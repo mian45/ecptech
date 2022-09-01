@@ -14,6 +14,7 @@ const SplitRoute = ({
     {...rest}
     render={(props) => (isAuthenticated ? (
       <Base>
+
         <Component {...props} />
       </Base>
     ) : (

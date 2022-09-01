@@ -6,14 +6,15 @@ import ForgotPassword from '../pages/ForgotPassword';
 import ResetPassword from '../pages/ResetPassword';
 import Archive from '../pages/Archive';
 import NoMatch from '../pages/NoMatch';
+import SideBar from "../Side-bar";
 
 const routes = [
   {
     path: '/',
     exact: true,
     auth: true,
-    component: Dashboard,
-    fallback: Home,
+    component: SideBar,
+    fallback: SideBar,
   },
   {
     path: '/login',
