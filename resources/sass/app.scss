@@ -9,8 +9,7 @@
     display: grid;
 }
 
-a {
-  text-decoration: none;
+a { text-decoration: none;
 
   &:hover {
     text-decoration: underline;
@@ -103,6 +102,9 @@ header {
 }
 
 // Login Page
+.card-body-header {
+    padding: 3rem 0rem 0rem 1rem;
+}
 .section-about {
     display: flex;
     justify-content: center;
@@ -111,6 +113,9 @@ header {
 
 // Login Form
 .section-login {
+    height:41em !important;
+    overflow:hidden ;
+    background-color: #F9F9FB !important;
     h4 {
         margin-bottom: 1.5rem;
         @include media-breakpoint-up(lg) {
@@ -118,10 +123,11 @@ header {
         }
     }
 
-    .card-body {
-        padding: 3rem;
-    }
 
+
+    .card-body {
+        padding: 3rem   ;
+    }
     .form-remember {
         font-size: 0.9rem;
     }
@@ -138,4 +144,14 @@ header {
     .password-reset-link {
         font-size: 0.9rem;
     }
+}
+.pd-0{
+    padding: 0 !important;
+}
+.form-control {
+    border-radius: 23px !important;
+    margin-top: 12px !important;
+}
+p{
+    margin:1rem 0 0 0 !important;
 }

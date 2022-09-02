@@ -4,7 +4,7 @@ import Header from './components/Header';
 
 const Base = ({ children }) => (
   <div>
-    <Header />
+
     <main>{children}</main>
   </div>
 );
