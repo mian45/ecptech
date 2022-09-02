@@ -18,3 +18,9 @@ export function authCheck() {
     type: ActionTypes.AUTH_CHECK,
   };
 }
+
+export function activeState () {
+    return {
+        type : ActionTypes.ACTIVE_STATE
+    }
+}
