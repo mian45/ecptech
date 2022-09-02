@@ -9,7 +9,7 @@ const defaultUser = {
 
 const initialState = {
   isAuthenticated: true,
-    isActiveState : 1,
+    isActiveState :0,
   user: defaultUser,
 };
 

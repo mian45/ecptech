@@ -12,7 +12,6 @@ store.dispatch(action.authCheck());
 
 ReactDOM.render(
     <React.StrictMode>
-    <Header/>
   <Provider store={store}>
     <Router>
       <Switch>

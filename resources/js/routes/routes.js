@@ -1,4 +1,3 @@
-import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Dashboard from '../pages/Dashboard';
 import Register from '../pages/Register';
@@ -12,16 +11,11 @@ const routes = [
   {
     path: '/',
     exact: true,
-    auth: true,
-    component: SideBar,
-    fallback: SideBar,
-  },
-  {
-    path: '/login',
-    exact: true,
     auth: false,
-    component: Login,
+    component:Login,
+      fallback:Login,
   },
+
   {
     path: '/register',
     exact: true,
@@ -40,6 +34,13 @@ const routes = [
     auth: false,
     component: ResetPassword,
   },
+    {
+        path: '/dashboard',
+        exact: true,
+        auth: true,
+        component: SideBar,
+        fallback:Login,
+    },
   {
     path: '/archive',
     exact: true,
