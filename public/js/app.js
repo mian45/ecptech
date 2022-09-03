@@ -11506,7 +11506,6 @@ var PhotoUpload = function PhotoUpload() {
     }
 
     if (info.file.status === 'done') {
-      // Get this url from response in real world.
       getBase64(info.file.originFileObj, function (url) {
         setLoading(false);
         setImageUrl(url);
@@ -14683,7 +14682,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".profile {\n  top: 86px;\n  right: 0px;\n  width: 409px;\n  position: absolute;\n  height: 993px;\n  /* UI Properties */\n  background: #FFFFFF 0% 0% no-repeat padding-box;\n  box-shadow: -3px 0px 6px rgba(0, 0, 0, 0.031372549);\n  border: 1px solid #E8E8E8;\n  opacity: 1;\n  display: flex;\n  align-items: flex-start;\n  padding: 1rem 0rem;\n}\n\n.profile > div {\n  flex: 1 1 auto;\n  border-bottom: 1px solid #E8E8E8;\n  padding: 1rem 0.8rem;\n}\n\n.profile > div label {\n  margin-top: 10px;\n  text-align: left;\n  font: normal normal normal 16px/19px Montserrat;\n  letter-spacing: 0px;\n  color: #2A2A2A;\n  opacity: 1;\n}\n\n.profile > div .business-name {\n  height: 45px;\n  width: 100%;\n  padding: 0px 20px;\n  background: #FFFFFF 0% 0% no-repeat padding-box;\n  border: 1px solid #DFDFDF;\n  border-radius: 23px;\n  opacity: 1;\n}\n\n.busniss-info {\n  text-align: left;\n  font: normal normal bold 18px/22px Montserrat;\n  letter-spacing: 0px;\n  color: #2A2A2A;\n  opacity: 1;\n}\n\n.ant-upload.ant-upload-select-picture-card {\n  width: 100% !important;\n  height: 70px !important;\n}\n\n.upload-title {\n  /* UI Properties */\n  text-align: center;\n  font: normal normal normal 14px/18px Montserrat;\n  letter-spacing: 0px;\n  color: #2A2A2A;\n  opacity: 1;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".profile {\n  top: 86px;\n  right: 0px;\n  width: 409px;\n  position: absolute;\n  height: 993px;\n  background: #FFFFFF 0% 0% no-repeat padding-box;\n  box-shadow: -3px 0px 6px rgba(0, 0, 0, 0.031372549);\n  border: 1px solid #E8E8E8;\n  opacity: 1;\n  display: flex;\n  align-items: flex-start;\n  padding: 1rem 0rem;\n}\n\n.profile > div {\n  flex: 1 1 auto;\n  border-bottom: 1px solid #E8E8E8;\n  padding: 1rem 0.8rem;\n}\n\n.profile > div label {\n  margin-top: 10px;\n  text-align: left;\n  font: normal normal normal 16px/19px Montserrat;\n  letter-spacing: 0px;\n  color: #2A2A2A;\n  opacity: 1;\n}\n\n.profile > div .business-name {\n  height: 45px;\n  width: 100%;\n  padding: 0px 20px;\n  background: #FFFFFF 0% 0% no-repeat padding-box;\n  border: 1px solid #DFDFDF;\n  border-radius: 23px;\n  opacity: 1;\n}\n\n.busniss-info {\n  text-align: left;\n  font: normal normal bold 18px/22px Montserrat;\n  letter-spacing: 0px;\n  color: #2A2A2A;\n  opacity: 1;\n}\n\n.ant-upload.ant-upload-select-picture-card {\n  width: 100% !important;\n  height: 70px !important;\n}\n\n.upload-title {\n  text-align: center;\n  font: normal normal normal 14px/18px Montserrat;\n  letter-spacing: 0px;\n  color: #2A2A2A;\n  opacity: 1;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
