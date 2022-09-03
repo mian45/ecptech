@@ -265,16 +265,15 @@ class Login extends Component {
 
         return (
             <div>
-                <div className="d-flex flex-column flex-md-row align-items-md-center" style={{overflow:"hidden",position:"fixed"}}>
-                    <div className="container-fluid">
+                <div className="d-flex flex-column flex-md-row align-items-md-center py-container">
+                    <div className="container">
 
                         <div className="row">
                             <div className="section-login col-lg-6">
 
                                 <div className="card-login  mb-3">
                                     <div>
-                                        {/*<img src={}*/}
-                                        {/*    />*/}
+                                        <img src='logo.png' alt='logo' className={"py-5"}/>
                                     </div>
                                     <div className={"card-body-header"}><h5>Log in</h5>
                                         <p className={"title"}>Welcome to the Urban Optics. Please put your login credentials below to start using the app.</p></div>
@@ -296,7 +295,7 @@ class Login extends Component {
 
                                             <div className="form-group row">
                                                 <div className={"col-lg-4 pd-0"}>
-                                                    <p className={"title"} htmlFor="email"> Email Address</p>
+                                                    <p className={"title"} htmlFor="email"> Email</p>
                                                 </div>
                                                 <div className={"col-lg-8 pd-0"}> <input
                                                     id="email"
@@ -317,7 +316,7 @@ class Login extends Component {
                                                     )}</div>
                                             </div>
 
-                                            <div className="form-group row">
+                                            <div className="form-group row borderlastindex" >
                                                 <div className={"col-lg-4 pd-0"}>
                                                     <p className={"title"} htmlFor="password"> Password</p>
                                                 </div>
@@ -342,29 +341,27 @@ class Login extends Component {
                                             </div>
 
 
-                                            <div className="form-group text-center">
+                                            <div className="form-group ending-text" >
+                                                <Link to="/forgot-password" style={{textDecoration:"none",color:"#ccc"}}>Forgot Password?</Link>
+                                            </div>
+
+                                            <div className="login-invite-text ending-text">
+
                                                 <button
                                                     type="submit"
                                                     className={classNames('btn btn-primary', {
                                                         'btn-loading': loading,
                                                     })}
                                                 >
-                                                    Sign In
+                                                   Login
                                                 </button>
-                                            </div>
-
-                                            <div className="login-invite-text text-center">
-                                                {"Don't have an account?"}
-                                                {' '}
-                                                <Link to="/register">Register</Link>
-                                                .
                                             </div>
                                         </form>
                                     </div>
                                 </div>
 
                                 <div className="password-reset-link text-center">
-                                    <Link to="/forgot-password">Forgot Your Password?</Link>
+
                                 </div>
                             </div>
                             <div className="section-about col-lg-6 mb-4 mb-lg-0 carousal-body">

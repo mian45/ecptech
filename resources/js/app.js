@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import Routes from './routes';
 import store from './store/index';
 import * as action from './store/actions';
-import Header from './Header/index';
 
 
 store.dispatch(action.authCheck());

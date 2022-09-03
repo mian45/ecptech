@@ -86,8 +86,8 @@
 }
 .carousal-body{
     background-color:#6FA5CB !important;
-    height:41em !important;
-    overflow:hidden ;
+    height:37em !important;
+    //overflow:hidden ;
 }
 .title{
     font: normal normal normal 16px/25px Montserrat;
@@ -111,3 +111,4 @@
     color: #000000;
     opacity: 1;
 }
+.py-container{padding: 2rem 0rem 0rem 0rem !important;}
