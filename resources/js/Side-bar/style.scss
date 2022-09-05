@@ -1,3 +1,7 @@
+.dashboard {
+    display: flex;
+    flex-direction: row;
+}
 .side-bar {
     width: 7.14em;
     background-color: #6FA5CB;
@@ -58,4 +62,10 @@
 .settings-image {
     width: 2.14em;
     height: 2.14em;
+}
+.dashboard-right {
+    background-color: #F9F9FB;
+    width: 100%;
+    padding-block-start: 2.25em;
+    padding-inline-start: 2.125em;
 }

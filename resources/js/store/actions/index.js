@@ -6,7 +6,6 @@ export function authLogin(payload) {
     payload,
   };
 }
-
 export function authLogout() {
   return {
     type: ActionTypes.AUTH_LOGOUT,
@@ -22,5 +21,12 @@ export function authCheck() {
 export function activeState () {
     return {
         type : ActionTypes.ACTIVE_STATE
+    }
+}
+
+export function activeSettingState (payload) {
+    return {
+        type : ActionTypes.ACTIVE_SETTING_STATE,
+        payload
     }
 }
