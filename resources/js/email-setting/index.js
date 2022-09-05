@@ -9,10 +9,6 @@ const EmailSetting = (props) => {
         props.dispatch(AuthServices.activeSetting(props.isActiveSettingState+1))
 
     }
-useEffect(()=>{
-    console.log(props.isActiveSettingState)
-
-},[props.isActiveSettingState])
 
     return (
         <div className='email-setting'>
