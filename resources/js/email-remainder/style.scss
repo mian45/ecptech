@@ -1,0 +1,232 @@
+.email-remainder {
+    &_heading {
+        font-weight: bold;
+        font-size: 1.5em;
+        margin-bottom: 2.375em;
+    }
+
+    &_arrow-section {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.812em;
+
+        p {
+            margin-bottom: 0;
+        }
+
+        &_back {
+            margin-left: 1.35em;
+        }
+    }
+
+    &_input-sections {
+        padding-left: 19.42em;
+
+        &_input-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.25em;
+
+            p {
+                margin-right: 2.875em;
+                font-size: 1em;
+                margin-bottom: 0;
+                width: 5.5em;
+            }
+
+            &_input {
+                background-color: white;
+                border: 1px solid #DFDFDF;
+                border-radius: 1.43em;
+                padding-inline-start: 1.375em;
+                padding-block: 0.8125em;
+                width: 23.68em;
+                height: 2.8125em;
+
+
+                &:focus-visible {
+                    border: 1px solid #DFDFDF;
+                    outline: none;
+                }
+            }
+        }
+    }
+
+    &_schedule {
+        font-weight: bold;
+        font-size: 1.125em;
+    }
+
+    &_save-button {
+        padding-block: 0.8125em;
+        padding-inline: 2em;
+        border: none;
+        border-radius: 28px;
+        background-color: #6FA5CB;
+        color: white;
+    }
+}
+
+.MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiAutocomplete-inputRoot.css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root {
+    background-color: white;
+    border: 1px solid #DFDFDF;
+    border-radius: 1.43em;
+    padding-inline-start: 1.375em;
+    padding-block: 0.8125em;
+    width: 23.68em;
+    height: 2.8125em;
+
+}
+
+.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root {
+    top: -5px !important;
+    left: 10px !important;
+}
+
+.react-tags {
+    width: 23.68em;
+    height: 2.8125em;
+    background-color: white;
+    border: 1px solid #DFDFDF;
+    border-radius: 1.43em;
+    position: relative;
+    padding-block: 0.43em;
+    padding-inline: 1.37em;
+
+    /* shared font styles */
+    font-size: 1em;
+    line-height: 1.2;
+
+    /* clicking anywhere will focus the input */
+    cursor: text;
+}
+
+.react-tags.is-focused {
+    border-color: #b1b1b1;
+}
+
+.react-tags__selected {
+    display: inline;
+}
+
+.react-tags__selected-tag {
+    display: inline-block;
+    box-sizing: border-box;
+    margin: 0 6px 0 0;
+    padding: 6px 0.812em;
+    border: 1px solid #d1d1d1;
+    border-radius: 23px;
+    background: #E8E8E8;
+    color: #2A2A2A;
+
+    /* match the font styles */
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.react-tags__selected-tag:after {
+    display: none;
+}
+
+.react-tags__selected-tag:hover,
+.react-tags__selected-tag:focus {
+    border-color: #b1b1b1;
+}
+
+.react-tags__search {
+    display: inline-block;
+
+    /* match tag layout */
+    padding: 7px 2px;
+    margin-bottom: 6px;
+
+    /* prevent autoresize overflowing the container */
+    max-width: 100%;
+}
+
+@media screen and (min-width: 30em) {
+    .react-tags__search {
+        /* this will become the offsetParent for suggestions */
+        position: relative;
+    }
+}
+
+.react-tags__search input {
+    /* prevent autoresize overflowing the container */
+    max-width: 100%;
+
+    /* remove styles and layout from this element */
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: none;
+
+    /* match the font styles */
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.react-tags__search input::-ms-clear {
+    display: none;
+}
+
+.react-tags__suggestions {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+}
+
+@media screen and (min-width: 30em) {
+    .react-tags__suggestions {
+        width: 240px;
+    }
+}
+
+.react-tags__suggestions ul {
+    margin: 4px -1px;
+    padding: 0;
+    list-style: none;
+    background: white;
+    border: 1px solid #d1d1d1;
+    border-radius: 2px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.react-tags__suggestions li {
+    border-bottom: 1px solid #ddd;
+    padding: 6px 8px;
+}
+
+.react-tags__suggestions li mark {
+    text-decoration: underline;
+    background: none;
+    font-weight: 600;
+}
+
+.react-tags__suggestions li:hover {
+    cursor: pointer;
+    background: #eee;
+}
+
+.react-tags__suggestions li.is-active {
+    background: #b7cfe0;
+}
+
+.react-tags__suggestions li.is-disabled {
+    opacity: 0.5;
+    cursor: auto;
+}
+
+.rdw-editor-wrapper {
+    width: 32.125em;
+}
+
+.rdw-editor-toolbar {
+    margin-bottom: 0 !important;
+    border: none;
+}
+
+.rdw-editor-main {
+    background-color: white;
+}

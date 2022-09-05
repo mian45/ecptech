@@ -34,7 +34,7 @@ class Register extends Component {
 
   handleChange = (e) => {
     const { name, value } = e.target;
-    this.setState({ [name]: value });
+    this.setState({ [name]: value });d
 
     // If a field has a validation error, we'll clear it when corrected.
     const { errors } = this.state;
