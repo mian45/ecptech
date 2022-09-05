@@ -1,7 +1,9 @@
-.dashboard {
+.dashboard-container {
     display: flex;
-    flex-direction: row;
+    width: 100%;
+    background-color: #F9F9FB;
 }
+
 .side-bar {
     width: 7.14em;
     background-color: #6FA5CB;

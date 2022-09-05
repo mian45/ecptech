@@ -1,63 +1,45 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import './style.scss'
-import {connect} from "react-redux";
-import EmailSetting from '../email-setting/index'
-import EmailRemainder from "../email-remainder";
-
-const mapStateToProps = (state) => ({
-    isActiveState: state.Auth.isActiveState,
-    isActiveSettingState: state.Auth.isActiveSettingState
-});
+import { connect } from "react-redux";
+import SettingDashboard from "../setting-dashboard";
 
 const SideBar = (props) => {
-    const [active , setActive]= useState(props.isActiveState)
-    console.log('hello',props.isActiveSettingState)
-
+    const [state, setState] = useState(props.isActiveState)
 
     return (
-        <div className='dashboard'>
+        <div className="dashboard-container">
+
             <div className="side-bar">
-                <div className="sidebar-section" onClick={() => {
-                    setActive(1)
-                }}>
-                    <img className="home-image" src="home.svg"/>
+                <div className="sidebar-section" onClick={() => { setState(1) }}>
+                    <img className="home-image" src="home.svg" />
                     <label className="sidebar-label">Dashboard</label>
-                    {active === 1 && <span className="active-state"></span>}
+                    {state === 1 && <span className="active-state"></span>}
                 </div>
-                <div className="sidebar-section" onClick={() => {
-                    setActive(2)
-                }}>
-                    <img className="invoices-image" src="invoices.svg"/>
+                <div className="sidebar-section" onClick={() => { setState(2) }}>
+                    <img className="invoices-image" src="invoices.svg" />
                     <label className="sidebar-label">Invoices</label>
-                    {active === 2 && <span className="active-state"></span>}
+                    {state === 2 && <span className="active-state"></span>}
                 </div>
-                <div className="sidebar-section" onClick={() => {
-                    setActive(3)
-                }}>
-                    <img className="payments-image" src="payments.svg"/>
+                <div className="sidebar-section" onClick={() => { setState(3) }}>
+                    <img className="payments-image" src="payments.svg" />
                     <label className="sidebar-label">Payments</label>
-                    {active === 3 && <span className="active-state"></span>}
+                    {state === 3 && <span className="active-state"></span>}
                 </div>
-                <div className="sidebar-section" onClick={() => {
-                    setActive(4)
-                }}>
-                    <img className="settings-image" src="settings.svg"/>
+                <div className="sidebar-section" onClick={() => { setState(4) }}>
+                    <img className="settings-image" src="settings.svg" />
                     <label className="sidebar-label">Settings</label>
-                    {active === 4 && <span className="active-state"></span>}
-
+                    {state === 4 && <span className="active-state"></span>}
                 </div>
             </div>
-            <div className='dashboard-right'>
-                {
-                    active === 4 && props.isActiveSettingState === 1 && <EmailSetting/>
-
-                }
-                {
-                    active === 4 && props.isActiveSettingState === 2 && <EmailRemainder/>
-                }
-            </div>
+            {
+                state === 4 &&
+                <SettingDashboard />
+            }
         </div>
     )
 }
 
+const mapStateToProps = (state) => ({
+    isActiveState: state.Auth.isActiveState,
+});
 export default connect(mapStateToProps)(SideBar)
