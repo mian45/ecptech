@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./hotselling.scss"
+import "./HotSelling.scss"
 const HotSellingProduct = () => {
     const hotproducts=[{
         id:1,
