@@ -10,12 +10,20 @@ const defaultUser = {
 const initialState = {
   isAuthenticated: true,
     isActiveState : 1,
+    isActiveSettingState : 1,
   user: defaultUser,
 };
 
 const activeState = (state , payload) => {
     state.isActiveState = state.isActiveState;
     return state;
+}
+
+const activeSettingState = (state , payload) => {
+    console.log("payload",payload,"state",state)
+
+
+    return {...state,isActiveSettingState:payload};
 }
 
 const authLogin = (state, payload) => {
@@ -66,6 +74,10 @@ const Auth = (state = initialState, { type, payload = null }) => {
       return logout(state);
       case ActionTypes.ACTIVE_STATE:
           return activeState(state, payload)
+      case ActionTypes.ACTIVE_SETTING_STATE: {
+
+          return activeSettingState(state, payload)
+      }
     default:
       return state;
   }
