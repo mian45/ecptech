@@ -1,7 +1,7 @@
 import React from "react"
 import "./profil.scss"
 import AddStaffMember from "../addStaffmember/AddStaff"
-import HotSellingProduct from "../hotselling/HotsellingProduct"
+import HotProduct from "../hotselling/HotProduct";
 import PhotoUpload from "./PhotoUpload.js"
 const Profile=()=>{
     return(
@@ -22,7 +22,7 @@ const Profile=()=>{
             <AddStaffMember/>
             </div>
             <div className='busniss-info'>
-            <HotSellingProduct/>
+            <HotProduct/>
             </div>
 
            
