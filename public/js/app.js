@@ -11199,7 +11199,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 var Header = function Header() {
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(false),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(true),
       _useState2 = _slicedToArray(_useState, 2),
       profile = _useState2[0],
       setProfile = _useState2[1];
@@ -11429,6 +11429,170 @@ react_dom__WEBPACK_IMPORTED_MODULE_1__.render( /*#__PURE__*/(0,react_jsx_runtime
 
 /***/ }),
 
+/***/ "./resources/js/components/addStaffmember/AddStaff.js":
+/*!************************************************************!*\
+  !*** ./resources/js/components/addStaffmember/AddStaff.js ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _Reactjs_ecptech_resources_images_Path_73_svg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Reactjs/ecptech/resources/images/Path 73.svg */ "../../Reactjs/ecptech/resources/images/Path 73.svg");
+/* harmony import */ var _Reactjs_ecptech_resources_images_user_icon_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Reactjs/ecptech/resources/images/user-icon.png */ "../../Reactjs/ecptech/resources/images/user-icon.png");
+/* harmony import */ var _Reactjs_ecptech_resources_images_edit_png__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Reactjs/ecptech/resources/images/edit.png */ "../../Reactjs/ecptech/resources/images/edit.png");
+/* harmony import */ var _Reactjs_ecptech_resources_images_cross_png__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Reactjs/ecptech/resources/images/cross.png */ "../../Reactjs/ecptech/resources/images/cross.png");
+/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./style.css */ "./resources/js/components/addStaffmember/style.css");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
+
+
+
+
+
+
+
+
+var AddStaffMember = function AddStaffMember() {
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+      _useState2 = _slicedToArray(_useState, 2),
+      value = _useState2[0],
+      setValue = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)([]),
+      _useState4 = _slicedToArray(_useState3, 2),
+      staff = _useState4[0],
+      setStaff = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)(""),
+      _useState6 = _slicedToArray(_useState5, 2),
+      editId = _useState6[0],
+      setEditId = _useState6[1];
+
+  var handleChange = function handleChange(e) {
+    setValue(e.target.value);
+  };
+
+  var handleSubmit = function handleSubmit(e) {
+    e.preventDefault();
+
+    if (editId) {
+      var selectedValue = _toConsumableArray(staff).find(function (singleStaff) {
+        return editId === singleStaff.id;
+      });
+
+      selectedValue.value = value;
+
+      var editIndex = _toConsumableArray(staff).indexOf(function (singleStaff) {
+        return editId === singleStaff.id;
+      });
+
+      _toConsumableArray(staff).splice(editIndex, 1, selectedValue);
+
+      setStaff(_toConsumableArray(staff));
+      setEditId("");
+      setValue("");
+    } else {
+      staff.push({
+        id: Date.now().toString(36) + Math.random().toString(36),
+        value: value
+      });
+      setValue("");
+    }
+  };
+
+  var handleDelete = function handleDelete(id) {
+    console.log("in program", id);
+    setStaff(_toConsumableArray(staff).filter(function (singleStaff) {
+      return singleStaff.id !== id;
+    }));
+  };
+
+  var handlUpdate = function handlUpdate(value) {
+    var selectedValue = _toConsumableArray(staff).find(function (singleStaff) {
+      return value.id === singleStaff.id;
+    });
+
+    setValue(selectedValue.value);
+    setEditId(value.id);
+  };
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+    className: "staff",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("p", {
+      className: "staff-label",
+      children: "Add Staff Members"
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      className: "add-staff",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("form", {
+        onSubmit: handleSubmit,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
+          type: "text",
+          placeholder: "Enter staff member name",
+          className: "staff-name",
+          value: value,
+          onChange: handleChange
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("button", {
+          type: "submit",
+          className: "add-btn",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
+            src: _Reactjs_ecptech_resources_images_Path_73_svg__WEBPACK_IMPORTED_MODULE_1__["default"]
+          })
+        })]
+      })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("ul", {
+      children: staff === null || staff === void 0 ? void 0 : staff.map(function (data, index) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("li", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
+              src: _Reactjs_ecptech_resources_images_user_icon_png__WEBPACK_IMPORTED_MODULE_2__["default"]
+            }), data.value]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
+              src: _Reactjs_ecptech_resources_images_edit_png__WEBPACK_IMPORTED_MODULE_3__["default"],
+              onClick: function onClick() {
+                return handlUpdate(data);
+              }
+            }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("img", {
+              src: _Reactjs_ecptech_resources_images_cross_png__WEBPACK_IMPORTED_MODULE_4__["default"],
+              onClick: function onClick() {
+                return handleDelete(data.id);
+              }
+            })]
+          })]
+        }, index);
+      })
+    })]
+  });
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (AddStaffMember);
+
+/***/ }),
+
 /***/ "./resources/js/components/profile/PhotoUpload.js":
 /*!********************************************************!*\
   !*** ./resources/js/components/profile/PhotoUpload.js ***!
@@ -11556,8 +11720,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _profil_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./profil.scss */ "./resources/js/components/profile/profil.scss");
-/* harmony import */ var _PhotoUpload_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PhotoUpload.js */ "./resources/js/components/profile/PhotoUpload.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _addStaffmember_AddStaff__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../addStaffmember/AddStaff */ "./resources/js/components/addStaffmember/AddStaff.js");
+/* harmony import */ var _PhotoUpload_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./PhotoUpload.js */ "./resources/js/components/profile/PhotoUpload.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
@@ -11565,23 +11731,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var Profile = function Profile() {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
     className: "profile",
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
       className: "busniss-info",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("p", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
         className: "busniess-label",
         children: "Business Information"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_PhotoUpload_js__WEBPACK_IMPORTED_MODULE_2__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_PhotoUpload_js__WEBPACK_IMPORTED_MODULE_3__["default"], {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
           children: "Business Name"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("br", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
           type: "text",
           placeholder: "Enter business name",
           className: "business-name"
         })]
       })]
-    })
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      className: "busniss-info",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_addStaffmember_AddStaff__WEBPACK_IMPORTED_MODULE_2__["default"], {})
+    })]
   });
 };
 
@@ -14102,6 +14271,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var routes = [{
+  path: '/Dashboard',
+  exact: true,
+  auth: true,
+  component: _pages_Dashboard__WEBPACK_IMPORTED_MODULE_2__["default"] // fallback: SideBar,
+
+}, {
   path: '/',
   exact: true,
   auth: true,
@@ -14616,6 +14791,30 @@ ___CSS_LOADER_EXPORT___.push([module.id, "/*!\n * \n * antd v4.22.8\n * \n * Cop
 
 /***/ }),
 
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/addStaffmember/style.css":
+/*!********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/addStaffmember/style.css ***!
+  \********************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".staff{\r\n    background: #FFFFFF 0% 0% no-repeat padding-box;\r\nbox-shadow: 0px 11px 30px #00000012;\r\nborder: 1px solid #E8E8E8;\r\nborder-radius: 10px;\r\nopacity: 1;\r\nwidth: 379px;\r\nmin-height: 200px;\r\npadding: 1rem;\r\n}\r\n.staff>div .staff-name\r\n{\r\n    height: 45px;\r\n    width: 100%;\r\n    padding: 0px 20px;\r\n    background: #FFFFFF 0% 0% no-repeat padding-box;\r\n    border: 1px solid #DFDFDF;\r\n    border-radius: 23px;\r\n    opacity: 1;\r\n}\r\n.busniss-info\r\n{\r\n    text-align: left;\r\n    font: normal normal bold 18px/22px Montserrat;\r\n    letter-spacing: 0px;\r\n    color: #2A2A2A;\r\n    opacity: 1;\r\n\r\n}\r\n.staff>div .staff-label{\r\n    margin-top: 10px;\r\n    text-align: left;\r\n    font: normal normal normal 16px/19px Montserrat;\r\n    letter-spacing: 0px;\r\n    color: #2A2A2A;\r\n    opacity: 1;\r\n}\r\n\r\n.add-staff form\r\n{\r\n    display: flex;\r\n    justify-content: space-between;\r\n    gap:0rem 1rem\r\n}\r\n\r\n.add-btn\r\n{\r\n    border: none;\r\n    border-radius: 50%;\r\n    overflow: hidden;\r\n}\r\n.add-btn img\r\n{\r\n    height: 45px;\r\n    width: 45px;\r\n    border-radius: 50%;\r\n    -o-object-fit: contain;\r\n       object-fit: contain;\r\n}\r\n\r\n.staff ul\r\n{\r\n  list-style: none;\r\n  margin: unset ;\r\n  margin-top: 1.5rem;\r\n  width: 100%;\r\n  padding: unset !important;\r\n}\r\n.staff ul li \r\n{\r\n    display: flex;\r\n    justify-content: space-between;\r\n    margin-bottom: 1rem;\r\n    align-items: center;\r\n    font: normal normal normal 16px/19px Montserrat;\r\nletter-spacing: 0px;\r\ncolor: #2A2A2A;\r\nopacity: 1;\r\n}\r\n.staff ul li img\r\n{\r\n  width: 18px;\r\n  height: 18px;\r\n  -o-object-fit: contain;\r\n     object-fit: contain;\r\n}\r\n.staff ul li div:first-child{\r\n    display: flex;\r\n    gap: 0rem 1.5rem;\r\n}\r\n.staff ul li div:last-child{\r\n    display: flex;\r\n    gap: 0rem 1.5rem;\r\n}\r\n.staff ul li div:last-child img\r\n{\r\n    cursor: pointer;\r\n}", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
 /***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/Header/style.scss":
 /*!******************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/Header/style.scss ***!
@@ -14633,7 +14832,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".header {\n  padding-inline: 1.5em 2.42em;\n  padding-block: 0.93em;\n  display: flex;\n  justify-content: space-between;\n  box-shadow: 0px 0.21em 0.42em rgba(0, 0, 0, 0.031372549);\n}\n\n.logo {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.right-side {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.bell-icon {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border-radius: 3.07em;\n  background-color: #CBCBCB;\n  width: 4.29em;\n  height: 4.29em;\n  margin-inline-end: 20px;\n}\n@media (max-width: 767px) {\n  .bell-icon {\n    width: 2em;\n    height: 2em;\n  }\n}\n\n.login {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border-radius: 3.07em;\n  background-color: #CBCBCB;\n  width: 4.29em;\n  height: 4.29em;\n}\n@media (max-width: 767px) {\n  .login {\n    width: 2em;\n    height: 2em;\n  }\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".header {\n  padding-inline: 1.5em 2.42em;\n  padding-block: 0.93em;\n  display: flex;\n  justify-content: space-between;\n  box-shadow: 0px 0.21em 0.42em rgba(0, 0, 0, 0.031372549);\n}\n\n.logo {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.right-side {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n}\n\n.bell-icon {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border-radius: 3.07em;\n  background-color: #CBCBCB;\n  width: 4.29em;\n  height: 4.29em;\n  -webkit-margin-end: 20px;\n          margin-inline-end: 20px;\n}\n@media (max-width: 767px) {\n  .bell-icon {\n    width: 2em;\n    height: 2em;\n  }\n}\n\n.login {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  border-radius: 3.07em;\n  background-color: #CBCBCB;\n  width: 4.29em;\n  height: 4.29em;\n}\n@media (max-width: 767px) {\n  .login {\n    width: 2em;\n    height: 2em;\n  }\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -14657,7 +14856,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".side-bar {\n  width: 7.14em;\n  background-color: #6FA5CB;\n  padding-block-start: 2.5em;\n  padding-block-end: 43.42em;\n}\n\n.sidebar-section {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  margin-block-end: 2.78em;\n}\n\n.active-state {\n  position: absolute;\n  top: -5%;\n  right: -6.5%;\n  width: 0.5em;\n  height: 100%;\n  background-color: #4F8DB8;\n}\n.active-state::before {\n  content: \".\";\n  left: -0.71em;\n  top: 10%;\n  position: absolute;\n  width: 0;\n  height: 0;\n  border-top: 0.71em solid transparent;\n  border-bottom: 0.71em solid transparent;\n  border-right: 0.71em solid #4F8DB8;\n}\n\n.sidebar-label {\n  color: white;\n  margin-block-start: 0.85em;\n}\n\n.home-image {\n  width: 1.92em;\n  height: 2.14em;\n}\n\n.invoices-image {\n  width: 1.78em;\n  height: 2.14em;\n}\n\n.payments-image {\n  width: 2.14em;\n  height: 1.57em;\n}\n\n.settings-image {\n  width: 2.14em;\n  height: 2.14em;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".side-bar {\n  width: 7.14em;\n  background-color: #6FA5CB;\n  -webkit-padding-before: 2.5em;\n          padding-block-start: 2.5em;\n  -webkit-padding-after: 43.42em;\n          padding-block-end: 43.42em;\n}\n\n.sidebar-section {\n  position: relative;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: center;\n  -webkit-margin-after: 2.78em;\n          margin-block-end: 2.78em;\n}\n\n.active-state {\n  position: absolute;\n  top: -5%;\n  right: -6.5%;\n  width: 0.5em;\n  height: 100%;\n  background-color: #4F8DB8;\n}\n.active-state::before {\n  content: \".\";\n  left: -0.71em;\n  top: 10%;\n  position: absolute;\n  width: 0;\n  height: 0;\n  border-top: 0.71em solid transparent;\n  border-bottom: 0.71em solid transparent;\n  border-right: 0.71em solid #4F8DB8;\n}\n\n.sidebar-label {\n  color: white;\n  -webkit-margin-before: 0.85em;\n          margin-block-start: 0.85em;\n}\n\n.home-image {\n  width: 1.92em;\n  height: 2.14em;\n}\n\n.invoices-image {\n  width: 1.78em;\n  height: 2.14em;\n}\n\n.payments-image {\n  width: 2.14em;\n  height: 1.57em;\n}\n\n.settings-image {\n  width: 2.14em;\n  height: 2.14em;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -14682,7 +14881,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".profile {\n  top: 86px;\n  right: 0px;\n  width: 409px;\n  position: absolute;\n  height: 993px;\n  background: #FFFFFF 0% 0% no-repeat padding-box;\n  box-shadow: -3px 0px 6px rgba(0, 0, 0, 0.031372549);\n  border: 1px solid #E8E8E8;\n  opacity: 1;\n  display: flex;\n  align-items: flex-start;\n  padding: 1rem 0rem;\n}\n\n.profile > div {\n  flex: 1 1 auto;\n  border-bottom: 1px solid #E8E8E8;\n  padding: 1rem 0.8rem;\n}\n\n.profile > div label {\n  margin-top: 10px;\n  text-align: left;\n  font: normal normal normal 16px/19px Montserrat;\n  letter-spacing: 0px;\n  color: #2A2A2A;\n  opacity: 1;\n}\n\n.profile > div .business-name {\n  height: 45px;\n  width: 100%;\n  padding: 0px 20px;\n  background: #FFFFFF 0% 0% no-repeat padding-box;\n  border: 1px solid #DFDFDF;\n  border-radius: 23px;\n  opacity: 1;\n}\n\n.busniss-info {\n  text-align: left;\n  font: normal normal bold 18px/22px Montserrat;\n  letter-spacing: 0px;\n  color: #2A2A2A;\n  opacity: 1;\n}\n\n.ant-upload.ant-upload-select-picture-card {\n  width: 100% !important;\n  height: 70px !important;\n}\n\n.upload-title {\n  text-align: center;\n  font: normal normal normal 14px/18px Montserrat;\n  letter-spacing: 0px;\n  color: #2A2A2A;\n  opacity: 1;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".profile {\n  top: 86px;\n  right: 0px;\n  width: 409px;\n  position: absolute;\n  background: #FFFFFF 0% 0% no-repeat padding-box;\n  box-shadow: -3px 0px 6px rgba(0, 0, 0, 0.031372549);\n  border: 1px solid #E8E8E8;\n  opacity: 1;\n  display: flex;\n  flex-direction: column;\n  justify-content: flex-start;\n  align-items: flex-start;\n  padding: 1rem 0rem;\n  min-height: 100vh;\n}\n\n.profile > div {\n  flex: 0 1 auto;\n  width: 100%;\n  border-bottom: 1px solid #E8E8E8;\n  padding: 1rem 0.8rem;\n}\n\n.profile > div label {\n  margin-top: 10px;\n  text-align: left;\n  font: normal normal normal 16px/19px Montserrat;\n  letter-spacing: 0px;\n  color: #2A2A2A;\n  opacity: 1;\n}\n\n.profile > div .business-name {\n  height: 45px;\n  width: 100%;\n  padding: 0px 20px;\n  background: #FFFFFF 0% 0% no-repeat padding-box;\n  border: 1px solid #DFDFDF;\n  border-radius: 23px;\n  opacity: 1;\n}\n\n.busniss-info {\n  text-align: left;\n  font: normal normal bold 18px/22px Montserrat;\n  letter-spacing: 0px;\n  color: #2A2A2A;\n  opacity: 1;\n}\n\n.ant-upload.ant-upload-select-picture-card {\n  width: 100% !important;\n  height: 70px !important;\n}\n\n.upload-title {\n  text-align: center;\n  font: normal normal normal 14px/18px Montserrat;\n  letter-spacing: 0px;\n  color: #2A2A2A;\n  opacity: 1;\n}\n\n.add-staff {\n  display: flex;\n  justify-content: space-between;\n  gap: 0rem 1rem;\n}\n\n.add-btn {\n  border: none;\n  border-radius: 50%;\n  overflow: hidden;\n}\n\n.add-btn img {\n  height: 45px;\n  width: 45px;\n  border-radius: 50%;\n  -o-object-fit: contain;\n     object-fit: contain;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -16121,6 +16320,66 @@ function alignPoint(el, tgtPoint, align) {
 
 //# sourceMappingURL=index.js.map
 
+
+/***/ }),
+
+/***/ "../../Reactjs/ecptech/resources/images/Path 73.svg":
+/*!**********************************************************!*\
+  !*** ../../Reactjs/ecptech/resources/images/Path 73.svg ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/Path 73.svg?f85bc86651e2ec4c20c8c592028dff79");
+
+/***/ }),
+
+/***/ "../../Reactjs/ecptech/resources/images/cross.png":
+/*!********************************************************!*\
+  !*** ../../Reactjs/ecptech/resources/images/cross.png ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/cross.png?aef376f003275612a1b978bd02eb34cb");
+
+/***/ }),
+
+/***/ "../../Reactjs/ecptech/resources/images/edit.png":
+/*!*******************************************************!*\
+  !*** ../../Reactjs/ecptech/resources/images/edit.png ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/edit.png?917220a5109f48f32baa49b2605d410c");
+
+/***/ }),
+
+/***/ "../../Reactjs/ecptech/resources/images/user-icon.png":
+/*!************************************************************!*\
+  !*** ../../Reactjs/ecptech/resources/images/user-icon.png ***!
+  \************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ("/images/user-icon.png?6fdf0553d144bc12d36bec67bd4b80fe");
 
 /***/ }),
 
@@ -73512,6 +73771,36 @@ var update = _style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMP
 
 /***/ }),
 
+/***/ "./resources/js/components/addStaffmember/style.css":
+/*!**********************************************************!*\
+  !*** ./resources/js/components/addStaffmember/style.css ***!
+  \**********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./style.css */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[6].oneOf[1].use[2]!./resources/js/components/addStaffmember/style.css");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_style_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_6_oneOf_1_use_2_style_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
 /***/ "./resources/js/Header/style.scss":
 /*!****************************************!*\
   !*** ./resources/js/Header/style.scss ***!
@@ -75113,7 +75402,7 @@ function _unsupportedIterableToArray(o, minLen) {
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"_args":[["axios@0.21.4","/home/amjad/ecptech"]],"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"/home/amjad/ecptech","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
+module.exports = JSON.parse('{"_args":[["axios@0.21.4","C:\\\\Reactjs\\\\ecptech"]],"_from":"axios@0.21.4","_id":"axios@0.21.4","_inBundle":false,"_integrity":"sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==","_location":"/axios","_phantomChildren":{},"_requested":{"type":"version","registry":true,"raw":"axios@0.21.4","name":"axios","escapedName":"axios","rawSpec":"0.21.4","saveSpec":null,"fetchSpec":"0.21.4"},"_requiredBy":["/"],"_resolved":"https://registry.npmjs.org/axios/-/axios-0.21.4.tgz","_spec":"0.21.4","_where":"C:\\\\Reactjs\\\\ecptech","author":{"name":"Matt Zabriskie"},"browser":{"./lib/adapters/http.js":"./lib/adapters/xhr.js"},"bugs":{"url":"https://github.com/axios/axios/issues"},"bundlesize":[{"path":"./dist/axios.min.js","threshold":"5kB"}],"dependencies":{"follow-redirects":"^1.14.0"},"description":"Promise based HTTP client for the browser and node.js","devDependencies":{"coveralls":"^3.0.0","es6-promise":"^4.2.4","grunt":"^1.3.0","grunt-banner":"^0.6.0","grunt-cli":"^1.2.0","grunt-contrib-clean":"^1.1.0","grunt-contrib-watch":"^1.0.0","grunt-eslint":"^23.0.0","grunt-karma":"^4.0.0","grunt-mocha-test":"^0.13.3","grunt-ts":"^6.0.0-beta.19","grunt-webpack":"^4.0.2","istanbul-instrumenter-loader":"^1.0.0","jasmine-core":"^2.4.1","karma":"^6.3.2","karma-chrome-launcher":"^3.1.0","karma-firefox-launcher":"^2.1.0","karma-jasmine":"^1.1.1","karma-jasmine-ajax":"^0.1.13","karma-safari-launcher":"^1.0.0","karma-sauce-launcher":"^4.3.6","karma-sinon":"^1.0.5","karma-sourcemap-loader":"^0.3.8","karma-webpack":"^4.0.2","load-grunt-tasks":"^3.5.2","minimist":"^1.2.0","mocha":"^8.2.1","sinon":"^4.5.0","terser-webpack-plugin":"^4.2.3","typescript":"^4.0.5","url-search-params":"^0.10.0","webpack":"^4.44.2","webpack-dev-server":"^3.11.0"},"homepage":"https://axios-http.com","jsdelivr":"dist/axios.min.js","keywords":["xhr","http","ajax","promise","node"],"license":"MIT","main":"index.js","name":"axios","repository":{"type":"git","url":"git+https://github.com/axios/axios.git"},"scripts":{"build":"NODE_ENV=production grunt build","coveralls":"cat coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js","examples":"node ./examples/server.js","fix":"eslint --fix lib/**/*.js","postversion":"git push && git push --tags","preversion":"npm test","start":"node ./sandbox/server.js","test":"grunt test","version":"npm run build && grunt version && git add -A dist && git add CHANGELOG.md bower.json package.json"},"typings":"./index.d.ts","unpkg":"dist/axios.min.js","version":"0.21.4"}');
 
 /***/ })
 
@@ -75322,7 +75611,7 @@ module.exports = JSON.parse('{"_args":[["axios@0.21.4","/home/amjad/ecptech"]],"
 /******/ 			return __webpack_require__.O(result);
 /******/ 		}
 /******/ 		
-/******/ 		var chunkLoadingGlobal = globalThis["webpackChunk"] = globalThis["webpackChunk"] || [];
+/******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
 /******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
 /******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
 /******/ 	})();

@@ -2,7 +2,7 @@ import React,{useState}from 'react'
 import './style.scss'
 import Profile from "../components/profile/Profile.js"
 const Header = () => {
-    const [profile, setProfile]=useState(false)
+    const [profile, setProfile]=useState(true)
     const showProfile=()=>{
         setProfile(!profile)
     }

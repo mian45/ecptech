@@ -10,6 +10,13 @@ import SideBar from "../Side-bar";
 
 const routes = [
   {
+    path: '/Dashboard',
+    exact: true,
+    auth: true,
+    component: Dashboard,
+    // fallback: SideBar,
+  },
+  {
     path: '/',
     exact: true,
     auth: true,
