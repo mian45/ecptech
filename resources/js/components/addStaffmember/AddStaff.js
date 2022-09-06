@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import btnIcon from "/Reactjs/ecptech/resources/images/Path 73.svg"
+import btnIcon from "/Reactjs/ecptech/resources/images/btn-icon.png"
 import user from "/Reactjs/ecptech/resources/images/user-icon.png"
 import edit from "/Reactjs/ecptech/resources/images/edit.png"
 import cross from "/Reactjs/ecptech/resources/images/cross.png"
