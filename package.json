@@ -23,12 +23,12 @@
         "prop-types": "^15.7.2",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
-<<<<<<< HEAD
+
         "react-icons": "^4.4.0",
-=======
+
         "react-draft-wysiwyg": "^1.15.0",
         "react-dropdown": "^1.10.0",
->>>>>>> 201832efa162ed5b010ec4ca68ad0299c5c2c076
+
         "react-redux": "^7.2.4",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
