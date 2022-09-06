@@ -1,5 +1,6 @@
 import React from "react"
 import "./profil.scss"
+import AddStaffMember from "../addStaffmember/AddStaff"
 import PhotoUpload from "./PhotoUpload.js"
 const Profile=()=>{
     return(
@@ -15,6 +16,9 @@ const Profile=()=>{
                     <input type="text" placeholder="Enter business name" className="business-name"/>
                 </div>
 
+            </div>
+            <div className='busniss-info'>
+            <AddStaffMember/>
             </div>
         </div>
     )
