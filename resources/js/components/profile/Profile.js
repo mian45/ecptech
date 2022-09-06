@@ -1,6 +1,7 @@
 import React from "react"
 import "./profil.scss"
 import AddStaffMember from "../addStaffmember/AddStaff"
+import HotProduct from "../hotselling/HotProduct";
 import PhotoUpload from "./PhotoUpload.js"
 const Profile=()=>{
     return(
@@ -20,6 +21,11 @@ const Profile=()=>{
             <div className='busniss-info'>
             <AddStaffMember/>
             </div>
+            <div className='busniss-info'>
+            <HotProduct/>
+            </div>
+
+           
         </div>
     )
 }
