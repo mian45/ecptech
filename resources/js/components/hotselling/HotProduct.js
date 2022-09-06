@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import "./HotSelling.scss"
-const HotSellingProduct = () => {
+import "./HotProduct.scss"
+const HotProduct = () => {
     const hotproducts=[{
         id:1,
         name:"Double-Gauss lens",
@@ -38,4 +38,4 @@ const HotSellingProduct = () => {
     )
 }
 
-export default HotSellingProduct
+export default HotProduct
