@@ -2,7 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\StaffController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('register', [RegisterController::class, 'register']);
+Route::post('login', [RegisterController::class, 'login']);
+Route::post('forgotPassword', [RegisterController::class, 'forgotPassword']);
+Route::post('verifyCode', [RegisterController::class, 'verifyCode']);
+Route::post('addRole', [RegisterController::class, 'addRole']);
+Route::post('getStaff', [StaffController::class, 'getStaff']);
+
+Route::middleware('auth:api')->group( function () {
+
+
+
 });
