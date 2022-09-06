@@ -1,7 +1,7 @@
 import React from "react"
 import "./profil.scss"
 import AddStaffMember from "../addStaffmember/AddStaff"
-import HotSellingProduct from "../hotselling/HotsellingProduct"
+import HotSellingProduct from "../hotselling/HotSellingProduct";
 import PhotoUpload from "./PhotoUpload.js"
 const Profile=()=>{
     return(
