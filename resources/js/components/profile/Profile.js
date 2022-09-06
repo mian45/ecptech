@@ -15,7 +15,7 @@ const defaultPasswordState = {
 const Profile = () => {
     const handleClick = (values, actions) => {
         if (values.newPassword !== values.confirmPassword) {
-            actions.setFieldError("newPassword", "Password must matched");
+            actions.setFieldError("newPassword", "Password must match");
             return;
         }
         //success case
