@@ -35,20 +35,22 @@ const ColorTheme = () => {
         <div className={classes.container}>
             <div className={classes.title}>Color Scheme</div>
             <label className={classes.subtitle}>Choose theme color</label>
-            <div ref={innerRef} className={classes["color-wrapper"]}>
-                <div
-                    className={classes["color-picker-handle"]}
-                    onClick={handleColorClick}
-                    style={{ backgroundColor: themeColor }}
-                />
-                {colorModal && (
-                    <div className={classes["picker-wrapper"]}>
-                        <SketchPicker
-                            color={themeColor}
-                            onChangeComplete={handleColorChange}
-                        />
-                    </div>
-                )}
+            <div className={classes["color-wrapper"]}>
+                <div ref={innerRef}>
+                    <div
+                        className={classes["color-picker-handle"]}
+                        onClick={handleColorClick}
+                        style={{ backgroundColor: themeColor }}
+                    />
+                    {colorModal && (
+                        <div className={classes["picker-wrapper"]}>
+                            <SketchPicker
+                                color={themeColor}
+                                onChangeComplete={handleColorChange}
+                            />
+                        </div>
+                    )}
+                </div>
                 <input
                     type={"text"}
                     className={classes["color-input"]}
