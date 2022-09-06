@@ -4,7 +4,7 @@ import user from "/Reactjs/ecptech/resources/images/user-icon.png"
 import edit from "/Reactjs/ecptech/resources/images/edit.png"
 import cross from "/Reactjs/ecptech/resources/images/cross.png"
 
-import "./style.css"
+import "./style.scss"
 const AddStaffMember = () => {
 
     const [value, setValue] = useState("")
