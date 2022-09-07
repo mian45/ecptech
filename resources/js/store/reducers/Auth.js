@@ -12,14 +12,18 @@ const defaultStaffUser = {
     name: null,
     email: null,
 };
+const defaultUserRole = {
+    id: null,
+    name: null,
+};
 
 const initialState = {
     isAuthenticated: true,
     isActiveState: 1,
     isActiveSettingState: 1,
     user: defaultUser,
-    isStaffAuthenticated: false,
     staffUser: defaultStaffUser,
+    userRole: defaultUserRole,
 };
 
 const activeState = (state, payload) => {
@@ -32,21 +36,29 @@ const activeSettingState = (state, payload) => {
 };
 
 const authLogin = (state, payload) => {
-    const { access_token: AccessToken, user } = payload;
     const userObject = {
         id: payload?.data?.id,
         name: payload?.data?.name,
         email: payload?.data?.email,
     };
+    const roleObject = {
+        id: payload?.data.role.id,
+        name: payload.data.role.name,
+    };
+    const staffObject = {
+        id: payload?.data?.staffAuth?.id || null,
+        name: payload?.data?.staffAuth?.name || null,
+        email: payload?.data?.staffAuth?.email || null,
+    };
     const token = payload?.data?.token;
 
-    localStorage.setItem("access_token", token);
-    localStorage.setItem("user", JSON.stringify(userObject));
     Http.defaults.headers.common.Authorization = `Bearer ${token}`;
     const stateObj = {
         ...state,
         isAuthenticated: true,
         user: userObject,
+        userRole: roleObject,
+        staffUser: staffObject,
     };
     return stateObj;
 };
@@ -55,7 +67,6 @@ const checkAuth = (state) => {
     const stateObj = {
         ...state,
         isAuthenticated: !!localStorage.getItem("access_token"),
-        // user: null,
         user: JSON.parse(
             localStorage.getItem("user") || JSON.stringify(defaultUser)
         ),
@@ -87,7 +98,6 @@ const staffLogin = (state, payload) => {
     };
     const stateObj = {
         ...state,
-        isStaffAuthenticated: true,
         staffUser: staffUserObject,
     };
     return stateObj;
@@ -101,7 +111,6 @@ const updateStaffLogin = (state, payload) => {
     };
     const stateObj = {
         ...state,
-        isStaffAuthenticated: true,
         staffUser: staffUserObject,
     };
     return stateObj;

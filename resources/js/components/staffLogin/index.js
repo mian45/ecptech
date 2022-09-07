@@ -1,16 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./styles.module.scss";
 import { connect } from "react-redux";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services";
 
-const StaffLogin = ({
-    dispatch,
-    clientUser,
-    isStaffAuthenticated,
-    staffUser,
-}) => {
+const defaultValues = {
+    email: "",
+    password: "",
+};
+
+const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
+    const [loginInitialValues, setInitialValues] = useState(defaultValues);
+    const [isEdit, setIsEdit] = useState(false);
+
+    useEffect(() => {
+        if (staffUser?.id) {
+            const editValues = {
+                email: staffUser?.email,
+                password: "",
+            };
+            setInitialValues(editValues);
+        }
+    }, []);
+
     const createNewStaff = (values) => {
         const registerObject = {
             email: values.email,
@@ -32,22 +45,28 @@ const StaffLogin = ({
     };
 
     const handleClick = (values) => {
-        if (isStaffAuthenticated) {
+        if (staffUser?.id) {
             updateStaff(values);
         } else {
             createNewStaff(values);
+        }
+        setIsEdit(false);
+    };
+    const handleEdit = () => {
+        if (isEdit) {
+            setIsEdit(false);
+        } else {
+            setIsEdit(true);
         }
     };
     return (
         <div className={classes["container"]}>
             <div className={classes["title"]}>Staff Login</div>
             <Formik
-                initialValues={{
-                    email: "",
-                    password: "",
-                }}
+                initialValues={loginInitialValues}
                 validationSchema={LoginValidation}
                 onSubmit={handleClick}
+                enableReinitialize={true}
             >
                 {({ values, handleChange, handleSubmit, handleBlur }) => {
                     return (
@@ -66,6 +85,7 @@ const StaffLogin = ({
                                         placeholder="Enter email"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        disabled={!isEdit && staffUser?.id}
                                     />
                                     <ErrorMessage
                                         name="email"
@@ -86,6 +106,7 @@ const StaffLogin = ({
                                         placeholder="Enter password"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        disabled={!isEdit && staffUser?.id}
                                     />
                                     <ErrorMessage
                                         name="password"
@@ -98,9 +119,19 @@ const StaffLogin = ({
                                 <button
                                     type="submit"
                                     className={classes["button"]}
+                                    disabled={!isEdit && staffUser?.id}
                                 >
-                                    Sign In
+                                    {staffUser?.id ? "Update" : "Sign In"}
                                 </button>
+                                {staffUser?.id && (
+                                    <button
+                                        type="button"
+                                        className={classes["edit-button"]}
+                                        onClick={handleEdit}
+                                    >
+                                        {isEdit ? "Cancel" : "Edit"}
+                                    </button>
+                                )}
                             </div>
                         </form>
                     );
@@ -112,7 +143,6 @@ const StaffLogin = ({
 const mapStateToProps = (state) => ({
     clientUser: state.Auth.user,
     staffUser: state.Auth.staffUser,
-    isStaffAuthenticated: state.Auth.isStaffAuthenticated,
 });
 
 export default connect(mapStateToProps)(StaffLogin);
