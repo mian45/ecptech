@@ -103,7 +103,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         value={values.password}
                                         className={classes["input"]}
                                         name="password"
-                                        placeholder="Enter password"
+                                        placeholder="********"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         disabled={!isEdit && staffUser?.id}
