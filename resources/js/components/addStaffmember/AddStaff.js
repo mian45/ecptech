@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import btnIcon from "/Reactjs/ecptech/resources/images/btn-icon.png"
-import user from "/Reactjs/ecptech/resources/images/user-icon.png"
-import edit from "/Reactjs/ecptech/resources/images/edit.png"
-import cross from "/Reactjs/ecptech/resources/images/cross.png"
+// import btnIcon from "/Reactjs/ecptech/resources/images/btn-icon.png"
+// import user from "/Reactjs/ecptech/resources/images/user-icon.png"
+// import edit from "/Reactjs/ecptech/resources/images/edit.png"
+// import cross from "/Reactjs/ecptech/resources/images/cross.png"
 
 import "./style.scss"
 const AddStaffMember = () => {
@@ -52,14 +52,14 @@ const AddStaffMember = () => {
             <div className="add-staff">
                 <form onSubmit={handleSubmit}>
                     <input type="text" placeholder="Enter staff member name" className="staff-name" value={value} onChange={handleChange} />
-                    <button type="submit" className="add-btn"><img src={btnIcon} /></button>
+                    <button type="submit" className="add-btn"><img src={''} /></button>
                 </form>
             </div>
-            <ul>
+            <ul>user
                 {
                     staff?.map((data, index) => {
 
-                        return (<li key={index}><div><img src={user} />{data.value}</div><div><img src={edit} onClick={() => handlUpdate(data)} /> <img src={cross} onClick={() => handleDelete(data.id)} /></div></li>)
+                        return (<li key={index}><div><img src={''} />{data.value}</div><div><img src={edit} onClick={() => handlUpdate(data)} /> <img src={cross} onClick={() => handleDelete(data.id)} /></div></li>)
 
                     })
 

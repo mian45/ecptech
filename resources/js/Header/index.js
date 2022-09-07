@@ -8,9 +8,9 @@ const Header = () => {
     }
     return(
         <div className='header'>
-            {
+            {/* {
                 profile===false? null:<Profile/>
-            }
+            } */}
             <div className='logo'>
                 <img src='logo.png' alt='logo'/>
             </div>
