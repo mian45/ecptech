@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import classes from "./style.module.scss";
 import CustomToggle from "../customToggle";
-import { SketchPicker } from "react-color";
-import { useOuterClick } from "../../hooks/useOuterClick";
 import { ThemeTypeEnum } from "../../enum/enum";
 
 const ColorTheme = () => {
     const [toggle, setToggle] = useState(ThemeTypeEnum.light);
 
-    const [colorModal, showColorModal] = useState(false);
     const [themeColor, setThemeColor] = useState("#6FA5CB");
     const handleTogglerChange = () => {
         if (toggle.includes(ThemeTypeEnum.light)) {
@@ -17,16 +14,8 @@ const ColorTheme = () => {
             setToggle(ThemeTypeEnum.light);
         }
     };
-    const handleColorClick = (e) => {
-        e.stopPropagation();
-        showColorModal(!colorModal);
-    };
-
-    const innerRef = useOuterClick((e) => {
-        showColorModal(false);
-    });
-    const handleColorChange = (color) => {
-        setThemeColor(color.hex);
+    const handleColorChange = (e) => {
+        setThemeColor(e.target.value);
     };
     const handleColorInput = (e) => {
         setThemeColor(e.target.value);
@@ -36,22 +25,16 @@ const ColorTheme = () => {
             <div className={classes.title}>Color Scheme</div>
             <label className={classes.subtitle}>Choose theme color</label>
             <div className={classes["color-wrapper"]}>
-                <div ref={innerRef}>
-                    <div
-                        className={classes["color-picker-handle"]}
-                        onClick={handleColorClick}
-                        style={{ backgroundColor: themeColor }}
+                <div>
+                    <input
+                        className={classes["color-picker"]}
+                        type={"color"}
+                        onChange={handleColorChange}
+                        value={themeColor}
                     />
-                    {colorModal && (
-                        <div className={classes["picker-wrapper"]}>
-                            <SketchPicker
-                                color={themeColor}
-                                onChangeComplete={handleColorChange}
-                            />
-                        </div>
-                    )}
                 </div>
                 <input
+                    maxLength={7}
                     type={"text"}
                     className={classes["color-input"]}
                     value={themeColor}

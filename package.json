@@ -19,7 +19,6 @@
         "popper.js": "^1.16.1",
         "prop-types": "^15.7.2",
         "react": "^16.14.0",
-        "react-color": "^2.19.3",
         "react-dom": "^16.14.0",
         "react-redux": "^7.2.4",
         "react-router": "^5.2.0",
