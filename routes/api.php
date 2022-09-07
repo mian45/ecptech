@@ -20,10 +20,15 @@ Route::post('login', [RegisterController::class, 'login']);
 Route::post('forgotPassword', [RegisterController::class, 'forgotPassword']);
 Route::post('verifyCode', [RegisterController::class, 'verifyCode']);
 Route::post('addRole', [RegisterController::class, 'addRole']);
-Route::post('getStaff', [StaffController::class, 'getStaff']);
+
+
+
+
 
 Route::middleware('auth:api')->group( function () {
 
-
-
+    Route::post('updateStaffLogin', [RegisterController::class, 'updateStaffLogin']);
+    Route::post('getStaff', [StaffController::class, 'getStaff']);
+    Route::post('addStaff', [StaffController::class, 'addStaff']);
+    Route::post('editStaff', [StaffController::class, 'editStaff']);
 });

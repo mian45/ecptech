@@ -7,11 +7,7 @@ use App\Models\Staff;
 use Validator;
 class StaffController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function getStaff(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -22,77 +18,80 @@ class StaffController extends Controller
             return $this->sendError('Validation Error.', $validator->errors());
         }
       $staff = Staff::select('id','name')->where('user_id',$request->userId)->get();
-        if($staff){
-            return $this->sendResponse($staff, 'Staff list get successfully');
+        return $this->sendResponse($staff, 'Staff list get successfully');
+
+    }
+
+
+    public function addStaff(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+
+            'userId' => 'required',
+            'name' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+        $user_id = $request->userId;
+        $name = $request->name;
+        $staffExist = Staff::where([
+            ['user_id', '=' ,$user_id],
+            ['name', '=' ,$name]
+        ])->first();
+
+        if ($staffExist) {
+            return $this->sendError('The staff name already exists.');
         }
 
-        return $this->sendResponse([], 'staff not found');
+        $staff = new Staff;
+        $staff->user_id = $user_id;
+        $staff->name = $name;
+        $staff->save();
+
+        $success['id'] =  $staff->id;
+        $success['name'] =  $staff->name;
+        return $this->sendResponse($success, 'Staff add successfully');
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function editStaff(Request $request)
     {
-        //
-    }
+        $validator = Validator::make($request->all(), [
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+            'id' => 'required',
+            'userId' => 'required',
+            'name' => 'required',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+        $id = $request->id;
+        $user_id = $request->userId;
+        $name = $request->name;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        $staffExist = Staff::where([
+            ['user_id', '=' ,$user_id],
+            ['name', '=' ,$name],
+            ['id', '!=' , $id]
+        ])->first();
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        if ($staffExist) {
+            return $this->sendError('The staff name already exists.');
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        $staff = Staff::find($id);
+        if($staff){
+            $staff->name = $name;
+            $staff->save();
+            $success['id'] =  $staff->id;
+            $success['name'] =  $staff->name;
+
+            return $this->sendResponse($success, 'Staff update successfully.');
+        }
+
+        return $this->sendError('Staff not found');
     }
 }
