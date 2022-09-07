@@ -33,7 +33,7 @@ class RegisterController extends Controller
         $name = $request->name;
         $email = $request->email;
         $password = $request->password;
-        $roleId = $request->roleId;
+        $roleId = $request->roleId;        
 
         $roleData = Role::find($roleId);
         if (empty($roleData)) {
@@ -51,7 +51,8 @@ class RegisterController extends Controller
         $userData['name'] = $name;
         $userData['email'] = $email;
         $userData['password'] = bcrypt($password);
-        $userData['role_id'] = $roleId;
+        $userData['role_id'] = $roleId;        
+      
 
         if ($role == 'staff') {
             $userData['client_id'] = $request->clientId;
@@ -74,6 +75,9 @@ class RegisterController extends Controller
             $success['id'] =  $user->id;
             $success['name'] =  $user->name;
             $success['email'] =  $user->email;
+            $success['business_name'] =  $user->business_name;
+            $success['theme_color'] =  $user->theme_color;
+            $success['theme_mode'] =  $user->theme_mode;
             $role['id'] = $user->role_id;
             $role['name'] =  $user->role->name;
             $success['role'] =  $role;
