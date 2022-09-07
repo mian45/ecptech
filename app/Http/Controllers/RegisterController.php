@@ -9,6 +9,7 @@ use App\Models\UserRole;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Hash;
 class RegisterController extends Controller
 {
 
@@ -165,5 +166,39 @@ class RegisterController extends Controller
         $userRole = Role::create($roleData);
 
         return $this->sendResponse($userRole, 'Role Added Successfully.');
+    }
+
+    public function change_password(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'old_password' => 'required',
+            'password' => 'required',
+            'password_confirmation' => 'required|required_with:password|same:password'
+
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error'=>$validator->errors()], 401); 
+        }
+        $user_id = $request->user_id;
+        $old_password = $request->old_password;
+        $password = bcrypt($old_password);
+        $passExist = User::where('id', $user_id)->first();        
+        if (Hash::check($old_password, $passExist->password)) {
+            $newpassword = bcrypt($request->password);
+            $user = User::find($user_id);
+            $user->password = $newpassword;
+            $result = $user->save();
+            if($result){
+                return response()->json([                
+                    "success" => true,
+                    "message" => "password save successfully.",                                  
+                ]);   
+            } else {
+                return response()->json(['error'=> 'Something Went Wrong.'], 401);
+            }
+        } else {
+            return response()->json(['error'=>'Invalid old password Please enter a valid password'], 401); 
+        }
     }
 }

@@ -22,7 +22,8 @@ Route::post('forgotPassword', [RegisterController::class, 'forgotPassword']);
 Route::post('verifyCode', [RegisterController::class, 'verifyCode']);
 Route::post('addRole', [RegisterController::class, 'addRole']);
 Route::post('getStaff', [StaffController::class, 'getStaff']);
-Route::post('edit_profile', [UserController::class, 'edit_profile']);
+Route::post('editProfile', [UserController::class, 'edit_profile']);
+Route::post('changePassword', [RegisterController::class, 'change_password']);
 
 Route::middleware('auth:api')->group( function () {
 
