@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import './style.scss';
 
+import edit from "../../images/edit.png"
+import cross from "../../images/cross.png"
+
 import { Select } from 'antd';
 const { Option } = Select;
 
@@ -18,6 +21,8 @@ const DiscountTaxes = () => {
     const [shippingState, setShippingState] = useState(0)
     const [shippingArray, setShippingArray] = useState([])
 
+    const [editId, setEditId] = useState("")
+
 
 
     const handleClick = (value) => {
@@ -26,8 +31,34 @@ const DiscountTaxes = () => {
     }
 
     const handleSubmit = (e) => {
-        setDiscountArray([...discountArray, { id: Math.random(), discountName: discountName, discountTax: discountTax }])
         e.preventDefault();
+        if (editId) {
+            const selectedValue = [...discountArray].find(obj => editId === obj.id);
+            selectedValue.discountName = discountName;
+            selectedValue.discountTax = discountTax
+            const editIndex = [...discountArray].indexOf(obj => editId === obj.id);
+            [...discountArray].splice(editIndex, 1, selectedValue);
+            setDiscountArray([...discountArray])
+            setEditId("")
+            setDiscountName("")
+            setDiscountTax("")
+
+        } else {
+            setDiscountArray([...discountArray, { id: Math.random(), discountName: discountName, discountTax: discountTax }])
+        }
+    }
+
+    const handlUpdate = (value) => {
+        const selectedValue = [...discountArray].find(discountObj => value.id === discountObj.id)
+        setDiscountName(selectedValue.discountName)
+        setDiscountTax(selectedValue.discountTax)
+        setEditId(value.id)
+    }
+
+    const handleDelete = (id) => {
+        setDiscountArray([...discountArray].filter((discountobj) => {
+            return discountobj.id !== id
+        }))
     }
 
     const handleTaxClick = (value) => {
@@ -37,9 +68,39 @@ const DiscountTaxes = () => {
 
     const handleTaxSubmit = (e) => {
         e.preventDefault();
-        setTaxArray([...taxArray, { id: Math.random(), taxName: taxName, taxState: taxState, taxValue: taxValue }])
+        if (editId) {
+            const selectedValueTax = [...taxArray].find(obj => editId === obj.id);
+            selectedValueTax.taxName = taxName;
+            selectedValueTax.taxState = taxState
+            selectedValueTax.taxValue = taxValue
+            console.log(selectedValueTax);
+            const editIndex = [...taxArray].indexOf(obj => editId === obj.id);
+            [...taxArray].splice(editIndex, 1, selectedValueTax);
+            setTaxArray([...taxArray])
+            setEditId("")
+            setTaxName("")
+            setTaxState("")
+            setTaxValue("")
+
+        } else {
+            setTaxArray([...taxArray, { id: Math.random(), taxName: taxName, taxState: taxState, taxValue: taxValue }])
+        }
     }
 
+
+    const handlUpdateTax = (value) => {
+        const selectedValueTax = [...taxArray].find(taxObj => value.id === taxObj.id)
+        setTaxName(selectedValueTax.taxName)
+        setTaxState(selectedValueTax.taxState)
+        setTaxValue(selectedValueTax.taxValue)
+        setEditId(value.id)
+    }
+
+    const handleDeleteTax = (id) => {
+        setTaxArray([...taxArray].filter((taxObj) => {
+            return taxObj.id !== id
+        }))
+    }
 
     const handleShippingSubmit = (e) => {
         e.preventDefault();
@@ -69,9 +130,7 @@ const DiscountTaxes = () => {
                             >
                                 <Option value="jack">Jack</Option>
                                 <Option value="lucy">Lucy</Option>
-                                <Option value="disabled" disabled>
-                                    Disabled
-                                </Option>
+                                <Option value="disabled">Disabled</Option>
                                 <Option value="Yiminghe">yiminghe</Option>
                             </Select>
                         </div>
@@ -79,25 +138,30 @@ const DiscountTaxes = () => {
                     </form>
                 </div>
                 <div className='discount-output'>
-                    {
-                        discountArray?.length > 0 &&
-                        <thead className='discount-output_head'>
-                            <th>Discount Name</th>
-                            <th>Discount Value</th>
-                            <th></th>
-                        </thead>
-                    }
-                    {
-                        discountArray?.map((obj) => {
-                            return (
-                                <tbody className='discount-output_body'>
-                                    <td>{obj.discountName}</td>
-                                    <td>{obj.discountTax}</td>
-                                    <td></td>
-                                </tbody>
-                            )
-                        })
-                    }
+                    <table>
+                        {
+                            discountArray?.length > 0 &&
+                            <tr className='discount-output_head'>
+                                <th>Discount Name</th>
+                                <th>Discount Value</th>
+                                <th></th>
+                            </tr>
+                        }
+                        {
+                            discountArray?.map((obj) => {
+                                return (
+                                    <tr className='discount-output_body'>
+
+                                        <td>{obj.discountName}</td>
+                                        <td>{obj.discountTax}</td>
+                                        <td><img style={{ width: '18px', height: '18px', marginRight: '30px' }} src={edit} onClick={() => { handlUpdate(obj) }} />
+                                            <img style={{ width: '16px', height: '16px' }} src={cross} onClick={() => { handleDelete(obj.id) }} /></td>
+                                    </tr>
+                                )
+                            })
+                        }
+
+                    </table>
                 </div>
             </div>
             <div className='discount-container_first'>
@@ -128,9 +192,7 @@ const DiscountTaxes = () => {
                                 >
                                     <Option value="jack">Jack</Option>
                                     <Option value="lucy">Lucy</Option>
-                                    <Option value="disabled" disabled>
-                                        Disabled
-                                    </Option>
+                                    <Option value="disabled">Disabled</Option>
                                     <Option value="Yiminghe">yiminghe</Option>
                                 </Select>
                             </div>
@@ -139,27 +201,32 @@ const DiscountTaxes = () => {
                     </form>
                 </div>
                 <div className='discount-output'>
-                    {
-                        taxArray?.length > 0 &&
-                        <thead className='discount-output_head'>
-                            <th>Discount Name</th>
-                            <th>Discount Value</th>
-                            <th>Amount</th>
-                            <th></th>
-                        </thead>
-                    }
-                    {
-                        taxArray?.map((obj) => {
-                            return (
-                                <tbody className='discount-output_body'>
-                                    <td>{obj.taxName}</td>
-                                    <td>{obj.taxState}</td>
-                                    <td>{obj.taxValue}</td>
-                                    <td></td>
-                                </tbody>
-                            )
-                        })
-                    }
+                    <table>
+                        {
+                            taxArray?.length > 0 &&
+                            <tr className='discount-output_head'>
+                                <th>Tax Name</th>
+                                <th>State</th>
+                                <th>Amount</th>
+                                <th></th>
+                            </tr>
+                        }
+                        {
+                            taxArray?.map((obj) => {
+                                return (
+                                    <tr className='discount-output_body'>
+
+                                        <td>{obj.taxName}</td>
+                                        <td>{obj.taxState}</td>
+                                        <td>{obj.taxValue}</td>
+                                        <td><img style={{ width: '18px', height: '18px', marginRight: '30px' }} src={edit} onClick={() => { handlUpdateTax(obj) }} />
+                                            <img style={{ width: '16px', height: '16px' }} src={cross} onClick={() => { handleDeleteTax(obj.id) }} /></td>
+                                    </tr>
+                                )
+                            })
+                        }
+
+                    </table>
                 </div>
             </div>
             <div className='discount-container_first'>
@@ -167,12 +234,12 @@ const DiscountTaxes = () => {
                 <div>
                     <form className='discount-container_first-form' onSubmit={handleShippingSubmit}>
                         <div className='discount-container_first-form_section'>
-                            <p>Tax Name</p>
-                            <input placeholder='Colorado Custom' value={shippingName} onChange={(e) => { setShippingName(e.target.value) }} />
+                            <p>Amount</p>
+                            <input placeholder='Enter Text' value={shippingName} onChange={(e) => { setShippingName(e.target.value) }} />
                         </div>
                         <div className='discount-container_first-form_section'>
-                            <p>State</p>
-                            <input placeholder='Colorado Custom' value={shippingState} onChange={(e) => { setShippingState(e.target.value) }} />
+                            <p>Add Shipping Amount</p>
+                            <input placeholder='Enter Amount' value={shippingState} onChange={(e) => { setShippingState(e.target.value) }} />
                         </div>
                         <div><button className='save-button' type='submit' >Save</button></div>
                     </form>
