@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import OtherSetting from '../other-setting';
 import EmailSetting from '../email-setting/index'
 import EmailRemainder from '../email-remainder/index'
-import DiscountTaxes from '../discount-taxes/index'
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import AuthServices from '../services'
@@ -19,7 +18,7 @@ const TabsSection = (props) => {
         Content of Tab Pane 2
       </Tabs.TabPane>
       <Tabs.TabPane tab={`Discounts & Taxes`} key="3">
-        <DiscountTaxes/>
+        Content of Tab Pane 3
       </Tabs.TabPane>
       <Tabs.TabPane tab="Other Settings" key="4">
         <OtherSetting />
