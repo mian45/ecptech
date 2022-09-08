@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\User;
 use App\Models\Role;
 use App\Models\UserRole;
@@ -48,9 +49,11 @@ class RegisterController extends Controller
         if ($emailExist) {
             return $this->sendError('The email address is already associated with another user.');
         }
+
         $userData['name'] = $name;
         $userData['email'] = $email;
         $userData['password'] = bcrypt($password);
+
         $userData['role_id'] = $roleId;
 
         if ($role == 'staff') {
@@ -68,6 +71,15 @@ class RegisterController extends Controller
 
     public function login(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
 

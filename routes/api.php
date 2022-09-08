@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\StaffController;
+use App\Http\Controllers\Client\SettingController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -31,4 +32,10 @@ Route::middleware('auth:api')->group( function () {
     Route::post('getStaff', [StaffController::class, 'getStaff']);
     Route::post('addStaff', [StaffController::class, 'addStaff']);
     Route::post('editStaff', [StaffController::class, 'editStaff']);
+
+    Route::get('getReminders', [SettingController::class, 'getReminders']);
+    Route::post('addReminder', [SettingController::class, 'addReminder']);
+    Route::post('editReminder', [SettingController::class, 'editReminder']);
+    Route::post('activeInactiveReminder', [SettingController::class, 'activeInactiveReminder']);
+    Route::post('deleteReminder', [SettingController::class, 'deleteReminder']);
 });
