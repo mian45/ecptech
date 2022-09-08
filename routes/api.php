@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\ReminderController;
+use App\Http\Controllers\Api\RegisterController;
+use App\Http\Controllers\Api\StaffController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\StaffController;
-use App\Http\Controllers\Client\SettingController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,9 +23,6 @@ Route::post('verifyCode', [RegisterController::class, 'verifyCode']);
 Route::post('addRole', [RegisterController::class, 'addRole']);
 
 
-
-
-
 Route::middleware('auth:api')->group( function () {
 
     Route::post('updateStaffLogin', [RegisterController::class, 'updateStaffLogin']);
@@ -33,9 +30,9 @@ Route::middleware('auth:api')->group( function () {
     Route::post('addStaff', [StaffController::class, 'addStaff']);
     Route::post('editStaff', [StaffController::class, 'editStaff']);
 
-    Route::get('getReminders', [SettingController::class, 'getReminders']);
-    Route::post('addReminder', [SettingController::class, 'addReminder']);
-    Route::post('editReminder', [SettingController::class, 'editReminder']);
-    Route::post('activeInactiveReminder', [SettingController::class, 'activeInactiveReminder']);
-    Route::post('deleteReminder', [SettingController::class, 'deleteReminder']);
+    Route::get('getReminders', [ReminderController::class, 'getReminders']);
+    Route::post('addReminder', [ReminderController::class, 'addReminder']);
+    Route::post('editReminder', [ReminderController::class, 'editReminder']);
+    Route::post('activeInactiveReminder', [ReminderController::class, 'activeInactiveReminder']);
+    Route::post('deleteReminder', [ReminderController::class, 'deleteReminder']);
 });
