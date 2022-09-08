@@ -30,12 +30,13 @@ class UserController extends Controller
 
         $path = '';
         if ($file = $request->file('logo')) {
-            $path = $file->store('public/uploads');
+            $file_name = time().'.'.$file->extension();
+            $path = $file->move(public_path('uploads'),$file_name);
             $name = $file->getClientOriginalName();                                        
         }
 
         $user = User::find($user_id);
-        $user->logo = $name;
+        $user->logo = $file_name;
         $user->business_name = $request->business_name;
         $user->theme_color = $request->theme_color;
         $user->theme_mode = $request->theme_mode;
@@ -45,7 +46,7 @@ class UserController extends Controller
                 "success" => true,
                 "message" => "Profile updated successfully.",
                 "data" => [
-                    'logo' => config('app.url').'uploads/'.$user->logo,
+                    'logo' => config('app.url').'public/uploads/'.$user->logo,
                     'business_name' => $user->business_name,
                     'theme_color' => $user->theme_color,
                     'theme_mode' => $user->theme_mode
