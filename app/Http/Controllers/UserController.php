@@ -20,7 +20,7 @@ class UserController extends Controller
     { 
         $user_id = $request->user_id;
         $validator = Validator::make($request->all(),[ 
-                'logo' => 'required|mimes:png,jpg,svg,doc,docx,pdf,txt,csv|max:2048',
+                'logo' => 'required|mimes:png,jpg,svg,doc,docx,pdf,txt,csv|dimensions:width=200,height=40',
         ]);   
 
         if($validator->fails()) {          
@@ -46,7 +46,7 @@ class UserController extends Controller
                 "success" => true,
                 "message" => "Profile updated successfully.",
                 "data" => [
-                    'logo' => config('app.url').'public/uploads/'.$user->logo,
+                    'logo' => config('app.url').'uploads/'.$user->logo,
                     'business_name' => $user->business_name,
                     'theme_color' => $user->theme_color,
                     'theme_mode' => $user->theme_mode
