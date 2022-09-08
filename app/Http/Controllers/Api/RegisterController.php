@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\User;
 use App\Models\UserRole;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-use Illuminate\Validation\Rule;
+
 class RegisterController extends Controller
 {
 

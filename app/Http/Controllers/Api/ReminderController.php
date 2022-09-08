@@ -1,13 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Client;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Reminder;
+use Illuminate\Http\Request;
 use Validator;
 
-class SettingController extends Controller
+
+class ReminderController extends Controller
 {
     public function getReminders(Request $request)
     {
