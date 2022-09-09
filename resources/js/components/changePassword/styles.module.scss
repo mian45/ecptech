@@ -1,21 +1,20 @@
-.container{
-    display:flex;
-        flex-direction: column;
-        padding:1.9em 1.5em;
-    }
-    .title{
-        font-weight: bold;
-        font-size: 1.1em;
-    
-    }
-    .subtitle{
-        font-weight: 400;
-        font-size: 1em;
-        color: #2A2A2A;
-        margin-top: 1.2em;
-    }
-    .error{
-        padding-left: 10px;
-        font-size: 14px;
-        color: red;
-    }
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 1.9em 1.5em;
+}
+.title {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+.subtitle {
+    font-weight: 400;
+    font-size: 1em;
+    color: #2a2a2a;
+    margin-top: 1.2em;
+}
+.error {
+    padding-left: 10px;
+    font-size: 14px;
+    color: red;
+}

@@ -1,25 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import classes from "./style.module.scss";
 import CustomToggle from "../customToggle";
 import { ThemeTypeEnum } from "../../enum/enum";
+import { ErrorMessage } from "formik";
 
-const ColorTheme = () => {
-    const [toggle, setToggle] = useState(ThemeTypeEnum.light);
-
-    const [themeColor, setThemeColor] = useState("#6FA5CB");
+const ColorTheme = ({ values, setFieldValue, handleChange }) => {
     const handleTogglerChange = () => {
-        if (toggle.includes(ThemeTypeEnum.light)) {
-            setToggle(ThemeTypeEnum.dark);
+        if (values.themeType === 0) {
+            setFieldValue("themeType", 1);
         } else {
-            setToggle(ThemeTypeEnum.light);
+            setFieldValue("themeType", 0);
         }
     };
-    const handleColorChange = (e) => {
-        setThemeColor(e.target.value);
-    };
-    const handleColorInput = (e) => {
-        setThemeColor(e.target.value);
-    };
+
     return (
         <div className={classes.container}>
             <div className={classes.title}>Color Scheme</div>
@@ -29,25 +22,34 @@ const ColorTheme = () => {
                     <input
                         className={classes["color-picker"]}
                         type={"color"}
-                        onChange={handleColorChange}
-                        value={themeColor}
+                        onChange={handleChange}
+                        value={values?.themeColor}
+                        id="themeColor"
+                        name="themeColor"
                     />
                 </div>
                 <input
                     maxLength={7}
                     type={"text"}
                     className={classes["color-input"]}
-                    value={themeColor}
-                    onChange={handleColorInput}
+                    value={values?.themeColor}
+                    onChange={handleChange}
+                    id="themeColor"
+                    name="themeColor"
                 />
             </div>
+            <ErrorMessage
+                name="themeColor"
+                component="div"
+                className={classes["error"]}
+            />
 
             <label className={classes.subtitle}>Choose theme mode</label>
 
             <div className={classes["toggle-wrapper"]}>
                 <CustomToggle
                     label={[ThemeTypeEnum.light, ThemeTypeEnum.dark]}
-                    toggle={!toggle.includes(ThemeTypeEnum.light)}
+                    toggle={values.themeType === 1}
                     handleTogglerChange={handleTogglerChange}
                 />
             </div>
