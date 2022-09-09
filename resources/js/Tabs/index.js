@@ -6,19 +6,20 @@ import EmailRemainder from '../email-remainder/index'
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import AuthServices from '../services'
+import DiscountTaxes from '../discount-taxes/index'
 
 const TabsSection = (props) => {
 
   return (
     <Tabs defaultActiveKey="1">
       <Tabs.TabPane tab="Emails" key="1">
-         {props.isActiveSettingState == 1 ? <EmailSetting /> : <EmailRemainder/>}
+        {props.isActiveSettingState == 1 ? <EmailSetting /> : <EmailRemainder />}
       </Tabs.TabPane>
       <Tabs.TabPane tab="Lenses" key="2">
         Content of Tab Pane 2
       </Tabs.TabPane>
       <Tabs.TabPane tab={`Discounts & Taxes`} key="3">
-        Content of Tab Pane 3
+        <DiscountTaxes />
       </Tabs.TabPane>
       <Tabs.TabPane tab="Other Settings" key="4">
         <OtherSetting />
