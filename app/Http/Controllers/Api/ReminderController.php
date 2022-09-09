@@ -23,7 +23,7 @@ class ReminderController extends Controller
 
         $reminders =  Reminder::where('user_id',$request->userId)->get();
         if($reminders){
-            return $this->sendResponse($reminders, 'Remindera list get successfully');
+            return $this->sendResponse($reminders, 'Reminders list get successfully');
         }
 
         return $this->sendResponse([], 'Remindera list not found');

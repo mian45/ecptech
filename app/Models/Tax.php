@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-class Staff extends Model
+class Tax extends Model
 {
     use HasFactory;
-    protected $table = 'staffs';
-    protected $fillable = [
-        'name',
-        'user_id'
-    ];
+
+    public function state()
+    {
+        return $this->belongsTo(State::class);
+    }
 }
