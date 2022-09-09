@@ -1,0 +1,56 @@
+.container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #e8e8e8;
+    padding: 25px;
+    position: relative;
+}
+.label {
+    color: #2a2a2a;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+.progress-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    align-items: center;
+}
+.bar-label {
+    width: 20%;
+    font-size: 14px;
+    text-align: left;
+}
+.bar-wrapper {
+    width: 78%;
+}
+.bar {
+    background-color: #2a2a2a;
+    border-bottom-right-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 5px 0px;
+}
+.bar-value {
+    color: #ffffff;
+    text-align: right;
+    padding-right: 3%;
+}
+.divider-wrapper {
+    position: absolute;
+    left: 22%;
+    height: 80%;
+    top: 15%;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+}
+.divider-value {
+    font-size: 12px;
+    color: #e8e8e8;
+}
+.divider {
+    border: 1px dotted #cbcbcb;
+    height: 100%;
+}
