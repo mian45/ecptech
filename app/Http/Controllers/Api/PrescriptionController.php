@@ -28,8 +28,7 @@ class PrescriptionController extends Controller
             return $this->sendResponse($eye_prescription, 'Eye Prescription Updated successfully');
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
-        }
-               
+        }               
     }
 
     public function eye_prescriptions_calculator(Request $request){
@@ -43,8 +42,29 @@ class PrescriptionController extends Controller
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
-        $eye_prescription = Prescription::where('sphere_from', '<=', $request->right_eye_sphere)
-        ->where('sphere_to', '>=', $request->right_eye_sphere)->first();
-        return $this->sendResponse($eye_prescription, 'Eye Prescription Updated successfully');   
+        $right_eye_material = Prescription::where('sphere_from', '<=', $request->right_eye_sphere)
+        ->where('sphere_to', '>=', $request->right_eye_sphere)
+        ->where('cylinder_from', '<=', $request->right_eye_cylinder)
+        ->where('cylinder_to', '>=', $request->right_eye_cylinder)->first();
+
+        $left_eye_material = Prescription::where('sphere_from', '<=', $request->left_eye_sphere)
+        ->where('sphere_to', '>=', $request->left_eye_sphere)
+        ->where('cylinder_from', '<=', $request->left_eye_cylinder)
+        ->where('cylinder_to', '>=', $request->left_eye_cylinder)->first();
+        $success = [
+            'use_material' => [
+                'right_eye_material' => [
+                    'used_meterial' => isset($right_eye_material->name) ? $right_eye_material->name : '',
+                    'sphere' => $request->right_eye_sphere,
+                    'cylinder' => $request->right_eye_cylinder
+                    ], 
+                'left_eye_material' => [
+                    'used_meterial' => isset($left_eye_material->name) ? $left_eye_material->name : '',
+                    'sphere' => $request->left_eye_sphere,
+                    'cylinder' => $request->left_eye_cylinder
+                    ]
+                ]
+            ];
+        return $this->sendResponse($success, 'Eye Prescription Updated successfully');   
     }
 }
