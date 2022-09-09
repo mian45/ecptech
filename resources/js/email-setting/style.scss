@@ -1,0 +1,22 @@
+.email-setting {
+
+    &_heading {
+        font-weight: bold;
+        font-size: 1.5em;
+        margin-bottom: 2.25em;
+    }
+
+    &_button-section {
+        padding-left: 19.42em;
+        &_save-button {
+            padding-block: 0.8125em;
+            padding-inline: 2em;
+            border: none;
+            border-radius: 28px;
+            background-color: #6FA5CB;
+            color: white;
+        }
+    }
+
+
+}
