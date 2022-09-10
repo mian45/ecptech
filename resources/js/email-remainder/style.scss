@@ -1,0 +1,109 @@
+.email-remainder {
+    &_heading {
+        font-weight: bold;
+        font-size: 1.5em;
+        margin-bottom: 2.375em;
+    }
+
+    &_arrow-section {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.812em;
+
+        p {
+            margin-bottom: 0;
+        }
+
+        &_back {
+            margin-left: 1.35em;
+        }
+    }
+
+    &_input-sections {
+        padding-left: 19.42em;
+
+        &_input-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.25em;
+
+            p {
+                margin-right: 2.875em;
+                font-size: 1em;
+                margin-bottom: 0;
+                width: 5.5em;
+            }
+
+            &_input {
+                background-color: white;
+                border: 1px solid #DFDFDF;
+                border-radius: 1.43em;
+                padding-inline-start: 1.375em;
+                padding-block: 0.8125em;
+                width: 23.68em;
+                height: 2.8125em;
+
+
+                &:focus-visible {
+                    border: 1px solid #DFDFDF;
+                    outline: none;
+                }
+            }
+        }
+    }
+
+    &_schedule {
+        font-weight: bold;
+        font-size: 1.125em;
+    }
+
+    &_save-button {
+        padding-block: 0.8125em;
+        padding-inline: 2em;
+        border: none;
+        border-radius: 28px;
+        background-color: #6FA5CB;
+        color: white;
+    }
+}
+
+.dropdown-email {
+    background-color: white;
+    border: 1px solid #DFDFDF;
+    border-radius: 1.43em;
+    padding-inline-start: 1.375em;
+    width: 23.68em;
+    height: 2.8125em;
+
+}
+
+.ant-space {
+    display: flex !important;
+    justify-content: space-between;
+}
+
+.ant-space-item {
+    display: flex;
+    align-items: center;
+}
+
+.tags {
+    border-radius: 23px;
+    background-color: #E8E8E8;
+    color: #2A2A2A;
+}
+
+.rdw-editor-wrapper {
+    width: 514px;
+}
+
+.rdw-editor-toolbar {
+    background-color: #F9F9FB !important;
+    border: none !important;
+
+} 
+
+.rdw-editor-main {
+    background-color: white;
+    height: 175px !important;
+}

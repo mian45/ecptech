@@ -19,6 +19,14 @@ export function login(credentials) {
   });
 }
 
+export function activeSetting(res) {
+    return (dispatch) => new Promise((resolve, reject) => {
+                dispatch(action.activeSettingState(res));
+                return resolve();
+            })
+}
+
+
 export function register(credentials) {
   return (dispatch) => new Promise((resolve, reject) => {
     Http.post('/api/v1/auth/register', credentials)
