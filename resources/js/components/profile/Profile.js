@@ -1,4 +1,5 @@
 import React from "react";
+import { connect } from "react-redux";
 import classes from "./profile.module.scss";
 import PhotoUpload from "./photoUpload/index.js";
 import ColorTheme from "../colorTheme";
@@ -6,6 +7,7 @@ import ChangePassword from "../changePassword";
 import CustomButton from "../customButton";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
 
 const defaultPasswordState = {
     businessName: "",
@@ -16,7 +18,35 @@ const defaultPasswordState = {
     newPassword: "",
     confirmPassword: "",
 };
-const Profile = () => {
+const Profile = ({ userId }) => {
+    const handleSaveClick = async (values) => {
+        try {
+            const personalInfo = {
+                logo: values.profileImage,
+                business_name: values.businessName,
+                theme_color: values.themeColor,
+                theme_mode: values.themeType,
+                user_id: userId,
+            };
+            const passwordObject = {
+                old_password: values.oldPassword,
+                password: values.newPassword,
+                password_confirmation: values.confirmPassword,
+                user_id: userId,
+            };
+            await axios.post(
+                "http://dev.usman-ecptech.wadic.net/api/editProfile",
+                personalInfo
+            );
+            await axios.post(
+                "http://dev.usman-ecptech.wadic.net/api/changePassword",
+                passwordObject
+            );
+        } catch (err) {
+            console.log("error while save changes", err);
+        }
+    };
+
     const handleClick = (values, actions) => {
         if (values.newPassword !== values.confirmPassword) {
             actions.setFieldError("newPassword", "Password must match");
@@ -30,8 +60,7 @@ const Profile = () => {
             actions.setFieldError("themeColor", "Invalid color code");
             return;
         }
-        //success case
-        console.log("values", values);
+        handleSaveClick(values);
     };
     return (
         <div className={classes["profile"]}>
@@ -50,6 +79,8 @@ const Profile = () => {
                     setFieldValue,
                     setFieldError,
                     isSubmitting,
+                    dirty,
+                    isValid,
                 }) => {
                     return (
                         <form onSubmit={handleSubmit} autoComplete="off">
@@ -76,7 +107,9 @@ const Profile = () => {
                                 <CustomButton
                                     onClick={handleSubmit}
                                     type={"submit"}
-                                    disabled={isSubmitting}
+                                    disabled={
+                                        !(isValid && dirty) || isSubmitting
+                                    }
                                 >
                                     Save
                                 </CustomButton>
@@ -89,7 +122,10 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+const mapStateToProps = (state) => ({
+    userId: state.Auth.user?.id,
+});
+export default connect(mapStateToProps)(Profile);
 
 const profileValidations = Yup.object().shape({
     profileImage: Yup.mixed().required("Image is Required"),
