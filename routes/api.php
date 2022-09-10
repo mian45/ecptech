@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\StaffController;
 use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\TaxController;
 use App\Http\Controllers\Api\ShippingController;
+use App\Http\Controllers\Api\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 /*
@@ -41,6 +42,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('activeInactiveReminder', [ReminderController::class, 'activeInactiveReminder']);
     Route::post('deleteReminder', [ReminderController::class, 'deleteReminder']);
 
+    Route::post('getInvoiceSummmary', [DashboardController::class, 'getInvoiceSummmary']);  
     Route::get('getDiscount', [DiscountController::class, 'getDiscount']);
     Route::post('addDiscount', [DiscountController::class, 'addDiscount']);
     Route::post('deleteDiscount', [DiscountController::class, 'deleteDiscount']);
@@ -57,4 +59,8 @@ Route::middleware('auth:api')->group( function () {
     Route::get('getShipping', [ShippingController::class, 'getShipping']);
     Route::post('addShipping', [ShippingController::class, 'addShipping']);
     Route::post('deleteShipping', [ShippingController::class, 'deleteShipping']);
+    
+    Route::post('getInvoiceSummmary', [DashboardController::class, 'getInvoiceSummmary']);
 });
+
+
