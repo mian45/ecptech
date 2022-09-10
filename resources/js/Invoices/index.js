@@ -15,10 +15,9 @@ const Invoices = ({ userId }) => {
 
     useEffect(() => {
         const getAllInvoices = async () => {
-            const res = await axios.get(
-                "http://dev.usman-ecptech.wadic.net/api/get_invoices",
-                { params: { user_id: userId } }
-            );
+            const res = await axios.get("/api/get_invoices", {
+                params: { user_id: userId },
+            });
             mapInvoicesData(res.data?.data);
         };
         getAllInvoices();
@@ -39,10 +38,7 @@ const Invoices = ({ userId }) => {
                 dob: values?.dob,
             };
 
-            const res = await axios.post(
-                "http://dev.usman-ecptech.wadic.net/api/search_invoices",
-                invoiceObject
-            );
+            const res = await axios.post("/api/search_invoices", invoiceObject);
             mapInvoicesData(res.data?.data);
         } catch (err) {
             setIsSearched(false);
