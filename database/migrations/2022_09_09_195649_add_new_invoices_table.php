@@ -24,55 +24,7 @@ return new class extends Migration
             $table->string('status')->default('unpaid')->nullable();
             $table->string('payment_mode')->nullable();
             $table->timestamps();
-        });
-
-        DB::table('invoices')->insert(
-            array(
-                'name' => 'Peter New Invoice',
-                'customer_id' => 1,
-                'user_id' => 9,
-                'staff_id' => 1,
-                'amount' => '880',
-                'status' => 'created',
-                'payment_mode' => '1'
-            )                
-        );
-
-        DB::table('invoices')->insert(
-            array(
-                'name' => 'Devid Frame',
-                'customer_id' => 1,
-                'user_id' => 9,
-                'staff_id' => 1,
-                'amount' => '326',
-                'status' => 'created',
-                'payment_mode' => '1'
-            )                
-        );
-
-        DB::table('invoices')->insert(
-            array(
-                'name' => 'Stephen Smith Glasses',
-                'customer_id' => 1,
-                'user_id' => 9,
-                'staff_id' => 1,
-                'amount' => '449',
-                'status' => 'created',
-                'payment_mode' => '1'
-            )                
-        );
-
-         DB::table('invoices')->insert(
-            array(
-                'name' => 'John Smith Glasses',
-                'customer_id' => 1,
-                'user_id' => 9,
-                'staff_id' => 1,
-                'amount' => '449',
-                'status' => 'created',
-                'payment_mode' => '1'
-            )                
-        );
+        });        
     }
 
     /**
@@ -83,7 +35,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('invoices', function (Blueprint $table) {
-            //
+            Schema::dropIfExists('invoices');
         });
     }
 };
