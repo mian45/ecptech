@@ -13,16 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('invoices', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->integer('role_id');
-            $table->integer('client_id')->nullable();
-            $table->string('verification_code')->nullable();
-            $table->rememberToken();
+            $table->integer('customer_id');
+            $table->integer('user_id');
+            $table->integer('product_id')->nullable();
+            $table->integer('staff_id');
+            $table->decimal('amount', 10, 2);
+            $table->string('status')->default('unpaid')->nullable();
+            $table->string('payment_mode')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('invoices');
     }
 };
