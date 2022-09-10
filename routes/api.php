@@ -6,8 +6,6 @@ use App\Http\Controllers\Api\StaffController;
 use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\TaxController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\StaffController;
 use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
