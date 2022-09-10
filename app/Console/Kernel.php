@@ -13,8 +13,13 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+    protected $commands = [
+        Commands\RemainderCron::class,
+    ];
     protected function schedule(Schedule $schedule)
     {
+        $schedule->command('remainder:cron')
+        ->everyMinute();
         // $schedule->command('inspire')->hourly();
     }
 
