@@ -22,7 +22,7 @@ class InvoicesController extends Controller
             return $this->sendError('Validation Error.', $validator->errors());
         }
         $user_id = $request->user_id;
-        $where_clouse['transactions.user_id'] = 9;
+        $where_clouse['transactions.user_id'] = $user_id;
         $invoices = DB::table('transactions')
             ->join('invoices', 'transactions.invoice_id', '=', 'invoices.id')
             ->where($where_clouse)
