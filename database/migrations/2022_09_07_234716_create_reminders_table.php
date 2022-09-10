@@ -13,10 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('staffs', function (Blueprint $table) {
+        Schema::create('reminders', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
             $table->integer('user_id');
+            $table->string('type');
+            $table->string('invoice_type');
+            $table->string('subject');
+            $table->string('body');
+            $table->integer('send_date');
+            $table->dateTime('send_time');
+            $table->string('time_zone');
+            $table->boolean('is_active');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
@@ -28,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('staffs');
+        Schema::dropIfExists('reminders');
     }
 };

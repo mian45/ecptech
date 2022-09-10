@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Models\User;
 use App\Models\UserRole;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Validation\Rule;
@@ -49,6 +50,7 @@ class RegisterController extends Controller
         if ($emailExist) {
             return $this->sendError('The email address is already associated with another user.');
         }
+
         $userData['name'] = $name;
         $userData['email'] = $email;
         $userData['password'] = bcrypt($password);
@@ -70,6 +72,15 @@ class RegisterController extends Controller
 
     public function login(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
 
@@ -86,11 +97,16 @@ class RegisterController extends Controller
             if($user->role->name == 'client'){
 
                 $staff = $user->staff;
-                $staffData['id'] = $staff->id;
-                $staffData['name'] = $staff->name;
-                $staffData['email'] = $staff->email;
-                $staffData['password'] = $staff->password;
-                $success['staffAuth'] = $staffData;
+                if($staff){
+                    $staffData['id'] = $staff->id;
+                    $staffData['name'] = $staff->name;
+                    $staffData['email'] = $staff->email;
+                    $staffData['password'] = $staff->password;
+                    $success['staffAuth'] = $staffData;
+                }else{
+                    $success['staffAuth'] = [];
+                }
+
             }
             if ($user->role->name == 'staff') {
 
@@ -128,6 +144,49 @@ class RegisterController extends Controller
         } else {
             return $this->sendError('givin email cannot found in system.', ['error' => 'givin email cannot found in system']);
         }
+    }
+
+    public function updateStaffLogin(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'email' => 'required|email',
+            'password' => 'required',
+            'id' => 'required'
+
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $email = $request->email;
+        $password = $request->password;
+        $id = $request->id;
+
+        $emailExist = User::where([
+            ['email', '=' ,$email],
+            ['id', '!=' ,$id]
+        ])->first();
+        if ($emailExist) {
+            return $this->sendError('The email address is already associated with another user.');
+        }
+
+
+        $user = User::find($id);
+        if($user){
+
+            $user->email = $email;
+            $user->password = bcrypt($password);
+            $user->save();
+            $success['id'] =  $user->id;
+            $success['name'] =  $user->name;
+            $success['email'] =  $user->email;
+            $success['token'] =  $user->createToken('ECP')->accessToken;
+            return $this->sendResponse($success, 'Staff login update successfully.');
+        }
+
+        return $this->sendError('Staff login user not found', []);
+
     }
 
     public function verifyCode(Request $request)
