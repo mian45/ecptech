@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\StaffController;
 use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\TaxController;
+use App\Http\Controllers\Api\ShippingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 /*
@@ -17,17 +18,7 @@ use App\Http\Controllers\UserController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::get('send-mail', function () {
 
-    $details = [
-        'title' => 'Mail from ECPTech.com',
-        'body' => 'This is for testing email using smtp'
-    ];
-
-    \Mail::to('waseemmushtaq088@gmail.com')->send(new \App\Mail\ReminderMail($details));
-
-    dd("Email is Sent.");
-});
 Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [RegisterController::class, 'login']);
 Route::post('forgotPassword', [RegisterController::class, 'forgotPassword']);
@@ -61,4 +52,9 @@ Route::middleware('auth:api')->group( function () {
     Route::post('deleteTax', [TaxController::class, 'deleteTax']);
 
     Route::get('getStates', [TaxController::class, 'getStates']);
+
+
+    Route::get('getShipping', [ShippingController::class, 'getShipping']);
+    Route::post('addShipping', [ShippingController::class, 'addShipping']);
+    Route::post('deleteShipping', [ShippingController::class, 'deleteShipping']);
 });
