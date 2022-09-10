@@ -26,7 +26,7 @@ Route::post('addRole', [RegisterController::class, 'addRole']);
 Route::post('eyePrescriptions', [PrescriptionController::class, 'eye_prescriptions']);
 Route::post('eyePrescriptionsCalculator', [PrescriptionController::class, 'eye_prescriptions_calculator']);
 Route::get('get_invoices', [InvoicesController::class, 'index']);
-Route::get('search_invoices', [InvoicesController::class, 'search']);
+Route::post('search_invoices', [InvoicesController::class, 'search']);
 
 
 
