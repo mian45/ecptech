@@ -34,14 +34,8 @@ const Profile = ({ userId }) => {
                 password_confirmation: values.confirmPassword,
                 user_id: userId,
             };
-            await axios.post(
-                "http://dev.usman-ecptech.wadic.net/api/editProfile",
-                personalInfo
-            );
-            await axios.post(
-                "http://dev.usman-ecptech.wadic.net/api/changePassword",
-                passwordObject
-            );
+            await axios.post("/api/editProfile", personalInfo);
+            await axios.post("/api/changePassword", passwordObject);
         } catch (err) {
             console.log("error while save changes", err);
         }

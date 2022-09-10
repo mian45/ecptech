@@ -4,10 +4,7 @@ import * as action from "../store/actions";
 export function login(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post(
-                "http://dev.waseem-ecptech.wadic.net/api/login",
-                credentials
-            )
+            Http.post("/api/login", credentials)
                 .then((res) => {
                     dispatch(action.authLogin(res.data));
                     return resolve();
