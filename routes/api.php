@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\TaxController;
 use App\Http\Controllers\Api\ShippingController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\UserController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,7 +24,9 @@ Route::post('login', [RegisterController::class, 'login']);
 Route::post('forgotPassword', [RegisterController::class, 'forgotPassword']);
 Route::post('verifyCode', [RegisterController::class, 'verifyCode']);
 Route::post('addRole', [RegisterController::class, 'addRole']);
-
+Route::post('getStaff', [StaffController::class, 'getStaff']);
+Route::post('editProfile', [UserController::class, 'edit_profile']);
+Route::post('changePassword', [RegisterController::class, 'change_password']);
 
 Route::middleware('auth:api')->group( function () {
 

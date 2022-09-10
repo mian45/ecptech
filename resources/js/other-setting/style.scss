@@ -1,0 +1,58 @@
+.other-setting {
+    &_heading {
+        font-size: 1.5em;
+        font-weight: bold;
+        margin-top: 37px;
+        margin-bottom: 36px;
+    }
+
+    &_section {
+
+        display: flex;
+        justify-content: space-between;
+
+        &-first {
+            padding: 45px 45px 45px 42px;
+            margin-left: 1.1em;
+            width: 32.18em;
+            margin-right: 32px;
+            background-color: white;
+
+            &_label {
+                font-size: 1em;
+                font-weight: bold;
+            }
+
+            &_switches {
+                display: flex;
+                flex-direction: column;
+
+                &-switch {
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+        }
+
+        &-second {
+            background-color: white;
+            width: 32.18em;
+            padding: 45px 45px 45px 42px;
+
+            &_label {
+                font-size: 1em;
+                font-weight: bold;
+            }
+
+            &_switches {
+                display: flex;
+                flex-direction: column;
+
+                &-switch {
+                    display: flex;
+                    justify-content: space-between;
+                }
+            }
+        }
+    }
+}

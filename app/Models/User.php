@@ -22,7 +22,10 @@ class User extends Authenticatable
         'email',
         'password',
         'role_id',
-        'client_id'
+        'client_id',
+        'business_name',
+        'theme_color',
+        'theme_mode'
     ];
 
     public function role()
