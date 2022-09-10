@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ReminderController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\StaffController;
+use App\Http\Controllers\Api\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,4 +36,6 @@ Route::middleware('auth:api')->group( function () {
     Route::post('editReminder', [ReminderController::class, 'editReminder']);
     Route::post('activeInactiveReminder', [ReminderController::class, 'activeInactiveReminder']);
     Route::post('deleteReminder', [ReminderController::class, 'deleteReminder']);
+
+    Route::post('getInvoiceSummmary', [DashboardController::class, 'getInvoiceSummmary']);    
 });
