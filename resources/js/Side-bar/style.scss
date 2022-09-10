@@ -1,0 +1,73 @@
+.dashboard-container {
+    display: flex;
+    width: 100%;
+    background-color: #F9F9FB;
+}
+
+.side-bar {
+    width: 7.14em;
+    background-color: #6FA5CB;
+    padding-block-start: 2.5em;
+    padding-block-end: 43.42em;
+}
+
+.sidebar-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-block-end: 2.78em;
+}
+
+.active-state {
+    position: absolute;
+    top: -5%;
+    right: -6.5%;
+    width: 0.5em;
+    height: 100%;
+    background-color: #4F8DB8;
+
+    &::before {
+        content: '.';
+        left: -0.71em;
+        top: 10%;
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-top: 0.71em solid transparent;
+        border-bottom: 0.71em solid transparent;
+        border-right:0.71em solid #4F8DB8;
+    }
+}
+
+.sidebar-label {
+    color: white;
+    margin-block-start: 0.85em;
+}
+
+.home-image {
+    width: 1.92em;
+    height: 2.14em;
+}
+
+.invoices-image {
+    width: 1.78em;
+    height: 2.14em;
+}
+
+.payments-image {
+    width: 2.14em;
+    height: 1.57em;
+}
+
+.settings-image {
+    width: 2.14em;
+    height: 2.14em;
+}
+.dashboard-right {
+    background-color: #F9F9FB;
+    width: 100%;
+    padding-block-start: 2.25em;
+    padding-inline-start: 2.125em;
+}
