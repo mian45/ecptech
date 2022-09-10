@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\SettingController;
 use App\Http\Controllers\Api\PrescriptionController;
+use App\Http\Controllers\Api\InvoicesController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -28,7 +29,6 @@ Route::post('login', [RegisterController::class, 'login']);
 Route::post('forgotPassword', [RegisterController::class, 'forgotPassword']);
 Route::post('verifyCode', [RegisterController::class, 'verifyCode']);
 Route::post('addRole', [RegisterController::class, 'addRole']);
-
 
 Route::middleware('auth:api')->group( function () {
 
@@ -65,6 +65,8 @@ Route::middleware('auth:api')->group( function () {
     Route::post('eyePrescriptionsCalculator', [PrescriptionController::class, 'eye_prescriptions_calculator']);
     Route::post('editProfile', [UserController::class, 'edit_profile']);
     Route::post('changePassword', [RegisterController::class, 'change_password']);
+    Route::get('get_invoices', [InvoicesController::class, 'index']);
+    Route::post('search_invoices', [InvoicesController::class, 'search']);
 });
 
 
