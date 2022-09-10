@@ -6,10 +6,7 @@ export function login(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
             axios
-                .post(
-                    "http://dev.waseem-ecptech.wadic.net/api/login",
-                    credentials
-                )
+                .post("/api/login", credentials)
                 .then((res) => {
                     dispatch(action.authLogin(res.data));
                     return resolve();
@@ -94,10 +91,7 @@ export function updatePassword(credentials) {
 export function staffLogin(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post(
-                "http://dev.waseem-ecptech.wadic.net/api/register",
-                credentials
-            )
+            Http.post("/api/register", credentials)
                 .then((res) => {
                     dispatch(action.staffLogin(res.data));
                     return resolve();
@@ -116,10 +110,7 @@ export function staffLogin(credentials) {
 export function updateStaffLogin(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post(
-                "http://dev.waseem-ecptech.wadic.net/api/updateStaffLogin",
-                credentials
-            )
+            Http.post("/api/updateStaffLogin", credentials)
                 .then((res) => {
                     dispatch(action.updateStaffLogin(res.data));
                     return resolve();
