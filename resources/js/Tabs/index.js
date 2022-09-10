@@ -10,7 +10,6 @@ import DiscountTaxes from '../discount-taxes/index'
 import EyePrescription from '../eye-prescription';
 
 const TabsSection = (props) => {
-
   return (
     <Tabs defaultActiveKey="1">
       <Tabs.TabPane tab="Emails" key="1">
