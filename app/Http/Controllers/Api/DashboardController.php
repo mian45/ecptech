@@ -93,8 +93,8 @@ class DashboardController extends Controller
         $total_unpaid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','unpaid')->count();
         $capture_rate = (int)(($total_paid_invoices/$total_invoices)*100);
 
-        $total_office_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->where('status','paid')->where('payment_mode','office')->count();
-        $total_online_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->where('status','paid')->where('payment_mode','online')->count();
+        $total_office_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->where('payment_mode','office')->count();
+        $total_online_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->where('payment_mode','online')->count();
 
         $data['invoice']['generated'] = $total_invoices;
         $data['invoice']['office_paid'] = $total_office_paid_invoices;
