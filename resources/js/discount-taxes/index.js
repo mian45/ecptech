@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './style.scss';
+import { connect } from "react-redux";
 
 import edit from "../../images/edit.png"
 import cross from "../../images/cross.png"
@@ -8,7 +9,7 @@ import { Select } from 'antd';
 import axios from 'axios';
 const { Option } = Select;
 
-const DiscountTaxes = () => {
+const DiscountTaxes = (props) => {
     const [discountName, setDiscountName] = useState('')
     const [discountTax, setDiscountTax] = useState('')
     const [discountArray, setDiscountArray] = useState([])
@@ -43,14 +44,14 @@ const DiscountTaxes = () => {
 
     const addDiscount = () => {
         var data = new FormData();
-        data.append('userId', '44');
+        data.append('userId', props.userID);
         data.append('name', discounts.name);
         data.append('value', discounts.value);
         var config = {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/addDiscount`,
             headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGFjYWEzM2Y0NGY2YjI2NDQ1ZmUxZTEyYzhlMTU3MmIyODI1NTdmYjM0YTI0Y2IyNWI1YzkxNmZiNDczMGEzNTg5NmI2MTJhYTI0OWEwMmYiLCJpYXQiOjE2NjMwMDg3ODUuNDE1Mjc2LCJuYmYiOjE2NjMwMDg3ODUuNDE1MjgsImV4cCI6MTY5NDU0NDc4NS40MTAwNDQsInN1YiI6IjEwIiwic2NvcGVzIjpbXX0.jNSgXRmHSENfv1GacNbGoXQ2rxVokWi0xhNRDgEMPQj9VpiADmfqJkOWrbmZ54d6xPONQhB8txdpgBRjGA8PozQov3cIpfkRxW-99uIpzU8Hm1y4r5vDJrBf9DIsG5XwoLwCdhuwOpB-DOnubSYgrYHJkK86dvlhe5VS5Sk74kTw7LNta3jsG1z8xytr1aWGAiJPvut1kk84Zvkl692rfP9bqsSQXp0TJQGrcH49vJmVvlvcwfEkYR15evvmBMS2Kfn5h6OXVflqg2QG2iIE8HsJAtlcs5oTuzitrNwoLPw0ixVvz-83Nc9VLPoLHj020HZx4ix-knSUDm3REywKr9LNv0mCP8G3BRWA68SaOkw_-zlxwjpsjP-Su5GsRDAfDGvknN4INiqD6vzi2zPvQ_DuwSTvrB-UMpU44UxR4QQNwJKTKdhE37iBqlPVftHmp-Uz1m0EDBAdkZegx1r7iQto4kXoCmKYCDtFfXbkROXi0qYZIPMFMcpuy7NZaFP4haB7OEl4YaEhs697O6HCF-kLWWvzBCHDjmNjR2zErIelamukisC7qGKQo6G_T6v-oYjOEt_5pKlDrJZ0VgGd2nRcslPqcZiIX3O_ljR5UIKqX71fG1aaoDrh84HnG0URhc1CcJTggutb_02w8W8wLtdMl75jh0Uylm1j4EACRgM',
+                'Authorization': `Bearer ${props.token} `,
             },
             data: data
         };
@@ -73,7 +74,7 @@ const DiscountTaxes = () => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/deleteDiscount`,
             headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGFjYWEzM2Y0NGY2YjI2NDQ1ZmUxZTEyYzhlMTU3MmIyODI1NTdmYjM0YTI0Y2IyNWI1YzkxNmZiNDczMGEzNTg5NmI2MTJhYTI0OWEwMmYiLCJpYXQiOjE2NjMwMDg3ODUuNDE1Mjc2LCJuYmYiOjE2NjMwMDg3ODUuNDE1MjgsImV4cCI6MTY5NDU0NDc4NS40MTAwNDQsInN1YiI6IjEwIiwic2NvcGVzIjpbXX0.jNSgXRmHSENfv1GacNbGoXQ2rxVokWi0xhNRDgEMPQj9VpiADmfqJkOWrbmZ54d6xPONQhB8txdpgBRjGA8PozQov3cIpfkRxW-99uIpzU8Hm1y4r5vDJrBf9DIsG5XwoLwCdhuwOpB-DOnubSYgrYHJkK86dvlhe5VS5Sk74kTw7LNta3jsG1z8xytr1aWGAiJPvut1kk84Zvkl692rfP9bqsSQXp0TJQGrcH49vJmVvlvcwfEkYR15evvmBMS2Kfn5h6OXVflqg2QG2iIE8HsJAtlcs5oTuzitrNwoLPw0ixVvz-83Nc9VLPoLHj020HZx4ix-knSUDm3REywKr9LNv0mCP8G3BRWA68SaOkw_-zlxwjpsjP-Su5GsRDAfDGvknN4INiqD6vzi2zPvQ_DuwSTvrB-UMpU44UxR4QQNwJKTKdhE37iBqlPVftHmp-Uz1m0EDBAdkZegx1r7iQto4kXoCmKYCDtFfXbkROXi0qYZIPMFMcpuy7NZaFP4haB7OEl4YaEhs697O6HCF-kLWWvzBCHDjmNjR2zErIelamukisC7qGKQo6G_T6v-oYjOEt_5pKlDrJZ0VgGd2nRcslPqcZiIX3O_ljR5UIKqX71fG1aaoDrh84HnG0URhc1CcJTggutb_02w8W8wLtdMl75jh0Uylm1j4EACRgM',
+                'Authorization': `Bearer ${props.token} `,
             },
             data: data
         };
@@ -90,7 +91,7 @@ const DiscountTaxes = () => {
 
     const addTax = () => {
         var data = new FormData();
-        data.append('userId', '44');
+        data.append('userId', props.userID);
         data.append('stateId', stateSetting);
         data.append('name', taxName);
         data.append('value', taxValue);
@@ -99,7 +100,7 @@ const DiscountTaxes = () => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/addTax`,
             headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGFjYWEzM2Y0NGY2YjI2NDQ1ZmUxZTEyYzhlMTU3MmIyODI1NTdmYjM0YTI0Y2IyNWI1YzkxNmZiNDczMGEzNTg5NmI2MTJhYTI0OWEwMmYiLCJpYXQiOjE2NjMwMDg3ODUuNDE1Mjc2LCJuYmYiOjE2NjMwMDg3ODUuNDE1MjgsImV4cCI6MTY5NDU0NDc4NS40MTAwNDQsInN1YiI6IjEwIiwic2NvcGVzIjpbXX0.jNSgXRmHSENfv1GacNbGoXQ2rxVokWi0xhNRDgEMPQj9VpiADmfqJkOWrbmZ54d6xPONQhB8txdpgBRjGA8PozQov3cIpfkRxW-99uIpzU8Hm1y4r5vDJrBf9DIsG5XwoLwCdhuwOpB-DOnubSYgrYHJkK86dvlhe5VS5Sk74kTw7LNta3jsG1z8xytr1aWGAiJPvut1kk84Zvkl692rfP9bqsSQXp0TJQGrcH49vJmVvlvcwfEkYR15evvmBMS2Kfn5h6OXVflqg2QG2iIE8HsJAtlcs5oTuzitrNwoLPw0ixVvz-83Nc9VLPoLHj020HZx4ix-knSUDm3REywKr9LNv0mCP8G3BRWA68SaOkw_-zlxwjpsjP-Su5GsRDAfDGvknN4INiqD6vzi2zPvQ_DuwSTvrB-UMpU44UxR4QQNwJKTKdhE37iBqlPVftHmp-Uz1m0EDBAdkZegx1r7iQto4kXoCmKYCDtFfXbkROXi0qYZIPMFMcpuy7NZaFP4haB7OEl4YaEhs697O6HCF-kLWWvzBCHDjmNjR2zErIelamukisC7qGKQo6G_T6v-oYjOEt_5pKlDrJZ0VgGd2nRcslPqcZiIX3O_ljR5UIKqX71fG1aaoDrh84HnG0URhc1CcJTggutb_02w8W8wLtdMl75jh0Uylm1j4EACRgM',
+                'Authorization': `Bearer ${props.token} `,
             },
             data: data
         };
@@ -131,7 +132,7 @@ const DiscountTaxes = () => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/editTax`,
             headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGFjYWEzM2Y0NGY2YjI2NDQ1ZmUxZTEyYzhlMTU3MmIyODI1NTdmYjM0YTI0Y2IyNWI1YzkxNmZiNDczMGEzNTg5NmI2MTJhYTI0OWEwMmYiLCJpYXQiOjE2NjMwMDg3ODUuNDE1Mjc2LCJuYmYiOjE2NjMwMDg3ODUuNDE1MjgsImV4cCI6MTY5NDU0NDc4NS40MTAwNDQsInN1YiI6IjEwIiwic2NvcGVzIjpbXX0.jNSgXRmHSENfv1GacNbGoXQ2rxVokWi0xhNRDgEMPQj9VpiADmfqJkOWrbmZ54d6xPONQhB8txdpgBRjGA8PozQov3cIpfkRxW-99uIpzU8Hm1y4r5vDJrBf9DIsG5XwoLwCdhuwOpB-DOnubSYgrYHJkK86dvlhe5VS5Sk74kTw7LNta3jsG1z8xytr1aWGAiJPvut1kk84Zvkl692rfP9bqsSQXp0TJQGrcH49vJmVvlvcwfEkYR15evvmBMS2Kfn5h6OXVflqg2QG2iIE8HsJAtlcs5oTuzitrNwoLPw0ixVvz-83Nc9VLPoLHj020HZx4ix-knSUDm3REywKr9LNv0mCP8G3BRWA68SaOkw_-zlxwjpsjP-Su5GsRDAfDGvknN4INiqD6vzi2zPvQ_DuwSTvrB-UMpU44UxR4QQNwJKTKdhE37iBqlPVftHmp-Uz1m0EDBAdkZegx1r7iQto4kXoCmKYCDtFfXbkROXi0qYZIPMFMcpuy7NZaFP4haB7OEl4YaEhs697O6HCF-kLWWvzBCHDjmNjR2zErIelamukisC7qGKQo6G_T6v-oYjOEt_5pKlDrJZ0VgGd2nRcslPqcZiIX3O_ljR5UIKqX71fG1aaoDrh84HnG0URhc1CcJTggutb_02w8W8wLtdMl75jh0Uylm1j4EACRgM',
+                'Authorization': `Bearer ${props.token} `,
             },
             data: data
         };
@@ -161,7 +162,7 @@ const DiscountTaxes = () => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/deleteTax`,
             headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGFjYWEzM2Y0NGY2YjI2NDQ1ZmUxZTEyYzhlMTU3MmIyODI1NTdmYjM0YTI0Y2IyNWI1YzkxNmZiNDczMGEzNTg5NmI2MTJhYTI0OWEwMmYiLCJpYXQiOjE2NjMwMDg3ODUuNDE1Mjc2LCJuYmYiOjE2NjMwMDg3ODUuNDE1MjgsImV4cCI6MTY5NDU0NDc4NS40MTAwNDQsInN1YiI6IjEwIiwic2NvcGVzIjpbXX0.jNSgXRmHSENfv1GacNbGoXQ2rxVokWi0xhNRDgEMPQj9VpiADmfqJkOWrbmZ54d6xPONQhB8txdpgBRjGA8PozQov3cIpfkRxW-99uIpzU8Hm1y4r5vDJrBf9DIsG5XwoLwCdhuwOpB-DOnubSYgrYHJkK86dvlhe5VS5Sk74kTw7LNta3jsG1z8xytr1aWGAiJPvut1kk84Zvkl692rfP9bqsSQXp0TJQGrcH49vJmVvlvcwfEkYR15evvmBMS2Kfn5h6OXVflqg2QG2iIE8HsJAtlcs5oTuzitrNwoLPw0ixVvz-83Nc9VLPoLHj020HZx4ix-knSUDm3REywKr9LNv0mCP8G3BRWA68SaOkw_-zlxwjpsjP-Su5GsRDAfDGvknN4INiqD6vzi2zPvQ_DuwSTvrB-UMpU44UxR4QQNwJKTKdhE37iBqlPVftHmp-Uz1m0EDBAdkZegx1r7iQto4kXoCmKYCDtFfXbkROXi0qYZIPMFMcpuy7NZaFP4haB7OEl4YaEhs697O6HCF-kLWWvzBCHDjmNjR2zErIelamukisC7qGKQo6G_T6v-oYjOEt_5pKlDrJZ0VgGd2nRcslPqcZiIX3O_ljR5UIKqX71fG1aaoDrh84HnG0URhc1CcJTggutb_02w8W8wLtdMl75jh0Uylm1j4EACRgM',
+                'Authorization': `Bearer ${props.token} `,
             },
             data: data
         };
@@ -178,7 +179,7 @@ const DiscountTaxes = () => {
 
     const addShipping = () => {
         var data = new FormData();
-        data.append('userId', '44');
+        data.append('userId', props.userID);
         data.append('name', shipping.name);
         data.append('value', shipping.value);
 
@@ -186,7 +187,7 @@ const DiscountTaxes = () => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/addShipping`,
             headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGFjYWEzM2Y0NGY2YjI2NDQ1ZmUxZTEyYzhlMTU3MmIyODI1NTdmYjM0YTI0Y2IyNWI1YzkxNmZiNDczMGEzNTg5NmI2MTJhYTI0OWEwMmYiLCJpYXQiOjE2NjMwMDg3ODUuNDE1Mjc2LCJuYmYiOjE2NjMwMDg3ODUuNDE1MjgsImV4cCI6MTY5NDU0NDc4NS40MTAwNDQsInN1YiI6IjEwIiwic2NvcGVzIjpbXX0.jNSgXRmHSENfv1GacNbGoXQ2rxVokWi0xhNRDgEMPQj9VpiADmfqJkOWrbmZ54d6xPONQhB8txdpgBRjGA8PozQov3cIpfkRxW-99uIpzU8Hm1y4r5vDJrBf9DIsG5XwoLwCdhuwOpB-DOnubSYgrYHJkK86dvlhe5VS5Sk74kTw7LNta3jsG1z8xytr1aWGAiJPvut1kk84Zvkl692rfP9bqsSQXp0TJQGrcH49vJmVvlvcwfEkYR15evvmBMS2Kfn5h6OXVflqg2QG2iIE8HsJAtlcs5oTuzitrNwoLPw0ixVvz-83Nc9VLPoLHj020HZx4ix-knSUDm3REywKr9LNv0mCP8G3BRWA68SaOkw_-zlxwjpsjP-Su5GsRDAfDGvknN4INiqD6vzi2zPvQ_DuwSTvrB-UMpU44UxR4QQNwJKTKdhE37iBqlPVftHmp-Uz1m0EDBAdkZegx1r7iQto4kXoCmKYCDtFfXbkROXi0qYZIPMFMcpuy7NZaFP4haB7OEl4YaEhs697O6HCF-kLWWvzBCHDjmNjR2zErIelamukisC7qGKQo6G_T6v-oYjOEt_5pKlDrJZ0VgGd2nRcslPqcZiIX3O_ljR5UIKqX71fG1aaoDrh84HnG0URhc1CcJTggutb_02w8W8wLtdMl75jh0Uylm1j4EACRgM',
+                'Authorization': `Bearer ${props.token} `,
             },
             data: data
         };
@@ -209,7 +210,7 @@ const DiscountTaxes = () => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/deleteShipping`,
             headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGFjYWEzM2Y0NGY2YjI2NDQ1ZmUxZTEyYzhlMTU3MmIyODI1NTdmYjM0YTI0Y2IyNWI1YzkxNmZiNDczMGEzNTg5NmI2MTJhYTI0OWEwMmYiLCJpYXQiOjE2NjMwMDg3ODUuNDE1Mjc2LCJuYmYiOjE2NjMwMDg3ODUuNDE1MjgsImV4cCI6MTY5NDU0NDc4NS40MTAwNDQsInN1YiI6IjEwIiwic2NvcGVzIjpbXX0.jNSgXRmHSENfv1GacNbGoXQ2rxVokWi0xhNRDgEMPQj9VpiADmfqJkOWrbmZ54d6xPONQhB8txdpgBRjGA8PozQov3cIpfkRxW-99uIpzU8Hm1y4r5vDJrBf9DIsG5XwoLwCdhuwOpB-DOnubSYgrYHJkK86dvlhe5VS5Sk74kTw7LNta3jsG1z8xytr1aWGAiJPvut1kk84Zvkl692rfP9bqsSQXp0TJQGrcH49vJmVvlvcwfEkYR15evvmBMS2Kfn5h6OXVflqg2QG2iIE8HsJAtlcs5oTuzitrNwoLPw0ixVvz-83Nc9VLPoLHj020HZx4ix-knSUDm3REywKr9LNv0mCP8G3BRWA68SaOkw_-zlxwjpsjP-Su5GsRDAfDGvknN4INiqD6vzi2zPvQ_DuwSTvrB-UMpU44UxR4QQNwJKTKdhE37iBqlPVftHmp-Uz1m0EDBAdkZegx1r7iQto4kXoCmKYCDtFfXbkROXi0qYZIPMFMcpuy7NZaFP4haB7OEl4YaEhs697O6HCF-kLWWvzBCHDjmNjR2zErIelamukisC7qGKQo6G_T6v-oYjOEt_5pKlDrJZ0VgGd2nRcslPqcZiIX3O_ljR5UIKqX71fG1aaoDrh84HnG0URhc1CcJTggutb_02w8W8wLtdMl75jh0Uylm1j4EACRgM',
+                'Authorization': `Bearer ${props.token} `,
             },
             data: data
         };
@@ -232,7 +233,7 @@ const DiscountTaxes = () => {
             method: 'get',
             url: `${process.env.MIX_REACT_APP_URL}/api/getStates`,
             headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGFjYWEzM2Y0NGY2YjI2NDQ1ZmUxZTEyYzhlMTU3MmIyODI1NTdmYjM0YTI0Y2IyNWI1YzkxNmZiNDczMGEzNTg5NmI2MTJhYTI0OWEwMmYiLCJpYXQiOjE2NjMwMDg3ODUuNDE1Mjc2LCJuYmYiOjE2NjMwMDg3ODUuNDE1MjgsImV4cCI6MTY5NDU0NDc4NS40MTAwNDQsInN1YiI6IjEwIiwic2NvcGVzIjpbXX0.jNSgXRmHSENfv1GacNbGoXQ2rxVokWi0xhNRDgEMPQj9VpiADmfqJkOWrbmZ54d6xPONQhB8txdpgBRjGA8PozQov3cIpfkRxW-99uIpzU8Hm1y4r5vDJrBf9DIsG5XwoLwCdhuwOpB-DOnubSYgrYHJkK86dvlhe5VS5Sk74kTw7LNta3jsG1z8xytr1aWGAiJPvut1kk84Zvkl692rfP9bqsSQXp0TJQGrcH49vJmVvlvcwfEkYR15evvmBMS2Kfn5h6OXVflqg2QG2iIE8HsJAtlcs5oTuzitrNwoLPw0ixVvz-83Nc9VLPoLHj020HZx4ix-knSUDm3REywKr9LNv0mCP8G3BRWA68SaOkw_-zlxwjpsjP-Su5GsRDAfDGvknN4INiqD6vzi2zPvQ_DuwSTvrB-UMpU44UxR4QQNwJKTKdhE37iBqlPVftHmp-Uz1m0EDBAdkZegx1r7iQto4kXoCmKYCDtFfXbkROXi0qYZIPMFMcpuy7NZaFP4haB7OEl4YaEhs697O6HCF-kLWWvzBCHDjmNjR2zErIelamukisC7qGKQo6G_T6v-oYjOEt_5pKlDrJZ0VgGd2nRcslPqcZiIX3O_ljR5UIKqX71fG1aaoDrh84HnG0URhc1CcJTggutb_02w8W8wLtdMl75jh0Uylm1j4EACRgM',
+                'Authorization': `Bearer ${props.token} `,
             },
             data: data
         };
@@ -333,9 +334,9 @@ const DiscountTaxes = () => {
 
         var config = {
             method: 'get',
-            url: `${process.env.MIX_REACT_APP_URL}/api/getDiscount?userId=44`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/getDiscount?userId=${props.userID}`,
             headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGFjYWEzM2Y0NGY2YjI2NDQ1ZmUxZTEyYzhlMTU3MmIyODI1NTdmYjM0YTI0Y2IyNWI1YzkxNmZiNDczMGEzNTg5NmI2MTJhYTI0OWEwMmYiLCJpYXQiOjE2NjMwMDg3ODUuNDE1Mjc2LCJuYmYiOjE2NjMwMDg3ODUuNDE1MjgsImV4cCI6MTY5NDU0NDc4NS40MTAwNDQsInN1YiI6IjEwIiwic2NvcGVzIjpbXX0.jNSgXRmHSENfv1GacNbGoXQ2rxVokWi0xhNRDgEMPQj9VpiADmfqJkOWrbmZ54d6xPONQhB8txdpgBRjGA8PozQov3cIpfkRxW-99uIpzU8Hm1y4r5vDJrBf9DIsG5XwoLwCdhuwOpB-DOnubSYgrYHJkK86dvlhe5VS5Sk74kTw7LNta3jsG1z8xytr1aWGAiJPvut1kk84Zvkl692rfP9bqsSQXp0TJQGrcH49vJmVvlvcwfEkYR15evvmBMS2Kfn5h6OXVflqg2QG2iIE8HsJAtlcs5oTuzitrNwoLPw0ixVvz-83Nc9VLPoLHj020HZx4ix-knSUDm3REywKr9LNv0mCP8G3BRWA68SaOkw_-zlxwjpsjP-Su5GsRDAfDGvknN4INiqD6vzi2zPvQ_DuwSTvrB-UMpU44UxR4QQNwJKTKdhE37iBqlPVftHmp-Uz1m0EDBAdkZegx1r7iQto4kXoCmKYCDtFfXbkROXi0qYZIPMFMcpuy7NZaFP4haB7OEl4YaEhs697O6HCF-kLWWvzBCHDjmNjR2zErIelamukisC7qGKQo6G_T6v-oYjOEt_5pKlDrJZ0VgGd2nRcslPqcZiIX3O_ljR5UIKqX71fG1aaoDrh84HnG0URhc1CcJTggutb_02w8W8wLtdMl75jh0Uylm1j4EACRgM',
+                'Authorization': `Bearer ${props.token} `,
             },
             data: data
         };
@@ -357,9 +358,9 @@ const DiscountTaxes = () => {
 
         var config = {
             method: 'get',
-            url: `${process.env.MIX_REACT_APP_URL}/api/getTaxes?userId=44`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/getTaxes?userId=${props.userID}`,
             headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGFjYWEzM2Y0NGY2YjI2NDQ1ZmUxZTEyYzhlMTU3MmIyODI1NTdmYjM0YTI0Y2IyNWI1YzkxNmZiNDczMGEzNTg5NmI2MTJhYTI0OWEwMmYiLCJpYXQiOjE2NjMwMDg3ODUuNDE1Mjc2LCJuYmYiOjE2NjMwMDg3ODUuNDE1MjgsImV4cCI6MTY5NDU0NDc4NS40MTAwNDQsInN1YiI6IjEwIiwic2NvcGVzIjpbXX0.jNSgXRmHSENfv1GacNbGoXQ2rxVokWi0xhNRDgEMPQj9VpiADmfqJkOWrbmZ54d6xPONQhB8txdpgBRjGA8PozQov3cIpfkRxW-99uIpzU8Hm1y4r5vDJrBf9DIsG5XwoLwCdhuwOpB-DOnubSYgrYHJkK86dvlhe5VS5Sk74kTw7LNta3jsG1z8xytr1aWGAiJPvut1kk84Zvkl692rfP9bqsSQXp0TJQGrcH49vJmVvlvcwfEkYR15evvmBMS2Kfn5h6OXVflqg2QG2iIE8HsJAtlcs5oTuzitrNwoLPw0ixVvz-83Nc9VLPoLHj020HZx4ix-knSUDm3REywKr9LNv0mCP8G3BRWA68SaOkw_-zlxwjpsjP-Su5GsRDAfDGvknN4INiqD6vzi2zPvQ_DuwSTvrB-UMpU44UxR4QQNwJKTKdhE37iBqlPVftHmp-Uz1m0EDBAdkZegx1r7iQto4kXoCmKYCDtFfXbkROXi0qYZIPMFMcpuy7NZaFP4haB7OEl4YaEhs697O6HCF-kLWWvzBCHDjmNjR2zErIelamukisC7qGKQo6G_T6v-oYjOEt_5pKlDrJZ0VgGd2nRcslPqcZiIX3O_ljR5UIKqX71fG1aaoDrh84HnG0URhc1CcJTggutb_02w8W8wLtdMl75jh0Uylm1j4EACRgM',
+                'Authorization': `Bearer ${props.token} `,
             },
             data: data
         };
@@ -381,9 +382,9 @@ const DiscountTaxes = () => {
 
         var config = {
             method: 'get',
-            url: `${process.env.MIX_REACT_APP_URL}/api/getShipping?userId=44`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/getShipping?userId=${props.userID}`,
             headers: {
-                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiNGFjYWEzM2Y0NGY2YjI2NDQ1ZmUxZTEyYzhlMTU3MmIyODI1NTdmYjM0YTI0Y2IyNWI1YzkxNmZiNDczMGEzNTg5NmI2MTJhYTI0OWEwMmYiLCJpYXQiOjE2NjMwMDg3ODUuNDE1Mjc2LCJuYmYiOjE2NjMwMDg3ODUuNDE1MjgsImV4cCI6MTY5NDU0NDc4NS40MTAwNDQsInN1YiI6IjEwIiwic2NvcGVzIjpbXX0.jNSgXRmHSENfv1GacNbGoXQ2rxVokWi0xhNRDgEMPQj9VpiADmfqJkOWrbmZ54d6xPONQhB8txdpgBRjGA8PozQov3cIpfkRxW-99uIpzU8Hm1y4r5vDJrBf9DIsG5XwoLwCdhuwOpB-DOnubSYgrYHJkK86dvlhe5VS5Sk74kTw7LNta3jsG1z8xytr1aWGAiJPvut1kk84Zvkl692rfP9bqsSQXp0TJQGrcH49vJmVvlvcwfEkYR15evvmBMS2Kfn5h6OXVflqg2QG2iIE8HsJAtlcs5oTuzitrNwoLPw0ixVvz-83Nc9VLPoLHj020HZx4ix-knSUDm3REywKr9LNv0mCP8G3BRWA68SaOkw_-zlxwjpsjP-Su5GsRDAfDGvknN4INiqD6vzi2zPvQ_DuwSTvrB-UMpU44UxR4QQNwJKTKdhE37iBqlPVftHmp-Uz1m0EDBAdkZegx1r7iQto4kXoCmKYCDtFfXbkROXi0qYZIPMFMcpuy7NZaFP4haB7OEl4YaEhs697O6HCF-kLWWvzBCHDjmNjR2zErIelamukisC7qGKQo6G_T6v-oYjOEt_5pKlDrJZ0VgGd2nRcslPqcZiIX3O_ljR5UIKqX71fG1aaoDrh84HnG0URhc1CcJTggutb_02w8W8wLtdMl75jh0Uylm1j4EACRgM',
+                'Authorization': `Bearer ${props.token} `,
             },
             data: data
         };
@@ -575,4 +576,10 @@ const DiscountTaxes = () => {
         </div>
     )
 }
-export default DiscountTaxes
+
+const mapStateToProps = (state) => ({
+
+    userID: state.Auth.user?.id,
+    token: state.Auth.token
+});
+export default connect(mapStateToProps)(DiscountTaxes)
