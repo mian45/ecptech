@@ -16,6 +16,7 @@ import {
 import Carousel from "react-material-ui-carousel";
 import autoBind from "auto-bind";
 import "../../sass/carousal.scss";
+import cr1 from "../assets/carousalImage1.png"
 function Banner(props) {
     if (props.newProp) console.log(props.newProp);
     const contentPosition = props.contentPosition
@@ -338,12 +339,17 @@ class Login extends Component {
                                                             {errors.password}
                                                         </div>
                                                     )}</div>
-                                            </div>
+                                                    <div className="form-group ending-text" >
+                                                        <div style={{padding: "11px 0px 0px 0px "}}>
 
-
-                                            <div className="form-group ending-text" >
                                                 <Link to="/forgot-password" style={{textDecoration:"none",color:"#ccc"}}>Forgot Password?</Link>
+
+                                                        </div>
                                             </div>
+                                            </div>
+
+
+                                            
 
                                             <div className="login-invite-text ending-text">
 
@@ -393,8 +399,9 @@ class Login extends Component {
                                 >
                                     {items.map((item, index) => {
                                         return (
-                                            <div style={{width:"50em"}}>
-                                                sdsdf
+                                            <div style={{width:"50em",justifyContent:"center",alignItems:"center",display:"contents"}}>
+                                                <img src={cr1} style={{alignSelf:"center"}}></img>
+                                                <div>carousalImage1.png</div>
                                             </div>
                                         );
                                     })}

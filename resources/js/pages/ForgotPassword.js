@@ -6,14 +6,7 @@ import ReeValidate from 'ree-validate';
 import classNames from 'classnames';
 import AuthService from '../services';
 import Carousel from "react-material-ui-carousel";
-import {
-    Card,
-    CardContent,
-    CardMedia,
-    Typography,
-    Grid,
-    Button
-} from "@material-ui/core";
+import cr1 from "../assets/carousalImage1.png"
 const items = [
     {
         Name: "Pizza begin",
@@ -246,40 +239,41 @@ class ForgotPassword extends Component {
                           </div>
                       </div>
                       <div className="section-about col-lg-6 mb-4 mb-lg-0 carousal-body">
-                          <Carousel
-                              className="Example"
-                              autoPlay={this.state.autoPlay}
-                              animation={this.state.animation}
-                              indicators={this.state.indicators}
-                              timeout={this.state.timeout}
-                              cycleNavigation={this.state.cycleNavigation}
-                              navButtonsAlwaysVisible={this.state.navButtonsAlwaysVisible}
-                              navButtonsAlwaysInvisible={this.state.navButtonsAlwaysInvisible}
-                              next={(now, previous) =>
-                                  console.log(
-                                      `Next User Callback: Now displaying child${now}. Previously displayed child${previous}`
-                                  )
-                              }
-                              prev={(now, previous) =>
-                                  console.log(
-                                      `Prev User Callback: Now displaying child${now}. Previously displayed child${previous}`
-                                  )
-                              }
-                              onChange={(now, previous) =>
-                                  console.log(
-                                      `OnChange User Callback: Now displaying child${now}. Previously displayed child${previous}`
-                                  )
-                              }
+                      <Carousel
+                                    className="Example"
+                                    autoPlay={this.state.autoPlay}
+                                    animation={this.state.animation}
+                                    indicators={this.state.indicators}
+                                    timeout={this.state.timeout}
+                                    cycleNavigation={this.state.cycleNavigation}
+                                    navButtonsAlwaysVisible={this.state.navButtonsAlwaysVisible}
+                                    navButtonsAlwaysInvisible={this.state.navButtonsAlwaysInvisible}
+                                    next={(now, previous) =>
+                                        console.log(
+                                            `Next User Callback: Now displaying child${now}. Previously displayed child${previous}`
+                                        )
+                                    }
+                                    prev={(now, previous) =>
+                                        console.log(
+                                            `Prev User Callback: Now displaying child${now}. Previously displayed child${previous}`
+                                        )
+                                    }
+                                    onChange={(now, previous) =>
+                                        console.log(
+                                            `OnChange User Callback: Now displaying child${now}. Previously displayed child${previous}`
+                                        )
+                                    }
 
-                          >
-                              {items.map((item, index) => {
-                                  return (
-                                      <div style={{width:"50em"}}>
-                                          sdsdf
-                                      </div>
-                                  );
-                              })}
-                          </Carousel>
+                                >
+                                    {items.map((item, index) => {
+                                        return (
+                                            <div style={{width:"50em",justifyContent:"center",alignItems:"center",display:"contents"}}>
+                                                <img src={cr1} style={{alignSelf:"center"}}></img>
+                                                <div>carousalImage1.png</div>
+                                            </div>
+                                        );
+                                    })}
+                                </Carousel>
                       </div>
                   </div>
               </div>

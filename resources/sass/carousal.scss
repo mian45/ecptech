@@ -86,7 +86,7 @@
 }
 .carousal-body{
     background-color:#6FA5CB !important;
-    height:37em !important;
+    height:40em !important;
     //overflow:hidden ;
 }
 .title{
@@ -112,3 +112,12 @@
     opacity: 1;
 }
 .py-container{padding: 2rem 0rem 0rem 0rem !important;}
+.Carousel-prev-12 {
+    left: -64px !important;
+}
+.Carousel-next-11 {
+    right: -64px !important;
+}
+.Carousel-root-1 {
+    overflow: inherit !important;
+}
