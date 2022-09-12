@@ -20,8 +20,6 @@ const activeState = (state, payload) => {
 };
 
 const activeSettingState = (state, payload) => {
-    console.log("payload", payload, "state", state);
-
     return { ...state, isActiveSettingState: payload };
 };
 

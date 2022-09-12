@@ -2,10 +2,6 @@ import Http from "../Http";
 import * as action from "../store/actions";
 
 export function login(credentials) {
-    console.log(
-        "MIX_REACT_APP_URL MIX_REACT_APP_URL",
-        process.env.MIX_REACT_APP_URL
-    );
     return (dispatch) =>
         new Promise((resolve, reject) => {
             Http.post("/api/v1/auth/login", credentials)
