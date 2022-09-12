@@ -20,9 +20,9 @@ return new class extends Migration
             $table->string('invoice_type');
             $table->string('subject');
             $table->string('body');
-            $table->integer('send_date');
-            $table->dateTime('send_time');
-            $table->string('time_zone');
+            $table->integer('send_date')->nullable();
+            $table->dateTime('send_time')->nullable();
+            $table->string('time_zone')->nullable();
             $table->boolean('is_active');
             $table->softDeletes();
             $table->timestamps();

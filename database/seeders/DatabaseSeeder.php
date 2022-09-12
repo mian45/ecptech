@@ -19,12 +19,7 @@ class DatabaseSeeder extends Seeder
             StatesTableSeeder::class,
             CustomersTableSeeder::class,
             InvoicesTableSeeder::class,
+            RolesTableSeeder::class,
         ]);
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
     }
 }
