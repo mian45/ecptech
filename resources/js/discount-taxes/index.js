@@ -450,7 +450,7 @@ const DiscountTaxes = () => {
                             <tr className='discount-output_body'>
 
                                 <td>{discounts.name}</td>
-                                <td>{discounts.value}</td>
+                                <td>${discounts.value}</td>
                                 <td><img style={{ width: '18px', height: '18px', marginRight: '30px' }} src={edit} onClick={() => { handlUpdate(discounts) }} />
                                     <img style={{ width: '16px', height: '16px' }} src={cross} onClick={() => { handleDelete(discounts.id) }} /></td>
                             </tr>
@@ -521,7 +521,7 @@ const DiscountTaxes = () => {
 
                                         <td>{obj.name}</td>
                                         <td>{obj.state_id}</td>
-                                        <td>{obj.value}</td>
+                                        <td>{obj.value}%</td>
                                         <td><img style={{ width: '18px', height: '18px', marginRight: '30px' }} src={edit} onClick={() => { updateHandler(obj) }} />
                                             <img style={{ width: '16px', height: '16px' }} src={cross} onClick={() => { handleDeleteTax(obj.id) }} /></td>
                                     </tr>
@@ -562,7 +562,7 @@ const DiscountTaxes = () => {
                             <tr className='discount-output_body'>
 
                                 <td>{shipping.name}</td>
-                                <td>{shipping.value}</td>
+                                <td>${shipping.value}</td>
                                 <td><img style={{ width: '18px', height: '18px', marginRight: '30px' }} src={edit} onClick={() => { handlUpdateShipping(shipping) }} />
                                     <img style={{ width: '16px', height: '16px' }} src={cross} onClick={() => { handleDeleteShipping(shipping.id) }} /></td>
                             </tr>
