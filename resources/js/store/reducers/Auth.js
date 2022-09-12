@@ -31,6 +31,7 @@ const authLogin = (state, payload) => {
         name: payload?.data?.name,
         email: payload?.data?.email,
     };
+    const token = payload?.data?.token;
     Http.defaults.headers.common.Authorization = `Bearer ${token}`;
     const stateObj = {
         ...state,
