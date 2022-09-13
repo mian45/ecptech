@@ -12,6 +12,7 @@ use App\Http\Controllers\Client\SettingController;
 use App\Http\Controllers\Api\PrescriptionController;
 use App\Http\Controllers\Api\InvoicesController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Api\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,3 +72,4 @@ Route::middleware('auth:api')->group( function () {
 });
 
 
+Route::post('hot_selling_products', [ProductController::class, 'hot_selling']);
