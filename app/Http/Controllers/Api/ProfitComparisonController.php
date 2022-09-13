@@ -134,7 +134,7 @@ class ProfitComparisonController extends Controller
                 ->where($where_clouse)
                 ->whereBetween('created_at', [$prestartdate->format('Y-m-d'), $preenddate->format('Y-m-d')])
                 ->sum('amount'); 
-            $data['previouse'] = [
+            $data['previous'] = [
                 'date' => $prestartdate->format('M Y').' - '.$preenddate->format('M Y'),
                 'amount' => $date_end
             ];      
@@ -144,6 +144,6 @@ class ProfitComparisonController extends Controller
             ];            
         }        
         
-        return $this->sendResponse($data, 'Invoices List');
+        return $this->sendResponse($data, 'Profit Comparison');
     }
 }
