@@ -2,7 +2,7 @@ import React from "react";
 import Chart from "react-apexcharts";
 import classes from "./styles.module.scss";
 
-const InvoicesStatsChart = () => {
+const InvoicesStatsChart = ({ data }) => {
     const options = {
         chart: {
             type: "bar",
@@ -68,14 +68,17 @@ const InvoicesStatsChart = () => {
             textAnchor: "end",
             offsetX: 0,
             formatter: function (val, opt) {
-                console.log("val", val, "opt", opt);
-                // return opt.w.globals.labels[opt.dataPointIndex] + ":  " + val
-                return INVOICES_DATA[opt.dataPointIndex].y;
+                let isPercentage = "";
+                if (data[opt.dataPointIndex].percentage)
+                    isPercentage = `-${data[opt.dataPointIndex].percentage}%`;
+                return data[opt.dataPointIndex].x === "Capture Rate"
+                    ? `${data[opt.dataPointIndex].percentage}%`
+                    : `${data[opt.dataPointIndex].y} ${isPercentage}`;
             },
         },
         series: [
             {
-                data: INVOICES_DATA,
+                data: data,
             },
         ],
         grid: {
