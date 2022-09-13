@@ -106,11 +106,55 @@ class DashboardController extends Controller
         $data['invoice']['online_paid_percent'] = ($total_paid_invoices>0)? round(($total_online_paid_invoices/$total_paid_invoices)*100):0;
         $data['invoice']['capture_rate'] = $capture_rate;
         $data['invoice']['unpaid'] = $total_unpaid_invoices;
-        
 
         return $this->sendResponse($data, 'Invoice Data');
 
        
+    }
+
+    public function getTeamProgress(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $client_id = auth()->user()->id;
+
+        $total_invoices = Invoice::join('staffs as s', 's.id', '=', 'invoices.staff_id')
+                            ->leftJoin('invoice_reminder', 'invoices.id', '=', 'invoice_reminder.invoice_id')
+                            ->select('s.name','s.id')
+                            ->selectRaw('count(invoices.id) as total_invoices,sum(invoices.amount) as total_sales,count(IF((invoices.payment_mode="office" AND invoices.status="paid"), invoices.id, NULL)) as total_paid_office,
+                            count(IF((invoices.payment_mode="online" AND invoices.status="paid"), invoices.id, NULL)) as total_paid_online,
+                            count(invoice_reminder.id) as reminder_sent')                            
+                            ->where('invoices.user_id',$client_id)
+                            ->where('invoices.created_at','>=',$request->start_date)
+                            ->where('invoices.created_at','<=',$request->end_date)
+                            ->groupBy('invoices.staff_id')
+                            ->get();
+
+
+        foreach($total_invoices as $key=>$invoice){
+            $data['team'][$key]['staff_name'] = $invoice->name;
+            $data['team'][$key]['total_sales'] = $invoice->total_sales;
+            $data['team'][$key]['paid_in_office'] = (($invoice->total_invoices>0) ?round(($invoice->total_paid_office/$invoice->total_invoices)*100):0)."%";
+            $data['team'][$key]['paid_online'] = (($invoice->total_invoices>0) ?round(($invoice->total_paid_online/$invoice->total_invoices)*100):0)."%";
+            $data['team'][$key]['reminder_sent'] = $invoice->reminder_sent;
+            $data['team'][$key]['capture_rate'] = (($invoice->total_invoices>0)? round((($invoice->total_paid_online+$invoice->total_paid_office)/$invoice->total_invoices)*100):0)."%";
+
+        }                    
+
+        return $this->sendResponse($data, 'Invoice Data');
+                            
+
+        
+        
+
+
     }
 
 }

@@ -44,7 +44,9 @@ Route::middleware('auth:api')->group( function () {
     Route::post('deleteReminder', [ReminderController::class, 'deleteReminder']);
 
     Route::post('invoice-summmary', [DashboardController::class, 'getInvoiceSummmary']);
-    Route::post('invoice-stats', [DashboardController::class, 'getInvoiceStats']);  
+    Route::post('invoice-stats', [DashboardController::class, 'getInvoiceStats']);
+    Route::post('team-progress', [DashboardController::class, 'getTeamProgress']);
+
     Route::get('getDiscount', [DiscountController::class, 'getDiscount']);
     Route::post('addDiscount', [DiscountController::class, 'addDiscount']);
     Route::post('deleteDiscount', [DiscountController::class, 'deleteDiscount']);
