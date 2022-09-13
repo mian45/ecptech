@@ -69,7 +69,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('changePassword', [RegisterController::class, 'change_password']);
     Route::get('get_invoices', [InvoicesController::class, 'index']);
     Route::post('search_invoices', [InvoicesController::class, 'search']);
+    Route::post('hot_selling_products', [ProductController::class, 'hot_selling']);
 });
 
 
-Route::post('hot_selling_products', [ProductController::class, 'hot_selling']);
