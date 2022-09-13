@@ -106,6 +106,7 @@ class DashboardController extends Controller
         $data['invoice']['online_paid_percent'] = ($total_paid_invoices>0)? round(($total_online_paid_invoices/$total_paid_invoices)*100):0;
         $data['invoice']['capture_rate'] = $capture_rate;
         $data['invoice']['unpaid'] = $total_unpaid_invoices;
+        
 
         return $this->sendResponse($data, 'Invoice Data');
 
