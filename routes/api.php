@@ -36,6 +36,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('getStaff', [StaffController::class, 'getStaff']);
     Route::post('addStaff', [StaffController::class, 'addStaff']);
     Route::post('editStaff', [StaffController::class, 'editStaff']);
+    Route::post('delete-staff', [StaffController::class, 'deleteStaff']);
 
     Route::get('getReminders', [ReminderController::class, 'getReminders']);
     Route::post('addReminder', [ReminderController::class, 'addReminder']);
