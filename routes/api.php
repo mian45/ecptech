@@ -68,8 +68,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('changepassword', [RegisterController::class, 'change_password']);
     Route::get('invoices', [InvoicesController::class, 'index']);
     Route::post('search_invoices', [InvoicesController::class, 'search']);
-    
+    Route::post('profit_comparison', [ProfitComparisonController::class, 'profitComparison']);    
 });
 
 
-Route::post('profit_comparison', [ProfitComparisonController::class, 'profitComparison']);
