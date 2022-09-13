@@ -121,11 +121,24 @@ class ProfitComparisonController extends Controller
             $end_date = Carbon::parse($end);
             $start = explode('/', $start);
             $end = explode('/', $end);
-            $last_year = $start[2] - 1;
-            $pre_start_date = $start[0].'/'.$start[1].'/'.$last_year;
-            $pre_end_date = $end[0].'/'.$end[1].'/'.$last_year;
-            $prestartdate = Carbon::parse($pre_start_date);
-            $preenddate = Carbon::parse($pre_end_date);
+            $get_start_year = $start[2];
+            $get_end_year = $end[2];
+            if($get_start_year === $get_end_year){
+                $last_year = $start[2] - 1;
+                $pre_start_date = $start[0].'/'.$start[1].'/'.$last_year;
+                $pre_end_date = $end[0].'/'.$end[1].'/'.$last_year;
+                $prestartdate = Carbon::parse($pre_start_date);
+                $preenddate = Carbon::parse($pre_end_date);
+            } else {
+                $last_year = ($get_end_year - $get_start_year);
+                $start_year = $start[2] - $last_year;
+                $last_year = $end[2] - $last_year;
+                $pre_start_date = $start[0].'/'.$start[1].'/'.$start_year;
+                $pre_end_date = $end[0].'/'.$end[1].'/'.$last_year;
+                $prestartdate = Carbon::parse($pre_start_date);
+                $preenddate = Carbon::parse($pre_end_date);
+            }
+            
             $date_start = DB::table('transactions')
                 ->where($where_clouse)
                 ->whereBetween('created_at', [$start_date->format('Y-m-d'), $end_date->format('Y-m-d')])
