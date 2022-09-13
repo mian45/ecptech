@@ -2,7 +2,9 @@
 /public/build
 /public/hot
 /public/storage
-/public
+/public/js/
+/public/css/
+/public/fonts/
 /storage/*.key
 /vendor
 .env
