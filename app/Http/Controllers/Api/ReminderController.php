@@ -30,21 +30,21 @@ class ReminderController extends Controller
     }
     public function addReminder(Request $request)
     {
-
+        
+    
         $validator = Validator::make($request->all(), [
             'userId' => 'required',
             'type' => 'required',
             'invoiceType' => 'required',
             'subject' => 'required',
             'body' => 'required',
-            'sendDate' => 'required',
-            'sendTime' => 'required',
-            'TimeZone' => 'required',
         ]);
+
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
+
 
         $reminder = new Reminder;
         $reminder->user_id = $request->userId;
