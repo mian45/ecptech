@@ -69,11 +69,11 @@ const InvoicesStatsChart = ({ data }) => {
             offsetX: 0,
             formatter: function (val, opt) {
                 let isPercentage = "";
-                if (data[opt.dataPointIndex].percentage)
-                    isPercentage = `-${data[opt.dataPointIndex].percentage}%`;
-                return data[opt.dataPointIndex].x === "Capture Rate"
-                    ? `${data[opt.dataPointIndex].percentage}%`
-                    : `${data[opt.dataPointIndex].y} ${isPercentage}`;
+                if (data[opt.dataPointIndex]?.percentage)
+                    isPercentage = `-${data[opt.dataPointIndex]?.percentage}%`;
+                return data[opt.dataPointIndex]?.x === "Capture Rate"
+                    ? `${data[opt.dataPointIndex]?.percentage || 0}%`
+                    : `${data[opt.dataPointIndex]?.y} ${isPercentage}`;
             },
         },
         series: [
@@ -117,7 +117,7 @@ const InvoicesStatsChart = ({ data }) => {
             <div className={classes["label"]}>Invoices</div>
             <Chart
                 options={options}
-                series={options.series}
+                series={options?.series}
                 type="bar"
                 height={200}
             />
@@ -125,27 +125,3 @@ const InvoicesStatsChart = ({ data }) => {
     );
 };
 export default InvoicesStatsChart;
-
-const INVOICES_DATA = [
-    {
-        x: "Generated",
-        y: 10,
-    },
-    {
-        x: "Paid In Office",
-        y: 18,
-    },
-    {
-        x: "Paid Online",
-        y: 13,
-    },
-    {
-        x: "Capture Rate",
-        y: 130,
-    },
-
-    {
-        x: "Un Paid",
-        y: 130,
-    },
-];
