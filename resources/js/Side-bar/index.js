@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./style.scss";
 import { connect } from "react-redux";
 import SettingDashboard from "../setting-dashboard";
-import Dashboard from "../dashboard";
+import DashboardPage from "../dashboard-page";
 
 const SideBar = ({ userRole, isActiveState }) => {
     const [state, setState] = useState(isActiveState);
@@ -66,7 +66,7 @@ const SideBar = ({ userRole, isActiveState }) => {
                 )}
             </div>
             {state === 4 && <SettingDashboard />}
-            {state === 1 && <Dashboard />}
+            {state === 1 && <DashboardPage />}
         </div>
     );
 };
