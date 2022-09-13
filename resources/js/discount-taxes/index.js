@@ -31,27 +31,23 @@ const DiscountTaxes = (props) => {
 
     const [editId, setEditId] = useState("")
 
-
     useEffect(() => {
         getState()
-    }, [])
-
-    useEffect(() => {
         getDiscount()
         getTaxes()
         getShipping()
     }, [])
 
     const addDiscount = () => {
-        var data = new FormData();
+        let data = new FormData();
         data.append('userId', props.userID);
         data.append('name', discounts.name);
         data.append('value', discounts.value);
-        var config = {
+        let config = {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/addDiscount`,
             headers: {
-                'Authorization': `Bearer ${props.token} `,
+                'Authorization': `Bearer ${props.token}`,
             },
             data: data
         };
@@ -67,14 +63,14 @@ const DiscountTaxes = (props) => {
     }
 
     const deleteDiscount = (id) => {
-        var data = new FormData();
+        let data = new FormData();
         data.append('id', id);
 
-        var config = {
+        let config = {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/deleteDiscount`,
             headers: {
-                'Authorization': `Bearer ${props.token} `,
+                'Authorization': `Bearer ${props.token}`,
             },
             data: data
         };
@@ -90,17 +86,17 @@ const DiscountTaxes = (props) => {
     }
 
     const addTax = () => {
-        var data = new FormData();
+        let data = new FormData();
         data.append('userId', props.userID);
         data.append('stateId', stateSetting);
         data.append('name', taxName);
         data.append('value', taxValue);
 
-        var config = {
+        let config = {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/addTax`,
             headers: {
-                'Authorization': `Bearer ${props.token} `,
+                'Authorization': `Bearer ${props.token}`,
             },
             data: data
         };
@@ -122,17 +118,17 @@ const DiscountTaxes = (props) => {
 
     const editTax = (values) => {
         console.log(values, 'values');
-        var data = new FormData();
+        let data = new FormData();
         data.append('id', idState);
         data.append('stateId', stateSetting);
         data.append('name', taxName);
         data.append('value', taxValue);
 
-        var config = {
+        let config = {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/editTax`,
             headers: {
-                'Authorization': `Bearer ${props.token} `,
+                'Authorization': `Bearer ${props.token}`,
             },
             data: data
         };
@@ -155,14 +151,14 @@ const DiscountTaxes = (props) => {
     }
 
     const deleteTax = (tid) => {
-        var data = new FormData();
+        let data = new FormData();
         data.append('id', tid);
 
-        var config = {
+        let config = {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/deleteTax`,
             headers: {
-                'Authorization': `Bearer ${props.token} `,
+                'Authorization': `Bearer ${props.token}`,
             },
             data: data
         };
@@ -178,16 +174,16 @@ const DiscountTaxes = (props) => {
     }
 
     const addShipping = () => {
-        var data = new FormData();
+        let data = new FormData();
         data.append('userId', props.userID);
         data.append('name', shipping.name);
         data.append('value', shipping.value);
 
-        var config = {
+        let config = {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/addShipping`,
             headers: {
-                'Authorization': `Bearer ${props.token} `,
+                'Authorization': `Bearer ${props.token}`,
             },
             data: data
         };
@@ -203,14 +199,14 @@ const DiscountTaxes = (props) => {
     }
 
     const deleteShipping = (id) => {
-        var data = new FormData();
+        let data = new FormData();
         data.append('id', id);
 
-        var config = {
+        let config = {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/deleteShipping`,
             headers: {
-                'Authorization': `Bearer ${props.token} `,
+                'Authorization': `Bearer ${props.token}`,
             },
             data: data
         };
@@ -227,13 +223,13 @@ const DiscountTaxes = (props) => {
 
 
     const getState = () => {
-        var data = new FormData();
+        let data = new FormData();
 
-        var config = {
+        let config = {
             method: 'get',
             url: `${process.env.MIX_REACT_APP_URL}/api/getStates`,
             headers: {
-                'Authorization': `Bearer ${props.token} `,
+                'Authorization': `Bearer ${props.token}`,
             },
             data: data
         };
@@ -261,6 +257,10 @@ const DiscountTaxes = (props) => {
             setEditId("")
             setDiscountName("")
             setDiscountTax("")
+            addDiscount()
+        }
+        else {
+            setDiscounts({ name: discountName, value: discountTax })
             addDiscount()
         }
     }
@@ -313,6 +313,11 @@ const DiscountTaxes = (props) => {
             setShippingState("")
             addDiscount()
         }
+
+        else {
+            setShipping({ name: shippingName, value: shippingState })
+            addShipping()
+        }
     }
 
     const handlUpdateShipping = (value) => {
@@ -330,13 +335,13 @@ const DiscountTaxes = (props) => {
     }
 
     const getDiscount = () => {
-        var data = new FormData();
+        let data = new FormData();
 
-        var config = {
+        let config = {
             method: 'get',
             url: `${process.env.MIX_REACT_APP_URL}/api/getDiscount?userId=${props.userID}`,
             headers: {
-                'Authorization': `Bearer ${props.token} `,
+                'Authorization': `Bearer ${props.token}`,
             },
             data: data
         };
@@ -354,13 +359,13 @@ const DiscountTaxes = (props) => {
     }
 
     const getTaxes = () => {
-        var data = new FormData();
+        let data = new FormData();
 
-        var config = {
+        let config = {
             method: 'get',
             url: `${process.env.MIX_REACT_APP_URL}/api/getTaxes?userId=${props.userID}`,
             headers: {
-                'Authorization': `Bearer ${props.token} `,
+                'Authorization': `Bearer ${props.token}`,
             },
             data: data
         };
@@ -378,13 +383,13 @@ const DiscountTaxes = (props) => {
     }
 
     const getShipping = () => {
-        var data = new FormData();
+        let data = new FormData();
 
-        var config = {
+        let config = {
             method: 'get',
             url: `${process.env.MIX_REACT_APP_URL}/api/getShipping?userId=${props.userID}`,
             headers: {
-                'Authorization': `Bearer ${props.token} `,
+                'Authorization': `Bearer ${props.token}`,
             },
             data: data
         };
