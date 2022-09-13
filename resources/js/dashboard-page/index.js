@@ -3,8 +3,9 @@ import { connect } from "react-redux";
 import InvoicesStatsChart from "../components/invoicesStatsChart";
 import classes from "./styles.module.scss";
 import Http from "../../js/Http";
+import StaffLogin from "../components/staffLogin";
 
-const Dashboard = ({}) => {
+const Dashboard = ({ userRole }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
     useEffect(() => {
         const getInvoiceStats = async () => {
@@ -31,13 +32,16 @@ const Dashboard = ({}) => {
         <div className={classes["container"]}>
             <div className={classes["left-stats"]}>
                 <InvoicesStatsChart data={invoiceStats} />
+                {userRole !== "staff" && <StaffLogin />}
             </div>
             <div className={classes["right-stats"]}></div>
         </div>
     );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+    userRole: state.Auth.userRole?.name,
+});
 
 export default connect(mapStateToProps)(Dashboard);
 const DEFAULT_INVOICES_DATA = [

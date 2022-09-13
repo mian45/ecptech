@@ -7,11 +7,23 @@ const defaultUser = {
     email: null,
 };
 
+const defaultStaffUser = {
+    id: null,
+    name: null,
+    email: null,
+};
+const defaultUserRole = {
+    id: null,
+    name: null,
+};
+
 const initialState = {
     isAuthenticated: true,
     isActiveState: 1,
     isActiveSettingState: 1,
     user: defaultUser,
+    staffUser: defaultStaffUser,
+    userRole: defaultUserRole,
 };
 
 const activeState = (state, payload) => {
@@ -29,12 +41,24 @@ const authLogin = (state, payload) => {
         name: payload?.data?.name,
         email: payload?.data?.email,
     };
+    const roleObject = {
+        id: payload?.data.role.id,
+        name: payload.data.role.name,
+    };
+    const staffObject = {
+        id: payload?.data?.staffAuth?.id || null,
+        name: payload?.data?.staffAuth?.name || null,
+        email: payload?.data?.staffAuth?.email || null,
+    };
     const token = payload?.data?.token;
+
     Http.defaults.headers.common.Authorization = `Bearer ${token}`;
     const stateObj = {
         ...state,
         isAuthenticated: true,
         user: userObject,
+        userRole: roleObject,
+        staffUser: staffObject,
     };
     return stateObj;
 };
@@ -43,7 +67,9 @@ const checkAuth = (state) => {
     const stateObj = {
         ...state,
         isAuthenticated: !!localStorage.getItem("access_token"),
-        user: JSON.parse(localStorage.getItem("user")),
+        user: JSON.parse(
+            localStorage.getItem("user") || JSON.stringify(defaultUser)
+        ),
     };
     if (state.isAuthenticated) {
         Http.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem(
@@ -64,6 +90,32 @@ const logout = (state) => {
     return stateObj;
 };
 
+const staffLogin = (state, payload) => {
+    const staffUserObject = {
+        id: payload?.data?.id,
+        name: payload?.data?.name,
+        email: payload?.data?.email,
+    };
+    const stateObj = {
+        ...state,
+        staffUser: staffUserObject,
+    };
+    return stateObj;
+};
+
+const updateStaffLogin = (state, payload) => {
+    const staffUserObject = {
+        id: payload?.data?.id,
+        name: payload?.data?.name,
+        email: payload?.data?.email,
+    };
+    const stateObj = {
+        ...state,
+        staffUser: staffUserObject,
+    };
+    return stateObj;
+};
+
 const Auth = (state = initialState, { type, payload = null }) => {
     switch (type) {
         case ActionTypes.AUTH_LOGIN:
@@ -77,6 +129,10 @@ const Auth = (state = initialState, { type, payload = null }) => {
         case ActionTypes.ACTIVE_SETTING_STATE: {
             return activeSettingState(state, payload);
         }
+        case ActionTypes.STAFF_LOGIN:
+            return staffLogin(state, payload);
+        case ActionTypes.UPDATE_STAFF_LOGIN:
+            return updateStaffLogin(state, payload);
         default:
             return state;
     }
