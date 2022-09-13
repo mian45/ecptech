@@ -21,7 +21,7 @@ const EmailSetting = (props) => {
 
     const [idState, setIdState] = useState('')
 
-    const [remainderType, setRemainderType] = useState('')
+    const [reminderType, setReminderType] = useState('')
     const [sentTo, setSentTo] = useState('')
     const [subject, setSubject] = useState('')
     const [editorState, setEditorState] = useState('')
@@ -32,13 +32,13 @@ const EmailSetting = (props) => {
 
 
     useEffect(() => {
-        getRemainder()
+        getReminder()
     }, [])
 
-    const addRemainder = (props) => {
+    const addReminder = (props) => {
         var data = new FormData();
         data.append('userId', props.userID);
-        data.append('type', remainderType);
+        data.append('type', reminderType);
         data.append('invoiceType', sentTo);
         data.append('subject', subject);
         data.append('body', 'editorState');
@@ -65,10 +65,10 @@ const EmailSetting = (props) => {
 
     }
 
-    const editRemainder = (value) => {
+    const editReminder = (value) => {
         var data = new FormData();
         data.append('id', idState);
-        data.append('type', remainderType);
+        data.append('type', reminderType);
         data.append('invoiceType', sentTo);
         data.append('subject', subject);
         data.append('body', 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without');
@@ -88,8 +88,8 @@ const EmailSetting = (props) => {
         axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
-                getRemainder()
-                setRemainderType('')
+                getReminder()
+                setReminderType('')
                 setSentTo('')
                 setSubject('')
                 setEditorState('')
@@ -104,7 +104,7 @@ const EmailSetting = (props) => {
 
     }
 
-    const deleteRemainder = (id) => {
+    const deleteReminder = (id) => {
         var data = new FormData();
         data.append('id', id);
 
@@ -127,7 +127,7 @@ const EmailSetting = (props) => {
 
     }
 
-    const getRemainder = () => {
+    const getReminder = () => {
         var data = new FormData();
 
         var config = {
@@ -154,16 +154,16 @@ const EmailSetting = (props) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         setEmailArray([...emailArray])
-        addRemainder()
-        getRemainder()
-        setRemainderType('')
+        addReminder()
+        getReminder()
+        setReminderType('')
         setEmailSettingProps(false)
     }
 
     const updateHandler = (obj) => {
         setIdState(obj.id)
         console.log(obj.id);
-        setRemainderType(obj.type)
+        setReminderType(obj.type)
         setSentTo(obj.invoice_type)
         setSubject(obj.subject)
         setEditorState(obj.body)
@@ -175,12 +175,12 @@ const EmailSetting = (props) => {
 
     const handleEdit = (e) => {
         e.preventDefault()
-        editRemainder()
+        editReminder()
         setEmailSettingProps(false)
     }
 
     const handleDelete = (id) => {
-        deleteRemainder(id)
+        deleteReminder(id)
         setEmailArray([...emailArray].filter((emailObj) => {
             return emailObj.id !== id
         }))
@@ -203,7 +203,7 @@ const EmailSetting = (props) => {
     }
 
     const handleRemainderClick = (value) => {
-        setRemainderType(value)
+        setReminderType(value)
     }
 
     const handleSentToClick = (value) => {
@@ -242,14 +242,14 @@ const EmailSetting = (props) => {
                                 <div className='email-setting-content'>
                                     <div className='email-setting-content-section'>
                                         <div className='email-setting-content-section-image'>
-                                            <img src={obj.type == 'remainder' ? iconRemainder : emailButton} /></div>
+                                            <img src={obj.type == 'reminder' ? iconRemainder : emailButton} /></div>
                                         <div>
                                             <div>
                                                 <p className='email-setting-content-section-heading'>{obj.subject}</p>
                                             </div>
                                             <div className='email-setting-content-section-subsection' >
-                                                <p className='email-setting-content-section-subsection-subheading' style={obj.type == 'remainder' ? { color: '#61C77B' } : { color: '#6FA5CB' }}>{obj.type}</p>
-                                                <p className='email-setting-content-section-subsection-subheading' style={{ color: '#CBCBCB' }}>{obj.type == 'remainder' ? `${obj.send_date} days after invoice` : 'Payment Completed'}</p>
+                                                <p className='email-setting-content-section-subsection-subheading' style={obj.type == 'reminder' ? { color: '#61C77B' } : { color: '#6FA5CB' }}>{obj.type}</p>
+                                                <p className='email-setting-content-section-subsection-subheading' style={{ color: '#CBCBCB' }}>{obj.type == 'reminder' ? `${obj.send_date} days after invoice` : 'Payment Completed'}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -292,14 +292,14 @@ const EmailSetting = (props) => {
                                             width: 120,
                                         }}
                                         onChange={handleRemainderClick}
-                                        value={remainderType || "Select"}
+                                        value={reminderType || "Select"}
                                     >
                                         <Option value={'reminder'}>Remainder</Option>
                                         <Option value={'orderComplete'}>Thank You</Option>
                                     </Select>
                                 </div>
                                 {
-                                    remainderType == 'reminder' ?
+                                    reminderType == 'reminder' ?
                                         <div className='email-remainder_input-sections_input-section'>
                                             <p>Send to</p>
                                             <Select
@@ -350,7 +350,7 @@ const EmailSetting = (props) => {
                                     />
                                 </div>
                                 {
-                                    remainderType == 'reminder' &&
+                                    reminderType == 'reminder' &&
                                     <>
                                         <p className='email-remainder_schedule'>Schedule</p>
                                         <div className='email-remainder_input-sections_input-section'>
