@@ -24,14 +24,17 @@ const activeSettingState = (state, payload) => {
 };
 
 const authLogin = (state, payload) => {
-    const { access_token: AccessToken, user } = payload;
-    localStorage.setItem("access_token", AccessToken);
-    localStorage.setItem("user", JSON.stringify(user));
-    Http.defaults.headers.common.Authorization = `Bearer ${AccessToken}`;
+    const userObject = {
+        id: payload?.data?.id,
+        name: payload?.data?.name,
+        email: payload?.data?.email,
+    };
+    const token = payload?.data?.token;
+    Http.defaults.headers.common.Authorization = `Bearer ${token}`;
     const stateObj = {
         ...state,
         isAuthenticated: true,
-        user,
+        user: userObject,
     };
     return stateObj;
 };
