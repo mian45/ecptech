@@ -9,6 +9,7 @@
     &-content {
         background-color: white;
         margin-left: 144px;
+        margin-bottom: 20px;
         padding-block: 20px 17px;
         padding-inline: 27px 40px;
         display: flex;
@@ -17,6 +18,7 @@
 
         &-section {
             display: flex;
+            align-items: center;
 
             &-image {
                 padding-right: 24px;
@@ -91,6 +93,15 @@
                 font-size: 1em;
                 margin-bottom: 0;
                 width: 5.5em;
+            }
+
+            .ant-select {
+                width: 23.68em !important;
+                height: 2.8125em !important;
+            }
+
+            .ant-select-selection-item {
+                line-height: 10px !important;
             }
 
             &_input {
