@@ -7,9 +7,9 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import AuthServices from '../services'
 import DiscountTaxes from '../discount-taxes/index'
+import EyePrescription from '../eye-prescription';
 
 const TabsSection = (props) => {
-
   return (
     <Tabs defaultActiveKey="1">
       <Tabs.TabPane tab="Emails" key="1">
@@ -25,7 +25,7 @@ const TabsSection = (props) => {
         <OtherSetting />
       </Tabs.TabPane>
       <Tabs.TabPane tab="Eye Prescription" key="5">
-        Content of Tab Pane 4
+        <EyePrescription />
       </Tabs.TabPane>
     </Tabs>
 
