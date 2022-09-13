@@ -21,7 +21,9 @@ class Transactions extends Seeder
                 'invoice_id' => 1,
                 'amount' => 880,
                 'status' => 'paid',
-                'customer_name' => 'Peter',
+                'customer_first_name' => 'Peter',
+                'customer_last_name' => '',
+                'customer_dob' => '27-09-1988',
                 'customer_phone' => '1234567890',
                 'customer_email' => 'jolyboy@gmail.com',
                 'customer_address' => 'Colorado'
@@ -34,7 +36,9 @@ class Transactions extends Seeder
                 'invoice_id' => 2,
                 'amount' => 326,
                 'status' => 'paid',
-                'customer_name' => 'David Hustler',
+                'customer_first_name' => 'David',
+                'customer_last_name' => 'Hustler',
+                'customer_dob' => '27-09-1988',
                 'customer_phone' => '1234567890',
                 'customer_email' => 'david.me@mail.com',
                 'customer_address' => 'Colorado'
@@ -47,8 +51,10 @@ class Transactions extends Seeder
                 'invoice_id' => 3,
                 'amount' => 120,
                 'status' => 'paid',
-                'customer_name' => 'Stephen Joe',
+                'customer_first_name' => 'Stephen',
+                'customer_last_name' => 'Joe',
                 'customer_phone' => '1234567890',
+                'customer_dob' => '27-09-1988',
                 'customer_email' => 'info@stephensons.net',
                 'customer_address' => 'Colorado'
             )                
@@ -60,7 +66,9 @@ class Transactions extends Seeder
                 'invoice_id' => 4,
                 'amount' => 449,
                 'status' => 'Un paid',
-                'customer_name' => 'John Smith',
+                'customer_first_name' => 'John',
+                'customer_last_name' => 'Smith',
+                'customer_dob' => '27-09-1988',
                 'customer_phone' => '1234567890',
                 'customer_email' => 'john@mymail.com',
                 'customer_address' => 'Colorado'
@@ -73,7 +81,9 @@ class Transactions extends Seeder
                 'invoice_id' => 4,
                 'amount' => 449,
                 'status' => 'Un paid',
-                'customer_name' => 'John Smith',
+                'customer_first_name' => 'John',
+                'customer_last_name' => 'Smith',
+                'customer_dob' => '27-09-1988',
                 'customer_phone' => '1234567890',
                 'customer_email' => 'john@mymail.com',
                 'customer_address' => 'Colorado'
