@@ -135,7 +135,7 @@ class ProfitComparisonController extends Controller
                 ->whereBetween('created_at', [$prestartdate->format('Y-m-d'), $preenddate->format('Y-m-d')])
                 ->sum('amount'); 
             $data['previouse'] = [
-                'date' => $prestartdate->format('Y'),
+                'date' => $prestartdate->format('M Y'),
                 'amount' => $date_end
             ];      
             $data['current'] = [
