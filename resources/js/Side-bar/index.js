@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import './style.scss'
 import { connect } from "react-redux";
 import SettingDashboard from "../setting-dashboard";
+import Dashboard from "../pages/Dashboard";
 
 const SideBar = (props) => {
     const [state, setState] = useState(props.isActiveState)
@@ -34,6 +35,10 @@ const SideBar = (props) => {
             {
                 state === 4 &&
                 <SettingDashboard />
+            }
+            {
+                state === 1 &&
+                <Dashboard />
             }
         </div>
     )
