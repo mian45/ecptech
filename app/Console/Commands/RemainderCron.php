@@ -58,11 +58,9 @@ class RemainderCron extends Command
               $sending_date = $current_date.' '.$send_time;
               $today_date = Carbon::now();
               $result = $sending_date->eq($today_date);
-             if($result){
-               if($invoice->customer->email){
-
+             if($result && $invoice->customer->email){
+              
                   $email = $invoice->customer->email;
-                
                   $details = [
                    'email' => $email,
                    'title' => 'Mail from ECPTech.com',
@@ -71,8 +69,6 @@ class RemainderCron extends Command
    
                   dispatch(new SendRemainderJob($details));
    
-   
-               }
             }
             }
            
