@@ -1,12 +1,10 @@
 import Http from "../Http";
 import * as action from "../store/actions";
-import axios from "axios";
 
 export function login(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            axios
-                .post("/api/login", credentials)
+            Http.post(process.env.MIX_REACT_APP_URL + "api/login", credentials)
                 .then((res) => {
                     dispatch(action.authLogin(res.data));
                     return resolve();

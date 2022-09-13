@@ -14,7 +14,7 @@ const routes = [
         exact: true,
         auth: true,
         component: SideBar,
-        // fallback: SideBar,
+        fallback: Login,
     },
     {
         path: "/login",

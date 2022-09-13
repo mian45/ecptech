@@ -23,8 +23,8 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->string('status')->default('unpaid')->nullable();
             $table->string('payment_mode')->nullable();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
