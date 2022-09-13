@@ -25,7 +25,7 @@ const EmailSetting = (props) => {
     const [sentTo, setSentTo] = useState('')
     const [subject, setSubject] = useState('')
     const [editorState, setEditorState] = useState('')
-    const [dates, setDate] = useState('')
+    const [dates, setDates] = useState('')
     const [times, setTimes] = useState('')
     const [timeZone, setTimeZone] = useState('')
     const [emailArray, setEmailArray] = useState([])
@@ -93,7 +93,7 @@ const EmailSetting = (props) => {
                 setSentTo('')
                 setSubject('')
                 setEditorState('')
-                setDate('')
+                setDates('')
                 setTimes('')
                 setTimeZone('')
                 setIdState(null)
@@ -167,7 +167,7 @@ const EmailSetting = (props) => {
         setSentTo(obj.invoice_type)
         setSubject(obj.subject)
         setEditorState(obj.body)
-        setDate(obj.send_date)
+        setDates(obj.send_date)
         setTimes(obj.send_time)
         setTimeZone(obj.time_zone)
         setEmailSettingProps(true)
@@ -211,7 +211,7 @@ const EmailSetting = (props) => {
     }
 
     const handleDateClick = (value) => {
-        setDate(value)
+        setDates(value)
     }
 
     const handleTimeClick = (value) => {
