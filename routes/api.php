@@ -29,10 +29,8 @@ Route::post('verifyCode', [RegisterController::class, 'verifyCode']);
 Route::post('addRole', [RegisterController::class, 'addRole']);
 
 Route::middleware('auth:api')->group( function () {
-
-    require base_path('routes/apis/dashboard.php');
-    require base_path('routes/apis/invoices.php');
-    require base_path('routes/apis/profile.php');
+   
+    includeRouteFiles(__DIR__ . '/apis/');
 
     Route::post('updateStaffLogin', [RegisterController::class, 'updateStaffLogin']);
     Route::post('getStaff', [StaffController::class, 'getStaff']);
