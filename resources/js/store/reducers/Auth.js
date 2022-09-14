@@ -22,8 +22,6 @@ const initialState = {
     isActiveState: 1,
     isActiveSettingState: 1,
     user: defaultUser,
-    staffUser: defaultStaffUser,
-    userRole: defaultUserRole,
 };
 
 const activeState = (state, payload) => {
@@ -33,7 +31,8 @@ const activeState = (state, payload) => {
 
 const activeSettingState = (state, payload) => {
     return { ...state, isActiveSettingState: payload };
-};
+};;
+
 
 const authLogin = (state, payload) => {
     const userObject = {
