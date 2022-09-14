@@ -4,10 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use App\Models\InvoiceReminder;
+use App\Models\Reminder;
 
-class InvoiceReminderTableSeeder extends Seeder
+class ReminderTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,6 +15,6 @@ class InvoiceReminderTableSeeder extends Seeder
      */
     public function run()
     {
-        InvoiceReminder::factory()->count(20)->create();
+        Reminder::factory()->count(20)->create();
     }
 }

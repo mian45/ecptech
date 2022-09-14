@@ -14,10 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('invoice_reminder', function (Blueprint $table) {
-            $table->id();
-            $table->integer('reminder_id');
-            $table->integer('invoice_id');
+            $table->unsignedBigInteger('reminder_id');
+            $table->unsignedBigInteger('invoice_id');
             $table->timestamps();
+
+            $table->foreign('reminder_id')->references('id')->on('reminders');
+            $table->foreign('invoice_id')->references('id')->on('invoices');
+
         });
     }
 
