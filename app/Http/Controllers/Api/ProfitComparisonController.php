@@ -26,17 +26,17 @@ class ProfitComparisonController extends Controller
         $end = $request->end_date;
         $start_date = Carbon::parse($start);
         $end_date = Carbon::parse($end);
-        
+        $now = Carbon::now();
+
         $where_clouse['user_id'] = $user_id;
         $where_clouse['status'] = 'paid';
         if($date_type == 'today'){
-            $yesterday = Carbon::yesterday();
-            $today = Carbon::now();    
+            $yesterday = Carbon::yesterday();  
             $where_clouse['created_at'] = $yesterday;        
             $lastday = DB::table('transactions')        
                 ->where($where_clouse)
                 ->sum('amount');
-            $where_clouse['created_at'] = $today->format('Y-m-d');    
+            $where_clouse['created_at'] = $now->format('Y-m-d');    
             $currentday = DB::table('transactions')        
                 ->where($where_clouse)
                 ->sum('amount'); 
@@ -50,7 +50,6 @@ class ProfitComparisonController extends Controller
             ]; 
 
         } else if ($date_type == 'week') {
-            $now = Carbon::now();
             $weekStartDate = $now->startOfWeek()->format('Y-m-d');            
             $weekEndDate = $now->endOfWeek()->format('Y-m-d');            
             $lastweekenddate = $now->subDays($now->dayOfWeek)->subWeek();
@@ -76,8 +75,7 @@ class ProfitComparisonController extends Controller
         } else if($date_type == 'month'){
             $start = new Carbon('first day of last month');
             $end = new Carbon('last day of last month');
-            $this_month = new Carbon('first day of this month');
-            $now = Carbon::now();            
+            $this_month = new Carbon('first day of this month');           
             $lastmonth = DB::table('transactions')        
                 ->where($where_clouse)
                 ->whereBetween('created_at', [$start, $end])
