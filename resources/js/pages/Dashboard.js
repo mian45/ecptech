@@ -9,6 +9,7 @@ import {  faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween'
 import axios from "axios"
+import DashboardPage from "../dashboard-page"
 const Dashboard =(props)=> {
   const [data,setData] =useState([]);
   const [date,setDate]=useState([
@@ -71,7 +72,7 @@ var config = {
   method: 'post',
   url: `${process.env.MIX_REACT_APP_URL}/api/invoice-summmary`,
   headers: { 
-    'Authorization': `Bearer ${localStorage.getItem("Access_Token")}`, 
+    'Authorization': `Bearer ${localStorage.getItem("access_token")}`, 
   },
   data : data
 };
@@ -95,7 +96,7 @@ axios(config)
       method: 'post',
       url: `${process.env.MIX_REACT_APP_URL}/api/invoice-stats`,
       headers: { 
-        'Authorization': `Bearer ${localStorage.getItem("Access_Token")}`, 
+        'Authorization': `Bearer ${localStorage.getItem("access_token")}`, 
       },
       data : data
     };
@@ -128,6 +129,7 @@ axios(config)
         />
         </div>
         :null}
+        <DashboardPage />
      </div>
     );
   }
