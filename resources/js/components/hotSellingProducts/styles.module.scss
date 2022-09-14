@@ -1,0 +1,55 @@
+.container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #e8e8e8;
+    padding: 20px;
+    width: 100%;
+}
+.label {
+    color: #2a2a2a;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.slot-container {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.products {
+    display: flex;
+    flex-direction: column;
+}
+
+.slot-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #6fa5cb;
+    color: #fff;
+    text-align: center;
+    padding-top: 8px;
+    font-size: 18px;
+    font-family: Montserrat;
+    font-weight: 600;
+}
+.sub-container {
+    width: calc(100% - 40px);
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.title {
+    font-size: 18px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+}
+.subtitle {
+    font-size: 14px;
+    color: #6fa5cb;
+    font-family: Montserrat;
+}

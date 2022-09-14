@@ -6,6 +6,7 @@ import Http from "../../js/Http";
 import ProfitCard from "../components/profitCard";
 import { PROFIT_CARDS_DATA } from "./data/data";
 import StaffLogin from "../components/staffLogin";
+import HotSellingProducts from "../components/hotSellingProducts";
 
 const Dashboard = ({ userRole }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
@@ -70,7 +71,9 @@ const Dashboard = ({ userRole }) => {
                 <InvoicesStatsChart data={invoiceStats} />
                 {userRole !== "staff" && <StaffLogin />}
             </div>
-            <div className={classes["right-stats"]}></div>
+            <div className={classes["right-stats"]}>
+                <HotSellingProducts />
+            </div>
         </div>
     );
 };
