@@ -438,7 +438,7 @@ const DiscountTaxes = (props) => {
                                 <Option value={40}>40</Option>
                             </Select>
                         </div>
-                        <div><button onClick={handleSubmit} className='save-button' type='submit' >Save</button></div>
+                        <div><button onClick={handleSubmit} className={`save-button ${!discountName || !discountTax ? 'disable' : ''} `} type='submit' >Save</button></div>
                     </form>
                 </div>
                 <div className='discount-output'>
@@ -457,8 +457,8 @@ const DiscountTaxes = (props) => {
 
                                 <td>{discounts.name}</td>
                                 <td>${discounts.value}</td>
-                                <td><img style={{ width: '18px', height: '18px', marginRight: '30px' }} src={edit} onClick={() => { handlUpdate(discounts) }} />
-                                    <img style={{ width: '16px', height: '16px' }} src={cross} onClick={() => { handleDelete(discounts.id) }} /></td>
+                                <td><img style={{ width: '18px', height: '18px', marginRight: '30px', cursor: 'pointer' }} src={edit} onClick={() => { handlUpdate(discounts) }} />
+                                    <img style={{ width: '16px', height: '16px', cursor: 'pointer' }} src={cross} onClick={() => { handleDelete(discounts.id) }} /></td>
                             </tr>
 
                         }
@@ -505,7 +505,7 @@ const DiscountTaxes = (props) => {
                                     }
                                 </Select>
                             </div>
-                            <div><button onClick={(e) => { idState !== null ? handlUpdateTax(e) : handleTaxSubmit(e) }} className='save-button' type='submit' >Save</button></div>
+                            <div><button onClick={(e) => { idState !== null ? handlUpdateTax(e) : handleTaxSubmit(e) }} className={`save-button ${!taxName || !stateSetting || taxValue ? 'disable' : ''} `} type='submit' >Save</button></div>
                         </div>
                     </form>
                 </div>
@@ -528,8 +528,8 @@ const DiscountTaxes = (props) => {
                                         <td>{obj.name}</td>
                                         <td>{obj.state_id}</td>
                                         <td>{obj.value}%</td>
-                                        <td><img style={{ width: '18px', height: '18px', marginRight: '30px' }} src={edit} onClick={() => { updateHandler(obj) }} />
-                                            <img style={{ width: '16px', height: '16px' }} src={cross} onClick={() => { handleDeleteTax(obj.id) }} /></td>
+                                        <td><img style={{ width: '18px', height: '18px', marginRight: '30px', cursor: 'pointer' }} src={edit} onClick={() => { updateHandler(obj) }} />
+                                            <img style={{ width: '16px', height: '16px', cursor: 'pointer' }} src={cross} onClick={() => { handleDeleteTax(obj.id) }} /></td>
                                     </tr>
                                 )
                             })
@@ -550,7 +550,7 @@ const DiscountTaxes = (props) => {
                             <p>Add Shipping Amount</p>
                             <input placeholder='Enter Amount' type={'number'} min={0} value={shippingState} onChange={(e) => { setShippingState(e.target.value) }} />
                         </div>
-                        <div><button onClick={handleShippingSubmit} className='save-button' type='submit' >Save</button></div>
+                        <div><button onClick={handleShippingSubmit} className={`save-button ${!shippingName || !shippingState ? 'disable' : ''} `} type='submit' >Save</button></div>
                     </form>
                 </div>
                 <div className='discount-output'>
@@ -569,8 +569,8 @@ const DiscountTaxes = (props) => {
 
                                 <td>{shipping.name}</td>
                                 <td>${shipping.value}</td>
-                                <td><img style={{ width: '18px', height: '18px', marginRight: '30px' }} src={edit} onClick={() => { handlUpdateShipping(shipping) }} />
-                                    <img style={{ width: '16px', height: '16px' }} src={cross} onClick={() => { handleDeleteShipping(shipping.id) }} /></td>
+                                <td><img style={{ width: '18px', height: '18px', marginRight: '30px', cursor: 'pointer' }} src={edit} onClick={() => { handlUpdateShipping(shipping) }} />
+                                    <img style={{ width: '16px', height: '16px', cursor: 'pointer' }} src={cross} onClick={() => { handleDeleteShipping(shipping.id) }} /></td>
                             </tr>
 
                         }
