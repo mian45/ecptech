@@ -22,6 +22,11 @@ class ProfitComparisonController extends Controller
         }
         $user_id = $request->user_id;
         $date_type = $request->date_type; 
+        $start = $request->start_date;
+        $end = $request->end_date;
+        $start_date = Carbon::parse($start);
+        $end_date = Carbon::parse($end);
+        
         $where_clouse['user_id'] = $user_id;
         $where_clouse['status'] = 'paid';
         if($date_type == 'today'){
@@ -114,11 +119,7 @@ class ProfitComparisonController extends Controller
             ];             
         } else if($date_type == 'year'){
             $year = Carbon::now()->format('Y');            
-        } else {
-            $start = $request->start_date;
-            $end = $request->end_date;
-            $start_date = Carbon::parse($start);
-            $end_date = Carbon::parse($end);
+        } else {                        
             $start = explode('/', $start);
             $end = explode('/', $end);
             $get_start_year = $start[2];
