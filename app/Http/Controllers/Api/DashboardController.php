@@ -76,4 +76,40 @@ class DashboardController extends Controller
         return $previous_range;
     }
 
+    public function getInvoiceStats(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $client_id = auth()->user()->id;
+        $total_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->count();
+        $total_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->count();
+        $total_unpaid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','unpaid')->count();
+        
+        $capture_rate = ($total_invoices>0)? round(($total_paid_invoices/$total_invoices)*100):0;
+        
+       
+
+        $total_office_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->where('payment_mode','office')->count();
+        $total_online_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->where('payment_mode','online')->count();
+
+        $data['invoice']['generated'] = $total_invoices;
+        $data['invoice']['office_paid'] = $total_office_paid_invoices;
+        $data['invoice']['office_paid_percent'] = ($total_paid_invoices>0) ?round(($total_office_paid_invoices/$total_paid_invoices)*100):0;
+        $data['invoice']['online_paid'] = $total_online_paid_invoices;
+        $data['invoice']['online_paid_percent'] = ($total_paid_invoices>0)? round(($total_online_paid_invoices/$total_paid_invoices)*100):0;
+        $data['invoice']['capture_rate'] = $capture_rate;
+        $data['invoice']['unpaid'] = $total_unpaid_invoices;
+
+        return $this->sendResponse($data, 'Invoice Data');
+
+       
+    }
+
 }
