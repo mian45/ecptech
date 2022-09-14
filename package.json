@@ -8,8 +8,6 @@
         "production": "mix --production"
     },
     "dependencies": {
-        "@material-ui/core": "4.11.3",
-        "@material-ui/icons": "4.11.2",
         "@fortawesome/fontawesome-svg-core": "^6.2.0",
         "@fortawesome/free-regular-svg-icons": "^6.2.0",
         "@fortawesome/free-solid-svg-icons": "^6.2.0",
@@ -39,7 +37,6 @@
         "react-draft-wysiwyg": "^1.15.0",
         "react-dropdown": "^1.10.0",
         "react-icons": "^4.4.0",
-        "react-material-ui-carousel": "2.2.2",
         "react-redux": "^7.2.4",
         "react-router": "^5.2.0",
         "react-router-dom": "^5.2.0",
@@ -50,6 +47,7 @@
         "redux-thunk": "^2.3.0",
         "ree-validate": "3.0.2",
         "resolve-url-loader": "^4.0.0",
+        "swiper": "^8.4.0",
         "yup": "^0.32.11"
     },
     "devDependencies": {

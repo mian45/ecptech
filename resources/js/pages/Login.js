@@ -5,18 +5,13 @@ import { Link, Redirect } from 'react-router-dom';
 import ReeValidate from 'ree-validate';
 import classNames from 'classnames';
 import AuthService from '../services';
-import {
-    Card,
-    CardContent,
-    CardMedia,
-    Typography,
-    Grid,
-    Button
-} from "@material-ui/core";
-import Carousel from "react-material-ui-carousel";
-import autoBind from "auto-bind";
-import "../../sass/carousal.scss";
 import cr1 from "../assets/carousalImage1.png"
+import "swiper/css/bundle";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper";
 
 const items = [
     {
@@ -63,7 +58,7 @@ class Login extends Component {
                 message: '',
             },
         };
-        autoBind(this);
+        //  autoBind(this);
     }
 
     handleChange = (e) => {
@@ -188,7 +183,7 @@ class Login extends Component {
                 <div className="d-flex flex-column flex-md-row align-items-md-center py-container">
                     <div className="container">
 
-                        <div className="row">
+                        <div className="row" style={{marginTop:"30px"}}>
                             <div className="section-login col-lg-6">
 
                                 <div className="card-login  mb-3">
@@ -289,42 +284,27 @@ class Login extends Component {
 
                                 </div>
                             </div>
-                            <div className="section-about col-lg-6 mb-4 mb-lg-0 carousal-body">
-                                <Carousel
-                                    className="Example"
-                                    autoPlay={this.state.autoPlay}
-                                    animation={this.state.animation}
-                                    indicators={this.state.indicators}
-                                    timeout={this.state.timeout}
-                                    cycleNavigation={this.state.cycleNavigation}
-                                    navButtonsAlwaysVisible={this.state.navButtonsAlwaysVisible}
-                                    navButtonsAlwaysInvisible={this.state.navButtonsAlwaysInvisible}
-                                    next={(now, previous) =>
-                                        console.log(
-                                            `Next User Callback: Now displaying child${now}. Previously displayed child${previous}`
-                                        )
-                                    }
-                                    prev={(now, previous) =>
-                                        console.log(
-                                            `Prev User Callback: Now displaying child${now}. Previously displayed child${previous}`
-                                        )
-                                    }
-                                    onChange={(now, previous) =>
-                                        console.log(
-                                            `OnChange User Callback: Now displaying child${now}. Previously displayed child${previous}`
-                                        )
-                                    }
-
-                                >
-                                    {items.map((item, index) => {
+                            <div className="section-about col-lg-6 mb-4 mb-lg-0 carousal-body" style={{padding:0}}>
+                            <Swiper
+        cssMode={true}
+        navigation={true}
+        pagination={true}
+        mousewheel={true}
+        keyboard={true}
+        modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+        className="mySwiper"
+      >
+        {items.map((item, index) => {
                                         return (
-                                            <div style={{width:"50em",justifyContent:"center",alignItems:"center",display:"contents"}}>
+                                            <SwiperSlide>
+                                            <div style={{width:"50em",justifyContent:"center",alignItems:"center",display:"grid"}}>
                                                 <img src={item.Image} style={{alignSelf:"center"}}></img>
-                                                <div>carousalImage1.png</div>
-                                            </div>
+                                                <div>{item.Name}</div>
+                                            </div></SwiperSlide>
                                         );
                                     })}
-                                </Carousel>
+        
+      </Swiper>
                             </div>
                         </div>
                     </div>
