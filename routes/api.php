@@ -64,9 +64,9 @@ Route::middleware('auth:api')->group( function () {
     Route::post('addShipping', [ShippingController::class, 'addShipping']);
     Route::post('deleteShipping', [ShippingController::class, 'deleteShipping']);
 
-    Route::post('eyeprescriptions', [PrescriptionController::class, 'eye_prescriptions']);
-    Route::post('eyeprescriptionsCalculator', [PrescriptionController::class, 'eye_prescriptions_calculator']);        
-    Route::post('profit_comparison', [ProfitComparisonController::class, 'profitComparison']);    
+    Route::post('eye-prescriptions', [PrescriptionController::class, 'eyePrescriptions']);
+    Route::post('eye-prescriptionsCalculator', [PrescriptionController::class, 'eyePrescriptionsCalculator']);        
+    Route::post('profit-comparison', [ProfitComparisonController::class, 'profitComparison']);    
 });
 
 
