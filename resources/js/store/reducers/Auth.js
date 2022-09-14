@@ -22,6 +22,8 @@ const initialState = {
     isActiveState: 1,
     isActiveSettingState: 1,
     user: defaultUser,
+    staffUser: defaultStaffUser,
+    userRole: defaultUserRole,
 };
 
 const activeState = (state, payload) => {
