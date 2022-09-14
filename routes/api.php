@@ -6,7 +6,6 @@ use App\Http\Controllers\Api\StaffController;
 use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\TaxController;
 use App\Http\Controllers\Api\ShippingController;
-use App\Http\Controllers\Api\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\SettingController;
 use App\Http\Controllers\Api\PrescriptionController;
@@ -32,6 +31,8 @@ Route::post('addRole', [RegisterController::class, 'addRole']);
 
 Route::middleware('auth:api')->group( function () {
 
+    require base_path('routes/apis/invoice.php');
+
     Route::post('updateStaffLogin', [RegisterController::class, 'updateStaffLogin']);
     Route::post('getStaff', [StaffController::class, 'getStaff']);
     Route::post('addStaff', [StaffController::class, 'addStaff']);
@@ -43,8 +44,8 @@ Route::middleware('auth:api')->group( function () {
     Route::post('activeInactiveReminder', [ReminderController::class, 'activeInactiveReminder']);
     Route::post('deleteReminder', [ReminderController::class, 'deleteReminder']);
 
-    Route::post('invoice-summmary', [DashboardController::class, 'getInvoiceSummmary']);
-    Route::post('invoice-stats', [DashboardController::class, 'getInvoiceStats']);  
+    
+
     Route::get('getDiscount', [DiscountController::class, 'getDiscount']);
     Route::post('addDiscount', [DiscountController::class, 'addDiscount']);
     Route::post('deleteDiscount', [DiscountController::class, 'deleteDiscount']);
