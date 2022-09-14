@@ -18,14 +18,14 @@ class ReminderFactory extends Factory
     public function definition()
     {
         return [
-            'type' => "test",
+            'type' => "remainder",
             'invoice_type' => fake()->randomElement(['paid','unpaid']),
-            'subject' => "Hello",
-            'body' => "testing",
+            'subject' => "pay invoice to confirm your order",
+            'body' => "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without",
             'user_id' => User::all()->random()->id,
             'send_date' => 1,
-            'send_time' => "2022-09-12",
-            'time_zone' => "GMT+5",
+            'send_time' => "9999-12-31 23:59:59",
+            'time_zone' => "Washington, DC, USA (GMT-4)",
             'is_active' => true,
             'created_at' => date("Y-m-d H:i:s"),
             'updated_at' => date("Y-m-d H:i:s")
