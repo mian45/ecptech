@@ -33,7 +33,7 @@ const activeState = (state, payload) => {
 
 const activeSettingState = (state, payload) => {
     return { ...state, isActiveSettingState: payload };
-};;
+};
 
 
 const authLogin = (state, payload) => {

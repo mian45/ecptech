@@ -8,51 +8,22 @@ import AuthService from '../services';
 import Carousel from "react-material-ui-carousel";
 import cr1 from "../assets/carousalImage1.png"
 const items = [
-    {
-        Name: "Pizza begin",
-        Image: "https://source.unsplash.com/featured/?macbook",
-        contentPosition: "left",
-        Items: [
-            {
-                Name: "Macbook Pro",
-                Image: "https://source.unsplash.com/featured/?macbook"
-            },
-            {
-                Name: "iPhone",
-                Image: "https://source.unsplash.com/featured/?iphone"
-            }
-        ]
-    },
-    {
-        Name: "Home Appliances",
-        Caption: "Say no to manual home labour!",
-        contentPosition: "middle",
-        Items: [
-            {
-                Name: "Washing Machine WX9102",
-                Image: "https://source.unsplash.com/featured/?washingmachine"
-            },
-            {
-                Name: "Learus Vacuum Cleaner",
-                Image: "https://source.unsplash.com/featured/?vacuum,cleaner"
-            }
-        ]
-    },
-    {
-        Name: "Decoratives",
-        Caption: "Give style and color to your living room!",
-        contentPosition: "right",
-        Items: [
-            {
-                Name: "Living Room Lamp",
-                Image: "https://source.unsplash.com/featured/?lamp"
-            },
-            {
-                Name: "Floral Vase",
-                Image: "https://source.unsplash.com/featured/?vase"
-            }
-        ]
-    }
+  {
+      Name: "slide 1",
+      Image: cr1,
+      contentPosition: "left",
+  },
+  {
+      Name: "slide 2",
+      Image: cr1,
+      contentPosition: "left",
+     
+  },
+  {
+      Name: "slide 3",
+      Image: cr1,
+      contentPosition: "right",
+  }
 ];
 class ForgotPassword extends Component {
   constructor() {
@@ -268,7 +239,7 @@ class ForgotPassword extends Component {
                                     {items.map((item, index) => {
                                         return (
                                             <div style={{width:"50em",justifyContent:"center",alignItems:"center",display:"contents"}}>
-                                                <img src={cr1} style={{alignSelf:"center"}}></img>
+                                                <img src={item.Image} style={{alignSelf:"center"}}></img>
                                                 <div>carousalImage1.png</div>
                                             </div>
                                         );
@@ -279,87 +250,7 @@ class ForgotPassword extends Component {
               </div>
           </div>
       </div>
-    // return (
-    //   <div>
-    //     <div className="d-flex flex-column flex-row align-content-center py-5">
-    //       <div className="container">
-    //         <div className="row">
-    //           <div className="section-login col-lg-6 mx-auto">
-    //             <h4>Request Password Reset</h4>
-    //
-    //             <div className="card-login card mb-3">
-    //               <div className="card-body">
-    //                 {this.state.success && (
-    //                   <div
-    //                     className="alert alert-success text-center"
-    //                     role="alert"
-    //                   >
-    //                     A password reset link has been sent!
-    //                   </div>
-    //                 )}
-    //
-    //                 {response.error && (
-    //                   <div
-    //                     className="alert alert-danger text-center"
-    //                     role="alert"
-    //                   >
-    //                     {response.message}
-    //                   </div>
-    //                 )}
-    //
-    //                 {!this.state.success && (
-    //                   <form
-    //                     className="form-horizontal"
-    //                     method="POST"
-    //                     onSubmit={this.handleSubmit}
-    //                     ref={(el) => {
-    //                       this.forgotPasswordForm = el;
-    //                     }}
-    //                   >
-    //                     <div className="form-group">
-    //                       <label htmlFor="email">Email Address</label>
-    //                       <input
-    //                         id="email"
-    //                         type="email"
-    //                         name="email"
-    //                         className={classNames('form-control', {
-    //                           'is-invalid': 'email' in errors,
-    //                         })}
-    //                         placeholder="Enter email"
-    //                         required
-    //                         onChange={this.handleChange}
-    //                         onBlur={this.handleBlur}
-    //                         disabled={loading}
-    //                       />
-    //
-    //                       {'email' in errors && (
-    //                         <div className="invalid-feedback">
-    //                           {errors.email}
-    //                         </div>
-    //                       )}
-    //                     </div>
-    //
-    //                     <div className="form-group text-center">
-    //                       <button
-    //                         type="submit"
-    //                         className={classNames('btn btn-primary', {
-    //                           'btn-loading': loading,
-    //                         })}
-    //                       >
-    //                         Send Password Reset Email
-    //                       </button>
-    //                     </div>
-    //                   </form>
-    //                 )}
-    //               </div>
-    //             </div>
-    //           </div>
-    //         </div>
-    //       </div>
-    //     </div>
-    //   </div>
-    // );
-  }
+   }
 }
 
 ForgotPassword.defaultProps = {

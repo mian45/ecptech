@@ -17,104 +17,23 @@ import Carousel from "react-material-ui-carousel";
 import autoBind from "auto-bind";
 import "../../sass/carousal.scss";
 import cr1 from "../assets/carousalImage1.png"
-function Banner(props) {
-    if (props.newProp) console.log(props.newProp);
-    const contentPosition = props.contentPosition
-        ? props.contentPosition
-        : "left";
-    const totalItems = props.length ? props.length : 3;
-    const mediaLength = totalItems - 1;
 
-    let items = [];
-    const content = (
-        <Grid item xs={12 / totalItems} key="content">
-            <CardContent className="Content">
-                <Typography className="Title">{props.item.Name}</Typography>
-
-                <Typography className="Caption">{props.item.Caption}</Typography>
-
-                <Button variant="outlined" className="ViewButton">
-                    View Now
-                </Button>
-            </CardContent>
-        </Grid>
-    );
-
-    for (let i = 0; i < mediaLength; i++) {
-        const item = props.item.Items[i];
-
-        const media = (
-            <Grid item xs={12 / totalItems} key={item.Name}>
-                <CardMedia className="Media" image={item.Image} title={item.Name}>
-                    <Typography className="MediaCaption">{item.Name}</Typography>
-                </CardMedia>
-            </Grid>
-        );
-
-        items.push(media);
-    }
-
-    if (contentPosition === "left") {
-        items.unshift(content);
-    } else if (contentPosition === "right") {
-        items.push(content);
-    } else if (contentPosition === "middle") {
-        items.splice(items.length / 2, 0, content);
-    }
-
-    return (
-        <Card raised className="Banner">
-            <Grid container spacing={0} className="BannerGrid">
-                {items}
-            </Grid>
-        </Card>
-    );
-}
 const items = [
     {
-        Name: "Pizza begin",
-        Image: "https://source.unsplash.com/featured/?macbook",
+        Name: "slide 1",
+        Image: cr1,
         contentPosition: "left",
-        Items: [
-            {
-                Name: "Macbook Pro",
-                Image: "https://source.unsplash.com/featured/?macbook"
-            },
-            {
-                Name: "iPhone",
-                Image: "https://source.unsplash.com/featured/?iphone"
-            }
-        ]
     },
     {
-        Name: "Home Appliances",
-        Caption: "Say no to manual home labour!",
-        contentPosition: "middle",
-        Items: [
-            {
-                Name: "Washing Machine WX9102",
-                Image: "https://source.unsplash.com/featured/?washingmachine"
-            },
-            {
-                Name: "Learus Vacuum Cleaner",
-                Image: "https://source.unsplash.com/featured/?vacuum,cleaner"
-            }
-        ]
+        Name: "slide 2",
+        Image: cr1,
+        contentPosition: "left",
+       
     },
     {
-        Name: "Decoratives",
-        Caption: "Give style and color to your living room!",
+        Name: "slide 3",
+        Image: cr1,
         contentPosition: "right",
-        Items: [
-            {
-                Name: "Living Room Lamp",
-                Image: "https://source.unsplash.com/featured/?lamp"
-            },
-            {
-                Name: "Floral Vase",
-                Image: "https://source.unsplash.com/featured/?vase"
-            }
-        ]
     }
 ];
 class Login extends Component {
@@ -400,7 +319,7 @@ class Login extends Component {
                                     {items.map((item, index) => {
                                         return (
                                             <div style={{width:"50em",justifyContent:"center",alignItems:"center",display:"contents"}}>
-                                                <img src={cr1} style={{alignSelf:"center"}}></img>
+                                                <img src={item.Image} style={{alignSelf:"center"}}></img>
                                                 <div>carousalImage1.png</div>
                                             </div>
                                         );
