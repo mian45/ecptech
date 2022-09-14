@@ -6,14 +6,12 @@ import 'antd/dist/antd.css';
 import Routes from './routes';
 import store from './store';
 import * as action from './store/actions';
-import Header from './Header/index';
 
 
 store.dispatch(action.authCheck());
 
 ReactDOM.render(
     <React.StrictMode>
-    <Header/>
   <Provider store={store}>
     <Router>
       <Switch>

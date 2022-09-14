@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween'
+import axios from "axios"
 const Dashboard =(props)=> {
   const [data,setData] =useState([]);
   const [date,setDate]=useState([
@@ -112,7 +113,7 @@ axios(config)
       <div className="container">
         <div onClickCapture={()=>{setShowDatePicker(!showDatePicker)}} 
         style={{backgroundColor:"#fff",width:"107px",height:"27px",cursor:"pointer",display:"flex",flexDirection:"row",marginTop: "10px",justifyContent:"space-evenly",}}>
-          <p style={{fontSize:17}}>{label}</p>
+          <div style={{fontSize:17}}>{label}</div>
           <FontAwesomeIcon icon={faCaretDown} size={17} color="#ccc" style={{alignSelf:"center"}} />
         </div>
         {showDatePicker?

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 const Base = ({ children }) => (
   <div>
+
     <main>{children}</main>
   </div>
 );
