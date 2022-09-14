@@ -9,8 +9,6 @@ use App\Http\Controllers\Api\ShippingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\SettingController;
 use App\Http\Controllers\Api\PrescriptionController;
-use App\Http\Controllers\Api\InvoicesController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\Api\ProfitComparisonController;
 
 /*
@@ -32,7 +30,9 @@ Route::post('addRole', [RegisterController::class, 'addRole']);
 
 Route::middleware('auth:api')->group( function () {
 
-    require base_path('routes/apis/invoice.php');
+    require base_path('routes/apis/dashboard.php');
+    require base_path('routes/apis/invoices.php');
+    require base_path('routes/apis/profile.php');
 
     Route::post('updateStaffLogin', [RegisterController::class, 'updateStaffLogin']);
     Route::post('getStaff', [StaffController::class, 'getStaff']);
@@ -65,11 +65,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('deleteShipping', [ShippingController::class, 'deleteShipping']);
 
     Route::post('eyeprescriptions', [PrescriptionController::class, 'eye_prescriptions']);
-    Route::post('eyeprescriptionsCalculator', [PrescriptionController::class, 'eye_prescriptions_calculator']);
-    Route::post('editprofile', [UserController::class, 'edit_profile']);
-    Route::post('changepassword', [RegisterController::class, 'change_password']);
-    Route::get('invoices', [InvoicesController::class, 'index']);
-    Route::post('search_invoices', [InvoicesController::class, 'search']);
+    Route::post('eyeprescriptionsCalculator', [PrescriptionController::class, 'eye_prescriptions_calculator']);        
     Route::post('profit_comparison', [ProfitComparisonController::class, 'profitComparison']);    
 });
 
