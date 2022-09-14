@@ -550,7 +550,7 @@ const DiscountTaxes = (props) => {
                             <p>Add Shipping Amount</p>
                             <input placeholder='Enter Amount' type={'number'} min={0} value={shippingState} onChange={(e) => { setShippingState(e.target.value) }} />
                         </div>
-                        <div><button onClick={handleShippingSubmit} className='save-button' type='submit' >Save</button></div>
+                        <div><button onClick={!shippingName && !shippingState && handleShippingSubmit} className='save-button' type='submit' >Save</button></div>
                     </form>
                 </div>
                 <div className='discount-output'>
