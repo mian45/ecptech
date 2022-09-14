@@ -5,8 +5,9 @@ import classes from "./styles.module.scss";
 import Http from "../../js/Http";
 import ProfitCard from "../components/profitCard";
 import { PROFIT_CARDS_DATA } from "./data/data";
+import StaffLogin from "../components/staffLogin";
 
-const Dashboard = ({}) => {
+const Dashboard = ({ userRole }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
     const [summaryStats, setSummaryStats] = useState([]);
     useEffect(() => {
@@ -67,13 +68,16 @@ const Dashboard = ({}) => {
                 </div>
 
                 <InvoicesStatsChart data={invoiceStats} />
+                {userRole !== "staff" && <StaffLogin />}
             </div>
             <div className={classes["right-stats"]}></div>
         </div>
     );
 };
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+    userRole: state.Auth.userRole?.name,
+});
 
 export default connect(mapStateToProps)(Dashboard);
 
