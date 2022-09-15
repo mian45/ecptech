@@ -12,7 +12,7 @@ use Validator;
 
 class ProductController extends Controller
 {
-    public function hot_selling(Request $request){
+    public function hotSelling(Request $request){
         $validator = Validator::make($request->all(), [
             'start_date' => 'required|date',
             'end_date' => 'required|date',
