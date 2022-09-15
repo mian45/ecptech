@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import StaffTableBodySlot from "../staffTableBodySlot";
 import StaffTableHeader from "../staffTableHeader";
 import classes from "./styles.module.scss";
-import Http from "../../../Http";
+import Axios from "../../../Http";
 
 const StaffListTable = () => {
     const [staffList, setStaffList] = useState([]);
@@ -14,7 +14,7 @@ const StaffListTable = () => {
                     start_date: "2022-08-16",
                     end_date: "2022-09-15",
                 };
-                const res = await Http.post(
+                const res = await Axios.post(
                     process.env.MIX_REACT_APP_URL + "/api/team-progress",
                     invoiceData
                 );

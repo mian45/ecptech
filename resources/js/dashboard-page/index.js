@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import InvoicesStatsChart from "../components/invoicesStatsChart";
 import classes from "./styles.module.scss";
-import Http from "../../js/Http";
+import Axios from "../../js/Http";
 import ProfitCard from "../components/profitCard";
 import { PROFIT_CARDS_DATA } from "./data/data";
 import StaffLogin from "../components/staffLogin";
@@ -21,7 +21,7 @@ const Dashboard = ({ userRole }) => {
                     start_date: "2022-08-16",
                     end_date: "2022-09-15",
                 };
-                const res = await Http.post(
+                const res = await Axios.post(
                     process.env.MIX_REACT_APP_URL + "/api/invoice-stats",
                     invoiceData
                 );
@@ -43,7 +43,7 @@ const Dashboard = ({ userRole }) => {
                     start_date: "2022-08-16",
                     end_date: "2022-09-15",
                 };
-                const res = await Http.post(
+                const res = await Axios.post(
                     process.env.MIX_REACT_APP_URL + "/api/invoice-summmary",
                     invoiceData
                 );
