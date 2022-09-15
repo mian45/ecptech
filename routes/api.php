@@ -10,7 +10,10 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\SettingController;
 use App\Http\Controllers\Api\PrescriptionController;
 use App\Http\Controllers\Api\InvoicesController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ProfitComparisonController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -30,8 +33,8 @@ Route::post('verifyCode', [RegisterController::class, 'verifyCode']);
 Route::post('addRole', [RegisterController::class, 'addRole']);
 
 Route::middleware('auth:api')->group( function () {
-
-    require base_path('routes/apis/invoice.php');
+   
+    includeRouteFiles(__DIR__ . '/apis/');
 
     Route::post('updateStaffLogin', [RegisterController::class, 'updateStaffLogin']);
     Route::post('getStaff', [StaffController::class, 'getStaff']);
@@ -62,13 +65,10 @@ Route::middleware('auth:api')->group( function () {
     Route::get('getShipping', [ShippingController::class, 'getShipping']);
     Route::post('addShipping', [ShippingController::class, 'addShipping']);
     Route::post('deleteShipping', [ShippingController::class, 'deleteShipping']);
-
-    Route::post('eyePrescriptions', [PrescriptionController::class, 'eye_prescriptions']);
-    Route::post('eyePrescriptionsCalculator', [PrescriptionController::class, 'eye_prescriptions_calculator']);
-    Route::post('editProfile', [UserController::class, 'edit_profile']);
-    Route::post('changePassword', [RegisterController::class, 'change_password']);
-    Route::get('get_invoices', [InvoicesController::class, 'index']);
-    Route::post('search_invoices', [InvoicesController::class, 'search']);
+       
+    Route::post('eye-prescriptions', [PrescriptionController::class, 'eyePrescriptions']);
+    Route::post('eye-prescriptions-calculator', [PrescriptionController::class, 'eyePrescriptionsCalculator']);        
+    Route::post('profit-comparison', [ProfitComparisonController::class, 'profitComparison']);    
 });
 
 

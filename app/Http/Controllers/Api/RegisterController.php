@@ -227,7 +227,7 @@ class RegisterController extends Controller
         return $this->sendResponse($userRole, 'Role Added Successfully.');
     }
 
-    public function change_password(Request $request)
+    public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'old_password' => 'required',
