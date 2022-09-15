@@ -1,7 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
 import classes from "./styles.module.scss";
+import Axios from "../../Http";
+import { connect } from "react-redux";
 
-const HotSellingProducts = () => {
+const HotSellingProducts = ({ userId }) => {
+    useEffect(() => {
+        const getHotSellingProducts = async () => {
+            try {
+                const productsObject = {
+                    start_date: "08/01/2022",
+                    end_date: "10/13/2022",
+                    user_id: userId,
+                };
+                const res = await Axios.post(
+                    `${process.env.MIX_REACT_APP_URL}/api/hot-selling-products`,
+                    productsObject
+                );
+                console.log("res hot selling products", res);
+            } catch (err) {
+                console.log("Error while fetch products", err);
+            }
+        };
+        getHotSellingProducts();
+    }, []);
     return (
         <div className={classes["container"]}>
             <div className={classes["label"]}>Hot Selling Products</div>
@@ -20,7 +41,11 @@ const HotSellingProducts = () => {
     );
 };
 
-export default HotSellingProducts;
+const mapStateToProps = (state) => ({
+    userId: state.Auth?.user?.id,
+});
+
+export default connect(mapStateToProps)(HotSellingProducts);
 
 const HotSellingProductsSlot = ({ data, index }) => {
     return (

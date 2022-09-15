@@ -10,6 +10,7 @@ import HotSellingProducts from "../components/hotSellingProducts";
 import StaffListTable from "./components/staffTable";
 import TeamPerformanceChart from "./components/teamPerformanceChart";
 import ProfitStatsChart from "./components/profitStatsChart";
+import AddStaffMember from "./AddStaffMembers";
 
 const Dashboard = ({ userRole }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
@@ -79,6 +80,7 @@ const Dashboard = ({ userRole }) => {
                 <ProfitStatsChart />
                 <HotSellingProducts />
                 <TeamPerformanceChart />
+                <AddStaffMember />
             </div>
         </div>
     );
