@@ -80,6 +80,12 @@
     border: none;
     border-radius: 28px;
     color: white;
+    cursor: pointer;
+
+    &.disable {
+        background-color: #CBCBCB;
+        pointer-events: none;
+    }
 }
 
 .discount-output {
@@ -145,4 +151,10 @@ th {
 td {
     padding-block: 20px 18px;
     padding-inline-start: 32px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

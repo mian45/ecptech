@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
+use App\Models\Staff;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Invoice>
@@ -21,7 +22,7 @@ class InvoiceFactory extends Factory
             'name' => fake()->name(),
             'customer_id' => 2,
             'user_id' => User::all()->random()->id,
-            'staff_id' => 5,
+            'staff_id' => Staff::all()->random()->id,
             'amount' => fake()->randomDigit,
             'status' => fake()->randomElement(['paid','unpaid']),
             'payment_mode' => fake()->randomElement(['office','online']),
