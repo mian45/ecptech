@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->string('name', 50);
             $table->integer('price');
             $table->timestamps();
