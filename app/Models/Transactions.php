@@ -13,6 +13,7 @@ class Transactions extends Model
     protected $fillable = [
         'user_id',
         'invoice_id',
+        'product_id',
         'amount',
         'status',
         'customer_first_name',
