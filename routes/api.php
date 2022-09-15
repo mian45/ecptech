@@ -11,6 +11,7 @@ use App\Http\Controllers\Client\SettingController;
 use App\Http\Controllers\Api\PrescriptionController;
 use App\Http\Controllers\Api\InvoicesController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfitComparisonController;
 
 
