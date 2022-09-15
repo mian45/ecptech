@@ -17,7 +17,6 @@ return new class extends Migration
             $table->unsignedBigInteger('reminder_id');
             $table->unsignedBigInteger('invoice_id');
             $table->timestamps();
-
             $table->foreign('reminder_id')->references('id')->on('reminders');
             $table->foreign('invoice_id')->references('id')->on('invoices');
 
