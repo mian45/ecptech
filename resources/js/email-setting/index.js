@@ -48,7 +48,7 @@ const EmailSetting = (props) => {
 
         var config = {
             method: 'post',
-            url: `${process.env.MIX_REACT_APP_URL}api/addReminder`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/addReminder`,
             headers: {
                 'Authorization': `Bearer ${props.token}`,
             },
@@ -78,7 +78,7 @@ const EmailSetting = (props) => {
 
         var config = {
             method: 'post',
-            url: `${process.env.MIX_REACT_APP_URL}api/editReminder`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/editReminder`,
             headers: {
                 'Authorization': `Bearer ${props.token}`,
             },
@@ -110,7 +110,7 @@ const EmailSetting = (props) => {
 
         var config = {
             method: 'post',
-            url: `${process.env.MIX_REACT_APP_URL}api/deleteReminder`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/deleteReminder`,
             headers: {
                 'Authorization': `Bearer ${props.token}`,
             },
@@ -132,7 +132,7 @@ const EmailSetting = (props) => {
 
         var config = {
             method: 'get',
-            url: `${process.env.MIX_REACT_APP_URL}api/getReminders?userId=${props.userID}`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/getReminders?userId=${props.userID}`,
             headers: {
                 'Authorization': `Bearer ${props.token}`,
             },

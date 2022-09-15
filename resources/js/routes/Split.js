@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Route } from 'react-router';
 import { connect } from 'react-redux';
 import Base from '../Base';
+import Header from "../Header";
 
 const SplitRoute = ({
   component: Component,
@@ -14,7 +15,7 @@ const SplitRoute = ({
     {...rest}
     render={(props) => (isAuthenticated ? (
       <Base>
-
+          <Header/>
         <Component {...props} />
       </Base>
     ) : (

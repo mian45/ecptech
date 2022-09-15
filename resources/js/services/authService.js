@@ -1,11 +1,15 @@
 import Http from "../Http";
 import * as action from "../store/actions";
+import axios from "axios";
 
 export function login(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post(process.env.MIX_REACT_APP_URL + "/api/login", credentials)
+            axios
+                .post(`${process.env.MIX_REACT_APP_URL}/api/login`, credentials)
                 .then((res) => {
+                    console.log("res is here", res);
+                    localStorage.setItem("access_token", res.data.data.token);
                     dispatch(action.authLogin(res.data));
                     return resolve();
                 })
@@ -27,7 +31,6 @@ export function activeSetting(res) {
             return resolve();
         });
 }
-
 export function register(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
@@ -47,7 +50,10 @@ export function register(credentials) {
 export function resetPassword(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post("/api/auth/forgot-password", credentials)
+            Http.post(
+                `${process.env.MIX_APP_URL}/api/forgotPassword`,
+                credentials
+            )
                 .then((res) => resolve(res.data))
                 .catch((err) => {
                     const { status, errors } = err.response.data;
