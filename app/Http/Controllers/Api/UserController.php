@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -16,7 +16,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function edit_profile(Request $request)
+    public function update(Request $request)
     { 
         $user_id = $request->user_id;
         $validator = Validator::make($request->all(),[ 
