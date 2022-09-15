@@ -22,7 +22,7 @@ const Dashboard = ({ userRole }) => {
                     end_date: "2022-09-15",
                 };
                 const res = await Http.post(
-                    process.env.MIX_REACT_APP_URL + "api/invoice-stats",
+                    process.env.MIX_REACT_APP_URL + "/api/invoice-stats",
                     invoiceData
                 );
 
@@ -44,7 +44,7 @@ const Dashboard = ({ userRole }) => {
                     end_date: "2022-09-15",
                 };
                 const res = await Http.post(
-                    process.env.MIX_REACT_APP_URL + "api/invoice-summmary",
+                    process.env.MIX_REACT_APP_URL + "/api/invoice-summmary",
                     invoiceData
                 );
                 const mappedSummary = mapSummaryStats(res?.data?.data);

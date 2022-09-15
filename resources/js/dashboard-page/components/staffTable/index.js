@@ -15,7 +15,7 @@ const StaffListTable = () => {
                     end_date: "2022-09-15",
                 };
                 const res = await Http.post(
-                    process.env.MIX_REACT_APP_URL + "api/team-progress",
+                    process.env.MIX_REACT_APP_URL + "/api/team-progress",
                     invoiceData
                 );
                 setStaffList(res?.data?.data);
