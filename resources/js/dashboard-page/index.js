@@ -8,6 +8,8 @@ import { PROFIT_CARDS_DATA } from "./data/data";
 import StaffLogin from "../components/staffLogin";
 import HotSellingProducts from "../components/hotSellingProducts";
 import StaffListTable from "./components/staffTable";
+import TeamPerformanceChart from "./components/teamPerformanceChart";
+import ProfitStatsChart from "./components/profitStatsChart";
 
 const Dashboard = ({ userRole }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
@@ -74,7 +76,9 @@ const Dashboard = ({ userRole }) => {
                 {userRole !== "staff" && <StaffLogin />}
             </div>
             <div className={classes["right-stats"]}>
+                <ProfitStatsChart />
                 <HotSellingProducts />
+                <TeamPerformanceChart />
             </div>
         </div>
     );
