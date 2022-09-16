@@ -1,4 +1,7 @@
 .discount-container {
+    font-family: Montserrat;
+
+
     &_first {
         padding-left: 221px;
 
@@ -8,7 +11,12 @@
             justify-content: space-between;
             width: 710px;
 
+            p {
+                margin-bottom: 13px !important;
+            }
+
             &_section {
+
                 input {
                     min-width: 284px;
                     padding-block: 13px;
@@ -21,9 +29,6 @@
                     }
                 }
 
-                p {
-                    margin-bottom: 13px;
-                }
             }
         }
     }
@@ -43,7 +48,7 @@
                 }
 
                 p {
-                    margin-bottom: 13px;
+                    margin-bottom: 13px !important;
                 }
             }
         }
@@ -53,8 +58,6 @@
 .ant-select {
     min-width: 284px;
     height: 50px;
-    padding-block: 13px;
-    padding-inline-start: 22px;
     border: 1px solid #DFDFDF;
     border-radius: 23px;
     background-color: white;
@@ -63,15 +66,27 @@
         border: none;
         padding: 0;
         background-color: unset;
+        height: 50px;
     }
+}
+
+.ant-select-single .ant-select-selector {
+    align-items: center;
 }
 
 .ant-select-single .ant-select-selector .ant-select-selection-item {
     line-height: 20px;
+    padding-left: 22px;
 
     &:focus-visible {
         outline: 0;
     }
+}
+
+
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    border-color: unset !important;
+    box-shadow: none !important;
 }
 
 .save-button {
@@ -116,6 +131,10 @@
     align-items: flex-end;
     justify-content: space-between;
     margin-bottom: 20px;
+
+    p {
+        margin-bottom: 13px !important;
+    }
 }
 
 .heading {
