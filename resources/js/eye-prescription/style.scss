@@ -1,5 +1,6 @@
 .eye-prescription {
     font-family: Montserrat;
+
     &_heading {
         font-size: 1.5em;
         font-weight: bold;
@@ -64,6 +65,19 @@
 
     p {
         margin-inline: 10px !important;
+    }
+
+    .ant-select-selector {
+        position: absolute !important;
+        height: 3.5em !important;
+        top: 0;
+        left: 0;
+        border-radius: 23px !important;
+    }
+
+    .ant-select-selection-item {
+        padding-left: 22px !important;
+        line-height: 45px !important;
     }
 }
 
