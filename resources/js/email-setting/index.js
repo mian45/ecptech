@@ -35,7 +35,7 @@ const EmailSetting = (props) => {
         getReminder()
     }, [])
 
-    const addReminder = (props) => {
+    const addReminder = () => {
         var data = new FormData();
         data.append('userId', props.userID);
         data.append('type', reminderType);

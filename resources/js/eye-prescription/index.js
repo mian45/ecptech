@@ -111,7 +111,7 @@ const EyePrescription = (props) => {
                 "user_id": props.userID
             };
             const res = await Axios.post(
-                process.env.MIX_REACT_APP_URL + "/api/eyePrescriptions",
+                process.env.MIX_REACT_APP_URL + "/api/eye-prescriptions",
                 data
             );
             setObject(res.config.data);
