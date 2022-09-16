@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
-import { DateRangePicker } from 'react-date-range';
+import * as daterange from "react-date-range";
+const DateRangePicker = daterange.DateRangePicker;
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { addDays } from 'date-fns';
@@ -55,7 +56,11 @@ const Dashboard =(props)=> {
    
       setLabel("Last Month")
      
-    }else {
+    }else if(new Date(date1).getFullYear()==new Date().getFullYear()-1 && new Date(date2).getFullYear()== new Date().getFullYear()-1){
+      //last Year
+      setLabel("Last Year")
+    } 
+    else {
       // custom
       setLabel("Custom")
     }
@@ -126,6 +131,19 @@ axios(config)
           months={2}
           ranges={date}
           direction="horizontal"
+          staticRanges={[
+            ...daterange.defaultStaticRanges,
+            {
+              label: "Last Year",
+              range: () => ({
+                startDate: new Date(`${new Date().getFullYear()-1}-01-01`),
+                endDate: new Date(`${new Date().getFullYear()-1}-12-31`)
+              }),
+              isSelected() {
+                return false;
+              }
+            }
+          ]}
         />
         </div>
         :null}
