@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import classes from "./styles.module.scss";
-import userIcon from "../../../images/user-icon.svg";
-import tickIcon from "../../../images/tick.svg";
-import editIcon from "../../../images/edit-icon.svg";
-import deleteIcon from "../../../images/delete-icon.svg";
-import Axios from "../../Http";
+import userIcon from "../../../../images/user-icon.svg";
+import tickIcon from "../../../../images/tick.svg";
+import editIcon from "../../../../images/edit-icon.svg";
+import deleteIcon from "../../../../images/delete-icon.svg";
+import Axios from "../../../Http";
 
 const AddStaffMember = ({ userId }) => {
     const [staffList, setStaffList] = useState([]);
@@ -31,21 +31,23 @@ const AddStaffMember = ({ userId }) => {
     const handleEdit = async () => {
         try {
             const payload = { userId: userId, id: editId, name: staffInput };
-            await Axios.post(
+            const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/editStaff`,
                 payload
             );
+            const updatedStaff = {
+                id: res?.data?.data?.id,
+                name: res?.data?.data?.name,
+            };
 
-            const selectedValue = [...staffList].find(
+            const editIndex = [...staffList].findIndex(
                 (singleStaff) => editId === singleStaff.id
             );
-            selectedValue.value = value;
-            const editIndex = [...staffList].indexOf(
-                (singleStaff) => editId === singleStaff.id
-            );
-            [...staffList].splice(editIndex, 1, selectedValue);
-            setStaff([...staffList]);
+            const staff = [...staffList];
+            staff.splice(editIndex, 1, updatedStaff);
+            setStaffList([...staff]);
             setStaffInput("");
+            setEditId(null);
         } catch (err) {
             console.log("Error while edit Staff", err);
         }
@@ -66,6 +68,7 @@ const AddStaffMember = ({ userId }) => {
     };
 
     const handleSubmit = async () => {
+        if (staffInput?.length < 3) return;
         if (editId) {
             await handleEdit();
         } else {
@@ -106,7 +109,14 @@ const AddStaffMember = ({ userId }) => {
                     onChange={handleStaffChange}
                     value={staffInput}
                 />
-                <div className={classes["tick-wrapper"]} onClick={handleSubmit}>
+                <div
+                    className={classes["tick-wrapper"]}
+                    onClick={handleSubmit}
+                    style={{
+                        backgroundColor:
+                            staffInput?.length < 3 ? "#747474" : "#6fa5cb",
+                    }}
+                >
                     <img
                         src={tickIcon}
                         alt="tick"
@@ -118,7 +128,7 @@ const AddStaffMember = ({ userId }) => {
                 {[...staffList]?.map((staff, index) => {
                     return (
                         <StaffMemberSlot
-                            name={staff}
+                            staff={staff}
                             key={index}
                             handleEdit={handleEditClick}
                             handleDelete={handleDeleteClick}
