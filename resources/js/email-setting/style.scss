@@ -104,10 +104,7 @@
             .ant-select {
                 width: 23.68em !important;
                 height: 2.8125em !important;
-            }
-
-            .ant-select-open {
-                text-decoration: none !important;
+                padding: 0;
             }
 
             .ant-select-selection-item {
@@ -115,8 +112,18 @@
                 line-height: 37px !important;
             }
 
+            .ant-select-single .ant-select-selector {
+                align-items: center;
+            }
+
+
+            .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+                border-color: unset !important;
+                box-shadow: none !important;
+            }
+
             .ant-select-selector {
-                height: 2.8125em !important;
+                height: 2.7em !important;
                 position: absolute !important;
                 top: 0;
                 left: 0;
