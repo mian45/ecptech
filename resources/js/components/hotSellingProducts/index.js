@@ -4,6 +4,7 @@ import Axios from "../../Http";
 import { connect } from "react-redux";
 
 const HotSellingProducts = ({ userId }) => {
+    const [products, setProducts] = useState([]);
     useEffect(() => {
         const getHotSellingProducts = async () => {
             try {
@@ -16,7 +17,9 @@ const HotSellingProducts = ({ userId }) => {
                     `${process.env.MIX_REACT_APP_URL}/api/hot-selling-products`,
                     productsObject
                 );
-                console.log("res hot selling products", res);
+                const productsList = res?.data?.data;
+                productsList.sort((a, b) => a.no - b.no);
+                setProducts(productsList);
             } catch (err) {
                 console.log("Error while fetch products", err);
             }
@@ -27,7 +30,7 @@ const HotSellingProducts = ({ userId }) => {
         <div className={classes["container"]}>
             <div className={classes["label"]}>Hot Selling Products</div>
             <div className={classes["products"]}>
-                {hotProducts.map((product, index) => {
+                {products.map((product, index) => {
                     return (
                         <HotSellingProductsSlot
                             key={index}
@@ -52,8 +55,10 @@ const HotSellingProductsSlot = ({ data, index }) => {
         <div className={classes["slot-container"]}>
             <div className={classes["slot-icon"]}>{index}</div>
             <div className={classes["sub-container"]}>
-                <div className={classes["title"]}>{data.title}</div>
-                <div className={classes["subtitle"]}>{data.subtitle} sales</div>
+                <div className={classes["title"]}>{data?.name || ""}</div>
+                <div className={classes["subtitle"]}>
+                    {data?.sale_count || ""} sales
+                </div>
             </div>
         </div>
     );

@@ -16,7 +16,7 @@ const ProfitStatsChart = ({ userId }) => {
                     user_id: userId,
                 };
                 const res = await Axios.post(
-                    process.env.MIX_REACT_APP_URL + "/api/profit_comparison",
+                    process.env.MIX_REACT_APP_URL + "/api/profit-comparison",
                     payload
                 );
                 console.log("res chart data", res);
