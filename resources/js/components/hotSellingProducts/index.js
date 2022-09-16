@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./styles.module.scss";
 import Axios from "../../Http";
 import { connect } from "react-redux";
@@ -63,18 +63,3 @@ const HotSellingProductsSlot = ({ data, index }) => {
         </div>
     );
 };
-
-const hotProducts = [
-    {
-        title: "Double-Gauss lens",
-        subtitle: 230,
-    },
-    {
-        title: "Inverted telephoto (retrofocus)",
-        subtitle: 130,
-    },
-    {
-        title: "Frazier lens.",
-        subtitle: 90,
-    },
-];
