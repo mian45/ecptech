@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import * as daterange from "react-date-range";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
-import { addDays } from 'date-fns';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import dayjs from 'dayjs';
@@ -16,7 +15,7 @@ const Dashboard =(props)=> {
   const [date,setDate]=useState([
     {
       startDate: new Date(),
-      endDate: addDays(new Date(), 7),
+      endDate: new Date(),
       key: 'selection'
     }
   ]);
