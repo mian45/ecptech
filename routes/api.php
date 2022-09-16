@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\Api\ReminderController;
 use App\Http\Controllers\Api\RegisterController;
-use App\Http\Controllers\Api\StaffController;
 use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\TaxController;
 use App\Http\Controllers\Api\ShippingController;
@@ -36,10 +35,6 @@ Route::middleware('auth:api')->group( function () {
     includeRouteFiles(__DIR__ . '/apis/');
 
     Route::post('updateStaffLogin', [RegisterController::class, 'updateStaffLogin']);
-    Route::post('getStaff', [StaffController::class, 'getStaff']);
-    Route::post('addStaff', [StaffController::class, 'addStaff']);
-    Route::post('editStaff', [StaffController::class, 'editStaff']);
-    Route::post('delete-staff', [StaffController::class, 'deleteStaff']);
 
     Route::get('getReminders', [ReminderController::class, 'getReminders']);
     Route::post('addReminder', [ReminderController::class, 'addReminder']);
