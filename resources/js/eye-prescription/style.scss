@@ -61,6 +61,10 @@
 .columns {
     display: flex;
     align-items: center;
+
+    p {
+        margin-inline: 10px !important;
+    }
 }
 
 .sections-divider {
