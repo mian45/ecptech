@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import * as daterange from "react-date-range";
-const DateRangePicker = daterange.DateRangePicker;
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { addDays } from 'date-fns';
@@ -12,6 +11,7 @@ import isBetween from 'dayjs/plugin/isBetween'
 import axios from "axios"
 import DashboardPage from "../dashboard-page"
 const Dashboard =(props)=> {
+  const DateRangePicker = daterange.DateRangePicker;
   const [data,setData] =useState([]);
   const [date,setDate]=useState([
     {
