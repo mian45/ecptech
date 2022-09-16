@@ -114,7 +114,7 @@ const AddStaffMember = ({ userId }) => {
                     onClick={handleSubmit}
                     style={{
                         backgroundColor:
-                            staffInput?.length < 3 ? "#747474" : "#6fa5cb",
+                            staffInput?.length < 3 ? "#CBCBCB" : "#6fa5cb",
                     }}
                 >
                     <img

@@ -1,17 +1,90 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import classes from "./styles.module.scss";
+import Axios from "../../../Http";
 
 const TeamPerformanceChart = () => {
-    const options = {
+    const [points, setPoints] = useState({
+        current: [],
+        prev: [],
+        names: [],
+    });
+
+    const options = getChartOptions(points);
+
+    useEffect(() => {
+        const getStats = async () => {
+            try {
+                const payload = {
+                    start_date: "2022-08-16",
+                    end_date: "2022-09-15",
+                };
+                const res = await Axios.post(
+                    process.env.MIX_REACT_APP_URL + "/api/team-performance",
+                    payload
+                );
+                manageValues(res?.data?.data);
+            } catch (err) {
+                console.log("Error while getting performance stats", err);
+            }
+        };
+        getStats();
+    }, []);
+    const manageValues = (data) => {
+        let current = [];
+        let prev = [];
+        let names = [];
+        data.forEach((item) => {
+            current.push(item["current_sales"]);
+            prev.push(item["prev_sales"]);
+            names.push(item["staff_name"].slice(0, 7));
+        });
+        setPoints({
+            current: [...current],
+            prev: [...prev],
+            names: [...names],
+        });
+    };
+    return (
+        <div className={classes["container"]}>
+            <div className={classes["label"]}>Team Performance</div>
+            <Chart
+                options={options}
+                series={options?.series}
+                type="bar"
+                height={200}
+            />
+            <div className={classes["status-map"]}>
+                <StatusSlot title={"Current"} />
+                <StatusSlot title={"Previous"} isGray />
+            </div>
+        </div>
+    );
+};
+
+export default TeamPerformanceChart;
+
+const StatusSlot = ({ title, isGray }) => {
+    return (
+        <div className={classes["status-container"]}>
+            <div className={isGray ? classes["icon-grey"] : classes["icon"]} />
+            <div className={isGray ? classes["title-grey"] : classes["title"]}>
+                {title}
+            </div>
+        </div>
+    );
+};
+
+const getChartOptions = (data) => {
+    return {
         series: [
             {
-                name: "Current Month",
-                data: [44, 55, 57, 56, 61],
+                name: "Current",
+                data: data?.current || [],
             },
             {
                 name: "Previous",
-                data: [76, 85, 101, 98, 87],
+                data: data?.prev || [],
             },
         ],
         chart: {
@@ -40,7 +113,7 @@ const TeamPerformanceChart = () => {
         colors: ["#6FA5CB", "#CBCBCB"],
 
         xaxis: {
-            categories: ["John", "David", "Peter", "Joseph", "Jenny"],
+            categories: data?.names || [],
         },
         stroke: {
             show: true,
@@ -85,32 +158,4 @@ const TeamPerformanceChart = () => {
             },
         },
     };
-    return (
-        <div className={classes["container"]}>
-            <div className={classes["label"]}>Team Performance</div>
-            <Chart
-                options={options}
-                series={options?.series}
-                type="bar"
-                height={200}
-            />
-            <div className={classes["status-map"]}>
-                <StatusSlot title={"Current Month"} />
-                <StatusSlot title={"Previous"} isGray />
-            </div>
-        </div>
-    );
-};
-
-export default TeamPerformanceChart;
-
-const StatusSlot = ({ title, isGray }) => {
-    return (
-        <div className={classes["status-container"]}>
-            <div className={isGray ? classes["icon-grey"] : classes["icon"]} />
-            <div className={isGray ? classes["title-grey"] : classes["title"]}>
-                {title}
-            </div>
-        </div>
-    );
 };
