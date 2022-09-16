@@ -1,4 +1,6 @@
 .discount-container {
+    font-family: Montserrat;
+
     &_first {
         padding-left: 221px;
 
@@ -8,7 +10,12 @@
             justify-content: space-between;
             width: 710px;
 
+             p {
+                margin-bottom: 13px !important;
+             }
+
             &_section {
+
                 input {
                     min-width: 284px;
                     padding-block: 13px;
@@ -21,9 +28,6 @@
                     }
                 }
 
-                p {
-                    margin-bottom: 13px;
-                }
             }
         }
     }
@@ -43,7 +47,7 @@
                 }
 
                 p {
-                    margin-bottom: 13px;
+                    margin-bottom: 13px !important;
                 }
             }
         }
@@ -116,6 +120,10 @@
     align-items: flex-end;
     justify-content: space-between;
     margin-bottom: 20px;
+
+    p {
+        margin-bottom: 13px !important;
+    }
 }
 
 .heading {
