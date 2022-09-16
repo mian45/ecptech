@@ -37,9 +37,6 @@ class ReminderController extends Controller
             'invoiceType' => 'required',
             'subject' => 'required',
             'body' => 'required',
-            'sendDate' => 'required',
-            'sendTime' => 'required',
-            'TimeZone' => 'required',
         ]);
 
         if ($validator->fails()) {
