@@ -112,4 +112,40 @@ class DashboardController extends Controller
        
     }
 
+    public function getTeamProgress(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $client_id = auth()->user()->id;
+
+        $team_progress = Invoice::join('staffs as s', 's.id', '=', 'invoices.staff_id')
+                            ->leftJoin('invoice_reminder', 'invoices.id', '=', 'invoice_reminder.invoice_id')
+                            ->select('s.name as staff_name')
+                            ->selectRaw('concat("$",sum(invoices.amount)) as total_sales,
+                            concat(case when count(if(invoices.status="paid",invoices.id,NULL))=0 then 0 else round((count(IF((invoices.payment_mode="office" AND invoices.status="paid"), invoices.id, NULL))/count(if(invoices.status="paid",invoices.id,NULL)))*100) end,"%") as paid_in_office,
+                            concat(case when count(if(invoices.status="paid",invoices.id,NULL))=0 then 0 else round((count(IF((invoices.payment_mode="online" AND invoices.status="paid"), invoices.id, NULL))/count(if(invoices.status="paid",invoices.id,NULL)))*100) end,"%") as paid_online,
+                            concat(case when count(invoices.id)=0 then 0 else round((count(IF((invoices.status="paid"), invoices.id, NULL))/count(invoices.id))*100) end,"%") as capture_rate,
+                            count(invoice_reminder.reminder_id) as reminder_sent')                            
+                            ->where('invoices.user_id',$client_id)
+                            ->where('invoices.created_at','>=',$request->start_date)
+                            ->where('invoices.created_at','<=',$request->end_date)
+                            ->groupBy('invoices.staff_id')
+                            ->get();
+
+        return $this->sendResponse($team_progress, 'Team Progress');
+                            
+
+        
+        
+
+
+    }
+
 }

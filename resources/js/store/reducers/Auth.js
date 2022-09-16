@@ -35,6 +35,7 @@ const activeSettingState = (state, payload) => {
     return { ...state, isActiveSettingState: payload };
 };
 
+
 const authLogin = (state, payload) => {
     const userObject = {
         id: payload?.data?.id,
@@ -59,6 +60,7 @@ const authLogin = (state, payload) => {
         user: userObject,
         userRole: roleObject,
         staffUser: staffObject,
+        token
     };
     return stateObj;
 };
