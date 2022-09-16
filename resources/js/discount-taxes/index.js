@@ -505,7 +505,7 @@ const DiscountTaxes = (props) => {
                                     }
                                 </Select>
                             </div>
-                            <div><button onClick={(e) => { idState !== null ? handlUpdateTax(e) : handleTaxSubmit(e) }} className={`save-button ${!taxName || !stateSetting || taxValue ? 'disable' : ''} `} type='submit' >Save</button></div>
+                            <div><button onClick={(e) => { idState !== null ? handlUpdateTax(e) : handleTaxSubmit(e) }} className={`save-button ${!taxName || !stateSetting || !taxValue ? 'disable' : ''} `} type='submit' >Save</button></div>
                         </div>
                     </form>
                 </div>
