@@ -223,7 +223,7 @@ class RegisterController extends Controller
         return $this->sendError('Roles not found.');
     }
 
-    public function change_password(Request $request)
+    public function changePassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'old_password' => 'required',

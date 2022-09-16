@@ -10,7 +10,7 @@ use Validator;
 
 class PrescriptionController extends Controller
 {
-    public function eye_prescriptions(Request $request){
+    public function eyePrescriptions(Request $request){
         $prescriptions = $request->eye_prescriptions;
         $user_id = $request->user_id;
         if($prescriptions){
@@ -31,7 +31,7 @@ class PrescriptionController extends Controller
         }               
     }
 
-    public function eye_prescriptions_calculator(Request $request){
+    public function eyePrescriptionsCalculator(Request $request){
         $validator = Validator::make($request->all(), [
             'right_eye_sphere' => 'required',
             'right_eye_cylinder' => 'required',

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('invoice_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('invoice_id')->references('id')->on('invoices');
             $table->integer('amount');
             $table->string('status');
             $table->string('customer_name');
