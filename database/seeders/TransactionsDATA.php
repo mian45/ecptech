@@ -4,10 +4,9 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
-use App\Models\Prescription;
+use App\Models\Transactions;
 
-class EyePrescriptions extends Seeder
+class TransactionsDATA extends Seeder
 {
     /**
      * Run the database seeds.
@@ -16,6 +15,6 @@ class EyePrescriptions extends Seeder
      */
     public function run()
     {
-        Prescription::factory()->count(20)->create();
+        Transactions::factory()->count(20)->create();
     }
 }

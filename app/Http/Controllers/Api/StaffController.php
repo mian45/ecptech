@@ -96,4 +96,27 @@ class StaffController extends Controller
 
         return $this->sendError('Staff not found');
     }
+
+     public function deleteStaff(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $staff =  Staff::find($request->id);
+        if($staff){
+            $staff->delete();
+            $success['id'] = $staff->id;
+
+            return $this->sendResponse($success, 'Staff delete successfully');
+        }
+
+        return $this->sendError('Staff not found');
+    }
 }
