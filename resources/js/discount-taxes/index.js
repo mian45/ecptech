@@ -516,7 +516,7 @@ const DiscountTaxes = (props) => {
                             <tr className='discount-output_head'>
                                 <th>Tax Name</th>
                                 <th>State</th>
-                                <th>Amount</th>
+                                <th>Tax Value</th>
                                 <th></th>
                             </tr>
                         }
