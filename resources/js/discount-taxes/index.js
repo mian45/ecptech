@@ -311,7 +311,7 @@ const DiscountTaxes = (props) => {
             setEditId("")
             setShippingName("")
             setShippingState("")
-            addDiscount()
+            addShipping()
         }
 
         else {
