@@ -14,7 +14,12 @@
     color: #2a2a2a;
     font-family: Montserrat;
     margin-top: 30px;
+    margin-bottom: 20px;
 }
 .card-status {
     font-weight: bold;
+}
+.card-wrapper {
+    display: flex;
+    align-items: center;
 }
