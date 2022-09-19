@@ -13,7 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('transactions', function($table) {
+        
+        Schema::table('transactions', function($table) {               
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('invoice_id')->references('id')->on('invoices');
         });
@@ -26,9 +27,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('transactions', function($table) {
-            $table->dropForeign('user_id');
-            $table->dropForeign('invoice_id');
-        });
+        // Schema::dropForeign('user_id');
+        // Schema::dropForeign('invoice_id');
     }
 };

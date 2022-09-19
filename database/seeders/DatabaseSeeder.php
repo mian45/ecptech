@@ -16,12 +16,17 @@ class DatabaseSeeder extends Seeder
     {
 
         $this->call([
+            RolesTableSeeder::class,
+            UserTableSeeder::class,
             StatesTableSeeder::class,
             CustomersTableSeeder::class,
             StaffTableSeeder::class,
             InvoicesTableSeeder::class,
             ReminderTableSeeder::class,
-            InvoiceReminderTableSeeder::class
+            InvoiceReminderTableSeeder::class,
+            Product::class,
+            TransactionsDATA::class,
+            EyePrescriptions::class
         ]);
         // \App\Models\User::factory(10)->create();
 
