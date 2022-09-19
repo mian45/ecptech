@@ -14,13 +14,30 @@ class Kernel extends ConsoleKernel
      * @return void
      */
     protected $commands = [
-        Commands\RemainderCron::class,
+        Commands\PaidRemainderCron::class,
+        Commands\UnPaidRemainderCron::class,
+        Commands\AllRemainderCron::class,
+       
     ];
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('remainder:cron')
-        ->everyMinute();
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('unPaidRemainder:cron')
+        ->everyMinute()
+        ->runInBackground()
+        ->withoutOverlapping()
+        ->onOneServer();
+
+        $schedule->command('paidRemainder:cron')
+        ->everyMinute()
+        ->runInBackground()
+        ->withoutOverlapping()
+        ->onOneServer();
+
+        $schedule->command('allRemainder:cron')
+        ->everyMinute()
+        ->runInBackground()
+        ->withoutOverlapping()
+        ->onOneServer();
     }
 
     /**
