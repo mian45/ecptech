@@ -1,5 +1,6 @@
 import React from "react";
 import Profile from "../components/profile/Profile";
+import classes from "./styles.module.scss";
 
 const Payments = () => {
     return (
