@@ -15,10 +15,11 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('user_id');
             $table->string('name', 50);
             $table->integer('price');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
