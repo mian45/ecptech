@@ -30,3 +30,15 @@ export function activeSettingState(payload) {
         payload,
     };
 }
+export function staffLogin(payload) {
+    return {
+        type: ActionTypes.STAFF_LOGIN,
+        payload,
+    };
+}
+export function updateStaffLogin(payload) {
+    return {
+        type: ActionTypes.UPDATE_STAFF_LOGIN,
+        payload,
+    };
+}

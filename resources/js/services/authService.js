@@ -1,11 +1,14 @@
 import Http from "../Http";
 import * as action from "../store/actions";
+import axios from "axios";
 
 export function login(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post("/api/login", credentials)
+            axios
+                .post(`${process.env.MIX_REACT_APP_URL}/api/login`, credentials)
                 .then((res) => {
+                    localStorage.setItem("access_token", res.data.data.token);
                     dispatch(action.authLogin(res.data));
                     return resolve();
                 })
@@ -27,11 +30,10 @@ export function activeSetting(res) {
             return resolve();
         });
 }
-
 export function register(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post("/api/v1/auth/register", credentials)
+            Http.post("/api/auth/register", credentials)
                 .then((res) => resolve(res.data))
                 .catch((err) => {
                     const { status, errors } = err.response.data;
@@ -47,7 +49,10 @@ export function register(credentials) {
 export function resetPassword(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post("/api/v1/auth/forgot-password", credentials)
+            Http.post(
+                `${process.env.MIX_APP_URL}/api/forgotPassword`,
+                credentials
+            )
                 .then((res) => resolve(res.data))
                 .catch((err) => {
                     const { status, errors } = err.response.data;
@@ -63,7 +68,7 @@ export function resetPassword(credentials) {
 export function updatePassword(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post("/api/v1/auth/password-reset", credentials)
+            Http.post("/api/auth/password-reset", credentials)
                 .then((res) => {
                     const { status } = res.data.status;
                     if (status === 202) {
@@ -74,6 +79,44 @@ export function updatePassword(credentials) {
                         return reject(data);
                     }
                     return resolve(res);
+                })
+                .catch((err) => {
+                    const { status, errors } = err.response.data;
+                    const data = {
+                        status,
+                        errors,
+                    };
+                    return reject(data);
+                });
+        });
+}
+
+export function staffLogin(credentials) {
+    return (dispatch) =>
+        new Promise((resolve, reject) => {
+            Http.post("/api/register", credentials)
+                .then((res) => {
+                    dispatch(action.staffLogin(res.data));
+                    return resolve();
+                })
+                .catch((err) => {
+                    const { status, errors } = err.response.data;
+                    const data = {
+                        status,
+                        errors,
+                    };
+                    return reject(data);
+                });
+        });
+}
+
+export function updateStaffLogin(credentials) {
+    return (dispatch) =>
+        new Promise((resolve, reject) => {
+            Http.post("/api/updateStaffLogin", credentials)
+                .then((res) => {
+                    dispatch(action.updateStaffLogin(res.data));
+                    return resolve();
                 })
                 .catch((err) => {
                     const { status, errors } = err.response.data;
