@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.label {
+    font-size: 18px;
+    font-weight: bold;
+    color: #2a2a2a;
+    font-family: Montserrat;
+}
+.subtitle {
+    font-size: 14px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+    margin-top: 30px;
+}
+.card-status {
+    font-weight: bold;
+}
