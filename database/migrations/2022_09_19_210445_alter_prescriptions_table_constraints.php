@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('user_id')->unsigned();
-            $table->string('name', 50);
-            $table->integer('price');
-            $table->timestamps();
-        });        
+        Schema::table('prescriptions', function($table) {
+            $table->foreign('user_id')->references('id')->on('users');
+        });
     }
 
     /**
@@ -29,6 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::table('prescriptions', function($table) {
+            $table->dropForeign('user_id');
+        });
     }
 };

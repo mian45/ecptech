@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('user_id')->unsigned();
-            $table->string('name', 50);
-            $table->integer('price');
-            $table->timestamps();
-        });        
+        Schema::table('transactions', function($table) {
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('invoice_id')->references('id')->on('invoices');
+        });
     }
 
     /**
@@ -29,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::table('transactions', function($table) {
+            $table->dropForeign('user_id');
+            $table->dropForeign('invoice_id');
+        });
     }
 };

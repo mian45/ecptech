@@ -23,10 +23,7 @@ return new class extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->softDeletes();
             $table->timestamps();
-        });       
-        Schema::table('prescriptions', function($table) {
-            $table->foreign('user_id')->references('id')->on('users');
-        });
+        });               
     }
 
     /**
