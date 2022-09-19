@@ -311,7 +311,7 @@ const DiscountTaxes = (props) => {
             setEditId("")
             setShippingName("")
             setShippingState("")
-            addDiscount()
+            addShipping()
         }
 
         else {
@@ -516,7 +516,7 @@ const DiscountTaxes = (props) => {
                             <tr className='discount-output_head'>
                                 <th>Tax Name</th>
                                 <th>State</th>
-                                <th>Amount</th>
+                                <th>Tax Value</th>
                                 <th></th>
                             </tr>
                         }
@@ -543,7 +543,7 @@ const DiscountTaxes = (props) => {
                 <div>
                     <form className='discount-container_first-form'>
                         <div className='discount-container_first-form_section'>
-                            <p>Amount</p>
+                            <p>Enter Label</p>
                             <input placeholder='Enter Text' value={shippingName} onChange={(e) => { setShippingName(e.target.value) }} />
                         </div>
                         <div className='discount-container_first-form_section'>
@@ -558,8 +558,8 @@ const DiscountTaxes = (props) => {
                         {
                             shipping &&
                             <tr className='discount-output_head'>
-                                <th>Enter Label</th>
-                                <th>Add Shipping Amount</th>
+                                <th>Shipping Label</th>
+                                <th>Amount</th>
                                 <th></th>
                             </tr>
                         }

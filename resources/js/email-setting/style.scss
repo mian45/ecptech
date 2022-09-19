@@ -116,6 +116,16 @@
                 align-items: center;
             }
 
+            .ant-select-arrow {
+                border-left:
+                    8px solid transparent;
+                border-right:
+                    8px solid transparent;
+                border-top:
+                    8px solid #d8d8d8;;
+                    font-size: 0 !important;
+            }
+
 
             .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
                 border-color: unset !important;
