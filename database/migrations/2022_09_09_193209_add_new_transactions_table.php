@@ -23,10 +23,13 @@ return new class extends Migration
             $table->string('customer_phone');
             $table->string('customer_email');
             $table->string('customer_address');
-            $table->timestamps();
+            $table->timestamps();            
+        });        
+
+        Schema::table('transactions', function($table) {
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('invoice_id')->references('id')->on('invoices');
-        });        
+        });
     }
 
     /**
