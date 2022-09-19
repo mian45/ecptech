@@ -8,7 +8,6 @@ export function login(credentials) {
             axios
                 .post(`${process.env.MIX_REACT_APP_URL}/api/login`, credentials)
                 .then((res) => {
-                    console.log("res is here", res);
                     localStorage.setItem("access_token", res.data.data.token);
                     dispatch(action.authLogin(res.data));
                     return resolve();
