@@ -57,7 +57,6 @@ class Login extends Component {
                 message: "",
             },
         };
-        //  autoBind(this);
     }
 
     handleChange = (e) => {

@@ -94,7 +94,11 @@ export default PhotoUpload;
 
 const GetFileSize = (file) => {
     if (file) {
-        return file.size / 1024 / 1024; // Return size in MB
+        return (
+            file.size /
+            process.env.MIX_REACT_FILE_SIZE /
+            process.env.MIX_REACT_FILE_SIZE
+        ); // Return size in MB
     }
     throw new Error("No File Found");
 };
