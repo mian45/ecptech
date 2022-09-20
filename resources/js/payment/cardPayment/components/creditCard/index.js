@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./styles.module.scss";
-import visaIcon from "../../../../images/visa-icon.png";
+import visaIcon from "../../../../../images/visa-icon.png";
 
 const CreditCard = () => {
     return (
