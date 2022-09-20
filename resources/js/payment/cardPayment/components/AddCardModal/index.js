@@ -51,7 +51,10 @@ const AddCardModal = ({ show, onClose }) => {
                             </div>
                         </div>
                         <div className={classes["terms"]}>
-                            <input type={"checkbox"} />
+                            <input
+                                type={"checkbox"}
+                                className={classes["checkbox"]}
+                            />
                             <div className={classes["term-line"]}>
                                 By adding card you are agreed with us to charge
                                 your card for subscription.
