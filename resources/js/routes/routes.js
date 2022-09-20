@@ -1,5 +1,4 @@
 import Login from "../pages/Login";
-import Dashboard from "../pages/Dashboard";
 import Register from "../pages/Register";
 import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/ResetPassword";

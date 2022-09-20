@@ -5,6 +5,7 @@ import SettingDashboard from "../setting-dashboard";
 import Dashboard from "../pages/Dashboard";
 import * as actions from "../store/actions";
 import Payments from "../payment";
+import Invoices from "../Invoices";
 
 const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
     const [state, setState] = useState(isActiveState);
@@ -75,6 +76,7 @@ const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
             </div>
             {state === 4 && <SettingDashboard />}
             {state === 1 && <Dashboard />}
+            {state === 2 && <Invoices />}
             {state === 3 && <Payments />}
         </div>
     );

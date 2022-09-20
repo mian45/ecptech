@@ -1,0 +1,25 @@
+.container {
+    border-bottom: 1px solid #e8e8e8;
+    font-size: 16px;
+    &:hover {
+        background-color: #ffffff;
+    }
+}
+.icon {
+    text-align: center;
+}
+.paid-tatus-tag {
+    border-radius: 15px;
+    text-align: center;
+    background-color: #dcf5dd;
+    color: #00940a;
+}
+.un-paid-tatus-tag {
+    border-radius: 15px;
+    text-align: center;
+    background-color: #f5dcdc;
+    color: #ff0000;
+}
+.more-icon {
+    cursor: pointer;
+}
