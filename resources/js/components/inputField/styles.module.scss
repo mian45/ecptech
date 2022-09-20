@@ -1,0 +1,24 @@
+.input-container {
+    display: flex;
+    flex-direction: column;
+}
+.input-label {
+    font-size: 16px;
+    color: #2a2a2a;
+    margin-bottom: 13px;
+    font-family: Montserrat;
+}
+.input-file {
+    border: 1px solid #dfdfdf;
+    border-radius: 23px;
+    font-size: 16px;
+    padding: 10px 20px;
+    color: #747474;
+    &::placeholder {
+        color: #cbcbcb;
+    }
+}
+.error {
+    color: red;
+    font-size: 12px;
+}
