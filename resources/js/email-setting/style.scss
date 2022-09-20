@@ -1,4 +1,5 @@
 .email-setting {
+    font-family: Montserrat;
 
     &_heading {
         font-weight: bold;
@@ -6,8 +7,45 @@
         margin-bottom: 2.25em;
     }
 
+    &-content {
+        background-color: white;
+        margin-left: 144px;
+        margin-bottom: 20px;
+        padding-block: 20px 17px;
+        padding-inline: 27px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &-section {
+            display: flex;
+            align-items: center;
+
+            &-image {
+                padding-right: 24px;
+            }
+
+            &-heading {
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            &-subsection {
+                display: flex;
+
+                &-subheading {
+                    font-size: 16px;
+                    margin-right: 17px;
+                }
+            }
+
+        }
+    }
+
     &_button-section {
-        padding-left: 19.42em;
+        margin-left: 144px;
+        margin-top: 36px;
+
         &_save-button {
             padding-block: 0.8125em;
             padding-inline: 2em;
@@ -19,4 +57,177 @@
     }
 
 
+}
+
+.email-remainder {
+
+    font-family: Montserrat;
+
+    &_heading {
+        font-weight: bold;
+        font-size: 1.5em;
+        margin-bottom: 2.375em !important;
+    }
+
+    &_arrow-section {
+        display: flex;
+        align-items: center;
+        margin-bottom: 1.812em;
+
+        p {
+            margin-bottom: 0;
+        }
+
+        &_back {
+            margin-left: 1.35em !important;
+            margin-bottom: 0 !important;
+            margin-top: 0 !important;
+        }
+    }
+
+    &_input-sections {
+        padding-left: 19.42em;
+
+        &_input-section {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.25em;
+
+            p {
+                margin-right: 2.875em !important;
+                font-size: 1em;
+                margin-bottom: 0 !important;
+                width: 5.5em;
+                margin-top: 0 !important;
+            }
+
+            .ant-select {
+                width: 23.68em !important;
+                height: 2.8125em !important;
+                padding: 0;
+            }
+
+            .ant-select-selection-item {
+                padding-left: 22px !important;
+                line-height: 37px !important;
+            }
+
+            .ant-select-single .ant-select-selector {
+                align-items: center;
+            }
+
+            .ant-select-arrow {
+                border-left:
+                    8px solid transparent;
+                border-right:
+                    8px solid transparent;
+                border-top:
+                    8px solid #d8d8d8;;
+                    font-size: 0 !important;
+            }
+
+
+            .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+                border-color: unset !important;
+                box-shadow: none !important;
+            }
+
+            .ant-select-selector {
+                height: 2.7em !important;
+                position: absolute !important;
+                top: 0;
+                left: 0;
+                border-radius: 23px !important;
+            }
+
+            &_input {
+                background-color: white;
+                border: 1px solid #DFDFDF;
+                border-radius: 1.43em;
+                padding-inline-start: 1.375em;
+                padding-block: 0.8125em;
+                width: 23.68em;
+                height: 2.8125em;
+
+
+                &:focus-visible {
+                    border: 1px solid #DFDFDF;
+                    outline: none;
+                }
+            }
+        }
+    }
+
+    &_schedule {
+        font-weight: bold;
+        font-size: 1.125em;
+    }
+
+    &_save-button {
+        padding-block: 0.8125em;
+        margin-top: 32px;
+        padding-inline: 2em;
+        border: none;
+        border-radius: 28px;
+        background-color: #6FA5CB;
+        color: white;
+    }
+}
+
+.dropdown-email {
+    background-color: white;
+    border: 1px solid #DFDFDF;
+    border-radius: 1.43em;
+    padding-inline-start: 1.375em;
+    width: 23.68em;
+    height: 2.8125em;
+
+}
+
+.ant-space {
+    display: flex !important;
+    justify-content: space-between;
+}
+
+.ant-space-item {
+    display: flex;
+    align-items: center;
+}
+
+.tags {
+    border-radius: 23px;
+    background-color: #E8E8E8;
+    color: #2A2A2A;
+}
+
+.rdw-editor-wrapper {
+    width: 514px;
+}
+
+.rdw-editor-toolbar {
+    background-color: #F9F9FB !important;
+    border: none !important;
+
+}
+
+.rdw-editor-main {
+    background-color: white;
+    height: 175px !important;
+}
+
+p {
+    margin-bottom: 0;
+}
+
+.cke_bottom {
+    display: none !important;
+}
+
+.cke_top {
+    border: none !important;
+}
+
+.cke_chrome {
+    border: none !important;
+    width: 445px !important;
 }

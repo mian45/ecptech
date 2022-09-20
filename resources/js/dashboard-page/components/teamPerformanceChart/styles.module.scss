@@ -1,0 +1,48 @@
+.container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #e8e8e8;
+    padding: 25px;
+    position: relative;
+    margin-top: 20px;
+}
+.label {
+    color: #2a2a2a;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.status-map {
+    display: flex;
+}
+.status-container {
+    display: flex;
+    margin-left: 10px;
+    align-items: center;
+}
+.icon {
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    background-color: #6fa5cb;
+    margin-right: 10px;
+}
+.title {
+    font-size: 12px;
+    font-family: Montserrat;
+    color: #6fa5cb;
+    font-weight: 600;
+}
+.icon-grey {
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background-color: #cbcbcb;
+    margin-right: 10px;
+}
+.title-grey {
+    font-size: 12px;
+    font-family: Montserrat;
+    color: #cbcbcb;
+    font-weight: 600;
+}

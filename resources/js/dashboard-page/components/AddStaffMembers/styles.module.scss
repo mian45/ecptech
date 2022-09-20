@@ -1,0 +1,105 @@
+.container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #e8e8e8;
+    padding: 25px;
+    margin-top: 20px;
+}
+.label {
+    color: #2a2a2a;
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    justify-content: space-between;
+}
+.input-field {
+    width: 80%;
+    border: 1px solid #dfdfdf;
+    border-radius: 23px;
+    font-size: 16px;
+    padding: 10px 20px;
+    color: #747474;
+    &::placeholder {
+        color: #cbcbcb;
+    }
+}
+.tick-wrapper {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #6fa5cb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.tick-icon {
+    width: 16px;
+    height: 12px;
+    object-fit: contain;
+}
+
+.slot-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-right: 15px;
+}
+.slot-info {
+    width: 75%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.user-icon {
+    width: 18px;
+    height: 16px;
+    object-fit: contain;
+}
+.staff-name {
+    color: #2a2a2a;
+    font-size: 16px;
+    font-family: Montserrat;
+    margin-left: 20px;
+}
+.slot-actions {
+    width: 20%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.edit-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    margin-right: 30px;
+}
+.delete-icon {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
+}
+.staff-map {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+}

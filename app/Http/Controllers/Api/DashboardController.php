@@ -59,7 +59,7 @@ class DashboardController extends Controller
         $end_date = \Carbon\Carbon::parse($end_date);
         $diff = $start_date->diffInDays($end_date);
         $start_date_prev = $start_date->subDays($diff);
-        $end_date_prev = $end_date;
+        $end_date_prev = $end_date->subDays($diff);
         $dates = array('start_date'=>$start_date_prev,'end_date'=>$end_date_prev);
         return $dates;
     }
@@ -74,6 +74,119 @@ class DashboardController extends Controller
             $previous_range = 0;
         }
         return $previous_range;
+    }
+
+    public function getInvoiceStats(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $client_id = auth()->user()->id;
+        $total_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->count();
+        $total_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->count();
+        $total_unpaid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','unpaid')->count();
+        
+        $capture_rate = ($total_invoices>0)? round(($total_paid_invoices/$total_invoices)*100):0;
+        
+       
+
+        $total_office_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->where('payment_mode','office')->count();
+        $total_online_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->where('payment_mode','online')->count();
+
+        $data['invoice']['generated'] = $total_invoices;
+        $data['invoice']['office_paid'] = $total_office_paid_invoices;
+        $data['invoice']['office_paid_percent'] = ($total_paid_invoices>0) ?round(($total_office_paid_invoices/$total_paid_invoices)*100):0;
+        $data['invoice']['online_paid'] = $total_online_paid_invoices;
+        $data['invoice']['online_paid_percent'] = ($total_paid_invoices>0)? round(($total_online_paid_invoices/$total_paid_invoices)*100):0;
+        $data['invoice']['capture_rate'] = $capture_rate;
+        $data['invoice']['unpaid'] = $total_unpaid_invoices;
+
+        return $this->sendResponse($data, 'Invoice Data');
+
+       
+    }
+
+    public function getTeamProgress(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $client_id = auth()->user()->id;
+
+        $team_progress = Invoice::join('staffs as s', 's.id', '=', 'invoices.staff_id')
+                            ->leftJoin('invoice_reminder', 'invoices.id', '=', 'invoice_reminder.invoice_id')
+                            ->select('s.name as staff_name')
+                            ->selectRaw('concat("$",sum(invoices.amount)) as total_sales,
+                            concat(case when count(if(invoices.status="paid",invoices.id,NULL))=0 then 0 else round((count(IF((invoices.payment_mode="office" AND invoices.status="paid"), invoices.id, NULL))/count(if(invoices.status="paid",invoices.id,NULL)))*100) end,"%") as paid_in_office,
+                            concat(case when count(if(invoices.status="paid",invoices.id,NULL))=0 then 0 else round((count(IF((invoices.payment_mode="online" AND invoices.status="paid"), invoices.id, NULL))/count(if(invoices.status="paid",invoices.id,NULL)))*100) end,"%") as paid_online,
+                            concat(case when count(invoices.id)=0 then 0 else round((count(IF((invoices.status="paid"), invoices.id, NULL))/count(invoices.id))*100) end,"%") as capture_rate,
+                            count(invoice_reminder.reminder_id) as reminder_sent')                            
+                            ->where('invoices.user_id',$client_id)
+                            ->where('invoices.created_at','>=',$request->start_date)
+                            ->where('invoices.created_at','<=',$request->end_date)
+                            ->groupBy('invoices.staff_id')
+                            ->get();
+
+        return $this->sendResponse($team_progress, 'Team Progress');
+  
+    }
+
+
+    public function getTeamPerformance(Request $request){
+        
+        $validator = Validator::make($request->all(), [
+            'start_date' => 'required|date',
+            'end_date' => 'required|date',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $client_id = auth()->user()->id;
+
+        $prev_dates = $this->getPreviousRanges($request->start_date,$request->end_date);
+
+        $current_sales = Invoice::selectRaw('if(sum(invoices.amount) IS NULL,0,sum(invoices.amount))')
+                    ->whereColumn('invoices.staff_id', 's.id')
+                    ->where('invoices.created_at','>=',$request->start_date)
+                    ->where('invoices.created_at','<=',$request->end_date)
+                    ->where('invoices.user_id',$client_id)
+                    ->getQuery();
+
+        
+
+        $prev_sales = Invoice::selectRaw('if(sum(invoices.amount) IS NULL,0,sum(invoices.amount))')
+                    ->whereColumn('invoices.staff_id', 's.id')
+                    ->where('invoices.created_at','>=',$prev_dates['start_date'])
+                    ->where('invoices.created_at','<=',$prev_dates['end_date'])
+                    ->where('invoices.user_id',$client_id)
+                    ->getQuery();
+        
+
+        $team_progress = Invoice::join('staffs as s', 's.id', '=', 'invoices.staff_id')
+                        ->select('s.name as staff_name','s.id')
+                        ->selectRaw('sum(invoices.amount) as current_sales') 
+                        ->selectSub( $current_sales,'current_sales')
+                        ->selectSub($prev_sales,'prev_sales')                           
+                        ->where('invoices.user_id',$client_id)
+                        ->groupBy('invoices.staff_id')
+                        ->get();
+
+        return $this->sendResponse($team_progress, 'Team Performance');
+
     }
 
 }
