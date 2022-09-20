@@ -7,7 +7,7 @@ import InvoiceValidation from "./data/validations";
 import InvoicesTable from "../components/invoiceTable";
 import axios from "axios";
 import { connect } from "react-redux";
-import { getMonth, getYear, getDate } from "date-fns";
+import dayjs from "dayjs";
 
 const Invoices = ({ userId }) => {
     const [isSearched, setIsSearched] = useState(false);
@@ -48,9 +48,9 @@ const Invoices = ({ userId }) => {
     const mapInvoicesData = (data) => {
         const mappedInvoices = data?.map((invoice) => {
             const createdDate = new Date(invoice?.created_at);
-            const date = `${getYear(createdDate)}-${
-                getMonth(createdDate) + 1
-            }-${getDate(createdDate)}`;
+            const date = `${dayjs(createdDate).get("year")}-${
+                dayjs(createdDate).get("month") + 1
+            }-${dayjs(createdDate).get("date")}`;
             return {
                 invoice: invoice?.name,
                 customerName: invoice?.customer_name,
