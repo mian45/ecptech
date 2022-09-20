@@ -1,0 +1,27 @@
+.profile {
+    top: 86px;
+    right: 0px;
+    width: 409px;
+    position: absolute;
+    background: #ffffff 0% 0% no-repeat padding-box;
+    box-shadow: -3px 0px 6px #00000008;
+    border: 1px solid #e8e8e8;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 1rem 0rem;
+    min-height: 100vh;
+}
+
+.save-button {
+    padding: 10px 20px;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background-color: #e8e8e8;
+    margin-top: 20px;
+}
