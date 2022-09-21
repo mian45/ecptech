@@ -15,18 +15,19 @@ return new class extends Migration
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->integer('invoice_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('invoice_id');
             $table->integer('amount');
             $table->string('status');
             $table->string('customer_name');
             $table->string('customer_phone');
             $table->string('customer_email');
             $table->string('customer_address');
-            $table->timestamps();
+            $table->timestamps(); 
+            
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('invoice_id')->references('id')->on('invoices');
-        });        
+        });                
     }
 
     /**

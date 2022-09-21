@@ -2,7 +2,6 @@ import { Tabs } from 'antd';
 import React, { useEffect } from 'react';
 import OtherSetting from '../other-setting';
 import EmailSetting from '../email-setting/index'
-import EmailRemainder from '../email-remainder/index'
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import AuthServices from '../services'

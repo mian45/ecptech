@@ -4,9 +4,10 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Transactions;
+use Illuminate\Support\Facades\DB;
+use App\Models\Products;
 
-class TransactionsDATA extends Seeder
+class ProductTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,6 +16,6 @@ class TransactionsDATA extends Seeder
      */
     public function run()
     {
-        Transactions::factory()->count(20)->create();
+        Products::factory()->count(30)->create();
     }
 }
