@@ -1,0 +1,16 @@
+.container {
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.page-title {
+    font-family: Montserrat;
+    font-size: 24px;
+    font-weight: bold;
+    color: #2a2a2a;
+    margin-bottom: 30px;
+    width: 100%;
+    text-align: left;
+}

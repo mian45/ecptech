@@ -1,0 +1,17 @@
+.container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-right: 20px;
+}
+.checkbox {
+    cursor: pointer;
+}
+
+.label {
+    margin-left: 10px;
+    color: #2a2a2a;
+    font-size: 16px;
+    font-family: Montserrat;
+    margin-top: 3px;
+}
