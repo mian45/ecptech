@@ -33,6 +33,19 @@ const EmailSetting = (props) => {
     const [timeZone, setTimeZone] = useState('')
     const [emailArray, setEmailArray] = useState([])
 
+    const blockStyleFn = (block) => {
+        let alignment = 'left';
+        block.findStyleRanges((e) => {
+            if (e.hasStyle('center')) {
+                alignment = 'center';
+            }
+            if (e.hasStyle('right')) {
+                alignment = 'right';
+            }
+        });
+        return `editor-alignment-${alignment}`;
+    };
+
 
     useEffect(() => {
         getReminder()
@@ -355,9 +368,8 @@ const EmailSetting = (props) => {
                                             options: ['fontSize', 'inline', 'textAlign', 'colorPicker', 'image'],
                                             inline: { inDropdown: false, options: ['bold', 'italic'] },
                                             textAlign: { inDropdown: true },
-                                            colorPicker: { icon: fontColor , style:{width : '10px'} }
+                                            colorPicker: { icon: fontColor, }
                                         }}
-
                                         editorState={editorState}
                                         wrapperClassName="demo-wrapper"
                                         editorClassName="demo-editor"
