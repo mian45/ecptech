@@ -9,9 +9,9 @@ import icon from "../../../../../images/calculator/shipping.svg";
 const GlassesProtection = () => {
     return (
         <div className={classes["container"]}>
-            <QuestionIcon icon={icon} />
+            <QuestionIcon icon={icon} iconClass={classes["icon-style"]} />
             <div className={classes["vision-container"]}>
-                <CalculatorHeading title="Glasses Protection Plan" />
+                <CalculatorHeading title="Add Shipping" />
                 <Radio.Group
                     onChange={() => {}}
                     // value={""}

@@ -9,7 +9,7 @@ import icon from "../../../../../images/calculator/protection.svg";
 const ProtectionPlan = () => {
     return (
         <div className={classes["container"]}>
-            <QuestionIcon icon={icon} />
+            <QuestionIcon icon={icon} iconClass={classes["icon-style"]} />
             <div className={classes["vision-container"]}>
                 <CalculatorHeading title="Protection Plan" />
                 <Radio.Group

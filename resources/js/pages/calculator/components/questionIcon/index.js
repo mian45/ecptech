@@ -2,7 +2,7 @@ import React from "react";
 import classes from "./styles.module.scss";
 import tickIcon from "../../../../../images/tick-green.svg";
 
-const QuestionIcon = ({ icon, active }) => {
+const QuestionIcon = ({ icon, active, iconClass }) => {
     return (
         <div className={classes["container"]}>
             <div
@@ -12,7 +12,7 @@ const QuestionIcon = ({ icon, active }) => {
                 <img
                     src={icon || tickIcon}
                     alt="icon"
-                    className={classes["icon"]}
+                    className={`${classes["icon"]} ${iconClass}`}
                 />
             </div>
             <div
