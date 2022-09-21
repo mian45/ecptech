@@ -20,9 +20,11 @@ return new class extends Migration
             $table->decimal('sphere_to', 5, 2);
             $table->decimal('cylinder_from', 5, 2);
             $table->decimal('cylinder_to', 5, 2);
-            $table->bigInteger('user_id')->unsigned();
+            $table->unsignedBigInteger('user_id');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users');
         });               
     }
 
