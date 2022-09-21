@@ -2,11 +2,19 @@ import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import InvoicesStatsChart from "../components/invoicesStatsChart";
 import classes from "./styles.module.scss";
-import Http from "../../js/Http";
+import Axios from "../../js/Http";
+import ProfitCard from "../components/profitCard";
+import { PROFIT_CARDS_DATA } from "./data/data";
 import StaffLogin from "../components/staffLogin";
+import HotSellingProducts from "../components/hotSellingProducts";
+import StaffListTable from "./components/staffTable";
+import TeamPerformanceChart from "./components/teamPerformanceChart";
+import ProfitStatsChart from "./components/profitStatsChart";
+import AddStaffMembers from "./components/AddStaffMembers";
 
 const Dashboard = ({ userRole }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
+    const [summaryStats, setSummaryStats] = useState([]);
     useEffect(() => {
         const getInvoiceStats = async () => {
             try {
@@ -14,8 +22,8 @@ const Dashboard = ({ userRole }) => {
                     start_date: "2022-08-16",
                     end_date: "2022-09-15",
                 };
-                const res = await Http.post(
-                    process.env.MIX_REACT_APP_URL + "api/invoice-stats",
+                const res = await Axios.post(
+                    process.env.MIX_REACT_APP_URL + "/api/invoice-stats",
                     invoiceData
                 );
 
@@ -28,13 +36,52 @@ const Dashboard = ({ userRole }) => {
 
         getInvoiceStats();
     }, []);
+
+    useEffect(() => {
+        const getSummaryStats = async () => {
+            try {
+                const invoiceData = {
+                    start_date: "2022-08-16",
+                    end_date: "2022-09-15",
+                };
+                const res = await Axios.post(
+                    process.env.MIX_REACT_APP_URL + "/api/invoice-summmary",
+                    invoiceData
+                );
+                const mappedSummary = mapSummaryStats(res?.data?.data);
+                setSummaryStats(mappedSummary);
+            } catch (err) {
+                console.log("Error while getting stats");
+            }
+        };
+
+        getSummaryStats();
+    }, []);
     return (
         <div className={classes["container"]}>
             <div className={classes["left-stats"]}>
+                <div className={classes["cards-mapper"]}>
+                    {PROFIT_CARDS_DATA.map((card, index) => {
+                        return (
+                            <ProfitCard
+                                key={index}
+                                cartData={card}
+                                stats={summaryStats[index]}
+                            />
+                        );
+                    })}
+                </div>
+
                 <InvoicesStatsChart data={invoiceStats} />
+                <StaffListTable />
                 {userRole !== "staff" && <StaffLogin />}
             </div>
-            <div className={classes["right-stats"]}></div>
+            <div className={classes["right-stats"]}>
+                <ProfitStatsChart />
+                <HotSellingProducts />
+                <TeamPerformanceChart />
+                <AddStaffMembers />
+            </div>
         </div>
     );
 };
@@ -44,6 +91,25 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(Dashboard);
+
+const mapSummaryStats = (data) => {
+    const stats = [
+        {
+            price: data?.sales?.total_sale,
+            diff: data?.sales?.last_range_diff,
+        },
+        {
+            price: data?.estimates?.amount_estimate,
+            diff: data?.estimates?.last_range_diff,
+        },
+        {
+            price: data?.orders?.total_paid_orders,
+            diff: data?.orders?.last_range_diff,
+        },
+    ];
+    return stats;
+};
+
 const DEFAULT_INVOICES_DATA = [
     {
         x: "Generated",
