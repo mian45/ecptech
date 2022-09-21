@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use App\Models\Prescription;
 
-class EyePrescriptions extends Seeder
+class PrescriptionTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -3,11 +3,14 @@ import { Select } from 'antd';
 const { Option } = Select;
 import { connect } from "react-redux";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import CKEditor from "react-ckeditor-component";
+import { convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import draftToMarkdown from 'draftjs-to-markdown';
 
 import axios from 'axios';
 
 import edit from "../../images/edit.png"
+import fontColor from '../../images/color.png'
 import cross from "../../images/cross.png"
 import iconRemainder from '../../images/remainder.svg'
 import bellIcon from '../../images/bell-icon.svg'
@@ -35,13 +38,19 @@ const EmailSetting = (props) => {
         getReminder()
     }, [])
 
+    const onEditorStateChange = (editorState) => {
+        console.log(editorState, 'value');
+        setEditorState(editorState)
+    }
+
+
     const addReminder = () => {
         var data = new FormData();
         data.append('userId', props.userID);
         data.append('type', reminderType);
         data.append('invoiceType', sentTo);
         data.append('subject', subject);
-        data.append('body', 'editorState');
+        data.append('body', draftToMarkdown(convertToRaw(editorState.getCurrentContent())));
         data.append('sendDate', dates);
         data.append('sendTime', times);
         data.append('TimeZone', timeZone);
@@ -71,7 +80,7 @@ const EmailSetting = (props) => {
         data.append('type', reminderType);
         data.append('invoiceType', sentTo);
         data.append('subject', subject);
-        data.append('body', 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without');
+        data.append('body', draftToMarkdown(convertToRaw(editorState.getCurrentContent())));
         data.append('sendDate', dates);
         data.append('sendTime', times);
         data.append('TimeZone', timeZone);
@@ -294,12 +303,12 @@ const EmailSetting = (props) => {
                                         onChange={handleRemainderClick}
                                         value={reminderType || "Select"}
                                     >
-                                        <Option value={'reminder'}>Remainder</Option>
+                                        <Option value={'reminder'}>Reminder</Option>
                                         <Option value={'orderComplete'}>Thank You</Option>
                                     </Select>
                                 </div>
                                 {
-                                    reminderType == 'reminder' ?
+                                    reminderType != 'orderComplete' ?
                                         <div className='email-remainder_input-sections_input-section'>
                                             <p>Send to</p>
                                             <Select
@@ -341,16 +350,22 @@ const EmailSetting = (props) => {
                                     }} type={'text'} required />
                                 </div>
                                 <div>
-                                    <CKEditor
-                                        activeClass="p10"
-                                        content={editorState}
-                                        events={{
-                                            "change": onChange
+                                    <Editor
+                                        toolbar={{
+                                            options: ['fontSize', 'inline', 'textAlign', 'colorPicker', 'image'],
+                                            inline: { inDropdown: false, options: ['bold', 'italic'] },
+                                            textAlign: { inDropdown: true },
+                                            colorPicker: { icon: fontColor , style:{width : '10px'} }
                                         }}
+
+                                        editorState={editorState}
+                                        wrapperClassName="demo-wrapper"
+                                        editorClassName="demo-editor"
+                                        onEditorStateChange={onEditorStateChange}
                                     />
                                 </div>
                                 {
-                                    reminderType == 'reminder' &&
+                                    reminderType != 'orderComplete' &&
                                     <>
                                         <p className='email-remainder_schedule'>Schedule</p>
                                         <div className='email-remainder_input-sections_input-section'>
