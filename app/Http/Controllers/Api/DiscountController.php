@@ -21,7 +21,7 @@ class DiscountController extends Controller
         }
 
         $user_id = $request->userId;
-        $discount = Discount::select('id','user_id','name','value')->where('user_id',$user_id)->first();
+        $discount = Discount::select('id','user_id','name','value')->where('user_id',$user_id)->orderBy('created_at', 'desc')->first();
 
         if($discount){
             $success['id'] = $discount->id;
