@@ -106,7 +106,6 @@
         8px solid transparent;
     border-top:
         8px solid #d8d8d8;
-    ;
     font-size: 0 !important;
 }
 
@@ -195,6 +194,7 @@ th {
     &:first-child {
         border-radius: 10px 0 0 0;
     }
+
     &:last-child {
         border-radius: 0 10px 0 0;
     }
