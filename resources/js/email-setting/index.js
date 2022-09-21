@@ -3,7 +3,9 @@ import { Select } from 'antd';
 const { Option } = Select;
 import { connect } from "react-redux";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import CKEditor from "react-ckeditor-component";
+import { convertToRaw } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import draftToMarkdown from 'draftjs-to-markdown';
 
 import axios from 'axios';
 
@@ -21,7 +23,7 @@ const EmailSetting = (props) => {
 
     const [idState, setIdState] = useState('')
 
-    const [reminderType, setReminderType] = useState('')
+    const [reminderType, setReminderType] = useState('reminder')
     const [sentTo, setSentTo] = useState('')
     const [subject, setSubject] = useState('')
     const [editorState, setEditorState] = useState('')
@@ -35,13 +37,19 @@ const EmailSetting = (props) => {
         getReminder()
     }, [])
 
+    const onEditorStateChange = (editorState) => {
+        console.log(editorState , 'value');
+        setEditorState(editorState)
+    }
+
+
     const addReminder = () => {
         var data = new FormData();
         data.append('userId', props.userID);
         data.append('type', reminderType);
         data.append('invoiceType', sentTo);
         data.append('subject', subject);
-        data.append('body', 'editorState');
+        data.append('body', draftToMarkdown(convertToRaw(editorState.getCurrentContent())));
         data.append('sendDate', dates);
         data.append('sendTime', times);
         data.append('TimeZone', timeZone);
@@ -71,7 +79,7 @@ const EmailSetting = (props) => {
         data.append('type', reminderType);
         data.append('invoiceType', sentTo);
         data.append('subject', subject);
-        data.append('body', 'In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without');
+        data.append('body', draftToMarkdown(convertToRaw(editorState.getCurrentContent())));
         data.append('sendDate', dates);
         data.append('sendTime', times);
         data.append('TimeZone', timeZone);
@@ -294,7 +302,7 @@ const EmailSetting = (props) => {
                                         onChange={handleRemainderClick}
                                         value={reminderType || "Select"}
                                     >
-                                        <Option value={'reminder'}>Remainder</Option>
+                                        <Option value={'reminder'}>Reminder</Option>
                                         <Option value={'orderComplete'}>Thank You</Option>
                                     </Select>
                                 </div>
@@ -341,12 +349,17 @@ const EmailSetting = (props) => {
                                     }} type={'text'} required />
                                 </div>
                                 <div>
-                                    <CKEditor
-                                        activeClass="p10"
-                                        content={editorState}
-                                        events={{
-                                            "change": onChange
+                                    <Editor
+                                        toolbar={{
+                                            options: ['fontSize', 'inline', 'textAlign', 'image'],
+                                            inline: { inDropdown: false, options: ['bold', 'italic'] },
+                                            textAlign: { inDropdown: true },
                                         }}
+
+                                        editorState={editorState}
+                                        wrapperClassName="demo-wrapper"
+                                        editorClassName="demo-editor"
+                                        onEditorStateChange={onEditorStateChange}
                                     />
                                 </div>
                                 {
