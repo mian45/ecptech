@@ -24,6 +24,10 @@
                     border: 1px solid #DFDFDF;
                     border-radius: 23px;
 
+                    &::placeholder {
+                        color: rgba($color: #DFDFDF, $alpha: 1.0);
+                    }
+
                     &:focus-visible {
                         outline: 0;
                     }
@@ -45,6 +49,11 @@
                     padding-inline-start: 22px;
                     border: 1px solid #DFDFDF;
                     border-radius: 23px;
+
+                    &::placeholder {
+                        color: rgba($color: #DFDFDF, $alpha: 1.0);
+                    }
+
                 }
 
                 p {
@@ -61,6 +70,11 @@
     border: 1px solid #DFDFDF;
     border-radius: 23px;
     background-color: white;
+    color: rgba($color: #DFDFDF, $alpha: 1.0);
+
+    &.ant-select-focused {
+        color: black;
+    }
 
     &.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
         border: none;
@@ -95,8 +109,8 @@
     border-right:
         8px solid transparent;
     border-top:
-        8px solid #d8d8d8;;
-        font-size: 0 !important;
+        8px solid #d8d8d8;
+    font-size: 0 !important;
 }
 
 .save-button {
@@ -117,11 +131,13 @@
     width: 710px;
     margin-top: 29px;
     margin-bottom: 111px;
+    border-radius: 10px 10px 0 0;
 
     &_head {
         padding-block: 13px;
         padding-inline-start: 32px;
         background-color: #E8E8E8;
+        border-radius: 10px 10px 0 0;
     }
 
     &_body {
@@ -164,6 +180,8 @@
 table {
     width: 710px;
     background-color: white;
+    border-radius: 10px 10px 0 0;
+
 }
 
 td,
@@ -176,6 +194,14 @@ th {
     background-color: #E8E8E8;
     padding-block: 14px;
     padding-inline-start: 32px;
+
+    &:first-child {
+        border-radius: 10px 0 0 0;
+    }
+
+    &:last-child {
+        border-radius: 0 10px 0 0;
+    }
 }
 
 td {
