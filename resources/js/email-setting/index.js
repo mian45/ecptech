@@ -10,6 +10,7 @@ import draftToMarkdown from 'draftjs-to-markdown';
 import axios from 'axios';
 
 import edit from "../../images/edit.png"
+import fontColor from '../../images/color.png'
 import cross from "../../images/cross.png"
 import iconRemainder from '../../images/remainder.svg'
 import bellIcon from '../../images/bell-icon.svg'
@@ -23,7 +24,7 @@ const EmailSetting = (props) => {
 
     const [idState, setIdState] = useState('')
 
-    const [reminderType, setReminderType] = useState('reminder')
+    const [reminderType, setReminderType] = useState('')
     const [sentTo, setSentTo] = useState('')
     const [subject, setSubject] = useState('')
     const [editorState, setEditorState] = useState('')
@@ -38,7 +39,7 @@ const EmailSetting = (props) => {
     }, [])
 
     const onEditorStateChange = (editorState) => {
-        console.log(editorState , 'value');
+        console.log(editorState, 'value');
         setEditorState(editorState)
     }
 
@@ -307,7 +308,7 @@ const EmailSetting = (props) => {
                                     </Select>
                                 </div>
                                 {
-                                    reminderType == 'reminder' ?
+                                    reminderType != 'orderComplete' ?
                                         <div className='email-remainder_input-sections_input-section'>
                                             <p>Send to</p>
                                             <Select
@@ -351,9 +352,10 @@ const EmailSetting = (props) => {
                                 <div>
                                     <Editor
                                         toolbar={{
-                                            options: ['fontSize', 'inline', 'textAlign', 'image'],
+                                            options: ['fontSize', 'inline', 'textAlign', 'colorPicker', 'image'],
                                             inline: { inDropdown: false, options: ['bold', 'italic'] },
                                             textAlign: { inDropdown: true },
+                                            colorPicker: { icon: fontColor , style:{width : '10px'} }
                                         }}
 
                                         editorState={editorState}
@@ -363,7 +365,7 @@ const EmailSetting = (props) => {
                                     />
                                 </div>
                                 {
-                                    reminderType == 'reminder' &&
+                                    reminderType != 'orderComplete' &&
                                     <>
                                         <p className='email-remainder_schedule'>Schedule</p>
                                         <div className='email-remainder_input-sections_input-section'>
