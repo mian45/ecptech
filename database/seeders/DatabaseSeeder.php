@@ -24,9 +24,9 @@ class DatabaseSeeder extends Seeder
             InvoicesTableSeeder::class,
             ReminderTableSeeder::class,
             InvoiceReminderTableSeeder::class,
-            Product::class,
-            TransactionsDATA::class,
-            EyePrescriptions::class
+            ProductTableSeeder::class,
+            TransactionTableSeeder::class,
+            PrescriptionTableSeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
 
