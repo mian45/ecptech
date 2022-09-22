@@ -1,0 +1,24 @@
+.container {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    margin-top: 30px;
+}
+.vision-container {
+    display: flex;
+    flex-direction: column;
+}
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+.label {
+    font-size: 18px;
+    font-family: Montserrat;
+    color: #2a2a2a;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.margin {
+    margin-bottom: 20px;
+}

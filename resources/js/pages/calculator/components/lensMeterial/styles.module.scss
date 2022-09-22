@@ -1,0 +1,29 @@
+.container {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    margin-top: 30px;
+}
+.vision-container {
+    display: flex;
+    flex-direction: column;
+}
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+.radio {
+    margin-bottom: 20px;
+}
+.tagline-box {
+    color: #2a2a2a;
+    font-size: 14px;
+    font-family: Montserrat;
+    margin-top: 25px;
+}
+.tagline {
+    color: #6fa5cb;
+    text-decoration: underline;
+    margin-right: 5px;
+    cursor: pointer;
+}

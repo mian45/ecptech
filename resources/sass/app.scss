@@ -2,31 +2,32 @@
 @import "variables";
 
 // Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "~bootstrap/scss/bootstrap";
 
 // General
 .grid {
     display: grid;
 }
 
-a { text-decoration: none;
+a {
+    text-decoration: none;
 
-  &:hover {
-    text-decoration: underline;
-  }
+    &:hover {
+        text-decoration: underline;
+    }
 }
 
 img {
-  max-width: 100%;
-  height: auto;
+    max-width: 100%;
+    height: auto;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 label {
-  margin-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
 // Buttons
@@ -43,7 +44,7 @@ $btn-size-base: 1rem;
 
         &::after,
         &::before {
-            content: '';
+            content: "";
             position: absolute;
             top: 50%;
             left: 50%;
@@ -79,7 +80,7 @@ $btn-size-base: 1rem;
 
 // Header
 header {
-    border-bottom: 1px solid #EBEDF8;
+    border-bottom: 1px solid #ebedf8;
     z-index: 10;
     padding: 20px $grid-gutter-width/2;
     @include media-breakpoint-up(md) {
@@ -113,8 +114,8 @@ header {
 
 // Login Form
 .section-login {
-    height:37em !important;
-    background-color: #F9F9FB !important;
+    height: 37em !important;
+    background-color: #f9f9fb !important;
     h4 {
         margin-bottom: 1.5rem;
         @include media-breakpoint-up(lg) {
@@ -122,10 +123,8 @@ header {
         }
     }
 
-
-
     .card-body {
-        padding: 3rem   ;
+        padding: 3rem;
     }
     .form-remember {
         font-size: 0.9rem;
@@ -144,32 +143,32 @@ header {
         font-size: 0.9rem;
     }
 }
-.pd-0{
+.pd-0 {
     padding: 0 !important;
 }
 .form-control {
     border-radius: 23px !important;
     margin-top: 12px !important;
 }
-p{
-    margin:1rem 0 0 0 !important;
+p {
+    margin: 1rem 0 0 0 !important;
 }
-.ending-text{
+.ending-text {
     text-align: end;
 }
-.borderlastindex{
+.borderlastindex {
     border-bottom: 1px solid #dfdfdf;
 }
 .swiper {
     width: 100%;
     height: 100%;
-  }
-  
-  .swiper-slide {
+}
+
+.swiper-slide {
     text-align: center;
     font-size: 18px;
-    background: #6FA5CB !important;;
-  
+    background: #6fa5cb !important;
+
     /* Center slide text vertically */
     display: -webkit-box;
     display: -ms-flexbox;
@@ -183,26 +182,38 @@ p{
     -ms-flex-align: center;
     -webkit-align-items: center;
     align-items: center;
-  }
-  
-  .swiper-slide img {
+}
+
+.swiper-slide img {
     display: block;
-  }
-  .swiper-button-next {
+}
+.swiper-button-next {
     background-image: url("../images//circle-chevron-right-solid.svg");
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-position: center;
-  }
- .swiper-button-next::after{
+}
+.swiper-button-next::after {
     display: none;
- }
-  .swiper-button-prev{
+}
+.swiper-button-prev {
     background-image: url("../images/circle-chevron-left-solid.svg");
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-position: center;
-  }
-  .swiper-button-prev::after{
+}
+.swiper-button-prev::after {
     display: none;
- }
+}
+
+.ant-radio-checked .ant-radio-inner {
+    border-color: #6fa5cb !important ;
+}
+
+.ant-radio-checked .ant-radio-inner:after {
+    background-color: #6fa5cb;
+}
+
+.ant-radio:hover .ant-radio-inner {
+    border-color: #6fa5cb;
+}

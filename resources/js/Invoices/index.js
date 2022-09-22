@@ -8,10 +8,13 @@ import InvoicesTable from "../components/invoiceTable";
 import axios from "axios";
 import { connect } from "react-redux";
 import dayjs from "dayjs";
+import { useHistory } from "react-router";
+import { CREATE_INVOICE_ROUTE } from "../appRoutes/routeConstants";
 
 const Invoices = ({ userId }) => {
     const [isSearched, setIsSearched] = useState(false);
     const [tableData, setTableData] = useState([]);
+    const history = useHistory();
 
     useEffect(() => {
         const getAllInvoices = async () => {
@@ -25,6 +28,7 @@ const Invoices = ({ userId }) => {
 
     const handleClick = (values) => {
         console.log("values", values);
+        history.push(CREATE_INVOICE_ROUTE);
     };
     const handleSearch = async (values) => {
         try {
@@ -41,7 +45,7 @@ const Invoices = ({ userId }) => {
             const res = await axios.post("/api/search_invoices", invoiceObject);
             mapInvoicesData(res.data?.data);
         } catch (err) {
-            setIsSearched(false);
+            // setIsSearched(false);  uncomment it after handle state
             console.log("error while search", err);
         }
     };
@@ -63,29 +67,38 @@ const Invoices = ({ userId }) => {
         setTableData([...mappedInvoices]);
     };
     return (
-        <div className={classes["container"]}>
-            <div className={classes["title"]}>Invoices</div>
-            <Formik
-                initialValues={InvoiceInitialValues}
-                validationSchema={InvoiceValidation}
-                onSubmit={handleClick}
-            >
-                {(formProps) => {
-                    return (
-                        <form
-                            onSubmit={formProps.handleSubmit}
-                            autoComplete="off"
-                        >
-                            <InvoicesForm
-                                handleSearch={handleSearch}
-                                formProps={formProps}
-                                isSearched={isSearched}
-                            />
-                        </form>
-                    );
-                }}
-            </Formik>
-            <InvoicesTable data={tableData} />
+        <div className={classes["root-container"]}>
+            <div className={classes["container"]}>
+                <div className={classes["title"]}>Invoices</div>
+                <button
+                    onClick={() => {
+                        history.push(CREATE_INVOICE_ROUTE);
+                    }}
+                >
+                    for testing only
+                </button>
+                <Formik
+                    initialValues={InvoiceInitialValues}
+                    validationSchema={InvoiceValidation}
+                    onSubmit={handleClick}
+                >
+                    {(formProps) => {
+                        return (
+                            <form
+                                onSubmit={formProps.handleSubmit}
+                                autoComplete="off"
+                            >
+                                <InvoicesForm
+                                    handleSearch={handleSearch}
+                                    formProps={formProps}
+                                    isSearched={isSearched}
+                                />
+                            </form>
+                        );
+                    }}
+                </Formik>
+                <InvoicesTable data={tableData} />
+            </div>
         </div>
     );
 };
