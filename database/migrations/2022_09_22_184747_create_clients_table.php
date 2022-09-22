@@ -21,9 +21,16 @@ return new class extends Migration
             $table->string('theme_color')->nullable();
             $table->string('theme_mode')->nullable();
             $table->string('logo')->nullable();          
-            $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by');
+            $table->unsignedBigInteger('deleted_by');
+
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
+            $table->foreign('deleted_by')->references('id')->on('users');
             
             $table->foreign('user_id')->references('id')->on('users');
 

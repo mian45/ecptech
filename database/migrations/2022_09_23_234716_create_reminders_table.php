@@ -24,11 +24,16 @@ return new class extends Migration
             $table->string('send_time',50);
             $table->unsignedBigInteger('timezone_id');
             $table->boolean('is_active');
-            $table->integer('created_by')->nullable();
-            $table->integer('updated_by')->nullable();
-            $table->integer('deleted_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by');
+            $table->unsignedBigInteger('deleted_by');
+
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
+            $table->foreign('deleted_by')->references('id')->on('users');
 
             $table->foreign('timezone_id')->references('id')->on('timezones');
         });
