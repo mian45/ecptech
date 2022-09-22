@@ -43,6 +43,7 @@
     position: absolute;
     right: 20px;
     top: 20px;
+    cursor: pointer;
 }
 
 .slot-container {
@@ -111,23 +112,27 @@
     align-items: center;
 }
 .answer-title {
-    font-size: 16px;
+    font-size: 15px;
     font-family: Montserrat;
     color: #2a2a2a;
     margin-right: 10px;
 }
 .answer-value {
-    font-size: 16px;
+    font-size: 15px;
     font-family: Montserrat;
     color: #2a2a2a;
     font-weight: bold;
 }
 
 .answer-section {
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
 }
 .margin {
     margin-bottom: 30px;
+}
+.margin-right {
+    margin-right: 20px;
 }
