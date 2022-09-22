@@ -20,12 +20,14 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('verification_code')->nullable();  
-            $table->unsignedBigInteger('role_id');          
+            $table->unsignedBigInteger('role_id');  
+            $table->unsignedBigInteger('client_id');        
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('client_id')->references('id')->on('users');
         });
     }
 
