@@ -1,0 +1,51 @@
+.container {
+    width: 100px;
+    position: fixed;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: #6fa5cb;
+    box-shadow: 3px 0px 6px #00000008;
+    min-height: 100vh;
+}
+.item-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 35px;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+.icon {
+    width: 27px;
+    height: 27px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+.sidebar-label {
+    color: #ffffff;
+    font-size: 14px;
+    font-family: Montserrat;
+}
+
+.active-state {
+    position: absolute;
+    top: -20%;
+    right: -6.5%;
+    width: 10px;
+    height: 86px;
+    background-color: #4f8db8;
+
+    &::before {
+        content: ".";
+        left: -0.71em;
+        top: 10%;
+        position: absolute;
+        width: 0;
+        height: 0;
+        border-top: 0.71em solid transparent;
+        border-bottom: 0.71em solid transparent;
+        border-right: 0.71em solid #4f8db8;
+    }
+}

@@ -1,0 +1,30 @@
+.container {
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    box-shadow: 0px 0px 11px #00000008;
+    width: 907px;
+}
+.sub-container {
+    padding: 55px;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+.submit-button {
+    font-size: 16px;
+    border-radius: 28px;
+    padding: 10px 32px;
+    color: #ffffff;
+    border: none;
+    margin-bottom: 20px;
+    background-color: #90b0c6;
+    width: 178px;
+    align-self: flex-end;
+    margin-top: 130px;
+    margin-bottom: 20px;
+    &:disabled {
+        background-color: #cbcbcb;
+    }
+}
