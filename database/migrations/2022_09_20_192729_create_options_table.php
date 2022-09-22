@@ -17,8 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('type');
-            $table->string('code');
-            $table->decimal('price',10,2);
             $table->unsignedBigInteger('question_id');
             $table->softDeletes();
             $table->timestamps();

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('category_id');
-            $table->boolean('required')->default(0);
+            $table->boolean('optional')->default(1);
             $table->softDeletes();
             $table->timestamps();
 

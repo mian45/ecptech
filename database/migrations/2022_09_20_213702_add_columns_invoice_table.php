@@ -14,8 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::table('invoices', function (Blueprint $table) {
-            $table->text('vp_state')->nullable();
-            $table->text('user_state')->nullable();
+            $table->longText('vp_state')->nullable();
+            $table->longText('user_state')->nullable();
         });
     }
 

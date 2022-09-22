@@ -19,7 +19,8 @@ return new class extends Migration
             $table->unsignedBigInteger('plan_id');
             $table->dateTime('plan_start');
             $table->dateTime('plan_end');
-            $table->string('status')->default('inactive');
+            $table->integer('status')->default(0);
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');
