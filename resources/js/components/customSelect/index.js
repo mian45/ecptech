@@ -1,16 +1,24 @@
 import React, { useState } from "react";
 import classes from "./style.module.scss";
 import downIcon from "../../../images/down-arrow.png";
+import { useOuterClick } from "../../hooks/useOuterClick";
 
 const CustomSelect = ({ options, ...rest }) => {
     const [selectedValue, setSelectedValue] = useState("");
     const [show, setShow] = useState(false);
+
+    const innerRef = useOuterClick((ev) => {
+        setShow(false);
+    });
     return (
-        <div className={classes["container"]}>
+        <div className={classes["container"]} ref={innerRef}>
             {show ? (
                 <>
                     <div className={classes["placeholder"]} />
-                    <div className={classes["menu-container"]}>
+                    <div
+                        className={classes["menu-container"]}
+                        onClick={(e) => e.stopPropagation()}
+                    >
                         <div className={classes["menu-item-1"]}>
                             <div>John Doe Sunglasses</div>
                             <img
@@ -30,7 +38,10 @@ const CustomSelect = ({ options, ...rest }) => {
             ) : (
                 <div
                     className={classes["sub-container"]}
-                    onClick={() => setShow(true)}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setShow(true);
+                    }}
                 >
                     <div
                         className={
