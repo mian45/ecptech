@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from "react";
-import "./style.scss";
+import React, { Fragment, useEffect, useState } from "react";
+import classes from "./styles.module.scss";
 import { connect } from "react-redux";
-import SettingDashboard from "../setting-dashboard";
-import Dashboard from "../pages/Dashboard";
 import * as actions from "../store/actions";
-import Payments from "../payment";
-import Invoices from "../Invoices";
-import Calculator from "../pages/calculator";
+import { useHistory } from "react-router-dom";
+import {
+    HOME_ROUTE,
+    INVOICES_ROUTE,
+    PAYMENT_ROUTE,
+    SETTINGS_ROUTE,
+} from "../appRoutes/routeConstants";
 
 const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
-    const [state, setState] = useState(2);
+    const [state, setState] = useState(isActiveState);
+    const history = useHistory();
 
     useEffect(() => {
         if (!userId) {
@@ -17,68 +20,69 @@ const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
         }
     }, []);
 
+    const handleSideBar = (value) => {
+        switch (value) {
+            case 1: {
+                setState(value);
+                history.push(HOME_ROUTE);
+                return;
+            }
+            case 2: {
+                setState(value);
+                history.push(INVOICES_ROUTE);
+                return;
+            }
+            case 3: {
+                setState(value);
+                history.push(PAYMENT_ROUTE);
+                return;
+            }
+            case 4: {
+                setState(value);
+                history.push(SETTINGS_ROUTE);
+                return;
+            }
+        }
+    };
+    const checkStaffRoute = (value) => {
+        if (userRole === "staff" && (value === 3 || value === 4)) {
+            return false;
+        }
+        return true;
+    };
+
     return (
-        <div className="dashboard-container">
-            <div className="side-bar">
-                <div
-                    className="sidebar-section"
-                    onClick={() => {
-                        setState(1);
-                    }}
-                >
-                    <img className="home-image" src="home.svg" />
-                    <label className="sidebar-label">Dashboard</label>
-                    {state === 1 && <span className="active-state"></span>}
-                </div>
-                <div
-                    className="sidebar-section"
-                    onClick={() => {
-                        setState(2);
-                    }}
-                >
-                    <img className="invoices-image" src="invoices.svg" />
-                    <label className="sidebar-label">Invoices</label>
-                    {state === 2 && <span className="active-state"></span>}
-                </div>
-                {userRole !== "staff" && (
-                    <>
-                        <div
-                            className="sidebar-section"
-                            onClick={() => {
-                                setState(3);
-                            }}
-                        >
-                            <img
-                                className="payments-image"
-                                src="payments.svg"
-                            />
-                            <label className="sidebar-label">Payments</label>
-                            {state === 3 && (
-                                <span className="active-state"></span>
-                            )}
-                        </div>
-                        <div
-                            className="sidebar-section"
-                            onClick={() => {
-                                setState(4);
-                            }}
-                        >
-                            <img
-                                className="settings-image"
-                                src="settings.svg"
-                            />
-                            <label className="sidebar-label">Settings</label>
-                            {state === 4 && (
-                                <span className="active-state"></span>
-                            )}
-                        </div>
-                    </>
-                )}
-            </div>
-            {state === 4 && <SettingDashboard />}
-            {state === 1 && <Dashboard />}
-            {state === 2 && <Calculator />}
-            {state === 3 && <Payments />}
+        <div className={classes["container"]}>
+            {SIDE_BAR_DATA.map((item, index) => {
+                return (
+                    <Fragment key={index}>
+                        {checkStaffRoute(item?.index) ? (
+                            <div
+                                className={classes["item-container"]}
+                                onClick={() => {
+                                    handleSideBar(item?.index);
+                                }}
+                                key={index}
+                            >
+                                <img
+                                    src={item.icon}
+                                    className={classes["icon"]}
+                                />
+                                <label className={classes["sidebar-label"]}>
+                                    {item.name}
+                                </label>
+                                {state === item?.index && (
+                                    <span
+                                        className={classes["active-state"]}
+                                    ></span>
+                                )}
+                            </div>
+                        ) : (
+                            <></>
+                        )}
+                    </Fragment>
+                );
+            })}
         </div>
     );
 };
@@ -88,4 +92,28 @@ const mapStateToProps = (state) => ({
     userRole: state.Auth.userRole?.name,
     userId: state.Auth?.user?.id,
 });
+
 export default connect(mapStateToProps)(SideBar);
+
+const SIDE_BAR_DATA = [
+    {
+        icon: "home.svg",
+        name: "Dashboard",
+        index: 1,
+    },
+    {
+        icon: "invoices.svg",
+        name: "Invoices",
+        index: 2,
+    },
+    {
+        icon: "payments.svg",
+        name: "Payments",
+        index: 3,
+    },
+    {
+        icon: "settings.svg",
+        name: "Settings",
+        index: 4,
+    },
+];

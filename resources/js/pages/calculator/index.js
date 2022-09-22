@@ -4,9 +4,11 @@ import classes from "./styles.module.scss";
 
 const Calculator = () => {
     return (
-        <div className={classes["container"]}>
-            <div className={classes["page-title"]}>Create Invoice</div>
-            <CalculatorScreen />
+        <div className={classes["root-container"]}>
+            <div className={classes["container"]}>
+                <div className={classes["page-title"]}>Create Invoice</div>
+                <CalculatorScreen />
+            </div>
         </div>
     );
 };
