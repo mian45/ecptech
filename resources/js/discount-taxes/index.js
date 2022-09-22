@@ -311,7 +311,7 @@ const DiscountTaxes = (props) => {
             setEditId("")
             setShippingName("")
             setShippingState("")
-            addDiscount()
+            addShipping()
         }
 
         else {
@@ -473,24 +473,24 @@ const DiscountTaxes = (props) => {
                         <div>
                             <div className='discount-container_second-form_section'>
                                 <p>Tax Value</p>
-                                <input type={'number'} min={0} placeholder='Enter Tax Name' value={taxValue} onChange={(e) => { setTaxValue(e.target.value) }} />
+                                <input type={'number'} min={0} placeholder='Add Percentage' value={taxValue} onChange={(e) => { setTaxValue(e.target.value) }} />
                             </div>
                         </div>
                         <div className='second-section'>
                             <div className='discount-container_second-form_section'>
                                 <p>Tax Name</p>
-                                <input placeholder='Select State' value={taxName} onChange={(e) => { setTaxName(e.target.value) }} />
+                                <input placeholder='Enter Tax Name' value={taxName} onChange={(e) => { setTaxName(e.target.value) }} />
                             </div>
                             <div>
 
 
                                 <p>State</p>
                                 <Select
-                                    defaultValue="Select"
+                                    defaultValue="Select State"
                                     style={{
                                         width: 120,
                                     }}
-                                    value={stateSetting || "Select"}
+                                    value={stateSetting || "Select State"}
                                     onChange={(e) => {
                                         setStateSetting(e)
                                     }}
@@ -505,7 +505,7 @@ const DiscountTaxes = (props) => {
                                     }
                                 </Select>
                             </div>
-                            <div><button onClick={(e) => { idState !== null ? handlUpdateTax(e) : handleTaxSubmit(e) }} className={`save-button ${!taxName || !stateSetting || taxValue ? 'disable' : ''} `} type='submit' >Save</button></div>
+                            <div><button onClick={(e) => { idState !== null ? handlUpdateTax(e) : handleTaxSubmit(e) }} className={`save-button ${!taxName || !stateSetting || !taxValue ? 'disable' : ''} `} type='submit' >Save</button></div>
                         </div>
                     </form>
                 </div>
@@ -516,7 +516,7 @@ const DiscountTaxes = (props) => {
                             <tr className='discount-output_head'>
                                 <th>Tax Name</th>
                                 <th>State</th>
-                                <th>Amount</th>
+                                <th>Tax Value</th>
                                 <th></th>
                             </tr>
                         }
@@ -543,7 +543,7 @@ const DiscountTaxes = (props) => {
                 <div>
                     <form className='discount-container_first-form'>
                         <div className='discount-container_first-form_section'>
-                            <p>Amount</p>
+                            <p>Enter Label</p>
                             <input placeholder='Enter Text' value={shippingName} onChange={(e) => { setShippingName(e.target.value) }} />
                         </div>
                         <div className='discount-container_first-form_section'>
@@ -558,8 +558,8 @@ const DiscountTaxes = (props) => {
                         {
                             shipping &&
                             <tr className='discount-output_head'>
-                                <th>Enter Label</th>
-                                <th>Add Shipping Amount</th>
+                                <th>Shipping Label</th>
+                                <th>Amount</th>
                                 <th></th>
                             </tr>
                         }

@@ -20,7 +20,7 @@ class ShippingController extends Controller
         }
 
         $user_id = $request->userId;
-        $shipping = Shipping::select('id','user_id','name','value')->where('user_id',$user_id)->first();
+        $shipping = Shipping::select('id','user_id','name','value')->where('user_id',$user_id)->orderBy('created_at', 'desc')->first();
 
         if($shipping){
             $success['id'] = $shipping->id;

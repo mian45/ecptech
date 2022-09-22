@@ -1,11 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
 import { connect } from "react-redux";
 import SettingDashboard from "../setting-dashboard";
 import Dashboard from "../pages/Dashboard";
+import * as actions from "../store/actions";
+import Payments from "../payment";
+import Invoices from "../Invoices";
 
-const SideBar = ({ userRole, isActiveState }) => {
+const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
     const [state, setState] = useState(isActiveState);
+
+    useEffect(() => {
+        if (!userId) {
+            dispatch(actions.authLogout());
+        }
+    }, []);
 
     return (
         <div className="dashboard-container">
@@ -65,14 +74,10 @@ const SideBar = ({ userRole, isActiveState }) => {
                     </>
                 )}
             </div>
-            {
-                state === 4 &&
-                <SettingDashboard />
-            }
-            {
-                state === 1 &&
-                <Dashboard />
-            }
+            {state === 4 && <SettingDashboard />}
+            {state === 1 && <Dashboard />}
+            {state === 2 && <Invoices />}
+            {state === 3 && <Payments />}
         </div>
     );
 };
@@ -80,5 +85,6 @@ const SideBar = ({ userRole, isActiveState }) => {
 const mapStateToProps = (state) => ({
     isActiveState: state.Auth.isActiveState,
     userRole: state.Auth.userRole?.name,
+    userId: state.Auth?.user?.id,
 });
 export default connect(mapStateToProps)(SideBar);

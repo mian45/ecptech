@@ -8,8 +8,7 @@ export function login(credentials) {
             axios
                 .post(`${process.env.MIX_REACT_APP_URL}/api/login`, credentials)
                 .then((res) => {
-                    console.log("res is here",res)
-                    localStorage.setItem("access_token",res.data.data.token)
+                    localStorage.setItem("access_token", res.data.data.token);
                     dispatch(action.authLogin(res.data));
                     return resolve();
                 })
@@ -50,7 +49,10 @@ export function register(credentials) {
 export function resetPassword(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post(`${process.env.MIX_APP_URL}/api/forgotPassword`, credentials)
+            Http.post(
+                `${process.env.MIX_APP_URL}/api/forgotPassword`,
+                credentials
+            )
                 .then((res) => resolve(res.data))
                 .catch((err) => {
                     const { status, errors } = err.response.data;

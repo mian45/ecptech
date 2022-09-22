@@ -14,6 +14,7 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
+
         DB::table('roles')->insert(array(
             array(
 
@@ -34,5 +35,6 @@ class RolesTableSeeder extends Seeder
                 'updated_at' => date("Y-m-d H:i:s"),
             )
         ));
+
     }
 }

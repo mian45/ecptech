@@ -1,0 +1,46 @@
+.container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+.form-slot {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+.input {
+    width: 284px;
+    margin-right: 20px;
+}
+.dob-wrapper {
+    display: flex;
+    flex-direction: column;
+    width: 284px;
+    margin-right: 20px;
+}
+.dob-label {
+    font-size: 16px;
+    color: #2a2a2a;
+    margin-bottom: 13px;
+    font-family: Montserrat;
+}
+.dob-input {
+    border: 1px solid #dfdfdf;
+    border-radius: 23px;
+    font-size: 16px;
+    padding: 10px 20px;
+    color: #747474;
+    &::placeholder {
+        color: #cbcbcb;
+    }
+}
+.search-button {
+    margin-right: 20px;
+}
+.error {
+    color: red;
+    font-size: 12px;
+}
