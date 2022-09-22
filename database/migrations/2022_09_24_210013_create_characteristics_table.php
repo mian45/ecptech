@@ -13,14 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('characteristics', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->unsignedBigInteger('vision_plan_id');
+            $table->unsignedBigInteger('lense_id');
+            $table->unsignedBigInteger('code_id');
+            $table->unsignedBigInteger('lens_material_id');
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('vision_plan_id')->references('id')->on('vision_plans');
+            $table->foreign('lense_id')->references('id')->on('lenses');
+            $table->foreign('code_id')->references('id')->on('codes');
+            $table->foreign('lens_material_id')->references('id')->on('lens_materials');
         });
     }
 
@@ -31,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('characteristics');
     }
 };

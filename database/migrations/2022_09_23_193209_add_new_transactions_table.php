@@ -17,14 +17,20 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('invoice_id');
-            $table->integer('amount');
-            $table->string('status');
-            $table->string('customer_name');
+            $table->decimal('amount',10,2);
+            $table->enum('status', ['paid', 'unpaid'])->nullable();
+            $table->string('card_last_digits',4)->nullable();
+            $table->string('customer_first_name');
+            $table->string('customer_last_name');
             $table->string('customer_phone');
             $table->string('customer_email');
             $table->string('customer_address');
+            $table->string('customer_dob');
+            $table->unsignedBigInteger('product_id');
+            $table->softDeletes();
             $table->timestamps(); 
             
+            $table->foreign('product_id')->references('id')->on('products');
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('invoice_id')->references('id')->on('invoices');
         });                

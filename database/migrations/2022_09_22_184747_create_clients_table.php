@@ -13,16 +13,21 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('user_category_permissions', function (Blueprint $table) {
+        Schema::create('clients', function (Blueprint $table) {
+            
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('category_id');
-            $table->boolean('optional')->default(1);
+            $table->string('business_name')->nullable();
+            $table->string('theme_color')->nullable();
+            $table->string('theme_mode')->nullable();
+            $table->string('logo')->nullable();          
+            $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
-
+            
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('category_id')->references('id')->on('categories');
+
+            
         });
     }
 
@@ -33,6 +38,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('user_category_permissions');
+        Schema::dropIfExists('clients');
     }
 };

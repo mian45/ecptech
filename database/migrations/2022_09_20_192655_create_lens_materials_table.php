@@ -13,9 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('invoices', function (Blueprint $table) {
-            $table->longText('vp_state')->nullable();
-            $table->longText('user_state')->nullable();
+        Schema::create('lens_materials', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->softDeletes();
+            $table->timestamps();
         });
     }
 
@@ -26,8 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('invoices', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('lens_materials');
     }
 };

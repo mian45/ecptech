@@ -13,15 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('options', function (Blueprint $table) {
+        Schema::create('user_lense_material_settings', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('type');
-            $table->unsignedBigInteger('question_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('lens_material_id');
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('question_id')->references('id')->on('questions');
+            $table->foreign('lens_material_id')->references('id')->on('lens_materials');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('options');
+        Schema::dropIfExists('user_lense_material_settings');
     }
 };

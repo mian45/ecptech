@@ -16,7 +16,10 @@ return new class extends Migration
         Schema::create('brands', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->unsignedBigInteger('lens_type_id');
             $table->timestamps();
+
+            $table->foreign('lens_type_id')->references('id')->on('lense_types');
         });
     }
 

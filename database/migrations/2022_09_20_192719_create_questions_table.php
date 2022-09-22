@@ -16,14 +16,11 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('type');
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('parent_question_id')->nullable();
+            $table->unsignedBigInteger('vision_plan_id');
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('category_id')->references('id')->on('categories');
-            $table->foreign('parent_question_id')->references('id')->on('questions');
+            $table->foreign('vision_plan_id')->references('id')->on('vision_plans');
         });
     }
 

@@ -13,14 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('base_lenses', function (Blueprint $table) {
+        Schema::create('question_permissions', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->unsignedBigInteger('lense_type_id');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('question_id');
+            $table->boolean('optional')->default(1);
             $table->softDeletes();
             $table->timestamps();
 
-            $table->foreign('lense_type_id')->references('id')->on('lense_types');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('question_id')->references('id')->on('questions');
         });
     }
 
@@ -31,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('base_lenses');
+        Schema::dropIfExists('user_category_permissions');
     }
 };

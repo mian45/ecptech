@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('invoice_reminder', function (Blueprint $table) {
             $table->unsignedBigInteger('reminder_id');
             $table->unsignedBigInteger('invoice_id');
+            $table->softDeletes();
             $table->timestamps();
 
             $table->foreign('reminder_id')->references('id')->on('reminders');

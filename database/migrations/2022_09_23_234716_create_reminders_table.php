@@ -16,16 +16,21 @@ return new class extends Migration
         Schema::create('reminders', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->string('type');
-            $table->string('invoice_type');
+            $table->enum('type', ['welcome', 'thankyou','reminder'])->nullable();
+            $table->enum('invoice_type', ['paid', 'unpaid'])->nullable();
             $table->string('subject');
             $table->string('body');
-            $table->integer('send_date');
-            $table->dateTime('send_time');
-            $table->string('time_zone');
+            $table->integer('send_after_day')->nullable();
+            $table->string('send_time',50);
+            $table->unsignedBigInteger('timezone_id');
             $table->boolean('is_active');
+            $table->integer('created_by')->nullable();
+            $table->integer('updated_by')->nullable();
+            $table->integer('deleted_by')->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('timezone_id')->references('id')->on('timezones');
         });
     }
 

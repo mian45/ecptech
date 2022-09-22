@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('plan_id');
             $table->dateTime('plan_start');
             $table->dateTime('plan_end');
-            $table->integer('status')->default(0);
+            $table->enum('status', ['active', 'inactive'])->nullable();
             $table->softDeletes();
             $table->timestamps();
 

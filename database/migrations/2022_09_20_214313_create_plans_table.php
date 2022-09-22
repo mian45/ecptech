@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('monthly_price',10,2);
             $table->decimal('yearly_price',10,2);
-            $table->string('type');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
