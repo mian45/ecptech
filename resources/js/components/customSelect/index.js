@@ -62,17 +62,3 @@ const CustomSelect = ({ options, ...rest }) => {
 };
 
 export default CustomSelect;
-
-// const CustomSelect = ({ options, ...rest }) => {
-//     return (
-//         <select className={classes["custom-select-component"]} {...rest}>
-//             {Object.keys(options).map((option, index) => {
-//                 return (
-//                     <option key={index} value={option}>
-//                         {options[option]}
-//                     </option>
-//                 );
-//             })}
-//         </select>
-//     );
-// };
