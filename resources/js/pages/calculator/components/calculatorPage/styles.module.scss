@@ -12,3 +12,19 @@
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
 }
+.submit-button {
+    font-size: 16px;
+    border-radius: 28px;
+    padding: 10px 32px;
+    color: #ffffff;
+    border: none;
+    margin-bottom: 20px;
+    background-color: #90b0c6;
+    width: 178px;
+    align-self: flex-end;
+    margin-top: 130px;
+    margin-bottom: 20px;
+    &:disabled {
+        background-color: #cbcbcb;
+    }
+}

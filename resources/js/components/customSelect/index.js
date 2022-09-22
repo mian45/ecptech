@@ -3,7 +3,7 @@ import classes from "./style.module.scss";
 import downIcon from "../../../images/down-arrow.png";
 import { useOuterClick } from "../../hooks/useOuterClick";
 
-const CustomSelect = ({ options, ...rest }) => {
+const CustomSelect = ({ options, style, ...rest }) => {
     const [selectedValue, setSelectedValue] = useState("");
     const [show, setShow] = useState(false);
 
@@ -14,9 +14,13 @@ const CustomSelect = ({ options, ...rest }) => {
         <div className={classes["container"]} ref={innerRef}>
             {show ? (
                 <>
-                    <div className={classes["placeholder"]} />
+                    <div
+                        className={classes["placeholder"]}
+                        style={{ ...style }}
+                    />
                     <div
                         className={classes["menu-container"]}
+                        style={{ ...style }}
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className={classes["menu-item-1"]}>
@@ -38,6 +42,7 @@ const CustomSelect = ({ options, ...rest }) => {
             ) : (
                 <div
                     className={classes["sub-container"]}
+                    style={{ ...style }}
                     onClick={(e) => {
                         e.stopPropagation();
                         setShow(true);

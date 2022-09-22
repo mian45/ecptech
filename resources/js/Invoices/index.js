@@ -45,7 +45,7 @@ const Invoices = ({ userId }) => {
             const res = await axios.post("/api/search_invoices", invoiceObject);
             mapInvoicesData(res.data?.data);
         } catch (err) {
-            setIsSearched(false);
+            // setIsSearched(false);  uncomment it after handle state
             console.log("error while search", err);
         }
     };
@@ -70,6 +70,13 @@ const Invoices = ({ userId }) => {
         <div className={classes["root-container"]}>
             <div className={classes["container"]}>
                 <div className={classes["title"]}>Invoices</div>
+                <button
+                    onClick={() => {
+                        history.push(CREATE_INVOICE_ROUTE);
+                    }}
+                >
+                    for testing only
+                </button>
                 <Formik
                     initialValues={InvoiceInitialValues}
                     validationSchema={InvoiceValidation}

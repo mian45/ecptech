@@ -29,6 +29,9 @@ const CalculatorScreen = () => {
                 <AntireFlextive />
                 <ProtectionPlan />
                 <GlassesProtection />
+                <button className={classes["submit-button"]}>
+                    Create Invoice
+                </button>
             </div>
         </div>
     );
