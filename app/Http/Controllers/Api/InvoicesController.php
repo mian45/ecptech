@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Prescription;
-use Illuminate\Http\Invoices;
+use App\Models\Invoices;
 use Illuminate\Http\Transactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -31,6 +31,53 @@ class InvoicesController extends Controller
         return $this->sendResponse($invoices, 'Invoices List');
     }
 
+    public function viewInvoice(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $id = $request->id;
+       $invoice = Invoices::where('id',$id)->first();
+       if($invoice){
+        
+        $user = $invoice->user;
+        $customer = $invoice->customer;
+        $staff = $invoice->staff;
+
+        if($user){
+            
+            $userData['id'] = $user->id;
+            $userData['name'] = $user->name;
+            $userData['email'] = $user->email;
+            $invoice['user'] = $userData; 
+        }
+        if($customer){
+            $customerData['id'] = $customer->id;
+            $customerData['fname'] = $customer->fname;
+            $customerData['lname'] = $customer->lname;
+            $customerData['dob'] = $customer->dob;
+            $customerData['email'] = $customer->email;
+            $customerData['phone'] = $customer->phone;
+            $invoice['customer'] = $customerData;
+        }
+        if($staff){
+            $staffData['id'] = $staff->id;
+            $staffData['name'] = $staff->name;
+            $invoice['staff'] = $staffData;
+        }
+
+      
+       }else{
+        $invoice = [];
+       }
+       
+       return $this->sendResponse($invoice, 'Invoice data');
+    }
     public function search(Request $request){
         $validator = Validator::make($request->all(), [
             'user_id' => 'required'

@@ -22,7 +22,6 @@ class DatabaseSeeder extends Seeder
             CustomersTableSeeder::class,
             StaffTableSeeder::class,
             InvoicesTableSeeder::class,
-            RolesTableSeeder::class,
             ReminderTableSeeder::class,
             InvoiceReminderTableSeeder::class,
             ProductTableSeeder::class,
