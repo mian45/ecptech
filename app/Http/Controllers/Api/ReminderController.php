@@ -97,7 +97,7 @@ class ReminderController extends Controller
             return $this->sendResponse($success, 'Reminder edit successfully');
         }
 
-        return $this->sendError('Remainder not found');
+        return $this->sendError('Reminder not found');
     }
 
     public function activeInactiveReminder(Request $request)
@@ -122,7 +122,7 @@ class ReminderController extends Controller
             return $this->sendResponse($success, 'Reminder update successfully');
         }
 
-        return $this->sendError('Remainder not found');
+        return $this->sendError('Reminder not found');
     }
 
     public function deleteReminder(Request $request)
@@ -145,7 +145,7 @@ class ReminderController extends Controller
             return $this->sendResponse($success, 'Reminder delete successfully');
         }
 
-        return $this->sendError('Remainder not found');
+        return $this->sendError('Reminder not found');
     }
 
     public function getTimeZone(){
