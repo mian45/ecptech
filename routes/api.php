@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Api\ReminderController;
 use App\Http\Controllers\Api\RegisterController;
 use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\TaxController;
@@ -34,14 +33,6 @@ Route::middleware('auth:api')->group( function () {
     includeRouteFiles(__DIR__ . '/apis/');
 
     Route::post('updateStaffLogin', [RegisterController::class, 'updateStaffLogin']);
-
-    Route::get('getReminders', [ReminderController::class, 'getReminders']);
-    Route::post('addReminder', [ReminderController::class, 'addReminder']);
-    Route::post('editReminder', [ReminderController::class, 'editReminder']);
-    Route::post('activeInactiveReminder', [ReminderController::class, 'activeInactiveReminder']);
-    Route::post('deleteReminder', [ReminderController::class, 'deleteReminder']);
-
-    
 
     Route::get('getDiscount', [DiscountController::class, 'getDiscount']);
     Route::post('addDiscount', [DiscountController::class, 'addDiscount']);

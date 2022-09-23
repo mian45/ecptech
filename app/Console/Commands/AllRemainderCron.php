@@ -36,8 +36,9 @@ class AllRemainderCron extends Command
        
         foreach($reminders as $reminder){
           $body = $reminder->body;
-          $timezone = $reminder->time_zone;
-          $day_after = $reminder->send_date;
+          $TimeZone = $reminder->TimeZone;
+          $timezone = $TimeZone->name;
+          $day_after = $reminder->send_after_day;
           $invoices = Invoice::get();
          
           foreach($invoices as $invoice){ 

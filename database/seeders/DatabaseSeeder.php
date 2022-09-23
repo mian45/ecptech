@@ -22,11 +22,13 @@ class DatabaseSeeder extends Seeder
             CustomersTableSeeder::class,
             StaffTableSeeder::class,
             InvoicesTableSeeder::class,
+            TimeZoneSeeder::class,
             ReminderTableSeeder::class,
             InvoiceReminderTableSeeder::class,
             ProductTableSeeder::class,
             TransactionTableSeeder::class,
             PrescriptionTableSeeder::class
+          
         ]);
     }
 }

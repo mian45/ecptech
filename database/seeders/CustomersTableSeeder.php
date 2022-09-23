@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 class CustomersTableSeeder extends Seeder
 {
     /**
@@ -17,7 +18,7 @@ class CustomersTableSeeder extends Seeder
         DB::table('customers')->insert(array(
             array(
 
-                'user_id' => 44,
+                'user_id' => User::all()->random()->id,
                 'fname' => "mark",
                 'lname' => "zakr",
                 'dob' => date("Y-m-d"),
@@ -28,7 +29,7 @@ class CustomersTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 44,
+                'user_id' => User::all()->random()->id,
                 'fname' => "jon",
                 'lname' => "son",
                 'dob' => date("Y-m-d"),
