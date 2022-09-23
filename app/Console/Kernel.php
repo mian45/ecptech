@@ -22,19 +22,19 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('unPaidRemainder:cron')
-        ->everyMinute()
+        ->hourly()
         ->runInBackground()
         ->withoutOverlapping()
         ->onOneServer();
 
         $schedule->command('paidRemainder:cron')
-        ->everyMinute()
+        ->hourly()
         ->runInBackground()
         ->withoutOverlapping()
         ->onOneServer();
 
         $schedule->command('allRemainder:cron')
-        ->everyMinute()
+        ->hourly()
         ->runInBackground()
         ->withoutOverlapping()
         ->onOneServer();
