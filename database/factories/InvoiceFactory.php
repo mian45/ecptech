@@ -5,7 +5,7 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use App\Models\User;
 use App\Models\Staff;
-
+use App\Models\Customer;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Invoice>
  */
@@ -19,8 +19,7 @@ class InvoiceFactory extends Factory
     public function definition()
     {
         return [
-            'name' => fake()->name(),
-            'customer_id' => 2,
+            'customer_id' => Customer::all()->random()->id,
             'user_id' => User::all()->random()->id,
             'staff_id' => Staff::all()->random()->id,
             'amount' => fake()->randomDigit,

@@ -36,8 +36,9 @@ class RemainderCron extends Command
              
          $invoice_type = $reminder->invoice_type;
          $body = $reminder->body;
-         $timezone = $reminder->time_zone;
-         $day_after = $reminder->send_date;
+         $TimeZone = $reminder->TimeZone;
+         $timezone = $TimeZone->name;
+         $day_after = $reminder->send_after_day;
          if($invoice_type == 'paid' || $invoice_type == 'unpaid'){
             $invoices = Invoice::where('status',$invoice_type)->get();
          }else{

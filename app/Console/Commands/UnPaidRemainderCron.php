@@ -37,8 +37,9 @@ class UnPaidRemainderCron extends Command
              
          $invoice_type = $reminder->invoice_type;
          $body = $reminder->body;
-         $timezone = $reminder->time_zone;
-         $day_after = $reminder->send_date;
+         $TimeZone = $reminder->TimeZone;
+         $timezone = $TimeZone->name;
+         $day_after = $reminder->send_after_day;
          $invoices = Invoice::where('status','unpaid')->get();
         
          foreach($invoices as $invoice){
