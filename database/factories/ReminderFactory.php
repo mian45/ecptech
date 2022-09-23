@@ -18,7 +18,7 @@ class ReminderFactory extends Factory
     public function definition()
     {
         return [
-            'type' => "remainder",
+            'type' => "reminder",
             'invoice_type' => fake()->randomElement(['paid','unpaid']),
             'subject' => "pay invoice to confirm your order",
             'body' => "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without",
@@ -28,7 +28,8 @@ class ReminderFactory extends Factory
             'time_zone' => "Washington, DC, USA (GMT-4)",
             'is_active' => true,
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
+            'created_by' => User::all()->random()->id
         ];
     }
 }

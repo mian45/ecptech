@@ -1,0 +1,25 @@
+.container {
+    display: flex;
+    align-items: center;
+}
+.icon-container {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+.divider {
+    width: 60px;
+    height: 2px;
+    background-color: #cbcbcb;
+    border-radius: 14px;
+    margin-left: 20px;
+    margin-right: 30px;
+}

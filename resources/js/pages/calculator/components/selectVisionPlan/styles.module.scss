@@ -1,0 +1,28 @@
+.container {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+}
+
+.heading {
+    font-size: 18px;
+    font-family: Montserrat;
+    color: #2a2a2a;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+.green-icon {
+    width: 18px;
+    height: 13px;
+    object-fit: contain;
+    margin-left: 13px;
+}
+.vision-container {
+    display: flex;
+    flex-direction: column;
+}
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+}

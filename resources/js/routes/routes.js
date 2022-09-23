@@ -1,5 +1,4 @@
 import Login from "../pages/Login";
-import Dashboard from "../pages/Dashboard";
 import Register from "../pages/Register";
 import ForgotPassword from "../pages/ForgotPassword";
 import ResetPassword from "../pages/ResetPassword";
@@ -13,7 +12,7 @@ const routes = [
         exact: true,
         auth: true,
         component: SideBar,
-        fallback: Login,
+        fallback: SideBar,
     },
     {
         path: "/login",

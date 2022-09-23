@@ -1,0 +1,11 @@
+.custom-button {
+    font-size: 16px;
+    background-color: #6fa5cb;
+    border-radius: 28px;
+    padding: 10px 32px;
+    color: #ffffff;
+    border: none;
+    &:disabled {
+        background-color: #cbcbcb;
+    }
+}

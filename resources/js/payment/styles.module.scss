@@ -1,0 +1,15 @@
+.container {
+    display: flex;
+    width: 100%;
+    padding: 30px;
+}
+.left-container {
+    width: 70%;
+}
+.right-container {
+    width: 30%;
+}
+.root-container {
+    width: calc(100% - 100px);
+    margin-left: 100px;
+}
