@@ -64,7 +64,7 @@ class UnPaidReminderCron extends Command
                    'body' => $body
                   ];
    
-                  dispatch(new SendRemainderJob($details));
+                  dispatch(new SendReminderJob($details));
    
             }
             }

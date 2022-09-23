@@ -30,6 +30,6 @@ class ReminderMail extends Mailable
     public function build()
     {
         return $this->subject('Mail from ECPTech.com')
-            ->view('emails.remainderMail');
+            ->view('emails.reminderMail');
     }
 }
