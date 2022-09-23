@@ -1,0 +1,21 @@
+.container {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    margin-top: 30px;
+}
+.vision-container {
+    display: flex;
+    flex-direction: column;
+}
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.checkbox-group {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}

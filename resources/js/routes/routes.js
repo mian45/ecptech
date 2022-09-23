@@ -12,7 +12,7 @@ const routes = [
         exact: true,
         auth: true,
         component: SideBar,
-        fallback: Login,
+        fallback: SideBar,
     },
     {
         path: "/login",

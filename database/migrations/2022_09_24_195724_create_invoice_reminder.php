@@ -13,10 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('roles', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
+        Schema::create('invoice_reminder', function (Blueprint $table) {
+            $table->unsignedBigInteger('reminder_id');
+            $table->unsignedBigInteger('invoice_id');
+            $table->softDeletes();
             $table->timestamps();
+            $table->foreign('reminder_id')->references('id')->on('reminders');
+            $table->foreign('invoice_id')->references('id')->on('invoices');
+
         });
     }
 
@@ -27,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('roles');
+        Schema::dropIfExists('invoice_reminder');
     }
 };
