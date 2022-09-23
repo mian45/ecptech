@@ -31,7 +31,8 @@ class TransactionsFactory extends Factory
             'customer_email' => 'it@wadic.com',
             'customer_address' => 'Washington, DC, USA',            
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
+            'created_by' => User::all()->random()->id
         ];
     }
 }

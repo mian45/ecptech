@@ -3,13 +3,12 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\DB;
 use App\Models\User;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Client>
  */
-class ProductsFactory extends Factory
+class ClientFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,10 +19,9 @@ class ProductsFactory extends Factory
     {
         return [
             'user_id' => User::all()->random()->id,
-            'name' => fake()->name(),
-            'price' => fake()->randomDigit,            
-            'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s"),
+            'business_name' => fake()->name(),
+            'theme_color' => fake()->randomElement(['red','blue']),
+            'theme_mode' => fake()->randomElement(['dark','light']),
             'created_by' => User::all()->random()->id,
         ];
     }

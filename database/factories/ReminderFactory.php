@@ -28,7 +28,8 @@ class ReminderFactory extends Factory
             'time_zone' => "Washington, DC, USA (GMT-4)",
             'is_active' => true,
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
+            'created_by' => User::all()->random()->id
         ];
     }
 }
