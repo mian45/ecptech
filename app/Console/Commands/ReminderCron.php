@@ -5,7 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Reminder;
 use App\Models\Invoice;
-use App\Jobs\SendRemainderJob;
+use App\Jobs\SendReminderJob;
 use Carbon\Carbon;
 class ReminderCron extends Command
 {
