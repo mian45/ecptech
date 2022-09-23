@@ -21,13 +21,13 @@ return new class extends Migration
             $table->string('subject');
             $table->string('body');
             $table->integer('send_after_day')->nullable();
-            $table->string('send_time',50);
-            $table->unsignedBigInteger('timezone_id');
-            $table->boolean('is_active');
+            $table->string('send_time',50)->nullable();
+            $table->unsignedBigInteger('timezone_id')->nullable();
+            $table->boolean('is_active')->nullable();
             $table->softDeletes();
             $table->timestamps();
 
-            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();
 

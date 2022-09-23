@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Reminder;
+use App\Models\Timezone;
+
 use Illuminate\Http\Request;
 use Validator;
 
@@ -30,7 +32,8 @@ class ReminderController extends Controller
     }
     public function addReminder(Request $request)
     {
-
+        
+    
         $validator = Validator::make($request->all(), [
             'userId' => 'required',
             'type' => 'required',
@@ -39,9 +42,11 @@ class ReminderController extends Controller
             'body' => 'required',
         ]);
 
+
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
+
 
         $reminder = new Reminder;
         $reminder->user_id = $request->userId;
@@ -49,9 +54,9 @@ class ReminderController extends Controller
         $reminder->invoice_type = $request->invoiceType;
         $reminder->subject = $request->subject;
         $reminder->body = $request->body;
-        $reminder->send_date = $request->sendDate;
+        $reminder->send_after_day = $request->sendAfterDay;
         $reminder->send_time = $request->sendTime;
-        $reminder->time_zone = $request->TimeZone;
+        $reminder->timezone_id = $request->timezoneId;
         $reminder->is_active = 1;
 
         $reminder->save();
@@ -69,9 +74,6 @@ class ReminderController extends Controller
             'invoiceType' => 'required',
             'subject' => 'required',
             'body' => 'required',
-            'sendDate' => 'required',
-            'sendTime' => 'required',
-            'TimeZone' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -85,9 +87,9 @@ class ReminderController extends Controller
             $reminder->invoice_type = $request->invoiceType;
             $reminder->subject = $request->subject;
             $reminder->body = $request->body;
-            $reminder->send_date = $request->sendDate;
+            $reminder->send_after_day = $request->sendAfterDay;
             $reminder->send_time = $request->sendTime;
-            $reminder->time_zone = $request->TimeZone;
+            $reminder->timezone_id = $request->timezoneId;
             $reminder->is_active = true;
 
             $reminder->save();
@@ -95,7 +97,7 @@ class ReminderController extends Controller
             return $this->sendResponse($success, 'Reminder edit successfully');
         }
 
-        return $this->sendError('Remainder not found');
+        return $this->sendError('Reminder not found');
     }
 
     public function activeInactiveReminder(Request $request)
@@ -120,7 +122,7 @@ class ReminderController extends Controller
             return $this->sendResponse($success, 'Reminder update successfully');
         }
 
-        return $this->sendError('Remainder not found');
+        return $this->sendError('Reminder not found');
     }
 
     public function deleteReminder(Request $request)
@@ -143,6 +145,13 @@ class ReminderController extends Controller
             return $this->sendResponse($success, 'Reminder delete successfully');
         }
 
-        return $this->sendError('Remainder not found');
+        return $this->sendError('Reminder not found');
+    }
+
+    public function getTimeZone(){
+       
+    $timezone  = Timezone::get();
+
+    return $this->sendResponse($timezone, 'Time zone get successfully');
     }
 }

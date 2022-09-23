@@ -14,15 +14,31 @@ class Kernel extends ConsoleKernel
      * @return void
      */
     protected $commands = [
-        Commands\RemainderCron::class,
+        Commands\PaidReminderCron::class,
+        Commands\UnPaidReminderCron::class,
+        Commands\AllReminderCron::class,
+       
     ];
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('remainder:cron')
-        ->everyMinute();
-        // $schedule->command('inspire')->hourly();
-    }
+        $schedule->command('unPaidReminder:cron')
+        ->everyMinute()
+        ->runInBackground()
+        ->withoutOverlapping()
+        ->onOneServer();
 
+        $schedule->command('paidReminder:cron')
+        ->everyMinute()
+        ->runInBackground()
+        ->withoutOverlapping()
+        ->onOneServer();
+
+        $schedule->command('allReminder:cron')
+        ->everyMinute()
+        ->runInBackground()
+        ->withoutOverlapping()
+        ->onOneServer();
+    }
     /**
      * Register the commands for the application.
      *
