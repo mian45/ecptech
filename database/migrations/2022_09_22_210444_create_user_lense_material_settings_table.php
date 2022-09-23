@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('user_lense_material_settings', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->unsignedBigInteger('user_id');
-            $table->string('name');
-            $table->integer('value');
-            $table->integer('state_id');
+            $table->unsignedBigInteger('lens_material_id');
             $table->softDeletes();
             $table->timestamps();
 
@@ -29,8 +28,9 @@ return new class extends Migration
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('deleted_by')->references('id')->on('users');
-            $table->foreign('user_id')->references('id')->on('users');
 
+            $table->foreign('lens_material_id')->references('id')->on('lens_materials');
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 
@@ -41,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('user_lense_material_settings');
     }
 };

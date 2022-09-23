@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('user_lense_settings', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->unsignedBigInteger('user_id');
-            $table->string('name');
-            $table->integer('value');
-            $table->integer('state_id');
+            $table->unsignedBigInteger('lense_type_id');
+            $table->unsignedBigInteger('brand_id');
+            $table->unsignedBigInteger('collection_id');
             $table->softDeletes();
             $table->timestamps();
 
@@ -29,8 +30,11 @@ return new class extends Migration
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('deleted_by')->references('id')->on('users');
-            $table->foreign('user_id')->references('id')->on('users');
 
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('lense_type_id')->references('id')->on('lense_types');
+            $table->foreign('brand_id')->references('id')->on('brands');
+            $table->foreign('collection_id')->references('id')->on('collections');
         });
     }
 
@@ -41,6 +45,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('user_lense_settings');
     }
 };

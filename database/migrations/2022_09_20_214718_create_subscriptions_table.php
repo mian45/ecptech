@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('subscriptions', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('name');
-            $table->integer('value');
-            $table->integer('state_id');
+            $table->unsignedBigInteger('plan_id');
+            $table->dateTime('plan_start');
+            $table->dateTime('plan_end');
+            $table->enum('status', ['active', 'inactive'])->nullable();
             $table->softDeletes();
             $table->timestamps();
 
@@ -29,8 +30,9 @@ return new class extends Migration
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('deleted_by')->references('id')->on('users');
-            $table->foreign('user_id')->references('id')->on('users');
 
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('plan_id')->references('id')->on('plans');
         });
     }
 
@@ -41,6 +43,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('subscriptions');
     }
 };

@@ -18,7 +18,7 @@ class ReminderFactory extends Factory
     public function definition()
     {
         return [
-            'type' => "remainder",
+            'type' => "reminder",
             'invoice_type' => fake()->randomElement(['paid','unpaid']),
             'subject' => "pay invoice to confirm your order",
             'body' => "In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without",

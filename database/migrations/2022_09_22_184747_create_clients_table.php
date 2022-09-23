@@ -13,12 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('clients', function (Blueprint $table) {
+            
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->string('name');
-            $table->integer('value');
-            $table->integer('state_id');
+            $table->string('business_name')->nullable();
+            $table->string('theme_color')->nullable();
+            $table->string('theme_mode')->nullable();
+            $table->string('logo')->nullable();          
             $table->softDeletes();
             $table->timestamps();
 
@@ -29,8 +31,10 @@ return new class extends Migration
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('deleted_by')->references('id')->on('users');
+            
             $table->foreign('user_id')->references('id')->on('users');
 
+            
         });
     }
 
@@ -41,6 +45,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('clients');
     }
 };

@@ -13,12 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('reminders', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('name');
-            $table->integer('value');
-            $table->integer('state_id');
+            $table->integer('user_id');
+            $table->enum('type', ['welcome', 'thankyou','reminder'])->nullable();
+            $table->enum('invoice_type', ['paid', 'unpaid'])->nullable();
+            $table->string('subject');
+            $table->string('body');
+            $table->integer('send_after_day')->nullable();
+            $table->string('send_time',50);
+            $table->unsignedBigInteger('timezone_id');
+            $table->boolean('is_active');
             $table->softDeletes();
             $table->timestamps();
 
@@ -29,8 +34,8 @@ return new class extends Migration
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('deleted_by')->references('id')->on('users');
-            $table->foreign('user_id')->references('id')->on('users');
 
+            $table->foreign('timezone_id')->references('id')->on('timezones');
         });
     }
 
@@ -41,6 +46,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('reminders');
     }
 };

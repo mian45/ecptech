@@ -13,14 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('invoices', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('user_id');
-            $table->string('name');
-            $table->integer('value');
-            $table->integer('state_id');
-            $table->softDeletes();
+            $table->unsignedBigInteger('staff_id');
+            $table->decimal('amount', 10, 2);
+            $table->text('vp_state')->nullable();
+            $table->text('user_state')->nullable();
+            $table->enum('status', ['paid', 'unpaid'])->nullable();
+            $table->enum('payment_mode', ['office', 'online'])->nullable();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('updated_by')->nullable();
@@ -29,7 +33,10 @@ return new class extends Migration
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('deleted_by')->references('id')->on('users');
+
             $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->foreign('staff_id')->references('id')->on('staffs');
 
         });
     }
@@ -41,6 +48,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('invoices');
     }
 };

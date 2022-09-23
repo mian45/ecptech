@@ -13,12 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('question_permissions', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('name');
-            $table->integer('value');
-            $table->integer('state_id');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('question_id');
+            $table->boolean('optional')->default(1);
             $table->softDeletes();
             $table->timestamps();
 
@@ -29,8 +28,9 @@ return new class extends Migration
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('deleted_by')->references('id')->on('users');
-            $table->foreign('user_id')->references('id')->on('users');
 
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('question_id')->references('id')->on('questions');
         });
     }
 
@@ -41,6 +41,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('user_category_permissions');
     }
 };

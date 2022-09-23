@@ -13,12 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('taxes', function (Blueprint $table) {
+        Schema::create('characteristics', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('name');
-            $table->integer('value');
-            $table->integer('state_id');
+            $table->string('title');
+            $table->unsignedBigInteger('lense_id');
+            $table->unsignedBigInteger('code_id');
+            $table->unsignedBigInteger('lens_material_id');
             $table->softDeletes();
             $table->timestamps();
 
@@ -29,8 +29,10 @@ return new class extends Migration
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('deleted_by')->references('id')->on('users');
-            $table->foreign('user_id')->references('id')->on('users');
 
+            $table->foreign('lense_id')->references('id')->on('lenses');
+            $table->foreign('code_id')->references('id')->on('codes');
+            $table->foreign('lens_material_id')->references('id')->on('lens_materials');
         });
     }
 
@@ -41,6 +43,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('taxes');
+        Schema::dropIfExists('characteristics');
     }
 };
