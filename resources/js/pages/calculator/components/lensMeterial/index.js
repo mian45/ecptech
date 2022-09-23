@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Radio } from "antd";
 import QuestionIcon from "../questionIcon";
-import { CalculatorHeading } from "../selectVisionPlan";
+import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
 import CustomRadio from "../../../../components/customRadio";
 import icon from "../../../../../images/calculator/lens-material.svg";
 import EyePrescriptionModal from "../eyePrescriptionModal";
 
-const LensMeterials = () => {
+const LensMeterials = ({ formProps }) => {
+    const { values, handleChange, handleBlur } = formProps;
     const [showModal, setShowModal] = useState(false);
 
     const handleOpenModal = () => {
@@ -19,45 +20,33 @@ const LensMeterials = () => {
     return (
         <div className={classes["container"]}>
             {showModal && <EyePrescriptionModal onClose={handleCloseModal} />}
-            <QuestionIcon icon={icon} />
+            <QuestionIcon icon={icon} active={values?.lensMaterial} />
             <div className={classes["vision-container"]}>
-                <CalculatorHeading title="Lens Material?" />
+                <CalculatorHeading
+                    title="Lens Material?"
+                    active={values?.lensMaterial}
+                />
                 <Radio.Group
-                    onChange={() => {}}
-                    // value={""}
+                    onBlur={handleBlur}
+                    onChange={handleChange}
+                    value={values?.lensMaterial}
+                    id="lensMaterial"
+                    name="lensMaterial"
                     className={classes["radio-group"]}
                 >
-                    <CustomRadio
-                        label={"CR39"}
-                        value={"CR39"}
-                        headClass={classes["radio"]}
-                    />
-                    <CustomRadio
-                        label={"Polycarbonate"}
-                        value={"Polycarbonate"}
-                        headClass={classes["radio"]}
-                    />
-                    <CustomRadio
-                        label={"Trivex"}
-                        value={"Trivex"}
-                        headClass={classes["radio"]}
-                    />
-                    <CustomRadio
-                        label={"Hi Index 1.67"}
-                        value={"Hi Index 1.67"}
-                        headClass={classes["radio"]}
-                    />
-                    <CustomRadio
-                        label={"Hi Index 1.70 & Above"}
-                        value={"Hi Index 1.70 & Above"}
-                        headClass={classes["radio"]}
-                    />
-                    <CustomRadio
-                        label={"Hi Index 1.60"}
-                        value={"Hi Index 1.60"}
-                        headClass={classes["radio"]}
-                    />
+                    {LEND_MATERIAL_DATA?.map((lensName, index) => {
+                        return (
+                            <CustomRadio
+                                key={index}
+                                label={lensName}
+                                value={lensName}
+                                headClass={classes["radio"]}
+                                active={values?.lensMaterial === lensName}
+                            />
+                        );
+                    })}
                 </Radio.Group>
+                <FormikError name={"lensMaterial"} />
                 <div className={classes["tagline-box"]}>
                     <span
                         className={classes["tagline"]}
@@ -76,3 +65,12 @@ const LensMeterials = () => {
 };
 
 export default LensMeterials;
+
+const LEND_MATERIAL_DATA = [
+    "CR39",
+    "Polycarbonate",
+    "Trivex",
+    "Hi Index 1.67",
+    "Hi Index 1.70 & Above",
+    "Hi Index 1.60",
+];

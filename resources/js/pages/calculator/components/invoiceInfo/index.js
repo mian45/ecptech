@@ -2,7 +2,8 @@ import React from "react";
 import CustomSelect from "../../../../components/customSelect";
 import classes from "./styles.module.scss";
 
-const InvoiceInfo = () => {
+const InvoiceInfo = ({ formProps }) => {
+    const { values, handleChange, handleBlur } = formProps;
     return (
         <div className={classes["container"]}>
             <div className={classes["info-section"]}>
