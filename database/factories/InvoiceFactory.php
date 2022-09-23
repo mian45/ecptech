@@ -27,7 +27,8 @@ class InvoiceFactory extends Factory
             'status' => fake()->randomElement(['paid','unpaid']),
             'payment_mode' => fake()->randomElement(['office','online']),
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
+            'created_by' => User::all()->random()->id
         ];
     }
 }
