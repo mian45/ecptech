@@ -5,12 +5,14 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {  faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import quarterOfYear from 'dayjs/plugin/quarterOfYear'
 import dayjs from 'dayjs';
 import isBetween from 'dayjs/plugin/isBetween'
 import axios from "axios"
 import DashboardPage from "../dashboard-page"
 const Dashboard =(props)=> {
   const DateRangePicker = daterange.DateRangePicker;
+  dayjs.extend(quarterOfYear)
   const [data,setData] =useState([]);
   const [date,setDate]=useState([
     {
@@ -26,7 +28,8 @@ const Dashboard =(props)=> {
   const [invoicesSummary,setInvoicesSummary]=useState([])
   const [invoicesStats,setInvoicesStats]=useState([])
   useEffect(()=>{
-    console.log("the date is here",date)
+    console.log("the date is here",dayjs().startOf('quarter').$d )
+    console.log("the date is here",dayjs().endOf('quarter').$d )
     const date1=dayjs(dayjs(startDate).format("YYYY-MM-DD"))
     const date2=dayjs(dayjs(endDate).format("YYYY-MM-DD"))
     dayjs.extend(isBetween)
@@ -132,6 +135,21 @@ axios(config)
           direction="horizontal"
           staticRanges={[
             ...daterange.defaultStaticRanges,
+            { label: "This Quarter",
+            range: () => ({
+              startDate: new Date(dayjs().startOf('quarter').$d),
+              endDate: new Date(dayjs().endOf('quarter').$d)
+            }),
+            isSelected() {
+              return false;
+            } }, { label: "Last Quarter",
+            range: () => ({
+              startDate: new Date(new Date().getFullYear(), Math.floor((new Date().getMonth() / 3)) * 3 - 3, 1),
+              endDate: new Date(new Date(new Date().getFullYear(), Math.floor((new Date().getMonth() / 3)) * 3 - 3, 1).getFullYear(), new Date(new Date().getFullYear(), Math.floor((new Date().getMonth() / 3)) * 3 - 3, 1).getMonth() + 3, 0)
+            }),
+            isSelected() {
+              return false;
+            } },
             {
               label: "Last Year",
               range: () => ({
@@ -141,7 +159,7 @@ axios(config)
               isSelected() {
                 return false;
               }
-            }
+            },
           ]}
         />
         </div>
