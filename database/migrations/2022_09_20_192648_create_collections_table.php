@@ -19,6 +19,14 @@ return new class extends Migration
             $table->unsignedBigInteger('brand_id');
             $table->timestamps();
 
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('deleted_by')->nullable();
+
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
+            $table->foreign('deleted_by')->references('id')->on('users');
+
             $table->foreign('brand_id')->references('id')->on('brands');
         });
     }

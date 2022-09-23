@@ -19,9 +19,17 @@ return new class extends Migration
             $table->unsignedBigInteger('plan_id');
             $table->dateTime('plan_start');
             $table->dateTime('plan_end');
-            $table->integer('status')->default(0);
+            $table->enum('status', ['active', 'inactive'])->nullable();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->unsignedBigInteger('created_by');
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('deleted_by')->nullable();
+
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
+            $table->foreign('deleted_by')->references('id')->on('users');
 
             $table->foreign('user_id')->references('id')->on('users');
             $table->foreign('plan_id')->references('id')->on('plans');
