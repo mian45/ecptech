@@ -21,6 +21,7 @@ export function useOuterClick(callback) {
                 callbackRef.current &&
                 !innerRef.current.contains(e.target)
             ) {
+                e.preventDefault();
                 callbackRef.current(e);
             }
         }

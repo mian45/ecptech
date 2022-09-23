@@ -80,7 +80,7 @@ const Dashboard = ({ userRole }) => {
                 <ProfitStatsChart />
                 <HotSellingProducts />
                 <TeamPerformanceChart />
-                <AddStaffMembers />
+                {userRole !== "staff" && <AddStaffMembers />}
             </div>
         </div>
     );

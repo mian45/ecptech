@@ -4,7 +4,10 @@
     width: 90%;
 }
 
-
 .MuiBox-root .css-1mb7ed4 {
     padding: 0 !important;
-} 
+}
+.root-container {
+    width: calc(100% - 100px);
+    margin-left: 100px;
+}
