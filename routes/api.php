@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\ReminderController;
 use App\Http\Controllers\Api\RegisterController;
-use App\Http\Controllers\Api\DiscountController;
 use App\Http\Controllers\Api\TaxController;
 use App\Http\Controllers\Api\ShippingController;
 use Illuminate\Support\Facades\Route;
@@ -28,26 +26,12 @@ Route::post('register', [RegisterController::class, 'register']);
 Route::post('login', [RegisterController::class, 'login']);
 Route::post('forgotPassword', [RegisterController::class, 'forgotPassword']);
 Route::post('verifyCode', [RegisterController::class, 'verifyCode']);
-Route::post('addRole', [RegisterController::class, 'addRole']);
-
+Route::get('get-roles', [RegisterController::class, 'getRoles']);
 Route::middleware('auth:api')->group( function () {
    
     includeRouteFiles(__DIR__ . '/apis/');
 
     Route::post('updateStaffLogin', [RegisterController::class, 'updateStaffLogin']);
-
-    Route::get('getReminders', [ReminderController::class, 'getReminders']);
-    Route::post('addReminder', [ReminderController::class, 'addReminder']);
-    Route::post('editReminder', [ReminderController::class, 'editReminder']);
-    Route::post('activeInactiveReminder', [ReminderController::class, 'activeInactiveReminder']);
-    Route::post('deleteReminder', [ReminderController::class, 'deleteReminder']);
-
-    
-
-    Route::get('getDiscount', [DiscountController::class, 'getDiscount']);
-    Route::post('addDiscount', [DiscountController::class, 'addDiscount']);
-    Route::post('deleteDiscount', [DiscountController::class, 'deleteDiscount']);
-
 
     Route::get('getTaxes', [TaxController::class, 'getTaxes']);
     Route::post('addTax', [TaxController::class, 'addTax']);

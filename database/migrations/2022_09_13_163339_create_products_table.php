@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->string('name', 50);
-            $table->integer('price');
+            $table->decimal('price',10,2);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users');

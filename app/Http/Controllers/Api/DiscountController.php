@@ -21,15 +21,10 @@ class DiscountController extends Controller
         }
 
         $user_id = $request->userId;
-        $discount = Discount::select('id','user_id','name','value')->where('user_id',$user_id)->orderBy('created_at', 'desc')->first();
+        $discount = Discount::select('id','user_id','name','value')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
 
         if($discount){
-            $success['id'] = $discount->id;
-            $success['user_id'] = $discount->user_id;
-            $success['name'] = $discount->name;
-            $success['value'] = $discount->value;
-
-            return $this->sendResponse($success, 'Discount get successfully');
+            return $this->sendResponse($discount, 'Discount get successfully');
         }
 
         return $this->sendError('Discount not found');
@@ -49,26 +44,52 @@ class DiscountController extends Controller
         $user_id = $request->userId;
         $name = $request->name;
         $value = $request->value;
-        $discount = Discount::updateOrCreate(
-            ['user_id' => $user_id, 'name' => $name],
-            ['value' => $value]
-        );
+
+        $discount = new Discount;
+        $discount->user_id = $user_id;
+        $discount->name = $name;
+        $discount->value = $value;
+        $discount->save();
 
         if($discount){
             $success['id'] = $discount->id;
-
             $success['user_id'] = $discount->user_id;
             $success['name'] = $discount->name;
             $success['value'] = $discount->value;
-
-
             return $this->sendResponse($success, 'Discount add successfully');
         }
-
-
         return $this->sendError('Something went wrong!');
     }
+    public function EditDiscount(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'name' => 'required',
+            'value' => 'required'
+        ]);
 
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $id = $request->id;
+        $name = $request->name;
+        $value = $request->value;
+
+        $discount = Discount::where('id',$id)->first();
+        if($discount){
+        $discount->name = $name;
+        $discount->value = $value;
+        $discount->save();
+        $success['id'] = $discount->id;
+        $success['user_id'] = $discount->user_id;
+        $success['name'] = $discount->name;
+        $success['value'] = $discount->value;
+        return $this->sendResponse($success, 'Discount Edit successfully');
+
+        }
+        return $this->sendError('Discount not found');
+    }
     public function deleteDiscount(Request $request)
     {
 

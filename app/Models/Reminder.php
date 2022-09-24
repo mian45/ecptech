@@ -9,4 +9,9 @@ class Reminder extends Model
 {
     use SoftDeletes;
     use HasFactory;
+
+    public function TimeZone()
+    {
+        return $this->belongsTo(Timezone::class,'timezone_id');
+    }
 }

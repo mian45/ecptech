@@ -211,20 +211,16 @@ class RegisterController extends Controller
             return $this->sendError('verification code cannot match.', ['error' => 'verification code cannot cannot match']);
         }
     }
-    public function addRole(Request $request)
+
+    public function getRoles(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
 
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+        $roles = Role::get();
+        
+        if($roles){
+            return $this->sendResponse($roles, 'Role get successfully.');
         }
-        $roleData['name'] = $request->name;
-        $userRole = Role::create($roleData);
-
-        return $this->sendResponse($userRole, 'Role Added Successfully.');
+        return $this->sendError('Roles not found.');
     }
 
     public function changePassword(Request $request)
@@ -237,7 +233,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['error'=>$validator->errors()], 401); 
+            return $this->sendError('Validation Error.', $validator->errors());
         }
         $user_id = $request->user_id;
         $old_password = $request->old_password;
@@ -254,10 +250,10 @@ class RegisterController extends Controller
                     "message" => "password save successfully.",                                  
                 ]);   
             } else {
-                return response()->json(['error'=> 'Something Went Wrong.'], 401);
+                return $this->sendError('Something Went Wrong.');
             }
         } else {
-            return response()->json(['error'=>'Invalid old password Please enter a valid password'], 401); 
+            return $this->sendError('Invalid old password Please enter a valid password');
         }
     }
 }

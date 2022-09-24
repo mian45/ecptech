@@ -19,12 +19,23 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->integer('role_id');
-            $table->integer('client_id')->nullable();
-            $table->string('verification_code')->nullable();            
+            $table->string('verification_code')->nullable();  
+            $table->unsignedBigInteger('role_id');  
+            $table->unsignedBigInteger('client_id')->nullable();        
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();
+
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
+            $table->unsignedBigInteger('deleted_by')->nullable();
+
+            $table->foreign('created_by')->references('id')->on('users');
+            $table->foreign('updated_by')->references('id')->on('users');
+            $table->foreign('deleted_by')->references('id')->on('users');
+
+            $table->foreign('role_id')->references('id')->on('roles');
+            $table->foreign('client_id')->references('id')->on('users');
         });
     }
 

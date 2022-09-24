@@ -22,4 +22,18 @@ class Invoices extends Model
         'created_at',
         'updated_at'
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class,'user_id');
+    }
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class,'customer_id');
+    }
+    public function staff() 
+    {
+        return $this->belongsTo(Staff::class,'staff_id');
+    }
+
 }

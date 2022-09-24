@@ -25,7 +25,8 @@ class PrescriptionFactory extends Factory
             'cylinder_to' => fake()->randomDigit,
             'user_id' => User::all()->random()->id,
             'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s")
+            'updated_at' => date("Y-m-d H:i:s"),
+            'created_by' => User::all()->random()->id,
         ];
     }
 }
