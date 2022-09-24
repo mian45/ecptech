@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->unsignedBigInteger('lense_id');
             $table->unsignedBigInteger('code_id');
-            $table->unsignedBigInteger('lens_material_id');
+            $table->enum('type', ['addon', 'base'])->nullable();
             $table->softDeletes();
             $table->timestamps();
 
@@ -32,7 +32,6 @@ return new class extends Migration
 
             $table->foreign('lense_id')->references('id')->on('lenses');
             $table->foreign('code_id')->references('id')->on('codes');
-            $table->foreign('lens_material_id')->references('id')->on('lens_materials');
         });
     }
 
