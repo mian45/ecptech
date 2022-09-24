@@ -12,8 +12,9 @@ const { Option } = Select;
 const DiscountTaxes = (props) => {
     const [discountName, setDiscountName] = useState('')
     const [discountTax, setDiscountTax] = useState('')
+    const [discountId,setDiscountId]=useState(null)
     const [discountArray, setDiscountArray] = useState([])
-    let [discounts, setDiscounts] = useState()
+    let [discounts, setDiscounts] = useState([])
 
 
     const [taxName, setTaxName] = useState('')
@@ -41,11 +42,11 @@ const DiscountTaxes = (props) => {
     const addDiscount = () => {
         let data = new FormData();
         data.append('userId', props.userID);
-        data.append('name', discounts.name);
-        data.append('value', discounts.value);
+        data.append('name', discountName);
+        data.append('value', discountTax);
         let config = {
             method: 'post',
-            url: `${process.env.MIX_REACT_APP_URL}/api/addDiscount`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/add-discount`,
             headers: {
                 'Authorization': `Bearer ${props.token}`,
             },
@@ -55,6 +56,10 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
+                setDiscountId(null)
+        setDiscountName("")
+        setDiscountTax("")
+        getDiscount()
             })
             .catch(function (error) {
                 console.log(error);
@@ -68,7 +73,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: 'post',
-            url: `${process.env.MIX_REACT_APP_URL}/api/deleteDiscount`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/delete-discount`,
             headers: {
                 'Authorization': `Bearer ${props.token}`,
             },
@@ -78,6 +83,7 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
+                getDiscount()
             })
             .catch(function (error) {
                 console.log(error);
@@ -243,24 +249,40 @@ const DiscountTaxes = (props) => {
                 console.log(error);
             });
     }
+    const updateDiscount=()=>{
+        var data = new FormData();
+data.append('id', discountId);
+data.append('name', discountName);
+data.append('value', discountTax);
 
-    const handleClick = (value) => {
-        setDiscountTax(value);
+var config = {
+  method: 'post',
+  url: `${process.env.MIX_REACT_APP_URL}/api/edit-discount`,
+  headers: {
+      'Authorization': `Bearer ${props.token}`,
+  },
+  data : data
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+  setEditId(null)
+        setDiscountName("")
+        setDiscountTax("")
+        getDiscount()
+})
+.catch(function (error) {
+  console.log(error);
+});
+        
     }
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (editId) {
-            discounts.name = discountName;
-            discounts.value = discountTax
-            setDiscounts(discounts)
-            setEditId("")
-            setDiscountName("")
-            setDiscountTax("")
-            addDiscount()
+        if (discountId!==null) {
+            updateDiscount()
         }
         else {
-            setDiscounts({ name: discountName, value: discountTax })
             addDiscount()
         }
     }
@@ -268,15 +290,11 @@ const DiscountTaxes = (props) => {
     const handlUpdate = (value) => {
         setDiscountName(value.name)
         setDiscountTax(value.value)
-        setEditId(value.id)
-        addDiscount()
+        setDiscountId(value.id);
     }
 
     const handleDelete = (id) => {
         deleteDiscount(id)
-        setDiscountArray([...discountArray].filter((discountobj) => {
-            return discountobj.id !== id
-        }))
     }
 
 
@@ -339,7 +357,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: 'get',
-            url: `${process.env.MIX_REACT_APP_URL}/api/getDiscount?userId=${props.userID}`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/get-discount?userId=${props.userID}`,
             headers: {
                 'Authorization': `Bearer ${props.token}`,
             },
@@ -349,8 +367,7 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
-                let discountTax = response.data.data
-                setDiscounts(discountTax)
+                setDiscounts(response.data.data)
             })
             .catch(function (error) {
                 console.log(error);
@@ -429,7 +446,7 @@ const DiscountTaxes = (props) => {
                                 style={{
                                     width: 120,
                                 }}
-                                onChange={handleClick}
+                                onChange={(e)=>{setDiscountTax(e);}}
                                 value={discountTax || "Select"}
                             >
                                 <Option value={10}>10</Option>
@@ -452,14 +469,17 @@ const DiscountTaxes = (props) => {
                             </tr>
                         }
                         {
-                            discounts &&
-                            <tr className='discount-output_body'>
+                            discounts.length>0 &&
+                            discounts.map((dis,index)=>{
+                                return <tr className='discount-output_body'>
 
-                                <td>{discounts.name}</td>
-                                <td>${discounts.value}</td>
-                                <td><img style={{ width: '18px', height: '18px', marginRight: '30px', cursor: 'pointer' }} src={edit} onClick={() => { handlUpdate(discounts) }} />
-                                    <img style={{ width: '16px', height: '16px', cursor: 'pointer' }} src={cross} onClick={() => { handleDelete(discounts.id) }} /></td>
+                                <td>{dis.name}</td>
+                                <td>${dis.value}</td>
+                                <td><img style={{ width: '18px', height: '18px', marginRight: '30px', cursor: 'pointer' }} src={edit} onClick={() => { handlUpdate(dis) }} />
+                                    <img style={{ width: '16px', height: '16px', cursor: 'pointer' }} src={cross} onClick={() => { handleDelete(dis.id) }} /></td>
                             </tr>
+                            })
+                            
 
                         }
 
