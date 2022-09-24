@@ -5,12 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Prescription;
 use App\Models\Invoices;
+use App\Models\Customer;
 use Illuminate\Http\Transactions;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Validator;
-
+use Carbon\Carbon;
 class InvoicesController extends Controller
 {
     public function index(Request $request){
@@ -30,7 +31,54 @@ class InvoicesController extends Controller
             ->get();
         return $this->sendResponse($invoices, 'Invoices List');
     }
+    
+    public function saveInvoice(Request $request){
+        $validator = Validator::make($request->all(), [
+            'userId' => 'required',
+            'staffId' => 'required',
+            'fname' => 'required',
+            'lname' => 'required',
+            'dob' => 'required',
+            'email' => 'required',
+            'amount' => 'required',
+            'vpState' => 'required',
+            'userState' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+    
+      $dob = Carbon::parse($request->dob)->format('Y-m-d');
+  
+      $customer = new Customer;
+      $customer->user_id = $request->userId;
+      $customer->fname = $request->fname;
+      $customer->lname = $request->lname;
+      $customer->dob = $dob;
+      $customer->email = $request->email;
+      $customer->phone = $request->phone;
+      $customer->created_by = $request->userId;
+      
+      $customer->save();
 
+     
+      $invoice = new Invoices;
+      $invoice->user_id = $request->userId;
+      $invoice->staff_id = $request->staffId;
+      $invoice->customer_id = $customer->id;
+      $invoice->amount = $request->amount;
+      $invoice->vp_state = $request->vpState;
+      $invoice->user_state = $request->userState;
+      $invoice->created_by = $request->userId;
+
+      $invoice->save();
+
+      if($invoice){
+        return $this->sendResponse($invoice, 'Invoice Successfully Save.');
+      }
+
+      return $this->sendError('Something went wrong!');
+    }
     public function viewInvoice(Request $request){
 
         $validator = Validator::make($request->all(), [

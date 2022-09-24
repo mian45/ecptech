@@ -13,6 +13,9 @@ import SunglassLens from "../sunglassLens";
 import ViewInvoice from "../viewInvoice";
 import VisionBenifits from "../visionBenifits";
 import classes from "./styles.module.scss";
+import { Formik } from "formik";
+import * as Yup from "yup";
+import { CalculatorInitialValues } from "../../data/initialValues";
 
 const CalculatorScreen = () => {
     const [showInvoice, setShowInvoice] = useState(false);
@@ -22,29 +25,51 @@ const CalculatorScreen = () => {
     const HideInvoice = () => {
         setShowInvoice(false);
     };
+
+    const handleClick = (values) => {
+        console.log("values", values);
+    };
     return (
         <div className={classes["container"]}>
-            {showInvoice && <ViewInvoice onClose={HideInvoice} />}
-            <InvoiceInfo />
-            <div className={classes["sub-container"]}>
-                <SelectVisionPlan />
-                <VisionBenifits />
-                <FrameOrder />
-                <LoweredCopay />
-                <LensType />
-                <LensMeterials />
-                <Photochromics />
-                <SunglassLens />
-                <AntireFlextive />
-                <ProtectionPlan />
-                <GlassesProtection />
-                <button
-                    className={classes["submit-button"]}
-                    onClick={ShowInvoice}
-                >
-                    Create Invoice
-                </button>
-            </div>
+            <Formik
+                initialValues={CalculatorInitialValues}
+                validationSchema={Yup.object().shape({})}
+                onSubmit={handleClick}
+            >
+                {(formProps) => {
+                    return (
+                        <form
+                            onSubmit={formProps.handleSubmit}
+                            autoComplete="off"
+                        >
+                            {showInvoice && (
+                                <ViewInvoice onClose={HideInvoice} />
+                            )}
+                            <InvoiceInfo formProps={formProps} />
+                            <div className={classes["sub-container"]}>
+                                <SelectVisionPlan formProps={formProps} />
+                                <VisionBenifits formProps={formProps} />
+                                <FrameOrder formProps={formProps} />
+                                <LoweredCopay formProps={formProps} />
+                                <LensType formProps={formProps} />
+                                <LensMeterials formProps={formProps} />
+                                <Photochromics formProps={formProps} />
+                                <SunglassLens formProps={formProps} />
+                                <AntireFlextive formProps={formProps} />
+                                <ProtectionPlan formProps={formProps} />
+                                <GlassesProtection formProps={formProps} />
+                                <button
+                                    className={classes["submit-button"]}
+                                    onClick={ShowInvoice}
+                                    type={"submit"}
+                                >
+                                    Create Invoice
+                                </button>
+                            </div>
+                        </form>
+                    );
+                }}
+            </Formik>
         </div>
     );
 };

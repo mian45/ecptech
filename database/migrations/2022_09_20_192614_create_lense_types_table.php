@@ -16,8 +16,11 @@ return new class extends Migration
         Schema::create('lense_types', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->unsignedBigInteger('vision_plan_id');
             $table->softDeletes();
             $table->timestamps();
+
+            $table->foreign('vision_plan_id')->references('id')->on('vision_plans');
 
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
