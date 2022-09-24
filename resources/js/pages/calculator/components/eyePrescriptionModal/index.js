@@ -1,11 +1,68 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomModal from "../../../../components/customModal";
 import classes from "./styles.module.scss";
 import closeIcon from "../../../../../images/cross.png";
 import eyeLens from "../../../../../images/eye-lens.svg";
-import CustomSelect from "../../../../components/customSelect";
+import AntdSelect from "../../../../components/customSelect/antdSelect";
+import { connect } from "react-redux";
+import Axios from "../../../../Http";
 
-const EyePrescriptionModal = ({ onClose }) => {
+const EyePrescriptionModal = ({ onClose, userId }) => {
+    const [eyeValues, setEyeValues] = useState({
+        rightEyeSPH: "",
+        rightEyeCYL: "",
+        leftEyeSPH: "",
+        leftEyeCYL: "",
+    });
+
+    useEffect(() => {
+        const getEyePrescriprion = async () => {
+            try {
+                const res = await Axios.post("/api/eye-prescriptions", {
+                    user_id: userId,
+                });
+                console.log("ressssssssssss", res);
+            } catch (err) {
+                console.log("error while get eyes Records");
+            }
+        };
+        getEyePrescriprion();
+    }, []);
+
+    const handleValueChange = (value, key) => {
+        setEyeValues({ ...eyeValues, [key]: value });
+    };
+    const handleDisable = () => {
+        if (
+            !!eyeValues?.rightEyeSPH &&
+            !!eyeValues?.rightEyeCYL &&
+            !!eyeValues?.leftEyeSPH &&
+            !!eyeValues?.leftEyeCYL
+        ) {
+            return false;
+        }
+        return true;
+    };
+    const handleSubmit = async () => {
+        try {
+            try {
+                const res = await Axios.post(
+                    "/api/eye-prescriptions-calculator",
+                    {
+                        right_eye_sphere: eyeValues?.rightEyeSPH,
+                        right_eye_cylinder: eyeValues?.rightEyeCYL,
+                        left_eye_sphere: eyeValues?.leftEyeSPH,
+                        left_eye_cylinder: eyeValues?.leftEyeCYL,
+                    }
+                );
+                console.log("ressssssssssss", res);
+            } catch (err) {
+                console.log("error while get eyes Records");
+            }
+        } catch (err) {
+            console.log("error while submit Eye Details");
+        }
+    };
     return (
         <CustomModal onClose={onClose}>
             <div
@@ -33,20 +90,28 @@ const EyePrescriptionModal = ({ onClose }) => {
                             <div className={classes["select-label"]}>
                                 Sphere (SPH)
                             </div>
-                            <CustomSelect
-                                style={{ width: "345px" }}
+                            <AntdSelect
                                 options={NAME_OPTIONS}
                                 placeholder="Select Spherical"
+                                style={{ width: "345px" }}
+                                value={eyeValues?.rightEyeSPH}
+                                onChange={(value) =>
+                                    handleValueChange(value, "rightEyeSPH")
+                                }
                             />
                         </div>
                         <div className={classes["info-section"]}>
                             <div className={classes["select-label"]}>
                                 Cylinder (CYL)
                             </div>
-                            <CustomSelect
+                            <AntdSelect
                                 style={{ width: "345px" }}
                                 options={NAME_OPTIONS}
                                 placeholder="Select Cylinder"
+                                value={eyeValues?.rightEyeCYL}
+                                onChange={(value) =>
+                                    handleValueChange(value, "rightEyeCYL")
+                                }
                             />
                         </div>
                     </div>
@@ -60,25 +125,44 @@ const EyePrescriptionModal = ({ onClose }) => {
                             <div className={classes["select-label"]}>
                                 Sphere (SPH)
                             </div>
-                            <CustomSelect
+                            <AntdSelect
                                 style={{ width: "345px" }}
                                 options={NAME_OPTIONS}
                                 placeholder="Select Spherical"
+                                value={eyeValues?.leftEyeSPH}
+                                onChange={(value) =>
+                                    handleValueChange(value, "leftEyeSPH")
+                                }
                             />
                         </div>
                         <div className={classes["info-section"]}>
                             <div className={classes["select-label"]}>
                                 Cylinder (CYL)
                             </div>
-                            <CustomSelect
+                            <AntdSelect
                                 style={{ width: "345px" }}
                                 options={NAME_OPTIONS}
                                 placeholder="Select Cylinder"
+                                value={eyeValues?.leftEyeCYL}
+                                onChange={(value) =>
+                                    handleValueChange(value, "leftEyeCYL")
+                                }
                             />
                         </div>
                     </div>
                 </LensSlot>
-                <button className={classes["submit-button"]}>Submit</button>
+                <button
+                    className={classes["submit-button"]}
+                    disabled={handleDisable()}
+                    onClick={handleSubmit}
+                    style={{
+                        backgroundColor: handleDisable()
+                            ? "#cbcbcb"
+                            : "#90B0C6",
+                    }}
+                >
+                    Submit
+                </button>
                 <div className={classes["top-label"]}>
                     EYE PRESCRIPTION MATERIAL RESULT:
                 </div>
@@ -123,7 +207,10 @@ const EyePrescriptionModal = ({ onClose }) => {
     );
 };
 
-export default EyePrescriptionModal;
+const mapStateToProps = (state) => ({
+    userId: state.Auth.user?.id,
+});
+export default connect(mapStateToProps)(EyePrescriptionModal);
 
 const AnswerSlot = ({ title, value, className }) => {
     return (

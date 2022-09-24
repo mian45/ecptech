@@ -102,8 +102,8 @@
     margin-bottom: 20px;
     background-color: #90b0c6;
     width: 355px;
-    &:disabled {
-        background-color: #cbcbcb;
+    & :disabled {
+        background-color: #cbcbcb !important;
     }
 }
 
@@ -135,4 +135,7 @@
 }
 .margin-right {
     margin-right: 20px;
+}
+.child-select {
+    width: 350px !important;
 }

@@ -1,4 +1,6 @@
 export const CalculatorInitialValues = {
+    invoiceName: "",
+    staffName: "",
     visionPlan: "",
     isFrameBenifit: "",
     isLensBenifit: "",
