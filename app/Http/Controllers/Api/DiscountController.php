@@ -77,18 +77,18 @@ class DiscountController extends Controller
         $value = $request->value;
 
         $discount = Discount::where('id',$id)->first();
+        if($discount){
         $discount->name = $name;
         $discount->value = $value;
         $discount->save();
+        $success['id'] = $discount->id;
+        $success['user_id'] = $discount->user_id;
+        $success['name'] = $discount->name;
+        $success['value'] = $discount->value;
+        return $this->sendResponse($success, 'Discount Edit successfully');
 
-        if($discount){
-            $success['id'] = $discount->id;
-            $success['user_id'] = $discount->user_id;
-            $success['name'] = $discount->name;
-            $success['value'] = $discount->value;
-            return $this->sendResponse($success, 'Discount Edit successfully');
         }
-        return $this->sendError('Something went wrong!');
+        return $this->sendError('Discount not found');
     }
     public function deleteDiscount(Request $request)
     {

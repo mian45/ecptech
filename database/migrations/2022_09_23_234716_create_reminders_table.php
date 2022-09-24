@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('reminders', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
-            $table->enum('type', ['welcome', 'thankyou','reminder'])->nullable();
-            $table->enum('invoice_type', ['paid', 'unpaid'])->nullable();
+            $table->enum('type', ['orderComplete', 'custom','reminder'])->nullable();
+            $table->enum('invoice_type', ['orderComplete','all','paid', 'unpaid'])->nullable();
             $table->string('subject');
             $table->string('body');
             $table->integer('send_after_day')->nullable();
