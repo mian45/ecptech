@@ -77,7 +77,7 @@ class InvoicesController extends Controller
         return $this->sendResponse($invoice, 'Invoice Successfully Save.');
       }
 
-      return $this->sendError('Some thing went wrong!');
+      return $this->sendError('Something went wrong!');
     }
     public function viewInvoice(Request $request){
 
