@@ -17,11 +17,15 @@ class CalculaterSeeder extends Seeder
     {
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         $this->call([
+            VisionPlansTableSeeder::class,
+            QuestionsTableSeeder::class,
             LenseTypesTableSeeder::class,
             BrandsTableSeeder::class,
             LenseMaterialsTableSeeder::class,
             CollectionsTableSeeder::class,
-            CodesTableSeeder::class          
+            LensesTableSeeder::class,
+            CodesTableSeeder::class,
+            CharacteristicsTableSeeder::class         
         ]);
     }
 }
