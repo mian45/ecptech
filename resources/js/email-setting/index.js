@@ -3,10 +3,10 @@ import { Select } from 'antd';
 const { Option } = Select;
 import { connect } from "react-redux";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
-import { convertToRaw } from 'draft-js';
+import { convertToRaw ,convertFromHTML,EditorState,ContentState} from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToMarkdown from 'draftjs-to-markdown';
-
+import {stateToHTML} from 'draft-js-export-html'; 
 import axios from 'axios';
 
 import edit from "../../images/edit.png"
@@ -32,7 +32,7 @@ const EmailSetting = (props) => {
     const [times, setTimes] = useState('')
     const [timeZone, setTimeZone] = useState('')
     const [emailArray, setEmailArray] = useState([])
-
+    const [timeZones,setTimeZones]=useState([])
     const blockStyleFn = (block) => {
         let alignment = 'left';
         block.findStyleRanges((e) => {
@@ -46,10 +46,35 @@ const EmailSetting = (props) => {
         return `editor-alignment-${alignment}`;
     };
 
+    useEffect(()=>{
+        getTimeZones()
 
+    },[])
     useEffect(() => {
         getReminder()
     }, [])
+    const getTimeZones=()=>{
+        var data = new FormData();
+
+var config = {
+  method: 'get',
+  url: `${process.env.MIX_REACT_APP_URL}/api/get-time-zone`,
+  headers: { 
+    'Authorization': `Bearer ${props.token}`,
+  },
+  data : data
+};
+
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+  setTimeZones(response.data.data)
+})
+.catch(function (error) {
+  console.log(error);
+});
+
+    }
 
     const onEditorStateChange = (editorState) => {
         console.log(editorState, 'value');
@@ -59,6 +84,14 @@ const EmailSetting = (props) => {
 
     const addReminder = () => {
         var data = new FormData();
+       if(reminderType ==="orderComplete"){
+        data.append('userId', props.userID);
+        data.append('type', reminderType);
+        data.append('invoiceType', reminderType);
+        data.append('subject', subject);
+        data.append('body', draftToMarkdown(convertToRaw(editorState.getCurrentContent())));
+       }
+       else{
         data.append('userId', props.userID);
         data.append('type', reminderType);
         data.append('invoiceType', sentTo);
@@ -67,10 +100,11 @@ const EmailSetting = (props) => {
         data.append('sendDate', dates);
         data.append('sendTime', times);
         data.append('TimeZone', timeZone);
+       }
 
         var config = {
             method: 'post',
-            url: `${process.env.MIX_REACT_APP_URL}/api/addReminder`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/add-reminder`,
             headers: {
                 'Authorization': `Bearer ${props.token}`,
             },
@@ -80,6 +114,7 @@ const EmailSetting = (props) => {
         axios(config)
             .then(function (response) {
                 console.log(JSON.stringify(response.data));
+                getReminder()
             })
             .catch(function (error) {
                 console.log(error);
@@ -100,7 +135,7 @@ const EmailSetting = (props) => {
 
         var config = {
             method: 'post',
-            url: `${process.env.MIX_REACT_APP_URL}/api/editReminder`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/edit-reminder`,
             headers: {
                 'Authorization': `Bearer ${props.token}`,
             },
@@ -132,7 +167,7 @@ const EmailSetting = (props) => {
 
         var config = {
             method: 'post',
-            url: `${process.env.MIX_REACT_APP_URL}/api/deleteReminder`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/delete-reminder`,
             headers: {
                 'Authorization': `Bearer ${props.token}`,
             },
@@ -154,7 +189,7 @@ const EmailSetting = (props) => {
 
         var config = {
             method: 'get',
-            url: `${process.env.MIX_REACT_APP_URL}/api/getReminders?userId=${props.userID}`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/get-reminders?userId=${props.userID}`,
             headers: {
                 'Authorization': `Bearer ${props.token}`,
             },
@@ -184,11 +219,13 @@ const EmailSetting = (props) => {
 
     const updateHandler = (obj) => {
         setIdState(obj.id)
-        console.log(obj.id);
         setReminderType(obj.type)
         setSentTo(obj.invoice_type)
-        setSubject(obj.subject)
-        setEditorState(obj.body)
+        const contentBlock = convertFromHTML(obj.body);
+        const contentState = ContentState.createFromBlockArray(contentBlock);
+        const editorState = EditorState.createWithContent(contentState);
+        setEditorState(editorState)
+        setSubject(obj.subject) 
         setDates(obj.send_date)
         setTimes(obj.send_time)
         setTimeZone(obj.time_zone)
@@ -317,7 +354,8 @@ const EmailSetting = (props) => {
                                         value={reminderType || "Select"}
                                     >
                                         <Option value={'reminder'}>Reminder</Option>
-                                        <Option value={'orderComplete'}>Thank You</Option>
+                                        <Option value={'orderComplete'}>Order Complete</Option>
+                                        <Option value={'custom'}>Custom</Option>
                                     </Select>
                                 </div>
                                 {
@@ -339,20 +377,7 @@ const EmailSetting = (props) => {
                                             </Select>
                                         </div>
                                         :
-                                        <div className='email-remainder_input-sections_input-section'>
-                                            <p>Send to</p>
-                                            <Select
-
-                                                defaultValue="Select"
-                                                style={{
-                                                    width: 120,
-                                                }}
-                                                onChange={handleSentToClick}
-                                                value={sentTo || "Select"}
-                                            >
-                                                <Option value={'thanku'}>Thank You</Option>
-                                            </Select>
-                                        </div>
+                                       null
                                 }
 
 
@@ -421,6 +446,7 @@ const EmailSetting = (props) => {
                                         </div>
                                         <div className='email-remainder_input-sections_input-section'>
                                             <p>Time Zone</p>
+                                            {console.log("the time zones are here",timeZones)}
                                             <Select
 
                                                 defaultValue="Select"
@@ -430,7 +456,9 @@ const EmailSetting = (props) => {
                                                 onChange={handleTimeZoneClick}
                                                 value={timeZone || "Select"}
                                             >
-                                                <Option value={'Washington, DC, USA (GMT-4)'}>Washington, DC, USA (GMT-4)</Option>
+                                                {timeZones.map((zone,index)=>{
+                                                    return <Option value={zone.id}>{zone.name}</Option>
+                                                })}
                                             </Select>
                                         </div>
                                     </>
