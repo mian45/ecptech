@@ -6,7 +6,7 @@ import moreIcon from "../../../../../images/more-icon.svg";
 const InvoicesTableBodySlot = ({ data }) => {
     return (
         <tr className={classes["container"]}>
-            <td>{data?.invoice}</td>
+            <td className={classes["first-column"]}>{data?.invoice}</td>
             <td>{data?.customerName}</td>
             <td>{data?.email}</td>
             <td>{data?.date}</td>

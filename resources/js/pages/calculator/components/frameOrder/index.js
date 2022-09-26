@@ -28,6 +28,7 @@ const FrameOrder = ({ formProps }) => {
                                 value={values?.frameRetailFee}
                                 id="frameRetailFee"
                                 name="frameRetailFee"
+                                step={0.01}
                             />
                         </div>
                         <FormikError name={"frameRetailFee"} />
@@ -49,6 +50,7 @@ const FrameOrder = ({ formProps }) => {
                                 value={values?.frameContribution}
                                 id="frameContribution"
                                 name="frameContribution"
+                                step={0.01}
                             />
                         </div>
                         <FormikError name={"frameContribution"} />

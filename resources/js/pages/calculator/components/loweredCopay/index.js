@@ -182,6 +182,7 @@ const SpecialCopaySlot = ({ title, formProps, radioValue, inputValue }) => {
                             value={values[inputValue]}
                             id={inputValue}
                             name={inputValue}
+                            step={0.01}
                         />
                     </div>
                     <FormikError name={inputValue} />

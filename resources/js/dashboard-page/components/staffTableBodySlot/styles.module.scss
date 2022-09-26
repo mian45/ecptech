@@ -1,12 +1,14 @@
 .container {
     border-bottom: 1px solid #e8e8e8;
     font-size: 16px;
-    background-color: #ffffff;
+    background-color: #f9f9fb;
     font-family: Montserrat;
     &:hover {
-        background-color: #e8e8e8;
+        background-color: #ffffff;
     }
     td {
         text-align: center;
+        padding-top: 20px;
+        padding-bottom: 20px;
     }
 }

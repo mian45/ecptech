@@ -165,6 +165,7 @@ const ProtectionPlan = ({ formProps }) => {
                                                 }
                                                 id="protectionPlanAmount"
                                                 name="protectionPlanAmount"
+                                                step={0.01}
                                             />
                                         </div>
                                         <FormikError

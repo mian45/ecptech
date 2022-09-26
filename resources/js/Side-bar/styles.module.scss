@@ -1,12 +1,14 @@
 .container {
     width: 100px;
     position: fixed;
+    top: 0;
     left: 0;
     display: flex;
     flex-direction: column;
     background-color: #6fa5cb;
     box-shadow: 3px 0px 6px #00000008;
     min-height: 100vh;
+    padding-top: 100px;
 }
 .item-container {
     width: 100%;

@@ -112,6 +112,7 @@ const VisionBenifits = ({ formProps }) => {
                             value={values?.materialCopay}
                             id="materialCopay"
                             name="materialCopay"
+                            step={0.01}
                         />
                     </div>
                     <FormikError name={"materialCopay"} />
