@@ -44,7 +44,8 @@ Route::middleware('auth:api')->group( function () {
     Route::get('getShipping', [ShippingController::class, 'getShipping']);
     Route::post('addShipping', [ShippingController::class, 'addShipping']);
     Route::post('deleteShipping', [ShippingController::class, 'deleteShipping']);
-       
+    
+    Route::get('get-eye-prescriptions', [PrescriptionController::class, 'getEyePrescriptions']);
     Route::post('eye-prescriptions', [PrescriptionController::class, 'eyePrescriptions']);
     Route::post('eye-prescriptions-calculator', [PrescriptionController::class, 'eyePrescriptionsCalculator']);        
     Route::post('profit-comparison', [ProfitComparisonController::class, 'profitComparison']);    
