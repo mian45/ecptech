@@ -90,10 +90,10 @@ class PrescriptionController extends Controller
             array_push($cylinder_to, $ep->cylinder_to);
         }
         $eye_prescription = [
-            'sphere_from' => $sphere_from,
-            'sphere_to'   => $sphere_to,
-            'cylinder_from' => $cylinder_from,
-            'cylinder_to'   => $cylinder_to
+            'right_eye_sph' => $sphere_from,            
+            'right_eye_cyl' => $cylinder_from,
+            'left_eye_sph'   => $sphere_to,
+            'left_eye_cyl'   => $cylinder_to
         ];
         return $this->sendResponse($eye_prescription, 'Eye Prescription data');   
     }
