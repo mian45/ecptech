@@ -14,6 +14,7 @@ class TimeZoneSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('timezones')->truncate();
         DB::table('timezones')->insert(array(
             array(
 

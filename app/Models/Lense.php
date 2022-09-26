@@ -5,11 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LenseType extends Model
+class Lense extends Model
 {
     use HasFactory;
-    
-    public function visionplan(){
-        return $this->belongsTo(VisionPlan::class);
-    }
 }

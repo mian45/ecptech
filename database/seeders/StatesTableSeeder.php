@@ -14,6 +14,7 @@ class StatesTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('states')->truncate();
         DB::table('states')->insert(array(
             array(
                 'name' => "California",
