@@ -20,7 +20,7 @@ class InvoiceCalculaterController extends Controller
     public function calculaterData (Request $request){
 
         //It will be dynamic when users setting/permission work is done in next sprint
-        $data['questions'] = array(
+        $data['questions']['VSP Signature'] = array(
             "visionPlan"=>["visibility"=>true, "optional"=>true],
             "frameBenefit"=>["visibility"=>true, "optional"=>true],
             "lensBenefit"=>["visibility"=>true, "optional"=>true],
@@ -35,8 +35,9 @@ class InvoiceCalculaterController extends Controller
             "protectionPlan"=>["visibility"=>true, "optional"=>true],
             "shipping"=>["visibility"=>true, "optional"=>true],
         );
+        //
 
-        //It will be dynamic when users etting/permission work is done in next sprint
+        //It will be dynamic according to user permission/setting work in next sprint
        
        $lensetypes = LenseType::get();
        foreach($lensetypes as $lensetype){
@@ -46,6 +47,7 @@ class InvoiceCalculaterController extends Controller
             $data['lens_types'][$lensetype->title] = $collections; 
         }
        }
+       //
 
        $data['lens_material'] = LensMaterial::get();
 
@@ -63,12 +65,13 @@ class InvoiceCalculaterController extends Controller
                     foreach($collections as $collection){
                         $lenses = Lense::where('collection_id',$collection->id)->get();
                         foreach($lenses as $lense ){
+                            $lens_material = LensMaterial::where('id',$lense->lens_material_id)->first();
                             $characteristics = Characteristic::where('lense_id',$lense->id)->get();
                             foreach($characteristics as $characteristic){
 
                                 $code = Code::where('id',$characteristic->code_id)->first();
                                 $data['sheet_data'][$vision_plan->title][$lensetype->title][$brand->title][$collection->title][$lense->title][$characteristic->title] = 
-                                array("type"=>$characteristic->type, "code"=>$code->name,"price"=>$code->price);
+                                array("type"=>$characteristic->type, "code"=>$code->name,"price"=>$code->price,"lens_material"=>$lens_material->title);
                                         
                             }
                         }
