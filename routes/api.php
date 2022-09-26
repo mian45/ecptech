@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\TaxController;
 use App\Http\Controllers\Api\ShippingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\SettingController;
-use App\Http\Controllers\Api\PrescriptionController;
 use App\Http\Controllers\Api\InvoicesController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProfitComparisonController;
@@ -44,10 +43,8 @@ Route::middleware('auth:api')->group( function () {
     Route::get('getShipping', [ShippingController::class, 'getShipping']);
     Route::post('addShipping', [ShippingController::class, 'addShipping']);
     Route::post('deleteShipping', [ShippingController::class, 'deleteShipping']);
-       
-    Route::post('eye-prescriptions', [PrescriptionController::class, 'eyePrescriptions']);
-    Route::post('eye-prescriptions-calculator', [PrescriptionController::class, 'eyePrescriptionsCalculator']);        
-    Route::post('profit-comparison', [ProfitComparisonController::class, 'profitComparison']);    
+          
+    Route::post('profit-comparison', [ProfitComparisonController::class, 'profitComparison']);
 });
 
 
