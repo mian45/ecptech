@@ -67,4 +67,34 @@ class PrescriptionController extends Controller
             ];
         return $this->sendResponse($success, 'Eye Prescription Updated successfully');   
     }
+
+    public function getEyePrescriptions(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $user_id = $request->user_id;
+        $eye_prescription = Prescription::where('user_id',$user_id)->get();
+        $sphere_from = [];
+        $sphere_to = [];
+        $cylinder_from = [];
+        $cylinder_to = [];
+        foreach ($eye_prescription as $ep) {
+            array_push($sphere_from, $ep->sphere_from);
+            array_push($sphere_to, $ep->sphere_to);
+            array_push($cylinder_from, $ep->cylinder_from);
+            array_push($cylinder_to, $ep->cylinder_to);
+        }
+        $eye_prescription = [
+            'right_eye_sph' => $sphere_from,            
+            'right_eye_cyl' => $cylinder_from,
+            'left_eye_sph'   => $sphere_to,
+            'left_eye_cyl'   => $cylinder_to
+        ];
+        return $this->sendResponse($eye_prescription, 'Eye Prescription data');   
+    }
 }
