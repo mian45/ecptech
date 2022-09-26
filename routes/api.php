@@ -44,6 +44,7 @@ Route::middleware('auth:api')->group( function () {
     Route::post('addShipping', [ShippingController::class, 'addShipping']);
     Route::post('deleteShipping', [ShippingController::class, 'deleteShipping']);
           
+    Route::post('profit-comparison', [ProfitComparisonController::class, 'profitComparison']);
 });
 
 
