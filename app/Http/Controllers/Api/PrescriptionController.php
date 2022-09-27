@@ -25,8 +25,7 @@ class PrescriptionController extends Controller
     }
     public function eyePrescriptions(Request $request){
         $prescriptions = $request->eye_prescriptions;
-        $user_id = $request->user_id;
-        $prescriptionExist = Prescription::where('id', $user_id)->first();   
+        $user_id = $request->user_id;  
         if($prescriptions){
             foreach($prescriptions as $ep){
                 $id = (isset($ep['id']) ? $ep['id'] : 0);
@@ -65,7 +64,8 @@ class PrescriptionController extends Controller
             'right_eye_sphere' => 'required',
             'right_eye_cylinder' => 'required',
             'left_eye_sphere' => 'required',
-            'left_eye_cylinder' => 'required'
+            'left_eye_cylinder' => 'required',
+            'user_id' => 'required'
         ]);
 
         if ($validator->fails()) {
@@ -74,12 +74,14 @@ class PrescriptionController extends Controller
         $right_eye_material = Prescription::where('sphere_from', '<=', $request->right_eye_sphere)
         ->where('sphere_to', '>=', $request->right_eye_sphere)
         ->where('cylinder_from', '<=', $request->right_eye_cylinder)
-        ->where('cylinder_to', '>=', $request->right_eye_cylinder)->first();
+        ->where('cylinder_to', '>=', $request->right_eye_cylinder)
+        ->where('user_id', $request->user_id)->first();
 
         $left_eye_material = Prescription::where('sphere_from', '<=', $request->left_eye_sphere)
         ->where('sphere_to', '>=', $request->left_eye_sphere)
         ->where('cylinder_from', '<=', $request->left_eye_cylinder)
-        ->where('cylinder_to', '>=', $request->left_eye_cylinder)->first();
+        ->where('cylinder_to', '>=', $request->left_eye_cylinder)
+        ->where('user_id', $request->user_id)->first();
         $success = [
             'use_material' => [
                 'right_eye_material' => [
