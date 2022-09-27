@@ -12,15 +12,15 @@ import TeamPerformanceChart from "./components/teamPerformanceChart";
 import ProfitStatsChart from "./components/profitStatsChart";
 import AddStaffMembers from "./components/AddStaffMembers";
 
-const Dashboard = ({ userRole }) => {
+const Dashboard = ({ userRole,apiDates }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
     const [summaryStats, setSummaryStats] = useState([]);
     useEffect(() => {
         const getInvoiceStats = async () => {
             try {
                 const invoiceData = {
-                    start_date: "2022-08-16",
-                    end_date: "2022-09-15",
+                    start_date: apiDates.startDate,
+                    end_date: apiDates.endDate,
                 };
                 const res = await Axios.post(
                     process.env.MIX_REACT_APP_URL + "/api/invoice-stats",
@@ -35,14 +35,14 @@ const Dashboard = ({ userRole }) => {
         };
 
         getInvoiceStats();
-    }, []);
+    }, [apiDates]);
 
     useEffect(() => {
         const getSummaryStats = async () => {
             try {
                 const invoiceData = {
-                    start_date: "2022-08-16",
-                    end_date: "2022-09-15",
+                    start_date: apiDates.startDate,
+                    end_date: apiDates.endDate,
                 };
                 const res = await Axios.post(
                     process.env.MIX_REACT_APP_URL + "/api/invoice-summmary",
@@ -56,7 +56,7 @@ const Dashboard = ({ userRole }) => {
         };
 
         getSummaryStats();
-    }, []);
+    }, [apiDates]);
     return (
         <div className={classes["container"]}>
             <div className={classes["left-stats"]}>
