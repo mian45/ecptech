@@ -41,6 +41,7 @@ class InvoicesController extends Controller
             'dob' => 'required',
             'email' => 'required',
             'amount' => 'required',
+            'invoiceName' => 'required',
             'vpState' => 'required',
             'userState' => 'required',
         ]);
@@ -66,10 +67,12 @@ class InvoicesController extends Controller
       $invoice->user_id = $request->userId;
       $invoice->staff_id = $request->staffId;
       $invoice->customer_id = $customer->id;
+      $invoice->name = $request->invoiceName;
       $invoice->amount = $request->amount;
       $invoice->vp_state = $request->vpState;
       $invoice->user_state = $request->userState;
       $invoice->created_by = $request->userId;
+      $invoice->status = 'unpaid';
 
       $invoice->save();
 
@@ -125,6 +128,55 @@ class InvoicesController extends Controller
        }
        
        return $this->sendResponse($invoice, 'Invoice data');
+    }
+
+    public function saveEditInvoice(Request $request){
+        
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'userId' => 'required',
+            'staffId' => 'required',
+            'invoiceName' => 'required',
+            'amount' => 'required',
+            'vpState' => 'required',
+            'userState' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+  
+      $invoice = Invoices::where('id',$request->id)->first();
+      
+      if($invoice){
+       
+        if($invoice->user_state == $request->userState){     
+            return $this->sendResponse($invoice, 'No change in invoice');
+        }else{
+
+            $invoice->status = 'discard';
+            $invoice->save();
+
+            $newInvoice = new Invoices;
+            $newInvoice->user_id = $request->userId;
+            $newInvoice->staff_id = $request->staffId;
+            $newInvoice->customer_id = $invoice->customer_id;
+            $newInvoice->name = $request->invoiceName;
+            $newInvoice->amount = $request->amount;
+            $newInvoice->vp_state = $request->vpState;
+            $newInvoice->user_state = $request->userState;
+            $newInvoice->created_by = $request->userId;
+            $newInvoice->status = 'unpaid';
+            $newInvoice->save();
+      
+            if($newInvoice){
+              return $this->sendResponse($invoice, 'New invoice created uccessfully');
+            }
+
+        }
+    
+    }
+      
+      return $this->sendError('Something went wrong!');
     }
     public function search(Request $request){
         $validator = Validator::make($request->all(), [
