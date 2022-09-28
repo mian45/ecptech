@@ -9,6 +9,9 @@ class Characteristic extends Model
 {
     use HasFactory;
 
+    protected $guarded =['id'];
+
+
     public function lense(){
         return $this->belongsTo(Lense::class);
     }

@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class LenseType extends Model
 {
     use HasFactory;
+
+    protected $guarded = ['id'];
     
     public function visionplan(){
         return $this->belongsTo(VisionPlan::class);
