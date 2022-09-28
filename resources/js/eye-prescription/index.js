@@ -7,6 +7,7 @@ import './style.scss'
 
 
 const EyePrescription = (props) => {
+    const [saveState,setSaveState]=useState(true)
     const [actionType,setActionType]=useState("add")
     const [crsphereFrom, setCrSphereFrom] = useState('')
     const [crsphereTo, setCrSphereTo] = useState('')
@@ -67,6 +68,7 @@ const EyePrescription = (props) => {
 
     const addEyePrescriptions = async () => {
         try {
+            setSaveState(true)
             if(actionType=="add"){
                 var data = {
                     "eye_prescriptions": [
@@ -176,8 +178,64 @@ const EyePrescription = (props) => {
                 process.env.MIX_REACT_APP_URL + "/api/eye-prescriptions",
                 data
             );
-            console.log(res.config.data);
-            getEyePrescriptions()
+            if(res.data.data){
+                res.data.data.map((item,index)=>{
+                    setActionType("update")
+                    switch (item.name) {
+                        case "CR39":
+                            {   setCrSphereFrom(item.sphere_from)
+                                setCrSphereTo(item.sphere_to)
+                                setCrCylinderTo(item.cylinder_to)
+                                setCrCylinderFrom(item.cylinder_from)
+                                setCrId(item.id)
+                            }
+                        case "Polycarbonate":
+                            {
+                                setPbSphereFrom(item.sphere_from)
+                                setPbSphereTo(item.sphere_to)
+                                setPbCylinderTo(item.cylinder_to)
+                                setPbCylinderFrom(item.cylinder_from)
+                                setPbId(item.id)
+                            }
+                        case "Trivex":
+                            {
+                                setTvSphereFrom(item.sphere_from)
+                                setTvSphereTo(item.sphere_to)
+                                setTvCylinderTo(item.cylinder_to)
+                                setTvCylinderFrom(item.cylinder_from)
+                                setTvId(item.id)
+                            }
+                        case "Hi Index 1.67":
+                            {
+                                setHiSphereFrom(item.sphere_from)
+                                setHiSphereTo(item.sphere_to)
+                                setHiCylinderTo(item.cylinder_to)
+                                setHiCylinderFrom(item.cylinder_from)
+                                setHiId(item.id)
+                            }
+                        case "Hi Index 1.70":
+                            {
+                                setHiaSphereFrom(item.sphere_from)
+                                setHiaSphereTo(item.sphere_to)
+                                setHiaCylinderTo(item.cylinder_to)
+                                setHiaCylinderFrom(item.cylinder_from)
+                                setHiaId(item.id)
+                            }
+                        case "Hi Index 1.60":
+                            {
+                                setHifSphereFrom(item.sphere_from)
+                                setHifSphereTo(item.sphere_to)
+                                setHifCylinderTo(item.cylinder_to)
+                                setHifCylinderFrom(item.cylinder_from)
+                                setHifId(item.id)
+                            }
+                    
+                        default:
+                            break;
+                    }
+                })
+                setSaveState(false)
+            }
         } catch (err) {
         }
     };
@@ -206,7 +264,7 @@ const EyePrescription = (props) => {
                                     setPbCylinderFrom(item.cylinder_from)
                                     setPbId(item.id)
                                 }
-                            case  "Trivex":
+                            case "Trivex":
                                 {
                                     setTvSphereFrom(item.sphere_from)
                                     setTvSphereTo(item.sphere_to)
@@ -222,7 +280,7 @@ const EyePrescription = (props) => {
                                     setHiCylinderFrom(item.cylinder_from)
                                     setHiId(item.id)
                                 }
-                            case " Hi Index 1.70":
+                            case "Hi Index 1.70":
                                 {
                                     setHiaSphereFrom(item.sphere_from)
                                     setHiaSphereTo(item.sphere_to)
@@ -230,7 +288,7 @@ const EyePrescription = (props) => {
                                     setHiaCylinderFrom(item.cylinder_from)
                                     setHiaId(item.id)
                                 }
-                            case " Hi Index 1.60":
+                            case "Hi Index 1.60":
                                 {
                                     setHifSphereFrom(item.sphere_from)
                                     setHifSphereTo(item.sphere_to)
@@ -243,6 +301,7 @@ const EyePrescription = (props) => {
                                 break;
                         }
                     })
+                    setSaveState(false)
                 }
 
         } catch (err) {
@@ -803,7 +862,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                     </div>
                 </div>
             </div>
-            <button onClick={handleSubmit} className='eye-prescription_button'>Save</button>
+            <button onClick={handleSubmit} className='eye-prescription_button' disabled={saveState} style={{backgroundColor:saveState?"#ccc":""}}>Save</button>
         </div>
     )
 }
