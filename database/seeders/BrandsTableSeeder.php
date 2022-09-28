@@ -16,7 +16,10 @@ class BrandsTableSeeder extends Seeder
      */
     public function run()
     {
+     
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('brands')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         DB::table('brands')->insert(array(
             array(
 

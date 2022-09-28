@@ -16,7 +16,10 @@ class TransactionTableSeeder extends Seeder
      */
     public function run()
     {
+        
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('transactions')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         Transactions::factory()->count(30)->create();
     }
 }

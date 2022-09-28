@@ -16,7 +16,10 @@ class ReminderTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('prescriptions')->truncate();
+        
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('remainders')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         Reminder::factory()->count(20)->create();
     }
 }
