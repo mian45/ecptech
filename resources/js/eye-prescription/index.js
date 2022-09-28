@@ -7,7 +7,7 @@ import './style.scss'
 
 
 const EyePrescription = (props) => {
-    const [saveState,setSaveState]=useState(true)
+    const [saveState,setSaveState]=useState(false)
     const [actionType,setActionType]=useState("add")
     const [crsphereFrom, setCrSphereFrom] = useState('')
     const [crsphereTo, setCrSphereTo] = useState('')
@@ -237,10 +237,12 @@ const EyePrescription = (props) => {
                 setSaveState(false)
             }
         } catch (err) {
+            setSaveState(false)
         }
     };
     const getEyePrescriptions=async()=>{
         try {
+            setSaveState(true)
             const res = await Axios.get(
                 process.env.MIX_REACT_APP_URL + `/api/prescriptions?user_id=${props.userID} `,
                 );
@@ -301,10 +303,11 @@ const EyePrescription = (props) => {
                                 break;
                         }
                     })
-                    setSaveState(false)
                 }
+                setSaveState(false)
 
         } catch (err) {
+            setSaveState(false)
         }
     }
 useEffect(()=>{getEyePrescriptions()},[])
