@@ -9,6 +9,8 @@ class Brand extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     public function lensetype(){
         return $this->belongsTo(LenseType::class);
     }

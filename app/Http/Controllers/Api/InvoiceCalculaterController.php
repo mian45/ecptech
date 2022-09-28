@@ -13,6 +13,7 @@ use App\Models\Collection;
 use App\Models\Lense;
 use App\Models\Characteristic;
 use App\Models\LensMaterial;
+use Validator;
 
 
 class InvoiceCalculaterController extends Controller
@@ -61,5 +62,131 @@ class InvoiceCalculaterController extends Controller
        
         
         return $this->sendResponse($data, 'Calculater Data');
+    }
+
+    public function storeCSVData(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'csv' => 'required|mimes:csv,txt'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+        
+        $csv = array();
+    
+        if($_FILES['csv']['error'] == 0){
+            $tmpName = $_FILES['csv']['tmp_name'];
+    
+            if(($handle = fopen($tmpName, 'r')) !== FALSE) {
+                
+                DB::beginTransaction();
+
+                $row = 0;
+                try{
+                    while(($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+                        if($row==0){
+                            // number of fields in the csv
+                            $col_count = count($data);
+                        }else{
+                            $data = $this->clear_encoding_str($data);
+
+                            if(!empty($data[0])){
+                                $vision_plan = VisionPlan::updateOrCreate(['title'=> $data[0]]);
+                            }
+
+                            if(!empty($data[1])){
+                                $lens_type = LenseType::updateOrCreate(
+                                    ['title'=> $data[1], 'vision_plan_id'=>$vision_plan->id]
+                                );
+                            }
+
+                            if(!empty($data[2])){
+                                if(strtolower($data[2]) == 'null'){
+                                    $title = 'No Brand';
+                                }else{
+                                    $title = $data[2];
+                                }
+                                $brand = Brand::updateOrCreate(
+                                    ['title'=> $title, 'lens_type_id'=>$lens_type->id]
+                                );
+                            }
+
+                            if(!empty($data[3])){
+                                $collection = Collection::updateOrCreate(
+                                    ['title'=> $data[3], 'brand_id'=>$brand->id]
+                                );
+                            }
+
+                            if(!empty($data[4])){
+                                if(strtolower($data[4]) == 'null'){
+                                    $material_id = null;
+                                }else{
+                                    $material_id = (LensMaterial::updateOrCreate(
+                                        ['lens_material_title'=> $data[4]]
+                                    ))->id;
+                                }
+
+                                
+                            }
+
+                            if(!empty($data[5])){
+                                $lense = Lense::updateOrCreate(
+                                    ['title'=> $data[5], 'collection_id'=>$collection->id, "lens_material_id"=>$material_id]
+                                );
+                            }
+
+                            if(!empty($data[6])){
+                                
+                                $code_id = null;
+                                if(!empty($data[7])){
+                                    
+                                    $code = Code::where('name',$data[7])->first();
+                                    if($code){
+                                        $code_id = $code->id;
+                                    }
+                                }
+
+                                $type = null;
+                                if(!empty($data[8])){
+                                    $type = strtolower($data[8]);
+                                }
+
+                                $characteristic = Characteristic::updateOrCreate(
+                                    ['title'=> $data[6], 'lense_id'=>$lense->id, "code_id"=>$code_id, "type"=>$type]
+                                );
+                            }
+
+                        }
+                        
+                        $row++;
+                    }
+                    fclose($handle);
+                    DB::commit();
+
+                    return $this->sendResponse([], 'CSV data uploaded');
+                }catch(\Exception $e){
+                    DB::rollback();
+                    return $this->sendError($e->getMessage());
+                    
+                }
+                
+            }
+        }
+    
+       
+    }
+
+    private function clear_encoding_str($value)
+    {
+        if (is_array($value)) {
+            $clean = [];
+            foreach ($value as $key => $val) {
+                $clean[$key] = mb_convert_encoding($val, 'UTF-8', 'UTF-8');
+            }
+            return $clean;
+        }
+        return mb_convert_encoding($value, 'UTF-8', 'UTF-8');
     }
 }
