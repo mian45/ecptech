@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Brand extends Model
 {
     use HasFactory;
+
+    public function lensetype(){
+        return $this->belongsTo(LenseType::class);
+    }
+
+    public function collections(){
+        return $this->hasMany(Collection::class);
+    }
+
 }

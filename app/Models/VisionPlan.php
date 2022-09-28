@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class VisionPlan extends Model
 {
     use HasFactory;
+
+    public function lensetypes(){
+        return $this->hasMany(LenseType::class);
+    }
 }

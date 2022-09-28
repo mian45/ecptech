@@ -15,6 +15,7 @@ class InvoicesTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('invoices')->truncate();
         Invoice::factory()->count(20)->create();
     }
 }
