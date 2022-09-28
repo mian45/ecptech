@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AntireFlextive from "../antireFlextive";
 import FrameOrder from "../frameOrder";
 import GlassesProtection from "../glassesProtection";
@@ -16,25 +16,46 @@ import classes from "./styles.module.scss";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { CalculatorInitialValues } from "../../data/initialValues";
+import { calculatorObject } from "../../data/dataObject";
+import {
+    CreateCalculatorValidations,
+    GetMappedPayload,
+} from "../../data/validationHelper";
+import { useHistory } from "react-router";
 
 const CalculatorScreen = () => {
+    const history = useHistory();
     const [showInvoice, setShowInvoice] = useState(false);
-    const ShowInvoice = () => {
-        setShowInvoice(true);
-    };
+    const [calculatorObj, setCalculatorObj] = useState(calculatorObject?.data);
+    const [calValidations, setCalValidations] = useState(null);
+    const [calValues, setCalValues] = useState(null);
+    console.log("history", history.location);
+    const userInfo = history.location?.state;
+    useEffect(() => {
+        if (calculatorObject?.data?.questions) {
+            const validations = CreateCalculatorValidations(
+                calculatorObj?.questions["VSP Signature"]
+            );
+            setCalValidations(validations);
+        }
+    }, []);
+
     const HideInvoice = () => {
         setShowInvoice(false);
     };
 
     const handleClick = (values) => {
-        console.log("values", values);
+        setShowInvoice(true);
+        const calculatorObject = GetMappedPayload(values);
+        setCalValues(calculatorObject);
     };
     return (
         <div className={classes["container"]}>
             <Formik
                 initialValues={CalculatorInitialValues}
-                validationSchema={Yup.object().shape({})}
+                validationSchema={Yup.object().shape({ ...calValidations })}
                 onSubmit={handleClick}
+                enableReinitialize
             >
                 {(formProps) => {
                     return (
@@ -43,24 +64,108 @@ const CalculatorScreen = () => {
                             autoComplete="off"
                         >
                             {showInvoice && (
-                                <ViewInvoice onClose={HideInvoice} />
+                                <ViewInvoice
+                                    onClose={HideInvoice}
+                                    calValues={calValues}
+                                    userInfo={userInfo}
+                                />
                             )}
                             <InvoiceInfo formProps={formProps} />
                             <div className={classes["sub-container"]}>
-                                <SelectVisionPlan formProps={formProps} />
-                                <VisionBenifits formProps={formProps} />
-                                <FrameOrder formProps={formProps} />
-                                <LoweredCopay formProps={formProps} />
-                                <LensType formProps={formProps} />
-                                <LensMeterials formProps={formProps} />
-                                <Photochromics formProps={formProps} />
-                                <SunglassLens formProps={formProps} />
-                                <AntireFlextive formProps={formProps} />
-                                <ProtectionPlan formProps={formProps} />
-                                <GlassesProtection formProps={formProps} />
+                                <SelectVisionPlan
+                                    formProps={formProps}
+                                    calculatorObj={calculatorObj}
+                                />
+                                <VisionBenifits
+                                    formProps={formProps}
+                                    calculatorObj={calculatorObj}
+                                />
+                                <FrameOrder
+                                    formProps={formProps}
+                                    calculatorObj={calculatorObj}
+                                    setCalValidations={setCalValidations}
+                                    calValidations={calValidations}
+                                    data={
+                                        calculatorObject?.data?.questions &&
+                                        calculatorObj?.questions[
+                                            "VSP Signature"
+                                        ]
+                                    }
+                                />
+                                <LoweredCopay
+                                    formProps={formProps}
+                                    calculatorObj={calculatorObj}
+                                    setCalValidations={setCalValidations}
+                                    calValidations={calValidations}
+                                    data={
+                                        calculatorObject?.data?.questions &&
+                                        calculatorObj?.questions[
+                                            "VSP Signature"
+                                        ]
+                                    }
+                                />
+                                <LensType
+                                    formProps={formProps}
+                                    calculatorObj={calculatorObj}
+                                />
+                                <LensMeterials
+                                    formProps={formProps}
+                                    calculatorObj={calculatorObj}
+                                />
+                                <Photochromics
+                                    formProps={formProps}
+                                    calculatorObj={calculatorObj}
+                                    setCalValidations={setCalValidations}
+                                    calValidations={calValidations}
+                                    data={
+                                        calculatorObject?.data?.questions &&
+                                        calculatorObj?.questions[
+                                            "VSP Signature"
+                                        ]
+                                    }
+                                />
+                                <SunglassLens
+                                    formProps={formProps}
+                                    calculatorObj={calculatorObj}
+                                    setCalValidations={setCalValidations}
+                                    calValidations={calValidations}
+                                    data={
+                                        calculatorObject?.data?.questions &&
+                                        calculatorObj?.questions[
+                                            "VSP Signature"
+                                        ]
+                                    }
+                                />
+                                <AntireFlextive
+                                    formProps={formProps}
+                                    calculatorObj={calculatorObj}
+                                    setCalValidations={setCalValidations}
+                                    calValidations={calValidations}
+                                    data={
+                                        calculatorObject?.data?.questions &&
+                                        calculatorObj?.questions[
+                                            "VSP Signature"
+                                        ]
+                                    }
+                                />
+                                <ProtectionPlan
+                                    formProps={formProps}
+                                    calculatorObj={calculatorObj}
+                                    setCalValidations={setCalValidations}
+                                    calValidations={calValidations}
+                                    data={
+                                        calculatorObject?.data?.questions &&
+                                        calculatorObj?.questions[
+                                            "VSP Signature"
+                                        ]
+                                    }
+                                />
+                                <GlassesProtection
+                                    formProps={formProps}
+                                    calculatorObj={calculatorObj}
+                                />
                                 <button
                                     className={classes["submit-button"]}
-                                    onClick={ShowInvoice}
                                     type={"submit"}
                                 >
                                     Create Invoice

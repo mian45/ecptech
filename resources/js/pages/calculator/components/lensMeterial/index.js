@@ -7,9 +7,27 @@ import CustomRadio from "../../../../components/customRadio";
 import icon from "../../../../../images/calculator/lens-material.svg";
 import EyePrescriptionModal from "../eyePrescriptionModal";
 
-const LensMeterials = ({ formProps }) => {
+const LensMeterials = ({ formProps, calculatorObj }) => {
     const { values, handleChange, handleBlur } = formProps;
     const [showModal, setShowModal] = useState(false);
+    const [error, setError] = useState("");
+    const lensMaterialVisibility =
+        calculatorObj?.questions &&
+        calculatorObj?.questions["VSP Signature"]?.lensMaterial?.visibility;
+
+    const handleLensMererialChange = (e) => {
+        handleChange(e);
+        if (values.isCopayPolycarbonate && e.target.value !== "Polycarbonate") {
+            setError("Are you sure? You don't want to avail discount");
+        } else if (
+            values.isCopayHighIndex &&
+            e.target.value.includes("Hi Index")
+        ) {
+            setError("Are you sure? You don't want to avail discount");
+        } else {
+            setError("");
+        }
+    };
 
     const handleOpenModal = () => {
         setShowModal(true);
@@ -18,49 +36,63 @@ const LensMeterials = ({ formProps }) => {
         setShowModal(false);
     };
     return (
-        <div className={classes["container"]}>
-            {showModal && <EyePrescriptionModal onClose={handleCloseModal} />}
-            <QuestionIcon icon={icon} active={values?.lensMaterial} />
-            <div className={classes["vision-container"]}>
-                <CalculatorHeading
-                    title="Lens Material?"
-                    active={values?.lensMaterial}
-                />
-                <Radio.Group
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values?.lensMaterial}
-                    id="lensMaterial"
-                    name="lensMaterial"
-                    className={classes["radio-group"]}
-                >
-                    {LEND_MATERIAL_DATA?.map((lensName, index) => {
-                        return (
-                            <CustomRadio
-                                key={index}
-                                label={lensName}
-                                value={lensName}
-                                headClass={classes["radio"]}
-                                active={values?.lensMaterial === lensName}
-                            />
-                        );
-                    })}
-                </Radio.Group>
-                <FormikError name={"lensMaterial"} />
-                <div className={classes["tagline-box"]}>
-                    <span
-                        className={classes["tagline"]}
-                        onClick={handleOpenModal}
-                    >
-                        Click here
-                    </span>
-                    <span>
-                        to input Rx to determine optimal lens material for your
-                        patient's glasses
-                    </span>
+        <>
+            {lensMaterialVisibility ? (
+                <div className={classes["container"]}>
+                    {showModal && (
+                        <EyePrescriptionModal onClose={handleCloseModal} />
+                    )}
+                    <QuestionIcon icon={icon} active={values?.lensMaterial} />
+                    <div className={classes["vision-container"]}>
+                        <CalculatorHeading
+                            title="Lens Material?"
+                            active={values?.lensMaterial}
+                        />
+                        <Radio.Group
+                            onBlur={handleBlur}
+                            onChange={handleLensMererialChange}
+                            value={values?.lensMaterial}
+                            id="lensMaterial"
+                            name="lensMaterial"
+                            className={classes["radio-group"]}
+                        >
+                            {calculatorObj["lens_material"]?.map(
+                                (lensName, index) => {
+                                    return (
+                                        <CustomRadio
+                                            key={index}
+                                            label={lensName?.title}
+                                            value={lensName?.title}
+                                            headClass={classes["radio"]}
+                                            active={
+                                                values?.lensMaterial ===
+                                                lensName?.title
+                                            }
+                                        />
+                                    );
+                                }
+                            )}
+                        </Radio.Group>
+                        <FormikError name={"lensMaterial"} />
+                        {error && (
+                            <div className={classes["error"]}>{error}</div>
+                        )}
+                        <div className={classes["tagline-box"]}>
+                            <span
+                                className={classes["tagline"]}
+                                onClick={handleOpenModal}
+                            >
+                                Click here
+                            </span>
+                            <span>
+                                to input Rx to determine optimal lens material
+                                for your patient's glasses
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+            ) : null}
+        </>
     );
 };
 

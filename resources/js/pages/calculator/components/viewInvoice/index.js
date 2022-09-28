@@ -1,9 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import CustomModal from "../../../../components/customModal";
 import classes from "./styles.module.scss";
 import closeIcon from "../../../../../images/cross.png";
+import {
+    CRIZAL_SUNSHIELD,
+    POLARIZED,
+    SHAMIR_GLACIER_PLUS_UV,
+    SKI_TYPE_MIRROR,
+    SOLID_SINGLE_GRADIENT,
+    TECHSHIELD_PLUS_UVR,
+} from "../../data/constants";
 
-const ViewInvoice = ({ onClose }) => {
+const ViewInvoice = ({ onClose, calValues, userInfo }) => {
+    const [receipt, setReceipt] = useState({ userInfo, calValues });
+    const calculateTotalDue = () => {
+        const total = 0;
+    };
+
+    const getCoatingPrice = () => {
+        if (
+            receipt?.calValues?.sunGlassesLens?.coatingType ===
+            "Ski Type Mirror"
+        ) {
+            return SKI_TYPE_MIRROR;
+        } else if (
+            receipt?.calValues?.sunGlassesLens?.coatingType ===
+            "Solid/Single Gradient"
+        ) {
+            return SOLID_SINGLE_GRADIENT;
+        } else {
+            return 0;
+        }
+    };
+    const getAntireflectivePrice = () => {
+        if (receipt?.calValues?.type === "Shamir Glacier Plus UV") {
+            return SHAMIR_GLACIER_PLUS_UV;
+        } else if (receipt?.calValues?.type === "TechShield Plus UVR") {
+            return TECHSHIELD_PLUS_UVR;
+        } else if (
+            receipt?.calValues?.type === "Crizal Sunshield (Backside AR Only)"
+        ) {
+            return CRIZAL_SUNSHIELD;
+        }
+    };
     return (
         <CustomModal onClose={onClose}>
             <div
@@ -23,30 +62,32 @@ const ViewInvoice = ({ onClose }) => {
                     <div className={classes["sub-left-container"]}>
                         <InfoSlot
                             title={"Invoice Name"}
-                            subTitle={"John Invoice for Lens"}
+                            subTitle={`${receipt?.calValues?.invoiceName}`}
                         />
                         <InfoSlot
                             title={"Customer Name"}
-                            subTitle={"John Smith"}
+                            subTitle={`${receipt?.userInfo?.firstName} ${receipt?.userInfo?.lastName}`}
                         />
                         <InfoSlot
                             title={"Date of Birth"}
-                            subTitle={"Jun 01, 1982"}
+                            subTitle={receipt?.userInfo?.dob}
                         />
                         <InfoSlot
                             title={"Email"}
-                            subTitle={"john@mymail.com"}
+                            subTitle={receipt?.userInfo?.email}
                         />
-                        <InfoSlot
-                            title={"Phone Number"}
-                            subTitle={"123 456 7890"}
-                        />
+                        {receipt?.userInfo?.phoneNo && (
+                            <InfoSlot
+                                title={"Phone Number"}
+                                subTitle={receipt?.userInfo?.phoneNo}
+                            />
+                        )}
                     </div>
                     <div className={classes["sub-right-container"]}>
                         <div className={classes["page-label"]}>Retail Fees</div>
                         <InvoiceSlot
                             title={"Retail fee of frame"}
-                            subTitle={"$0.00"}
+                            subTitle={`${receipt?.calValues?.frameOrder?.retailFee}`}
                         />
                         <InvoiceSlot
                             title={"Lenses retail fee"}
@@ -56,15 +97,53 @@ const ViewInvoice = ({ onClose }) => {
                         <div className={classes["page-sub-label"]}>
                             Out of pocket Fees
                         </div>
-                        {DATA.map((item, index) => {
-                            return (
-                                <InvoiceSlot
-                                    key={index}
-                                    title={item.title}
-                                    subTitle={item.subTitle}
-                                />
-                            );
-                        })}
+                        <InvoiceSlot
+                            title={"Shamir Computer/Workspace ( Base fee )"}
+                            subTitle={"$50.00"}
+                        />
+                        <InvoiceSlot
+                            title={
+                                "Shamir Computer/Workspace ( Lens Material: Polycarbonate )"
+                            }
+                            subTitle={"$0.00"}
+                        />
+                        <InvoiceSlot
+                            title={"Material Copay"}
+                            subTitle={"$200.00"}
+                        />
+                        <InvoiceSlot
+                            title={
+                                "Photochromic Option: Transitions Signature 8"
+                            }
+                            subTitle={"$75.00"}
+                        />
+                        <InvoiceSlot
+                            title={`Antireflective Properties: ${
+                                receipt?.calValues?.status === "Yes"
+                                    ? receipt?.calValues?.type
+                                    : ""
+                            }`}
+                            subTitle={`$${getAntireflectivePrice()}`}
+                        />
+                        <InvoiceSlot
+                            title={`Mirror Coating: ${receipt?.calValues?.sunGlassesLens?.coatingType}`}
+                            subTitle={`${getCoatingPrice() || 0}`}
+                        />
+                        <InvoiceSlot
+                            title={"Is Sunglass Lens Polarized?"}
+                            subTitle={
+                                receipt?.calValues?.sunGlassesLens?.status
+                            }
+                        />
+                        <InvoiceSlot
+                            title={"Polarized Fee"}
+                            subTitle={
+                                receipt?.calValues?.sunGlassesLens?.lensType ===
+                                "Polarized"
+                                    ? `$${POLARIZED}`
+                                    : "$0.00"
+                            }
+                        />
 
                         <div className={classes["invoice-slot-container"]}>
                             <div className={classes["invoice-slot-title"]}>
@@ -130,38 +209,3 @@ const InvoiceBoldSlot = ({ title, subTitle }) => {
         </div>
     );
 };
-
-const DATA = [
-    {
-        title: "Shamir Computer/Workspace ( Base fee )",
-        subTitle: "$50.00",
-    },
-    {
-        title: "Shamir Computer/Workspace ( Lens Material: Polycarbonate )",
-        subTitle: "$0.00",
-    },
-    {
-        title: "Material Copay",
-        subTitle: "$200.00",
-    },
-    {
-        title: "Photochromic Option: Transitions Signature 8",
-        subTitle: "$75.00",
-    },
-    {
-        title: "Antireflective Properties: Shamir Glacier Plus UV",
-        subTitle: "$85.00",
-    },
-    {
-        title: "Mirror Coating: Ski Type Mirror",
-        subTitle: "$47.00",
-    },
-    {
-        title: "Is Sunglass Lens Polarized?",
-        subTitle: "Yes",
-    },
-    {
-        title: "Polarized Fee",
-        subTitle: "$77.00",
-    },
-];

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import classes from "./styles.module.scss";
 
 const CustomCheckbox = ({
-    defaultChecked,
+    defaultChecked = false,
     onValueChange,
     isDisable,
     label,

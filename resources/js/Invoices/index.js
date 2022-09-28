@@ -27,7 +27,10 @@ const Invoices = ({ userId }) => {
     }, []);
 
     const handleClick = (values) => {
-        history.push(CREATE_INVOICE_ROUTE);
+        history.push({
+            pathname: CREATE_INVOICE_ROUTE,
+            state: values,
+        });
     };
     const handleSearch = async (values) => {
         try {
@@ -69,13 +72,6 @@ const Invoices = ({ userId }) => {
         <div className={classes["root-container"]}>
             <div className={classes["container"]}>
                 <div className={classes["title"]}>Invoices</div>
-                <button
-                    onClick={() => {
-                        history.push(CREATE_INVOICE_ROUTE);
-                    }}
-                >
-                    for testing only
-                </button>
                 <Formik
                     initialValues={InvoiceInitialValues}
                     validationSchema={InvoiceValidation}
