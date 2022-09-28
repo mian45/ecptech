@@ -16,6 +16,7 @@ class InvoiceReminderTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('invoice_reminder')->truncate();
         InvoiceReminder::factory()->count(20)->create();
     }
 }

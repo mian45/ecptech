@@ -15,6 +15,7 @@ class CustomersTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('customers')->truncate();
         DB::table('customers')->insert(array(
             array(
 

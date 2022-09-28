@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class LenseType extends Model
 {
     use HasFactory;
+    
+    public function visionplan(){
+        return $this->belongsTo(VisionPlan::class);
+    }
+
+    public function brands(){
+        return $this->hasMany(Brand::class,'lens_type_id');
+    }
 }
