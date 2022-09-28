@@ -70,6 +70,7 @@ class InvoicesController extends Controller
       $invoice->vp_state = $request->vpState;
       $invoice->user_state = $request->userState;
       $invoice->created_by = $request->userId;
+      $invoice->status = 'unpaid';
 
       $invoice->save();
 
@@ -142,18 +143,35 @@ class InvoicesController extends Controller
         }
   
       $invoice = Invoices::where('id',$request->id)->first();
-      $invoice->user_id = $request->userId;
-      $invoice->staff_id = $request->staffId;
-      $invoice->amount = $request->amount;
-      $invoice->vp_state = $request->vpState;
-      $invoice->user_state = $request->userState;
-      $invoice->created_by = $request->userId;
-      $invoice->save();
-
+      
       if($invoice){
-        return $this->sendResponse($invoice, 'Invoice Edit Successfully.');
-      }
+       
+        if($invoice->user_state == $request->userState){     
+            return $this->sendResponse($invoice, 'No change in invoice');
+        }else{
 
+            $invoice->status = 'discard';
+            $invoice->save();
+
+            $newInvoice = new Invoices;
+            $newInvoice->user_id = $request->userId;
+            $newInvoice->staff_id = $request->staffId;
+            $newInvoice->customer_id = $invoice->customer_id;
+            $newInvoice->amount = $request->amount;
+            $newInvoice->vp_state = $request->vpState;
+            $newInvoice->user_state = $request->userState;
+            $newInvoice->created_by = $request->userId;
+            $newInvoice->status = 'unpaid';
+            $newInvoice->save();
+      
+            if($newInvoice){
+              return $this->sendResponse($invoice, 'New invoice created uccessfully');
+            }
+
+        }
+    
+    }
+      
       return $this->sendError('Something went wrong!');
     }
     public function search(Request $request){

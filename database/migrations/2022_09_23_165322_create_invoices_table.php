@@ -21,7 +21,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2);
             $table->text('vp_state')->nullable();
             $table->text('user_state')->nullable();
-            $table->enum('status', ['paid', 'unpaid'])->nullable();
+            $table->enum('status', ['paid', 'unpaid','discard'])->nullable();
             $table->enum('payment_mode', ['office', 'online'])->nullable();
             $table->timestamps();
             $table->softDeletes();
