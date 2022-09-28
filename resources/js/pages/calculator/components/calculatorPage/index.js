@@ -36,7 +36,6 @@ const CalculatorScreen = () => {
             try {
                 const res = await Axios.get("/api/calculater-data");
                 setCalculatorObj(res?.data?.data);
-                console.log("res", res);
             } catch (err) {
                 console.log("error while fetching Data");
             }
@@ -79,6 +78,9 @@ const CalculatorScreen = () => {
                                     onClose={HideInvoice}
                                     calValues={calValues}
                                     userInfo={userInfo}
+                                    calculatorObj={
+                                        calculatorObj && calculatorObj
+                                    }
                                 />
                             )}
                             <InvoiceInfo formProps={formProps} />

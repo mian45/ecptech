@@ -308,7 +308,7 @@ const SpecialCopaySlot = ({
         handleChange(e);
         const price = getPrice(inputValue);
         if (e.target.value > price) {
-            setErr("You enter a grater amount then total");
+            setErr("You enter a greater amount then total");
         } else {
             setErr("");
         }
@@ -377,6 +377,7 @@ const SpecialCopaySlot = ({
                             id={inputValue}
                             name={inputValue}
                             step={0.01}
+                            min={0.0}
                         />
                     </div>
                     <FormikError name={inputValue} />

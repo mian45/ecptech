@@ -71,14 +71,7 @@ const Invoices = ({ userId }) => {
     return (
         <div className={classes["root-container"]}>
             <div className={classes["container"]}>
-                <div
-                    className={classes["title"]}
-                    onClick={() => {
-                        history.push(CREATE_INVOICE_ROUTE);
-                    }}
-                >
-                    Invoices
-                </div>
+                <div className={classes["title"]}>Invoices</div>
                 <Formik
                     initialValues={InvoiceInitialValues}
                     validationSchema={InvoiceValidation}

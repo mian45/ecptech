@@ -23,7 +23,7 @@ const VisionBenifits = ({ formProps, calculatorObj }) => {
 
     const handleMaterialCopayChange = (e) => {
         handleChange(e);
-        if (e?.target?.value >= 50) {
+        if (e?.target?.value > 50) {
             setErr("Current enter amount is more than $50");
         } else {
             setErr("");

@@ -243,6 +243,7 @@ const ProtectionPlan = ({
                                                         id="protectionPlanAmount"
                                                         name="protectionPlanAmount"
                                                         step={0.01}
+                                                        min={0.0}
                                                     />
                                                 </div>
                                                 <FormikError

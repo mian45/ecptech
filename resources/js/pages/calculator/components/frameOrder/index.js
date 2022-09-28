@@ -39,6 +39,7 @@ const FrameOrder = ({
                                 id="frameRetailFee"
                                 name="frameRetailFee"
                                 step={0.01}
+                                min={0.0}
                             />
                         </div>
                         <FormikError name={"frameRetailFee"} />
@@ -61,6 +62,7 @@ const FrameOrder = ({
                                 id="frameContribution"
                                 name="frameContribution"
                                 step={0.01}
+                                min={0.0}
                             />
                         </div>
                         <FormikError name={"frameContribution"} />

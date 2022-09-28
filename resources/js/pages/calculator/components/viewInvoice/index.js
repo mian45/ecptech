@@ -7,15 +7,34 @@ import {
     DRILL_MOUNT,
     GRADIENT_TINT,
     POLARIZED,
+    SENSITY_PHOTOCHROMIC,
     SHAMIR_GLACIER_PLUS_UV,
     SKI_TYPE_MIRROR,
     SOLID_SINGLE_GRADIENT,
     SOLID_TINT,
+    SUNSYNC_DRIVEXT,
+    SUNSYNC_ELITE_XT,
     TECHSHIELD_PLUS_UVR,
+    TRANSITION_SIGNATURE,
+    TRANSITION_VANTAGE,
+    TRANSITION_XTRACTION,
+    ZEISS_PHOTOFUSION,
 } from "../../data/constants";
+import Axios from "../../../../Http";
+import { connect } from "react-redux";
+import { useHistory } from "react-router";
+import { HOME_ROUTE } from "../../../../appRoutes/routeConstants";
 
-const ViewInvoice = ({ onClose, calValues, userInfo }) => {
+const ViewInvoice = ({
+    onClose,
+    calValues,
+    userInfo,
+    userId,
+    calculatorObj,
+}) => {
+    const history = useHistory();
     const [receipt, setReceipt] = useState(null);
+    const [payable, setPayable] = useState(0);
 
     useEffect(() => {
         setReceipt({
@@ -23,16 +42,39 @@ const ViewInvoice = ({ onClose, calValues, userInfo }) => {
             values: { ...calValues },
         });
     }, [calValues]);
+
+    const handleSendInvoiceClick = async () => {
+        try {
+            const payload = {
+                userId: userId,
+                staffId: receipt?.values?.staffId,
+                invoiceName: receipt?.values?.invoiceName,
+                fname: receipt?.userInfo?.firstName,
+                lname: receipt?.userInfo?.lastName,
+                dob: receipt?.userInfo?.dob,
+                email: receipt?.userInfo?.email,
+                phone: receipt?.userInfo?.phoneNo,
+                amount: payable,
+                vpState: calculatorObj,
+                userState: receipt?.values,
+            };
+            const res = Axios.post("/api/save-invoice", payload);
+            console.log("submitted successfully", res);
+            history.push(HOME_ROUTE);
+        } catch (err) {
+            console.log("error while save Invoice");
+        }
+    };
     const calculateTotalDue = () => {
         let total = 0;
-        total = total + (values?.materialCopay || 0);
+        total = total + (receipt?.values?.materialCopay || 0);
         if (
-            values?.frameOrder?.type === "New Frame Purchase" &&
-            values?.frameOrder?.drillMount === "Yes"
+            receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
+            receipt?.values?.frameOrder?.drillMount === "Yes"
         ) {
             total = total + DRILL_MOUNT;
         }
-        if (values?.sunGlassesLens?.status === "Yes") {
+        if (receipt?.values?.sunGlassesLens?.status === "Yes") {
             {
                 if (values?.sunGlassesLens?.lensType === "Polarized") {
                     total = total + POLARIZED;
@@ -66,22 +108,24 @@ const ViewInvoice = ({ onClose, calValues, userInfo }) => {
             }
         }
         if (
-            values?.protectionPlan?.status === "Yes" &&
-            values?.protectionPlan?.paymentStatus === "Paid"
+            receipt?.values?.protectionPlan?.status === "Yes" &&
+            receipt?.values?.protectionPlan?.paymentStatus === "Paid"
         ) {
             total = total + (values?.protectionPlan?.price || 0);
         }
-        if (values?.shipping?.status === "Yes") {
+        if (receipt?.values?.shipping?.status === "Yes") {
             total = total + (receipt?.values?.shipping?.price || 0);
         }
-        const isPolycarbonateActive = lowerCopaythanStandard?.copayList?.find(
-            (item) => item?.type === "Polycarbonate"
-        );
-        const isHighIndexActive = lowerCopaythanStandard?.copayList?.find(
-            (item) => (item?.type).includes("Hi index")
-        );
+        const isPolycarbonateActive =
+            receipt?.values?.lowerCopaythanStandard?.copayList?.find(
+                (item) => item?.type === "Polycarbonate"
+            );
+        const isHighIndexActive =
+            receipt?.values?.lowerCopaythanStandard?.copayList?.find((item) =>
+                (item?.type).includes("Hi index")
+            );
         if (
-            values?.lensMaterial === "Polycarbonate" &&
+            receipt?.values?.lensMaterial === "Polycarbonate" &&
             isPolycarbonateActive?.status
         ) {
             if (isPolycarbonateActive?.copayType === "$0 Copay") {
@@ -90,7 +134,7 @@ const ViewInvoice = ({ onClose, calValues, userInfo }) => {
                 total = total + (isPolycarbonateActive?.price || 0);
             }
         } else if (
-            values?.lensMaterial === "Hi index" &&
+            receipt?.values?.lensMaterial === "Hi index" &&
             isHighIndexActive?.status
         ) {
             if (isHighIndexActive?.copayType === "$0 Copay") {
@@ -99,7 +143,50 @@ const ViewInvoice = ({ onClose, calValues, userInfo }) => {
                 total = total + (isHighIndexActive?.price || 0);
             }
         } else {
-            getPriceByLensMaterial(values?.lensMaterial);
+            total =
+                total + getPriceByLensMaterial(receipt?.values?.lensMaterial);
+        }
+        const isPhotochromicActive =
+            receipt?.values?.lowerCopaythanStandard?.copayList?.find(
+                (item) => item?.type === "Photochromic"
+            );
+        if (
+            receipt?.values?.photochromics?.status === "Yes" &&
+            isPhotochromicActive?.status
+        ) {
+            if (isPhotochromicActive?.copayType === "$0 Copay") {
+                total = total + 0;
+            } else {
+                total = total + (isPhotochromicActive?.price || 0);
+            }
+            if (receipt?.values?.photochromics?.type) {
+                total =
+                    total +
+                    (getPriceByPhotochromicMaterial(
+                        receipt?.values?.photochromics?.type
+                    ) || 0);
+            }
+        }
+        const isAntiReflectiveActive =
+            receipt?.values?.lowerCopaythanStandard?.copayList?.find(
+                (item) => item?.type === "Anti-Reflective Properties"
+            );
+        if (
+            receipt?.values?.antiReflectiveProperties?.status === "Yes" &&
+            isAntiReflectiveActive?.status
+        ) {
+            if (isAntiReflectiveActive?.copayType === "$0 Copay") {
+                total = total + 0;
+            } else {
+                total = total + (isAntiReflectiveActive?.price || 0);
+            }
+            if (receipt?.values?.antiReflectiveProperties?.type) {
+                total =
+                    total +
+                    (getPriceByAntireflective(
+                        receipt?.values?.antiReflectiveProperties?.type
+                    ) || 0);
+            }
         }
         return total || 0;
     };
@@ -255,7 +342,10 @@ const ViewInvoice = ({ onClose, calValues, userInfo }) => {
                             title={"Total Due"}
                             subTitle={`$${calculateTotalDue()}`}
                         />
-                        <button className={classes["send-button"]}>
+                        <button
+                            className={classes["send-button"]}
+                            onClick={handleSendInvoiceClick}
+                        >
                             Send Invoice
                         </button>
                     </div>
@@ -265,7 +355,10 @@ const ViewInvoice = ({ onClose, calValues, userInfo }) => {
     );
 };
 
-export default ViewInvoice;
+const mapStateToProps = (state) => ({
+    userId: state.Auth.user?.id,
+});
+export default connect(mapStateToProps)(ViewInvoice);
 
 const InfoSlot = ({ title, subTitle }) => {
     return (
@@ -294,6 +387,43 @@ const InvoiceBoldSlot = ({ title, subTitle }) => {
     );
 };
 
-const getPriceByLensMaterial = () => {
-    return 0;
+const getPriceByLensMaterial = (value) => {
+    switch (value) {
+        case "CR39":
+        case "Polycarbonate":
+        case "Trivex":
+        case "Hi Index 1.67":
+        case "Hi index 1.70 and above":
+        case "Hi index 1.60":
+            return 0;
+    }
+};
+
+const getPriceByPhotochromicMaterial = (value) => {
+    switch (value) {
+        case "Transition Signature":
+            return TRANSITION_SIGNATURE;
+        case "Transition XTRActive":
+            return TRANSITION_XTRACTION;
+        case "SunSync / Drive XT":
+            return SUNSYNC_DRIVEXT;
+        case "SunSync Elite / Elite XT":
+            return SUNSYNC_ELITE_XT;
+        case "Sensity Photochromic":
+            return SENSITY_PHOTOCHROMIC;
+        case "ZEISS Photofusion":
+            return ZEISS_PHOTOFUSION;
+        case "Transition Vantage":
+            return TRANSITION_VANTAGE;
+    }
+};
+const getPriceByAntireflective = (value) => {
+    switch (value) {
+        case "Shamir Glacier Plus UV":
+            return 0;
+        case "TechShield Plus UVR":
+            return 0;
+        case "Crizal Sunshield (Backside AR Only)":
+            return 0;
+    }
 };
