@@ -126,6 +126,36 @@ class InvoicesController extends Controller
        
        return $this->sendResponse($invoice, 'Invoice data');
     }
+
+    public function saveEditInvoice(Request $request){
+        
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+            'userId' => 'required',
+            'staffId' => 'required',
+            'amount' => 'required',
+            'vpState' => 'required',
+            'userState' => 'required',
+        ]);
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+  
+      $invoice = Invoices::where('id',$request->id)->first();
+      $invoice->user_id = $request->userId;
+      $invoice->staff_id = $request->staffId;
+      $invoice->amount = $request->amount;
+      $invoice->vp_state = $request->vpState;
+      $invoice->user_state = $request->userState;
+      $invoice->created_by = $request->userId;
+      $invoice->save();
+
+      if($invoice){
+        return $this->sendResponse($invoice, 'Invoice Edit Successfully.');
+      }
+
+      return $this->sendError('Something went wrong!');
+    }
     public function search(Request $request){
         $validator = Validator::make($request->all(), [
             'user_id' => 'required'

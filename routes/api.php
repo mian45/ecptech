@@ -26,6 +26,8 @@ Route::post('login', [RegisterController::class, 'login']);
 Route::post('forgotPassword', [RegisterController::class, 'forgotPassword']);
 Route::post('verifyCode', [RegisterController::class, 'verifyCode']);
 Route::get('get-roles', [RegisterController::class, 'getRoles']);
+
+
 Route::middleware('auth:api')->group( function () {
    
     includeRouteFiles(__DIR__ . '/apis/');
