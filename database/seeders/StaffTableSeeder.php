@@ -16,6 +16,7 @@ class StaffTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('staffs')->truncate();
         Staff::factory()->count(20)->create();
     }
 }

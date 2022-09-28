@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Collection extends Model
 {
     use HasFactory;
+
+    public function brand(){
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function lenses(){
+        return $this->hasMany(Lense::class);
+    }
 }
