@@ -30,7 +30,7 @@ class PrescriptionController extends Controller
             foreach($prescriptions as $ep){
                 $id = (isset($ep['id']) ? $ep['id'] : 0);
                 $prescriptionExist = Prescription::where('id', $id)->where('user_id', $user_id)->first();                                   
-                if($prescriptionExist){
+                if(isset($prescriptionExist)){
                     $eyePrescription =  Prescription::find($id);
                     if($eyePrescription){
                         $eyePrescription->name = $ep['name'];
