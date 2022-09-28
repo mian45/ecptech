@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('customer_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('staff_id');
+            $table->string('name');
             $table->decimal('amount', 10, 2);
             $table->text('vp_state')->nullable();
             $table->text('user_state')->nullable();

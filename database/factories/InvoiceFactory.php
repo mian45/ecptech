@@ -22,6 +22,7 @@ class InvoiceFactory extends Factory
             'customer_id' => Customer::all()->random()->id,
             'user_id' => User::all()->random()->id,
             'staff_id' => Staff::all()->random()->id,
+            'name' => fake()->name(),
             'amount' => fake()->randomDigit,
             'status' => fake()->randomElement(['paid','unpaid']),
             'payment_mode' => fake()->randomElement(['office','online']),
