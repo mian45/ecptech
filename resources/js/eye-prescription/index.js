@@ -177,7 +177,7 @@ const EyePrescription = (props) => {
                 data
             );
             console.log(res.config.data);
-            setActionType("update")
+            getEyePrescriptions()
         } catch (err) {
         }
     };
