@@ -39,48 +39,27 @@ class InvoiceCalculaterController extends Controller
 
         //It will be dynamic according to user permission/setting work in next sprint
        
-       $lensetypes = LenseType::get();
-       foreach($lensetypes as $lensetype){
-        $brands = Brand::where('lens_type_id',$lensetype->id)->get();
-        foreach($brands as $brand){
-            $collections = Collection::where('brand_id',$brand->id)->get();
-            $data['lens_types'][$lensetype->title] = $collections; 
-        }
-       }
-       //
+       $data['lens_types'] = LenseType::with(['brands'=>function($q){
+        $q->with('collections');
+       }])->get();
 
        $data['lens_material'] = LensMaterial::get();
 
 
+       $data['sheet_data'] = VisionPlan::with(['lensetypes'=>function($q){
+        $q->with(['brands'=>function($q){
+            $q->with(['collections'=>function($q){
+                $q->with(['lenses'=>function($q){
+                    $q->join('lens_materials', 'lenses.lens_material_id', '=', 'lens_materials.id');
+                    $q->with(['characteristics' => function($q){
+                        $q->join('codes', 'characteristics.code_id', '=', 'codes.id');
+                    }]);
+                }]);
+            }]);
+        }]);
+       }])->get();
+       
         
-        $vision_plans = VisionPlan::get();
-
-        foreach($vision_plans as $vision_plan){
-            $lensetypes = LenseType::where('vision_plan_id',$vision_plan->id)->get();
-           
-            foreach($lensetypes as $lensetype){
-                $brands = Brand::where('lens_type_id',$lensetype->id)->get();
-                foreach($brands as $brand){
-                    $collections = Collection::where('brand_id',$brand->id)->get();
-                    foreach($collections as $collection){
-                        $lenses = Lense::where('collection_id',$collection->id)->get();
-                        foreach($lenses as $lense ){
-                            $lens_material = LensMaterial::where('id',$lense->lens_material_id)->first();
-                            $characteristics = Characteristic::where('lense_id',$lense->id)->get();
-                            foreach($characteristics as $characteristic){
-
-                                $code = Code::where('id',$characteristic->code_id)->first();
-                                $data['sheet_data'][$vision_plan->title][$lensetype->title][$brand->title][$collection->title][$lense->title][$characteristic->title] = 
-                                array("type"=>$characteristic->type, "code"=>$code->name,"price"=>$code->price,"lens_material"=>$lens_material->title);
-                                        
-                            }
-                        }
-                    }
-                }
-                
-            }
-            
-        }
         return $this->sendResponse($data, 'Calculater Data');
     }
 }

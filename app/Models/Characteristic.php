@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Characteristic extends Model
 {
     use HasFactory;
+
+    public function lense(){
+        return $this->belongsTo(Lense::class);
+    }
+
+    public function code(){
+        return $this->belongsTo(Code::class);
+    }
 }

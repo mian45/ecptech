@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class LensMaterial extends Model
 {
     use HasFactory;
+
+    public function lenses(){
+        return $this->hasMany(Lense::class);
+    }
 }

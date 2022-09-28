@@ -12,4 +12,8 @@ class LenseType extends Model
     public function visionplan(){
         return $this->belongsTo(VisionPlan::class);
     }
+
+    public function brands(){
+        return $this->hasMany(Brand::class,'lens_type_id');
+    }
 }

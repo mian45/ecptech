@@ -20,37 +20,37 @@ class LenseMaterialsTableSeeder extends Seeder
         DB::table('lens_materials')->insert(array(
             array(
 
-                'title' => "CR39",
+                'lens_material_title' => "CR39",
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ),
             array(
 
-                'title' => "Polycarbonate",
+                'lens_material_title' => "Polycarbonate",
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ),
             array(
 
-                'title' => "Trivex",
+                'lens_material_title' => "Trivex",
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ),
             array(
 
-                'title' => "Hi Index 1.67",
+                'lens_material_title' => "Hi Index 1.67",
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ),
             array(
 
-                'title' => "Hi index 1.70 and above",
+                'lens_material_title' => "Hi index 1.70 and above",
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ),
             array(
 
-                'title' => "Hi index 1.60",
+                'lens_material_title' => "Hi index 1.60",
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ) 
