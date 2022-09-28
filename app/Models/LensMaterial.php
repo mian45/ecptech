@@ -9,6 +9,8 @@ class LensMaterial extends Model
 {
     use HasFactory;
 
+    protected $guarded = ['id'];
+
     public function lenses(){
         return $this->hasMany(Lense::class);
     }
