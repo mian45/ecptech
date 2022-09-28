@@ -38,8 +38,6 @@ const EyePrescription = (props) => {
     const [hifCylinderFrom, setHifCylinderFrom] = useState('')
     const [hifCylinderTo, setHifCylinderTo] = useState('')
 
-    const [object, setObject] = useState({})
-
     var quarterHours = ["00", "75", "50", "25"];
     var sphere = [];
     for (var i = -16; i <= 10; i++) {
@@ -66,42 +64,43 @@ const EyePrescription = (props) => {
             var data = {
                 "eye_prescriptions": [
                     {
-                        "id": 2,
+                        "name": "CR39",
                         "sphere_from": crsphereFrom,
                         "sphere_to": crsphereTo,
                         "cylinder_from": crCylinderFrom,
                         "cylinder_to": crCylinderTo
                     },
                     {
-                        "id": 3,
+                        "name": "Plycarbonate",
                         "sphere_from": pbsphereFrom,
                         "sphere_to": pbsphereTo,
                         "cylinder_from": pbCylinderFrom,
                         "cylinder_to": pbCylinderTo
                     },
                     {
-                        "id": 4,
+                        "name": "Trivex",
                         "sphere_from": tvsphereFrom,
                         "sphere_to": tvsphereTo,
                         "cylinder_from": tvCylinderFrom,
                         "cylinder_to": tvCylinderTo
                     },
                     {
-                        "id": 5,
+                        
+                        "name": "Hi Index 1.67",
                         "sphere_from": hisphereFrom,
                         "sphere_to": hisphereTo,
                         "cylinder_from": hiCylinderFrom,
                         "cylinder_to": hiCylinderTo
                     },
                     {
-                        "id": 6,
+                        "name":" Hi Index 1.70",
                         "sphere_from": hiasphereFrom,
                         "sphere_to": hiasphereTo,
                         "cylinder_from": hiaCylinderFrom,
                         "cylinder_to": hiaCylinderTo
                     },
                     {
-                        "id": 7,
+                        "name":" Hi Index 1.60",
                         "sphere_from": hifsphereFrom,
                         "sphere_to": hifsphereTo,
                         "cylinder_from": hifCylinderFrom,
@@ -114,11 +113,70 @@ const EyePrescription = (props) => {
                 process.env.MIX_REACT_APP_URL + "/api/eye-prescriptions",
                 data
             );
-            setObject(res.config.data);
+            console.log(res.config.data);
         } catch (err) {
         }
     };
+    const getEyePrescriptions=async()=>{
+        try {
+            const res = await Axios.get(
+                process.env.MIX_REACT_APP_URL + `/api/prescriptions?user_id=${props.userID} `,
+            );
+                if(res.data.data.length>0){
+                    res.data.data.map((item,index)=>{
+                        switch (item.name) {
+                            case "CR39":
+                                {   setCrSphereFrom(item.sphere_from)
+                                    setCrSphereTo(item.sphere_to)
+                                    setCrCylinderTo(item.cylinder_to)
+                                    setCrCylinderFrom(item.cylinder_from)
+                                }
+                            case "Plycarbonate":
+                                {
+                                    setPbSphereFrom(item.sphere_from)
+                                    setPbSphereTo(item.sphere_to)
+                                    setPbCylinderTo(item.cylinder_to)
+                                    setPbCylinderFrom(item.cylinder_from)
+                                }
+                            case  "Trivex":
+                                {
+                                    setTvSphereFrom(item.sphere_from)
+                                    setTvSphereTo(item.sphere_to)
+                                    setTvCylinderTo(item.cylinder_to)
+                                    setTvCylinderFrom(item.cylinder_from)
+                                }
+                            case "Hi Index 1.67":
+                                {
+                                    setHiSphereFrom(item.sphere_from)
+                                    setHiSphereTo(item.sphere_to)
+                                    setHiCylinderTo(item.cylinder_to)
+                                    setHiCylinderFrom(item.cylinder_from)
+                                }
+                            case " Hi Index 1.70":
+                                {
+                                    setHiaSphereFrom(item.sphere_from)
+                                    setHiaSphereTo(item.sphere_to)
+                                    setHiaCylinderTo(item.cylinder_to)
+                                    setHiaCylinderFrom(item.cylinder_from)
+                                }
+                            case " Hi Index 1.60":
+                                {
+                                    setHifSphereFrom(item.sphere_from)
+                                    setHifSphereTo(item.sphere_to)
+                                    setHifCylinderTo(item.cylinder_to)
+                                    setHifCylinderFrom(item.cylinder_from)
+                                }
+                        
+                            default:
+                                break;
+                        }
+                    })
+                }
 
+        } catch (err) {
+        }
+    }
+useEffect(()=>{getEyePrescriptions()},[])
     return (
         <div className='eye-prescription'>
             <p className='eye-prescription_heading'>Eye Prescription Setting</p>
