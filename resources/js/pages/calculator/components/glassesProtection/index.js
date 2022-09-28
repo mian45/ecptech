@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Radio } from "antd";
 import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
@@ -7,10 +7,14 @@ import classes from "./styles.module.scss";
 import icon from "../../../../../images/calculator/shipping.svg";
 
 const GlassesProtection = ({ formProps, calculatorObj }) => {
-    const { values, handleChange, handleBlur } = formProps;
+    const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const shippingVisibility =
         calculatorObj?.questions &&
         calculatorObj?.questions["VSP Signature"]?.shipping?.visibility;
+
+    useEffect(() => {
+        setFieldValue("shippingAmount", calculatorObj?.shipping);
+    }, []);
     return (
         <>
             {shippingVisibility && (
@@ -55,7 +59,7 @@ const GlassesProtection = ({ formProps, calculatorObj }) => {
                                         $
                                     </div>
                                     <div className={classes["input-shipping"]}>
-                                        {values.shippingAmount}
+                                        {calculatorObj?.shipping}
                                     </div>
                                 </div>
                             </>

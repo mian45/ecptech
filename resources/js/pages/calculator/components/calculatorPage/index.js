@@ -27,7 +27,7 @@ import Axios from "../../../../Http";
 const CalculatorScreen = () => {
     const history = useHistory();
     const [showInvoice, setShowInvoice] = useState(false);
-    const [calculatorObj, setCalculatorObj] = useState(calculatorObject?.data);
+    const [calculatorObj, setCalculatorObj] = useState(null);
     const [calValidations, setCalValidations] = useState(null);
     const [calValues, setCalValues] = useState(null);
     const userInfo = history.location?.state;
@@ -35,6 +35,7 @@ const CalculatorScreen = () => {
         const getCalculatorObject = async () => {
             try {
                 const res = await Axios.get("/api/calculater-data");
+                setCalculatorObj(res?.data?.data);
                 console.log("res", res);
             } catch (err) {
                 console.log("error while fetching Data");
@@ -44,7 +45,7 @@ const CalculatorScreen = () => {
 
         if (calculatorObject?.data?.questions) {
             const validations = CreateCalculatorValidations(
-                calculatorObj?.questions["VSP Signature"]
+                calculatorObj && calculatorObj?.questions["VSP Signature"]
             );
             setCalValidations(validations);
         }
@@ -84,15 +85,21 @@ const CalculatorScreen = () => {
                             <div className={classes["sub-container"]}>
                                 <SelectVisionPlan
                                     formProps={formProps}
-                                    calculatorObj={calculatorObj}
+                                    calculatorObj={
+                                        calculatorObj && calculatorObj
+                                    }
                                 />
                                 <VisionBenifits
                                     formProps={formProps}
-                                    calculatorObj={calculatorObj}
+                                    calculatorObj={
+                                        calculatorObj && calculatorObj
+                                    }
                                 />
                                 <FrameOrder
                                     formProps={formProps}
-                                    calculatorObj={calculatorObj}
+                                    calculatorObj={
+                                        calculatorObj && calculatorObj
+                                    }
                                     setCalValidations={setCalValidations}
                                     calValidations={calValidations}
                                     data={
@@ -104,7 +111,9 @@ const CalculatorScreen = () => {
                                 />
                                 <LoweredCopay
                                     formProps={formProps}
-                                    calculatorObj={calculatorObj}
+                                    calculatorObj={
+                                        calculatorObj && calculatorObj
+                                    }
                                     setCalValidations={setCalValidations}
                                     calValidations={calValidations}
                                     data={
@@ -116,15 +125,21 @@ const CalculatorScreen = () => {
                                 />
                                 <LensType
                                     formProps={formProps}
-                                    calculatorObj={calculatorObj}
+                                    calculatorObj={
+                                        calculatorObj && calculatorObj
+                                    }
                                 />
                                 <LensMeterials
                                     formProps={formProps}
-                                    calculatorObj={calculatorObj}
+                                    calculatorObj={
+                                        calculatorObj && calculatorObj
+                                    }
                                 />
                                 <Photochromics
                                     formProps={formProps}
-                                    calculatorObj={calculatorObj}
+                                    calculatorObj={
+                                        calculatorObj && calculatorObj
+                                    }
                                     setCalValidations={setCalValidations}
                                     calValidations={calValidations}
                                     data={
@@ -136,7 +151,9 @@ const CalculatorScreen = () => {
                                 />
                                 <SunglassLens
                                     formProps={formProps}
-                                    calculatorObj={calculatorObj}
+                                    calculatorObj={
+                                        calculatorObj && calculatorObj
+                                    }
                                     setCalValidations={setCalValidations}
                                     calValidations={calValidations}
                                     data={
@@ -148,7 +165,9 @@ const CalculatorScreen = () => {
                                 />
                                 <AntireFlextive
                                     formProps={formProps}
-                                    calculatorObj={calculatorObj}
+                                    calculatorObj={
+                                        calculatorObj && calculatorObj
+                                    }
                                     setCalValidations={setCalValidations}
                                     calValidations={calValidations}
                                     data={
@@ -160,7 +179,9 @@ const CalculatorScreen = () => {
                                 />
                                 <ProtectionPlan
                                     formProps={formProps}
-                                    calculatorObj={calculatorObj}
+                                    calculatorObj={
+                                        calculatorObj && calculatorObj
+                                    }
                                     setCalValidations={setCalValidations}
                                     calValidations={calValidations}
                                     data={
@@ -172,7 +193,9 @@ const CalculatorScreen = () => {
                                 />
                                 <GlassesProtection
                                     formProps={formProps}
-                                    calculatorObj={calculatorObj}
+                                    calculatorObj={
+                                        calculatorObj && calculatorObj
+                                    }
                                 />
                                 <button
                                     className={classes["submit-button"]}

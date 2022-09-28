@@ -61,12 +61,16 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
                                     return (
                                         <CustomRadio
                                             key={index}
-                                            label={lensName?.title}
-                                            value={lensName?.title}
+                                            label={
+                                                lensName?.lens_material_title
+                                            }
+                                            value={
+                                                lensName?.lens_material_title
+                                            }
                                             headClass={classes["radio"]}
                                             active={
                                                 values?.lensMaterial ===
-                                                lensName?.title
+                                                lensName?.lens_material_title
                                             }
                                         />
                                     );

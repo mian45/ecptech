@@ -17,6 +17,21 @@ const LensType = ({ formProps, calculatorObj }) => {
         }
         return false;
     };
+    const lensTypeValues = () => {
+        return calculatorObj["lens_types"]?.map((value) => value?.title);
+    };
+    const getLensSubValues = () => {
+        const selectedLensType = calculatorObj["lens_types"]?.find(
+            (value) => value?.title === values.lensType
+        );
+        let lenses = [];
+        selectedLensType?.brands?.forEach((element) => {
+            element?.collections?.forEach((lens) => {
+                lenses.push(lens?.title);
+            });
+        });
+        return lenses;
+    };
     return (
         <>
             {lensTypeVisibility ? (
@@ -39,20 +54,16 @@ const LensType = ({ formProps, calculatorObj }) => {
                                 name="lensType"
                                 className={classes["radio-group"]}
                             >
-                                {Object.keys(calculatorObj["lens_types"]).map(
-                                    (lens, index) => {
-                                        return (
-                                            <CustomRadio
-                                                key={index}
-                                                label={lens}
-                                                value={lens}
-                                                active={
-                                                    values?.lensType === lens
-                                                }
-                                            />
-                                        );
-                                    }
-                                )}
+                                {lensTypeValues()?.map((lens, index) => {
+                                    return (
+                                        <CustomRadio
+                                            key={index}
+                                            label={lens}
+                                            value={lens}
+                                            active={values?.lensType === lens}
+                                        />
+                                    );
+                                })}
                             </Radio.Group>
                             <FormikError name={"lensType"} />
                             {values?.lensType && (
@@ -68,21 +79,26 @@ const LensType = ({ formProps, calculatorObj }) => {
                                         name="lensTypeValue"
                                         className={classes["radio-group"]}
                                     >
-                                        {calculatorObj["lens_types"][
-                                            values.lensType
-                                        ]?.map((lens, index) => {
-                                            return (
-                                                <CustomRadio
-                                                    key={index}
-                                                    label={lens?.title}
-                                                    value={lens?.title}
-                                                    active={
-                                                        values?.lensTypeValue ===
-                                                        lens?.title
-                                                    }
-                                                />
-                                            );
-                                        })}
+                                        {getLensSubValues()?.map(
+                                            (lens, index) => {
+                                                return (
+                                                    <CustomRadio
+                                                        headClass={
+                                                            classes[
+                                                                "radio-margin"
+                                                            ]
+                                                        }
+                                                        key={index}
+                                                        label={lens}
+                                                        value={lens}
+                                                        active={
+                                                            values?.lensTypeValue ===
+                                                            lens
+                                                        }
+                                                    />
+                                                );
+                                            }
+                                        )}
                                     </Radio.Group>
                                     <FormikError name={"lensTypeValue"} />
                                 </>

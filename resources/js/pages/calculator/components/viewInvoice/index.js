@@ -4,10 +4,13 @@ import classes from "./styles.module.scss";
 import closeIcon from "../../../../../images/cross.png";
 import {
     CRIZAL_SUNSHIELD,
+    DRILL_MOUNT,
+    GRADIENT_TINT,
     POLARIZED,
     SHAMIR_GLACIER_PLUS_UV,
     SKI_TYPE_MIRROR,
     SOLID_SINGLE_GRADIENT,
+    SOLID_TINT,
     TECHSHIELD_PLUS_UVR,
 } from "../../data/constants";
 
@@ -21,7 +24,84 @@ const ViewInvoice = ({ onClose, calValues, userInfo }) => {
         });
     }, [calValues]);
     const calculateTotalDue = () => {
-        const total = 0;
+        let total = 0;
+        total = total + (values?.materialCopay || 0);
+        if (
+            values?.frameOrder?.type === "New Frame Purchase" &&
+            values?.frameOrder?.drillMount === "Yes"
+        ) {
+            total = total + DRILL_MOUNT;
+        }
+        if (values?.sunGlassesLens?.status === "Yes") {
+            {
+                if (values?.sunGlassesLens?.lensType === "Polarized") {
+                    total = total + POLARIZED;
+                    if (values?.sunGlassesLens?.mirrorCoating === "Yes") {
+                        if (
+                            values?.sunGlassesLens?.coatingType ===
+                            "Ski Type Mirror"
+                        ) {
+                            total = total + SKI_TYPE_MIRROR;
+                        } else {
+                            total = total + SOLID_SINGLE_GRADIENT;
+                        }
+                    }
+                } else if (values?.sunGlassesLens?.lensType === "Tint") {
+                    if (values?.sunGlassesLens?.tintType === "Solid Tint") {
+                        total = total + SOLID_TINT;
+                    } else {
+                        total = total + GRADIENT_TINT;
+                    }
+                    if (values?.sunGlassesLens?.mirrorCoating === "Yes") {
+                        if (
+                            values?.sunGlassesLens?.coatingType ===
+                            "Ski Type Mirror"
+                        ) {
+                            total = total + SKI_TYPE_MIRROR;
+                        } else {
+                            total = total + SOLID_SINGLE_GRADIENT;
+                        }
+                    }
+                }
+            }
+        }
+        if (
+            values?.protectionPlan?.status === "Yes" &&
+            values?.protectionPlan?.paymentStatus === "Paid"
+        ) {
+            total = total + (values?.protectionPlan?.price || 0);
+        }
+        if (values?.shipping?.status === "Yes") {
+            total = total + (receipt?.values?.shipping?.price || 0);
+        }
+        const isPolycarbonateActive = lowerCopaythanStandard?.copayList?.find(
+            (item) => item?.type === "Polycarbonate"
+        );
+        const isHighIndexActive = lowerCopaythanStandard?.copayList?.find(
+            (item) => (item?.type).includes("Hi index")
+        );
+        if (
+            values?.lensMaterial === "Polycarbonate" &&
+            isPolycarbonateActive?.status
+        ) {
+            if (isPolycarbonateActive?.copayType === "$0 Copay") {
+                total = total + 0;
+            } else {
+                total = total + (isPolycarbonateActive?.price || 0);
+            }
+        } else if (
+            values?.lensMaterial === "Hi index" &&
+            isHighIndexActive?.status
+        ) {
+            if (isHighIndexActive?.copayType === "$0 Copay") {
+                total = total + 0;
+            } else {
+                total = total + (isHighIndexActive?.price || 0);
+            }
+        } else {
+            getPriceByLensMaterial(values?.lensMaterial);
+        }
+        return total || 0;
     };
 
     const getCoatingPrice = () => {
@@ -173,7 +253,7 @@ const ViewInvoice = ({ onClose, calValues, userInfo }) => {
                         </div>
                         <InvoiceBoldSlot
                             title={"Total Due"}
-                            subTitle={"$534.20"}
+                            subTitle={`$${calculateTotalDue()}`}
                         />
                         <button className={classes["send-button"]}>
                             Send Invoice
@@ -212,4 +292,8 @@ const InvoiceBoldSlot = ({ title, subTitle }) => {
             <div className={classes["invoice-bold-slot-title"]}>{subTitle}</div>
         </div>
     );
+};
+
+const getPriceByLensMaterial = () => {
+    return 0;
 };
