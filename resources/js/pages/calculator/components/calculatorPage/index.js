@@ -22,6 +22,7 @@ import {
     GetMappedPayload,
 } from "../../data/validationHelper";
 import { useHistory } from "react-router";
+import Axios from "../../../../Http";
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -29,9 +30,18 @@ const CalculatorScreen = () => {
     const [calculatorObj, setCalculatorObj] = useState(calculatorObject?.data);
     const [calValidations, setCalValidations] = useState(null);
     const [calValues, setCalValues] = useState(null);
-    console.log("history", history.location);
     const userInfo = history.location?.state;
     useEffect(() => {
+        const getCalculatorObject = async () => {
+            try {
+                const res = await Axios.get("/api/calculater-data");
+                console.log("res", res);
+            } catch (err) {
+                console.log("error while fetching Data");
+            }
+        };
+        getCalculatorObject();
+
         if (calculatorObject?.data?.questions) {
             const validations = CreateCalculatorValidations(
                 calculatorObj?.questions["VSP Signature"]
@@ -46,8 +56,8 @@ const CalculatorScreen = () => {
 
     const handleClick = (values) => {
         setShowInvoice(true);
-        const calculatorObject = GetMappedPayload(values);
-        setCalValues(calculatorObject);
+        const arrangedValues = GetMappedPayload(values);
+        setCalValues(arrangedValues);
     };
     return (
         <div className={classes["container"]}>

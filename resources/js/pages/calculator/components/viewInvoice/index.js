@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomModal from "../../../../components/customModal";
 import classes from "./styles.module.scss";
 import closeIcon from "../../../../../images/cross.png";
@@ -12,19 +12,25 @@ import {
 } from "../../data/constants";
 
 const ViewInvoice = ({ onClose, calValues, userInfo }) => {
-    const [receipt, setReceipt] = useState({ userInfo, calValues });
+    const [receipt, setReceipt] = useState(null);
+
+    useEffect(() => {
+        setReceipt({
+            userInfo: userInfo,
+            values: { ...calValues },
+        });
+    }, [calValues]);
     const calculateTotalDue = () => {
         const total = 0;
     };
 
     const getCoatingPrice = () => {
         if (
-            receipt?.calValues?.sunGlassesLens?.coatingType ===
-            "Ski Type Mirror"
+            receipt?.values?.sunGlassesLens?.coatingType === "Ski Type Mirror"
         ) {
             return SKI_TYPE_MIRROR;
         } else if (
-            receipt?.calValues?.sunGlassesLens?.coatingType ===
+            receipt?.values?.sunGlassesLens?.coatingType ===
             "Solid/Single Gradient"
         ) {
             return SOLID_SINGLE_GRADIENT;
@@ -33,12 +39,12 @@ const ViewInvoice = ({ onClose, calValues, userInfo }) => {
         }
     };
     const getAntireflectivePrice = () => {
-        if (receipt?.calValues?.type === "Shamir Glacier Plus UV") {
+        if (receipt?.values?.type === "Shamir Glacier Plus UV") {
             return SHAMIR_GLACIER_PLUS_UV;
-        } else if (receipt?.calValues?.type === "TechShield Plus UVR") {
+        } else if (receipt?.values?.type === "TechShield Plus UVR") {
             return TECHSHIELD_PLUS_UVR;
         } else if (
-            receipt?.calValues?.type === "Crizal Sunshield (Backside AR Only)"
+            receipt?.values?.type === "Crizal Sunshield (Backside AR Only)"
         ) {
             return CRIZAL_SUNSHIELD;
         }
@@ -62,7 +68,7 @@ const ViewInvoice = ({ onClose, calValues, userInfo }) => {
                     <div className={classes["sub-left-container"]}>
                         <InfoSlot
                             title={"Invoice Name"}
-                            subTitle={`${receipt?.calValues?.invoiceName}`}
+                            subTitle={`${receipt?.values?.invoiceName}`}
                         />
                         <InfoSlot
                             title={"Customer Name"}
@@ -87,7 +93,7 @@ const ViewInvoice = ({ onClose, calValues, userInfo }) => {
                         <div className={classes["page-label"]}>Retail Fees</div>
                         <InvoiceSlot
                             title={"Retail fee of frame"}
-                            subTitle={`${receipt?.calValues?.frameOrder?.retailFee}`}
+                            subTitle={`${receipt?.values?.frameOrder?.retailFee}`}
                         />
                         <InvoiceSlot
                             title={"Lenses retail fee"}
@@ -119,26 +125,24 @@ const ViewInvoice = ({ onClose, calValues, userInfo }) => {
                         />
                         <InvoiceSlot
                             title={`Antireflective Properties: ${
-                                receipt?.calValues?.status === "Yes"
-                                    ? receipt?.calValues?.type
+                                receipt?.values?.status === "Yes"
+                                    ? receipt?.values?.type
                                     : ""
                             }`}
                             subTitle={`$${getAntireflectivePrice()}`}
                         />
                         <InvoiceSlot
-                            title={`Mirror Coating: ${receipt?.calValues?.sunGlassesLens?.coatingType}`}
+                            title={`Mirror Coating: ${receipt?.values?.sunGlassesLens?.coatingType}`}
                             subTitle={`${getCoatingPrice() || 0}`}
                         />
                         <InvoiceSlot
                             title={"Is Sunglass Lens Polarized?"}
-                            subTitle={
-                                receipt?.calValues?.sunGlassesLens?.status
-                            }
+                            subTitle={receipt?.values?.sunGlassesLens?.status}
                         />
                         <InvoiceSlot
                             title={"Polarized Fee"}
                             subTitle={
-                                receipt?.calValues?.sunGlassesLens?.lensType ===
+                                receipt?.values?.sunGlassesLens?.lensType ===
                                 "Polarized"
                                     ? `$${POLARIZED}`
                                     : "$0.00"
