@@ -6,7 +6,6 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { convertToRaw ,convertFromHTML,EditorState,ContentState} from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import draftToMarkdown from 'draftjs-to-markdown';
-import {stateToHTML} from 'draft-js-export-html'; 
 import axios from 'axios';
 
 import edit from "../../images/edit.png"
