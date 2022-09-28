@@ -71,7 +71,7 @@ const EyePrescription = (props) => {
                         "cylinder_to": crCylinderTo
                     },
                     {
-                        "name": "Plycarbonate",
+                        "name": "Polycarbonate",
                         "sphere_from": pbsphereFrom,
                         "sphere_to": pbsphereTo,
                         "cylinder_from": pbCylinderFrom,
@@ -131,7 +131,7 @@ const EyePrescription = (props) => {
                                     setCrCylinderTo(item.cylinder_to)
                                     setCrCylinderFrom(item.cylinder_from)
                                 }
-                            case "Plycarbonate":
+                            case "Polycarbonate":
                                 {
                                     setPbSphereFrom(item.sphere_from)
                                     setPbSphereTo(item.sphere_to)
