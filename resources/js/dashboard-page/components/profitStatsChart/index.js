@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import Chart from "react-apexcharts";
 import classes from "./styles.module.scss";
 import Axios from "../../../Http";
@@ -6,24 +6,26 @@ import { connect } from "react-redux";
 
 const ProfitStatsChart = ({ userId }) => {
     const options = getChartOptions();
-
+    const [data,setData]=useState()
+    const getProfitStats = async () => {
+        console.log("the data in the charts are here",options.series)
+        try {
+            const payload = {
+                start_date: "2022-08-16",
+                end_date: "2022-09-15",
+                user_id: userId,
+            };
+            const res = await Axios.post(
+                process.env.MIX_REACT_APP_URL + "/api/profit-comparison",
+                payload
+            );
+            console.log("res chart data", res);
+        } catch (err) {
+            console.log("Error while getting profit stats", err);
+        }
+    };
     useEffect(() => {
-        const getProfitStats = async () => {
-            try {
-                const payload = {
-                    start_date: "2022-08-16",
-                    end_date: "2022-09-15",
-                    user_id: userId,
-                };
-                const res = await Axios.post(
-                    process.env.MIX_REACT_APP_URL + "/api/profit-comparison",
-                    payload
-                );
-                console.log("res chart data", res);
-            } catch (err) {
-                console.log("Error while getting profit stats", err);
-            }
-        };
+       
         getProfitStats();
     }, []);
 
@@ -32,7 +34,7 @@ const ProfitStatsChart = ({ userId }) => {
             <div className={classes["label"]}>Profit Comparison</div>
             <Chart
                 options={options}
-                series={options?.series}
+                series={[{data:[150,23,25]}]}
                 type="area"
                 height={200}
             />
