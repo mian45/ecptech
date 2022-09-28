@@ -13,12 +13,20 @@ use App\Models\Collection;
 use App\Models\Lense;
 use App\Models\Characteristic;
 use App\Models\LensMaterial;
+use App\Models\Shipping;
 use Validator;
 
 
 class InvoiceCalculaterController extends Controller
 {
     public function calculaterData (Request $request){
+
+        $data['shipping'] = "";
+
+        $shipping = Shipping::where('user_id',auth()->user()->id)->first();
+        if($shipping){
+            $data['shipping'] = $shipping->value;
+        }
 
         //It will be dynamic when users setting/permission work is done in next sprint
         $data['questions']['VSP Signature'] = array(
