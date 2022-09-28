@@ -16,6 +16,7 @@ class PrescriptionTableSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('prescriptions')->truncate();
         Prescription::factory()->count(20)->create();
     }
 }
