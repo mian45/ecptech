@@ -16,7 +16,10 @@ class PrescriptionTableSeeder extends Seeder
      */
     public function run()
     {
+        
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('prescriptions')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         Prescription::factory()->count(20)->create();
     }
 }
