@@ -69,8 +69,8 @@ class InvoicesController extends Controller
       $invoice->customer_id = $customer->id;
       $invoice->name = $request->invoiceName;
       $invoice->amount = $request->amount;
-      $invoice->vp_state = $request->vpState;
-      $invoice->user_state = $request->userState;
+      $invoice->vp_state = json_encode($request->vpState);
+      $invoice->user_state = json_encode($request->userState);
       $invoice->created_by = $request->userId;
       $invoice->status = 'unpaid';
 
@@ -162,8 +162,8 @@ class InvoicesController extends Controller
             $newInvoice->customer_id = $invoice->customer_id;
             $newInvoice->name = $request->invoiceName;
             $newInvoice->amount = $request->amount;
-            $newInvoice->vp_state = $request->vpState;
-            $newInvoice->user_state = $request->userState;
+            $newInvoice->vp_state = json_encode($request->vpState);
+            $newInvoice->user_state = json_encode($request->userState);
             $newInvoice->created_by = $request->userId;
             $newInvoice->status = 'unpaid';
             $newInvoice->save();
