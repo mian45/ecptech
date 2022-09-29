@@ -206,7 +206,7 @@ class InvoicesController extends Controller
                 ->where('dob',$where_clouse['dob'])
                 ->where('email',$where_clouse['email'])
                 ->where('phone',$where_clouse['phone']);
-        })->where('user_id',$request->userId)->get();
+        })->where('user_id',$request->userId)->where('status','!=','discard')->get();
       }else{
         $invoices = Invoices::with('customer')->whereHas('customer', function($q) use($where_clouse) {
             $q->where('fname',$where_clouse['fname'])
@@ -214,7 +214,7 @@ class InvoicesController extends Controller
                 ->where('fname',$where_clouse['fname'])
                 ->where('dob',$where_clouse['dob'])
                 ->where('email',$where_clouse['email']);
-        })->where('user_id',$request->userId)->get();
+        })->where('user_id',$request->userId)->where('status','!=','discard')->get();
       }
         return $this->sendResponse($invoices, 'Invoices List');
     }
