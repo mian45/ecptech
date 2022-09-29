@@ -118,13 +118,12 @@ const OutPackPrices = ({ receipt, totalPrice }) => {
                 title={"Material Copay"}
                 subTitle={`${receipt?.values?.materialCopay || 0}`}
             />
-            {receipt?.values?.frameOrder?.type ===
-                "New Frame Purchase"(
-                    <InvoiceSlot
-                        title={`Frame: `}
-                        subTitle={`$${calculateFrameFee()}`}
-                    />
-                )}
+            {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
+                <InvoiceSlot
+                    title={`Frame: `}
+                    subTitle={`$${calculateFrameFee()}`}
+                />
+            )}
             {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
                 receipt?.values?.frameOrder?.drillMount ===
                     "Yes"(
@@ -141,11 +140,7 @@ const OutPackPrices = ({ receipt, totalPrice }) => {
             )}
             {receipt?.values?.antiReflectiveProperties?.status === "Yes" && (
                 <InvoiceSlot
-                    title={`Antireflective Properties: ${
-                        receipt?.values?.antiReflectiveProperties?.status ===
-                            "Yes" &&
-                        receipt?.values?.antiReflectiveProperties?.type
-                    }`}
+                    title={`Antireflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
                     subTitle={`$${getAntireflectivePrice()}`}
                 />
             )}
@@ -208,13 +203,12 @@ const OutPackPrices = ({ receipt, totalPrice }) => {
                         subTitle={receipt?.values?.protectionPlan?.price}
                     />
                 )}
-            {receipt?.values?.shipping?.status ===
-                "Yes"(
-                    <InvoiceSlot
-                        title={"Shipping Fee"}
-                        subTitle={receipt?.values?.shipping?.price}
-                    />
-                )}
+            {receipt?.values?.shipping?.status === "Yes" && (
+                <InvoiceSlot
+                    title={"Shipping Fee"}
+                    subTitle={receipt?.values?.shipping?.price}
+                />
+            )}
 
             <div className={classes["invoice-slot-container"]}>
                 <div className={classes["invoice-slot-title"]}>

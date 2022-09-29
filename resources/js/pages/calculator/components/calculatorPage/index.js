@@ -20,6 +20,7 @@ import { calculatorObject } from "../../data/dataObject";
 import {
     CreateCalculatorValidations,
     GetMappedPayload,
+    mappedEditValues,
 } from "../../data/validationHelper";
 import { useHistory } from "react-router";
 import Axios from "../../../../Http";
@@ -30,25 +31,61 @@ const CalculatorScreen = () => {
     const [calculatorObj, setCalculatorObj] = useState(null);
     const [calValidations, setCalValidations] = useState(null);
     const [calValues, setCalValues] = useState(null);
-    const userInfo = history.location?.state;
-    useEffect(() => {
-        const getCalculatorObject = async () => {
-            try {
-                const res = await Axios.get("/api/calculater-data");
-                setCalculatorObj(res?.data?.data);
-            } catch (err) {
-                console.log("error while fetching Data");
-            }
-        };
-        getCalculatorObject();
+    const [userInfo, setUserInfo] = useState(null);
+    const [calculatorState, setCalculatorState] = useState({
+        ...CalculatorInitialValues,
+    });
+    const editInvoiceState = history?.location?.state?.invoice;
 
-        if (calculatorObject?.data?.questions) {
+    useEffect(() => {
+        if (editInvoiceState?.id) {
+            const values = mappedEditValues(editInvoiceState);
+            setCalculatorState({ ...values });
+            const vpState = JSON.parse(editInvoiceState?.vp_state);
+
+            const editUserInfo = {
+                dob: editInvoiceState?.customer?.dob,
+                email: editInvoiceState?.customer?.email,
+                firstName: editInvoiceState?.customer?.fname,
+                lastName: editInvoiceState?.customer?.lname,
+                phoneNo: editInvoiceState?.customer?.phone,
+            };
+            setUserInfo({ ...editUserInfo });
+            const editCalObject = {
+                lens_material: vpState?.lens_material,
+                lens_types: vpState?.lens_types,
+                questions: vpState?.questions,
+                sheet_data: vpState?.sheet_data,
+                shipping: vpState?.shipping,
+            };
+            setCalculatorObj(editCalObject);
+            if (editInvoiceState && editInvoiceState?.vp_state) {
+                const parsedJson = JSON.parse(editInvoiceState?.vp_state);
+                const questionsData = parsedJson?.questions;
+                const validations = CreateCalculatorValidations(
+                    questionsData["VSP Signature"]
+                );
+                setCalValidations(validations);
+            }
+        } else {
+            const userDetails = history.location?.state?.user;
+            setUserInfo(userDetails || {});
+            getCalculatorObject();
+        }
+    }, [history?.location?.state]);
+    const getCalculatorObject = async () => {
+        try {
+            const res = await Axios.get("/api/calculater-data");
+            setCalculatorObj(res?.data?.data);
+            const questions = res?.data?.data?.questions;
             const validations = CreateCalculatorValidations(
-                calculatorObj && calculatorObj?.questions["VSP Signature"]
+                questions && questions["VSP Signature"]
             );
             setCalValidations(validations);
+        } catch (err) {
+            console.log("error while fetching Data");
         }
-    }, []);
+    };
 
     const HideInvoice = () => {
         setShowInvoice(false);
@@ -62,7 +99,7 @@ const CalculatorScreen = () => {
     return (
         <div className={classes["container"]}>
             <Formik
-                initialValues={CalculatorInitialValues}
+                initialValues={{ ...calculatorState }}
                 validationSchema={Yup.object().shape({ ...calValidations })}
                 onSubmit={handleClick}
                 enableReinitialize

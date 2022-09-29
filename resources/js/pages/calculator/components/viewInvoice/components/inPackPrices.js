@@ -8,12 +8,14 @@ const InPackPrices = (receipt) => {
             <div className={classes["page-label"]}>Retail Fees</div>
             <InvoiceSlot
                 title={"Retail fee of frame"}
-                subTitle={`${receipt?.values?.frameOrder?.retailFee}`}
+                subTitle={`${receipt?.values?.frameOrder?.retailFee || 0}`}
             />
             <InvoiceSlot title={"Lenses retail fee"} subTitle={"$902.00"} />
             <InvoiceBoldSlot
                 title={"Total"}
-                subTitle={`$${receipt?.values?.frameOrder?.retailFee + 200}`}
+                subTitle={`$${
+                    (receipt?.values?.frameOrder?.retailFee || 0) + 200
+                }`}
             />
         </>
     );

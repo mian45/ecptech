@@ -23,6 +23,7 @@ import { useHistory } from "react-router";
 import { HOME_ROUTE } from "../../../../appRoutes/routeConstants";
 import UserInfo from "./components/userInfo";
 import OutPackPrices from "./components/outPackPrices";
+import InPackPrices from "./components/inPackPrices";
 
 const ViewInvoice = ({
     onClose,

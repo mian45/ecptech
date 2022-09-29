@@ -161,3 +161,69 @@ export const GetMappedPayload = (data) => {
         },
     };
 };
+
+export const mappedEditValues = (data) => {
+    const userState = JSON.parse(data?.user_state);
+    const lowerCopay = userState?.lowerCopaythanStandard?.copayList;
+    const polycarbonate = lowerCopay.find(
+        (item) => item.type === "Polycarbonate"
+    );
+    const photochromic = lowerCopay.find(
+        (item) => item.type === "Photochromic"
+    );
+    const hignIndex = lowerCopay.find((item) => item.type === "High Index");
+    const antiReflective = lowerCopay.find(
+        (item) => item.type === "Anti-Reflective Properties"
+    );
+    const premiumProgresive = lowerCopay.find(
+        (item) => item.type === "Premium Progressives"
+    );
+
+    return {
+        invoiceName: data?.name || "",
+        staffName: userState?.staffName || "",
+        staffId: userState?.staffId || "",
+        visionPlan: userState?.visionPlan || "",
+        isFrameBenifit: userState?.isFrameBenifit || "",
+        isLensBenifit: userState?.isLensBenifit || "",
+        materialCopay: userState?.materialCopay || "",
+        frameOrderType: userState?.frameOrder?.type || "",
+        frameRetailFee: userState?.frameOrder?.retailFee || "",
+        frameContribution: userState?.frameOrder?.frameContribution || "",
+        drillMount: userState?.frameOrder?.drillMount || "",
+        isloweredCopay: userState?.lowerCopaythanStandard?.value || "",
+        isCopayPolycarbonate: polycarbonate?.status || null,
+        isCopayPhotochromic: photochromic?.status || null,
+        isCopayHighIndex: hignIndex?.status || null,
+        isCopayAntiReflective: antiReflective?.status || null,
+        isCopayPremiumProgressives: premiumProgresive?.status || null,
+        isCopayPolycarbonateAmount: polycarbonate?.copayType || "",
+        copayPolycarbonateAmount: polycarbonate?.price || "",
+        isCopayPhotochromicAmount: photochromic?.copayType || "",
+        copayPhotochromicAmount: photochromic?.price || "",
+        isCopayHighIndexAmount: hignIndex?.copayType || "",
+        copayHighIndexAmount: hignIndex?.price || "",
+        isCopayAntiReflectiveAmount: antiReflective?.copayType || "",
+        copayAntiReflectiveAmount: antiReflective?.price || "",
+        isCopaypremiumProgressiveAmount: antiReflective?.copayType || "",
+        copaypremiumProgressiveAmount: antiReflective?.price || "",
+        lensType: userState?.lensType?.type || "",
+        lensTypeValue: userState?.lensType?.brand || "",
+        lensMaterial: userState?.lensMaterial || "",
+        isPhotochromics: userState?.photochromics?.status || "",
+        photochromicsType: userState?.photochromics?.type || "",
+        isSunglasses: userState?.sunGlassesLens?.status || "",
+        sunglassesType: userState?.sunGlassesLens?.lensType || "",
+        tintType: userState?.sunGlassesLens?.tintType || "",
+        isMirrorCoating: userState?.sunGlassesLens?.mirrorCoating || "",
+        mirrorCoatingType: userState?.sunGlassesLens?.coatingType || "",
+        isAntireflective: userState?.antiReflectiveProperties?.status || "",
+        antireflectiveType: userState?.antiReflectiveProperties?.type || "",
+        isProtectionPlan: userState?.protectionPlan?.status || "",
+        protectionPlanType: userState?.protectionPlan?.type || "",
+        isProtectionPlanPaid: userState?.protectionPlan?.paymentStatus || "",
+        protectionPlanAmount: userState?.protectionPlan?.price || "",
+        shipping: userState?.shipping?.status || "",
+        shippingAmount: userState?.shipping?.price || "",
+    };
+};

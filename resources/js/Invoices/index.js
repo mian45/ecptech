@@ -21,7 +21,6 @@ const Invoices = ({ userId }) => {
             const res = await Axios.get("/api/invoices", {
                 params: { user_id: userId },
             });
-            mapInvoicesData(res.data?.data);
         };
         getAllInvoices();
     }, []);
@@ -29,23 +28,23 @@ const Invoices = ({ userId }) => {
     const handleClick = (values) => {
         history.push({
             pathname: CREATE_INVOICE_ROUTE,
-            state: values,
+            state: { user: values },
         });
     };
     const handleSearch = async (values) => {
         try {
             setIsSearched(true);
             const invoiceObject = {
-                first_name: values?.firstName,
-                last_name: values?.lastName,
-                user_id: userId,
+                fname: values?.firstName,
+                lname: values?.lastName,
+                userId: userId,
                 email: values?.email,
-                phone_number: values?.phoneNo,
+                phone: values?.phoneNo,
                 dob: values?.dob,
             };
 
             const res = await Axios.post("/api/search-invoices", invoiceObject);
-            mapInvoicesData(res.data?.data);
+            setTableData(res?.data?.data);
         } catch (err) {
             setIsSearched(false);
             console.log("error while search", err);

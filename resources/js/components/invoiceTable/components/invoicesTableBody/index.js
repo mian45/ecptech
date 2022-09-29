@@ -2,15 +2,17 @@ import React, { useState } from "react";
 import { Popover } from "antd";
 import classes from "./styles.module.scss";
 import moreIcon from "../../../../../images/more-icon.svg";
+import { useHistory } from "react-router";
+import { CREATE_INVOICE_ROUTE } from "../../../../appRoutes/routeConstants";
 
 const InvoicesTableBodySlot = ({ data }) => {
     return (
         <tr className={classes["container"]}>
-            <td className={classes["first-column"]}>{data?.invoice}</td>
-            <td>{data?.customerName}</td>
-            <td>{data?.email}</td>
-            <td>{data?.date}</td>
-            <td>{data?.price}</td>
+            <td className={classes["first-column"]}>{data?.name}</td>
+            <td>{`${data?.customer?.fname} ${data?.customer?.lname}`}</td>
+            <td>{data?.customer?.email}</td>
+            <td>{data?.customer?.date}</td>
+            <td>{data?.amount}</td>
             <td>
                 <div
                     className={
@@ -32,6 +34,7 @@ const InvoicesTableBodySlot = ({ data }) => {
 export default InvoicesTableBodySlot;
 
 const InvoiceTableActions = ({ data }) => {
+    const history = useHistory();
     const [openPopup, showPopup] = useState(false);
     const handleOpen = (value) => {
         showPopup(value);
@@ -46,7 +49,16 @@ const InvoiceTableActions = ({ data }) => {
                     VIEW
                 </div>
                 {data?.status !== "Paid" && (
-                    <div className={classes["more-icon"]} onClick={handleClose}>
+                    <div
+                        className={classes["more-icon"]}
+                        onClick={() => {
+                            history.push({
+                                pathname: CREATE_INVOICE_ROUTE,
+                                state: { invoice: data },
+                            });
+                            handleClose();
+                        }}
+                    >
                         EDIT
                     </div>
                 )}
