@@ -16,7 +16,10 @@ class CollectionsTableSeeder extends Seeder
      */
     public function run()
     {
+        
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('collections')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         DB::table('collections')->insert(array(
             array(
 
