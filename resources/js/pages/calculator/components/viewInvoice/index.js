@@ -31,6 +31,7 @@ const ViewInvoice = ({
     userInfo,
     userId,
     calculatorObj,
+    mode,
 }) => {
     const history = useHistory();
     const [receipt, setReceipt] = useState(null);
@@ -45,6 +46,10 @@ const ViewInvoice = ({
 
     const handleSendInvoiceClick = async () => {
         try {
+            if (mode === "view") {
+                onClose();
+                return;
+            }
             const payload = {
                 userId: userId,
                 staffId: receipt?.values?.staffId,
@@ -209,12 +214,13 @@ const ViewInvoice = ({
                         <OutPackPrices
                             totalPrice={calculateTotalDue()}
                             receipt={receipt}
+                            calculatorObj={calculatorObj}
                         />
                         <button
                             className={classes["send-button"]}
                             onClick={handleSendInvoiceClick}
                         >
-                            Send Invoice
+                            {mode === "view" ? "Close" : "Send Invoice"}
                         </button>
                     </div>
                 </div>

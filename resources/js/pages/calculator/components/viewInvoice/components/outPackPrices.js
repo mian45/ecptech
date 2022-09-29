@@ -17,7 +17,7 @@ import {
 } from "../../../data/constants";
 import classes from "../styles.module.scss";
 
-const OutPackPrices = ({ receipt, totalPrice }) => {
+const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
     const getCoatingPrice = () => {
         if (
             receipt?.values?.sunGlassesLens?.coatingType === "Ski Type Mirror"
@@ -99,6 +99,15 @@ const OutPackPrices = ({ receipt, totalPrice }) => {
             const payableFramePrice = actualPrice - discount;
             return payableFramePrice || 0;
         }
+    };
+
+    const getMaterialValues = () => {
+        const currentPlan = calculatorObj?.sheet_data?.find(
+            (plan) => plan.title === receipt?.values?.visionPlan
+        );
+        const currentLensType = currentPlan?.lensetypes?.find(
+            (lens) => lens.title === receipt?.values?.lensType
+        );
     };
 
     return (
