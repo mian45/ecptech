@@ -9,7 +9,7 @@ import lensIcon from "../../../../../images/calculator/lens.svg";
 import materialIcon from "../../../../../images/calculator/material.svg";
 
 const VisionBenifits = ({ formProps, calculatorObj }) => {
-    const { values, handleChange, handleBlur, errors } = formProps;
+    const { values, handleChange, handleBlur } = formProps;
     const [err, setErr] = useState("");
     const frameBenifitVisibility =
         calculatorObj?.questions &&

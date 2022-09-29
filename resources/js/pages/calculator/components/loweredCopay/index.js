@@ -205,7 +205,7 @@ const LoweredCopay = ({
                 <FormikError name={"isCopayPolycarbonate"} />
                 {values?.isCopayPolycarbonate && (
                     <SpecialCopaySlot
-                        title={"Polycarbonate"}
+                        title={"polycarbonate"}
                         formProps={formProps}
                         radioValue={"isCopayPolycarbonateAmount"}
                         inputValue={"copayPolycarbonateAmount"}

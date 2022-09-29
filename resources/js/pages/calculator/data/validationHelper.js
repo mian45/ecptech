@@ -5,6 +5,9 @@ export const CreateCalculatorValidations = (data) => {
     validationObject.invoiceName = Yup.string().required(
         "Invoice name is required"
     );
+    validationObject.staffName = Yup.string().required(
+        "Staff name is required"
+    );
     if (!data?.visionPlan?.optional) {
         validationObject.visionPlan = Yup.string().required(
             "Vision plan is required"
