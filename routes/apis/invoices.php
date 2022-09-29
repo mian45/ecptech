@@ -2,7 +2,7 @@
 use App\Http\Controllers\Api\InvoicesController;
 
 Route::get('invoices', [InvoicesController::class, 'index']);
-Route::get('search-invoices', [InvoicesController::class, 'search']);
+Route::post('search-invoices', [InvoicesController::class, 'search']);
 Route::get('view-invoice', [InvoicesController::class, 'viewInvoice']);
 Route::post('save-invoice', [InvoicesController::class, 'saveInvoice']);
 Route::post('save-edit-invoice', [InvoicesController::class, 'saveEditInvoice']);
