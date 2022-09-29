@@ -132,6 +132,7 @@ class InvoicesController extends Controller
 
     public function saveEditInvoice(Request $request){
         
+        
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'userId' => 'required',
@@ -146,10 +147,25 @@ class InvoicesController extends Controller
         }
   
       $invoice = Invoices::where('id',$request->id)->first();
-      
+     
       if($invoice){
-       
-        if($invoice->user_state == $request->userState){     
+        //   if($invoice->status == 'discard'){
+        //     return $this->sendError('cannot edit discard invoice');
+        //   }
+        
+            
+       $a2 = json_decode(json_encode($request->userState),true);
+       $a1 = json_decode(json_encode($request->userState),true);
+     
+
+       multi_diff($a1,$a2);
+        dd(1);
+
+       $a2 = json_decode($a2,true);
+
+      // $result = array_diff($a1,$a2);
+       return $this->sendError($a1);
+        if(json_encode($invoice->user_state) == json_encode($request->userState)){     
             return $this->sendResponse($invoice, 'No change in invoice');
         }else{
 
@@ -169,7 +185,7 @@ class InvoicesController extends Controller
             $newInvoice->save();
       
             if($newInvoice){
-              return $this->sendResponse($invoice, 'New invoice created uccessfully');
+              return $this->sendResponse($newInvoice, 'New invoice created successfully');
             }
 
         }
