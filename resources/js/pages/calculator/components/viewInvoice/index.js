@@ -32,10 +32,10 @@ const ViewInvoice = ({
     userId,
     calculatorObj,
     mode,
+    invoiceId = "",
 }) => {
     const history = useHistory();
     const [receipt, setReceipt] = useState(null);
-    const [payable, setPayable] = useState(0);
 
     useEffect(() => {
         setReceipt({
@@ -45,31 +45,53 @@ const ViewInvoice = ({
     }, [calValues]);
 
     const handleSendInvoiceClick = async () => {
+        if (mode === "view") {
+            onClose();
+            return;
+        }
         try {
-            if (mode === "view") {
-                onClose();
-                return;
+            if (invoiceId) {
+                onEditInvoice();
+            } else {
+                createNewInvoice();
             }
-            const payload = {
-                userId: userId,
-                staffId: receipt?.values?.staffId,
-                invoiceName: receipt?.values?.invoiceName,
-                fname: receipt?.userInfo?.firstName,
-                lname: receipt?.userInfo?.lastName,
-                dob: receipt?.userInfo?.dob,
-                email: receipt?.userInfo?.email,
-                phone: receipt?.userInfo?.phoneNo,
-                amount: payable,
-                vpState: calculatorObj,
-                userState: receipt?.values,
-            };
-            const res = Axios.post("/api/save-invoice", payload);
-            console.log("submitted successfully", res);
+
             history.push(HOME_ROUTE);
         } catch (err) {
             console.log("error while save Invoice");
         }
     };
+
+    const createNewInvoice = async () => {
+        const payload = {
+            userId: userId,
+            staffId: receipt?.values?.staffId,
+            invoiceName: receipt?.values?.invoiceName,
+            fname: receipt?.userInfo?.firstName,
+            lname: receipt?.userInfo?.lastName,
+            dob: receipt?.userInfo?.dob,
+            email: receipt?.userInfo?.email,
+            phone: receipt?.userInfo?.phoneNo,
+            amount: calculateTotalDue(),
+            vpState: calculatorObj,
+            userState: receipt?.values,
+        };
+        await Axios.post("/api/save-invoice", payload);
+    };
+
+    const onEditInvoice = async () => {
+        const payload = {
+            id: invoiceId,
+            userId: userId,
+            staffId: receipt?.values?.staffId,
+            invoiceName: receipt?.values?.invoiceName,
+            amount: calculateTotalDue(),
+            vpState: calculatorObj,
+            userState: receipt?.values,
+        };
+        await Axios.post("/api/save-edit-invoice", payload);
+    };
+
     const calculateTotalDue = () => {
         let total = 0;
         total = total + (receipt?.values?.materialCopay || 0);

@@ -118,6 +118,7 @@ const CalculatorScreen = () => {
                                     calculatorObj={
                                         calculatorObj && calculatorObj
                                     }
+                                    invoiceId={editInvoiceState?.id || ""}
                                 />
                             )}
                             <InvoiceInfo formProps={formProps} />
