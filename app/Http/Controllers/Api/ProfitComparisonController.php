@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use Carbon\CarbonPeriod;
 use Validator;
 
 class ProfitComparisonController extends Controller
@@ -156,6 +157,92 @@ class ProfitComparisonController extends Controller
             ];            
         }        
         
+        return $this->sendResponse($data, 'Profit Comparison');
+    }
+    public function calculateProfitComparison(Request $request){
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'start_date' => 'required',
+            'end_date' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $user_id = $request->user_id;
+        $start = $request->start_date;
+        $end = $request->end_date;
+        $start_date = Carbon::parse($start);
+        $end_date = Carbon::parse($end);
+        $where_clouse['user_id'] = $user_id;
+        $where_clouse['status'] = 'paid';
+        $data = [];
+        $days = $end_date->diffInDays($start_date);
+        $months = $end_date->diffInMonths($start_date);        
+        $sum = [];
+        $type = '';
+        if($start_date == $end_date){     
+            $type = 'hour';       
+            for ($i = 1; $i <= 24; $i++) {
+                $amount = DB::table('transactions')
+                    //->where($where_clouse)
+                    ->whereBetween('created_at', [$start_date->format('Y-m-d 0'.$i.':00:00'), $end_date->format('Y-m-d 0'.$i.':12:59')])
+                    ->sum('amount');
+
+                $sum[] = [
+                    'date' => $i,
+                    'total' => (int) $amount
+                ];
+            }                                    
+        } else if ($days === 7) {
+            $type = 'day';
+            $period = CarbonPeriod::create($start_date, $end_date);
+            foreach ($period as $date) {                 
+                $amount = DB::table('transactions')
+                    //->where($where_clouse)
+                    ->whereBetween('created_at', [$date->format('Y-m-d 00:00:00'), $date->format('Y-m-d 23:12:59')])
+                    ->sum('amount');
+
+                $sum[] = [
+                    'date' => $date->format('Y-m-d'),
+                    'total' => (int) $amount
+                ];
+            }
+        } else if ($days === 28 || $days === 29 || $days === 30 || $days === 31) {
+            $type = 'day';
+            $period = CarbonPeriod::create($start_date, $end_date);
+            foreach ($period as $date) {                 
+                $amount = DB::table('transactions')
+                    //->where($where_clouse)
+                    ->whereBetween('created_at', [$date->format('Y-m-d 00:00:00'), $date->format('Y-m-d 23:12:59')])                    
+                    ->sum('amount');
+
+                $sum[] = [
+                    'date' => $date->format('Y-m-d'),
+                    'total' => (int) $amount
+                ];
+            }
+        } else if ($months === 3){
+            for ($i = 1; $i <= $months; $i++) {
+                $amount = DB::table('transactions')
+                    //->where($where_clouse)
+                    ->whereBetween('created_at', [$start_date->format('Y-'.$i.'-d 00:00:00'), $end_date->format('Y-'.$i.'-d 23:12:59')])
+                    ->sum('amount');
+                $sum[] = [
+                    'date' => $date->format('Y-m-d'),
+                    'total' => (int) $amount
+                ];    
+            }
+        }        
+
+        $data = [
+            'test' => $months,
+            'type' => $type,
+            'start_date' => $start,
+            'end_date' => $end,
+            'range' => $sum
+        ]; 
         return $this->sendResponse($data, 'Profit Comparison');
     }
 }
