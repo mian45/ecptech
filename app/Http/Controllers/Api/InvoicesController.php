@@ -69,8 +69,8 @@ class InvoicesController extends Controller
       $invoice->customer_id = $customer->id;
       $invoice->name = $request->invoiceName;
       $invoice->amount = $request->amount;
-      $invoice->vp_state = $request->vpState;
-      $invoice->user_state = $request->userState;
+      $invoice->vp_state = json_encode($request->vpState);
+      $invoice->user_state = json_encode($request->userState);
       $invoice->created_by = $request->userId;
       $invoice->status = 'unpaid';
 
@@ -162,8 +162,8 @@ class InvoicesController extends Controller
             $newInvoice->customer_id = $invoice->customer_id;
             $newInvoice->name = $request->invoiceName;
             $newInvoice->amount = $request->amount;
-            $newInvoice->vp_state = $request->vpState;
-            $newInvoice->user_state = $request->userState;
+            $newInvoice->vp_state = json_encode($request->vpState);
+            $newInvoice->user_state = json_encode($request->userState);
             $newInvoice->created_by = $request->userId;
             $newInvoice->status = 'unpaid';
             $newInvoice->save();
@@ -180,37 +180,42 @@ class InvoicesController extends Controller
     }
     public function search(Request $request){
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required'
+            'userId' => 'required',
+            'fname' => 'required',
+            'lname' => 'required',
+            'dob' => 'required',
+            'email' => 'required',
         ]);
 
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
         
-        if(isset($request->user_id)){
-            $where_clouse['transactions.user_id'] = $request->user_id;
-        }
-        if(isset($request->first_name)){
-            $where_clouse['transactions.customer_first_name'] = $request->first_name;
-        }
-        if(isset($request->last_name)){
-            $where_clouse['transactions.customer_last_name'] = $request->last_name;
-        }
-        if(isset($request->dob)){
-            $where_clouse['transactions.customer_dob'] = $request->dob;
-        }
-        if(isset($request->email)){
-            $where_clouse['transactions.customer_email'] = $request->email;
-        }
-        if(isset($request->phone_number)){
-            $where_clouse['transactions.customer_phone'] = $request->phone_number;
-        }
-        
-        $invoices = DB::table('transactions')
-            ->join('invoices', 'transactions.invoice_id', '=', 'invoices.id')
-            ->where($where_clouse)
-            ->select('invoices.name', DB::Raw("CONCAT(transactions.customer_first_name, ' ', transactions.customer_last_name) AS customer_name"), 'transactions.customer_email', 'transactions.created_at', 'transactions.amount', 'transactions.status')
-            ->get();
+        $where_clouse['user_id'] = $request->user_id;
+        $where_clouse['fname'] = $request->fname;
+        $where_clouse['lname'] = $request->lname;
+        $where_clouse['dob'] = $request->dob;
+        $where_clouse['email'] = $request->email;
+
+       if(isset($request->phone)){
+        $where_clouse['phone'] = $request->phone;
+        $invoices = Invoices::with('customer')->whereHas('customer', function($q) use($where_clouse) {
+            $q->where('fname',$where_clouse['fname'])
+                ->where('lname',$where_clouse['lname'])
+                ->where('fname',$where_clouse['fname'])
+                ->where('dob',$where_clouse['dob'])
+                ->where('email',$where_clouse['email'])
+                ->where('phone',$where_clouse['phone']);
+        })->where('user_id',$request->userId)->get();
+      }else{
+        $invoices = Invoices::with('customer')->whereHas('customer', function($q) use($where_clouse) {
+            $q->where('fname',$where_clouse['fname'])
+                ->where('lname',$where_clouse['lname'])
+                ->where('fname',$where_clouse['fname'])
+                ->where('dob',$where_clouse['dob'])
+                ->where('email',$where_clouse['email']);
+        })->where('user_id',$request->userId)->get();
+      }
         return $this->sendResponse($invoices, 'Invoices List');
     }
 

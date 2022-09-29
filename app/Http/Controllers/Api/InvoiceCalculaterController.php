@@ -14,6 +14,7 @@ use App\Models\Lense;
 use App\Models\Characteristic;
 use App\Models\LensMaterial;
 use App\Models\Shipping;
+use App\Models\Tax;
 use Validator;
 
 
@@ -22,10 +23,16 @@ class InvoiceCalculaterController extends Controller
     public function calculaterData (Request $request){
 
         $data['shipping'] = "";
+        $data['tax'] = "";
 
         $shipping = Shipping::where('user_id',auth()->user()->id)->first();
         if($shipping){
             $data['shipping'] = $shipping->value;
+        }
+
+        $tax = Tax::where('user_id',auth()->user()->id)->orderBy('created_at', 'desc')->first();
+        if($tax){
+            $data['tax'] = $tax->value;
         }
 
         //It will be dynamic when users setting/permission work is done in next sprint
