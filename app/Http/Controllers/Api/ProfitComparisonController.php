@@ -186,7 +186,7 @@ class ProfitComparisonController extends Controller
             $type = 'hour';       
             for ($i = 1; $i <= 24; $i++) {
                 $amount = DB::table('transactions')
-                    //->where($where_clouse)
+                    ->where($where_clouse)
                     ->whereBetween('created_at', [$start_date->format('Y-m-d 0'.$i.':00:00'), $end_date->format('Y-m-d 0'.$i.':12:59')])
                     ->sum('amount');
 
@@ -200,7 +200,7 @@ class ProfitComparisonController extends Controller
             $period = CarbonPeriod::create($start_date, $end_date);
             foreach ($period as $date) {                 
                 $amount = DB::table('transactions')
-                    //->where($where_clouse)
+                    ->where($where_clouse)
                     ->whereBetween('created_at', [$date->format('Y-m-d 00:00:00'), $date->format('Y-m-d 23:12:59')])
                     ->sum('amount');
 
@@ -214,7 +214,7 @@ class ProfitComparisonController extends Controller
             $period = CarbonPeriod::create($start_date, $end_date);
             foreach ($period as $date) {                 
                 $amount = DB::table('transactions')
-                    //->where($where_clouse)
+                    ->where($where_clouse)
                     ->whereBetween('created_at', [$date->format('Y-m-d 00:00:00'), $date->format('Y-m-d 23:12:59')])                    
                     ->sum('amount');
 
@@ -224,9 +224,10 @@ class ProfitComparisonController extends Controller
                 ];
             }
         } else if ($months === 3){
+            $type = 'month';
             for ($i = 1; $i <= $months; $i++) {
                 $amount = DB::table('transactions')
-                    //->where($where_clouse)
+                    ->where($where_clouse)
                     ->whereBetween('created_at', [$start_date->format('Y-'.$i.'-d 00:00:00'), $end_date->format('Y-'.$i.'-d 23:12:59')])
                     ->sum('amount');
                 $sum[] = [
@@ -237,7 +238,6 @@ class ProfitComparisonController extends Controller
         }        
 
         $data = [
-            'test' => $months,
             'type' => $type,
             'start_date' => $start,
             'end_date' => $end,
