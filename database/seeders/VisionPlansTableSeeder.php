@@ -15,7 +15,10 @@ class VisionPlansTableSeeder extends Seeder
      */
     public function run()
     {
+        
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('vision_plans')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         DB::table('vision_plans')->insert(array(
             array(
 
