@@ -16,7 +16,10 @@ class LenseMaterialsTableSeeder extends Seeder
      */
     public function run()
     {
+        
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('lens_materials')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         DB::table('lens_materials')->insert(array(
             array(
 
