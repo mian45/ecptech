@@ -127,7 +127,6 @@ class ProfitComparisonController extends Controller
         }      
 
 
-        // dd($sum);
 
         $data = [
             'type' => $type,
