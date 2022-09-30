@@ -19,6 +19,6 @@ class InvoicesTableSeeder extends Seeder
         DB::table('invoices')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         
-        Invoice::factory()->count(20)->create();
+        Invoice::factory()->count(500)->create();
     }
 }

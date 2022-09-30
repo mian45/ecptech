@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Invoice;
 use Validator;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -20,6 +21,10 @@ class DashboardController extends Controller
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
+
+        
+        $request->start_date = Carbon::parse($request->start_date)->toDateString();
+        $request->end_date = Carbon::parse($request->end_date)->toDateString();
 
         $client_id = auth()->user()->id;
 
@@ -87,6 +92,9 @@ class DashboardController extends Controller
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
+        $request->start_date = Carbon::parse($request->start_date)->toDateString();
+        $request->end_date = Carbon::parse($request->end_date)->toDateString();
+
         $client_id = auth()->user()->id;
         $total_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->count();
         $total_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->count();
@@ -123,6 +131,9 @@ class DashboardController extends Controller
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
+        $request->start_date = Carbon::parse($request->start_date)->toDateString();
+        $request->end_date = Carbon::parse($request->end_date)->toDateString();
+
         $client_id = auth()->user()->id;
 
         $team_progress = Invoice::join('staffs as s', 's.id', '=', 'invoices.staff_id')
@@ -154,6 +165,9 @@ class DashboardController extends Controller
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
+
+        $request->start_date = Carbon::parse($request->start_date)->toDateString();
+        $request->end_date = Carbon::parse($request->end_date)->toDateString();
 
         $client_id = auth()->user()->id;
 
