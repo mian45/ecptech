@@ -16,23 +16,19 @@ class InvoicesController extends Controller
 {
     public function index(Request $request){
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required'
+            'userId' => 'required'
         ]);
-
+        
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
-        $user_id = $request->user_id;
-        $where_clouse['transactions.user_id'] = $user_id;
-        $invoices = DB::table('transactions')
-            ->join('invoices', 'transactions.invoice_id', '=', 'invoices.id')
-            ->where($where_clouse)
-            ->select('invoices.name', DB::Raw("CONCAT(transactions.customer_first_name, ' ', transactions.customer_last_name) AS customer_name"), 'transactions.customer_email', 'transactions.created_at', 'transactions.amount', 'transactions.status')
-            ->get();
+        $user_id = $request->userId;
+        $invoices = Invoices::with('customer')->where('user_id',$user_id)->whereNot('status', 'discard')->latest()->take(10)->get();
         return $this->sendResponse($invoices, 'Invoices List');
     }
     
     public function saveInvoice(Request $request){
+        
         $validator = Validator::make($request->all(), [
             'userId' => 'required',
             'staffId' => 'required',
@@ -62,7 +58,6 @@ class InvoicesController extends Controller
       
       $customer->save();
 
-     
       $invoice = new Invoices;
       $invoice->user_id = $request->userId;
       $invoice->staff_id = $request->staffId;
@@ -132,6 +127,7 @@ class InvoicesController extends Controller
 
     public function saveEditInvoice(Request $request){
         
+        
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'userId' => 'required',
@@ -146,12 +142,18 @@ class InvoicesController extends Controller
         }
   
       $invoice = Invoices::where('id',$request->id)->first();
-      
+     
       if($invoice){
-       
-        if($invoice->user_state == $request->userState){     
+
+          if($invoice->status == 'discard'){
+            return $this->sendError('cannot edit discard invoice');
+          }
+       $a2 = json_encode($request->userState);
+       $a1 = $invoice->user_state;
+     
+      if($a1 == $a2 && $invoice->name == $request->invoiceName){
             return $this->sendResponse($invoice, 'No change in invoice');
-        }else{
+      }else{
 
             $invoice->status = 'discard';
             $invoice->save();
@@ -169,7 +171,7 @@ class InvoicesController extends Controller
             $newInvoice->save();
       
             if($newInvoice){
-              return $this->sendResponse($invoice, 'New invoice created uccessfully');
+              return $this->sendResponse($newInvoice, 'New invoice created successfully');
             }
 
         }
@@ -206,7 +208,7 @@ class InvoicesController extends Controller
                 ->where('dob',$where_clouse['dob'])
                 ->where('email',$where_clouse['email'])
                 ->where('phone',$where_clouse['phone']);
-        })->where('user_id',$request->userId)->get();
+        })->where('user_id',$request->userId)->whereNot('status', 'discard')->get();
       }else{
         $invoices = Invoices::with('customer')->whereHas('customer', function($q) use($where_clouse) {
             $q->where('fname',$where_clouse['fname'])
@@ -214,7 +216,7 @@ class InvoicesController extends Controller
                 ->where('fname',$where_clouse['fname'])
                 ->where('dob',$where_clouse['dob'])
                 ->where('email',$where_clouse['email']);
-        })->where('user_id',$request->userId)->get();
+        })->where('user_id',$request->userId)->whereNot('status', 'discard')->get();
       }
         return $this->sendResponse($invoices, 'Invoices List');
     }
