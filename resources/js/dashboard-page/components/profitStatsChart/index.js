@@ -8,7 +8,9 @@ import dayjs from "dayjs";
 const ProfitStatsChart = ({ userId , dates}) => {
     const {startDate,endDate} = dates
     const options = getChartOptions();
-    const [data, setData] = useState();
+    const [data,setData]=useState([])
+    const [startTag,setStartTag]=useState("")
+    const [endTag,setEndTag]=useState("")
     const getProfitStats = async () => {
         try {
             const formData= new FormData();
@@ -20,12 +22,24 @@ const ProfitStatsChart = ({ userId , dates}) => {
                 process.env.MIX_REACT_APP_URL + "/api/profit-comparison",
                 formData
             );
+        if(res.data.statusCode===200){
+            if(res?.data?.data?.range?.length>0){
+                const newData= res?.data?.data?.range.map((item,index)=>{
+                    return item.total
+                })
+                setData(newData)
+                setStartTag(res?.data?.data?.range[0]?.date)
+                setEndTag(res?.data?.data?.range[res?.data?.data?.range.length-1]?.date)
+            }
+
+        }
         } catch (err) {
             console.log("Error while getting profit stats", err);
         }
     };
     useEffect(() => {
-        if (!userId) return;
+        console.log(dates)
+       
         getProfitStats();
     }, [dates]);
 
@@ -34,7 +48,7 @@ const ProfitStatsChart = ({ userId , dates}) => {
             <div className={classes["label"]}>Profit Comparison</div>
             <Chart
                 options={options}
-                series={[{ data: [150, 23, 25] }]}
+                series={[{data:data}]}
                 type="area"
                 height={200}
             />
