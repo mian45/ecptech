@@ -33,6 +33,5 @@ class UserTableSeeder extends Seeder
                 'updated_at' => date("Y-m-d H:i:s")
             )
         ));
-        // User::factory()->count(5)->create();
     }
 }
