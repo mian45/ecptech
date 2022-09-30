@@ -45,37 +45,41 @@ class ProfitComparisonController extends Controller
                     ->sum('amount');
 
                 $sum[$i] = [
-                    'date' => $i,
+                    'hour' => $i,
                     'total' => (int) $amount
                 ];
             }                                    
         } else if ($days === 7) {
             $type = 'week';
             $period = CarbonPeriod::create($start_date->toDateString(),$end_date->toDateString());
+            $i =1;
             foreach ($period as $key=>$date) {
 
                 $amount = Invoice::where($where_clouse)
                     ->whereBetween('created_at', [$date->format('Y-m-d 00:00:00'), $date->format('Y-m-d 23:59:59')])
                     ->sum('amount');
 
-                $sum[$key] = [
-                    'date' => $date->format('Y-m-d'),
+                $sum[$i] = [
+                    'week' => $date->format('Y-m-d'),
                     'total' => (int) $amount
                 ];
+                $i++;
                 
             }
         } else if ($days === 28 || $days === 29 || $days === 30 || $days === 31) {
             $type = 'month';
             $period = CarbonPeriod::create($start_date->toDateString(), $end_date->toDateString());
+            $i =1;
             foreach ($period as $key=>$date) {                 
                 $amount = Invoice::where($where_clouse)
                     ->whereBetween('created_at', [$date->format('Y-m-d 00:00:00'), $date->format('Y-m-d 23:59:59')])                    
                     ->sum('amount');
 
-                $sum[$key] = [
-                    'date' => $date->format('Y-m-d'),
+                $sum[$i] = [
+                    'month' => $date->format('Y-m-d'),
                     'total' => (int) $amount
                 ];
+                $i++;
             }
         } else if ($months === 3){
             $type = 'quarter';
@@ -88,7 +92,7 @@ class ProfitComparisonController extends Controller
                     ->where('created_at', '>=',$month[$i])->where('created_at', '<=',$next_month[$i] )
                     ->sum('amount');
                 $sum[$i] = [
-                    'date' => $month[$i],
+                    'month' => $month[$i],
                     'total' => $amount
                 ];    
             }
@@ -103,7 +107,7 @@ class ProfitComparisonController extends Controller
                     ->where('created_at', '>=',$month[$i])->where('created_at', '<=',$next_month[$i] )
                     ->sum('amount');
                 $sum[$i] = [
-                    'date' => $month[$i],
+                    'year' => $month[$i],
                     'total' => $amount
                 ];    
             }
@@ -121,6 +125,9 @@ class ProfitComparisonController extends Controller
             ];    
             
         }      
+
+
+        // dd($sum);
 
         $data = [
             'type' => $type,
