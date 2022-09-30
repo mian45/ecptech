@@ -77,7 +77,7 @@ const Dashboard = ({ userRole,apiDates }) => {
                 {userRole !== "staff" && <StaffLogin />}
             </div>
             <div className={classes["right-stats"]}>
-                <ProfitStatsChart />
+                <ProfitStatsChart dates={apiDates}/>
                 <HotSellingProducts />
                 <TeamPerformanceChart />
                 {userRole !== "staff" && <AddStaffMembers />}
