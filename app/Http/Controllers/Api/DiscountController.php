@@ -21,7 +21,7 @@ class DiscountController extends Controller
         }
 
         $user_id = $request->userId;
-        $discount = Discount::select('id','user_id','name','value')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
+        $discount = Discount::select('id','user_id','name','value','status')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
 
         if($discount){
             return $this->sendResponse($discount, 'Discount get successfully');
@@ -110,6 +110,27 @@ class DiscountController extends Controller
             return $this->sendResponse($success, 'Discount delete successfully');
         }
 
+        return $this->sendError('Discount not found');
+    }
+
+    public function changeStatus(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'discount_id' => 'required',
+            'status' => "required|in:active,inactive",
+
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $discount =  Discount::where('id',$request->discount_id)->where('user_id',auth()->user()->id)->first();
+        if($discount){
+            $discount->status = $request->status;
+            $discount->save();
+            return $this->sendResponse([], 'Discount Status Changed Successfully');
+        }
         return $this->sendError('Discount not found');
     }
 }
