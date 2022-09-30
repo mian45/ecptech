@@ -3,7 +3,7 @@ import classes from "./styles.module.scss";
 
 const InvoicesTableHeader = () => {
     return (
-        <tr>
+        <tr className={classes["t-head"]}>
             <th className={classes["invoice-column"]}>Invoice</th>
             <th>Customer Name</th>
             <th>Email</th>

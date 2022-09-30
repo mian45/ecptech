@@ -1,6 +1,7 @@
 .container {
     width: 100%;
     padding: 30px;
+    background-color: #f9f9fb;
 }
 .title {
     font-size: 24px;
@@ -11,4 +12,15 @@
 .root-container {
     width: calc(100% - 100px);
     margin-left: 100px;
+    margin-top: 100px;
+}
+.table-container {
+    width: 100%;
+}
+@media only screen and (max-width: 900px) {
+    .table-container {
+        max-width: 730px !important;
+        width: 100% !important;
+        overflow: auto !important;
+    }
 }
