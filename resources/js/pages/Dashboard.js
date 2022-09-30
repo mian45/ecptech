@@ -25,8 +25,8 @@ const Dashboard =(props)=> {
   const [startDate,setStartDate]=useState(new Date());
   const [endDate,setEndDate]=useState(new Date());
   const [label,setLabel]=useState("");
-  const [invoicesSummary,setInvoicesSummary]=useState([])
-  const [invoicesStats,setInvoicesStats]=useState([])
+  const [apiDates,setApiDates]=useState({startDate:dayjs(new Date).format("YYYY-MM-DD"),endDate:dayjs(new Date).format("YYYY-MM-DD")})
+
   useEffect(()=>{
     console.log("the date is here",dayjs().startOf('quarter').$d )
     console.log("the date is here",dayjs().endOf('quarter').$d )
@@ -66,57 +66,8 @@ const Dashboard =(props)=> {
       // custom
       setLabel("Custom")
     }
-    getInvoicesSummary(date1,date2)
-    getInvoicesStats(date1,date2)
+    setApiDates({startDate:dayjs(startDate).format("YYYY-MM-DD"),endDate:dayjs(endDate).format("YYYY-MM-DD")})
   },[date,startDate,endDate])
-
-  const getInvoicesSummary=(date1,date2)=>{
-    var data = new FormData();
-data.append('start_date', date1);
-data.append('end_date', date2);
-
-var config = {
-  method: 'post',
-  url: `${process.env.MIX_REACT_APP_URL}/api/invoice-summmary`,
-  headers: { 
-    'Authorization': `Bearer ${localStorage.getItem("access_token")}`, 
-  },
-  data : data
-};
-
-axios(config)
-.then(function (response) {
-  console.log(JSON.stringify(response.data.data));
-  setInvoicesSummary(response.data.data)
-})
-.catch(function (error) {
-  console.log(error);
-});
-
-  }
-  const getInvoicesStats=(date1,date2)=>{
-    var data = new FormData();
-    data.append('start_date', date1);
-    data.append('end_date', date2);
-    
-    var config = {
-      method: 'post',
-      url: `${process.env.MIX_REACT_APP_URL}/api/invoice-stats`,
-      headers: { 
-        'Authorization': `Bearer ${localStorage.getItem("access_token")}`, 
-      },
-      data : data
-    };
-    
-    axios(config)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data));
-      setInvoicesStats(response.data.data)
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
     return (
       <div className="container">
         <div onClickCapture={()=>{setShowDatePicker(!showDatePicker)}} 
@@ -164,7 +115,7 @@ axios(config)
         />
         </div>
         :null}
-        <DashboardPage />
+        <DashboardPage apiDates={apiDates}/>
      </div>
     );
   }
