@@ -5,9 +5,82 @@ import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
 import icon from "../../../../../images/calculator/sunglasses.svg";
+import * as Yup from "yup";
 
-const SunglassLens = ({ formProps }) => {
+const SunglassLens = ({
+    formProps,
+    calculatorObj,
+    setCalValidations,
+    calValidations,
+    data,
+}) => {
     const { values, handleChange, handleBlur } = formProps;
+
+    const sunglassLensVisibility =
+        calculatorObj?.questions &&
+        calculatorObj?.questions["VSP Signature"]?.sunglassLens?.visibility;
+
+    const handleIsSunglassesLensChange = (e) => {
+        handleChange(e);
+        if (e?.target?.value === "Yes" && !data?.sunglassLens?.optional) {
+            const sunglassesType = Yup.string().required("Option is required");
+            setCalValidations({
+                ...calValidations,
+                sunglassesType,
+            });
+        } else if (e?.target?.value === "No") {
+            const validations = { ...calValidations };
+            delete validations.sunglassesType;
+            delete validations.tintType;
+            delete validations.isMirrorCoating;
+            delete validations.mirrorCoatingType;
+            setCalValidations({
+                ...validations,
+            });
+        }
+    };
+    const handleSunGlassesLensTypeChange = (e) => {
+        handleChange(e);
+        if (e?.target?.value === "Polarized" && !data?.sunglassLens?.optional) {
+            const validations = { ...calValidations };
+            delete validations.tintType;
+            const isMirrorCoating = Yup.string().required("Option is required");
+            setCalValidations({
+                ...validations,
+                isMirrorCoating,
+            });
+        } else if (
+            e?.target?.value === "Tint" &&
+            !data?.sunglassLens?.optional
+        ) {
+            const validationObj = {
+                tintType: Yup.string().required("Option is required"),
+                isMirrorCoating: Yup.string().required("Option is required"),
+            };
+            setCalValidations({
+                ...calValidations,
+                ...validationObj,
+            });
+        }
+    };
+
+    const handleMirrirCoatingChange = (e) => {
+        handleChange(e);
+        if (e?.target?.value === "Yes" && !data?.sunglassLens?.optional) {
+            const mirrorCoatingType =
+                Yup.string().required("Option is required");
+            setCalValidations({
+                ...calValidations,
+                mirrorCoatingType,
+            });
+        } else if (e?.target?.value === "No") {
+            const validations = { ...calValidations };
+            delete validations.mirrorCoatingType;
+            setCalValidations({
+                ...validations,
+            });
+        }
+    };
 
     const handleActiveState = () => {
         if (values?.isSunglasses === "No") {
@@ -51,7 +124,7 @@ const SunglassLens = ({ formProps }) => {
                 <div className={classes["label"]}>Select Sunglass Lens</div>
                 <Radio.Group
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={handleSunGlassesLensTypeChange}
                     value={values?.sunglassesType}
                     id="sunglassesType"
                     name="sunglassesType"
@@ -109,7 +182,7 @@ const SunglassLens = ({ formProps }) => {
                 <CalculatorHeading title="Mirror Coating?" />
                 <Radio.Group
                     onBlur={handleBlur}
-                    onChange={handleChange}
+                    onChange={handleMirrirCoatingChange}
                     value={values?.isMirrorCoating}
                     id="isMirrorCoating"
                     name="isMirrorCoating"
@@ -164,51 +237,55 @@ const SunglassLens = ({ formProps }) => {
         );
     };
     return (
-        <div className={classes["container"]}>
-            <QuestionIcon icon={icon} active={handleActiveState()} />
-            <div className={classes["vision-container"]}>
-                <CalculatorHeading
-                    title="Sunglass Lens?"
-                    active={handleActiveState()}
-                />
-                <Radio.Group
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values?.isSunglasses}
-                    id="isSunglasses"
-                    name="isSunglasses"
-                    className={classes["radio-group"]}
-                >
-                    <CustomRadio
-                        label={"Yes"}
-                        value={"Yes"}
-                        active={values?.isSunglasses === "Yes"}
-                    />
+        <>
+            {sunglassLensVisibility ? (
+                <div className={classes["container"]}>
+                    <QuestionIcon icon={icon} active={handleActiveState()} />
+                    <div className={classes["vision-container"]}>
+                        <CalculatorHeading
+                            title="Sunglass Lens?"
+                            active={handleActiveState()}
+                        />
+                        <Radio.Group
+                            onBlur={handleBlur}
+                            onChange={handleIsSunglassesLensChange}
+                            value={values?.isSunglasses}
+                            id="isSunglasses"
+                            name="isSunglasses"
+                            className={classes["radio-group"]}
+                        >
+                            <CustomRadio
+                                label={"Yes"}
+                                value={"Yes"}
+                                active={values?.isSunglasses === "Yes"}
+                            />
 
-                    <CustomRadio
-                        label={"No"}
-                        value={"No"}
-                        active={values?.isSunglasses === "No"}
-                    />
-                </Radio.Group>
-                <FormikError name={"isSunglasses"} />
-                {values?.isSunglasses === "Yes" && (
-                    <>
-                        {renderSunGlassLens()}
-                        {values?.sunglassesType && (
+                            <CustomRadio
+                                label={"No"}
+                                value={"No"}
+                                active={values?.isSunglasses === "No"}
+                            />
+                        </Radio.Group>
+                        <FormikError name={"isSunglasses"} />
+                        {values?.isSunglasses === "Yes" && (
                             <>
-                                {values?.sunglassesType === "Tint" &&
-                                    renderTintLens()}
-                                {renderMirrorCoating()}
-                                {values?.isMirrorCoating === "Yes" && (
-                                    <>{renderMirrorType()}</>
+                                {renderSunGlassLens()}
+                                {values?.sunglassesType && (
+                                    <>
+                                        {values?.sunglassesType === "Tint" &&
+                                            renderTintLens()}
+                                        {renderMirrorCoating()}
+                                        {values?.isMirrorCoating === "Yes" && (
+                                            <>{renderMirrorType()}</>
+                                        )}
+                                    </>
                                 )}
                             </>
                         )}
-                    </>
-                )}
-            </div>
-        </div>
+                    </div>
+                </div>
+            ) : null}
+        </>
     );
 };
 

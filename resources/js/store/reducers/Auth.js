@@ -18,7 +18,7 @@ const defaultUserRole = {
 };
 
 const initialState = {
-    isAuthenticated: true,
+    isAuthenticated: false,
     isActiveState: 1,
     isActiveSettingState: 1,
     user: defaultUser,
