@@ -12,10 +12,11 @@ import TeamPerformanceChart from "./components/teamPerformanceChart";
 import ProfitStatsChart from "./components/profitStatsChart";
 import AddStaffMembers from "./components/AddStaffMembers";
 
-const Dashboard = ({ userRole }) => {
+const Dashboard = ({ userRole, userId }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
     const [summaryStats, setSummaryStats] = useState([]);
     useEffect(() => {
+        if (!userId) return;
         const getInvoiceStats = async () => {
             try {
                 const invoiceData = {
@@ -38,6 +39,7 @@ const Dashboard = ({ userRole }) => {
     }, []);
 
     useEffect(() => {
+        if (!userId) return;
         const getSummaryStats = async () => {
             try {
                 const invoiceData = {
@@ -88,6 +90,7 @@ const Dashboard = ({ userRole }) => {
 
 const mapStateToProps = (state) => ({
     userRole: state.Auth.userRole?.name,
+    userId: state.Auth?.user?.id,
 });
 
 export default connect(mapStateToProps)(Dashboard);

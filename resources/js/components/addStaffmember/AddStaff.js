@@ -36,7 +36,6 @@ const AddStaffMember = () => {
     };
 
     const handleDelete = (id) => {
-        console.log("in program", id);
         setStaff(
             [...staff].filter((singleStaff) => {
                 return singleStaff.id !== id;

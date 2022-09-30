@@ -101,28 +101,14 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
         }
     };
 
-    const getMaterialValues = () => {
-        const currentPlan = calculatorObj?.sheet_data?.find(
-            (plan) => plan.title === receipt?.values?.visionPlan
-        );
-        const currentLensType = currentPlan?.lensetypes?.find(
-            (lens) => lens.title === receipt?.values?.lensType
-        );
-    };
-
     return (
         <>
             <div className={classes["page-sub-label"]}>Out of pocket Fees</div>
             <InvoiceSlot
                 title={`${receipt?.values?.lensType?.brand || ""} ( Base fee )`}
-                subTitle={"$50.00"}
+                subTitle={`$${getLensFee(receipt)}`}
             />
-            <InvoiceSlot
-                title={`${
-                    receipt?.values?.lensType?.brand || ""
-                } ( Lens Material: ${receipt?.values?.lensMaterial} )`}
-                subTitle={"$0.00"}
-            />
+
             <InvoiceSlot
                 title={"Material Copay"}
                 subTitle={`${receipt?.values?.materialCopay || 0}`}
@@ -224,15 +210,25 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                     Percent discount
                 </div>
                 <div className={classes["invoice-slot-title"]}>
-                    <span className={classes["light-title"]}>{"($400)"}</span>{" "}
-                    40.78%
+                    <span className={classes["light-title"]}>{`($${
+                        (totalPrice || 0) /
+                        (receipt?.values?.frameOrder?.retailFee || 0 + 200)
+                    })`}</span>{" "}
+                    {((totalPrice || 0) /
+                        (receipt?.values?.frameOrder?.retailFee || 0 + 200)) *
+                        100}
+                    %
                 </div>
             </div>
             <div className={classes["invoice-slot-container"]}>
                 <div className={classes["invoice-slot-title"]}>Sales Tax</div>
                 <div className={classes["invoice-slot-title"]}>
-                    <span className={classes["light-title"]}>{"(25%)"}</span>{" "}
-                    $100
+                    <span
+                        className={classes["light-title"]}
+                    >{`(${calculatorObj.tax}%)`}</span>{" "}
+                    {(totalPrice /
+                        ((receipt?.values?.frameOrder?.retailFee || 0) + 200)) *
+                        (calculatorObj.tax || 1)}
                 </div>
             </div>
             <InvoiceBoldSlot title={"Total Due"} subTitle={`$${totalPrice}`} />
@@ -250,5 +246,90 @@ export const getPriceByAntireflective = (value) => {
             return TECHSHIELD_PLUS_UVR;
         case "Crizal Sunshield (Backside AR Only)":
             return CRIZAL_SUNSHIELD;
+    }
+};
+
+export const getPriceFromDB = (receipt) => {
+    const currentPlan = calculatorObj?.sheet_data?.find(
+        (plan) => plan.title === receipt?.values?.visionPlan
+    );
+    const currentLensType = currentPlan?.lensetypes?.find(
+        (lens) => lens.title === receipt?.values?.lensType
+    );
+    let brands = null;
+    currentLensType?.brands.forEach((item) => {
+        item.collections?.forEach((val) => {
+            if (val.title === receipt?.values?.lensType?.brand) brands = val;
+        });
+    });
+    const materials = brands?.lenses?.filter(
+        (item) => item.lens_material_title === receipt?.values?.lensMaterial
+    );
+    if (materials.length < 0) {
+        return 0;
+    } else if (materials?.characteristics?.length === 1) {
+        return materials?.characteristics?.price;
+    } else {
+        const charecterstics = materials[0]?.characteristics?.filter(
+            (item) => item.type !== "add-on"
+        );
+        const price = 0;
+        charecterstics.forEach((item) => {
+            price = price + item.price;
+        });
+        return price;
+    }
+};
+
+export const getLensFee = (receipt) => {
+    if (
+        receipt?.values?.lensType?.type &&
+        receipt?.values?.lensType?.brand &&
+        receipt?.values?.lensMaterial
+    ) {
+        if (
+            receipt?.values?.lensMaterial === "Polycarbonate" ||
+            (receipt?.values?.lensMaterial).includes("High Index")
+        ) {
+            if (receipt?.values?.lensMaterial === "Polycarbonate") {
+                const isPholicarbinateActive =
+                    receipt?.values?.lowerCopaythanStandard?.copayList?.find(
+                        (item) => item?.type === "Polycarbonate"
+                    );
+                if (isPholicarbinateActive?.status) {
+                    if (isPholicarbinateActive?.copayType === "$0 Copay") {
+                        return 0;
+                    } else if (
+                        isPholicarbinateActive?.copayType ===
+                        "Lowered copay dollar amount"
+                    ) {
+                        return isPholicarbinateActive?.price || 0;
+                    }
+                } else {
+                    getPriceFromDB(receipt);
+                }
+            } else {
+                const isHighIndexActive =
+                    receipt?.values?.lowerCopaythanStandard?.copayList?.find(
+                        (item) => item?.type === "High Index"
+                    );
+                if (isHighIndexActive?.status) {
+                    if (isPholicarbinateActive?.copayType === "$0 Copay") {
+                        return 0;
+                    } else if (
+                        isHighIndexActive?.copayType ===
+                        "Lowered copay dollar amount"
+                    ) {
+                        return isHighIndexActive?.price || 0;
+                    }
+                } else {
+                    getPriceFromDB(receipt);
+                }
+            }
+        } else {
+            return getPriceFromDB(receipt);
+        }
+    } else {
+        return 0;
     }
 };

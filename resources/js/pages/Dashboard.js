@@ -28,15 +28,11 @@ const Dashboard = (props) => {
     const [invoicesSummary, setInvoicesSummary] = useState([]);
     const [invoicesStats, setInvoicesStats] = useState([]);
     useEffect(() => {
-        console.log("the date is here", dayjs().startOf("quarter").$d);
-        console.log("the date is here", dayjs().endOf("quarter").$d);
         const date1 = dayjs(dayjs(startDate).format("YYYY-MM-DD"));
         const date2 = dayjs(dayjs(endDate).format("YYYY-MM-DD"));
         dayjs.extend(isBetween);
-        console.log("the difference is here", date2.diff(date1, "day", true));
         if (date2.diff(date1, "day", true) == 0) {
             //today/yesterday
-            console.log("the first condition is true");
             if (dayjs(date1).isSame(dayjs(new Date()).format("YYYY-MM-DD"))) {
                 setLabel("Today");
             } else {
@@ -89,7 +85,6 @@ const Dashboard = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data.data));
                 setInvoicesSummary(response.data.data);
             })
             .catch(function (error) {
@@ -112,7 +107,6 @@ const Dashboard = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 setInvoicesStats(response.data.data);
             })
             .catch(function (error) {
