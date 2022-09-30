@@ -38,9 +38,7 @@ class ProfitComparisonController extends Controller
         $start_day_month_year = $start_date->format('M Y');
         $end_day_month_year = $end_date->format('M Y');
 
-        $start_day_month = $start_date->format('m');
-        $end_day_month = $end_date->format('m');
-        
+       
  
         $sum = [];
         $type = '';
