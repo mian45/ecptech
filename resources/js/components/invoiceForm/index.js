@@ -70,9 +70,10 @@ const InvoicesForm = ({ formProps, isSearched, handleSearch }) => {
                     value={values.phoneNo}
                     onChange={handleChange}
                     onBlur={handleBlur}
+                    type={"number"}
                 />
             </div>
-            <div className={classes["form-slot"]}>
+            <div className={classes["form-slot-button"]}>
                 <ButtonComponent
                     className={classes["search-button"]}
                     type={"button"}

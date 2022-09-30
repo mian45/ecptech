@@ -366,7 +366,7 @@ class Login extends Component {
                                 >
                                     {items.map((item, index) => {
                                         return (
-                                            <SwiperSlide>
+                                            <SwiperSlide key={index}>
                                                 <div
                                                     style={{
                                                         width: "50em",

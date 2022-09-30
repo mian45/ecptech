@@ -1,9 +1,19 @@
 .container {
+    background-color: #f9f9fb;
     border-bottom: 1px solid #e8e8e8;
     font-size: 16px;
+    font-family: Montserrat;
     &:hover {
         background-color: #ffffff;
     }
+
+    td {
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+}
+.first-column {
+    padding-left: 20px;
 }
 .icon {
     text-align: center;
@@ -19,6 +29,7 @@
     text-align: center;
     background-color: #f5dcdc;
     color: #ff0000;
+    padding-bottom: 3px;
 }
 .more-icon {
     cursor: pointer;

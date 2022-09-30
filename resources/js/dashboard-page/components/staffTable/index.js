@@ -3,11 +3,13 @@ import StaffTableBodySlot from "../staffTableBodySlot";
 import StaffTableHeader from "../staffTableHeader";
 import classes from "./styles.module.scss";
 import Axios from "../../../Http";
+import { connect } from "react-redux";
 
-const StaffListTable = () => {
+const StaffListTable = ({ userId }) => {
     const [staffList, setStaffList] = useState([]);
 
     useEffect(() => {
+        if (!userId) return;
         const getStaffList = async () => {
             try {
                 const invoiceData = {
@@ -44,4 +46,8 @@ const StaffListTable = () => {
     );
 };
 
-export default StaffListTable;
+const mapStateToProps = (state) => ({
+    userId: state.Auth.user?.id,
+});
+
+export default connect(mapStateToProps)(StaffListTable);

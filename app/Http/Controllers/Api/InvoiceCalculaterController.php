@@ -25,7 +25,7 @@ class InvoiceCalculaterController extends Controller
         $data['shipping'] = "";
         $data['tax'] = "";
 
-        $shipping = Shipping::where('user_id',auth()->user()->id)->first();
+        $shipping = Shipping::where('user_id',auth()->user()->id)->orderBy('created_at', 'desc')->first();
         if($shipping){
             $data['shipping'] = $shipping->value;
         }
@@ -56,24 +56,32 @@ class InvoiceCalculaterController extends Controller
         //It will be dynamic according to user permission/setting work in next sprint
        
        $data['lens_types'] = LenseType::with(['brands'=>function($q){
-        $q->with('collections');
-       }])->get();
+            $q->select('id','lens_type_id','title');
+            $q->with(['collections'=>function($q){
+                $q->select('id','brand_id','title');
+            }]);
+       }])->select('id','vision_plan_id','title')->get();
 
        $data['lens_material'] = LensMaterial::get();
 
 
-       $data['sheet_data'] = VisionPlan::with(['lensetypes'=>function($q){
+       $data['price_calculation_data'] = VisionPlan::with(['lensetypes'=>function($q){
+        $q->select('id','vision_plan_id','title');
         $q->with(['brands'=>function($q){
+            $q->select('id','lens_type_id','title');
             $q->with(['collections'=>function($q){
+                $q->select('id','brand_id','title');
                 $q->with(['lenses'=>function($q){
-                    $q->join('lens_materials', 'lenses.lens_material_id', '=', 'lens_materials.id');
+                    $q->leftjoin('lens_materials', 'lenses.lens_material_id', '=', 'lens_materials.id');
+                    $q->select('lenses.id','collection_id','lens_material_id','title','lens_materials.lens_material_title');
                     $q->with(['characteristics' => function($q){
-                        $q->join('codes', 'characteristics.code_id', '=', 'codes.id');
+                        $q->leftjoin('codes', 'characteristics.code_id', '=', 'codes.id');
+                        $q->select('characteristics.id','characteristics.title','characteristics.lense_id','characteristics.type','characteristics.code_id','codes.name','codes.price');
                     }]);
                 }]);
             }]);
         }]);
-       }])->get();
+       }])->select('id','title')->get();
        
         
         return $this->sendResponse($data, 'Calculater Data');

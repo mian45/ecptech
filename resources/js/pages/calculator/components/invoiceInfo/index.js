@@ -1,17 +1,47 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./styles.module.scss";
 import AutoCompleteSelect from "../../../../components/autoCompleteSelect";
 import { FormikError } from "../selectVisionPlan";
+import Axios from "../../../../Http";
+import { connect } from "react-redux";
 
-const InvoiceInfo = ({ formProps }) => {
+const InvoiceInfo = ({ formProps, userId }) => {
     const { values, setFieldValue, handleBlur } = formProps;
+    const [staff, setStaff] = useState([]);
+    const [staffData, setStaffData] = useState([]);
+
+    useEffect(() => {
+        if (!userId) return;
+        const getStaffList = async () => {
+            try {
+                const res = await Axios.post("/api/getStaff", {
+                    userId: userId,
+                });
+                const resData = res?.data?.data;
+                setStaff(resData);
+                const mappedData = resData.map((value) => {
+                    return { value: value?.name };
+                });
+                setStaffData([...mappedData]);
+            } catch (err) {
+                console.log("error while getting staff");
+            }
+        };
+        getStaffList();
+    }, []);
+
+    const handleStaffChange = (value) => {
+        const selectedStaff = staff.find((ele) => ele.name === value);
+        setFieldValue("staffName", value);
+        setFieldValue("staffId", selectedStaff?.id);
+    };
     return (
         <div className={classes["container"]}>
             <div className={classes["info-section"]}>
                 <div className={classes["label"]}>Invoice Name</div>
                 <AutoCompleteSelect
                     placeholder="John Doe Sunglasses"
-                    options={INVOICE_NAME_OPTIONS}
+                    options={[]}
                     className={classes["dropdown-styles"]}
                     onBlur={handleBlur}
                     onChange={(value) => setFieldValue("invoiceName", value)}
@@ -24,11 +54,11 @@ const InvoiceInfo = ({ formProps }) => {
             <div className={classes["info-section"]}>
                 <div className={classes["label"]}>Staff Name</div>
                 <AutoCompleteSelect
-                    options={NAME_OPTIONS}
+                    options={staffData}
                     placeholder="Select Staff Name"
                     className={classes["dropdown-styles"]}
                     onBlur={handleBlur}
-                    onChange={(value) => setFieldValue("staffName", value)}
+                    onChange={handleStaffChange}
                     value={values?.staffName}
                     id="staffName"
                     name="staffName"
@@ -39,7 +69,10 @@ const InvoiceInfo = ({ formProps }) => {
     );
 };
 
-export default InvoiceInfo;
+const mapStateToProps = (state) => ({
+    userId: state.Auth.user?.id,
+});
+export default connect(mapStateToProps)(InvoiceInfo);
 
 const NAME_OPTIONS = [{ value: "John Doe" }, { value: "David Joe" }];
 const INVOICE_NAME_OPTIONS = [

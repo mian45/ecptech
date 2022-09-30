@@ -7,28 +7,71 @@ import AntdSelect from "../../../../components/customSelect/antdSelect";
 import { connect } from "react-redux";
 import Axios from "../../../../Http";
 
-const EyePrescriptionModal = ({ onClose, userId }) => {
-    const [eyeValues, setEyeValues] = useState({
-        rightEyeSPH: "",
-        rightEyeCYL: "",
-        leftEyeSPH: "",
-        leftEyeCYL: "",
-    });
+const defaultEyeValues = {
+    rightEyeSPH: "",
+    rightEyeCYL: "",
+    leftEyeSPH: "",
+    leftEyeCYL: "",
+};
+const defaultEyeResponse = {
+    rightEyeSPH: [],
+    rightEyeCYL: [],
+    leftEyeSPH: [],
+    leftEyeCYL: [],
+};
 
+const defaultSuggession = {
+    rightEye: {
+        CYL: "",
+        SPH: "",
+        materialToUse: "",
+    },
+    leftEye: { CYL: "", SPH: "", materialToUse: "" },
+};
+
+const EyePrescriptionModal = ({ onClose, userId }) => {
+    const [eyeValues, setEyeValues] = useState({ ...defaultEyeValues });
+    const [eyeData, setEyeData] = useState({ ...defaultEyeResponse });
+    const [showResult, setShowResult] = useState(false);
+    const [suggestedMaterial, setSuggestedMaterial] =
+        useState(defaultSuggession);
     useEffect(() => {
-        const getEyePrescriprion = async () => {
-            try {
-                const res = await Axios.post("/api/eye-prescriptions", {
-                    user_id: userId,
-                });
-                console.log("ressssssssssss", res);
-            } catch (err) {
-                console.log("error while get eyes Records");
-            }
-        };
+        if (!userId) return;
+     
         getEyePrescriprion();
     }, []);
+    const getEyePrescriprion = async () => {
+        try {
+            const res = await Axios.get(`/api/prescriptions`, {
+                params: { user_id: userId },
+            });
+            const prescriptionDetails = res?.data?.data;
+            
+            let rightEyeSPH=[];
+            let rightEyeCYL=[];
+            let leftEyeSPH=[];
+            let leftEyeCYL=[];
+            for (let index = 0; index < prescriptionDetails.length; index++) {
+                const eye = prescriptionDetails[index];
+                rightEyeSPH=[...rightEyeSPH,eye.sphere_from]
+                leftEyeSPH=[...leftEyeSPH,eye.sphere_to]
+                rightEyeCYL=[...rightEyeCYL,eye.cylinder_from]
+                leftEyeCYL=[...leftEyeCYL,eye.cylinder_to]
+            }
 
+            setEyeData({
+                rightEyeSPH,
+                rightEyeCYL,
+                leftEyeSPH,
+                leftEyeCYL,
+            });
+        } catch (err) {
+            console.log("error while get eyes Records");
+        }
+    };
+    useEffect(()=>{
+        console.log("the eye prescription data is here",eyeData)
+    },[eyeData])
     const handleValueChange = (value, key) => {
         setEyeValues({ ...eyeValues, [key]: value });
     };
@@ -45,23 +88,87 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
     };
     const handleSubmit = async () => {
         try {
-            try {
-                const res = await Axios.post(
-                    "/api/eye-prescriptions-calculator",
-                    {
-                        right_eye_sphere: eyeValues?.rightEyeSPH,
-                        right_eye_cylinder: eyeValues?.rightEyeCYL,
-                        left_eye_sphere: eyeValues?.leftEyeSPH,
-                        left_eye_cylinder: eyeValues?.leftEyeCYL,
-                    }
-                );
-                console.log("ressssssssssss", res);
-            } catch (err) {
-                console.log("error while get eyes Records");
-            }
+            const formData=new FormData();
+            formData.append("right_eye_sphere",eyeValues?.rightEyeSPH)
+            formData.append("right_eye_cylinder",eyeValues?.rightEyeCYL)
+            formData.append("left_eye_sphere",eyeValues?.leftEyeSPH)
+            formData.append("left_eye_cylinder",eyeValues?.leftEyeCYL)
+            formData.append("user_id",userId)
+            const res = await Axios.post(
+                "/api/eye-prescriptions-calculator",
+                formData
+            );
+            const materialData = res?.data?.data?.use_material;
+            const processedData = {
+                rightEye: {
+                    CYL: materialData?.right_eye_material?.cylinder,
+                    SPH: materialData?.right_eye_material?.sphere,
+                    materialToUse:
+                        materialData?.right_eye_material?.used_meterial,
+                },
+                leftEye: {
+                    CYL: materialData?.left_eye_material?.cylinder,
+                    SPH: materialData?.left_eye_material?.sphere,
+                    materialToUse:
+                        materialData?.left_eye_material?.used_meterial,
+                },
+            };
+            setShowResult(true);
+            setSuggestedMaterial(processedData);
         } catch (err) {
             console.log("error while submit Eye Details");
         }
+    };
+
+    const prescriptionResult = () => {
+        if (!showResult) return <></>;
+        return (
+            <>
+                <div className={classes["top-label"]}>
+                    EYE PRESCRIPTION MATERIAL RESULT:
+                </div>
+                <LensSlot label={"Right Eye"} className={classes["margin"]}>
+                    <div className={classes["answer-section"]}>
+                        <AnswerSlot
+                            title={"Sphere (SPH):"}
+                            value={suggestedMaterial?.rightEye?.SPH || ""}
+                            className={classes["margin-right"]}
+                        />
+                        <AnswerSlot
+                            title={"Cylinder (CYL):"}
+                            value={suggestedMaterial?.rightEye?.CYL || ""}
+                            className={classes["margin-right"]}
+                        />
+                        <AnswerSlot
+                            title={"Lens material to use?:"}
+                            value={
+                                suggestedMaterial?.rightEye?.materialToUse || ""
+                            }
+                        />
+                    </div>
+                </LensSlot>
+                <LensSlot label={"Left Eye"}>
+                    <div className={classes["answer-section"]}>
+                        <AnswerSlot
+                            title={"Sphere (SPH):"}
+                            value={suggestedMaterial?.leftEye?.SPH || ""}
+                            className={classes["margin-right"]}
+                        />
+                        <AnswerSlot
+                            title={"Cylinder (CYL):"}
+                            value={suggestedMaterial?.leftEye?.CYL || ""}
+                            className={classes["margin-right"]}
+                        />
+                        <AnswerSlot
+                            title={"Lens material to use?:"}
+                            value={
+                                suggestedMaterial?.leftEye?.materialToUse || ""
+                            }
+                        />
+                    </div>
+                </LensSlot>
+            </>
+        );
     };
     return (
         <CustomModal onClose={onClose}>
@@ -91,7 +198,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                                 Sphere (SPH)
                             </div>
                             <AntdSelect
-                                options={NAME_OPTIONS}
+                                options={eyeData?.rightEyeSPH}
                                 placeholder="Select Spherical"
                                 style={{ width: "345px" }}
                                 value={eyeValues?.rightEyeSPH}
@@ -106,7 +213,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                             </div>
                             <AntdSelect
                                 style={{ width: "345px" }}
-                                options={NAME_OPTIONS}
+                                options={eyeData?.rightEyeCYL}
                                 placeholder="Select Cylinder"
                                 value={eyeValues?.rightEyeCYL}
                                 onChange={(value) =>
@@ -127,7 +234,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                             </div>
                             <AntdSelect
                                 style={{ width: "345px" }}
-                                options={NAME_OPTIONS}
+                                options={eyeData?.leftEyeSPH}
                                 placeholder="Select Spherical"
                                 value={eyeValues?.leftEyeSPH}
                                 onChange={(value) =>
@@ -141,7 +248,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                             </div>
                             <AntdSelect
                                 style={{ width: "345px" }}
-                                options={NAME_OPTIONS}
+                                options={eyeData?.leftEyeCYL}
                                 placeholder="Select Cylinder"
                                 value={eyeValues?.leftEyeCYL}
                                 onChange={(value) =>
@@ -163,45 +270,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                 >
                     Submit
                 </button>
-                <div className={classes["top-label"]}>
-                    EYE PRESCRIPTION MATERIAL RESULT:
-                </div>
-                <LensSlot label={"Right Eye"} className={classes["margin"]}>
-                    <div className={classes["answer-section"]}>
-                        <AnswerSlot
-                            title={"Sphere (SPH)"}
-                            value={"-15.00"}
-                            className={classes["margin-right"]}
-                        />
-                        <AnswerSlot
-                            title={"Cylinder (CYL)"}
-                            value={"-4.25"}
-                            className={classes["margin-right"]}
-                        />
-                        <AnswerSlot
-                            title={"Lens material to use?"}
-                            value={"Lens material to use?"}
-                        />
-                    </div>
-                </LensSlot>
-                <LensSlot label={"Right Eye"}>
-                    <div className={classes["answer-section"]}>
-                        <AnswerSlot
-                            title={"Sphere (SPH)"}
-                            value={"-15.00"}
-                            className={classes["margin-right"]}
-                        />
-                        <AnswerSlot
-                            title={"Cylinder (CYL)"}
-                            value={"2.75"}
-                            className={classes["margin-right"]}
-                        />
-                        <AnswerSlot
-                            title={"Lens material to use?"}
-                            value={"Lens material to use?"}
-                        />
-                    </div>
-                </LensSlot>
+                {prescriptionResult()}
             </div>
         </CustomModal>
     );
@@ -237,9 +306,4 @@ const LensSlot = ({ children, label, className }) => {
             {children}
         </div>
     );
-};
-
-const NAME_OPTIONS = {
-    john_doe: "John Doe",
-    david_joe: "David Joe",
 };
