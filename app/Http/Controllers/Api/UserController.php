@@ -57,4 +57,32 @@ class UserController extends Controller
             return response()->json(['error'=> 'Something Went Wrong.'], 401);
         }
     }
+
+    public function addCard(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'card_no' => 'required',
+            'card_name' => 'required',
+            'card_expiry' => 'required',
+            'ccv' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $client = Client::where('user_id',auth()->user()->id)>first();
+        $client->card_no = $request->card_no;
+        $client->card_name = $request->card_name;
+        $client->card_expiry = $request->card_expiry;
+        $client->ccv = $request->ccv;
+
+        $client->save();
+        return $this->sendResponse([], 'Discount Status Changed Successfully');
+
+    }
+
+    public function getCard(Request $request){
+
+    }
 }
