@@ -16,13 +16,13 @@ class InvoicesController extends Controller
 {
     public function index(Request $request){
         $validator = Validator::make($request->all(), [
-            'userid' => 'required'
+            'userId' => 'required'
         ]);
         
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
-        $user_id = $request->userid;
+        $user_id = $request->userId;
         $invoices = Invoices::with('customer')->where('user_id',$user_id)->whereNot('status', 'discard')->latest()->take(10)->get();
         return $this->sendResponse($invoices, 'Invoices List');
     }
