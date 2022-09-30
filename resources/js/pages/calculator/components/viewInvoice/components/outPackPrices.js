@@ -18,6 +18,7 @@ import {
 import classes from "../styles.module.scss";
 
 const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
+    console.log("calculatorObj", calculatorObj);
     const getCoatingPrice = () => {
         if (
             receipt?.values?.sunGlassesLens?.coatingType === "Ski Type Mirror"
@@ -104,10 +105,14 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
     return (
         <>
             <div className={classes["page-sub-label"]}>Out of pocket Fees</div>
-            <InvoiceSlot
-                title={`${receipt?.values?.lensType?.brand || ""} ( Base fee )`}
-                subTitle={`$${getLensFee(receipt)}`}
-            />
+            {calculatorObj && (
+                <InvoiceSlot
+                    title={`${
+                        receipt?.values?.lensType?.brand || ""
+                    } ( Base fee )`}
+                    subTitle={`$${getLensFee(receipt, calculatorObj) || 0}`}
+                />
+            )}
 
             <InvoiceSlot
                 title={"Material Copay"}
@@ -249,13 +254,16 @@ export const getPriceByAntireflective = (value) => {
     }
 };
 
-export const getPriceFromDB = (receipt) => {
-    const currentPlan = calculatorObj?.sheet_data?.find(
+export const getPriceFromDB = (receipt, calculatorObj) => {
+    console.log("getPriceFromDB", calculatorObj);
+    const currentPlan = calculatorObj?.price_calculation_data?.find(
         (plan) => plan.title === receipt?.values?.visionPlan
     );
+
     const currentLensType = currentPlan?.lensetypes?.find(
         (lens) => lens.title === receipt?.values?.lensType
     );
+    console.log("currentPlan", currentLensType);
     let brands = null;
     currentLensType?.brands.forEach((item) => {
         item.collections?.forEach((val) => {
@@ -265,23 +273,25 @@ export const getPriceFromDB = (receipt) => {
     const materials = brands?.lenses?.filter(
         (item) => item.lens_material_title === receipt?.values?.lensMaterial
     );
-    if (materials.length < 0) {
+    if (materials?.length < 0) {
         return 0;
     } else if (materials?.characteristics?.length === 1) {
         return materials?.characteristics?.price;
     } else {
-        const charecterstics = materials[0]?.characteristics?.filter(
-            (item) => item.type !== "add-on"
-        );
-        const price = 0;
-        charecterstics.forEach((item) => {
-            price = price + item.price;
-        });
-        return price;
+        if (materials) {
+            const charecterstics = materials[0]?.characteristics?.filter(
+                (item) => item.type !== "add-on"
+            );
+            const price = 0;
+            charecterstics.forEach((item) => {
+                price = price + item.price;
+            });
+            return price;
+        }
     }
 };
 
-export const getLensFee = (receipt) => {
+export const getLensFee = (receipt, calculatorObj) => {
     if (
         receipt?.values?.lensType?.type &&
         receipt?.values?.lensType?.brand &&
@@ -289,7 +299,7 @@ export const getLensFee = (receipt) => {
     ) {
         if (
             receipt?.values?.lensMaterial === "Polycarbonate" ||
-            (receipt?.values?.lensMaterial).includes("High Index")
+            receipt?.values?.lensMaterial?.includes("High Index")
         ) {
             if (receipt?.values?.lensMaterial === "Polycarbonate") {
                 const isPholicarbinateActive =
@@ -306,7 +316,7 @@ export const getLensFee = (receipt) => {
                         return isPholicarbinateActive?.price || 0;
                     }
                 } else {
-                    getPriceFromDB(receipt);
+                    getPriceFromDB(receipt, calculatorObj);
                 }
             } else {
                 const isHighIndexActive =
@@ -323,11 +333,11 @@ export const getLensFee = (receipt) => {
                         return isHighIndexActive?.price || 0;
                     }
                 } else {
-                    getPriceFromDB(receipt);
+                    getPriceFromDB(receipt, calculatorObj);
                 }
             }
         } else {
-            return getPriceFromDB(receipt);
+            return getPriceFromDB(receipt, calculatorObj);
         }
     } else {
         return 0;

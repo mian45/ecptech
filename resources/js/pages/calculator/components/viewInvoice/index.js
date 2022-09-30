@@ -210,7 +210,7 @@ const ViewInvoice = ({
         } else {
             total = total + 0;
         }
-        total = total + (getLensFee(receipt) || 0);
+        total = total + (getLensFee(receipt, calculatorObj) || 0);
         //add tax
         total =
             total +
