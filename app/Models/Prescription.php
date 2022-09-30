@@ -15,7 +15,6 @@ class Prescription extends Model
         'sphere_from',
         'sphere_to',
         'cylinder_from',
-        'cylinder_from',
         'cylinder_to',
         'user_id',
         'deleted_at',
