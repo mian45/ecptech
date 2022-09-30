@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 const HotSellingProducts = ({ userId }) => {
     const [products, setProducts] = useState([]);
     useEffect(() => {
+        if (!userId) return;
         const getHotSellingProducts = async () => {
             try {
                 const productsObject = {

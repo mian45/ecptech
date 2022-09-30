@@ -16,7 +16,6 @@ import classes from "./styles.module.scss";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import { CalculatorInitialValues } from "../../data/initialValues";
-import { calculatorObject } from "../../data/dataObject";
 import {
     CreateCalculatorValidations,
     GetMappedPayload,
@@ -57,6 +56,7 @@ const CalculatorScreen = () => {
                 questions: vpState?.questions,
                 sheet_data: vpState?.sheet_data,
                 shipping: vpState?.shipping,
+                tax: vpState?.tax,
             };
             setCalculatorObj(editCalObject);
             if (editInvoiceState && editInvoiceState?.vp_state) {
@@ -143,7 +143,7 @@ const CalculatorScreen = () => {
                                     setCalValidations={setCalValidations}
                                     calValidations={calValidations}
                                     data={
-                                        calculatorObject?.data?.questions &&
+                                        calculatorObj?.data?.questions &&
                                         calculatorObj?.questions[
                                             "VSP Signature"
                                         ]
@@ -157,7 +157,7 @@ const CalculatorScreen = () => {
                                     setCalValidations={setCalValidations}
                                     calValidations={calValidations}
                                     data={
-                                        calculatorObject?.data?.questions &&
+                                        calculatorObj?.questions &&
                                         calculatorObj?.questions[
                                             "VSP Signature"
                                         ]
@@ -183,7 +183,7 @@ const CalculatorScreen = () => {
                                     setCalValidations={setCalValidations}
                                     calValidations={calValidations}
                                     data={
-                                        calculatorObject?.data?.questions &&
+                                        calculatorObj?.questions &&
                                         calculatorObj?.questions[
                                             "VSP Signature"
                                         ]
@@ -197,7 +197,7 @@ const CalculatorScreen = () => {
                                     setCalValidations={setCalValidations}
                                     calValidations={calValidations}
                                     data={
-                                        calculatorObject?.data?.questions &&
+                                        calculatorObj?.questions &&
                                         calculatorObj?.questions[
                                             "VSP Signature"
                                         ]
@@ -211,7 +211,7 @@ const CalculatorScreen = () => {
                                     setCalValidations={setCalValidations}
                                     calValidations={calValidations}
                                     data={
-                                        calculatorObject?.data?.questions &&
+                                        calculatorObj?.questions &&
                                         calculatorObj?.questions[
                                             "VSP Signature"
                                         ]
@@ -225,7 +225,7 @@ const CalculatorScreen = () => {
                                     setCalValidations={setCalValidations}
                                     calValidations={calValidations}
                                     data={
-                                        calculatorObject?.data?.questions &&
+                                        calculatorObj?.questions &&
                                         calculatorObj?.questions[
                                             "VSP Signature"
                                         ]

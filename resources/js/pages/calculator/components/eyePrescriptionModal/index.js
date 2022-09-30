@@ -36,6 +36,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
     const [suggestedMaterial, setSuggestedMaterial] =
         useState(defaultSuggession);
     useEffect(() => {
+        if (!userId) return;
         const getEyePrescriprion = async () => {
             try {
                 const res = await Axios.get("/api/get-eye-prescriptions", {

@@ -13,6 +13,7 @@ const AddStaffMember = ({ userId }) => {
     const [editId, setEditId] = useState(null);
 
     useEffect(() => {
+        if (!userId) return;
         const getAllStaff = async () => {
             try {
                 const payload = { userId: userId };

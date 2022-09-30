@@ -2,8 +2,9 @@ import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import classes from "./styles.module.scss";
 import Axios from "../../../Http";
+import { connect } from "react-redux";
 
-const TeamPerformanceChart = () => {
+const TeamPerformanceChart = (userId) => {
     const [points, setPoints] = useState({
         current: [],
         prev: [],
@@ -13,6 +14,7 @@ const TeamPerformanceChart = () => {
     const options = getChartOptions(points);
 
     useEffect(() => {
+        if (!userId) return;
         const getStats = async () => {
             try {
                 const payload = {
@@ -62,7 +64,11 @@ const TeamPerformanceChart = () => {
     );
 };
 
-export default TeamPerformanceChart;
+const mapStateToProps = (state) => ({
+    userId: state.Auth.user?.id,
+});
+
+export default connect(mapStateToProps)(TeamPerformanceChart);
 
 const StatusSlot = ({ title, isGray }) => {
     return (

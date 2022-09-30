@@ -22,7 +22,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { HOME_ROUTE } from "../../../../appRoutes/routeConstants";
 import UserInfo from "./components/userInfo";
-import OutPackPrices from "./components/outPackPrices";
+import OutPackPrices, { getLensFee } from "./components/outPackPrices";
 import InPackPrices from "./components/inPackPrices";
 
 const ViewInvoice = ({
@@ -210,7 +210,12 @@ const ViewInvoice = ({
         } else {
             total = total + 0;
         }
-
+        total = total + (getLensFee(receipt) || 0);
+        //add tax
+        total =
+            total +
+            (total / ((receipt?.values?.frameOrder?.retailFee || 0) + 200)) *
+                (calculatorObj.tax || 1);
         return total || 0;
     };
 
