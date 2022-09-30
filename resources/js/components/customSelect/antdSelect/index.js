@@ -14,10 +14,10 @@ const AntdSelect = ({ options, ...rest }) => {
             }
             {...rest}
         >
-            {Object.keys(options).map((option, index) => {
+            {options.map((option, index) => {
                 return (
                     <Option value={option} key={index}>
-                        {options[option]}
+                        {option}
                     </Option>
                 );
             })}
