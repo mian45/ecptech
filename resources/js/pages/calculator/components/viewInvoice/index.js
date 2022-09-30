@@ -22,7 +22,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { HOME_ROUTE } from "../../../../appRoutes/routeConstants";
 import UserInfo from "./components/userInfo";
-import OutPackPrices, { getLensFee } from "./components/outPackPrices";
+import OutPackPrices, { getPriceFromDB } from "./components/outPackPrices";
 import InPackPrices from "./components/inPackPrices";
 
 const ViewInvoice = ({
@@ -210,7 +210,8 @@ const ViewInvoice = ({
         } else {
             total = total + 0;
         }
-        total = total + (getLensFee(receipt, calculatorObj) || 0);
+        total = total + (receipt?.values?.shipping?.price || 0);
+        total = total + (getLensPrice(receipt, calculatorObj) || 0);
         //add tax
         total =
             total +
@@ -305,5 +306,67 @@ const getPriceByAntireflective = (value) => {
             return 0;
         case "Crizal Sunshield (Backside AR Only)":
             return 0;
+    }
+};
+
+const getLensPrice = (receipt, calculatorObj) => {
+    if (
+        receipt?.values?.lensType?.type &&
+        receipt?.values?.lensType?.brand &&
+        receipt?.values?.lensMaterial
+    ) {
+        if (
+            receipt?.values?.lensMaterial === "Polycarbonate" ||
+            receipt?.values?.lensMaterial?.includes("High Index")
+        ) {
+            if (receipt?.values?.lensMaterial === "Polycarbonate") {
+                const isPholicarbinateActive =
+                    receipt?.values?.lowerCopaythanStandard?.copayList?.find(
+                        (item) => item?.type === "Polycarbonate"
+                    );
+                if (isPholicarbinateActive?.status) {
+                    if (isPholicarbinateActive?.copayType === "$0 Copay") {
+                        return 0;
+                    } else if (
+                        isPholicarbinateActive?.copayType ===
+                        "Lowered copay dollar amount"
+                    ) {
+                        return (isPholicarbinateActive?.price || 0) + 0;
+                    }
+                } else {
+                    return (
+                        getPriceFromDB(receipt, calculatorObj).lensPrice +
+                        getPriceFromDB(receipt, calculatorObj).materialPrice
+                    );
+                }
+            } else {
+                const isHighIndexActive =
+                    receipt?.values?.lowerCopaythanStandard?.copayList?.find(
+                        (item) => item?.type === "High Index"
+                    );
+                if (isHighIndexActive?.status) {
+                    if (isPholicarbinateActive?.copayType === "$0 Copay") {
+                        return 0;
+                    } else if (
+                        isHighIndexActive?.copayType ===
+                        "Lowered copay dollar amount"
+                    ) {
+                        return isHighIndexActive?.price || 0;
+                    }
+                } else {
+                    return (
+                        getPriceFromDB(receipt, calculatorObj).lensPrice +
+                        getPriceFromDB(receipt, calculatorObj).materialPrice
+                    );
+                }
+            }
+        } else {
+            return (
+                getPriceFromDB(receipt, calculatorObj).lensPrice +
+                getPriceFromDB(receipt, calculatorObj).materialPrice
+            );
+        }
+    } else {
+        return 0;
     }
 };
