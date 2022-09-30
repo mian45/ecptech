@@ -44,3 +44,20 @@
     color: red;
     font-size: 12px;
 }
+.form-slot-button {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+@media only screen and (max-width: 650px) {
+    .form-slot-button {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .search-button {
+        margin-bottom: 20px;
+    }
+}

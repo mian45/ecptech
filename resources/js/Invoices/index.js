@@ -5,10 +5,10 @@ import { Formik } from "formik";
 import { InvoiceInitialValues } from "./data/initialValues";
 import InvoiceValidation from "./data/validations";
 import InvoicesTable from "../components/invoiceTable";
-import axios from "axios";
 import { connect } from "react-redux";
 import dayjs from "dayjs";
 import { useHistory } from "react-router";
+import Axios from "../Http";
 import { CREATE_INVOICE_ROUTE } from "../appRoutes/routeConstants";
 
 const Invoices = ({ userId }) => {
@@ -18,34 +18,35 @@ const Invoices = ({ userId }) => {
 
     useEffect(() => {
         const getAllInvoices = async () => {
-            const res = await axios.get("/api/get_invoices", {
+            const res = await Axios.get("/api/invoices", {
                 params: { user_id: userId },
             });
-            mapInvoicesData(res.data?.data);
         };
         getAllInvoices();
     }, []);
 
     const handleClick = (values) => {
-        console.log("values", values);
-        history.push(CREATE_INVOICE_ROUTE);
+        history.push({
+            pathname: CREATE_INVOICE_ROUTE,
+            state: { user: values },
+        });
     };
     const handleSearch = async (values) => {
         try {
             setIsSearched(true);
             const invoiceObject = {
-                first_name: values?.firstName,
-                last_name: values?.lastName,
-                user_id: userId,
+                fname: values?.firstName,
+                lname: values?.lastName,
+                userId: userId,
                 email: values?.email,
-                phone_number: values?.phoneNo,
+                phone: values?.phoneNo,
                 dob: values?.dob,
             };
 
-            const res = await axios.post("/api/search_invoices", invoiceObject);
-            mapInvoicesData(res.data?.data);
+            const res = await Axios.post("/api/search-invoices", invoiceObject);
+            setTableData(res?.data?.data);
         } catch (err) {
-            // setIsSearched(false);  uncomment it after handle state
+            setIsSearched(false);
             console.log("error while search", err);
         }
     };
@@ -70,13 +71,6 @@ const Invoices = ({ userId }) => {
         <div className={classes["root-container"]}>
             <div className={classes["container"]}>
                 <div className={classes["title"]}>Invoices</div>
-                <button
-                    onClick={() => {
-                        history.push(CREATE_INVOICE_ROUTE);
-                    }}
-                >
-                    for testing only
-                </button>
                 <Formik
                     initialValues={InvoiceInitialValues}
                     validationSchema={InvoiceValidation}
@@ -97,7 +91,9 @@ const Invoices = ({ userId }) => {
                         );
                     }}
                 </Formik>
-                <InvoicesTable data={tableData} />
+                <div className={classes["table-container"]}>
+                    <InvoicesTable data={tableData} />
+                </div>
             </div>
         </div>
     );
