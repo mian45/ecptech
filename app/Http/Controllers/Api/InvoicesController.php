@@ -16,25 +16,18 @@ class InvoicesController extends Controller
 {
     public function index(Request $request){
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required'
+            'userId' => 'required'
         ]);
-
+        
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
-        $user_id = $request->user_id;
-        $where_clouse['transactions.user_id'] = $user_id;
-        $invoices = DB::table('transactions')
-            ->join('invoices', 'transactions.invoice_id', '=', 'invoices.id')
-            ->where($where_clouse)
-            ->select('invoices.name', DB::Raw("CONCAT(transactions.customer_first_name, ' ', transactions.customer_last_name) AS customer_name"), 'transactions.customer_email', 'transactions.created_at', 'transactions.amount', 'transactions.status')
-            ->get();
+        $user_id = $request->userId;
+        $invoices = Invoices::with('customer')->where('user_id',$user_id)->whereNot('status', 'discard')->latest()->take(10)->get();
         return $this->sendResponse($invoices, 'Invoices List');
     }
     
     public function saveInvoice(Request $request){
-
-        // dd($request->userId);
         
         $validator = Validator::make($request->all(), [
             'userId' => 'required',
@@ -65,8 +58,6 @@ class InvoicesController extends Controller
       
       $customer->save();
 
-     
-     
       $invoice = new Invoices;
       $invoice->user_id = $request->userId;
       $invoice->staff_id = $request->staffId;
