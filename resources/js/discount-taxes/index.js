@@ -17,7 +17,7 @@ const DiscountTaxes = (props) => {
     let [discounts, setDiscounts] = useState([])
 
 
-    const [taxName, setTaxName] = useState('')
+    const [taxName, setTaxName] = useState('Sales Tax')
     const [stateSetting, setStateSetting] = useState('')
     const [taxValue, setTaxValue] = useState('')
     let [tax, setTaxes] = useState([])
