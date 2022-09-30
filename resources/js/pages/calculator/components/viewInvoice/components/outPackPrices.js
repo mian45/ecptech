@@ -18,7 +18,6 @@ import {
 import classes from "../styles.module.scss";
 
 const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
-    console.log("calculatorObj", calculatorObj);
     const getCoatingPrice = () => {
         if (
             receipt?.values?.sunGlassesLens?.coatingType === "Ski Type Mirror"
@@ -255,15 +254,12 @@ export const getPriceByAntireflective = (value) => {
 };
 
 export const getPriceFromDB = (receipt, calculatorObj) => {
-    console.log("getPriceFromDB", calculatorObj);
     const currentPlan = calculatorObj?.price_calculation_data?.find(
         (plan) => plan.title === receipt?.values?.visionPlan
     );
-
     const currentLensType = currentPlan?.lensetypes?.find(
         (lens) => lens.title === receipt?.values?.lensType
     );
-    console.log("currentPlan", currentLensType);
     let brands = null;
     currentLensType?.brands.forEach((item) => {
         item.collections?.forEach((val) => {
