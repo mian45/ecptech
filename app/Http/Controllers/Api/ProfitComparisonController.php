@@ -34,6 +34,11 @@ class ProfitComparisonController extends Controller
         $data = [];
         $days = $end_date->diffInDays($start_date);
         $months = $end_date->diffInMonths($start_date);  
+
+        $start_day_month_year = $start_date->format('M Y');
+        $end_day_month_year = $end_date->format('M Y');
+
+       
  
         $sum = [];
         $type = '';
@@ -66,7 +71,7 @@ class ProfitComparisonController extends Controller
                 $i++;
                 
             }
-        } else if ($days === 28 || $days === 29 || $days === 30 || $days === 31) {
+        } else if (($start_day_month_year==$end_day_month_year)) {
             $type = 'month';
             $period = CarbonPeriod::create($start_date->toDateString(), $end_date->toDateString());
             $i =1;
@@ -81,7 +86,7 @@ class ProfitComparisonController extends Controller
                 ];
                 $i++;
             }
-        } else if ($months === 3){
+        } else if ($months === 2){
             $type = 'quarter';
             for ($i = 1; $i <= $months+1; $i++) {
                 
@@ -112,18 +117,23 @@ class ProfitComparisonController extends Controller
                 ];    
             }
         } else{
-            $type = 'custom range'; 
-            $start_date = $start_date->toDateString();
-            $end_date = $end_date->toDateString();
-                    
-            $amount = Invoice::where($where_clouse)
-                ->where('created_at', '>=',$start_date)->where('created_at', '<=',$end_date)
-                ->sum('amount');
+            $type = 'custom'; 
+            $period = CarbonPeriod::create($start_date->toDateString(),$end_date->toDateString());
+            $i =1;
+            foreach ($period as $key=>$date) {
 
-            $sum[] = [
-                'total' => $amount
-            ];    
-            
+                $amount = Invoice::where($where_clouse)
+                    ->whereBetween('created_at', [$date->format('Y-m-d 00:00:00'), $date->format('Y-m-d 23:59:59')])
+                    ->sum('amount');
+
+                $sum[$i] = [
+                    'custom' => $date->format('Y-m-d'),
+                    'total' => (int) $amount
+                ];
+                $i++;
+                
+            }
+
         }      
 
 
