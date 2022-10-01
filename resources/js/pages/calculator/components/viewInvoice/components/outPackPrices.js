@@ -109,7 +109,19 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                     title={`${
                         receipt?.values?.lensType?.brand || ""
                     } ( Base fee )`}
-                    subTitle={`$${getLensFee(receipt, calculatorObj) || 0}`}
+                    subTitle={`$${
+                        getLensFee(receipt, calculatorObj)?.lensPrice || 0
+                    }`}
+                />
+            )}
+            {calculatorObj && (
+                <InvoiceSlot
+                    title={`${
+                        receipt?.values?.lensType?.brand || ""
+                    } ( Lens Material ${receipt?.values?.lensMaterial} )`}
+                    subTitle={`$${
+                        getLensFee(receipt, calculatorObj)?.materialPrice || 0
+                    }`}
                 />
             )}
 
@@ -120,34 +132,33 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
             {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
                 <InvoiceSlot
                     title={`Frame: `}
-                    subTitle={`$${calculateFrameFee()}`}
+                    subTitle={`$${calculateFrameFee().toFixed(2) || 0}`}
                 />
             )}
             {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
-                receipt?.values?.frameOrder?.drillMount ===
-                    "Yes"(
-                        <InvoiceSlot
-                            title={`Drill Mount: `}
-                            subTitle={`$${DRILL_MOUNT}`}
-                        />
-                    )}
+                receipt?.values?.frameOrder?.drillMount === "Yes" && (
+                    <InvoiceSlot
+                        title={`Drill Mount: `}
+                        subTitle={`$${DRILL_MOUNT}`}
+                    />
+                )}
             {receipt?.values?.photochromics?.status === "Yes" && (
                 <InvoiceSlot
                     title={`Photochromic Option: ${receipt?.values?.photochromics?.type}`}
-                    subTitle={`$${getPhotochromicPrice()}`}
+                    subTitle={`$${getPhotochromicPrice().toFixed(2) || 0}`}
                 />
             )}
             {receipt?.values?.antiReflectiveProperties?.status === "Yes" && (
                 <InvoiceSlot
                     title={`Antireflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
-                    subTitle={`$${getAntireflectivePrice()}`}
+                    subTitle={`$${getAntireflectivePrice().toFixed(2) || 0}`}
                 />
             )}
             {receipt?.values?.sunGlassesLens?.status === "Yes" &&
                 receipt?.values?.sunGlassesLens?.status === "Yes" && (
                     <InvoiceSlot
                         title={`Mirror Coating: ${receipt?.values?.sunGlassesLens?.coatingType}`}
-                        subTitle={`${getCoatingPrice() || 0}`}
+                        subTitle={`$${getCoatingPrice().toFixed(2) || 0}`}
                     />
                 )}
             {receipt?.values?.sunGlassesLens?.status === "Yes" && (
@@ -199,13 +210,20 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                 receipt?.values?.protectionPlan?.paymentStatus === "Paid" && (
                     <InvoiceSlot
                         title={"Protection Plan Fee"}
-                        subTitle={receipt?.values?.protectionPlan?.price}
+                        subTitle={
+                            "$" +
+                                (receipt?.values?.protectionPlan?.price).toFixed(
+                                    2
+                                ) || 0
+                        }
                     />
                 )}
             {receipt?.values?.shipping?.status === "Yes" && (
                 <InvoiceSlot
                     title={"Shipping Fee"}
-                    subTitle={receipt?.values?.shipping?.price}
+                    subTitle={
+                        "$" + (receipt?.values?.shipping?.price).toFixed(2) || 0
+                    }
                 />
             )}
 
@@ -214,13 +232,16 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                     Percent discount
                 </div>
                 <div className={classes["invoice-slot-title"]}>
-                    <span className={classes["light-title"]}>{`($${
+                    <span className={classes["light-title"]}>{`($${(
                         (totalPrice || 0) /
-                        (receipt?.values?.frameOrder?.retailFee || 0 + 200)
-                    })`}</span>{" "}
-                    {((totalPrice || 0) /
-                        (receipt?.values?.frameOrder?.retailFee || 0 + 200)) *
-                        100}
+                        ((receipt?.values?.frameOrder?.retailFee || 0) + 200)
+                    ).toFixed(2)})`}</span>{" "}
+                    {(
+                        ((totalPrice || 0) /
+                            ((receipt?.values?.frameOrder?.retailFee || 0) +
+                                200)) *
+                        100
+                    ).toFixed(2)}
                     %
                 </div>
             </div>
@@ -229,13 +250,19 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                 <div className={classes["invoice-slot-title"]}>
                     <span
                         className={classes["light-title"]}
-                    >{`(${calculatorObj.tax}%)`}</span>{" "}
-                    {(totalPrice /
-                        ((receipt?.values?.frameOrder?.retailFee || 0) + 200)) *
-                        (calculatorObj.tax || 1)}
+                    >{`$(${calculatorObj.tax.toFixed(2)}%)`}</span>{" "}
+                    {(
+                        ((totalPrice || 0) /
+                            ((receipt?.values?.frameOrder?.retailFee || 0) +
+                                200)) *
+                        (calculatorObj.tax || 1)
+                    ).toFixed(2) || 0}
                 </div>
             </div>
-            <InvoiceBoldSlot title={"Total Due"} subTitle={`$${totalPrice}`} />
+            <InvoiceBoldSlot
+                title={"Total Due"}
+                subTitle={`$${totalPrice.toFixed(2)}`}
+            />
         </>
     );
 };
@@ -254,11 +281,13 @@ export const getPriceByAntireflective = (value) => {
 };
 
 export const getPriceFromDB = (receipt, calculatorObj) => {
+    let lensPrice = 0;
+    let materialPrice = 0;
     const currentPlan = calculatorObj?.price_calculation_data?.find(
         (plan) => plan.title === receipt?.values?.visionPlan
     );
     const currentLensType = currentPlan?.lensetypes?.find(
-        (lens) => lens.title === receipt?.values?.lensType
+        (lens) => lens.title === receipt?.values?.lensType?.type
     );
     let brands = null;
     currentLensType?.brands.forEach((item) => {
@@ -270,19 +299,27 @@ export const getPriceFromDB = (receipt, calculatorObj) => {
         (item) => item.lens_material_title === receipt?.values?.lensMaterial
     );
     if (materials?.length < 0) {
-        return 0;
+        return { lensPrice: lensPrice, materialPrice: materialPrice };
     } else if (materials?.characteristics?.length === 1) {
-        return materials?.characteristics?.price;
+        lensPrice = materials[0]?.characteristics?.price;
+        return { lensPrice: lensPrice, materialPrice: materialPrice };
     } else {
         if (materials) {
-            const charecterstics = materials[0]?.characteristics?.filter(
+            const baseCharecterstics = materials[0]?.characteristics?.filter(
                 (item) => item.type !== "add-on"
             );
-            const price = 0;
-            charecterstics.forEach((item) => {
-                price = price + item.price;
+            const TACharecterstics = materials[0]?.characteristics?.filter(
+                (item) => item.name === "TA"
+            );
+            lensPrice = baseCharecterstics[0]?.price;
+            baseCharecterstics.splice(0, 1);
+            const restBases = [...baseCharecterstics, ...TACharecterstics];
+            restBases.forEach((item) => {
+                materialPrice = materialPrice + parseInt(item.price);
             });
-            return price;
+            return { lensPrice: lensPrice, materialPrice: materialPrice };
+        } else {
+            return { lensPrice: 0, materialPrice: 0 };
         }
     }
 };
@@ -304,15 +341,18 @@ export const getLensFee = (receipt, calculatorObj) => {
                     );
                 if (isPholicarbinateActive?.status) {
                     if (isPholicarbinateActive?.copayType === "$0 Copay") {
-                        return 0;
+                        return { lensPrice: 0, materialPrice: 0 };
                     } else if (
                         isPholicarbinateActive?.copayType ===
                         "Lowered copay dollar amount"
                     ) {
-                        return isPholicarbinateActive?.price || 0;
+                        return {
+                            lensPrice: isPholicarbinateActive?.price || 0,
+                            materialPrice: 0,
+                        };
                     }
                 } else {
-                    getPriceFromDB(receipt, calculatorObj);
+                    return getPriceFromDB(receipt, calculatorObj);
                 }
             } else {
                 const isHighIndexActive =
@@ -321,21 +361,24 @@ export const getLensFee = (receipt, calculatorObj) => {
                     );
                 if (isHighIndexActive?.status) {
                     if (isPholicarbinateActive?.copayType === "$0 Copay") {
-                        return 0;
+                        return { lensPrice: 0, materialPrice: 0 };
                     } else if (
                         isHighIndexActive?.copayType ===
                         "Lowered copay dollar amount"
                     ) {
-                        return isHighIndexActive?.price || 0;
+                        return {
+                            lensPrice: isHighIndexActive?.price || 0,
+                            materialPrice: 0,
+                        };
                     }
                 } else {
-                    getPriceFromDB(receipt, calculatorObj);
+                    return getPriceFromDB(receipt, calculatorObj);
                 }
             }
         } else {
             return getPriceFromDB(receipt, calculatorObj);
         }
     } else {
-        return 0;
+        return { lensPrice: 0, materialPrice: 0 };
     }
 };
