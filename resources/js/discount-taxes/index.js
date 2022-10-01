@@ -8,7 +8,8 @@ import cross from "../../images/cross.png"
 import { Select } from 'antd';
 import axios from 'axios';
 const { Option } = Select;
-
+import { Switch } from 'antd';
+const label = { inputProps: { 'aria-label': 'Switch demo' } }
 const DiscountTaxes = (props) => {
     const [discountName, setDiscountName] = useState('')
     const [discountTax, setDiscountTax] = useState('')
@@ -476,7 +477,8 @@ axios(config)
                                 <td>{dis.name}</td>
                                 <td>${dis.value}</td>
                                 <td><img style={{ width: '18px', height: '18px', marginRight: '30px', cursor: 'pointer' }} src={edit} onClick={() => { handlUpdate(dis) }} />
-                                    <img style={{ width: '16px', height: '16px', cursor: 'pointer' }} src={cross} onClick={() => { handleDelete(dis.id) }} /></td>
+                                    <img style={{ width: '16px', height: '16px', cursor: 'pointer' }} src={cross} onClick={() => { handleDelete(dis.id) }} />
+                                    <Switch {...label} style={{marginLeft:"10px"}}/></td>
                             </tr>
                             })
                             
