@@ -63,10 +63,10 @@ class UserController extends Controller
     public function addCard(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'card_no' => 'required',
+            'card_no' => 'required|integer|min:15|max:16',
             'card_name' => 'required',
-            'card_expiry' => 'required',
-            'ccv' => 'required'
+            'card_expiry' => 'required|date_format:m/y',
+            'ccv' => 'required|integer|min:3|max:3'
         ]);
 
         if ($validator->fails()) {
