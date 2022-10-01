@@ -22,7 +22,7 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { HOME_ROUTE } from "../../../../appRoutes/routeConstants";
 import UserInfo from "./components/userInfo";
-import OutPackPrices, { getLensFee } from "./components/outPackPrices";
+import OutPackPrices, { getPriceFromDB } from "./components/outPackPrices";
 import InPackPrices from "./components/inPackPrices";
 
 const ViewInvoice = ({
@@ -122,11 +122,13 @@ const ViewInvoice = ({
         }
         if (receipt?.values?.sunGlassesLens?.status === "Yes") {
             {
-                if (values?.sunGlassesLens?.lensType === "Polarized") {
+                if (receipt?.values?.sunGlassesLens?.lensType === "Polarized") {
                     total = total + POLARIZED;
-                    if (values?.sunGlassesLens?.mirrorCoating === "Yes") {
+                    if (
+                        receipt?.values?.sunGlassesLens?.mirrorCoating === "Yes"
+                    ) {
                         if (
-                            values?.sunGlassesLens?.coatingType ===
+                            receipt?.values?.sunGlassesLens?.coatingType ===
                             "Ski Type Mirror"
                         ) {
                             total = total + SKI_TYPE_MIRROR;
@@ -134,15 +136,22 @@ const ViewInvoice = ({
                             total = total + SOLID_SINGLE_GRADIENT;
                         }
                     }
-                } else if (values?.sunGlassesLens?.lensType === "Tint") {
-                    if (values?.sunGlassesLens?.tintType === "Solid Tint") {
+                } else if (
+                    receipt?.values?.sunGlassesLens?.lensType === "Tint"
+                ) {
+                    if (
+                        receipt?.values?.sunGlassesLens?.tintType ===
+                        "Solid Tint"
+                    ) {
                         total = total + SOLID_TINT;
                     } else {
                         total = total + GRADIENT_TINT;
                     }
-                    if (values?.sunGlassesLens?.mirrorCoating === "Yes") {
+                    if (
+                        receipt?.values?.sunGlassesLens?.mirrorCoating === "Yes"
+                    ) {
                         if (
-                            values?.sunGlassesLens?.coatingType ===
+                            receipt?.values?.sunGlassesLens?.coatingType ===
                             "Ski Type Mirror"
                         ) {
                             total = total + SKI_TYPE_MIRROR;
@@ -157,7 +166,7 @@ const ViewInvoice = ({
             receipt?.values?.protectionPlan?.status === "Yes" &&
             receipt?.values?.protectionPlan?.paymentStatus === "Paid"
         ) {
-            total = total + (values?.protectionPlan?.price || 0);
+            total = total + (receipt?.values?.protectionPlan?.price || 0);
         }
         if (receipt?.values?.shipping?.status === "Yes") {
             total = total + (receipt?.values?.shipping?.price || 0);
@@ -210,7 +219,8 @@ const ViewInvoice = ({
         } else {
             total = total + 0;
         }
-        total = total + (getLensFee(receipt) || 0);
+        total = total + (receipt?.values?.shipping?.price || 0);
+        total = total + (parseInt(getLensPrice(receipt, calculatorObj)) || 0);
         //add tax
         total =
             total +
@@ -305,5 +315,67 @@ const getPriceByAntireflective = (value) => {
             return 0;
         case "Crizal Sunshield (Backside AR Only)":
             return 0;
+    }
+};
+
+const getLensPrice = (receipt, calculatorObj) => {
+    if (
+        receipt?.values?.lensType?.type &&
+        receipt?.values?.lensType?.brand &&
+        receipt?.values?.lensMaterial
+    ) {
+        if (
+            receipt?.values?.lensMaterial === "Polycarbonate" ||
+            receipt?.values?.lensMaterial?.includes("High Index")
+        ) {
+            if (receipt?.values?.lensMaterial === "Polycarbonate") {
+                const isPholicarbinateActive =
+                    receipt?.values?.lowerCopaythanStandard?.copayList?.find(
+                        (item) => item?.type === "Polycarbonate"
+                    );
+                if (isPholicarbinateActive?.status) {
+                    if (isPholicarbinateActive?.copayType === "$0 Copay") {
+                        return 0;
+                    } else if (
+                        isPholicarbinateActive?.copayType ===
+                        "Lowered copay dollar amount"
+                    ) {
+                        return (isPholicarbinateActive?.price || 0) + 0;
+                    }
+                } else {
+                    return (
+                        getPriceFromDB(receipt, calculatorObj).lensPrice +
+                        getPriceFromDB(receipt, calculatorObj).materialPrice
+                    );
+                }
+            } else {
+                const isHighIndexActive =
+                    receipt?.values?.lowerCopaythanStandard?.copayList?.find(
+                        (item) => item?.type === "High Index"
+                    );
+                if (isHighIndexActive?.status) {
+                    if (isPholicarbinateActive?.copayType === "$0 Copay") {
+                        return 0;
+                    } else if (
+                        isHighIndexActive?.copayType ===
+                        "Lowered copay dollar amount"
+                    ) {
+                        return isHighIndexActive?.price || 0;
+                    }
+                } else {
+                    return (
+                        getPriceFromDB(receipt, calculatorObj).lensPrice +
+                        getPriceFromDB(receipt, calculatorObj).materialPrice
+                    );
+                }
+            }
+        } else {
+            return (
+                getPriceFromDB(receipt, calculatorObj).lensPrice +
+                getPriceFromDB(receipt, calculatorObj).materialPrice
+            );
+        }
+    } else {
+        return 0;
     }
 };
