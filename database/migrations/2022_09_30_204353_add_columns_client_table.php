@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::table('clients', function (Blueprint $table) {
-            $table->string('card_no');
-            $table->string('card_name');
-            $table->string('card_expiry');
+            $table->string('card_no')->nullable();
+            $table->string('card_name')->nullable();
+            $table->string('card_expiry')->nullable();
             $table->string('ccv')->nullable();
         });
     }
@@ -29,7 +29,12 @@ return new class extends Migration
     public function down()
     {
         Schema::table('clients', function (Blueprint $table) {
-            //
+            $table->dropClumn('card_no');
+            $table->dropClumn('card_name');
+            $table->dropClumn('card_expiry');
+            $table->dropClumn('ccv');
+            
+
         });
     }
 };

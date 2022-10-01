@@ -10,6 +10,8 @@ use App\Models\UserRole;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Validation\Rule;
+use App\Models\Client;
+
 class UserController extends Controller
 {
     /**
@@ -71,18 +73,34 @@ class UserController extends Controller
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $client = Client::where('user_id',auth()->user()->id)>first();
-        $client->card_no = $request->card_no;
-        $client->card_name = $request->card_name;
-        $client->card_expiry = $request->card_expiry;
-        $client->ccv = $request->ccv;
+        $client_card = Client::where('user_id',auth()->user()->id)->first();
+        if(!$client_card){
+            $client_card = new Client();
+            $client_card->user_id = auth()->user()->id;
+        }
+        $client_card->card_no = $request->card_no;
+        $client_card->card_name = $request->card_name;
+        $client_card->card_expiry = $request->card_expiry;
+        $client_card->ccv = $request->ccv;
 
-        $client->save();
-        return $this->sendResponse([], 'Discount Status Changed Successfully');
+        $client_card->save();
+
+        if($client_card){
+            return $this->sendResponse([], 'Card Added Succesfully');
+        }
+
+        return $this->sendError('Something went wrong!');
 
     }
 
     public function getCard(Request $request){
 
+        $client_card = Client::select('id','card_name','card_no','card_expiry','ccv')->where('user_id',auth()->user()->id)->first();
+        
+        if($client_card){
+            return $this->sendResponse($client_card, 'Card get successfully');
+        }
+
+        return $this->sendError('Discount not found');
     }
 }
