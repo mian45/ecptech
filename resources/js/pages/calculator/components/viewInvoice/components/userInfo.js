@@ -16,7 +16,10 @@ const UserInfo = ({ receipt }) => {
                 title={"Date of Birth"}
                 subTitle={receipt?.userInfo?.dob}
             />
-            <InfoSlot title={"Email"} subTitle={receipt?.userInfo?.email} />
+            <InfoSlot
+                title={"Email"}
+                subTitle={(receipt?.userInfo?.email || "").slice(0, 20)}
+            />
             {receipt?.userInfo?.phoneNo && (
                 <InfoSlot
                     title={"Phone Number"}

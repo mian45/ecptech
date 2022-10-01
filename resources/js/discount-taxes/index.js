@@ -8,7 +8,8 @@ import cross from "../../images/cross.png"
 import { Select } from 'antd';
 import axios from 'axios';
 const { Option } = Select;
-
+import { Switch } from 'antd';
+const label = { inputProps: { 'aria-label': 'Switch demo' } }
 const DiscountTaxes = (props) => {
     const [discountName, setDiscountName] = useState('')
     const [discountTax, setDiscountTax] = useState('')
@@ -17,7 +18,7 @@ const DiscountTaxes = (props) => {
     let [discounts, setDiscounts] = useState([])
 
 
-    const [taxName, setTaxName] = useState('')
+    const [taxName, setTaxName] = useState('Sales Tax')
     const [stateSetting, setStateSetting] = useState('')
     const [taxValue, setTaxValue] = useState('')
     let [tax, setTaxes] = useState([])
@@ -55,7 +56,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 setDiscountId(null)
         setDiscountName("")
         setDiscountTax("")
@@ -82,7 +82,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 getDiscount()
             })
             .catch(function (error) {
@@ -109,7 +108,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 setTaxName("")
                 setStateSetting("")
                 setTaxValue("")
@@ -123,7 +121,6 @@ const DiscountTaxes = (props) => {
     }
 
     const editTax = (values) => {
-        console.log(values, 'values');
         let data = new FormData();
         data.append('id', idState);
         data.append('stateId', stateSetting);
@@ -141,7 +138,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 getTaxes();
 
                 setTaxName("")
@@ -171,7 +167,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 console.log(error);
@@ -196,7 +191,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 console.log(error);
@@ -219,7 +213,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 console.log(error);
@@ -242,7 +235,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 setTaxState(response.data.data)
             })
             .catch(function (error) {
@@ -251,30 +243,29 @@ const DiscountTaxes = (props) => {
     }
     const updateDiscount=()=>{
         var data = new FormData();
-data.append('id', discountId);
-data.append('name', discountName);
-data.append('value', discountTax);
+        data.append('id', discountId);
+        data.append('name', discountName);
+        data.append('value', discountTax);
+        var config = {
+        method: 'post',
+        url: `${process.env.MIX_REACT_APP_URL}/api/edit-discount`,
+        headers: {
+            'Authorization': `Bearer ${props.token}`,
+        },
+        data : data
+        };
 
-var config = {
-  method: 'post',
-  url: `${process.env.MIX_REACT_APP_URL}/api/edit-discount`,
-  headers: {
-      'Authorization': `Bearer ${props.token}`,
-  },
-  data : data
-};
-
-axios(config)
-.then(function (response) {
-  console.log(JSON.stringify(response.data));
-  setEditId(null)
-        setDiscountName("")
-        setDiscountTax("")
-        getDiscount()
-})
-.catch(function (error) {
-  console.log(error);
-});
+        axios(config)
+        .then(function (response) {
+        setEditId(null)
+                setDiscountName("")
+                setDiscountTax("")
+                setDiscountId(null)
+                getDiscount()
+        })
+        .catch(function (error) {
+        console.log(error);
+        });
         
     }
     const handleSubmit = (e) => {
@@ -366,7 +357,6 @@ axios(config)
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 setDiscounts(response.data.data)
             })
             .catch(function (error) {
@@ -389,7 +379,6 @@ axios(config)
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 let taxes = response.data.data;
                 setTaxes(taxes)
             })
@@ -413,7 +402,6 @@ axios(config)
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 let shippingTax = response.data.data
                 setShipping(shippingTax)
             })
@@ -422,11 +410,35 @@ axios(config)
             });
 
     }
+   
     const updateHandler = (obj) => {
         setIdState(obj.id)
         setTaxName(obj.name)
         setStateSetting(obj.state.id)
         setTaxValue(obj.value)
+    }
+    const  onChangeDiscountActive=(e,disc,index)=>{
+            let data = new FormData();
+            data.append('discount_id', disc.id);
+            data.append('status', e?"active":"inactive");
+            let config = {
+                method: 'post',
+                url: `${process.env.MIX_REACT_APP_URL}/api/discount-status`,
+                headers: {
+                    'Authorization': `Bearer ${props.token}`,
+                },
+                data: data
+            };
+    
+            axios(config)
+                .then(function (response) {
+                    getDiscount()
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+    
+        
     }
     return (
         <div className='discount-container'>
@@ -476,7 +488,12 @@ axios(config)
                                 <td>{dis.name}</td>
                                 <td>${dis.value}</td>
                                 <td><img style={{ width: '18px', height: '18px', marginRight: '30px', cursor: 'pointer' }} src={edit} onClick={() => { handlUpdate(dis) }} />
-                                    <img style={{ width: '16px', height: '16px', cursor: 'pointer' }} src={cross} onClick={() => { handleDelete(dis.id) }} /></td>
+                                    <img style={{ width: '16px', height: '16px', cursor: 'pointer' }} src={cross} onClick={() => { handleDelete(dis.id) }} />
+                                    <Switch {...label} style={{marginLeft:"10px"}} 
+                                    checked={dis?.status=="active"?true:false}
+                                    onChange={(e)=>{
+                                        onChangeDiscountActive(e,dis,index)
+                                    }}/></td>
                             </tr>
                             })
                             
