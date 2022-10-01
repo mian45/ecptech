@@ -132,17 +132,16 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
             {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
                 <InvoiceSlot
                     title={`Frame: `}
-                    subTitle={`$${calculateFrameFee() || 0}`}
+                    subTitle={`$${calculateFrameFee().toFixed() || 0}`}
                 />
             )}
             {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
-                receipt?.values?.frameOrder?.drillMount ===
-                    "Yes"(
-                        <InvoiceSlot
-                            title={`Drill Mount: `}
-                            subTitle={`$${DRILL_MOUNT}`}
-                        />
-                    )}
+                receipt?.values?.frameOrder?.drillMount === "Yes" && (
+                    <InvoiceSlot
+                        title={`Drill Mount: `}
+                        subTitle={`$${DRILL_MOUNT}`}
+                    />
+                )}
             {receipt?.values?.photochromics?.status === "Yes" && (
                 <InvoiceSlot
                     title={`Photochromic Option: ${receipt?.values?.photochromics?.type}`}
@@ -159,7 +158,7 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                 receipt?.values?.sunGlassesLens?.status === "Yes" && (
                     <InvoiceSlot
                         title={`Mirror Coating: ${receipt?.values?.sunGlassesLens?.coatingType}`}
-                        subTitle={`${getCoatingPrice() || 0}`}
+                        subTitle={`$${getCoatingPrice() || 0}`}
                     />
                 )}
             {receipt?.values?.sunGlassesLens?.status === "Yes" && (
@@ -241,13 +240,16 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                 <div className={classes["invoice-slot-title"]}>
                     <span
                         className={classes["light-title"]}
-                    >{`(${calculatorObj.tax}%)`}</span>{" "}
+                    >{`$(${calculatorObj.tax}%)`}</span>{" "}
                     {((totalPrice || 0) /
                         ((receipt?.values?.frameOrder?.retailFee || 0) + 200)) *
                         (calculatorObj.tax || 1) || 0}
                 </div>
             </div>
-            <InvoiceBoldSlot title={"Total Due"} subTitle={`$${totalPrice}`} />
+            <InvoiceBoldSlot
+                title={"Total Due"}
+                subTitle={`$${totalPrice.toFixed()}`}
+            />
         </>
     );
 };
@@ -300,7 +302,7 @@ export const getPriceFromDB = (receipt, calculatorObj) => {
             baseCharecterstics.splice(0, 1);
             const restBases = [...baseCharecterstics, ...TACharecterstics];
             restBases.forEach((item) => {
-                materialPrice = materialPrice + item.price;
+                materialPrice = materialPrice + parseInt(item.price);
             });
             return { lensPrice: lensPrice, materialPrice: materialPrice };
         } else {

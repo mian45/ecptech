@@ -122,11 +122,13 @@ const ViewInvoice = ({
         }
         if (receipt?.values?.sunGlassesLens?.status === "Yes") {
             {
-                if (values?.sunGlassesLens?.lensType === "Polarized") {
+                if (receipt?.values?.sunGlassesLens?.lensType === "Polarized") {
                     total = total + POLARIZED;
-                    if (values?.sunGlassesLens?.mirrorCoating === "Yes") {
+                    if (
+                        receipt?.values?.sunGlassesLens?.mirrorCoating === "Yes"
+                    ) {
                         if (
-                            values?.sunGlassesLens?.coatingType ===
+                            receipt?.values?.sunGlassesLens?.coatingType ===
                             "Ski Type Mirror"
                         ) {
                             total = total + SKI_TYPE_MIRROR;
@@ -134,15 +136,22 @@ const ViewInvoice = ({
                             total = total + SOLID_SINGLE_GRADIENT;
                         }
                     }
-                } else if (values?.sunGlassesLens?.lensType === "Tint") {
-                    if (values?.sunGlassesLens?.tintType === "Solid Tint") {
+                } else if (
+                    receipt?.values?.sunGlassesLens?.lensType === "Tint"
+                ) {
+                    if (
+                        receipt?.values?.sunGlassesLens?.tintType ===
+                        "Solid Tint"
+                    ) {
                         total = total + SOLID_TINT;
                     } else {
                         total = total + GRADIENT_TINT;
                     }
-                    if (values?.sunGlassesLens?.mirrorCoating === "Yes") {
+                    if (
+                        receipt?.values?.sunGlassesLens?.mirrorCoating === "Yes"
+                    ) {
                         if (
-                            values?.sunGlassesLens?.coatingType ===
+                            receipt?.values?.sunGlassesLens?.coatingType ===
                             "Ski Type Mirror"
                         ) {
                             total = total + SKI_TYPE_MIRROR;
@@ -157,7 +166,7 @@ const ViewInvoice = ({
             receipt?.values?.protectionPlan?.status === "Yes" &&
             receipt?.values?.protectionPlan?.paymentStatus === "Paid"
         ) {
-            total = total + (values?.protectionPlan?.price || 0);
+            total = total + (receipt?.values?.protectionPlan?.price || 0);
         }
         if (receipt?.values?.shipping?.status === "Yes") {
             total = total + (receipt?.values?.shipping?.price || 0);
@@ -211,7 +220,7 @@ const ViewInvoice = ({
             total = total + 0;
         }
         total = total + (receipt?.values?.shipping?.price || 0);
-        total = total + (getLensPrice(receipt, calculatorObj) || 0);
+        total = total + (parseInt(getLensPrice(receipt, calculatorObj)) || 0);
         //add tax
         total =
             total +
