@@ -219,7 +219,7 @@ const ViewInvoice = ({
         } else {
             total = total + 0;
         }
-        total = total + (receipt?.values?.shipping?.price || 0);
+        total = total + (parseInt(calculatorObj?.shipping) || 0);
         total = total + (parseInt(getLensPrice(receipt, calculatorObj)) || 0);
         //add tax
         total =

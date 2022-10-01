@@ -158,7 +158,7 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                 receipt?.values?.sunGlassesLens?.status === "Yes" && (
                     <InvoiceSlot
                         title={`Mirror Coating: ${receipt?.values?.sunGlassesLens?.coatingType}`}
-                        subTitle={`$${getCoatingPrice().toFixed(2) || 0}`}
+                        subTitle={`$${getCoatingPrice() || 0}`}
                     />
                 )}
             {receipt?.values?.sunGlassesLens?.status === "Yes" && (
@@ -221,9 +221,7 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
             {receipt?.values?.shipping?.status === "Yes" && (
                 <InvoiceSlot
                     title={"Shipping Fee"}
-                    subTitle={
-                        "$" + (receipt?.values?.shipping?.price).toFixed(2) || 0
-                    }
+                    subTitle={"$" + (calculatorObj?.shipping || 0)}
                 />
             )}
 
