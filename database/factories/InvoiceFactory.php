@@ -26,8 +26,8 @@ class InvoiceFactory extends Factory
             'amount' => fake()->randomDigit,
             'status' => fake()->randomElement(['paid','unpaid']),
             'payment_mode' => fake()->randomElement(['office','online']),
-            'created_at' => date("Y-m-d H:i:s"),
-            'updated_at' => date("Y-m-d H:i:s"),
+            'created_at' => fake()->randomElement([fake()->dateTimeBetween($startDate = '-1 years', $endDate = 'now',$timezone='UTC'),fake()->dateTimeBetween($startDate = 'now', $endDate = 'now',$timezone='UTC')]),
+            'updated_at' => fake()->dateTimeBetween($startDate = '-1 years', $endDate = 'now',$timezone='UTC'),
             'created_by' => User::all()->random()->id
         ];
     }

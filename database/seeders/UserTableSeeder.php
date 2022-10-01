@@ -34,8 +34,8 @@ class UserTableSeeder extends Seeder
                 'updated_at' => date("Y-m-d H:i:s")
             ),
             array(
-                'name' => 'ECP QA/DEV',
-                'email' => 'qa@wadic.net',
+                'name' => 'ECP QA/Dev',
+                'email' => 'qa@ecp-wadic.net',
                 'email_verified_at' => now(),
                 'role_id' => 2,
                 'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -44,6 +44,5 @@ class UserTableSeeder extends Seeder
                 'updated_at' => date("Y-m-d H:i:s")
             )
         ));
-        // User::factory()->count(5)->create();
     }
 }

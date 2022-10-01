@@ -17,10 +17,12 @@ const Invoices = ({ userId }) => {
     const history = useHistory();
 
     useEffect(() => {
+        if (!userId) return;
         const getAllInvoices = async () => {
-            const res = await Axios.get("/api/invoices", {
-                params: { user_id: userId },
+            const res = await Axios.get("/api/get-invoices", {
+                params: { userId: userId },
             });
+            setTableData(res?.data?.data);
         };
         getAllInvoices();
     }, []);
@@ -50,23 +52,7 @@ const Invoices = ({ userId }) => {
             console.log("error while search", err);
         }
     };
-    const mapInvoicesData = (data) => {
-        const mappedInvoices = data?.map((invoice) => {
-            const createdDate = new Date(invoice?.created_at);
-            const date = `${dayjs(createdDate).get("year")}-${
-                dayjs(createdDate).get("month") + 1
-            }-${dayjs(createdDate).get("date")}`;
-            return {
-                invoice: invoice?.name,
-                customerName: invoice?.customer_name,
-                email: invoice?.customer_email,
-                date: date,
-                price: invoice?.amount,
-                status: invoice?.status,
-            };
-        });
-        setTableData([...mappedInvoices]);
-    };
+
     return (
         <div className={classes["root-container"]}>
             <div className={classes["container"]}>

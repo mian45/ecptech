@@ -12,15 +12,16 @@ import TeamPerformanceChart from "./components/teamPerformanceChart";
 import ProfitStatsChart from "./components/profitStatsChart";
 import AddStaffMembers from "./components/AddStaffMembers";
 
-const Dashboard = ({ userRole }) => {
+const Dashboard = ({ userRole,apiDates,userId }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
     const [summaryStats, setSummaryStats] = useState([]);
     useEffect(() => {
+        if (!userId) return;
         const getInvoiceStats = async () => {
             try {
                 const invoiceData = {
-                    start_date: "2022-08-16",
-                    end_date: "2022-09-15",
+                    start_date: apiDates.startDate,
+                    end_date: apiDates.endDate,
                 };
                 const res = await Axios.post(
                     process.env.MIX_REACT_APP_URL + "/api/invoice-stats",
@@ -35,14 +36,15 @@ const Dashboard = ({ userRole }) => {
         };
 
         getInvoiceStats();
-    }, []);
+    }, [apiDates]);
 
     useEffect(() => {
+        if (!userId) return;
         const getSummaryStats = async () => {
             try {
                 const invoiceData = {
-                    start_date: "2022-08-16",
-                    end_date: "2022-09-15",
+                    start_date: apiDates.startDate,
+                    end_date: apiDates.endDate,
                 };
                 const res = await Axios.post(
                     process.env.MIX_REACT_APP_URL + "/api/invoice-summmary",
@@ -56,7 +58,7 @@ const Dashboard = ({ userRole }) => {
         };
 
         getSummaryStats();
-    }, []);
+    }, [apiDates]);
     return (
         <div className={classes["container"]}>
             <div className={classes["left-stats"]}>
@@ -77,7 +79,7 @@ const Dashboard = ({ userRole }) => {
                 {userRole !== "staff" && <StaffLogin />}
             </div>
             <div className={classes["right-stats"]}>
-                <ProfitStatsChart />
+                <ProfitStatsChart dates={apiDates}/>
                 <HotSellingProducts />
                 <TeamPerformanceChart />
                 {userRole !== "staff" && <AddStaffMembers />}
@@ -88,6 +90,7 @@ const Dashboard = ({ userRole }) => {
 
 const mapStateToProps = (state) => ({
     userRole: state.Auth.userRole?.name,
+    userId: state.Auth?.user?.id,
 });
 
 export default connect(mapStateToProps)(Dashboard);

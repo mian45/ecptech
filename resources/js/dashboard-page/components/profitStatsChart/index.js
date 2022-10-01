@@ -1,46 +1,60 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import Chart from "react-apexcharts";
 import classes from "./styles.module.scss";
 import Axios from "../../../Http";
 import { connect } from "react-redux";
+import dayjs from "dayjs";
 
-const ProfitStatsChart = ({ userId }) => {
+const ProfitStatsChart = ({ userId , dates}) => {
+    const {startDate,endDate} = dates
     const options = getChartOptions();
-    const [data,setData]=useState()
+    const [data,setData]=useState([])
+    const [startTag,setStartTag]=useState("")
+    const [endTag,setEndTag]=useState("")
     const getProfitStats = async () => {
-        console.log("the data in the charts are here",options.series)
         try {
-            const payload = {
-                start_date: "2022-08-16",
-                end_date: "2022-09-15",
-                user_id: userId,
-            };
+            const formData= new FormData();
+            console.log("the date is here",`${dayjs(dates.startDate).format("DD/MM/YYYY")}`)
+            formData.append("start_date",`${dayjs(startDate).format("MM/DD/YYYY")}`)
+            formData.append("end_date",`${dayjs(endDate).format("MM/DD/YYYY")}`)
+            
             const res = await Axios.post(
                 process.env.MIX_REACT_APP_URL + "/api/profit-comparison",
-                payload
+                formData
             );
-            console.log("res chart data", res);
+        if(res.data.statusCode===200){
+            if(res?.data?.data?.range?.length>0){
+                const newData= res?.data?.data?.range.map((item,index)=>{
+                    return item.total
+                })
+                setData(newData)
+                setStartTag(res?.data?.data?.range[0]?.date)
+                setEndTag(res?.data?.data?.range[res?.data?.data?.range.length-1]?.date)
+            }
+
+        }
         } catch (err) {
             console.log("Error while getting profit stats", err);
         }
     };
     useEffect(() => {
+        console.log(dates)
        
         getProfitStats();
-    }, []);
+    }, [dates]);
 
     return (
         <div className={classes["container"]}>
             <div className={classes["label"]}>Profit Comparison</div>
             <Chart
                 options={options}
-                series={[{data:[150,23,25]}]}
+                series={[{data:data}]}
                 type="area"
                 height={200}
             />
             <div className={classes["y-axis-label"]}>
-                <div className={classes["date"]}>Jan 2021</div>
-                <div className={classes["date"]}>Jul 2022</div>
+                <div className={classes["date"]}>{startTag}</div>
+                <div className={classes["date"]}>{endTag}</div>
             </div>
         </div>
     );

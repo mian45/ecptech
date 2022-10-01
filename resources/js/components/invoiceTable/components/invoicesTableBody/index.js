@@ -67,7 +67,7 @@ const InvoiceTableActions = ({ data }) => {
             lens_material: vpState?.lens_material,
             lens_types: vpState?.lens_types,
             questions: vpState?.questions,
-            sheet_data: vpState?.sheet_data,
+            price_calculation_data: vpState?.price_calculation_data,
             shipping: vpState?.shipping,
         };
     };

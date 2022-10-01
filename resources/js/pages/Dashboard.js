@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import * as daterange from "react-date-range";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import quarterOfYear from "dayjs/plugin/quarterOfYear";
@@ -13,7 +13,6 @@ import DashboardPage from "../dashboard-page";
 const Dashboard = (props) => {
     const DateRangePicker = daterange.DateRangePicker;
     dayjs.extend(quarterOfYear);
-    const [data, setData] = useState([]);
     const [date, setDate] = useState([
         {
             startDate: new Date(),
@@ -25,100 +24,48 @@ const Dashboard = (props) => {
     const [startDate, setStartDate] = useState(new Date());
     const [endDate, setEndDate] = useState(new Date());
     const [label, setLabel] = useState("");
-    const [invoicesSummary, setInvoicesSummary] = useState([]);
-    const [invoicesStats, setInvoicesStats] = useState([]);
-    useEffect(() => {
-        console.log("the date is here", dayjs().startOf("quarter").$d);
-        console.log("the date is here", dayjs().endOf("quarter").$d);
-        const date1 = dayjs(dayjs(startDate).format("YYYY-MM-DD"));
-        const date2 = dayjs(dayjs(endDate).format("YYYY-MM-DD"));
-        dayjs.extend(isBetween);
-        console.log("the difference is here", date2.diff(date1, "day", true));
-        if (date2.diff(date1, "day", true) == 0) {
-            //today/yesterday
-            console.log("the first condition is true");
-            if (dayjs(date1).isSame(dayjs(new Date()).format("YYYY-MM-DD"))) {
-                setLabel("Today");
-            } else {
-                setLabel("Yesterday");
-            }
-        } else if (date2.diff(date1, "day", true) == 6) {
-            //this week/ last week
-
-            if (
-                dayjs(dayjs(new Date()).format("YYYY-MM-DD")).isBetween(
-                    date1,
-                    date2
-                )
-            ) {
-                setLabel("This Week");
-            } else {
-                setLabel("Last Week");
-            }
-        } else if (date2.diff(date1, "day", true) == 29) {
-            setLabel("This Month");
-        } else if (date2.diff(date1, "day", true) == 30) {
-            setLabel("Last Month");
-        } else if (
-            new Date(date1).getFullYear() == new Date().getFullYear() - 1 &&
-            new Date(date2).getFullYear() == new Date().getFullYear() - 1
-        ) {
-            //last Year
-            setLabel("Last Year");
-        } else {
-            // custom
-            setLabel("Custom");
+    const [apiDates,setApiDates]=useState({startDate:dayjs(new Date).format("YYYY-MM-DD"),endDate:dayjs(new Date).format("YYYY-MM-DD")})
+    useEffect(()=>{
+        console.log("the date is here",dayjs().startOf('quarter').$d )
+        console.log("the date is here",dayjs().endOf('quarter').$d )
+        const date1=dayjs(dayjs(startDate).format("YYYY-MM-DD"))
+        const date2=dayjs(dayjs(endDate).format("YYYY-MM-DD"))
+        dayjs.extend(isBetween)
+        console.log("the difference is here",date2.diff(date1, 'day', true))
+        if(date2.diff(date1, 'day', true)==0){
+          //today/yesterday
+          console.log("the first condition is true")
+          if(dayjs(date1).isSame(dayjs(new Date()).format("YYYY-MM-DD"))){
+            setLabel("Today")
+          }else {
+            setLabel("Yesterday")
+          }
+        }else if(date2.diff(date1, 'day', true)==6){
+          //this week/ last week
+          
+          if(dayjs(dayjs(new Date()).format("YYYY-MM-DD")).isBetween(date1,date2)){
+            setLabel("This Week")
+          }else {
+            setLabel("Last Week")
+          }
+        }else if(date2.diff(date1, 'day', true)==29) {
+       
+            setLabel("This Month")
+         
+        }else if(date2.diff(date1, 'day', true)==30) {
+       
+          setLabel("Last Month")
+         
+        }else if(new Date(date1).getFullYear()==new Date().getFullYear()-1 && new Date(date2).getFullYear()== new Date().getFullYear()-1){
+          //last Year
+          setLabel("Last Year")
+        } 
+        else {
+          // custom
+          setLabel("Custom")
         }
-        getInvoicesSummary(date1, date2);
-        getInvoicesStats(date1, date2);
-    }, [date, startDate, endDate]);
-
-    const getInvoicesSummary = (date1, date2) => {
-        var data = new FormData();
-        data.append("start_date", date1);
-        data.append("end_date", date2);
-
-        var config = {
-            method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/invoice-summmary`,
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-            data: data,
-        };
-
-        axios(config)
-            .then(function (response) {
-                console.log(JSON.stringify(response.data.data));
-                setInvoicesSummary(response.data.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
-    const getInvoicesStats = (date1, date2) => {
-        var data = new FormData();
-        data.append("start_date", date1);
-        data.append("end_date", date2);
-
-        var config = {
-            method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/invoice-stats`,
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem("access_token")}`,
-            },
-            data: data,
-        };
-
-        axios(config)
-            .then(function (response) {
-                console.log(JSON.stringify(response.data));
-                setInvoicesStats(response.data.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
+        setApiDates({startDate:dayjs(startDate).format("YYYY-MM-DD"),endDate:dayjs(endDate).format("YYYY-MM-DD")})
+      },[date,startDate,endDate])
     return (
         <div className="container" style={{ marginTop: "110px" }}>
             <div
@@ -151,89 +98,46 @@ const Dashboard = (props) => {
                         width: "882px",
                     }}
                 >
-                    <DateRangePicker
-                        onChange={(item) => {
-                            setDate([item.selection]);
-                            setShowDatePicker(false);
-                            setStartDate(item.selection.startDate);
-                            setEndDate(item.selection.endDate);
-                        }}
-                        showSelectionPreview={true}
-                        moveRangeOnFirstSelection={false}
-                        months={2}
-                        ranges={date}
-                        direction="horizontal"
-                        staticRanges={[
-                            ...daterange.defaultStaticRanges,
-                            {
-                                label: "This Quarter",
-                                range: () => ({
-                                    startDate: new Date(
-                                        dayjs().startOf("quarter").$d
-                                    ),
-                                    endDate: new Date(
-                                        dayjs().endOf("quarter").$d
-                                    ),
-                                }),
-                                isSelected() {
-                                    return false;
-                                },
-                            },
-                            {
-                                label: "Last Quarter",
-                                range: () => ({
-                                    startDate: new Date(
-                                        new Date().getFullYear(),
-                                        Math.floor(new Date().getMonth() / 3) *
-                                            3 -
-                                            3,
-                                        1
-                                    ),
-                                    endDate: new Date(
-                                        new Date(
-                                            new Date().getFullYear(),
-                                            Math.floor(
-                                                new Date().getMonth() / 3
-                                            ) *
-                                                3 -
-                                                3,
-                                            1
-                                        ).getFullYear(),
-                                        new Date(
-                                            new Date().getFullYear(),
-                                            Math.floor(
-                                                new Date().getMonth() / 3
-                                            ) *
-                                                3 -
-                                                3,
-                                            1
-                                        ).getMonth() + 3,
-                                        0
-                                    ),
-                                }),
-                                isSelected() {
-                                    return false;
-                                },
-                            },
-                            {
-                                label: "Last Year",
-                                range: () => ({
-                                    startDate: new Date(
-                                        `${new Date().getFullYear() - 1}-01-01`
-                                    ),
-                                    endDate: new Date(
-                                        `${new Date().getFullYear() - 1}-12-31`
-                                    ),
-                                }),
-                                isSelected() {
-                                    return false;
-                                },
-                            },
-                        ]}
-                    />
+                   <DateRangePicker
+          onChange={item => {setDate([item.selection]);setShowDatePicker(false);setStartDate(item.selection.startDate);setEndDate(item.selection.endDate)}}
+          showSelectionPreview={true}
+          moveRangeOnFirstSelection={false}
+          months={2}
+          ranges={date}
+          direction="horizontal"
+          staticRanges={[
+            ...daterange.defaultStaticRanges,
+            { label: "This Quarter",
+            range: () => ({
+              startDate: new Date(dayjs().startOf('quarter').$d),
+              endDate: new Date(dayjs().endOf('quarter').$d)
+            }),
+            isSelected() {
+              return false;
+            } }, { label: "Last Quarter",
+            range: () => ({
+              startDate: new Date(new Date().getFullYear(), Math.floor((new Date().getMonth() / 3)) * 3 - 3, 1),
+              endDate: new Date(new Date(new Date().getFullYear(), Math.floor((new Date().getMonth() / 3)) * 3 - 3, 1).getFullYear(), new Date(new Date().getFullYear(), Math.floor((new Date().getMonth() / 3)) * 3 - 3, 1).getMonth() + 3, 0)
+            }),
+            isSelected() {
+              return false;
+            } },
+            {
+              label: "Last Year",
+              range: () => ({
+                startDate: new Date(`${new Date().getFullYear()-1}-01-01`),
+                endDate: new Date(`${new Date().getFullYear()-1}-12-31`)
+              }),
+              isSelected() {
+                return false;
+              }
+            },
+          ]}
+        />
+
                 </div>
             ) : null}
-            <DashboardPage />
+            <DashboardPage apiDates={apiDates}/>
         </div>
     );
 };

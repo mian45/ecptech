@@ -36,25 +36,42 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
     const [suggestedMaterial, setSuggestedMaterial] =
         useState(defaultSuggession);
     useEffect(() => {
-        const getEyePrescriprion = async () => {
-            try {
-                const res = await Axios.get("/api/get-eye-prescriptions", {
-                    params: { user_id: userId },
-                });
-                const prescriptionDetails = res?.data?.data;
-                setEyeData({
-                    rightEyeSPH: [...prescriptionDetails?.right_eye_sph],
-                    rightEyeCYL: [...prescriptionDetails?.right_eye_cyl],
-                    leftEyeSPH: [...prescriptionDetails?.left_eye_sph],
-                    leftEyeCYL: [...prescriptionDetails?.left_eye_cyl],
-                });
-            } catch (err) {
-                console.log("error while get eyes Records");
-            }
-        };
+        if (!userId) return;
+     
         getEyePrescriprion();
     }, []);
+    const getEyePrescriprion = async () => {
+        try {
+            const res = await Axios.get(`/api/prescriptions`, {
+                params: { user_id: userId },
+            });
+            const prescriptionDetails = res?.data?.data;
+            
+            let rightEyeSPH=[];
+            let rightEyeCYL=[];
+            let leftEyeSPH=[];
+            let leftEyeCYL=[];
+            for (let index = 0; index < prescriptionDetails.length; index++) {
+                const eye = prescriptionDetails[index];
+                rightEyeSPH=[...rightEyeSPH,eye.sphere_from]
+                leftEyeSPH=[...leftEyeSPH,eye.sphere_to]
+                rightEyeCYL=[...rightEyeCYL,eye.cylinder_from]
+                leftEyeCYL=[...leftEyeCYL,eye.cylinder_to]
+            }
 
+            setEyeData({
+                rightEyeSPH,
+                rightEyeCYL,
+                leftEyeSPH,
+                leftEyeCYL,
+            });
+        } catch (err) {
+            console.log("error while get eyes Records");
+        }
+    };
+    useEffect(()=>{
+        console.log("the eye prescription data is here",eyeData)
+    },[eyeData])
     const handleValueChange = (value, key) => {
         setEyeValues({ ...eyeValues, [key]: value });
     };
@@ -71,15 +88,15 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
     };
     const handleSubmit = async () => {
         try {
-            const payload = {
-                right_eye_sphere: eyeValues?.rightEyeSPH,
-                right_eye_cylinder: eyeValues?.rightEyeCYL,
-                left_eye_sphere: eyeValues?.leftEyeSPH,
-                left_eye_cylinder: eyeValues?.leftEyeCYL,
-            };
+            const formData=new FormData();
+            formData.append("right_eye_sphere",eyeValues?.rightEyeSPH)
+            formData.append("right_eye_cylinder",eyeValues?.rightEyeCYL)
+            formData.append("left_eye_sphere",eyeValues?.leftEyeSPH)
+            formData.append("left_eye_cylinder",eyeValues?.leftEyeCYL)
+            formData.append("user_id",userId)
             const res = await Axios.post(
                 "/api/eye-prescriptions-calculator",
-                payload
+                formData
             );
             const materialData = res?.data?.data?.use_material;
             const processedData = {
@@ -181,7 +198,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                                 Sphere (SPH)
                             </div>
                             <AntdSelect
-                                options={ConvertEyeData(eyeData?.rightEyeSPH)}
+                                options={eyeData?.rightEyeSPH}
                                 placeholder="Select Spherical"
                                 style={{ width: "345px" }}
                                 value={eyeValues?.rightEyeSPH}
@@ -196,7 +213,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                             </div>
                             <AntdSelect
                                 style={{ width: "345px" }}
-                                options={ConvertEyeData(eyeData?.rightEyeCYL)}
+                                options={eyeData?.rightEyeCYL}
                                 placeholder="Select Cylinder"
                                 value={eyeValues?.rightEyeCYL}
                                 onChange={(value) =>
@@ -217,7 +234,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                             </div>
                             <AntdSelect
                                 style={{ width: "345px" }}
-                                options={ConvertEyeData(eyeData?.leftEyeSPH)}
+                                options={eyeData?.leftEyeSPH}
                                 placeholder="Select Spherical"
                                 value={eyeValues?.leftEyeSPH}
                                 onChange={(value) =>
@@ -231,7 +248,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                             </div>
                             <AntdSelect
                                 style={{ width: "345px" }}
-                                options={ConvertEyeData(eyeData?.leftEyeCYL)}
+                                options={eyeData?.leftEyeCYL}
                                 placeholder="Select Cylinder"
                                 value={eyeValues?.leftEyeCYL}
                                 onChange={(value) =>
@@ -289,8 +306,4 @@ const LensSlot = ({ children, label, className }) => {
             {children}
         </div>
     );
-};
-
-const ConvertEyeData = (data) => {
-    return data?.reduce((item, index) => ({ ...item, [index]: index }), {});
 };

@@ -11,6 +11,7 @@ const InvoiceInfo = ({ formProps, userId }) => {
     const [staffData, setStaffData] = useState([]);
 
     useEffect(() => {
+        if (!userId) return;
         const getStaffList = async () => {
             try {
                 const res = await Axios.post("/api/getStaff", {

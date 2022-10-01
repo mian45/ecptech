@@ -33,8 +33,8 @@ class DatabaseSeeder extends Seeder
             VisionPlansTableSeeder::class,
             VisionPlanPermissionTableSeeder::class,
             QuestionsTableSeeder::class,
-            QuestionPermissionsTableSeeder::class
-            
+            QuestionPermissionsTableSeeder::class,
+            CodesTableSeeder::class
           
         ]);
     }
