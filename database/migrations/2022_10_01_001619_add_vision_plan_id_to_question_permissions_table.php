@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('question_permissions', function (Blueprint $table) {
             $table->unsignedBigInteger('vision_plan_id');
+            $table->boolean('status')->default(true);
         });
     }
 
@@ -26,7 +27,8 @@ return new class extends Migration
     public function down()
     {
         Schema::table('question_permissions', function (Blueprint $table) {
-            //
+            $table->unsignedBigInteger('vision_plan_id');
+            $table->boolean('status')->default(true);
         });
     }
 };
