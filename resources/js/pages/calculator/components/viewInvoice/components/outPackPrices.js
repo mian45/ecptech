@@ -132,7 +132,7 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
             {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
                 <InvoiceSlot
                     title={`Frame: `}
-                    subTitle={`$${calculateFrameFee().toFixed() || 0}`}
+                    subTitle={`$${calculateFrameFee().toFixed(2) || 0}`}
                 />
             )}
             {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
@@ -145,20 +145,20 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
             {receipt?.values?.photochromics?.status === "Yes" && (
                 <InvoiceSlot
                     title={`Photochromic Option: ${receipt?.values?.photochromics?.type}`}
-                    subTitle={`$${getPhotochromicPrice() || 0}`}
+                    subTitle={`$${getPhotochromicPrice().toFixed(2) || 0}`}
                 />
             )}
             {receipt?.values?.antiReflectiveProperties?.status === "Yes" && (
                 <InvoiceSlot
                     title={`Antireflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
-                    subTitle={`$${getAntireflectivePrice() || 0}`}
+                    subTitle={`$${getAntireflectivePrice().toFixed(2) || 0}`}
                 />
             )}
             {receipt?.values?.sunGlassesLens?.status === "Yes" &&
                 receipt?.values?.sunGlassesLens?.status === "Yes" && (
                     <InvoiceSlot
                         title={`Mirror Coating: ${receipt?.values?.sunGlassesLens?.coatingType}`}
-                        subTitle={`$${getCoatingPrice() || 0}`}
+                        subTitle={`$${getCoatingPrice().toFixed(2) || 0}`}
                     />
                 )}
             {receipt?.values?.sunGlassesLens?.status === "Yes" && (
@@ -210,13 +210,20 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                 receipt?.values?.protectionPlan?.paymentStatus === "Paid" && (
                     <InvoiceSlot
                         title={"Protection Plan Fee"}
-                        subTitle={receipt?.values?.protectionPlan?.price || 0}
+                        subTitle={
+                            "$" +
+                                (receipt?.values?.protectionPlan?.price).toFixed(
+                                    2
+                                ) || 0
+                        }
                     />
                 )}
             {receipt?.values?.shipping?.status === "Yes" && (
                 <InvoiceSlot
                     title={"Shipping Fee"}
-                    subTitle={receipt?.values?.shipping?.price || 0}
+                    subTitle={
+                        "$" + (receipt?.values?.shipping?.price).toFixed(2) || 0
+                    }
                 />
             )}
 
@@ -225,13 +232,16 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                     Percent discount
                 </div>
                 <div className={classes["invoice-slot-title"]}>
-                    <span className={classes["light-title"]}>{`($${
+                    <span className={classes["light-title"]}>{`($${(
                         (totalPrice || 0) /
                         ((receipt?.values?.frameOrder?.retailFee || 0) + 200)
-                    })`}</span>{" "}
-                    {((totalPrice || 0) /
-                        ((receipt?.values?.frameOrder?.retailFee || 0) + 200)) *
-                        100}
+                    ).toFixed(2)})`}</span>{" "}
+                    {(
+                        ((totalPrice || 0) /
+                            ((receipt?.values?.frameOrder?.retailFee || 0) +
+                                200)) *
+                        100
+                    ).toFixed(2)}
                     %
                 </div>
             </div>
@@ -240,15 +250,18 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                 <div className={classes["invoice-slot-title"]}>
                     <span
                         className={classes["light-title"]}
-                    >{`$(${calculatorObj.tax}%)`}</span>{" "}
-                    {((totalPrice || 0) /
-                        ((receipt?.values?.frameOrder?.retailFee || 0) + 200)) *
-                        (calculatorObj.tax || 1) || 0}
+                    >{`$(${calculatorObj.tax.toFixed(2)}%)`}</span>{" "}
+                    {(
+                        ((totalPrice || 0) /
+                            ((receipt?.values?.frameOrder?.retailFee || 0) +
+                                200)) *
+                        (calculatorObj.tax || 1)
+                    ).toFixed(2) || 0}
                 </div>
             </div>
             <InvoiceBoldSlot
                 title={"Total Due"}
-                subTitle={`$${totalPrice.toFixed()}`}
+                subTitle={`$${totalPrice.toFixed(2)}`}
             />
         </>
     );
