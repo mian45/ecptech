@@ -56,7 +56,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 setDiscountId(null)
         setDiscountName("")
         setDiscountTax("")
@@ -83,7 +82,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 getDiscount()
             })
             .catch(function (error) {
@@ -110,7 +108,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 setTaxName("")
                 setStateSetting("")
                 setTaxValue("")
@@ -124,7 +121,6 @@ const DiscountTaxes = (props) => {
     }
 
     const editTax = (values) => {
-        console.log(values, 'values');
         let data = new FormData();
         data.append('id', idState);
         data.append('stateId', stateSetting);
@@ -142,7 +138,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 getTaxes();
 
                 setTaxName("")
@@ -172,7 +167,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 console.log(error);
@@ -197,7 +191,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 console.log(error);
@@ -220,7 +213,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
             })
             .catch(function (error) {
                 console.log(error);
@@ -243,7 +235,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 setTaxState(response.data.data)
             })
             .catch(function (error) {
@@ -266,7 +257,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
         .then(function (response) {
-        console.log(JSON.stringify(response.data));
         setEditId(null)
                 setDiscountName("")
                 setDiscountTax("")
@@ -367,7 +357,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 setDiscounts(response.data.data)
             })
             .catch(function (error) {
@@ -390,7 +379,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 let taxes = response.data.data;
                 setTaxes(taxes)
             })
@@ -414,7 +402,6 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 let shippingTax = response.data.data
                 setShipping(shippingTax)
             })
