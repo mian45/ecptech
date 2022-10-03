@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('user_lense_material_settings', function (Blueprint $table) {
             $table->enum('status', ['active', 'inactive'])->default('inactive');
+            $table->decimal('price',10,2);
             $table->dropColumn('title');
         });
     }
@@ -28,6 +29,7 @@ return new class extends Migration
     {
         Schema::table('user_lense_material_settings', function (Blueprint $table) {
             $table->dropColumn('status');
+            $table->dropColumn('price');
         });
     }
 };
