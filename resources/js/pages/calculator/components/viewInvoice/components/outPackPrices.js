@@ -246,9 +246,9 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
             <div className={classes["invoice-slot-container"]}>
                 <div className={classes["invoice-slot-title"]}>Sales Tax</div>
                 <div className={classes["invoice-slot-title"]}>
-                    <span
-                        className={classes["light-title"]}
-                    >{`$(${calculatorObj.tax.toFixed(2)}%)`}</span>{" "}
+                    <span className={classes["light-title"]}>{`$(${(
+                        calculatorObj.tax || 0
+                    ).toFixed(2)}%)`}</span>{" "}
                     {(
                         ((totalPrice || 0) /
                             ((receipt?.values?.frameOrder?.retailFee || 0) +
