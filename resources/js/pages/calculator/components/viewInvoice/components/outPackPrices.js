@@ -158,7 +158,7 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                 receipt?.values?.sunGlassesLens?.status === "Yes" && (
                     <InvoiceSlot
                         title={`Mirror Coating: ${receipt?.values?.sunGlassesLens?.coatingType}`}
-                        subTitle={`$${getCoatingPrice().toFixed(2) || 0}`}
+                        subTitle={`$${getCoatingPrice() || 0}`}
                     />
                 )}
             {receipt?.values?.sunGlassesLens?.status === "Yes" && (
@@ -221,9 +221,7 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
             {receipt?.values?.shipping?.status === "Yes" && (
                 <InvoiceSlot
                     title={"Shipping Fee"}
-                    subTitle={
-                        "$" + (receipt?.values?.shipping?.price).toFixed(2) || 0
-                    }
+                    subTitle={"$" + (calculatorObj?.shipping || 0)}
                 />
             )}
 
@@ -248,9 +246,9 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
             <div className={classes["invoice-slot-container"]}>
                 <div className={classes["invoice-slot-title"]}>Sales Tax</div>
                 <div className={classes["invoice-slot-title"]}>
-                    <span
-                        className={classes["light-title"]}
-                    >{`$(${calculatorObj.tax.toFixed(2)}%)`}</span>{" "}
+                    <span className={classes["light-title"]}>{`$(${(
+                        calculatorObj.tax || 0
+                    ).toFixed(2)}%)`}</span>{" "}
                     {(
                         ((totalPrice || 0) /
                             ((receipt?.values?.frameOrder?.retailFee || 0) +
