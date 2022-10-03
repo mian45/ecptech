@@ -18,7 +18,7 @@ class SettingController extends Controller
                                 $join->on('lens_materials.id', '=', 'setting.lens_material_id')
                                 ->where('setting.user_id',  auth()->user()->id);            
                             })
-                            ->select('lens_materials.id','lens_material_title',DB::raw('IFNULL(status,"inactive") as status'))
+                            ->select('lens_materials.id','lens_material_title',DB::raw('IFNULL(status,"inactive") as status'),'price')
                             ->orderBy('lens_materials.id')
                             ->get();
 
@@ -30,7 +30,8 @@ class SettingController extends Controller
         
         $validator = Validator::make($request->all(), [
             'lens_material_id' => 'required|exists:lens_materials,id',
-            'status' => 'required|in:active,inactive'
+            'status' => 'sometimes|in:active,inactive',
+            'price' => 'sometimes|numeric'
         ]);
 
         if ($validator->fails()) {
@@ -43,7 +44,14 @@ class SettingController extends Controller
         ]);
         
         if($setting){
-            $setting->status = $request->status;
+            if ($request->has('status')) {
+                $setting->status = $request->status;
+            }
+            
+            if ($request->has('price')) {
+                $setting->price = $request->price;
+            }
+
             $setting->save();
             return $this->sendResponse([], 'Lense material status Updated');
         }
