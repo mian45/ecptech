@@ -4,9 +4,7 @@ import visaIcon from "../../../../../images/visa-icon.png";
 import { useEffect } from "react";
 
 const CreditCard = (props) => {
-useEffect(()=>{
-    console.log("the data is here",props.data)
-},[props])
+
     return (
         <div className={classes["container"]}>
             <div className={classes["sub-container"]}>
