@@ -14,7 +14,6 @@ const ProfitStatsChart = ({ userId , dates}) => {
     const getProfitStats = async () => {
         try {
             const formData= new FormData();
-            console.log("the date is here",`${dayjs(dates.startDate).format("DD/MM/YYYY")}`)
             formData.append("start_date",`${dayjs(startDate).format("MM/DD/YYYY")}`)
             formData.append("end_date",`${dayjs(endDate).format("MM/DD/YYYY")}`)
             
@@ -22,16 +21,19 @@ const ProfitStatsChart = ({ userId , dates}) => {
                 process.env.MIX_REACT_APP_URL + "/api/profit-comparison",
                 formData
             );
-        if(res.data.statusCode===200){
-            if(res?.data?.data?.range?.length>0){
-                const newData= res?.data?.data?.range.map((item,index)=>{
+            if(res.data.statusCode===200){
+                const range=res?.data?.data?.range
+                const details= Object.keys(range).map((key)=>{
+                    const item =range[key];
                     return item.total
-                })
-                setData(newData)
-                setStartTag(res?.data?.data?.range[0]?.date)
-                setEndTag(res?.data?.data?.range[res?.data?.data?.range.length-1]?.date)
-            }
-
+                });
+                const det= Object.keys(range).map((key)=>{
+                    const item =range[key];
+                    return item[res?.data?.data?.type]
+                });
+                setData(details)
+                setStartTag(det[0])
+                setEndTag(det[det.length-1])
         }
         } catch (err) {
             console.log("Error while getting profit stats", err);
