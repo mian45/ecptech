@@ -53,8 +53,6 @@ const AddCardModal = ({ show, onClose }) => {
                     data.append('card_no', cardNumber);
                     data.append('card_name', name);
                     data.append('card_expiry', date);
-                    data.append('ccv', cvc);
-
       const res=  await Axios.post(
             `${process.env.MIX_REACT_APP_URL}/api/add-card`,
             data
