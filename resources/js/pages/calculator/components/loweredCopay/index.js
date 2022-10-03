@@ -220,6 +220,9 @@ const LoweredCopay = ({
                         formProps={formProps}
                         radioValue={"isCopayPhotochromicAmount"}
                         inputValue={"copayPhotochromicAmount"}
+                        setCalValidations={setCalValidations}
+                        calValidations={calValidations}
+                        data={data}
                     />
                 )}
                 {values?.isCopayHighIndex && (
@@ -228,6 +231,9 @@ const LoweredCopay = ({
                         formProps={formProps}
                         radioValue={"isCopayHighIndexAmount"}
                         inputValue={"copayHighIndexAmount"}
+                        setCalValidations={setCalValidations}
+                        calValidations={calValidations}
+                        data={data}
                     />
                 )}
                 {values?.isCopayAntiReflective && (
@@ -236,6 +242,9 @@ const LoweredCopay = ({
                         formProps={formProps}
                         radioValue={"isCopayAntiReflectiveAmount"}
                         inputValue={"copayAntiReflectiveAmount"}
+                        setCalValidations={setCalValidations}
+                        calValidations={calValidations}
+                        data={data}
                     />
                 )}
                 {values?.isCopayPremiumProgressives && (
@@ -244,6 +253,9 @@ const LoweredCopay = ({
                         formProps={formProps}
                         radioValue={"isCopaypremiumProgressiveAmount"}
                         inputValue={"copaypremiumProgressiveAmount"}
+                        setCalValidations={setCalValidations}
+                        calValidations={calValidations}
+                        data={data}
                     />
                 )}
             </>
