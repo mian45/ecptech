@@ -11,11 +11,14 @@ import ProtectionPlan from "../protectionPlan";
 import SelectVisionPlan from "../selectVisionPlan";
 import SunglassLens from "../sunglassLens";
 import ViewInvoice from "../viewInvoice";
-import VisionBenifits from "../visionBenifits";
+import VisionBenifits, { GetValidations } from "../visionBenifits";
 import classes from "./styles.module.scss";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { CalculatorInitialValues } from "../../data/initialValues";
+import {
+    BenifitTypeEnums,
+    CalculatorInitialValues,
+} from "../../data/initialValues";
 import {
     CreateCalculatorValidations,
     GetMappedPayload,
@@ -23,6 +26,10 @@ import {
 } from "../../data/validationHelper";
 import { useHistory } from "react-router";
 import Axios from "../../../../Http";
+import {
+    FrameBenifitAvailableEnum,
+    LensBenifitAvailableEnum,
+} from "../../data/enums";
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -91,10 +98,120 @@ const CalculatorScreen = () => {
         setShowInvoice(false);
     };
 
-    const handleClick = (values) => {
-        setShowInvoice(true);
-        const arrangedValues = GetMappedPayload(values);
-        setCalValues(arrangedValues);
+    const handleClick = (values, actions) => {
+        if (values?.benifitType === "") {
+            setShowInvoice(true);
+            const arrangedValues = GetMappedPayload(values);
+            setCalValues(arrangedValues);
+            submitBenifitType;
+        } else if (values?.benifitType === BenifitTypeEnums?.frame) {
+            if (
+                !calculatorObj?.questions["VSP Signature"]?.frameOrder?.optional
+            ) {
+                const validationObject = {
+                    frameOrderType: Yup.string().required(
+                        "Frame Order is required"
+                    ),
+                };
+                setCalValidations({
+                    ...calValidations,
+                    ...validationObject,
+                });
+            }
+            actions.setFieldValue("submitBenifitType", BenifitTypeEnums.frame);
+            actions.setFieldValue("benifitType", "");
+        } else if (values?.benifitType === BenifitTypeEnums?.lens) {
+            const validationObject = GetValidations(
+                calculatorObj?.questions["VSP Signature"]
+            );
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
+            actions.setFieldValue("submitBenifitType", BenifitTypeEnums.lens);
+            actions.setFieldValue("benifitType", "");
+        }
+    };
+    const RenderFrameOrder = ({
+        formProps,
+        calculatorObj,
+        setCalValidations,
+        calValidations,
+        isFrame = false,
+    }) => {
+        return (
+            <FrameOrder
+                formProps={formProps}
+                calculatorObj={calculatorObj && calculatorObj}
+                setCalValidations={setCalValidations}
+                calValidations={calValidations}
+                data={
+                    calculatorObj?.questions &&
+                    calculatorObj?.questions["VSP Signature"]
+                }
+                isFrame={isFrame}
+            />
+        );
+    };
+
+    const RenderLensFields = ({
+        formProps,
+        calculatorObj,
+        setCalValidations,
+        calValidations,
+    }) => {
+        return (
+            <>
+                <LoweredCopay
+                    formProps={formProps}
+                    calculatorObj={calculatorObj && calculatorObj}
+                    setCalValidations={setCalValidations}
+                    calValidations={calValidations}
+                    data={
+                        calculatorObj?.questions &&
+                        calculatorObj?.questions["VSP Signature"]
+                    }
+                />
+                <LensType
+                    formProps={formProps}
+                    calculatorObj={calculatorObj && calculatorObj}
+                />
+                <LensMeterials
+                    formProps={formProps}
+                    calculatorObj={calculatorObj && calculatorObj}
+                />
+                <Photochromics
+                    formProps={formProps}
+                    calculatorObj={calculatorObj && calculatorObj}
+                    setCalValidations={setCalValidations}
+                    calValidations={calValidations}
+                    data={
+                        calculatorObj?.questions &&
+                        calculatorObj?.questions["VSP Signature"]
+                    }
+                />
+                <SunglassLens
+                    formProps={formProps}
+                    calculatorObj={calculatorObj && calculatorObj}
+                    setCalValidations={setCalValidations}
+                    calValidations={calValidations}
+                    data={
+                        calculatorObj?.questions &&
+                        calculatorObj?.questions["VSP Signature"]
+                    }
+                />
+                <AntireFlextive
+                    formProps={formProps}
+                    calculatorObj={calculatorObj && calculatorObj}
+                    setCalValidations={setCalValidations}
+                    calValidations={calValidations}
+                    data={
+                        calculatorObj?.questions &&
+                        calculatorObj?.questions["VSP Signature"]
+                    }
+                />
+            </>
+        );
     };
     return (
         <div className={classes["container"]}>
@@ -119,125 +236,173 @@ const CalculatorScreen = () => {
                                     invoiceId={editInvoiceState?.id || ""}
                                 />
                             )}
-                            <InvoiceInfo formProps={formProps} />
+                            <InvoiceInfo
+                                formProps={formProps}
+                                disable={
+                                    formProps.values?.submitBenifitType ===
+                                        BenifitTypeEnums.frame ||
+                                    formProps.values?.submitBenifitType ===
+                                        BenifitTypeEnums.lens
+                                }
+                            />
+                            {(formProps.values?.submitBenifitType ===
+                                BenifitTypeEnums.frame ||
+                                formProps.values?.submitBenifitType ===
+                                    BenifitTypeEnums.lens) && (
+                                <div
+                                    className={classes["private-pay-title"]}
+                                >{`Please choose ${getPrivatePayTitle(
+                                    formProps.values?.submitBenifitType
+                                )} under private pay.`}</div>
+                            )}
+                            {formProps.values?.submitBenifitType ===
+                                BenifitTypeEnums.frame && (
+                                <div className={classes["sub-container"]}>
+                                    <RenderFrameOrder
+                                        formProps={formProps}
+                                        calculatorObj={
+                                            calculatorObj && calculatorObj
+                                        }
+                                        setCalValidations={setCalValidations}
+                                        calValidations={calValidations}
+                                        data={
+                                            calculatorObj?.data?.questions &&
+                                            calculatorObj?.questions[
+                                                "VSP Signature"
+                                            ]
+                                        }
+                                        isFrame={true}
+                                    />
+                                </div>
+                            )}
+                            {formProps.values?.submitBenifitType ===
+                                BenifitTypeEnums.lens && (
+                                <div className={classes["sub-container"]}>
+                                    <RenderLensFields
+                                        formProps={formProps}
+                                        calculatorObj={
+                                            calculatorObj && calculatorObj
+                                        }
+                                        setCalValidations={setCalValidations}
+                                        calValidations={calValidations}
+                                        data={
+                                            calculatorObj?.data?.questions &&
+                                            calculatorObj?.questions[
+                                                "VSP Signature"
+                                            ]
+                                        }
+                                    />
+                                </div>
+                            )}
+
                             <div className={classes["sub-container"]}>
-                                <SelectVisionPlan
-                                    formProps={formProps}
-                                    calculatorObj={
-                                        calculatorObj && calculatorObj
-                                    }
-                                />
-                                <VisionBenifits
-                                    formProps={formProps}
-                                    calculatorObj={
-                                        calculatorObj && calculatorObj
-                                    }
-                                />
-                                <FrameOrder
-                                    formProps={formProps}
-                                    calculatorObj={
-                                        calculatorObj && calculatorObj
-                                    }
-                                    setCalValidations={setCalValidations}
-                                    calValidations={calValidations}
-                                    data={
-                                        calculatorObj?.data?.questions &&
-                                        calculatorObj?.questions[
-                                            "VSP Signature"
-                                        ]
-                                    }
-                                />
-                                <LoweredCopay
-                                    formProps={formProps}
-                                    calculatorObj={
-                                        calculatorObj && calculatorObj
-                                    }
-                                    setCalValidations={setCalValidations}
-                                    calValidations={calValidations}
-                                    data={
-                                        calculatorObj?.questions &&
-                                        calculatorObj?.questions[
-                                            "VSP Signature"
-                                        ]
-                                    }
-                                />
-                                <LensType
-                                    formProps={formProps}
-                                    calculatorObj={
-                                        calculatorObj && calculatorObj
-                                    }
-                                />
-                                <LensMeterials
-                                    formProps={formProps}
-                                    calculatorObj={
-                                        calculatorObj && calculatorObj
-                                    }
-                                />
-                                <Photochromics
-                                    formProps={formProps}
-                                    calculatorObj={
-                                        calculatorObj && calculatorObj
-                                    }
-                                    setCalValidations={setCalValidations}
-                                    calValidations={calValidations}
-                                    data={
-                                        calculatorObj?.questions &&
-                                        calculatorObj?.questions[
-                                            "VSP Signature"
-                                        ]
-                                    }
-                                />
-                                <SunglassLens
-                                    formProps={formProps}
-                                    calculatorObj={
-                                        calculatorObj && calculatorObj
-                                    }
-                                    setCalValidations={setCalValidations}
-                                    calValidations={calValidations}
-                                    data={
-                                        calculatorObj?.questions &&
-                                        calculatorObj?.questions[
-                                            "VSP Signature"
-                                        ]
-                                    }
-                                />
-                                <AntireFlextive
-                                    formProps={formProps}
-                                    calculatorObj={
-                                        calculatorObj && calculatorObj
-                                    }
-                                    setCalValidations={setCalValidations}
-                                    calValidations={calValidations}
-                                    data={
-                                        calculatorObj?.questions &&
-                                        calculatorObj?.questions[
-                                            "VSP Signature"
-                                        ]
-                                    }
-                                />
-                                <ProtectionPlan
-                                    formProps={formProps}
-                                    calculatorObj={
-                                        calculatorObj && calculatorObj
-                                    }
-                                    setCalValidations={setCalValidations}
-                                    calValidations={calValidations}
-                                    data={
-                                        calculatorObj?.questions &&
-                                        calculatorObj?.questions[
-                                            "VSP Signature"
-                                        ]
-                                    }
-                                />
-                                <GlassesProtection
-                                    formProps={formProps}
-                                    calculatorObj={
-                                        calculatorObj && calculatorObj
-                                    }
-                                />
+                                {formProps.values?.submitBenifitType !==
+                                    BenifitTypeEnums.frame &&
+                                formProps.values?.submitBenifitType !==
+                                    BenifitTypeEnums.lens ? (
+                                    <>
+                                        <SelectVisionPlan
+                                            formProps={formProps}
+                                            calculatorObj={
+                                                calculatorObj && calculatorObj
+                                            }
+                                        />
+                                        <VisionBenifits
+                                            formProps={formProps}
+                                            calculatorObj={
+                                                calculatorObj && calculatorObj
+                                            }
+                                            setCalValidations={
+                                                setCalValidations
+                                            }
+                                            calValidations={calValidations}
+                                            data={
+                                                calculatorObj?.data
+                                                    ?.questions &&
+                                                calculatorObj?.questions[
+                                                    "VSP Signature"
+                                                ]
+                                            }
+                                        />
+                                        {formProps?.values?.isFrameBenifit ===
+                                        FrameBenifitAvailableEnum.onlyThisTime ? (
+                                            <></>
+                                        ) : (
+                                            <RenderFrameOrder
+                                                formProps={formProps}
+                                                calculatorObj={
+                                                    calculatorObj &&
+                                                    calculatorObj
+                                                }
+                                                setCalValidations={
+                                                    setCalValidations
+                                                }
+                                                calValidations={calValidations}
+                                                data={
+                                                    calculatorObj?.questions &&
+                                                    calculatorObj?.questions[
+                                                        "VSP Signature"
+                                                    ]
+                                                }
+                                            />
+                                        )}
+                                        {formProps?.values?.isLensBenifit ===
+                                        LensBenifitAvailableEnum.onlyThisTime ? (
+                                            <></>
+                                        ) : (
+                                            <RenderLensFields
+                                                formProps={formProps}
+                                                calculatorObj={
+                                                    calculatorObj &&
+                                                    calculatorObj
+                                                }
+                                                setCalValidations={
+                                                    setCalValidations
+                                                }
+                                                calValidations={calValidations}
+                                                data={
+                                                    calculatorObj?.questions &&
+                                                    calculatorObj?.questions[
+                                                        "VSP Signature"
+                                                    ]
+                                                }
+                                            />
+                                        )}
+                                        <ProtectionPlan
+                                            formProps={formProps}
+                                            calculatorObj={
+                                                calculatorObj && calculatorObj
+                                            }
+                                            setCalValidations={
+                                                setCalValidations
+                                            }
+                                            calValidations={calValidations}
+                                            data={
+                                                calculatorObj?.questions &&
+                                                calculatorObj?.questions[
+                                                    "VSP Signature"
+                                                ]
+                                            }
+                                        />
+                                        <GlassesProtection
+                                            formProps={formProps}
+                                            calculatorObj={
+                                                calculatorObj && calculatorObj
+                                            }
+                                        />
+                                    </>
+                                ) : (
+                                    <></>
+                                )}
                                 <button
                                     className={classes["submit-button"]}
                                     type={"submit"}
+                                    disabled={
+                                        formProps?.values?.isFrameBenifit ===
+                                            FrameBenifitAvailableEnum.onlyThisTime &&
+                                        formProps?.values?.isLensBenifit ===
+                                            LensBenifitAvailableEnum.onlyThisTime
+                                    }
                                 >
                                     Create Invoice
                                 </button>
@@ -251,3 +416,11 @@ const CalculatorScreen = () => {
 };
 
 export default CalculatorScreen;
+const getPrivatePayTitle = (value) => {
+    switch (value) {
+        case BenifitTypeEnums.lens:
+            return "lens";
+        case BenifitTypeEnums.frame:
+            return "frame";
+    }
+};

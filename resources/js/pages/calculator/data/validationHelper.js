@@ -81,6 +81,7 @@ export const CreateCalculatorValidations = (data) => {
 
 export const GetMappedPayload = (data) => {
     return {
+        submitBenifitType: data?.submitBenifitType,
         invoiceName: data?.invoiceName,
         staffName: data?.staffName,
         staffId: data?.staffId,
@@ -180,6 +181,7 @@ export const mappedEditValues = (data) => {
     );
 
     return {
+        benifitType: data?.submitBenifitType || "",
         invoiceName: data?.name || "",
         staffName: userState?.staffName || "",
         staffId: userState?.staffId || "",

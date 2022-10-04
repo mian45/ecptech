@@ -24,6 +24,7 @@ import { HOME_ROUTE } from "../../../../appRoutes/routeConstants";
 import UserInfo from "./components/userInfo";
 import OutPackPrices, { getPriceFromDB } from "./components/outPackPrices";
 import InPackPrices from "./components/inPackPrices";
+import { BenifitTypeEnums } from "../../data/initialValues";
 
 const ViewInvoice = ({
     onClose,
@@ -95,31 +96,7 @@ const ViewInvoice = ({
     const calculateTotalDue = () => {
         let total = 0;
         total = total + (receipt?.values?.materialCopay || 0);
-        if (
-            receipt?.values?.frameOrder?.retailFee <=
-            receipt?.values?.frameOrder?.frameContribution
-        ) {
-            total = total + 0;
-        } else if (
-            receipt?.values?.frameOrder?.retailFee >
-            receipt?.values?.frameOrder?.frameContribution
-        ) {
-            const actualPrice =
-                receipt?.values?.frameOrder?.retailFee -
-                receipt?.values?.frameOrder?.frameContribution;
-            const discount =
-                (receipt?.values?.frameOrder?.frameContribution /
-                    receipt?.values?.frameOrder?.retailFee) *
-                20;
-            const payableFramePrice = actualPrice - discount;
-            total = total + (payableFramePrice || 0);
-        }
-        if (
-            receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
-            receipt?.values?.frameOrder?.drillMount === "Yes"
-        ) {
-            total = total + DRILL_MOUNT;
-        }
+        total = total + GetFrameFee(receipt);
         if (receipt?.values?.sunGlassesLens?.status === "Yes") {
             {
                 if (receipt?.values?.sunGlassesLens?.lensType === "Polarized") {
@@ -378,4 +355,44 @@ const getLensPrice = (receipt, calculatorObj) => {
     } else {
         return 0;
     }
+};
+
+const GetFrameFee = (receipt) => {
+    const total = 0;
+    if (receipt?.values?.submitBenifitType === "") {
+        if (
+            receipt?.values?.frameOrder?.retailFee <=
+            receipt?.values?.frameOrder?.frameContribution
+        ) {
+            total = total + 0;
+        } else if (
+            receipt?.values?.frameOrder?.retailFee >
+            receipt?.values?.frameOrder?.frameContribution
+        ) {
+            const actualPrice =
+                receipt?.values?.frameOrder?.retailFee -
+                receipt?.values?.frameOrder?.frameContribution;
+            const discount =
+                (receipt?.values?.frameOrder?.frameContribution /
+                    receipt?.values?.frameOrder?.retailFee) *
+                20;
+            const payableFramePrice = actualPrice - discount;
+            total = total + (payableFramePrice || 0);
+        }
+        if (
+            receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
+            receipt?.values?.frameOrder?.drillMount === "Yes"
+        ) {
+            total = total + DRILL_MOUNT;
+        }
+    } else if (receipt?.values?.submitBenifitType === BenifitTypeEnums.frame) {
+        total = total + receipt?.values?.frameOrder?.retailFee;
+        if (
+            receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
+            receipt?.values?.frameOrder?.drillMount === "Yes"
+        ) {
+            total = total + DRILL_MOUNT;
+        }
+    }
+    return total;
 };

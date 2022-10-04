@@ -5,7 +5,7 @@ import { FormikError } from "../selectVisionPlan";
 import Axios from "../../../../Http";
 import { connect } from "react-redux";
 
-const InvoiceInfo = ({ formProps, userId }) => {
+const InvoiceInfo = ({ formProps, userId, disable }) => {
     const { values, setFieldValue, handleBlur } = formProps;
     const [staff, setStaff] = useState([]);
     const [staffData, setStaffData] = useState([]);
@@ -48,6 +48,7 @@ const InvoiceInfo = ({ formProps, userId }) => {
                     value={values?.invoiceName}
                     id="invoiceName"
                     name="invoiceName"
+                    disabled={disable}
                 />
                 <FormikError name={"invoiceName"} />
             </div>
@@ -62,6 +63,7 @@ const InvoiceInfo = ({ formProps, userId }) => {
                     value={values?.staffName}
                     id="staffName"
                     name="staffName"
+                    disabled={disable}
                 />
                 <FormikError name={"staffName"} />
             </div>

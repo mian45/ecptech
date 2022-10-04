@@ -14,6 +14,7 @@ const FrameOrder = ({
     setCalValidations,
     calValidations,
     data,
+    isFrame,
 }) => {
     const { values, handleChange, handleBlur } = formProps;
     const frameOrderVisibility =
@@ -44,29 +45,31 @@ const FrameOrder = ({
                         </div>
                         <FormikError name={"frameRetailFee"} />
                     </div>
-                    <div
-                        className={classes["amount-sub-container"]}
-                        style={{ marginLeft: "50px" }}
-                    >
-                        <div className={classes["sub-label"]}>
-                            Frame Contribution?
+                    {!isFrame && (
+                        <div
+                            className={classes["amount-sub-container"]}
+                            style={{ marginLeft: "50px" }}
+                        >
+                            <div className={classes["sub-label"]}>
+                                Frame Contribution?
+                            </div>
+                            <div className={classes["input-container"]}>
+                                <div className={classes["input-label"]}>$</div>
+                                <input
+                                    className={classes["input"]}
+                                    type={"number"}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    value={values?.frameContribution}
+                                    id="frameContribution"
+                                    name="frameContribution"
+                                    step={0.01}
+                                    min={0.0}
+                                />
+                            </div>
+                            <FormikError name={"frameContribution"} />
                         </div>
-                        <div className={classes["input-container"]}>
-                            <div className={classes["input-label"]}>$</div>
-                            <input
-                                className={classes["input"]}
-                                type={"number"}
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values?.frameContribution}
-                                id="frameContribution"
-                                name="frameContribution"
-                                step={0.01}
-                                min={0.0}
-                            />
-                        </div>
-                        <FormikError name={"frameContribution"} />
-                    </div>
+                    )}
                 </div>
                 <div className={classes["frame-sub-container"]}>
                     <CalculatorHeading title="Drill Mount?" />
@@ -131,6 +134,9 @@ const FrameOrder = ({
                 ),
                 drillMount: Yup.string().required("Drill mount is required"),
             };
+            if (isFrame) {
+                delete validationObject.frameContribution;
+            }
             setCalValidations({
                 ...calValidations,
                 ...validationObject,
