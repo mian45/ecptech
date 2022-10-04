@@ -15,12 +15,6 @@ class SettingController extends Controller
 {
 
     public function getLenseFeaturesBrands(Request $request){
-    //     $data = LenseType::with(['brands'=>function($q){
-    //         $q->select('id','lens_type_id','title');
-    //         $q->with(['collections'=>function($q){
-    //             $q->select('id','brand_id','title');
-    //         }]);
-    //    }])->select('id','title')->get();
 
         $data = LenseType::with(['brands'=>function($q){
             $q->leftJoin('brand_permissions as setting', function($join){
