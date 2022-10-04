@@ -256,4 +256,8 @@ class RegisterController extends Controller
             return $this->sendError('Invalid old password Please enter a valid password');
         }
     }
+
+    public function getUser(Request $request){
+        return $this->sendResponse(auth()->user(), 'User Details');
+    }
 }
