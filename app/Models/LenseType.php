@@ -18,4 +18,6 @@ class LenseType extends Model
     public function brands(){
         return $this->hasMany(Brand::class,'lens_type_id');
     }
+
+    
 }
