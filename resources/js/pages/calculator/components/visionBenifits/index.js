@@ -96,7 +96,7 @@ const VisionBenifits = ({
             });
         } else {
             setPrivatePayError("");
-            const validationObject = GetValidations(data);
+            const validationObject = GetValidations(data, false);
             setCalValidations({
                 ...calValidations,
                 ...validationObject,
@@ -231,9 +231,9 @@ const VisionBenifits = ({
 
 export default VisionBenifits;
 
-export const GetValidations = (data) => {
+export const GetValidations = (data, isLoweredCopay) => {
     const validationObject = {};
-    if (!data?.copayDollarAmount?.optional) {
+    if (!data?.copayDollarAmount?.optional && isLoweredCopay) {
         validationObject.isloweredCopay =
             Yup.string().required("Option is required");
     }

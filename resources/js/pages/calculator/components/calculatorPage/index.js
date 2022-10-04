@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AntireFlextive from "../antireFlextive";
 import FrameOrder from "../frameOrder";
 import GlassesProtection from "../glassesProtection";
@@ -42,6 +42,7 @@ const CalculatorScreen = () => {
         ...CalculatorInitialValues,
     });
     const editInvoiceState = history?.location?.state?.invoice;
+    let scrollRef = useRef();
 
     useEffect(() => {
         if (editInvoiceState?.id) {
@@ -120,9 +121,16 @@ const CalculatorScreen = () => {
             }
             actions.setFieldValue("submitBenifitType", BenifitTypeEnums.frame);
             actions.setFieldValue("benifitType", "");
+            window.scrollTo({
+                behavior: "smooth",
+                top: scrollRef.current.offsetTop,
+            });
+            actions.setErrors({});
+            actions.setTouched({}, false);
         } else if (values?.benifitType === BenifitTypeEnums?.lens) {
             const validationObject = GetValidations(
-                calculatorObj?.questions["VSP Signature"]
+                calculatorObj?.questions["VSP Signature"],
+                false
             );
             setCalValidations({
                 ...calValidations,
@@ -130,6 +138,12 @@ const CalculatorScreen = () => {
             });
             actions.setFieldValue("submitBenifitType", BenifitTypeEnums.lens);
             actions.setFieldValue("benifitType", "");
+            window.scrollTo({
+                behavior: "smooth",
+                top: scrollRef.current.offsetTop,
+            });
+            actions.setErrors({});
+            actions.setTouched({}, false);
         }
     };
     const RenderFrameOrder = ({
@@ -162,16 +176,6 @@ const CalculatorScreen = () => {
     }) => {
         return (
             <>
-                <LoweredCopay
-                    formProps={formProps}
-                    calculatorObj={calculatorObj && calculatorObj}
-                    setCalValidations={setCalValidations}
-                    calValidations={calValidations}
-                    data={
-                        calculatorObj?.questions &&
-                        calculatorObj?.questions["VSP Signature"]
-                    }
-                />
                 <LensType
                     formProps={formProps}
                     calculatorObj={calculatorObj && calculatorObj}
@@ -251,6 +255,7 @@ const CalculatorScreen = () => {
                                     BenifitTypeEnums.lens) && (
                                 <div
                                     className={classes["private-pay-title"]}
+                                    ref={scrollRef}
                                 >{`Please choose ${getPrivatePayTitle(
                                     formProps.values?.submitBenifitType
                                 )} under private pay.`}</div>
@@ -350,23 +355,48 @@ const CalculatorScreen = () => {
                                         LensBenifitAvailableEnum.onlyThisTime ? (
                                             <></>
                                         ) : (
-                                            <RenderLensFields
-                                                formProps={formProps}
-                                                calculatorObj={
-                                                    calculatorObj &&
-                                                    calculatorObj
-                                                }
-                                                setCalValidations={
-                                                    setCalValidations
-                                                }
-                                                calValidations={calValidations}
-                                                data={
-                                                    calculatorObj?.questions &&
-                                                    calculatorObj?.questions[
-                                                        "VSP Signature"
-                                                    ]
-                                                }
-                                            />
+                                            <>
+                                                <LoweredCopay
+                                                    formProps={formProps}
+                                                    calculatorObj={
+                                                        calculatorObj &&
+                                                        calculatorObj
+                                                    }
+                                                    setCalValidations={
+                                                        setCalValidations
+                                                    }
+                                                    calValidations={
+                                                        calValidations
+                                                    }
+                                                    data={
+                                                        calculatorObj?.questions &&
+                                                        calculatorObj
+                                                            ?.questions[
+                                                            "VSP Signature"
+                                                        ]
+                                                    }
+                                                />
+                                                <RenderLensFields
+                                                    formProps={formProps}
+                                                    calculatorObj={
+                                                        calculatorObj &&
+                                                        calculatorObj
+                                                    }
+                                                    setCalValidations={
+                                                        setCalValidations
+                                                    }
+                                                    calValidations={
+                                                        calValidations
+                                                    }
+                                                    data={
+                                                        calculatorObj?.questions &&
+                                                        calculatorObj
+                                                            ?.questions[
+                                                            "VSP Signature"
+                                                        ]
+                                                    }
+                                                />
+                                            </>
                                         )}
                                         <ProtectionPlan
                                             formProps={formProps}
