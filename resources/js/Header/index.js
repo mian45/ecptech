@@ -17,7 +17,7 @@ const Header = () => {
                     alt="Profile"
                     className={classes["bell-icon"]}
                     onClick={(e) => {
-                        setShowProfile(true);
+                        setShowProfile(!showProfile);
                     }}
                 />
                 {showProfile && <Profile />}

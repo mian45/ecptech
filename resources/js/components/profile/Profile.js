@@ -11,14 +11,12 @@ import axios from "axios";
 
 const Profile = ({ userId }) => {
     return (
-        <div className={classes["back-drop"]}>
-            <div
-                className={classes["profile"]}
-                onClick={(e) => e.stopPropagation()}
-            >
-                <ProfileInfoSection userId={userId} />
-                <ProfilePasswordValidations userId={userId} />
-            </div>
+        <div
+            className={classes["profile"]}
+            onClick={(e) => e.stopPropagation()}
+        >
+            <ProfileInfoSection userId={userId} />
+            <ProfilePasswordValidations userId={userId} />
         </div>
     );
 };
