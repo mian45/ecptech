@@ -114,3 +114,14 @@ margin:0px !important
     color: #ccc;
     font-weight: 300;
 }
+.button {
+    background-color: #6fa5cb;
+    border-radius: 28px;
+    border: none;
+    color: #ffffff;
+    margin-left: 10%;
+    padding: 10px 15px;
+    &:disabled {
+        background-color: #ccc;
+    }
+}

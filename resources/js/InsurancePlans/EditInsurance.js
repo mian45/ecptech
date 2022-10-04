@@ -62,6 +62,12 @@ function EditInsurance(props) {
                 </div>
                
             </div>
+            <button
+                                    type="submit"
+                                    className={"button"}
+                                >
+                                    {"Submit"}
+                                </button>
         </div>
         </div>
         </div>
