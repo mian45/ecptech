@@ -15,12 +15,28 @@ class SettingController extends Controller
 {
 
     public function getLenseFeaturesBrands(Request $request){
+    //     $data = LenseType::with(['brands'=>function($q){
+    //         $q->select('id','lens_type_id','title');
+    //         $q->with(['collections'=>function($q){
+    //             $q->select('id','brand_id','title');
+    //         }]);
+    //    }])->select('id','title')->get();
+
         $data = LenseType::with(['brands'=>function($q){
-            $q->select('id','lens_type_id','title');
+            $q->leftJoin('brand_permissions as setting', function($join){
+                $join->on('setting.brand_id', '=', 'brands.id')
+           ->where('setting.user_id',  auth()->user()->id);
+            });
+            $q->select('brands.id','lens_type_id','title',DB::raw('IFNULL(status,"inactive") as status'));
             $q->with(['collections'=>function($q){
-                $q->select('id','brand_id','title');
+                $q->leftJoin('collections_permissions as collection_setting', function($join){
+                    $join->on('collection_setting.collection_id', '=', 'collections.id')
+               ->where('collection_setting.user_id',  auth()->user()->id);
+                });
+                $q->select('collections.id','collections.brand_id','title',DB::raw('IFNULL(status,"inactive") as status'));
             }]);
        }])->select('id','title')->get();
+ 
 
        return $this->sendResponse($data, 'Lense data');
     }
