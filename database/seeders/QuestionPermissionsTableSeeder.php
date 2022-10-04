@@ -397,7 +397,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             array(
 
                 'user_id' => 1,
-                'vision_plan_id' => 1,
+                'vision_plan_id' => 4,
                 'question_id' => 8,
                 'optional' => 0,
                 'status' => 1

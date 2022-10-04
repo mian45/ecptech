@@ -13,7 +13,7 @@ use Validator;
 class VisionPlanController extends Controller
 {
     public function getClientVisionPlans(Request $request){
-        $plans = VisionPlanPermission::select('id','user_id','vision_plan_id','status')->with('VisionPlan')->where('user_id',1)->get();
+        $plans = VisionPlanPermission::select('id','vision_plan_id','status')->with('VisionPlan')->where('user_id',1)->get();
         return $this->sendResponse($plans, 'vision plan List');
         
     }
@@ -46,9 +46,10 @@ class VisionPlanController extends Controller
 
     public function getClientPlanQuestions(Request $request){
 
-        $questions = QuestionPermission::select('id','user_id','question_id','optional','status')->with(['Question' => function ($query) {
-            $query->select('id', 'title','vision_plan_id');
-        }])->where('user_id',1)->get();
+      $vision_plan_id = $request->visionPlanId;
+        $questions = QuestionPermission::select('id','question_id','optional','status')->with(['Question' => function ($query) {
+            $query->select('id', 'title','vision_plan_id'); 
+        }])->where('user_id',1)->where('vision_plan_id',$vision_plan_id)->get();
         return $this->sendResponse($questions, 'Questions List');
         
     }
@@ -58,9 +59,7 @@ class VisionPlanController extends Controller
         $validator = Validator::make($request->all(),[ 
             'user_id' => 'required',
             'vision_plan_id' => 'required',
-            'question_id' => 'required',
-            'optional' => 'required',
-            'status' => 'required'
+            'data' => 'required',
         ]);   
 
         if($validator->fails()) {          
@@ -69,20 +68,14 @@ class VisionPlanController extends Controller
         } 
         $user_id = $request->user_id;
         $vision_plan_id = $request->vision_plan_id;
-        $question_id = $request->question_id;
-        $optional = $request->optional;
-        $status = $request->status;
-        $question_id_arr = explode(",", $question_id);
-        $optional_ar = explode(",", $optional);
-        $status_ar = explode(",", $status);
+        $data = $request->data;
         $i = 0;
-        foreach($question_id_arr as $question_id){
-
-            $questions = QuestionPermission::select('id','user_id','vision_plan_id','question_id','optional','status',)->updateOrCreate(
-                ['user_id' => $user_id, 'vision_plan_id' => $vision_plan_id,'question_id' => $question_id],
-                ['status' => $status_ar[$i],'optional' => $optional_ar[$i]]
-            );
+        foreach($data as $row){
             
+            $questions = QuestionPermission::select('id','user_id','vision_plan_id','question_id','optional','status',)->updateOrCreate(
+                ['user_id' => $user_id, 'vision_plan_id' => $vision_plan_id,'question_id' => $row['question_id']],
+                ['status' => $row['status'],'optional' => $row['optional']]
+            );
             $permission[$i] = $questions;
             $i++;
         }
