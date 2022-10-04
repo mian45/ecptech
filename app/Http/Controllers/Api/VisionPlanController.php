@@ -52,12 +52,23 @@ class VisionPlanController extends Controller
 
     public function getClientPlanQuestions(Request $request){
 
-      $vision_plan_id = $request->visionPlanId;
-        $questions = QuestionPermission::select('id','question_id','optional','status')->with(['Question' => function ($query) {
-            $query->select('id', 'title','vision_plan_id'); 
-        }])->where('user_id',1)->where('vision_plan_id',$vision_plan_id)->get();
-        return $this->sendResponse($questions, 'Questions List');
+        $validator = Validator::make($request->all(),[ 
+            'visionPlanId' => 'required'
+        ]);   
+
+        if($validator->fails()) {          
         
+           return response()->json(['error'=>$validator->errors()], 401);                        
+        } 
+      $vision_plan_id = $request->visionPlanId;
+        $questions = Question::leftJoin('question_permissions as setting', function($join){
+            $join->on('questions.id', '=', 'setting.question_id')
+            ->where('setting.user_id',  auth()->user()->id);            
+        })->where('questions.status',1)->where('questions.vision_plan_id',$vision_plan_id)
+        ->select('questions.id','questions.vision_plan_id','questions.title',DB::raw('IFNULL(setting.status,0) as status'),DB::raw('IFNULL(setting.optional,0) as optional'))
+        ->get(); 
+
+        return $this->sendResponse($questions, 'Questions List');
     }
 
     public function updatePlanQuestionPermission(Request $request){
