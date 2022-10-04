@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LensMaterial;
+use App\Models\LenseType;
 use App\Models\UserLenseMaterialSetting;
 use Validator;
 use Illuminate\Support\Facades\DB;
@@ -13,6 +14,16 @@ use Illuminate\Support\Facades\DB;
 class SettingController extends Controller
 {
 
+    public function getLenseFeaturesBrands(Request $request){
+        $data = LenseType::with(['brands'=>function($q){
+            $q->select('id','lens_type_id','title');
+            $q->with(['collections'=>function($q){
+                $q->select('id','brand_id','title');
+            }]);
+       }])->select('id','title')->get();
+
+       return $this->sendResponse($data, 'Lense data');
+    }
     public function getLenseMaterial(Request $request){
         $lense_materials = LensMaterial::leftJoin('user_lense_material_settings as setting', function($join){
                                 $join->on('lens_materials.id', '=', 'setting.lens_material_id')
