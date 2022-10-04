@@ -65,8 +65,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'card_no' => 'required|integer',
             'card_name' => 'required',
-            'card_expiry' => 'required|date_format:m/y',
-            'ccv' => 'required|integer|digits:3'
+            'card_expiry' => 'required|date_format:m/y'
         ]);
 
         if ($validator->fails()) {
@@ -81,7 +80,6 @@ class UserController extends Controller
         $client_card->card_no = $request->card_no;
         $client_card->card_name = $request->card_name;
         $client_card->card_expiry = $request->card_expiry;
-        $client_card->ccv = $request->ccv;
 
         $client_card->save();
 
@@ -95,7 +93,7 @@ class UserController extends Controller
 
     public function getCard(Request $request){
 
-        $client_card = Client::select('id','card_name','card_no','card_expiry','ccv')->where('user_id',auth()->user()->id)->first();
+        $client_card = Client::select('id','card_name','card_no','card_expiry')->where('user_id',auth()->user()->id)->first();
         
         if($client_card){
             return $this->sendResponse($client_card, 'Card get successfully');
