@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LensMaterial;
+use App\Models\AddOn;
 use App\Models\UserLenseMaterialSetting;
+use App\Models\UserAddOnSetting;
 use Validator;
 use Illuminate\Support\Facades\DB;
 
@@ -59,4 +61,52 @@ class SettingController extends Controller
         return $this->sendError('Something went wrong');
 
     }
+
+    public function getAddons(Request $request){
+        $addons = AddOn::leftJoin('user_addon_settings as setting', function($join){
+                                $join->on('addons.id', '=', 'setting.addon_id')
+                                ->where('setting.user_id',  auth()->user()->id);            
+                            })
+                            ->select('addons.id','addons.title',DB::raw('IFNULL(status,"inactive") as status'),'price')
+                            ->orderBy('addons.id')
+                            ->get();
+
+        return $this->sendResponse($addons, 'Add-Ons');
+
+    }
+
+    public function addAddon(Request $request){
+        
+        $validator = Validator::make($request->all(), [
+            'addon_id' => 'required|exists:addons,id',
+            'status' => 'sometimes|in:active,inactive',
+            'price' => 'sometimes|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $setting = UserAddOnSetting::firstOrNew([
+            'user_id' => auth()->user()->id,
+            'addon_id' => $request->addon_id
+        ]);
+        
+        if($setting){
+            if ($request->has('status')) {
+                $setting->status = $request->status;
+            }
+            
+            if ($request->has('price')) {
+                $setting->price = $request->price;
+            }
+
+            $setting->save();
+            return $this->sendResponse([], 'AddOn status Updated');
+        }
+        
+        return $this->sendError('Something went wrong');
+
+    }
+
 }
