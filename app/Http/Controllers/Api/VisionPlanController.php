@@ -8,14 +8,20 @@ use App\Models\VisionPlan;
 use App\Models\VisionPlanPermission;
 use App\Models\Question;
 use App\Models\QuestionPermission;
+use DB;
 use Validator;
 
 class VisionPlanController extends Controller
 {
     public function getClientVisionPlans(Request $request){
-        $plans = VisionPlanPermission::select('id','vision_plan_id','status')->with('VisionPlan')->where('user_id',1)->get();
+
+        $plans = VisionPlan::leftJoin('vision_plan_permissions as setting', function($join){
+            $join->on('vision_plans.id', '=', 'setting.vision_plan_id')
+            ->where('setting.user_id',  auth()->user()->id);            
+        })->where('vision_plans.status',1)
+        ->select('vision_plans.id','vision_plans.title',DB::raw('IFNULL(setting.status,0) as status'))
+        ->get(); 
         return $this->sendResponse($plans, 'vision plan List');
-        
     }
     public function updateVisionPlanPermission(Request $request){
         
