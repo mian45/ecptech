@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('addons', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->unsignedBigInteger('addon_type_id');
             $table->softDeletes();
             $table->timestamps();
 
@@ -26,6 +27,8 @@ return new class extends Migration
             $table->foreign('created_by')->references('id')->on('users');
             $table->foreign('updated_by')->references('id')->on('users');
             $table->foreign('deleted_by')->references('id')->on('users');
+
+            $table->foreign('addon_type_id')->references('id')->on('addon_types');
         });
     }
 

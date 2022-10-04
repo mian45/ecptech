@@ -18,7 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('addon_id');
             $table->enum('status', ['active', 'inactive'])->default('inactive');
-            $table->decimal('price',10,2);
+            $table->string('name')->nullable();
+            $table->decimal('price',10,2)->nullable();
             $table->softDeletes();
             $table->timestamps();
 

@@ -15,6 +15,8 @@ use App\Models\Characteristic;
 use App\Models\LensMaterial;
 use App\Models\Shipping;
 use App\Models\Tax;
+use App\Models\AddonType;
+use App\Models\AddOn;
 use Validator;
 
 
@@ -200,6 +202,67 @@ class InvoiceCalculaterController extends Controller
     
        
     }
+
+
+    public function storeAddonCSVData(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'csv' => 'required|mimes:csv,txt'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+        
+        $csv = array();
+    
+        if($_FILES['csv']['error'] == 0){
+            $tmpName = $_FILES['csv']['tmp_name'];
+    
+            if(($handle = fopen($tmpName, 'r')) !== FALSE) {
+                
+                DB::beginTransaction();
+
+                $row = 0;
+                try{
+                    while(($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+                        if($row==0){
+                            // number of fields in the csv
+                            $col_count = count($data);
+                        }else{
+                            $data = $this->clear_encoding_str($data);
+
+                            if(!empty($data[0])){
+                                $addon_type = AddonType::updateOrCreate(['title'=> $data[0]]);
+                            }
+
+                            if(!empty($data[1])){
+                                $addon = AddOn::updateOrCreate(
+                                    ['title'=> $data[1], 'addon_type_id'=>$addon_type->id]
+                                );
+                            }
+
+                        }
+                        
+                        $row++;
+                    }
+                    fclose($handle);
+                    DB::commit();
+
+                    return $this->sendResponse([], 'Addon CSV data uploaded');
+                }catch(\Exception $e){
+                    DB::rollback();
+                    return $this->sendError($e->getMessage());
+                    
+                }
+                
+            }
+        }
+    
+       
+    }
+
+
 
     private function clear_encoding_str($value)
     {

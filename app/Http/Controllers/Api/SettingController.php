@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LensMaterial;
 use App\Models\AddOn;
+use App\Models\AddonType;
 use App\Models\UserLenseMaterialSetting;
 use App\Models\UserAddOnSetting;
 use Validator;
@@ -63,14 +64,18 @@ class SettingController extends Controller
     }
 
     public function getAddons(Request $request){
-        $addons = AddOn::leftJoin('user_addon_settings as setting', function($join){
-                                $join->on('addons.id', '=', 'setting.addon_id')
-                                ->where('setting.user_id',  auth()->user()->id);            
-                            })
-                            ->select('addons.id','addons.title',DB::raw('IFNULL(status,"inactive") as status'),'price')
-                            ->orderBy('addons.id')
-                            ->get();
+        $addons = AddonType::with(['addons'=>function($q){
+           $q->leftJoin('user_addon_settings as setting', function($join){
+            $join->on('addons.id', '=', 'setting.addon_id')
+            ->where('setting.user_id',  auth()->user()->id);            
+            });
+            $q->select('addons.id','addons.title','addons.addon_type_id',DB::raw('IFNULL(status,"inactive") as status'),'name as display_name','price');
+        }])->select('id','title')->get();
 
+
+        
+        
+        
         return $this->sendResponse($addons, 'Add-Ons');
 
     }
@@ -80,6 +85,7 @@ class SettingController extends Controller
         $validator = Validator::make($request->all(), [
             'addon_id' => 'required|exists:addons,id',
             'status' => 'sometimes|in:active,inactive',
+            'name' => 'sometimes|required',
             'price' => 'sometimes|numeric'
         ]);
 
@@ -99,6 +105,10 @@ class SettingController extends Controller
             
             if ($request->has('price')) {
                 $setting->price = $request->price;
+            }
+
+            if ($request->has('name')) {
+                $setting->name = $request->name;
             }
 
             $setting->save();
