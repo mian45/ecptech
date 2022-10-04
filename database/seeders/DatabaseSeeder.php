@@ -30,6 +30,10 @@ class DatabaseSeeder extends Seeder
             ProductTableSeeder::class,
             TransactionTableSeeder::class,
             PrescriptionTableSeeder::class,
+            VisionPlansTableSeeder::class,
+            VisionPlanPermissionTableSeeder::class,
+            QuestionsTableSeeder::class,
+            QuestionPermissionsTableSeeder::class,
             CodesTableSeeder::class
           
         ]);
