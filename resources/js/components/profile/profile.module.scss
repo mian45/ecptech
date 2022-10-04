@@ -12,7 +12,18 @@
     justify-content: flex-start;
     align-items: flex-start;
     padding: 1rem 0rem;
-    min-height: 100vh;
+    min-height: 90vh;
+    max-height: 90vh;
+    overflow: auto;
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #888;
+    }
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
 }
 
 .save-button {
@@ -24,4 +35,9 @@
     height: 1px;
     background-color: #e8e8e8;
     margin-top: 20px;
+}
+.back-drop {
+    width: 100vw;
+    height: 100vh;
+    background-color: #00000008;
 }
