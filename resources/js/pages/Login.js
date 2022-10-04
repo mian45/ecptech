@@ -12,7 +12,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper";
-
+import { Checkbox } from 'antd';
 const items = [
     {
         Name: "slide 1",
@@ -51,7 +51,7 @@ class Login extends Component {
             email: "",
             password: "",
             errors: {},
-
+            remember:false,
             response: {
                 error: false,
                 message: "",
@@ -96,10 +96,11 @@ class Login extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const { email, password } = this.state;
+        const { email, password ,remember } = this.state;
         const credentials = {
             email,
             password,
+            remember
         };
 
         this.validator.validateAll(credentials).then((success) => {
@@ -325,9 +326,15 @@ class Login extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            
                                             <div className="login-invite-text ending-text">
-                                                <button
+                                            <div>
+                                            <Checkbox 
+                                            onChange={()=>{this.setState({remember:!this.state.remember})}} 
+                                            checked={this.state.remember}>Remember me</Checkbox>
+                                            </div>
+                                            <div>
+                                            <button
                                                     type="submit"
                                                     className={classNames(
                                                         "btn btn-primary",
@@ -339,6 +346,8 @@ class Login extends Component {
                                                 >
                                                     Login
                                                 </button>
+                                            </div>
+                                                
                                             </div>
                                         </form>
                                     </div>

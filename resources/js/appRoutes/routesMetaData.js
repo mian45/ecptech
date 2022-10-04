@@ -7,7 +7,7 @@ import {
     PAYMENT_ROUTE,
     SETTINGS_ROUTE,
 } from "./routeConstants";
-
+import { Redirect, Route } from "react-router-dom";
 const Home = React.lazy(() => import("../pages/Dashboard"));
 const Login = React.lazy(() => import("../pages/Login"));
 const Invoices = React.lazy(() => import("../Invoices"));
@@ -16,6 +16,10 @@ const Seetings = React.lazy(() => import("../setting-dashboard"));
 const CreateInvoice = React.lazy(() => import("../pages/calculator"));
 
 export const allRoutes = [
+    {   path: "/",
+        component: ()=> <Redirect to={HOME_ROUTE} />,
+        exact: true,
+        isPrivate: true},
     {
         path: HOME_ROUTE,
         component: Home,

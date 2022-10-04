@@ -9,17 +9,11 @@ import {
     PAYMENT_ROUTE,
     SETTINGS_ROUTE,
 } from "../appRoutes/routeConstants";
-
+import AuthService from "../services";
 const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
     const [state, setState] = useState(isActiveState);
     const history = useHistory();
-
-    useEffect(() => {
-        if (!userId) {
-            dispatch(actions.authLogout());
-        }
-    }, []);
-
+  
     const handleSideBar = (value) => {
         switch (value) {
             case 1: {

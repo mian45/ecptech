@@ -36,6 +36,7 @@ const activeSettingState = (state, payload) => {
 };
 
 const authLogin = (state, payload) => {
+    consonle.log("the payload is here",payload)
     const userObject = {
         id: payload?.data?.id,
         name: payload?.data?.name,
@@ -82,7 +83,7 @@ const checkAuth = (state) => {
 
 const logout = (state) => {
     localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
+    localStorage.removeItem("remember");
     const stateObj = {
         ...state,
         isAuthenticated: false,
