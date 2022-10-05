@@ -252,7 +252,7 @@ const ViewInvoice = ({
                     <div className={classes["sub-right-container"]}>
                         <InPackPrices receipt={receipt} />
                         <OutPackPrices
-                            withoutTax={totalWithoutTax()}
+                            withoutTaxPrice={totalWithoutTax()}
                             totalPrice={calculateTotalDue()}
                             receipt={receipt}
                             calculatorObj={calculatorObj}

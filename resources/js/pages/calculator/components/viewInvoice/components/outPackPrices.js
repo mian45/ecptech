@@ -17,7 +17,12 @@ import {
 } from "../../../data/constants";
 import classes from "../styles.module.scss";
 
-const OutPackPrices = ({ receipt, totalPrice, calculatorObj, withoutTax }) => {
+const OutPackPrices = ({
+    receipt,
+    totalPrice,
+    calculatorObj,
+    withoutTaxPrice,
+}) => {
     const getCoatingPrice = () => {
         if (
             receipt?.values?.sunGlassesLens?.coatingType === "Ski Type Mirror"
@@ -253,9 +258,10 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj, withoutTax }) => {
                         calculatorObj.tax || 0
                     ).toFixed(2)}%)`}</span>
                     $
-                    {((withoutTax * (calculatorObj.tax || 1)) / 100).toFixed(
-                        2
-                    ) || 0}
+                    {(
+                        (withoutTaxPrice * (calculatorObj.tax || 1)) /
+                        100
+                    ).toFixed(2) || 0}
                 </div>
             </div>
             <InvoiceBoldSlot
