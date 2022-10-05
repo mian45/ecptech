@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class InvoiceReminder extends Model
 {
     
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     protected $table ='invoice_reminder';
 }
