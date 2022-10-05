@@ -106,9 +106,15 @@ const OutPackPrices = ({
         }
     };
     const getDiscountPercent = () => {
-        lensTotal = (receipt?.values?.frameOrder?.retailFee || 0) + 200;
-        const percentage = (lensTotal / (totalPrice || 1)) * 100;
-        return 100 - percentage;
+        const discount = parseInt(getDiscountPrice() || 0);
+        const totalRetailFee =
+            (receipt?.values?.frameOrder?.retailFee || 0) + 200;
+        return (discount / totalRetailFee) * 100;
+    };
+    const getDiscountPrice = () => {
+        const totalRetailFee =
+            (receipt?.values?.frameOrder?.retailFee || 0) + 200;
+        return totalRetailFee - (totalPrice || 0);
     };
 
     return (
@@ -241,13 +247,10 @@ const OutPackPrices = ({
                 </div>
                 <div className={classes["invoice-slot-title"]}>
                     <span className={classes["light-title"]}>
-                        {(getDiscountPercent() || 0).toFixed(2)}%
+                        {`(${(getDiscountPercent() || 0).toFixed(2)}%) `}
                     </span>
 
-                    {`($${(
-                        (totalPrice || 0) -
-                        ((receipt?.values?.frameOrder?.retailFee || 0) + 200)
-                    ).toFixed(2)})`}
+                    {`$${parseInt(getDiscountPrice() || 0)?.toFixed(2)}`}
                 </div>
             </div>
             <div className={classes["invoice-slot-container"]}>
@@ -255,7 +258,7 @@ const OutPackPrices = ({
                 <div className={classes["invoice-slot-title"]}>
                     <span className={classes["light-title"]}>{`(${(
                         calculatorObj.tax || 0
-                    ).toFixed(2)}%)`}</span>
+                    ).toFixed(2)}%) `}</span>
                     $
                     {(
                         (withoutTaxPrice * (calculatorObj.tax || 1)) /
