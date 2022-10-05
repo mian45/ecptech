@@ -104,6 +104,9 @@ class SettingController extends Controller
         $price = $request->price;
         $status = $request->status;
 
+        if(auth()->user()->id != $user_id){
+            return $this->sendError('invalid user id!');
+        }
 
         $collectionPermission = CollectionPermission::updateOrCreate(
             ['user_id' => $user_id, 'brand_id' => $brand_id, 'collection_id' => $collection_id],
