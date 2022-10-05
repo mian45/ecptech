@@ -121,7 +121,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                     className={classes["button"]}
                                     disabled={!isEdit && staffUser?.id}
                                 >
-                                    {staffUser?.id ? "Update" : "Sign In"}
+                                    {staffUser?.id ? "Update" : "Save"}
                                 </button>
                                 {staffUser?.id && (
                                     <button
