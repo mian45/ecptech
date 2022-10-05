@@ -91,8 +91,8 @@ class SettingController extends Controller
     public function addAddon(Request $request){
         
         $validator = Validator::make($request->all(), [
-            'addon_id' => 'sometimes|required|exists:addons,id',
-            'addon_extra_id' => 'sometimes|required|exists:addon_extra,id',
+            'addon_id' => 'required_without:addon_extra_id|exists:addons,id',
+            'addon_extra_id' => 'required_without:addon_id|exists:addon_extra,id',
             'status' => 'sometimes|in:active,inactive',
             'name' => 'sometimes|required',
             'price' => 'sometimes|numeric'
