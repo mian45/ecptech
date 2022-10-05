@@ -87,9 +87,18 @@ class RegisterController extends Controller
             $success['id'] =  $user->id;
             $success['name'] =  $user->name;
             $success['email'] =  $user->email;
-            $success['business_name'] =  $user->business_name;
-            $success['theme_color'] =  $user->theme_color;
-            $success['theme_mode'] =  $user->theme_mode;
+            if($user->client){
+                $profile = $user->client;
+                $success['business_name'] = $profile->business_name;
+                $success['theme_color'] = $profile->theme_color;
+                $success['theme_mode'] = $profile->theme_mode;
+                $success['logo'] = $profile->logo;
+                }else{
+                $success['business_name'] = null;
+                $success['theme_color'] = null;
+                $success['theme_mode'] = null;
+                $success['logo'] = null;
+                }
             $role['id'] = $user->role_id;
             $role['name'] =  $user->role->name;
             $success['role'] =  $role;
@@ -256,4 +265,68 @@ class RegisterController extends Controller
             return $this->sendError('Invalid old password Please enter a valid password');
         }
     }
+
+
+    public function getUser(Request $request){
+        
+                $validator = Validator::make($request->all(), [
+                    'userId' => 'required'
+                ]);
+        
+                if ($validator->fails()) {
+                    return $this->sendError('Validation Error.', $validator->errors());
+                }
+        
+                $user_id = $request->userId;
+                if($user_id != auth()->user()->id){
+                    return $this->sendError('invalid user id!');
+                }
+        
+                 $user = Auth::user();
+        
+                    $success['id'] =  $user->id;
+                    $success['name'] =  $user->name;
+                    $success['email'] =  $user->email;
+                    if($user->client){
+                        $profile = $user->client;
+                        $success['business_name'] = $profile->business_name;
+                        $success['theme_color'] = $profile->theme_color;
+                        $success['theme_mode'] = $profile->theme_mode;
+                        $success['logo'] = $profile->logo;
+                    }else{
+                        $success['business_name'] = null;
+                        $success['theme_color'] = null;
+                        $success['theme_mode'] = null;
+                        $success['logo'] = null;
+                    }
+                    $role['id'] = $user->role_id;
+                    $role['name'] =  $user->role->name;
+                    $success['role'] =  $role;
+                   
+                    if($user->role->name == 'client'){
+        
+                        $staff = $user->staff;
+                        if($staff){
+                            $staffData['id'] = $staff->id;
+                            $staffData['name'] = $staff->name;
+                            $staffData['email'] = $staff->email;
+                            $staffData['password'] = $staff->password;
+                            $success['staffAuth'] = $staffData;
+                        }else{
+                            $success['staffAuth'] = [];
+                        }
+        
+                    } 
+                    if ($user->role->name == 'staff') {
+        
+                        $client = $user->client;
+                        $clientData['id'] = $client->id;
+                        $clientData['name'] = $client->name;
+                        $success['client'] =  $clientData;
+                    }
+        
+        
+        
+                return $this->sendResponse($success, 'User Details');
+            }
 }
