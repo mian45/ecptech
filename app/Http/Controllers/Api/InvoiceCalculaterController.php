@@ -39,6 +39,7 @@ class InvoiceCalculaterController extends Controller
         }
 
         //It will be dynamic when users setting/permission work is done in next sprint
+        
         $data['questions']['VSP Signature'] = array(
             "visionPlan"=>["visibility"=>true, "optional"=>true],
             "frameBenefit"=>["visibility"=>true, "optional"=>true],
@@ -68,23 +69,6 @@ class InvoiceCalculaterController extends Controller
        $data['lens_material'] = LensMaterial::get();
 
 
-       $data['price_calculation_data'] = VisionPlan::with(['lensetypes'=>function($q){
-        $q->select('id','vision_plan_id','title');
-        $q->with(['brands'=>function($q){
-            $q->select('id','lens_type_id','title');
-            $q->with(['collections'=>function($q){
-                $q->select('id','brand_id','title');
-                $q->with(['lenses'=>function($q){
-                    $q->leftjoin('lens_materials', 'lenses.lens_material_id', '=', 'lens_materials.id');
-                    $q->select('lenses.id','collection_id','lens_material_id','title','lens_materials.lens_material_title');
-                    $q->with(['characteristics' => function($q){
-                        $q->leftjoin('codes', 'characteristics.code_id', '=', 'codes.id');
-                        $q->select('characteristics.id','characteristics.title','characteristics.lense_id','characteristics.type','characteristics.code_id','codes.name','codes.price');
-                    }]);
-                }]);
-            }]);
-        }]);
-       }])->select('id','title')->get();
        
         
         return $this->sendResponse($data, 'Calculater Data');
@@ -281,5 +265,36 @@ class InvoiceCalculaterController extends Controller
             return $clean;
         }
         return mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+    }
+
+
+    public function getLensePrices(Request $request){
+        
+        $validator = Validator::make($request->all(), [
+            'vision_plan_id' => 'required',
+            'lense_type_id' => 'required',
+            'collection_id' => 'required',
+            'lense_material_id' => 'required'
+            
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $data['lenses_price'] = Collection::where('id',$request->collection_id)->with(['lenses'=>function($q){
+
+                        $q->leftjoin('lens_materials', 'lenses.lens_material_id', '=', 'lens_materials.id');
+                        $q->where('lenses.lens_material_id',request()->lense_material_id);
+                        $q->select('lenses.id','collection_id','lens_material_id','title','lens_materials.lens_material_title');
+                        $q->with(['characteristics' => function($q){
+                            $q->leftjoin('codes', 'characteristics.code_id', '=', 'codes.id');
+                            $q->select('characteristics.id','characteristics.title','characteristics.lense_id','characteristics.type','characteristics.code_id','codes.name','codes.price');
+                        }]);
+                    }])->select('id','title')->get();
+           
+            
+        return $this->sendResponse($data, 'Calculater Data');
+
     }
 }
