@@ -14,6 +14,82 @@ class UserLenseSettingsTableSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('question_permissions')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        DB::table('question_permissions')->insert(array(
+            array(
+
+                'user_id' => 2,
+                'vision_plan_id' => 1,
+                'question_id' => 1,
+                'optional' => 0,
+                'status' => 1
+            ),
+            array(
+
+                'user_id' => 2,
+                'vision_plan_id' => 1,
+                'question_id' => 2,
+                'optional' => 0,
+                'status' => 1
+            ),
+            array(
+
+                'user_id' => 2,
+                'vision_plan_id' => 1,
+                'question_id' => 3,
+                'optional' => 0,
+                'status' => 1
+            ),
+            array(
+
+                'user_id' => 2,
+                'vision_plan_id' => 1,
+                'question_id' => 4,
+                'optional' => 0,
+                'status' => 1
+            ),
+            array(
+
+                'user_id' => 2,
+                'vision_plan_id' => 1,
+                'question_id' => 5,
+                'optional' => 0,
+                'status' => 1
+            ),
+            array(
+
+                'user_id' => 2,
+                'vision_plan_id' => 1,
+                'question_id' => 6,
+                'optional' => 0,
+                'status' => 1
+            ),
+            array(
+
+                'user_id' => 2,
+                'vision_plan_id' => 1,
+                'question_id' => 7,
+                'optional' => 0,
+                'status' => 1
+            ),
+            array(
+
+                'user_id' => 2,
+                'vision_plan_id' => 1,
+                'question_id' => 8,
+                'optional' => 0,
+                'status' => 1
+            ),
+            array(
+
+                'user_id' => 2,
+                'vision_plan_id' => 1,
+                'question_id' => 9,
+                'optional' => 0,
+                'status' => 1
+            ),
+        ));
     }
 }

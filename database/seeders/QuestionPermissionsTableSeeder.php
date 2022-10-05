@@ -20,7 +20,7 @@ class QuestionPermissionsTableSeeder extends Seeder
         DB::table('question_permissions')->insert(array(
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 1,
                 'optional' => 0,
@@ -28,7 +28,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 2,
                 'optional' => 0,
@@ -36,7 +36,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 3,
                 'optional' => 0,
@@ -44,7 +44,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 4,
                 'optional' => 0,
@@ -52,7 +52,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 5,
                 'optional' => 0,
@@ -60,7 +60,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 6,
                 'optional' => 0,
@@ -68,7 +68,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 7,
                 'optional' => 0,
@@ -76,7 +76,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 8,
                 'optional' => 0,
@@ -84,7 +84,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 9,
                 'optional' => 0,
@@ -92,7 +92,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 10,
                 'optional' => 0,
@@ -100,7 +100,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 11,
                 'optional' => 0,
@@ -108,7 +108,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 12,
                 'optional' => 0,
@@ -116,7 +116,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 1,
                 'question_id' => 13,
                 'optional' => 0,
@@ -127,7 +127,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 1,
                 'optional' => 0,
@@ -135,7 +135,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 2,
                 'optional' => 0,
@@ -143,7 +143,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 3,
                 'optional' => 0,
@@ -151,7 +151,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 4,
                 'optional' => 0,
@@ -159,7 +159,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 5,
                 'optional' => 0,
@@ -167,7 +167,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 6,
                 'optional' => 0,
@@ -175,7 +175,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 7,
                 'optional' => 0,
@@ -183,7 +183,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 8,
                 'optional' => 0,
@@ -191,7 +191,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 9,
                 'optional' => 0,
@@ -199,7 +199,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 10,
                 'optional' => 0,
@@ -207,7 +207,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 11,
                 'optional' => 0,
@@ -215,7 +215,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 12,
                 'optional' => 0,
@@ -223,7 +223,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 2,
                 'question_id' => 13,
                 'optional' => 0,
@@ -234,7 +234,7 @@ class QuestionPermissionsTableSeeder extends Seeder
 
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 1,
                 'optional' => 0,
@@ -242,7 +242,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 2,
                 'optional' => 0,
@@ -250,7 +250,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 3,
                 'optional' => 0,
@@ -258,7 +258,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 4,
                 'optional' => 0,
@@ -266,7 +266,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 5,
                 'optional' => 0,
@@ -274,7 +274,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 6,
                 'optional' => 0,
@@ -282,7 +282,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 7,
                 'optional' => 0,
@@ -290,7 +290,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 8,
                 'optional' => 0,
@@ -298,7 +298,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 9,
                 'optional' => 0,
@@ -306,7 +306,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 10,
                 'optional' => 0,
@@ -314,7 +314,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 11,
                 'optional' => 0,
@@ -322,7 +322,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 12,
                 'optional' => 0,
@@ -330,7 +330,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 3,
                 'question_id' => 13,
                 'optional' => 0,
@@ -340,7 +340,7 @@ class QuestionPermissionsTableSeeder extends Seeder
            
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 1,
                 'optional' => 0,
@@ -348,7 +348,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 2,
                 'optional' => 0,
@@ -356,7 +356,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 3,
                 'optional' => 0,
@@ -364,7 +364,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 4,
                 'optional' => 0,
@@ -372,7 +372,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 5,
                 'optional' => 0,
@@ -380,7 +380,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 6,
                 'optional' => 0,
@@ -388,7 +388,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 7,
                 'optional' => 0,
@@ -396,7 +396,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 8,
                 'optional' => 0,
@@ -404,7 +404,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 9,
                 'optional' => 0,
@@ -412,7 +412,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 10,
                 'optional' => 0,
@@ -420,7 +420,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 11,
                 'optional' => 0,
@@ -428,7 +428,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 12,
                 'optional' => 0,
@@ -436,7 +436,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 4,
                 'question_id' => 13,
                 'optional' => 0,
@@ -446,7 +446,7 @@ class QuestionPermissionsTableSeeder extends Seeder
            
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 1,
                 'optional' => 0,
@@ -454,7 +454,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 2,
                 'optional' => 0,
@@ -462,7 +462,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 3,
                 'optional' => 0,
@@ -470,7 +470,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 4,
                 'optional' => 0,
@@ -478,7 +478,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 5,
                 'optional' => 0,
@@ -486,7 +486,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 6,
                 'optional' => 0,
@@ -494,7 +494,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 7,
                 'optional' => 0,
@@ -502,7 +502,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 8,
                 'optional' => 0,
@@ -510,7 +510,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 9,
                 'optional' => 0,
@@ -518,7 +518,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 10,
                 'optional' => 0,
@@ -526,7 +526,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 11,
                 'optional' => 0,
@@ -534,7 +534,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 12,
                 'optional' => 0,
@@ -542,7 +542,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 5,
                 'question_id' => 13,
                 'optional' => 0,
@@ -552,7 +552,7 @@ class QuestionPermissionsTableSeeder extends Seeder
      
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 1,
                 'optional' => 0,
@@ -560,7 +560,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 2,
                 'optional' => 0,
@@ -568,7 +568,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 3,
                 'optional' => 0,
@@ -576,7 +576,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 4,
                 'optional' => 0,
@@ -584,7 +584,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 5,
                 'optional' => 0,
@@ -592,7 +592,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 6,
                 'optional' => 0,
@@ -600,7 +600,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 7,
                 'optional' => 0,
@@ -608,7 +608,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 8,
                 'optional' => 0,
@@ -616,7 +616,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 9,
                 'optional' => 0,
@@ -624,7 +624,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 10,
                 'optional' => 0,
@@ -632,7 +632,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 11,
                 'optional' => 0,
@@ -640,7 +640,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 12,
                 'optional' => 0,
@@ -648,7 +648,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 6,
                 'question_id' => 13,
                 'optional' => 0,
@@ -659,7 +659,7 @@ class QuestionPermissionsTableSeeder extends Seeder
 
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 1,
                 'optional' => 0,
@@ -667,7 +667,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 2,
                 'optional' => 0,
@@ -675,7 +675,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 3,
                 'optional' => 0,
@@ -683,7 +683,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 4,
                 'optional' => 0,
@@ -691,7 +691,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 5,
                 'optional' => 0,
@@ -699,7 +699,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 6,
                 'optional' => 0,
@@ -707,7 +707,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 7,
                 'optional' => 0,
@@ -715,7 +715,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 8,
                 'optional' => 0,
@@ -723,7 +723,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 9,
                 'optional' => 0,
@@ -731,7 +731,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 10,
                 'optional' => 0,
@@ -739,7 +739,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 11,
                 'optional' => 0,
@@ -747,7 +747,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 12,
                 'optional' => 0,
@@ -755,7 +755,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 7,
                 'question_id' => 13,
                 'optional' => 0,
@@ -766,7 +766,7 @@ class QuestionPermissionsTableSeeder extends Seeder
 
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 1,
                 'optional' => 0,
@@ -774,7 +774,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 2,
                 'optional' => 0,
@@ -782,7 +782,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 3,
                 'optional' => 0,
@@ -790,7 +790,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 4,
                 'optional' => 0,
@@ -798,7 +798,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 5,
                 'optional' => 0,
@@ -806,7 +806,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 6,
                 'optional' => 0,
@@ -814,7 +814,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 7,
                 'optional' => 0,
@@ -822,7 +822,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 8,
                 'optional' => 0,
@@ -830,7 +830,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 9,
                 'optional' => 0,
@@ -838,7 +838,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 10,
                 'optional' => 0,
@@ -846,7 +846,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 11,
                 'optional' => 0,
@@ -854,7 +854,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 12,
                 'optional' => 0,
@@ -862,7 +862,7 @@ class QuestionPermissionsTableSeeder extends Seeder
             ),
             array(
 
-                'user_id' => 1,
+                'user_id' => 2,
                 'vision_plan_id' => 8,
                 'question_id' => 13,
                 'optional' => 0,

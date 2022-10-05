@@ -37,28 +37,19 @@ class InvoiceCalculaterController extends Controller
         if($tax){
             $data['tax'] = $tax->value;
         }
-
-        //It will be dynamic when users setting/permission work is done in next sprint
         
-        $data['questions']['VSP Signature'] = array(
-            "visionPlan"=>["visibility"=>true, "optional"=>true],
-            "frameBenefit"=>["visibility"=>true, "optional"=>true],
-            "lensBenefit"=>["visibility"=>true, "optional"=>false],
-            "materialCopay"=>["visibility"=>true, "optional"=>true],
-            "frameOrder"=>["visibility"=>true, "optional"=>false],
-            "copayDollarAmount"=>["visibility"=>true, "optional"=>true],
-            "lensType"=>["visibility"=>true, "optional"=>true],
-            "lensMaterial"=>["visibility"=>true, "optional"=>true],
-            "photochromics"=>["visibility"=>true, "optional"=>false],
-            "sunglassLens"=>["visibility"=>true, "optional"=>true],
-            "antireflective"=>["visibility"=>true, "optional"=>true],
-            "protectionPlan"=>["visibility"=>true, "optional"=>true],
-            "shipping"=>["visibility"=>true, "optional"=>true],
-        );
-        //
+        $data['questions'] = VisionPlan::with(['question_permissions' => function($q){
+                $q->join('questions as q','q.id','=','question_permissions.question_id');
+                $q->select('q.id as q_id','question_permissions.vision_plan_id','q.title as question',
+                    DB::raw('IF(question_permissions.status, "true", "false") as visibility'),
+                    DB::raw('IF(question_permissions.optional, "true", "false") as optional')
+                );
+                $q->where('question_permissions.user_id',auth()->user()->id);
+        }])->join('vision_plan_permissions as vsp','vsp.vision_plan_id','=','vision_plans.id')
+            ->where('vsp.user_id',auth()->user()->id)
+            ->select('vision_plans.id','vision_plans.title')->get();
 
-        //It will be dynamic according to user permission/setting work in next sprint
-       
+
        $data['lens_types'] = LenseType::with(['brands'=>function($q){
             $q->select('id','lens_type_id','title');
             $q->with(['collections'=>function($q){
@@ -66,11 +57,10 @@ class InvoiceCalculaterController extends Controller
             }]);
        }])->select('id','vision_plan_id','title')->get();
 
-       $data['lens_material'] = LensMaterial::get();
+       $data['lens_material'] = LensMaterial::leftjoin('user_lense_material_settings as setting','setting.lens_material_id','=','lens_materials.id')
+                                            ->select('lens_materials.id','lens_materials.lens_material_title','setting.price as retail_price')    
+                                            ->get();
 
-
-       
-        
         return $this->sendResponse($data, 'Calculater Data');
     }
 
