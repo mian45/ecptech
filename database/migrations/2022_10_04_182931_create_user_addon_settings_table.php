@@ -16,7 +16,8 @@ return new class extends Migration
         Schema::create('user_addon_settings', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('addon_id');
+            $table->unsignedBigInteger('addon_id')->nullable();
+            $table->unsignedBigInteger('addon_extra_id')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->string('name')->nullable();
             $table->decimal('price',10,2)->nullable();

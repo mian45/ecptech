@@ -16,4 +16,10 @@ class AddOn extends Model
         return $this->belongsTo(AddonType::class);
     }
 
+    public function addon_extra(){
+        return $this->hasMany(AddonExtra::class,'addon_id');
+    }
+
+    
+
 }

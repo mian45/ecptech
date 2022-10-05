@@ -70,6 +70,14 @@ class SettingController extends Controller
             ->where('setting.user_id',  auth()->user()->id);            
             });
             $q->select('addons.id','addons.title','addons.addon_type_id',DB::raw('IFNULL(status,"inactive") as status'),'name as display_name','price');
+            $q->with(['addon_extra' => function($q){
+                $q->leftJoin('user_addon_settings as setting', function($join){
+                    $join->on('addon_extra.id', '=', 'setting.addon_extra_id')
+                    ->where('setting.user_id',  auth()->user()->id);            
+                    });
+                $q->select('addon_extra.id','addon_extra.title','addon_extra.addon_id',DB::raw('IFNULL(status,"inactive") as status'),'name as display_name','price');
+
+            }]);
         }])->select('id','title')->get();
 
 
@@ -83,7 +91,8 @@ class SettingController extends Controller
     public function addAddon(Request $request){
         
         $validator = Validator::make($request->all(), [
-            'addon_id' => 'required|exists:addons,id',
+            'addon_id' => 'sometimes|required|exists:addons,id',
+            'addon_extra_id' => 'sometimes|required|exists:addon_extra,id',
             'status' => 'sometimes|in:active,inactive',
             'name' => 'sometimes|required',
             'price' => 'sometimes|numeric'
@@ -93,10 +102,21 @@ class SettingController extends Controller
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
-        $setting = UserAddOnSetting::firstOrNew([
-            'user_id' => auth()->user()->id,
-            'addon_id' => $request->addon_id
-        ]);
+        if ($request->has('addon_id')) {
+            $data = array(
+                'user_id' => auth()->user()->id,
+                'addon_id' => $request->addon_id
+            );
+        }
+
+        if ($request->has('addon_extra_id')) {
+            $data = array(
+                'user_id' => auth()->user()->id,
+                'addon_extra_id' => $request->addon_extra_id
+            );
+        }
+
+        $setting = UserAddOnSetting::firstOrNew($data);
         
         if($setting){
             if ($request->has('status')) {

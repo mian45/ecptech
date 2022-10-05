@@ -17,6 +17,7 @@ use App\Models\Shipping;
 use App\Models\Tax;
 use App\Models\AddonType;
 use App\Models\AddOn;
+use App\Models\AddonExtra;
 use Validator;
 
 
@@ -239,6 +240,12 @@ class InvoiceCalculaterController extends Controller
                             if(!empty($data[1])){
                                 $addon = AddOn::updateOrCreate(
                                     ['title'=> $data[1], 'addon_type_id'=>$addon_type->id]
+                                );
+                            }
+
+                            if(!empty($data[2])){
+                                $addon_extra = AddonExtra::updateOrCreate(
+                                    ['title'=> $data[2], 'addon_id'=>$addon->id]
                                 );
                             }
 
