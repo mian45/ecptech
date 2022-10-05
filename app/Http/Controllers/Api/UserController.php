@@ -19,46 +19,46 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
-    { 
-        $user_id = $request->user_id;
-        $validator = Validator::make($request->all(),[ 
-                'logo' => 'required|mimes:png,jpg,svg,doc,docx,pdf,txt,csv|dimensions:width=200,height=40',
-        ]);   
+    // public function update(Request $request)
+    // { 
+    //     $user_id = $request->user_id;
+    //     $validator = Validator::make($request->all(),[ 
+    //             'logo' => 'required|mimes:png,jpg,svg,doc,docx,pdf,txt,csv|dimensions:width=200,height=40',
+    //     ]);   
 
-        if($validator->fails()) {          
+    //     if($validator->fails()) {          
             
-            return response()->json(['error'=>$validator->errors()], 401);                        
-        }  
+    //         return response()->json(['error'=>$validator->errors()], 401);                        
+    //     }  
 
-        $path = '';
-        if ($file = $request->file('logo')) {
-            $file_name = time().'.'.$file->extension();
-            $path = $file->move(public_path('uploads'),$file_name);
-            $name = $file->getClientOriginalName();                                        
-        }
+    //     $path = '';
+    //     if ($file = $request->file('logo')) {
+    //         $file_name = time().'.'.$file->extension();
+    //         $path = $file->move(public_path('uploads'),$file_name);
+    //         $name = $file->getClientOriginalName();                                        
+    //     }
 
-        $user = User::find($user_id);
-        $user->logo = $file_name;
-        $user->business_name = $request->business_name;
-        $user->theme_color = $request->theme_color;
-        $user->theme_mode = $request->theme_mode;
-        $result = $user->save();
-        if($result){
-            return response()->json([                
-                "success" => true,
-                "message" => "Profile updated successfully.",
-                "data" => [
-                    'logo' => config('app.url').'uploads/'.$user->logo,
-                    'business_name' => $user->business_name,
-                    'theme_color' => $user->theme_color,
-                    'theme_mode' => $user->theme_mode
-                ]                
-            ]);
-        } else {
-            return response()->json(['error'=> 'Something Went Wrong.'], 401);
-        }
-    }
+    //     $user = User::find($user_id);
+    //     $user->logo = $file_name;
+    //     $user->business_name = $request->business_name;
+    //     $user->theme_color = $request->theme_color;
+    //     $user->theme_mode = $request->theme_mode;
+    //     $result = $user->save();
+    //     if($result){
+    //         return response()->json([                
+    //             "success" => true,
+    //             "message" => "Profile updated successfully.",
+    //             "data" => [
+    //                 'logo' => config('app.url').'uploads/'.$user->logo,
+    //                 'business_name' => $user->business_name,
+    //                 'theme_color' => $user->theme_color,
+    //                 'theme_mode' => $user->theme_mode
+    //             ]                
+    //         ]);
+    //     } else {
+    //         return response()->json(['error'=> 'Something Went Wrong.'], 401);
+    //     }
+    // }
 
     public function addCard(Request $request){
 
@@ -100,5 +100,49 @@ class UserController extends Controller
         }
 
         return $this->sendError('Discount not found');
+    }
+
+    public function update(Request $request)
+    { 
+        
+        $validator = Validator::make($request->all(),[ 
+                'userId' => 'required',
+        ]);   
+
+        if($validator->fails()) {          
+            
+            return response()->json(['error'=>$validator->errors()], 401);                        
+        }  
+        $user_id = $request->userId;
+        if($user_id != auth()->user()->id){
+            return $this->sendError('invalid user id!');
+        }
+        $path = '';
+        if ($file = $request->file('logo')) {
+            $file_name = time().'.'.$file->extension();
+            $path = $file->move(public_path('uploads'),$file_name);
+            $name = $file->getClientOriginalName();                                        
+        }
+        $client = Client::select()->where('user_id',$user_id)->first();
+       
+        $client->logo = $file_name;
+        $user->business_name = $request->business_name;
+        $client->theme_color = $request->theme_color;
+        $client->theme_mode = $request->theme_mode;
+        $result = $client->save();
+        if($result){
+            return response()->json([                
+                "success" => true,
+                "message" => "Profile updated successfully.",
+                "data" => [
+                    'logo' => config('app.url').'uploads/'.$user->logo,
+                    'business_name' => $user->business_name,
+                    'theme_color' => $user->theme_color,
+                    'theme_mode' => $user->theme_mode
+                ]                
+            ]);
+        } else {
+            return response()->json(['error'=> 'Something Went Wrong.'], 401);
+        }
     }
 }
