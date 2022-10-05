@@ -52,9 +52,6 @@ const EyePrescription = (props) => {
             sphere.push(`${i + "." + quarterHours[j]}`);
         }
     }
-
-
-    var quarterHours = ["00", "75", "50", "25"];
     var cylinder = [];
     for (var i = -7; i <= 0; i++) {
         for (var j = 0; j < 4; j++) {
@@ -335,7 +332,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                             }}
                                         >
                                             {
-                                                sphere && sphere.map((obj, i) => {
+                                                sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                     return <Option value={obj}>{obj}</Option>
 
                                                 })
@@ -355,7 +352,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                             onChange={(e) => { setCrSphereTo(e) }}
                                         >
                                             {
-                                                sphere && sphere.map((obj, i) => {
+                                                sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                     return <Option value={obj}>{obj}</Option>
 
                                                 })
@@ -377,7 +374,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                             onChange={(e) => { setCrCylinderFrom(e) }}
                                         >
                                             {
-                                                cylinder && cylinder.map((obj, i) => {
+                                                cylinder && cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                     return <Option value={obj}>{obj}</Option>
 
                                                 })
@@ -397,7 +394,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                             onChange={(e) => { setCrCylinderTo(e) }}
                                         >
                                             {
-                                                cylinder && cylinder.map((obj, i) => {
+                                                cylinder && cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                     return <Option value={obj}>{obj}</Option>
 
                                                 })
@@ -427,7 +424,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setPbSphereFrom(e) }}
                                     >
                                         {
-                                            sphere && sphere.map((obj, i) => {
+                                            sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -447,7 +444,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setPbSphereTo(e) }}
                                     >
                                         {
-                                            sphere && sphere.map((obj, i) => {
+                                            sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -469,7 +466,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setPbCylinderFrom(e) }}
                                     >
                                         {
-                                            cylinder && cylinder.map((obj, i) => {
+                                            cylinder && cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -489,7 +486,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setPbCylinderTo(e) }}
                                     >
                                         {
-                                            cylinder && cylinder.map((obj, i) => {
+                                            cylinder && cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -518,7 +515,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setTvSphereFrom(e) }}
                                     >
                                         {
-                                            sphere && sphere.map((obj, i) => {
+                                            sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -538,7 +535,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setTvSphereTo(e) }}
                                     >
                                         {
-                                            sphere && sphere.map((obj, i) => {
+                                            sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -560,7 +557,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setTvCylinderFrom(e) }}
                                     >
                                         {
-                                            cylinder && cylinder.map((obj, i) => {
+                                            cylinder && cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -580,7 +577,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setTvCylinderTo(e) }}
                                     >
                                         {
-                                            cylinder && cylinder.map((obj, i) => {
+                                            cylinder && cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -609,7 +606,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setHiSphereFrom(e) }}
                                     >
                                         {
-                                            sphere && sphere.map((obj, i) => {
+                                            sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -629,7 +626,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setHiSphereTo(e) }}
                                     >
                                         {
-                                            sphere && sphere.map((obj, i) => {
+                                            sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -651,7 +648,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setHiCylinderFrom(e) }}
                                     >
                                         {
-                                            cylinder && cylinder.map((obj, i) => {
+                                            cylinder && cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -671,7 +668,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setHiCylinderTo(e) }}
                                     >
                                         {
-                                            cylinder && cylinder.map((obj, i) => {
+                                            cylinder && cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -700,7 +697,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setHiaSphereFrom(e) }}
                                     >
                                         {
-                                            sphere && sphere.map((obj, i) => {
+                                            sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -720,7 +717,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setHiaSphereTo(e) }}
                                     >
                                         {
-                                            sphere && sphere.map((obj, i) => {
+                                            sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -742,7 +739,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setHiaCylinderFrom(e) }}
                                     >
                                         {
-                                            cylinder && cylinder.map((obj, i) => {
+                                            cylinder && cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -762,7 +759,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setHiaCylinderTo(e) }}
                                     >
                                         {
-                                            cylinder && cylinder.map((obj, i) => {
+                                            cylinder && cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -791,7 +788,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setHifSphereFrom(e) }}
                                     >
                                         {
-                                            sphere && sphere.map((obj, i) => {
+                                            sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -811,7 +808,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setHifSphereTo(e) }}
                                     >
                                         {
-                                            sphere && sphere.map((obj, i) => {
+                                            sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -833,7 +830,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setHifCylinderFrom(e) }}
                                     >
                                         {
-                                            cylinder && cylinder.map((obj, i) => {
+                                            cylinder && cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
@@ -853,7 +850,7 @@ useEffect(()=>{getEyePrescriptions()},[])
                                         onChange={(e) => { setHifCylinderTo(e) }}
                                     >
                                         {
-                                            cylinder && cylinder.map((obj, i) => {
+                                            cylinder && cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
                                                 return <Option value={obj}>{obj}</Option>
 
                                             })
