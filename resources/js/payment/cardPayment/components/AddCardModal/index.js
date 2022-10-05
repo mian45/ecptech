@@ -115,9 +115,9 @@ const AddCardModal = ({ show, onClose }) => {
                                     placeholder="MM/YY"
                                     min={new Date()}
                                     className={classes["input"]}
-                                    data-date-format="mm/yy"
+                                    data
                                     onChange={(e)=>{setDate(dayjs(new Date(e.target.value)).format("MM/YY"))}}
-                                    type={"month"}
+                                    type={"date"}
                                     onBlur={(e)=>{
                                         if(date==""){
                                             setDateValidation(true)
