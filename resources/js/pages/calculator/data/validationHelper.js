@@ -181,7 +181,7 @@ export const mappedEditValues = (data) => {
     );
 
     return {
-        benifitType: data?.submitBenifitType || "",
+        benifitType: userState?.submitBenifitType || "",
         invoiceName: data?.name || "",
         staffName: userState?.staffName || "",
         staffId: userState?.staffId || "",
