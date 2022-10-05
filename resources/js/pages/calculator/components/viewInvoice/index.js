@@ -332,7 +332,8 @@ const getLensPrice = (receipt, calculatorObj) => {
     ) {
         if (
             receipt?.values?.lensMaterial === "Polycarbonate" ||
-            receipt?.values?.lensMaterial?.includes("Hi index")
+            receipt?.values?.lensMaterial?.includes("Hi index") ||
+            receipt?.values?.lensMaterial?.includes("Hi Index")
         ) {
             if (receipt?.values?.lensMaterial === "Polycarbonate") {
                 const isPholicarbinateActive =
