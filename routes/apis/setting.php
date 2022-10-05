@@ -8,3 +8,5 @@ Route::get('lense-material-settings', [SettingController::class, 'getLenseMateri
 Route::post('add-lense-material-setting', [SettingController::class, 'addLenseMaterial']);
 
 Route::post('add-price-dispaly-name-in-brands', [SettingController::class, 'addPriceDispalyNameInBrands']);
+Route::get('addon-settings', [SettingController::class, 'getAddons']);
+Route::post('add-addon-setting', [SettingController::class, 'addAddon']);
