@@ -227,7 +227,9 @@ const ViewInvoice = ({
         } else {
             total = total + 0;
         }
-        total = total + (parseInt(calculatorObj?.shipping) || 0);
+        if (receipt?.values?.shipping?.status === "Yes") {
+            total = total + (parseInt(calculatorObj?.shipping) || 0);
+        }
         total = total + (parseInt(getLensPrice(receipt, calculatorObj)) || 0);
         return total;
     };

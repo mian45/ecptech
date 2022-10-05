@@ -16,7 +16,7 @@ const InPackPrices = (receipt) => {
             <InvoiceBoldSlot
                 title={"Total"}
                 subTitle={`$${
-                    (receipt?.values?.frameOrder?.retailFee || 0) + 200
+                    receipt?.receipt?.values?.frameOrder?.retailFee + 200
                 }`}
             />
         </>

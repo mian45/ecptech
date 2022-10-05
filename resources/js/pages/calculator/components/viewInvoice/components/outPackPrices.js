@@ -105,6 +105,11 @@ const OutPackPrices = ({
             return payableFramePrice || 0;
         }
     };
+    const getDiscountPercent = () => {
+        lensTotal = (receipt?.values?.frameOrder?.retailFee || 0) + 200;
+        const percentage = (lensTotal / (totalPrice || 1)) * 100;
+        return 100 - percentage;
+    };
 
     return (
         <>
@@ -236,17 +241,11 @@ const OutPackPrices = ({
                 </div>
                 <div className={classes["invoice-slot-title"]}>
                     <span className={classes["light-title"]}>
-                        {(
-                            ((totalPrice || 0) /
-                                ((receipt?.values?.frameOrder?.retailFee || 0) +
-                                    200)) *
-                            100
-                        ).toFixed(2)}
-                        %
+                        {(getDiscountPercent() || 0).toFixed(2)}%
                     </span>
 
                     {`($${(
-                        (totalPrice || 0) /
+                        (totalPrice || 0) -
                         ((receipt?.values?.frameOrder?.retailFee || 0) + 200)
                     ).toFixed(2)})`}
                 </div>
