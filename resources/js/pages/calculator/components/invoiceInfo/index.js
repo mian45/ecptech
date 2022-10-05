@@ -41,7 +41,8 @@ const InvoiceInfo = ({ formProps, userId }) => {
                 <div className={classes["label"]}>Invoice Name</div>
                 <AutoCompleteSelect
                     placeholder="John Doe Sunglasses"
-                    options={[]}
+                    defaultValue={{ value:"John Doe Sunglasses"}}
+                    options={[{ value:"John Doe Sunglasses"},{ value:"John Doe Lenses"},{ value:"John Doe Frame order"}]}
                     className={classes["dropdown-styles"]}
                     onBlur={handleBlur}
                     onChange={(value) => setFieldValue("invoiceName", value)}
