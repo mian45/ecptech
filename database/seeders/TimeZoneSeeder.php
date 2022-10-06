@@ -19,18 +19,49 @@ class TimeZoneSeeder extends Seeder
         DB::table('timezones')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         DB::table('timezones')->insert(array(
-            array(
 
-                'name' => "Asia/Karachi",
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ),
             array(
 
                 'name' => "Washington, DC, USA (GMT-4)",
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ),
+            array(
+
+                'name' => "Chicago (GMT-5)",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ),
+            array(
+
+                'name' => "Denver (GMT-6)",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ),
+            array(
+
+                'name' => "Phoenix (GMT-7)",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ),
+            array(
+
+                'name' => "Los Angeles (GMT-7)",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ),
+            array(
+
+                'name' => "Anchorage (GMT-8)",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ),
+            array(
+
+                'name' => "Honolulu (GMT-10)",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            )
 
         ));
     }
