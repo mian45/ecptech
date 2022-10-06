@@ -102,7 +102,7 @@ class RegisterController extends Controller
             $role['id'] = $user->role_id;
             $role['name'] =  $user->role->name;
             $success['role'] =  $role;
-
+           
             if($user->role->name == 'client'){
 
                 $staff = $user->staff;
