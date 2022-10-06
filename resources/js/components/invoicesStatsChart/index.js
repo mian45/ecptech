@@ -70,7 +70,7 @@ const InvoicesStatsChart = ({ data }) => {
             formatter: function (val, opt) {
                 let isPercentage = "";
                 if (data[opt.dataPointIndex]?.percentage)
-                    isPercentage = `-${data[opt.dataPointIndex]?.percentage}%`;
+                    isPercentage = `- ${data[opt.dataPointIndex]?.percentage}%`;
                 return data[opt.dataPointIndex]?.x === "Capture Rate"
                     ? `${data[opt.dataPointIndex]?.percentage || 0}%`
                     : `${data[opt.dataPointIndex]?.y} ${isPercentage}`;

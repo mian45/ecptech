@@ -11,11 +11,12 @@
         background-color: white;
         margin-left: 144px;
         margin-bottom: 20px;
-        padding-block: 20px 17px;
         padding-inline: 27px 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        box-shadow: 2px 1px 5px 4px #ccc3;
+        border-radius: 20px;
 
         &-section {
             display: flex;
@@ -36,6 +37,7 @@
                 &-subheading {
                     font-size: 16px;
                     margin-right: 17px;
+                    margin-left: 10px !important;
                 }
             }
 
