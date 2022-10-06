@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\LensMaterial;
 use App\Models\LenseType;
 use App\Models\UserLenseMaterialSetting;
+use App\Models\BrandPermission;
 use App\Models\CollectionPermission;
 use App\Models\AddOn;
 use App\Models\AddonType;
@@ -49,6 +50,56 @@ class SettingController extends Controller
        return $this->sendResponse($data, 'Lense data');
     }
     
+    public function updateLenseSettings(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required',
+            'data' => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+        $user_id = $request->user_id;
+        $data = $request->data;
+        if(auth()->user()->id != $user_id){
+            return $this->sendError('invalid user id!');
+        }
+        $i = 0;
+        foreach($data as $lense_type){
+            
+            $lense_type_id = $lense_type['id'];
+            
+            foreach($lense_type['brands'] as $brand){
+                $brand_id = $brand['id'];
+                $brandPermission = BrandPermission::updateOrCreate(
+                    ['user_id' => $user_id, 'lense_type_id' => $lense_type_id,'brand_id'=>$brand_id],
+                    ['status' => $brand['status']]
+                );
+
+                foreach($brand['collections'] as $collection){
+
+                    
+                    $collection_id = $collection['id'];
+                    $name = $collection['display_name'];
+                    $price = $collection['custom_price'];
+                    $status = $collection['status'];
+                    $collectionPermission = CollectionPermission::updateOrCreate(
+                        ['user_id' => $user_id, 'brand_id' => $brand_id, 'collection_id' => $collection_id],
+                        ['price' => $price,'name' => $name,'status' => $status]
+                    );
+                }
+            }
+
+            $permission[$i] = $lense_type;
+            $i++;
+
+            return $this->sendResponse($permission, 'Lense setting updated successfully');
+        }
+
+
+        
+    }
     public function getLenseMaterial(Request $request){
         $lense_materials = LensMaterial::leftJoin('user_lense_material_settings as setting', function($join){
                                 $join->on('lens_materials.id', '=', 'setting.lens_material_id')
