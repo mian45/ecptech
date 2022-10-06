@@ -9,109 +9,16 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-const defaultPasswordState = {
-    businessName: "",
-    profileImage: null,
-    themeColor: "#6FA5CB",
-    themeType: 0,
-    oldPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-};
-const Profile = ({ userId }) => {
-    const handleSaveClick = async (values) => {
-        try {
-            const personalInfo = {
-                logo: values.profileImage,
-                business_name: values.businessName,
-                theme_color: values.themeColor,
-                theme_mode: values.themeType,
-                user_id: userId,
-            };
-            const passwordObject = {
-                old_password: values.oldPassword,
-                password: values.newPassword,
-                password_confirmation: values.confirmPassword,
-                user_id: userId,
-            };
-            await axios.post("/api/editProfile", personalInfo);
-            await axios.post("/api/changePassword", passwordObject);
-        } catch (err) {
-            console.log("error while save changes", err);
-        }
-    };
-
-    const handleClick = (values, actions) => {
-        if (values.newPassword !== values.confirmPassword) {
-            actions.setFieldError("newPassword", "Password must match");
-            return;
-        }
-        if (
-            !values.themeColor.match(
-                /#(([0-9a-fA-F]{2}){3,4}|([0-9a-fA-F]){3,4})/g
-            )
-        ) {
-            actions.setFieldError("themeColor", "Invalid color code");
-            return;
-        }
-        handleSaveClick(values);
-    };
+const Profile = ({ userId, closeModal }) => {
     return (
-        <div className={classes["profile"]}>
-            <Formik
-                initialValues={{
-                    ...defaultPasswordState,
-                }}
-                validationSchema={profileValidations}
-                onSubmit={handleClick}
+        <div className={classes["backdrop"]} onClick={closeModal}>
+            <div
+                className={classes["profile"]}
+                onClick={(e) => e.stopPropagation()}
             >
-                {({
-                    values,
-                    handleChange,
-                    handleSubmit,
-                    handleBlur,
-                    setFieldValue,
-                    setFieldError,
-                    isSubmitting,
-                    dirty,
-                    isValid,
-                }) => {
-                    return (
-                        <form onSubmit={handleSubmit} autoComplete="off">
-                            <PhotoUpload
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                                setFieldValue={setFieldValue}
-                                setFieldError={setFieldError}
-                            />
-                            <div className={classes["divider"]} />
-                            <ColorTheme
-                                values={values}
-                                handleChange={handleChange}
-                                setFieldValue={setFieldValue}
-                            />
-                            <div className={classes["divider"]} />
-                            <ChangePassword
-                                values={values}
-                                handleChange={handleChange}
-                                handleBlur={handleBlur}
-                            />
-                            <div className={classes["save-button"]}>
-                                <CustomButton
-                                    onClick={handleSubmit}
-                                    type={"submit"}
-                                    disabled={
-                                        !(isValid && dirty) || isSubmitting
-                                    }
-                                >
-                                    Save
-                                </CustomButton>
-                            </div>
-                        </form>
-                    );
-                }}
-            </Formik>
+                <ProfileInfoSection userId={userId} />
+                <ProfilePasswordValidations userId={userId} />
+            </div>
         </div>
     );
 };
@@ -126,16 +33,162 @@ const profileValidations = Yup.object().shape({
     businessName: Yup.string()
         .min(2, "Must have 3 characters")
         .required("Name is Required"),
+});
+
+const ProfileInfoSection = ({ userId }) => {
+    const defaultProfileState = {
+        businessName: "",
+        profileImage: null,
+        themeColor: "#6FA5CB",
+        themeType: 0,
+    };
+
+    const handleSaveClick = async (values) => {
+        try {
+            const personalInfo = new FormData();
+            personalInfo.append("logo", values.profileImage);
+            personalInfo.append("business_name", values.businessName);
+            personalInfo.append("theme_color", values.themeColor);
+            personalInfo.append("theme_mode", values.themeType);
+            personalInfo.append("userId", userId);
+
+            await axios.post("/api/edit-profile", personalInfo);
+        } catch (err) {
+            console.log("error while save changes", err);
+        }
+    };
+
+    const handleClick = (values, actions) => {
+        if (
+            !values.themeColor.match(
+                /#(([0-9a-fA-F]{2}){3,4}|([0-9a-fA-F]){3,4})/g
+            )
+        ) {
+            actions.setFieldError("themeColor", "Invalid color code");
+            return;
+        }
+        handleSaveClick(values);
+    };
+    return (
+        <Formik
+            initialValues={{
+                ...defaultProfileState,
+            }}
+            validationSchema={profileValidations}
+            onSubmit={handleClick}
+        >
+            {({
+                values,
+                handleChange,
+                handleSubmit,
+                handleBlur,
+                setFieldValue,
+                setFieldError,
+            }) => {
+                return (
+                    <form onSubmit={handleSubmit} autoComplete="off">
+                        <PhotoUpload
+                            values={values}
+                            handleChange={handleChange}
+                            handleBlur={handleBlur}
+                            setFieldValue={setFieldValue}
+                            setFieldError={setFieldError}
+                        />
+                        <div className={classes["divider"]} />
+                        <ColorTheme
+                            values={values}
+                            handleChange={handleChange}
+                            setFieldValue={setFieldValue}
+                        />
+
+                        <div className={classes["save-button"]}>
+                            <CustomButton
+                                onClick={handleSubmit}
+                                type={"submit"}
+                            >
+                                Save
+                            </CustomButton>
+                        </div>
+                        <div className={classes["divider"]} />
+                    </form>
+                );
+            }}
+        </Formik>
+    );
+};
+
+const passwordValidations = Yup.object().shape({
     oldPassword: Yup.string()
-        .min(8, "Must have 8 characters")
+        .min(6, "Must have 6 characters")
         .max(15, "Enter maximum 15 charecter")
         .required("Password is Required"),
     newPassword: Yup.string()
-        .min(8, "Must have 8 characters")
+        .min(6, "Must have 6 characters")
         .max(15, "Enter maximum 15 charecter")
         .required("Password is Required"),
     confirmPassword: Yup.string()
-        .min(8, "Must have 8 characters")
+        .min(6, "Must have 6 characters")
         .max(15, "Enter maximum 15 charecter")
         .required("Password is Required"),
 });
+const ProfilePasswordValidations = ({ userId }) => {
+    const defaultPasswordState = {
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
+    };
+
+    const handleSaveClick = async (values) => {
+        try {
+            const passwordObject = {
+                old_password: values.oldPassword,
+                password: values.newPassword,
+                password_confirmation: values.confirmPassword,
+                user_id: userId,
+            };
+            await axios.post("/api/change-password", passwordObject);
+        } catch (err) {
+            console.log("error while save password", err);
+        }
+    };
+
+    const handleClick = (values, actions) => {
+        if (values.newPassword !== values.confirmPassword) {
+            actions.setFieldError("newPassword", "Password must match");
+            return;
+        }
+
+        handleSaveClick(values);
+    };
+    return (
+        <div style={{ width: "100%" }}>
+            <Formik
+                initialValues={{
+                    ...defaultPasswordState,
+                }}
+                validationSchema={passwordValidations}
+                onSubmit={handleClick}
+            >
+                {({ values, handleChange, handleSubmit, handleBlur }) => {
+                    return (
+                        <form onSubmit={handleSubmit} autoComplete="off">
+                            <ChangePassword
+                                values={values}
+                                handleChange={handleChange}
+                                handleBlur={handleBlur}
+                            />
+                            <div className={classes["save-button"]}>
+                                <CustomButton
+                                    onClick={handleSubmit}
+                                    type={"submit"}
+                                >
+                                    Save
+                                </CustomButton>
+                            </div>
+                        </form>
+                    );
+                }}
+            </Formik>
+        </div>
+    );
+};

@@ -9,17 +9,11 @@ import {
     PAYMENT_ROUTE,
     SETTINGS_ROUTE,
 } from "../appRoutes/routeConstants";
-
+import AuthService from "../services";
 const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
     const [state, setState] = useState(isActiveState);
     const history = useHistory();
-
-    useEffect(() => {
-        if (!userId) {
-            dispatch(actions.authLogout());
-        }
-    }, []);
-
+  
     const handleSideBar = (value) => {
         switch (value) {
             case 1: {
@@ -53,36 +47,56 @@ const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
 
     return (
         <div className={classes["container"]}>
-            {SIDE_BAR_DATA.map((item, index) => {
-                return (
-                    <Fragment key={index}>
-                        {checkStaffRoute(item?.index) ? (
-                            <div
-                                className={classes["item-container"]}
-                                onClick={() => {
-                                    handleSideBar(item?.index);
-                                }}
-                                key={index}
-                            >
-                                <img
-                                    src={item.icon}
-                                    className={classes["icon"]}
-                                />
-                                <label className={classes["sidebar-label"]}>
-                                    {item.name}
-                                </label>
-                                {state === item?.index && (
-                                    <span
-                                        className={classes["active-state"]}
-                                    ></span>
+            {userRole === "staff" ? (
+                <div
+                    className={classes["item-container"]}
+                    onClick={() => {
+                        history.push(INVOICES_ROUTE);
+                    }}
+                >
+                    <img src={"invoices.svg"} className={classes["icon"]} />
+                    <label className={classes["sidebar-label"]}>Invoices</label>
+
+                    <span className={classes["active-state"]}></span>
+                </div>
+            ) : (
+                <>
+                    {SIDE_BAR_DATA.map((item, index) => {
+                        return (
+                            <Fragment key={index}>
+                                {checkStaffRoute(item?.index) ? (
+                                    <div
+                                        className={classes["item-container"]}
+                                        onClick={() => {
+                                            handleSideBar(item?.index);
+                                        }}
+                                        key={index}
+                                    >
+                                        <img
+                                            src={item.icon}
+                                            className={classes["icon"]}
+                                        />
+                                        <label
+                                            className={classes["sidebar-label"]}
+                                        >
+                                            {item.name}
+                                        </label>
+                                        {state === item?.index && (
+                                            <span
+                                                className={
+                                                    classes["active-state"]
+                                                }
+                                            ></span>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <></>
                                 )}
-                            </div>
-                        ) : (
-                            <></>
-                        )}
-                    </Fragment>
-                );
-            })}
+                            </Fragment>
+                        );
+                    })}
+                </>
+            )}
         </div>
     );
 };

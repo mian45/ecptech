@@ -26,7 +26,7 @@ const EmailSetting = (props) => {
     const [emailSettingProps, setEmailSettingProps] = useState(false);
 
     const [idState, setIdState] = useState("");
-
+    const token =localStorage.getItem("remember")=="true"?localStorage.getItem("access_token"):sessionStorage.getItem("access_token")
     const [reminderType, setReminderType] = useState("");
     const [sentTo, setSentTo] = useState("");
     const [subject, setSubject] = useState("");
@@ -62,7 +62,7 @@ const EmailSetting = (props) => {
             method: "get",
             url: `${process.env.MIX_REACT_APP_URL}/api/get-time-zone`,
             headers: {
-                Authorization: `Bearer ${props.token}`,
+                Authorization: `Bearer ${token}`,
             },
             data: data,
         };
@@ -111,7 +111,7 @@ const EmailSetting = (props) => {
             method: "post",
             url: `${process.env.MIX_REACT_APP_URL}/api/add-reminder`,
             headers: {
-                Authorization: `Bearer ${props.token}`,
+                Authorization: `Bearer ${token}`,
             },
             data: data,
         };
@@ -144,7 +144,7 @@ const EmailSetting = (props) => {
             method: "post",
             url: `${process.env.MIX_REACT_APP_URL}/api/edit-reminder`,
             headers: {
-                Authorization: `Bearer ${props.token}`,
+                Authorization: `Bearer ${token}`,
             },
             data: data,
         };
@@ -175,7 +175,7 @@ const EmailSetting = (props) => {
             method: "post",
             url: `${process.env.MIX_REACT_APP_URL}/api/delete-reminder`,
             headers: {
-                Authorization: `Bearer ${props.token}`,
+                Authorization: `Bearer ${token}`,
             },
             data: data,
         };
@@ -196,7 +196,7 @@ const EmailSetting = (props) => {
             method: "get",
             url: `${process.env.MIX_REACT_APP_URL}/api/get-reminders?userId=${props.userID}`,
             headers: {
-                Authorization: `Bearer ${props.token}`,
+                Authorization: `Bearer ${token}`,
             },
             data: data,
         };
@@ -331,14 +331,14 @@ const EmailSetting = (props) => {
                                                               }
                                                     }
                                                 >
-                                                    {obj.type}
+                                                    {obj.type == "reminder"?obj.type:"Order Success"}
                                                 </p>
                                                 <p
                                                     className="email-setting-content-section-subsection-subheading"
                                                     style={{ color: "#CBCBCB" }}
                                                 >
                                                     {obj.type == "reminder"
-                                                        ? `${obj.send_date} days after invoice`
+                                                        ? `${obj.send_after_day} days after invoice`
                                                         : "Payment Completed"}
                                                 </p>
                                             </div>
@@ -489,7 +489,18 @@ const EmailSetting = (props) => {
                                         </p>
                                         <div className="email-remainder_input-sections_input-section">
                                             <p>Send date</p>
-                                            <Select
+                                            {reminderType=="custom"?
+                                            <input
+                                            
+                                            className="email-remainder_input-sections_input-section_input"
+                                            
+                                            value={dates}
+                                            onChange={(e) => {
+                                                setDates(e.target.value);
+                                            }}
+                                            type={"date"}
+                                            required
+                                        />:<Select
                                                 defaultValue="Select"
                                                 style={{
                                                     width: 120,
@@ -518,7 +529,7 @@ const EmailSetting = (props) => {
                                                 <Option value={7}>
                                                     7 days after invoice sent
                                                 </Option>
-                                            </Select>
+                                            </Select>}
                                         </div>
                                         <div className="email-remainder_input-sections_input-section">
                                             <p>Send Time</p>
@@ -542,10 +553,7 @@ const EmailSetting = (props) => {
                                         </div>
                                         <div className="email-remainder_input-sections_input-section">
                                             <p>Time Zone</p>
-                                            {console.log(
-                                                "the time zones are here",
-                                                timeZones
-                                            )}
+
                                             <Select
                                                 defaultValue="Select"
                                                 style={{

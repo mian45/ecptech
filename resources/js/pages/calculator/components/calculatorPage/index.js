@@ -248,6 +248,7 @@ const CalculatorScreen = () => {
                                     formProps.values?.submitBenifitType ===
                                         BenifitTypeEnums.lens
                                 }
+                                userInfo={userInfo}
                             />
                             {(formProps.values?.submitBenifitType ===
                                 BenifitTypeEnums.frame ||
