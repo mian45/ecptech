@@ -260,6 +260,12 @@ const getPriceByAntireflective = (value) => {
 };
 
 const getLensPrice = (receipt, calculatorObj) => {
+    const lensPrice = parseInt(
+        getPriceFromDB(receipt, calculatorObj).lensPrice || 0
+    );
+    const materialPrice = parseInt(
+        getPriceFromDB(receipt, calculatorObj).materialPrice || 0
+    );
     if (
         receipt?.values?.lensType?.type &&
         receipt?.values?.lensType?.brand &&
@@ -294,10 +300,7 @@ const getLensPrice = (receipt, calculatorObj) => {
                         );
                     }
                 } else {
-                    return (
-                        getPriceFromDB(receipt, calculatorObj).lensPrice +
-                        getPriceFromDB(receipt, calculatorObj).materialPrice
-                    );
+                    return lensPrice + materialPrice;
                 }
             } else {
                 const isHighIndexActive =
@@ -323,17 +326,11 @@ const getLensPrice = (receipt, calculatorObj) => {
                         );
                     }
                 } else {
-                    return (
-                        getPriceFromDB(receipt, calculatorObj).lensPrice +
-                        getPriceFromDB(receipt, calculatorObj).materialPrice
-                    );
+                    return lensPrice + materialPrice;
                 }
             }
         } else {
-            return (
-                getPriceFromDB(receipt, calculatorObj).lensPrice +
-                getPriceFromDB(receipt, calculatorObj).materialPrice
-            );
+            return lensPrice + materialPrice;
         }
     } else {
         return 0;
