@@ -138,3 +138,20 @@
 .child-select {
     width: 350px !important;
 }
+
+.select-prescription {
+    width: 345px;
+    border-radius: 23px !important;
+    border: 1px solid #dfdfdf !important;
+    height: 45px !important;
+    padding: 0px 12px;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    background-image: url("../../../../../images/down-arrow.png");
+    background-repeat: no-repeat;
+    background-position-x: 94%;
+    background-position-y: 50%;
+    background-size: 20px;
+}
