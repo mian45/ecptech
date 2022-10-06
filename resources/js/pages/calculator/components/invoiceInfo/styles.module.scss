@@ -7,7 +7,7 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 .info-section {
     width: 48%;
@@ -26,4 +26,10 @@
 .dropdown-styles {
     width: 375px !important;
     padding-left: 20px !important;
+}
+.down-icon {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    margin-right: 25px;
 }

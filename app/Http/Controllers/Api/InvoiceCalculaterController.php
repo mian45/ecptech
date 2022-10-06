@@ -15,6 +15,9 @@ use App\Models\Characteristic;
 use App\Models\LensMaterial;
 use App\Models\Shipping;
 use App\Models\Tax;
+use App\Models\AddonType;
+use App\Models\AddOn;
+use App\Models\AddonExtra;
 use Validator;
 
 
@@ -34,56 +37,36 @@ class InvoiceCalculaterController extends Controller
         if($tax){
             $data['tax'] = $tax->value;
         }
+        
+        $data['questions'] = VisionPlan::with(['question_permissions' => function($q){
+                $q->join('questions as q','q.id','=','question_permissions.question_id');
+                $q->select('q.id as q_id','question_permissions.vision_plan_id','q.title as question',
+                    DB::raw('IF(question_permissions.status, "true", "false") as visibility'),
+                    DB::raw('IF(question_permissions.optional, "true", "false") as optional')
+                );
+                $q->where('question_permissions.user_id',auth()->user()->id);
+        }])->join('vision_plan_permissions as vsp','vsp.vision_plan_id','=','vision_plans.id')
+            ->where('vsp.user_id',auth()->user()->id)
+            ->select('vision_plans.id','vision_plans.title')->get();
 
-        //It will be dynamic when users setting/permission work is done in next sprint
-        $data['questions']['VSP Signature'] = array(
-            "visionPlan"=>["visibility"=>true, "optional"=>true],
-            "frameBenefit"=>["visibility"=>true, "optional"=>true],
-            "lensBenefit"=>["visibility"=>true, "optional"=>false],
-            "materialCopay"=>["visibility"=>true, "optional"=>true],
-            "frameOrder"=>["visibility"=>true, "optional"=>false],
-            "copayDollarAmount"=>["visibility"=>true, "optional"=>true],
-            "lensType"=>["visibility"=>true, "optional"=>true],
-            "lensMaterial"=>["visibility"=>true, "optional"=>true],
-            "photochromics"=>["visibility"=>true, "optional"=>false],
-            "sunglassLens"=>["visibility"=>true, "optional"=>true],
-            "antireflective"=>["visibility"=>true, "optional"=>true],
-            "protectionPlan"=>["visibility"=>true, "optional"=>true],
-            "shipping"=>["visibility"=>true, "optional"=>true],
-        );
-        //
 
-        //It will be dynamic according to user permission/setting work in next sprint
-       
        $data['lens_types'] = LenseType::with(['brands'=>function($q){
-            $q->select('id','lens_type_id','title');
+            $q->join('brand_permissions as bp','bp.brand_id','=','brands.id');
+            $q->select('brands.id','lens_type_id','title');
+            $q->where('bp.user_id',auth()->user()->id)->where('bp.status','active');
             $q->with(['collections'=>function($q){
-                $q->select('id','brand_id','title');
+                $q->join('collections_permissions as cp','cp.collection_id','=','collections.id');
+                $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price');
+                $q->where('cp.user_id',auth()->user()->id)->where('cp.status','active');
             }]);
        }])->select('id','vision_plan_id','title')->get();
 
-       $data['lens_material'] = LensMaterial::get();
+       $data['lens_material'] = LensMaterial::leftjoin('user_lense_material_settings as setting','setting.lens_material_id','=','lens_materials.id')
+                                            ->select('lens_materials.id','lens_materials.lens_material_title','setting.price as retail_price')    
+                                            ->where('setting.user_id',auth()->user()->id)
+                                            ->where('setting.status','active')
+                                            ->get();
 
-
-       $data['price_calculation_data'] = VisionPlan::with(['lensetypes'=>function($q){
-        $q->select('id','vision_plan_id','title');
-        $q->with(['brands'=>function($q){
-            $q->select('id','lens_type_id','title');
-            $q->with(['collections'=>function($q){
-                $q->select('id','brand_id','title');
-                $q->with(['lenses'=>function($q){
-                    $q->leftjoin('lens_materials', 'lenses.lens_material_id', '=', 'lens_materials.id');
-                    $q->select('lenses.id','collection_id','lens_material_id','title','lens_materials.lens_material_title');
-                    $q->with(['characteristics' => function($q){
-                        $q->leftjoin('codes', 'characteristics.code_id', '=', 'codes.id');
-                        $q->select('characteristics.id','characteristics.title','characteristics.lense_id','characteristics.type','characteristics.code_id','codes.name','codes.price');
-                    }]);
-                }]);
-            }]);
-        }]);
-       }])->select('id','title')->get();
-       
-        
         return $this->sendResponse($data, 'Calculater Data');
     }
 
@@ -201,6 +184,73 @@ class InvoiceCalculaterController extends Controller
        
     }
 
+
+    public function storeAddonCSVData(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'csv' => 'required|mimes:csv,txt'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+        
+        $csv = array();
+    
+        if($_FILES['csv']['error'] == 0){
+            $tmpName = $_FILES['csv']['tmp_name'];
+    
+            if(($handle = fopen($tmpName, 'r')) !== FALSE) {
+                
+                DB::beginTransaction();
+
+                $row = 0;
+                try{
+                    while(($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+                        if($row==0){
+                            // number of fields in the csv
+                            $col_count = count($data);
+                        }else{
+                            $data = $this->clear_encoding_str($data);
+
+                            if(!empty($data[0])){
+                                $addon_type = AddonType::updateOrCreate(['title'=> $data[0]]);
+                            }
+
+                            if(!empty($data[1])){
+                                $addon = AddOn::updateOrCreate(
+                                    ['title'=> $data[1], 'addon_type_id'=>$addon_type->id]
+                                );
+                            }
+
+                            if(!empty($data[2])){
+                                $addon_extra = AddonExtra::updateOrCreate(
+                                    ['title'=> $data[2], 'addon_id'=>$addon->id]
+                                );
+                            }
+
+                        }
+                        
+                        $row++;
+                    }
+                    fclose($handle);
+                    DB::commit();
+
+                    return $this->sendResponse([], 'Addon CSV data uploaded');
+                }catch(\Exception $e){
+                    DB::rollback();
+                    return $this->sendError($e->getMessage());
+                    
+                }
+                
+            }
+        }
+    
+       
+    }
+
+
+
     private function clear_encoding_str($value)
     {
         if (is_array($value)) {
@@ -211,5 +261,36 @@ class InvoiceCalculaterController extends Controller
             return $clean;
         }
         return mb_convert_encoding($value, 'UTF-8', 'UTF-8');
+    }
+
+
+    public function getLensePrices(Request $request){
+        
+        $validator = Validator::make($request->all(), [
+            'vision_plan_id' => 'required',
+            'lense_type_id' => 'required',
+            'collection_id' => 'required',
+            'lense_material_id' => 'required'
+            
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $data['lenses_price'] = Collection::where('id',$request->collection_id)->with(['lenses'=>function($q){
+
+                        $q->leftjoin('lens_materials', 'lenses.lens_material_id', '=', 'lens_materials.id');
+                        $q->where('lenses.lens_material_id',request()->lense_material_id);
+                        $q->select('lenses.id','collection_id','lens_material_id','title','lens_materials.lens_material_title');
+                        $q->with(['characteristics' => function($q){
+                            $q->leftjoin('codes', 'characteristics.code_id', '=', 'codes.id');
+                            $q->select('characteristics.id','characteristics.title','characteristics.lense_id','characteristics.type','characteristics.code_id','codes.name','codes.price');
+                        }]);
+                    }])->select('id','title')->get();
+           
+            
+        return $this->sendResponse($data, 'Calculater Data');
+
     }
 }

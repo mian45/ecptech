@@ -160,7 +160,9 @@ p {
     margin: 1rem 0 0 0 !important;
 }
 .ending-text {
-    text-align: end;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .borderlastindex {
     border-bottom: 1px solid #dfdfdf;
@@ -222,4 +224,13 @@ p {
 
 .ant-radio:hover .ant-radio-inner {
     border-color: #6fa5cb;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
 }

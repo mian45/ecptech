@@ -94,6 +94,14 @@ const ViewInvoice = ({
 
     const calculateTotalDue = () => {
         let total = 0;
+        total = total + totalWithoutTax();
+        //add tax
+        total = total + (total * (calculatorObj.tax || 1)) / 100;
+        return total || 0;
+    };
+
+    const totalWithoutTax = () => {
+        let total = 0;
         total = total + (receipt?.values?.materialCopay || 0);
         if (
             receipt?.values?.frameOrder?.retailFee <=
@@ -219,14 +227,11 @@ const ViewInvoice = ({
         } else {
             total = total + 0;
         }
-        total = total + (parseInt(calculatorObj?.shipping) || 0);
+        if (receipt?.values?.shipping?.status === "Yes") {
+            total = total + (parseInt(calculatorObj?.shipping) || 0);
+        }
         total = total + (parseInt(getLensPrice(receipt, calculatorObj)) || 0);
-        //add tax
-        total =
-            total +
-            (total / ((receipt?.values?.frameOrder?.retailFee || 0) + 200)) *
-                (calculatorObj.tax || 1);
-        return total || 0;
+        return total;
     };
 
     return (
@@ -249,6 +254,7 @@ const ViewInvoice = ({
                     <div className={classes["sub-right-container"]}>
                         <InPackPrices receipt={receipt} />
                         <OutPackPrices
+                            withoutTaxPrice={totalWithoutTax()}
                             totalPrice={calculateTotalDue()}
                             receipt={receipt}
                             calculatorObj={calculatorObj}
@@ -319,6 +325,12 @@ const getPriceByAntireflective = (value) => {
 };
 
 const getLensPrice = (receipt, calculatorObj) => {
+    const lensPrice = parseInt(
+        getPriceFromDB(receipt, calculatorObj).lensPrice || 0
+    );
+    const materialPrice = parseInt(
+        getPriceFromDB(receipt, calculatorObj).materialPrice || 0
+    );
     if (
         receipt?.values?.lensType?.type &&
         receipt?.values?.lensType?.brand &&
@@ -326,7 +338,8 @@ const getLensPrice = (receipt, calculatorObj) => {
     ) {
         if (
             receipt?.values?.lensMaterial === "Polycarbonate" ||
-            receipt?.values?.lensMaterial?.includes("High Index")
+            receipt?.values?.lensMaterial?.includes("Hi index") ||
+            receipt?.values?.lensMaterial?.includes("Hi Index")
         ) {
             if (receipt?.values?.lensMaterial === "Polycarbonate") {
                 const isPholicarbinateActive =
@@ -335,18 +348,24 @@ const getLensPrice = (receipt, calculatorObj) => {
                     );
                 if (isPholicarbinateActive?.status) {
                     if (isPholicarbinateActive?.copayType === "$0 Copay") {
-                        return 0;
+                        return parseInt(
+                            getPriceFromDB(receipt, calculatorObj)?.lensPrice ||
+                                0
+                        );
                     } else if (
                         isPholicarbinateActive?.copayType ===
                         "Lowered copay dollar amount"
                     ) {
-                        return (isPholicarbinateActive?.price || 0) + 0;
+                        return (
+                            (isPholicarbinateActive?.price || 0) +
+                            parseInt(
+                                getPriceFromDB(receipt, calculatorObj)
+                                    ?.lensPrice || 0
+                            )
+                        );
                     }
                 } else {
-                    return (
-                        getPriceFromDB(receipt, calculatorObj).lensPrice +
-                        getPriceFromDB(receipt, calculatorObj).materialPrice
-                    );
+                    return lensPrice + materialPrice;
                 }
             } else {
                 const isHighIndexActive =
@@ -354,26 +373,29 @@ const getLensPrice = (receipt, calculatorObj) => {
                         (item) => item?.type === "High Index"
                     );
                 if (isHighIndexActive?.status) {
-                    if (isPholicarbinateActive?.copayType === "$0 Copay") {
-                        return 0;
+                    if (isHighIndexActive?.copayType === "$0 Copay") {
+                        return parseInt(
+                            getPriceFromDB(receipt, calculatorObj)?.lensPrice ||
+                                0
+                        );
                     } else if (
                         isHighIndexActive?.copayType ===
                         "Lowered copay dollar amount"
                     ) {
-                        return isHighIndexActive?.price || 0;
+                        return (
+                            (isHighIndexActive?.price || 0) +
+                            parseInt(
+                                getPriceFromDB(receipt, calculatorObj)
+                                    ?.lensPrice || 0
+                            )
+                        );
                     }
                 } else {
-                    return (
-                        getPriceFromDB(receipt, calculatorObj).lensPrice +
-                        getPriceFromDB(receipt, calculatorObj).materialPrice
-                    );
+                    return lensPrice + materialPrice;
                 }
             }
         } else {
-            return (
-                getPriceFromDB(receipt, calculatorObj).lensPrice +
-                getPriceFromDB(receipt, calculatorObj).materialPrice
-            );
+            return lensPrice + materialPrice;
         }
     } else {
         return 0;

@@ -17,7 +17,12 @@ import {
 } from "../../../data/constants";
 import classes from "../styles.module.scss";
 
-const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
+const OutPackPrices = ({
+    receipt,
+    totalPrice,
+    calculatorObj,
+    withoutTaxPrice,
+}) => {
     const getCoatingPrice = () => {
         if (
             receipt?.values?.sunGlassesLens?.coatingType === "Ski Type Mirror"
@@ -100,6 +105,17 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
             return payableFramePrice || 0;
         }
     };
+    const getDiscountPercent = () => {
+        const discount = parseInt(getDiscountPrice() || 0);
+        const totalRetailFee =
+            (receipt?.values?.frameOrder?.retailFee || 0) + 200;
+        return (discount / totalRetailFee) * 100;
+    };
+    const getDiscountPrice = () => {
+        const totalRetailFee =
+            (receipt?.values?.frameOrder?.retailFee || 0) + 200;
+        return totalRetailFee - (totalPrice || 0);
+    };
 
     return (
         <>
@@ -127,7 +143,7 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
 
             <InvoiceSlot
                 title={"Material Copay"}
-                subTitle={`${receipt?.values?.materialCopay || 0}`}
+                subTitle={`$${receipt?.values?.materialCopay || 0}`}
             />
             {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
                 <InvoiceSlot
@@ -230,30 +246,23 @@ const OutPackPrices = ({ receipt, totalPrice, calculatorObj }) => {
                     Percent discount
                 </div>
                 <div className={classes["invoice-slot-title"]}>
-                    <span className={classes["light-title"]}>{`($${(
-                        (totalPrice || 0) /
-                        ((receipt?.values?.frameOrder?.retailFee || 0) + 200)
-                    ).toFixed(2)})`}</span>{" "}
-                    {(
-                        ((totalPrice || 0) /
-                            ((receipt?.values?.frameOrder?.retailFee || 0) +
-                                200)) *
-                        100
-                    ).toFixed(2)}
-                    %
+                    <span className={classes["light-title"]}>
+                        {`(${(getDiscountPercent() || 0).toFixed(2)}%) `}
+                    </span>
+
+                    {`$${parseInt(getDiscountPrice() || 0)?.toFixed(2)}`}
                 </div>
             </div>
             <div className={classes["invoice-slot-container"]}>
                 <div className={classes["invoice-slot-title"]}>Sales Tax</div>
                 <div className={classes["invoice-slot-title"]}>
-                    <span className={classes["light-title"]}>{`$(${(
+                    <span className={classes["light-title"]}>{`(${(
                         calculatorObj.tax || 0
-                    ).toFixed(2)}%)`}</span>{" "}
+                    ).toFixed(2)}%) `}</span>
+                    $
                     {(
-                        ((totalPrice || 0) /
-                            ((receipt?.values?.frameOrder?.retailFee || 0) +
-                                200)) *
-                        (calculatorObj.tax || 1)
+                        (withoutTaxPrice * (calculatorObj.tax || 1)) /
+                        100
                     ).toFixed(2) || 0}
                 </div>
             </div>
@@ -296,7 +305,7 @@ export const getPriceFromDB = (receipt, calculatorObj) => {
     const materials = brands?.lenses?.filter(
         (item) => item.lens_material_title === receipt?.values?.lensMaterial
     );
-    if (materials?.length < 0) {
+    if (materials?.length <= 0) {
         return { lensPrice: lensPrice, materialPrice: materialPrice };
     } else if (materials?.characteristics?.length === 1) {
         lensPrice = materials[0]?.characteristics?.price;
@@ -330,7 +339,8 @@ export const getLensFee = (receipt, calculatorObj) => {
     ) {
         if (
             receipt?.values?.lensMaterial === "Polycarbonate" ||
-            receipt?.values?.lensMaterial?.includes("High Index")
+            receipt?.values?.lensMaterial?.includes("Hi index") ||
+            receipt?.values?.lensMaterial?.includes("Hi Index")
         ) {
             if (receipt?.values?.lensMaterial === "Polycarbonate") {
                 const isPholicarbinateActive =
@@ -339,14 +349,23 @@ export const getLensFee = (receipt, calculatorObj) => {
                     );
                 if (isPholicarbinateActive?.status) {
                     if (isPholicarbinateActive?.copayType === "$0 Copay") {
-                        return { lensPrice: 0, materialPrice: 0 };
+                        return {
+                            lensPrice: parseInt(
+                                getPriceFromDB(receipt, calculatorObj)
+                                    ?.lensPrice || 0
+                            ),
+                            materialPrice: 0,
+                        };
                     } else if (
                         isPholicarbinateActive?.copayType ===
                         "Lowered copay dollar amount"
                     ) {
                         return {
-                            lensPrice: isPholicarbinateActive?.price || 0,
-                            materialPrice: 0,
+                            lensPrice: parseInt(
+                                getPriceFromDB(receipt, calculatorObj)
+                                    ?.lensPrice || 0
+                            ),
+                            materialPrice: isPholicarbinateActive?.price || 0,
                         };
                     }
                 } else {
@@ -358,15 +377,24 @@ export const getLensFee = (receipt, calculatorObj) => {
                         (item) => item?.type === "High Index"
                     );
                 if (isHighIndexActive?.status) {
-                    if (isPholicarbinateActive?.copayType === "$0 Copay") {
-                        return { lensPrice: 0, materialPrice: 0 };
+                    if (isHighIndexActive?.copayType === "$0 Copay") {
+                        return {
+                            lensPrice: parseInt(
+                                getPriceFromDB(receipt, calculatorObj)
+                                    ?.lensPrice || 0
+                            ),
+                            materialPrice: 0,
+                        };
                     } else if (
                         isHighIndexActive?.copayType ===
                         "Lowered copay dollar amount"
                     ) {
                         return {
-                            lensPrice: isHighIndexActive?.price || 0,
-                            materialPrice: 0,
+                            lensPrice: parseInt(
+                                getPriceFromDB(receipt, calculatorObj)
+                                    ?.lensPrice || 0
+                            ),
+                            materialPrice: isHighIndexActive?.price || 0,
                         };
                     }
                 } else {

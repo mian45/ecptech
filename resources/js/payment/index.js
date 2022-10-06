@@ -1,5 +1,4 @@
 import React from "react";
-import Profile from "../components/profile/Profile";
 import CardPayment from "./cardPayment";
 import classes from "./styles.module.scss";
 
@@ -10,9 +9,7 @@ const Payments = () => {
                 <div className={classes["left-container"]}>
                     <CardPayment />
                 </div>
-                <div className={classes["right-container"]}>
-                    <Profile />
-                </div>
+                <div className={classes["right-container"]}></div>
             </div>
         </div>
     );
