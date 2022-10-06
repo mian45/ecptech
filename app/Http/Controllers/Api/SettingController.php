@@ -5,7 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\LensMaterial;
+use App\Models\AddOn;
+use App\Models\AddonType;
 use App\Models\UserLenseMaterialSetting;
+use App\Models\UserAddOnSetting;
 use Validator;
 use Illuminate\Support\Facades\DB;
 
@@ -59,4 +62,81 @@ class SettingController extends Controller
         return $this->sendError('Something went wrong');
 
     }
+
+    public function getAddons(Request $request){
+        $addons = AddonType::with(['addons'=>function($q){
+           $q->leftJoin('user_addon_settings as setting', function($join){
+            $join->on('addons.id', '=', 'setting.addon_id')
+            ->where('setting.user_id',  auth()->user()->id);            
+            });
+            $q->select('addons.id','addons.title','addons.addon_type_id',DB::raw('IFNULL(status,"inactive") as status'),'name as display_name','price');
+            $q->with(['addon_extra' => function($q){
+                $q->leftJoin('user_addon_settings as setting', function($join){
+                    $join->on('addon_extra.id', '=', 'setting.addon_extra_id')
+                    ->where('setting.user_id',  auth()->user()->id);            
+                    });
+                $q->select('addon_extra.id','addon_extra.title','addon_extra.addon_id',DB::raw('IFNULL(status,"inactive") as status'),'name as display_name','price');
+
+            }]);
+        }])->select('id','title')->get();
+
+
+        
+        
+        
+        return $this->sendResponse($addons, 'Add-Ons');
+
+    }
+
+    public function addAddon(Request $request){
+        
+        $validator = Validator::make($request->all(), [
+            'addon_id' => 'required_without:addon_extra_id|exists:addons,id',
+            'addon_extra_id' => 'required_without:addon_id|exists:addon_extra,id',
+            'status' => 'sometimes|in:active,inactive',
+            'name' => 'sometimes|required',
+            'price' => 'sometimes|numeric'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        if ($request->has('addon_id')) {
+            $data = array(
+                'user_id' => auth()->user()->id,
+                'addon_id' => $request->addon_id
+            );
+        }
+
+        if ($request->has('addon_extra_id')) {
+            $data = array(
+                'user_id' => auth()->user()->id,
+                'addon_extra_id' => $request->addon_extra_id
+            );
+        }
+
+        $setting = UserAddOnSetting::firstOrNew($data);
+        
+        if($setting){
+            if ($request->has('status')) {
+                $setting->status = $request->status;
+            }
+            
+            if ($request->has('price')) {
+                $setting->price = $request->price;
+            }
+
+            if ($request->has('name')) {
+                $setting->name = $request->name;
+            }
+
+            $setting->save();
+            return $this->sendResponse([], 'AddOn status Updated');
+        }
+        
+        return $this->sendError('Something went wrong');
+
+    }
+
 }

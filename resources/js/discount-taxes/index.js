@@ -44,7 +44,7 @@ const DiscountTaxes = (props) => {
         let data = new FormData();
         data.append('userId', props.userID);
         data.append('name', discountName);
-        data.append('value', discountTax);
+        data.append('value', new Number(discountTax));
         let config = {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/add-discount`,
@@ -245,7 +245,7 @@ const DiscountTaxes = (props) => {
         var data = new FormData();
         data.append('id', discountId);
         data.append('name', discountName);
-        data.append('value', discountTax);
+        data.append('value', new Number(discountTax));
         var config = {
         method: 'post',
         url: `${process.env.MIX_REACT_APP_URL}/api/edit-discount`,
@@ -255,17 +255,18 @@ const DiscountTaxes = (props) => {
         data : data
         };
 
-        axios(config)
-        .then(function (response) {
-        setEditId(null)
-                setDiscountName("")
-                setDiscountTax("")
-                setDiscountId(null)
-                getDiscount()
-        })
-        .catch(function (error) {
-        console.log(error);
-        });
+axios(config)
+.then(function (response) {
+  console.log(JSON.stringify(response.data));
+  setEditId(null)
+        setDiscountName("")
+        setDiscountTax("")
+        setDiscountId(null)
+        getDiscount()
+})
+.catch(function (error) {
+  console.log(error);
+});
         
     }
     const handleSubmit = (e) => {
@@ -451,21 +452,9 @@ const DiscountTaxes = (props) => {
                             <p>Discount Name</p>
                             <input placeholder='Discount Name' value={discountName} onChange={(e) => { setDiscountName(e.target.value) }} />
                         </div>
-                        <div>
+                        <div className='discount-container_first-form_section'>
                             <p>Discount Value</p>
-                            <Select
-                                defaultValue="Select"
-                                style={{
-                                    width: 120,
-                                }}
-                                onChange={(e)=>{setDiscountTax(e);}}
-                                value={discountTax || "Select"}
-                            >
-                                <Option value={10}>10</Option>
-                                <Option value={20}>20</Option>
-                                <Option value={30}>30</Option>
-                                <Option value={40}>40</Option>
-                            </Select>
+                            <input placeholder='Discount Value' value={`${discountTax}%`} onChange={(e) => { setDiscountTax(new Number(e.target.value.replace(/\D/g, "")>100?100:e.target.value.replace(/\D/g, ""))) }} />
                         </div>
                         <div><button onClick={handleSubmit} className={`save-button ${!discountName || !discountTax ? 'disable' : ''} `} type='submit' >Save</button></div>
                     </form>
@@ -486,7 +475,7 @@ const DiscountTaxes = (props) => {
                                 return <tr className='discount-output_body'>
 
                                 <td>{dis.name}</td>
-                                <td>${dis.value}</td>
+                                <td>{dis.value} %</td>
                                 <td><img style={{ width: '18px', height: '18px', marginRight: '30px', cursor: 'pointer' }} src={edit} onClick={() => { handlUpdate(dis) }} />
                                     <img style={{ width: '16px', height: '16px', cursor: 'pointer' }} src={cross} onClick={() => { handleDelete(dis.id) }} />
                                     <Switch {...label} style={{marginLeft:"10px"}} 
@@ -563,7 +552,7 @@ const DiscountTaxes = (props) => {
                                     <tr className='discount-output_body'>
 
                                         <td>{obj.name}</td>
-                                        <td>{obj.state_id}</td>
+                                        <td>{taxState && taxState.filter((state, i) => state.id==obj.state_id).map(state=>{return state.name})}</td>
                                         <td>{obj.value}%</td>
                                         <td><img style={{ width: '18px', height: '18px', marginRight: '30px', cursor: 'pointer' }} src={edit} onClick={() => { updateHandler(obj) }} />
                                             <img style={{ width: '16px', height: '16px', cursor: 'pointer' }} src={cross} onClick={() => { handleDeleteTax(obj.id) }} /></td>

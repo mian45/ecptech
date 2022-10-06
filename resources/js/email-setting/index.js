@@ -331,14 +331,14 @@ const EmailSetting = (props) => {
                                                               }
                                                     }
                                                 >
-                                                    {obj.type}
+                                                    {obj.type == "reminder"?obj.type:"Order Success"}
                                                 </p>
                                                 <p
                                                     className="email-setting-content-section-subsection-subheading"
                                                     style={{ color: "#CBCBCB" }}
                                                 >
                                                     {obj.type == "reminder"
-                                                        ? `${obj.send_date} days after invoice`
+                                                        ? `${obj.send_after_day} days after invoice`
                                                         : "Payment Completed"}
                                                 </p>
                                             </div>
@@ -489,7 +489,18 @@ const EmailSetting = (props) => {
                                         </p>
                                         <div className="email-remainder_input-sections_input-section">
                                             <p>Send date</p>
-                                            <Select
+                                            {reminderType=="custom"?
+                                            <input
+                                            
+                                            className="email-remainder_input-sections_input-section_input"
+                                            
+                                            value={dates}
+                                            onChange={(e) => {
+                                                setDates(e.target.value);
+                                            }}
+                                            type={"date"}
+                                            required
+                                        />:<Select
                                                 defaultValue="Select"
                                                 style={{
                                                     width: 120,
@@ -518,7 +529,7 @@ const EmailSetting = (props) => {
                                                 <Option value={7}>
                                                     7 days after invoice sent
                                                 </Option>
-                                            </Select>
+                                            </Select>}
                                         </div>
                                         <div className="email-remainder_input-sections_input-section">
                                             <p>Send Time</p>
@@ -542,10 +553,7 @@ const EmailSetting = (props) => {
                                         </div>
                                         <div className="email-remainder_input-sections_input-section">
                                             <p>Time Zone</p>
-                                            {console.log(
-                                                "the time zones are here",
-                                                timeZones
-                                            )}
+
                                             <Select
                                                 defaultValue="Select"
                                                 style={{
