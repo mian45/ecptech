@@ -22,7 +22,13 @@ const AddStaffMember = ({ userId }) => {
                     payload
                 );
                 const staffRes = res?.data?.data;
-                setStaffList([...staffRes]);
+                setStaffList(
+                    [...staffRes].sort(function (a, b) {
+                        var nameA = a?.name?.toUpperCase();
+                        var nameB = b?.name?.toUpperCase();
+                        return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+                    })
+                );
             } catch (err) {
                 console.log("Error while fetch Staff", err);
             }
@@ -61,7 +67,14 @@ const AddStaffMember = ({ userId }) => {
                 payload
             );
             const newStaff = res?.data?.data;
-            setStaffList([newStaff, ...staffList]);
+
+            setStaffList(
+                [newStaff, ...staffList].sort(function (a, b) {
+                    var nameA = a?.name?.toUpperCase();
+                    var nameB = b?.name?.toUpperCase();
+                    return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
+                })
+            );
             setStaffInput("");
         } catch (err) {
             console.log("Error while create Staff", err);
@@ -84,7 +97,7 @@ const AddStaffMember = ({ userId }) => {
                 payload
             );
 
-            const filteredStaff = [...staffList].filter(
+            let filteredStaff = [...staffList].filter(
                 (staff) => staff.id !== id
             );
             setStaffList([...filteredStaff]);

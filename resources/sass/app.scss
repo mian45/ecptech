@@ -223,3 +223,12 @@ p {
 .ant-radio:hover .ant-radio-inner {
     border-color: #6fa5cb;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance:textfield;
+}

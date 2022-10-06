@@ -10,7 +10,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -36,7 +36,7 @@ class User extends Authenticatable
 
     public function client()
     {
-        return $this->belongsTo(User::class,'client_id');
+        return $this->hasOne(Client::class,'user_id');
     }
     public function staff()
     {
