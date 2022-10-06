@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class AddonType extends Model
 {
     use HasFactory;
-    protected $fillable = [
-        'user_id',
-        'business_name',
-        'theme_color',
-        'theme_mode'
-    ];
+    protected $guarded = ['id'];
+
+    
+    public function addons(){
+        return $this->hasMany(AddOn::class);
+    }
 }

@@ -25,7 +25,50 @@ class VisionPlansTableSeeder extends Seeder
                 'title' => "VSP Signature",
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "VSP Choice",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "VSP Advantage",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Eyemed",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Spectera",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Davis",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "VBA",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Private",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
             )
+            
         ));
     }
 }

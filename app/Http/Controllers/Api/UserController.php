@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\UserRole;
+use App\Models\Client;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Validation\Rule;
@@ -19,9 +21,9 @@ class UserController extends Controller
      */
     public function update(Request $request)
     { 
-        $user_id = $request->user_id;
+
         $validator = Validator::make($request->all(),[ 
-                'logo' => 'required|mimes:png,jpg,svg,doc,docx,pdf,txt,csv|dimensions:width=200,height=40',
+         'userId' => 'required'
         ]);   
 
         if($validator->fails()) {          
@@ -29,32 +31,90 @@ class UserController extends Controller
             return response()->json(['error'=>$validator->errors()], 401);                        
         }  
 
+         $user_id = $request->userId;
+         if($user_id != auth()->user()->id){
+            return $this->sendError('invalid user id!');
+        }
         $path = '';
+       
         if ($file = $request->file('logo')) {
+            
             $file_name = time().'.'.$file->extension();
-            $path = $file->move(public_path('uploads'),$file_name);
+            $path = $file->move(public_path('uploads/'.$user_id), $file_name);
             $name = $file->getClientOriginalName();                                        
         }
 
-        $user = User::find($user_id);
-        $user->logo = $file_name;
-        $user->business_name = $request->business_name;
-        $user->theme_color = $request->theme_color;
-        $user->theme_mode = $request->theme_mode;
-        $result = $user->save();
+        $client = Client::firstOrNew(['user_id' =>  $user_id]);
+       
+        if($request->file('logo')){
+            $client->logo = $file_name;
+        }
+        if($request->business_name){
+            $client->business_name = $request->business_name;
+        }
+        if($request->theme_color){
+            $client->theme_color = $request->theme_color;
+        }
+        if($request->theme_mode){
+            $client->theme_mode = $request->theme_mode;
+        }
+        
+        $result = $client->save();
         if($result){
             return response()->json([                
                 "success" => true,
                 "message" => "Profile updated successfully.",
                 "data" => [
-                    'logo' => config('app.url').'uploads/'.$user->logo,
-                    'business_name' => $user->business_name,
-                    'theme_color' => $user->theme_color,
-                    'theme_mode' => $user->theme_mode
+                    'logo' => config('app.url').'/'.'uploads/'.$user_id.'/'.$client->logo,
+                    'business_name' => $client->business_name,
+                    'theme_color' => $client->theme_color,
+                    'theme_mode' => $client->theme_mode
                 ]                
             ]);
         } else {
             return response()->json(['error'=> 'Something Went Wrong.'], 401);
         }
+    }
+
+    public function addCard(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'card_no' => 'required|integer',
+            'card_name' => 'required',
+            'card_expiry' => 'required|date_format:m/y'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+
+        $client_card = Client::where('user_id',auth()->user()->id)->first();
+        if(!$client_card){
+            $client_card = new Client();
+            $client_card->user_id = auth()->user()->id;
+        }
+        $client_card->card_no = $request->card_no;
+        $client_card->card_name = $request->card_name;
+        $client_card->card_expiry = $request->card_expiry;
+
+        $client_card->save();
+
+        if($client_card){
+            return $this->sendResponse([], 'Card Added Succesfully');
+        }
+
+        return $this->sendError('Something went wrong!');
+
+    }
+
+    public function getCard(Request $request){
+
+        $client_card = Client::select('id','card_name','card_no','card_expiry')->where('user_id',auth()->user()->id)->first();
+        
+        if($client_card){
+            return $this->sendResponse($client_card, 'Card get successfully');
+        }
+
+        return $this->sendError('Discount not found');
     }
 }
