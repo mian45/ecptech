@@ -9,14 +9,16 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-const Profile = ({ userId }) => {
+const Profile = ({ userId, closeModal }) => {
     return (
-        <div
-            className={classes["profile"]}
-            onClick={(e) => e.stopPropagation()}
-        >
-            <ProfileInfoSection userId={userId} />
-            <ProfilePasswordValidations userId={userId} />
+        <div className={classes["backdrop"]} onClick={closeModal}>
+            <div
+                className={classes["profile"]}
+                onClick={(e) => e.stopPropagation()}
+            >
+                <ProfileInfoSection userId={userId} />
+                <ProfilePasswordValidations userId={userId} />
+            </div>
         </div>
     );
 };

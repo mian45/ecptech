@@ -4,12 +4,13 @@ import AutoCompleteSelect from "../../../../components/autoCompleteSelect";
 import { FormikError } from "../selectVisionPlan";
 import Axios from "../../../../Http";
 import { connect } from "react-redux";
+import Select from "react-select";
+import downArrow from "../../../../../images/down-arrow.png";
 
-const InvoiceInfo = ({ formProps, userId }) => {
+const InvoiceInfo = ({ formProps, userId, userInfo }) => {
     const { values, setFieldValue, handleBlur } = formProps;
     const [staff, setStaff] = useState([]);
     const [staffData, setStaffData] = useState([]);
-
     useEffect(() => {
         if (!userId) return;
         const getStaffList = async () => {
@@ -20,7 +21,7 @@ const InvoiceInfo = ({ formProps, userId }) => {
                 const resData = res?.data?.data;
                 setStaff(resData);
                 const mappedData = resData.map((value) => {
-                    return { value: value?.name };
+                    return { value: value?.name, label: value?.name };
                 });
                 setStaffData([...mappedData]);
             } catch (err) {
@@ -31,8 +32,8 @@ const InvoiceInfo = ({ formProps, userId }) => {
     }, []);
 
     const handleStaffChange = (value) => {
-        const selectedStaff = staff.find((ele) => ele.name === value);
-        setFieldValue("staffName", value);
+        const selectedStaff = staff.find((ele) => ele.name === value.value);
+        setFieldValue("staffName", value.value);
         setFieldValue("staffId", selectedStaff?.id);
     };
     return (
@@ -41,8 +42,7 @@ const InvoiceInfo = ({ formProps, userId }) => {
                 <div className={classes["label"]}>Invoice Name</div>
                 <AutoCompleteSelect
                     placeholder="John Doe Sunglasses"
-                    defaultValue={{ value:"John Doe Sunglasses"}}
-                    options={[{ value:"John Doe Sunglasses"},{ value:"John Doe Lenses"},{ value:"John Doe Frame order"}]}
+                    options={getOptions(userInfo)}
                     className={classes["dropdown-styles"]}
                     onBlur={handleBlur}
                     onChange={(value) => setFieldValue("invoiceName", value)}
@@ -54,15 +54,45 @@ const InvoiceInfo = ({ formProps, userId }) => {
             </div>
             <div className={classes["info-section"]}>
                 <div className={classes["label"]}>Staff Name</div>
-                <AutoCompleteSelect
+                <Select
                     options={staffData}
                     placeholder="Select Staff Name"
                     className={classes["dropdown-styles"]}
                     onBlur={handleBlur}
                     onChange={handleStaffChange}
-                    value={values?.staffName}
+                    value={
+                        values.staffName && {
+                            value: values.staffName || "",
+                            label: values.staffName || "",
+                        }
+                    }
                     id="staffName"
                     name="staffName"
+                    components={{
+                        DropdownIndicator: () => (
+                            <img
+                                src={downArrow}
+                                className={classes["down-icon"]}
+                            />
+                        ),
+                        IndicatorSeparator: () => null,
+                    }}
+                    styles={{
+                        control: (provided, state) => ({
+                            ...provided,
+                            borderRadius: 23,
+                            border: "1px solid #dfdfdf",
+                            height: 45,
+                            width: 375,
+                        }),
+                        indicatorSeparator: () => ({ display: "none" }),
+                        placeholder: (defaultStyles) => {
+                            return {
+                                ...defaultStyles,
+                                color: "#C7C7C7",
+                            };
+                        },
+                    }}
                 />
                 <FormikError name={"staffName"} />
             </div>
@@ -74,6 +104,26 @@ const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
 });
 export default connect(mapStateToProps)(InvoiceInfo);
+
+const getOptions = (userInfo) => {
+    return [
+        {
+            value: `${userInfo?.firstName || ""} ${
+                userInfo?.lastName || ""
+            } Sunglasses`,
+        },
+        {
+            value: `${userInfo?.firstName || ""} ${
+                userInfo?.lastName || ""
+            }  Lenses`,
+        },
+        {
+            value: `${userInfo?.firstName || ""} ${
+                userInfo?.lastName || ""
+            } Frame order`,
+        },
+    ];
+};
 
 const NAME_OPTIONS = [{ value: "John Doe" }, { value: "David Joe" }];
 const INVOICE_NAME_OPTIONS = [
