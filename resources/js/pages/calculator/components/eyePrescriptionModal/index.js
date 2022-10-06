@@ -159,7 +159,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
         if (!showResult) return <></>;
         if (
             !suggestedMaterial?.rightEye?.materialToUse ||
-            suggestedMaterial?.leftEye?.materialToUse
+            !suggestedMaterial?.leftEye?.materialToUse
         ) {
             return (
                 <div className={classes["top-label"]}>No suggession found</div>
