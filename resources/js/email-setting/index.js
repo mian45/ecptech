@@ -26,7 +26,7 @@ const EmailSetting = (props) => {
     const [emailSettingProps, setEmailSettingProps] = useState(false);
 
     const [idState, setIdState] = useState("");
-
+    const token =localStorage.getItem("remember")=="true"?localStorage.getItem("access_token"):sessionStorage.getItem("access_token")
     const [reminderType, setReminderType] = useState("");
     const [sentTo, setSentTo] = useState("");
     const [subject, setSubject] = useState("");
@@ -62,7 +62,7 @@ const EmailSetting = (props) => {
             method: "get",
             url: `${process.env.MIX_REACT_APP_URL}/api/get-time-zone`,
             headers: {
-                Authorization: `Bearer ${props.token}`,
+                Authorization: `Bearer ${token}`,
             },
             data: data,
         };
@@ -111,7 +111,7 @@ const EmailSetting = (props) => {
             method: "post",
             url: `${process.env.MIX_REACT_APP_URL}/api/add-reminder`,
             headers: {
-                Authorization: `Bearer ${props.token}`,
+                Authorization: `Bearer ${token}`,
             },
             data: data,
         };
@@ -144,7 +144,7 @@ const EmailSetting = (props) => {
             method: "post",
             url: `${process.env.MIX_REACT_APP_URL}/api/edit-reminder`,
             headers: {
-                Authorization: `Bearer ${props.token}`,
+                Authorization: `Bearer ${token}`,
             },
             data: data,
         };
@@ -175,7 +175,7 @@ const EmailSetting = (props) => {
             method: "post",
             url: `${process.env.MIX_REACT_APP_URL}/api/delete-reminder`,
             headers: {
-                Authorization: `Bearer ${props.token}`,
+                Authorization: `Bearer ${token}`,
             },
             data: data,
         };
@@ -196,7 +196,7 @@ const EmailSetting = (props) => {
             method: "get",
             url: `${process.env.MIX_REACT_APP_URL}/api/get-reminders?userId=${props.userID}`,
             headers: {
-                Authorization: `Bearer ${props.token}`,
+                Authorization: `Bearer ${token}`,
             },
             data: data,
         };
