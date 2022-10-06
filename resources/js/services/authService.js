@@ -1,15 +1,20 @@
 import Http from "../Http";
 import * as action from "../store/actions";
 import axios from "axios";
+import { useDispatch } from "react-redux";
 
-export function login(credentials) {
+export function login({email, password ,remember}) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
             axios
-                .post(`${process.env.MIX_REACT_APP_URL}/api/login`, credentials)
+                .post(`${process.env.MIX_REACT_APP_URL}/api/login`, {email,password})
                 .then((res) => {
-                    localStorage.setItem("access_token", res.data.data.token);
+                    remember?localStorage.setItem("access_token", res.data.data.token)
+                    :sessionStorage.setItem("access_token",res.data.data.token)
+                    localStorage.setItem("remember",remember);
+                    
                     dispatch(action.authLogin(res.data));
+
                     return resolve();
                 })
                 .catch((err) => {
@@ -22,7 +27,27 @@ export function login(credentials) {
                 });
         });
 }
-
+export function remember(){
+    const token = localStorage.getItem("remember")=="true"?localStorage.getItem("access_token"):sessionStorage.getItem("access_token")
+    return (dispatch) =>
+    new Promise((resolve, reject) => {
+        Http.get('/api/get-user-details')
+            .then((response) => {
+                let res=response
+                res.data.data={...res.data.data,token:token}
+                dispatch(action.authLogin(res.data));
+                return resolve();
+            })
+            .catch((err) => {
+                const { status, errors } = err.response.data;
+                const data = {
+                    status,
+                    errors,
+                };
+                return reject(data);
+            });
+    });
+}
 export function activeSetting(res) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
