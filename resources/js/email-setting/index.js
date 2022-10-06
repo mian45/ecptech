@@ -26,7 +26,7 @@ const EmailSetting = (props) => {
     const [emailSettingProps, setEmailSettingProps] = useState(false);
 
     const [idState, setIdState] = useState("");
-    const token =localStorage.getItem("remember")=="true"?localStorage.getItem("access_token"):sessionStorage.getItem("access_token")
+    const token =localStorage.getItem("access_token")
     const [reminderType, setReminderType] = useState("");
     const [sentTo, setSentTo] = useState("");
     const [subject, setSubject] = useState("");
