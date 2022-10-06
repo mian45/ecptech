@@ -5,22 +5,7 @@ import { BrowserRouter as Router, Switch } from "react-router-dom";
 import Routes from "./appRoutes/routes";
 import Header from "./Header";
 import SideBar from "./Side-bar";
-import AuthService from "./services";
 const AppRoot = ({ isAuthenticated }) => {
-    const dispatch= useDispatch()
-    useEffect(()=>{
-        getAuthentication();
-    
-    },[])
-    const getAuthentication=async ()=>{
-        const remember= localStorage.getItem("remember");
-       
-        if(remember!=null)
-        {  
-            if(remember==="true"){
-          dispatch(AuthService.remember(remember))
-      }}
-    }
     return (
         <div>
             <Router>

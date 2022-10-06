@@ -16,7 +16,7 @@ const DiscountTaxes = (props) => {
     const [discountId,setDiscountId]=useState(null)
     const [discountArray, setDiscountArray] = useState([])
     let [discounts, setDiscounts] = useState([])
-
+    const token =localStorage.getItem("remember")=="true"?localStorage.getItem("access_token"):sessionStorage.getItem("access_token")
 
     const [taxName, setTaxName] = useState('Sales Tax')
     const [stateSetting, setStateSetting] = useState('')
@@ -49,7 +49,7 @@ const DiscountTaxes = (props) => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/add-discount`,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                'Authorization': `Bearer ${token}`,
             },
             data: data
         };
@@ -75,7 +75,7 @@ const DiscountTaxes = (props) => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/delete-discount`,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                'Authorization': `Bearer ${token}`,
             },
             data: data
         };
@@ -101,7 +101,7 @@ const DiscountTaxes = (props) => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/addTax`,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                'Authorization': `Bearer ${token}`,
             },
             data: data
         };
@@ -131,7 +131,7 @@ const DiscountTaxes = (props) => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/editTax`,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                'Authorization': `Bearer ${token}`,
             },
             data: data
         };
@@ -160,7 +160,7 @@ const DiscountTaxes = (props) => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/deleteTax`,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                'Authorization': `Bearer ${token}`,
             },
             data: data
         };
@@ -184,7 +184,7 @@ const DiscountTaxes = (props) => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/addShipping`,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                'Authorization': `Bearer ${token}`,
             },
             data: data
         };
@@ -206,7 +206,7 @@ const DiscountTaxes = (props) => {
             method: 'post',
             url: `${process.env.MIX_REACT_APP_URL}/api/deleteShipping`,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                'Authorization': `Bearer ${token}`,
             },
             data: data
         };
@@ -228,7 +228,7 @@ const DiscountTaxes = (props) => {
             method: 'get',
             url: `${process.env.MIX_REACT_APP_URL}/api/getStates`,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                'Authorization': `Bearer ${token}`,
             },
             data: data
         };
@@ -250,7 +250,7 @@ const DiscountTaxes = (props) => {
         method: 'post',
         url: `${process.env.MIX_REACT_APP_URL}/api/edit-discount`,
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+            'Authorization': `Bearer ${token}`,
         },
         data : data
         };
@@ -351,7 +351,7 @@ axios(config)
             method: 'get',
             url: `${process.env.MIX_REACT_APP_URL}/api/get-discount?userId=${props.userID}`,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                'Authorization': `Bearer ${token}`,
             },
             data: data
         };
@@ -373,7 +373,7 @@ axios(config)
             method: 'get',
             url: `${process.env.MIX_REACT_APP_URL}/api/getTaxes?userId=${props.userID}`,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                'Authorization': `Bearer ${token}`,
             },
             data: data
         };
@@ -396,7 +396,7 @@ axios(config)
             method: 'get',
             url: `${process.env.MIX_REACT_APP_URL}/api/getShipping?userId=${props.userID}`,
             headers: {
-                'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                'Authorization': `Bearer ${token}`,
             },
             data: data
         };
@@ -426,7 +426,7 @@ axios(config)
                 method: 'post',
                 url: `${process.env.MIX_REACT_APP_URL}/api/discount-status`,
                 headers: {
-                    'Authorization': `Bearer ${localStorage.getItem("access_token")}`,
+                    'Authorization': `Bearer ${token}`,
                 },
                 data: data
             };

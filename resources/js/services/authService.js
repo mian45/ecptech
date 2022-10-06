@@ -9,7 +9,8 @@ export function login({email, password ,remember}) {
             axios
                 .post(`${process.env.MIX_REACT_APP_URL}/api/login`, {email,password})
                 .then((res) => {
-                    localStorage.setItem("access_token", res.data.data.token);
+                    remember?localStorage.setItem("access_token", res.data.data.token)
+                    :sessionStorage.setItem("access_token",res.data.data.token)
                     localStorage.setItem("remember",remember);
                     
                     dispatch(action.authLogin(res.data));
@@ -27,7 +28,7 @@ export function login({email, password ,remember}) {
         });
 }
 export function remember(){
-    const token = localStorage.getItem("access_token")
+    const token = localStorage.getItem("remember")=="true"?localStorage.getItem("access_token"):sessionStorage.getItem("access_token")
     return (dispatch) =>
     new Promise((resolve, reject) => {
         Http.get('/api/get-user-details')
