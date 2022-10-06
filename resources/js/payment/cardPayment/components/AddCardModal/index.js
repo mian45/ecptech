@@ -2,6 +2,7 @@ import dayjs from "dayjs";
 import React , {useState} from "react";
 import classes from "./styles.module.scss";
 import Axios from "../../../../Http"
+import { DatePicker, Space } from "antd";
 const AddCardModal = ({ show, onClose }) => {
     const [cardNumber,setCardNumber]=useState("")
     const [validNumber,setValidNumber]=useState(false)
@@ -85,7 +86,9 @@ const AddCardModal = ({ show, onClose }) => {
                             className={classes["input"]}
                             type="number"
                             value={cardNumber}
-                            onChange={(e)=>{setCardNumber(e.target.value)}}
+                            onChange={(e)=>{if(e.target.value.length<=16){
+                                setCardNumber(e.target.value)
+                            }}}
                             onBlur={(e)=>{stripeCardNumberValidation(e.target.value)}}
                         />
                         {validNumber?<label className={classes["validation-error"]}>Please enter valid card number</label>:""}
@@ -96,7 +99,14 @@ const AddCardModal = ({ show, onClose }) => {
                         value={name}
                             placeholder="Enter Card Holder Name"
                             className={classes["input"]}
-                            onChange={(e)=>{setName(e.target.value)}}
+                            onChange={(e)=>{
+                                var letters = /^[A-Za-z ]+$/;
+                                if(e.target.value.match(letters))
+                                  {
+                                    setName(e.target.value)
+                                  }
+                                
+                                }}
                             onBlur={(e)=>{
                                 if(name==""){
                                     setNameValidation(true)
@@ -111,22 +121,21 @@ const AddCardModal = ({ show, onClose }) => {
                                 <div className={classes["input-label"]}>
                                     Card Expiry
                                 </div>
-                                <input
-                                    placeholder="MM/YY"
-                                    min={new Date()}
-                                    className={classes["input"]}
-                                    data
-                                    onChange={(e)=>{setDate(dayjs(new Date(e.target.value)).format("MM/YY"))}}
-                                    type={"date"}
-                                    onBlur={(e)=>{
-                                        if(date==""){
-                                            setDateValidation(true)
-                                        }else{
-                                            setDateValidation(false)
-                                        }
-                                    }}
-                                    
-                                />
+                                <Space direction="vertical">
+                                <DatePicker picker="month"className={classes["input"]} 
+                                format="MM/YY"
+                                getPopupContainer={(triggerNode) => {
+                                  return triggerNode.parentNode;
+                                     }}  onChange={(e,dateString)=>{
+                                        setDate(dateString)}}
+                                     onBlur={(e)=>{
+                                         if(date==""){
+                                             setDateValidation(true)
+                                         }else{
+                                             setDateValidation(false)
+                                         }
+                                     }}/></Space>
+                                
                                 {dateValidation?<label  className={classes["validation-error"]}> Date is required</label>:""}
                             </div>
                             <div className={classes["inline-right-input"]}>
@@ -138,7 +147,9 @@ const AddCardModal = ({ show, onClose }) => {
                                     type={"number"}
                                     className={classes["input"]}
                                     value={cvc}
-                                    onChange={(e)=>{setCvc(e.target.value)}}
+                                    onChange={(e)=>{if(e.target.value.length<=4){
+                                        setCvc(e.target.value)
+                                    }}}
                                     onBlur={(e)=>{if(cvc.length<3){
                                         setValidCvc(true)
                                     }else{setValidCvc(false)}}}
