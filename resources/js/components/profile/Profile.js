@@ -50,7 +50,7 @@ const ProfileInfoSection = ({ userId }) => {
             personalInfo.append("business_name", values.businessName);
             personalInfo.append("theme_color", values.themeColor);
             personalInfo.append("theme_mode", values.themeType);
-            personalInfo.append("user_id", userId);
+            personalInfo.append("userId", userId);
 
             await axios.post("/api/edit-profile", personalInfo);
         } catch (err) {
