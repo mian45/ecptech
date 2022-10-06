@@ -3,6 +3,7 @@ import Profile from "../components/profile/Profile";
 import classes from "./styles.module.scss";
 const Header = () => {
     const [showProfile, setShowProfile] = useState(false);
+    const closeModal = () => setShowProfile(false);
     return (
         <div className={classes["container"]}>
             <img src="logo.png" alt="logo" className={classes["logo-icon"]} />
@@ -20,7 +21,7 @@ const Header = () => {
                         setShowProfile(!showProfile);
                     }}
                 />
-                {showProfile && <Profile />}
+                {showProfile && <Profile closeModal={closeModal} />}
             </div>
         </div>
     );
