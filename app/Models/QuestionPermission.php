@@ -20,4 +20,8 @@ class QuestionPermission extends Model
     {
         return $this->belongsTo(Question::class,'question_id');
     }
+
+    public function vision_plan(){
+        return $this->belongsTo(VisionPlan::class);
+    }
 }

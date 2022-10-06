@@ -13,4 +13,10 @@ class VisionPlan extends Model
     public function lensetypes(){
         return $this->hasMany(LenseType::class);
     }
+
+    public function question_permissions(){
+        return $this->hasMany(QuestionPermission::class);
+    }
+
+
 }
