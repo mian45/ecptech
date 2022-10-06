@@ -7,11 +7,11 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\UserRole;
+use App\Models\Client;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Validation\Rule;
-use App\Models\Client;
-use Illuminate\Support\Facades\File;
 class UserController extends Controller
 {
     /**
@@ -19,7 +19,63 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-   
+    public function update(Request $request)
+    { 
+
+        $validator = Validator::make($request->all(),[ 
+         'userId' => 'required'
+        ]);   
+
+        if($validator->fails()) {          
+            
+            return response()->json(['error'=>$validator->errors()], 401);                        
+        }  
+
+         $user_id = $request->userId;
+         if($user_id != auth()->user()->id){
+            return $this->sendError('invalid user id!');
+        }
+        $path = '';
+       
+        if ($file = $request->file('logo')) {
+            
+            $file_name = time().'.'.$file->extension();
+            $path = $file->move(public_path('uploads/'.$user_id), $file_name);
+            $name = $file->getClientOriginalName();                                        
+        }
+
+        $client = Client::firstOrNew(['user_id' =>  $user_id]);
+       
+        if($request->file('logo')){
+            $client->logo = $file_name;
+        }
+        if($request->business_name){
+            $client->business_name = $request->business_name;
+        }
+        if($request->theme_color){
+            $client->theme_color = $request->theme_color;
+        }
+        if($request->theme_mode){
+            $client->theme_mode = $request->theme_mode;
+        }
+        
+        $result = $client->save();
+        if($result){
+            return response()->json([                
+                "success" => true,
+                "message" => "Profile updated successfully.",
+                "data" => [
+                    'logo' => config('app.url').'/'.'uploads/'.$user_id.'/'.$client->logo,
+                    'business_name' => $client->business_name,
+                    'theme_color' => $client->theme_color,
+                    'theme_mode' => $client->theme_mode
+                ]                
+            ]);
+        } else {
+            return response()->json(['error'=> 'Something Went Wrong.'], 401);
+        }
+    }
+
     public function addCard(Request $request){
 
         $validator = Validator::make($request->all(), [
@@ -60,61 +116,5 @@ class UserController extends Controller
         }
 
         return $this->sendError('Discount not found');
-    }
-
-    public function update(Request $request)
-    { 
-        
-        $validator = Validator::make($request->all(),[ 
-                'userId' => 'required',
-        ]);   
-
-        if($validator->fails()) {          
-            
-            return response()->json(['error'=>$validator->errors()], 401);                        
-        }  
-        $user_id = $request->userId;
-        if($user_id != auth()->user()->id){
-            return $this->sendError('invalid user id!');
-        }
-        $path = '';
-        
-        if ($file = $request->file('logo')) {
-            
-            $file_name = time().'.'.$file->extension();
-            $path = $file->move(public_path('uploads/'.$user_id), $file_name);
-            $name = $file->getClientOriginalName();                                        
-        }
-       
-        $client = Client::firstOrNew(['user_id' =>  $user_id]);
-       
-        if($request->file('logo')){
-            $client->logo = $file_name;
-        }
-        if($request->business_name){
-            $client->business_name = $request->business_name;
-        }
-        if($request->theme_color){
-            $client->theme_color = $request->theme_color;
-        }
-        if($request->theme_mode){
-            $client->theme_mode = $request->theme_mode;
-        }
-        
-        $result = $client->save();
-        if($result){
-            return response()->json([                
-                "success" => true,
-                "message" => "Profile updated successfully.",
-                "data" => [
-                    'logo' => config('app.url').'/'.'uploads/'.$client->logo,
-                    'business_name' => $client->business_name,
-                    'theme_color' => $client->theme_color,
-                    'theme_mode' => $client->theme_mode
-                ]                
-            ]);
-        } else {
-            return response()->json(['error'=> 'Something Went Wrong.'], 401);
-        }
     }
 }
