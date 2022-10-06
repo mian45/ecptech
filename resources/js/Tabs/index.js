@@ -1,6 +1,6 @@
 import { Tabs } from 'antd';
 import React, { useEffect } from 'react';
-import OtherSetting from '../other-setting';
+import InsurancePlans from '../InsurancePlans';
 import EmailSetting from '../email-setting/index'
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
@@ -21,8 +21,8 @@ const TabsSection = (props) => {
       <Tabs.TabPane tab={`Discounts & Taxes`} key="3">
         <DiscountTaxes />
       </Tabs.TabPane>
-      <Tabs.TabPane tab="Other Settings" key="4">
-        <OtherSetting />
+      <Tabs.TabPane tab="Insurance Plans" key="4">
+        <InsurancePlans />
       </Tabs.TabPane>
       <Tabs.TabPane tab="Eye Prescription" key="5">
        <EyePrescription/>

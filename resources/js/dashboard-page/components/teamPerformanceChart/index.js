@@ -39,12 +39,12 @@ const TeamPerformanceChart = (userId) => {
         data.forEach((item) => {
             current.push(item["current_sales"]);
             prev.push(item["prev_sales"]);
-            names.push(item["staff_name"].slice(0, 7));
+            names.push(item["staff_name"].split(" ")[0]);
         });
         setPoints({
-            current: [...current],
-            prev: [...prev],
-            names: [...names],
+            current: [...current].slice(0, 5),
+            prev: [...prev].slice(0, 5),
+            names: [...names].slice(0, 5),
         });
     };
     return (

@@ -12,6 +12,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper";
+import { INVOICES_ROUTE } from "../appRoutes/routeConstants";
 
 const items = [
     {
@@ -165,11 +166,11 @@ class Login extends Component {
         });
     }
     render() {
+        const { isAuthenticated, userRole } = this.props;
         // If user is already authenticated we redirect to entry location.
         const { from } = this.props.location.state || {
-            from: { pathname: "/" },
+            from: { pathname: userRole === "staff" ? INVOICES_ROUTE : "/" },
         };
-        const { isAuthenticated } = this.props;
         if (isAuthenticated) {
             return <Redirect to={from} />;
         }
@@ -404,6 +405,7 @@ Login.propTypes = {
 
 const mapStateToProps = (state) => ({
     isAuthenticated: state.Auth.isAuthenticated,
+    userRole: state.Auth.userRole?.name,
 });
 
 export default connect(mapStateToProps)(Login);
