@@ -59,6 +59,8 @@ class InvoiceCalculaterController extends Controller
 
        $data['lens_material'] = LensMaterial::leftjoin('user_lense_material_settings as setting','setting.lens_material_id','=','lens_materials.id')
                                             ->select('lens_materials.id','lens_materials.lens_material_title','setting.price as retail_price')    
+                                            ->where('setting.user_id',auth()->user()->id)
+                                            ->where('setting.status','active')
                                             ->get();
 
         return $this->sendResponse($data, 'Calculater Data');
