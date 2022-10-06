@@ -1,6 +1,7 @@
 import React from "react";
 import {
     CREATE_INVOICE_ROUTE,
+    EDIT_INSURANCE_ROUTE,
     HOME_ROUTE,
     INVOICES_ROUTE,
     LOGIN_ROUTE,
@@ -14,7 +15,7 @@ const Invoices = React.lazy(() => import("../Invoices"));
 const Payment = React.lazy(() => import("../payment"));
 const Seetings = React.lazy(() => import("../setting-dashboard"));
 const CreateInvoice = React.lazy(() => import("../pages/calculator"));
-
+const EditInsurance = React.lazy(()=> import("../InsurancePlans/EditInsurance"))
 export const allRoutes = [
     {
         path: HOME_ROUTE,
@@ -25,6 +26,12 @@ export const allRoutes = [
     {
         path: INVOICES_ROUTE,
         component: Invoices,
+        exact: true,
+        isPrivate: true,
+    },
+    {
+        path: EDIT_INSURANCE_ROUTE,
+        component: EditInsurance,
         exact: true,
         isPrivate: true,
     },
