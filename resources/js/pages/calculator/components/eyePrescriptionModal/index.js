@@ -35,6 +35,19 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
     const [showResult, setShowResult] = useState(false);
     const [suggestedMaterial, setSuggestedMaterial] =
         useState(defaultSuggession);
+        var quarterHours = ["00", "75", "50", "25"];
+        var sphere = [];
+        for (var i = -16; i <= 10; i++) {
+            for (var j = 0; j < 4; j++) {
+                sphere.push(`${i + "." + quarterHours[j]}`);
+            }
+        }
+        var cylinder = [];
+        for (var i = -7; i <= 0; i++) {
+            for (var j = 0; j < 4; j++) {
+                cylinder.push(`${i + "." + quarterHours[j]}`);
+            }
+        }
     useEffect(() => {
         if (!userId) return;
      
@@ -197,8 +210,12 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                             <div className={classes["select-label"]}>
                                 Sphere (SPH)
                             </div>
+                            {/* sphere && sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'})).map((obj, i) => {
+                                                    return <Option value={obj}>{obj}</Option>
+
+                                                })           */}
                             <AntdSelect
-                                options={eyeData?.rightEyeSPH}
+                                options={sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'}))}
                                 placeholder="Select Spherical"
                                 style={{ width: "345px" }}
                                 value={eyeValues?.rightEyeSPH}
@@ -213,7 +230,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                             </div>
                             <AntdSelect
                                 style={{ width: "345px" }}
-                                options={eyeData?.rightEyeCYL}
+                                options={cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'}))}
                                 placeholder="Select Cylinder"
                                 value={eyeValues?.rightEyeCYL}
                                 onChange={(value) =>
@@ -234,7 +251,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                             </div>
                             <AntdSelect
                                 style={{ width: "345px" }}
-                                options={eyeData?.leftEyeSPH}
+                                options={sphere.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'}))}
                                 placeholder="Select Spherical"
                                 value={eyeValues?.leftEyeSPH}
                                 onChange={(value) =>
@@ -248,7 +265,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                             </div>
                             <AntdSelect
                                 style={{ width: "345px" }}
-                                options={eyeData?.leftEyeCYL}
+                                options={cylinder.sort((a, b) => a - b || a.localeCompare(b, undefined, {sensitivity: 'base'}))}
                                 placeholder="Select Cylinder"
                                 value={eyeValues?.leftEyeCYL}
                                 onChange={(value) =>
