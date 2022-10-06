@@ -305,7 +305,7 @@ export const getPriceFromDB = (receipt, calculatorObj) => {
     const materials = brands?.lenses?.filter(
         (item) => item.lens_material_title === receipt?.values?.lensMaterial
     );
-    if (materials?.length < 0) {
+    if (materials?.length <= 0) {
         return { lensPrice: lensPrice, materialPrice: materialPrice };
     } else if (materials?.characteristics?.length === 1) {
         lensPrice = materials[0]?.characteristics?.price;
