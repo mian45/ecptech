@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Validation\Rule;
-use App\Models\Client;
-
 class UserController extends Controller
 {
     /**

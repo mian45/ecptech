@@ -5,13 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class CollectionPermission extends Model
 {
     use HasFactory;
+    
+    protected $table = 'collections_permissions';
     protected $fillable = [
+        'name',
+        'price',
         'user_id',
-        'business_name',
-        'theme_color',
-        'theme_mode'
+        'brand_id',
+        'collection_id',
+        'status'
     ];
 }

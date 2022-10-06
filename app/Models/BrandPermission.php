@@ -5,13 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class BrandPermission extends Model
 {
     use HasFactory;
     protected $fillable = [
         'user_id',
-        'business_name',
-        'theme_color',
-        'theme_mode'
+        'lense_type_id',
+        'brand_id',
+        'status'
     ];
 }

@@ -119,7 +119,10 @@ const CalculatorScreen = () => {
                                     invoiceId={editInvoiceState?.id || ""}
                                 />
                             )}
-                            <InvoiceInfo formProps={formProps} />
+                            <InvoiceInfo
+                                formProps={formProps}
+                                userInfo={userInfo}
+                            />
                             <div className={classes["sub-container"]}>
                                 <SelectVisionPlan
                                     formProps={formProps}

@@ -9,14 +9,16 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-const Profile = ({ userId }) => {
+const Profile = ({ userId, closeModal }) => {
     return (
-        <div
-            className={classes["profile"]}
-            onClick={(e) => e.stopPropagation()}
-        >
-            <ProfileInfoSection userId={userId} />
-            <ProfilePasswordValidations userId={userId} />
+        <div className={classes["backdrop"]} onClick={closeModal}>
+            <div
+                className={classes["profile"]}
+                onClick={(e) => e.stopPropagation()}
+            >
+                <ProfileInfoSection userId={userId} />
+                <ProfilePasswordValidations userId={userId} />
+            </div>
         </div>
     );
 };
@@ -48,7 +50,7 @@ const ProfileInfoSection = ({ userId }) => {
             personalInfo.append("business_name", values.businessName);
             personalInfo.append("theme_color", values.themeColor);
             personalInfo.append("theme_mode", values.themeType);
-            personalInfo.append("user_id", userId);
+            personalInfo.append("userId", userId);
 
             await axios.post("/api/edit-profile", personalInfo);
         } catch (err) {
