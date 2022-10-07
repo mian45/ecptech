@@ -10,7 +10,10 @@ const SplitRoute = ({
   fallback: Fallback,
   isAuthenticated,
   ...rest
-}) => (
+}) => {
+
+  
+  return (
   <Route
     {...rest}
     render={(props) => (isAuthenticated ? (
@@ -24,7 +27,7 @@ const SplitRoute = ({
       </Base>
     ))}
   />
-);
+);}
 
 SplitRoute.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,

@@ -16,7 +16,7 @@ const DiscountTaxes = (props) => {
     const [discountId,setDiscountId]=useState(null)
     const [discountArray, setDiscountArray] = useState([])
     let [discounts, setDiscounts] = useState([])
-    const token =localStorage.getItem("remember")=="true"?localStorage.getItem("access_token"):sessionStorage.getItem("access_token")
+    const token =localStorage.getItem("access_token");
 
     const [taxName, setTaxName] = useState('Sales Tax')
     const [stateSetting, setStateSetting] = useState('')
