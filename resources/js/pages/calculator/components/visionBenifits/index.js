@@ -152,6 +152,7 @@ const VisionBenifits = ({
                                     values?.isFrameBenifit ===
                                     FrameBenifitAvailableEnum.onlyThisTime
                                 }
+                                disabled={true}
                             />
                         </Radio.Group>
                         <FormikError name={"isFrameBenifit"} />
@@ -196,6 +197,7 @@ const VisionBenifits = ({
                                     values?.isLensBenifit ===
                                     LensBenifitAvailableEnum.onlyThisTime
                                 }
+                                disabled={true}
                             />
                         </Radio.Group>
                         <FormikError name={"isLensBenifit"} />

@@ -98,7 +98,8 @@ const ViewInvoice = ({
         let total = 0;
         total = total + totalWithoutTax();
         //add tax
-        total = total + (total * (calculatorObj.tax || 1)) / 100;
+        const tax = (total * (calculatorObj.tax || 0)) / 100;
+        total = total + tax;
         return total || 0;
     };
 
@@ -135,29 +136,6 @@ const ViewInvoice = ({
             } else {
                 const price = getPriceByAntireflective(
                     receipt?.values?.antiReflectiveProperties?.type
-                );
-                total = total + (price || 0);
-            }
-        } else {
-            total = total + 0;
-        }
-        if (receipt?.values?.photochromics?.status === "Yes") {
-            const isPhotochromicActive =
-                receipt?.values?.lowerCopaythanStandard?.copayList?.find(
-                    (item) => item?.type === "Photochromic"
-                );
-            if (isPhotochromicActive?.status) {
-                if (isPhotochromicActive?.copayType === "$0 Copay") {
-                    total = total + 0;
-                } else if (
-                    isPhotochromicActive?.copayType ===
-                    "Lowered copay dollar amount"
-                ) {
-                    total = total + (isPhotochromicActive?.price || 0);
-                }
-            } else {
-                const price = getPriceByPhotochromicMaterial(
-                    receipt?.values?.photochromics?.type
                 );
                 total = total + (price || 0);
             }
@@ -422,9 +400,6 @@ const GetLensFee = (receipt, calculatorObj, lensPrices) => {
             total = total + 0;
         }
         total = total + getGlassesPrice(receipt);
-        total =
-            total +
-            (parseInt(getLensPrice(receipt, calculatorObj, lensPrices)) || 0);
     }
     return total;
 };

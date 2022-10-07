@@ -300,7 +300,7 @@ const OutPackPrices = ({
                     ).toFixed(2)}%) `}</span>
                     $
                     {(
-                        (withoutTaxPrice * (calculatorObj.tax || 1)) /
+                        (withoutTaxPrice * (calculatorObj.tax || 0)) /
                         100
                     ).toFixed(2) || 0}
                 </div>
