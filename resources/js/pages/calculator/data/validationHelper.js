@@ -8,70 +8,85 @@ export const CreateCalculatorValidations = (data) => {
     validationObject.staffName = Yup.string().required(
         "Staff name is required"
     );
-    if (!data?.visionPlan?.optional) {
+    if (
+        !data?.find((ques) => ques.question === "Select Vision Plan")?.optional
+    ) {
         validationObject.visionPlan = Yup.string().required(
             "Vision plan is required"
         );
     }
-    if (!data?.frameBenefit?.optional) {
+    if (
+        !data?.find((ques) => ques.question === "Frame Benefit Available")
+            ?.optional
+    ) {
         validationObject.isFrameBenifit = Yup.string().required(
             "Frame benefit is required"
         );
     }
-    if (!data?.lensBenefit?.optional) {
+    if (
+        !data?.find((ques) => ques.question === "Lens Benefit Available")
+            ?.optional
+    ) {
         validationObject.isLensBenifit = Yup.string().required(
             "Lens benefit is required"
         );
     }
-    if (!data?.materialCopay?.optional) {
+    if (!data?.find((ques) => ques.question === "Material Copay")?.optional) {
         validationObject.materialCopay = Yup.string().required(
             "Material copay is required"
         );
     }
-    if (!data?.frameOrder?.optional) {
+    if (!data?.find((ques) => ques.question === "Frame Order")?.optional) {
         validationObject.frameOrderType = Yup.string().required(
             "Frame Order is required"
         );
     }
-    if (!data?.copayDollarAmount?.optional) {
+    if (
+        !data?.find(
+            (ques) => ques.question === "Any copay lowered than standard"
+        )?.optional
+    ) {
         validationObject.isloweredCopay =
             Yup.string().required("Option is required");
     }
-    if (!data?.lensType?.optional) {
+    if (!data?.find((ques) => ques.question === "Lens Type")?.optional) {
         validationObject.lensType = Yup.string().required(
             "Lens type is required"
         );
     }
-    if (!data?.lensType?.optional) {
+    if (!data?.find((ques) => ques.question === "Lens Type")?.optional) {
         validationObject.lensTypeValue =
             Yup.string().required("Option is required");
     }
-    if (!data?.lensMaterial?.optional) {
+    if (!data?.find((ques) => ques.question === "Lens Material")?.optional) {
         validationObject.lensMaterial = Yup.string().required(
             "Lens material is required"
         );
     }
-    if (!data?.photochromics?.optional) {
+    if (!data?.find((ques) => ques.question === "Photochromics")?.optional) {
         validationObject.isPhotochromics = Yup.string().required(
             "Photochromics is required"
         );
     }
-    if (!data?.sunglassLens?.optional) {
+    if (!data?.find((ques) => ques.question === "Sunglass Lens")?.optional) {
         validationObject.isSunglasses = Yup.string().required(
             "Sunglass lens is required"
         );
     }
-    if (!data?.antireflective?.optional) {
+    if (
+        !data?.find((ques) => ques.question === "Antireflective Properties")
+            ?.optional
+    ) {
         validationObject.isAntireflective = Yup.string().required(
             "Antireflective is required"
         );
     }
-    if (!data?.protectionPlan?.optional) {
+    if (!data?.find((ques) => ques.question === "Protection Plan")?.optional) {
         validationObject.isProtectionPlan = Yup.string().required(
             "Protection plan is required"
         );
     }
-    if (!data?.shipping?.optional) {
+    if (!data?.find((ques) => ques.question === "Add Shipping")?.optional) {
         validationObject.shipping = Yup.string().required(
             "Add Shipping is required"
         );

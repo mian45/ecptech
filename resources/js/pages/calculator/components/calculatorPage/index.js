@@ -41,6 +41,7 @@ const CalculatorScreen = () => {
     const [calculatorState, setCalculatorState] = useState({
         ...CalculatorInitialValues,
     });
+    const [lensPrices, setLensPrices] = useState([]);
     const editInvoiceState = history?.location?.state?.invoice;
     let scrollRef = useRef();
 
@@ -69,10 +70,11 @@ const CalculatorScreen = () => {
             setCalculatorObj(editCalObject);
             if (editInvoiceState && editInvoiceState?.vp_state) {
                 const parsedJson = JSON.parse(editInvoiceState?.vp_state);
-                const questionsData = parsedJson?.questions;
-                const validations = CreateCalculatorValidations(
-                    questionsData["VSP Signature"]
-                );
+                const questionsData = parsedJson?.questions?.find(
+                    (item) => item.title === "VSP Signature"
+                )?.question_permissions;
+
+                const validations = CreateCalculatorValidations(questionsData);
                 setCalValidations(validations);
             }
         } else {
@@ -98,17 +100,53 @@ const CalculatorScreen = () => {
     const HideInvoice = () => {
         setShowInvoice(false);
     };
+    const getBaseValues = async (values) => {
+        try {
+            const planId = calculatorObj?.questions?.find(
+                (item) => item.title === "VSP Signature"
+            )?.id;
+            const lensType = calculatorObj?.lens_types?.find(
+                (item) => item.title === values?.lensType
+            );
+            const materialId = calculatorObj?.lens_material?.find((item) => {
+                return item.lens_material_title === values?.lensMaterial;
+            })?.id;
+            let collectionId = null;
+            lensType?.brands?.forEach((item) => {
+                item.collections?.forEach((val) => {
+                    if (val.title == values?.lensTypeValue) {
+                        collectionId = val?.id;
+                    }
+                });
+            });
+            const payload = {
+                collection_id: collectionId,
+                lense_material_id: materialId,
+                lense_type_id: lensType?.id,
+                vision_plan_id: planId,
+            };
+
+            const res = await Axios.post("/api/get-lenses-price", payload);
+            setLensPrices(res?.data?.data);
+        } catch (err) {
+            console.log("error while get data");
+        }
+    };
 
     const handleClick = (values, actions) => {
+        getBaseValues(values);
         if (values?.benifitType === "") {
             setShowInvoice(true);
             const arrangedValues = GetMappedPayload(values);
             setCalValues(arrangedValues);
             submitBenifitType;
         } else if (values?.benifitType === BenifitTypeEnums?.frame) {
-            if (
-                !calculatorObj?.questions["VSP Signature"]?.frameOrder?.optional
-            ) {
+            const permission = calculatorObj?.questions
+                ?.find((item) => item.title === "VSP Signature")
+                ?.question_permissions?.find(
+                    (ques) => ques.question === "Frame Order"
+                )?.optional;
+            if (!permission) {
                 const validationObject = {
                     frameOrderType: Yup.string().required(
                         "Frame Order is required"
@@ -128,10 +166,10 @@ const CalculatorScreen = () => {
             actions.setErrors({});
             actions.setTouched({}, false);
         } else if (values?.benifitType === BenifitTypeEnums?.lens) {
-            const validationObject = GetValidations(
-                calculatorObj?.questions["VSP Signature"],
-                false
-            );
+            const permissions = calculatorObj?.questions?.find(
+                (item) => item.title === "VSP Signature"
+            )?.question_permissions;
+            const validationObject = GetValidations(permissions, false);
             setCalValidations({
                 ...calValidations,
                 ...validationObject,
@@ -160,8 +198,9 @@ const CalculatorScreen = () => {
                 setCalValidations={setCalValidations}
                 calValidations={calValidations}
                 data={
-                    calculatorObj?.questions &&
-                    calculatorObj?.questions["VSP Signature"]
+                    calculatorObj?.questions?.find(
+                        (item) => item.title === "VSP Signature"
+                    )?.question_permissions
                 }
                 isFrame={isFrame}
             />
@@ -190,8 +229,9 @@ const CalculatorScreen = () => {
                     setCalValidations={setCalValidations}
                     calValidations={calValidations}
                     data={
-                        calculatorObj?.questions &&
-                        calculatorObj?.questions["VSP Signature"]
+                        calculatorObj?.questions?.find(
+                            (item) => item.title === "VSP Signature"
+                        )?.question_permissions
                     }
                 />
                 <SunglassLens
@@ -200,8 +240,9 @@ const CalculatorScreen = () => {
                     setCalValidations={setCalValidations}
                     calValidations={calValidations}
                     data={
-                        calculatorObj?.questions &&
-                        calculatorObj?.questions["VSP Signature"]
+                        calculatorObj?.questions?.find(
+                            (item) => item.title === "VSP Signature"
+                        )?.question_permissions
                     }
                 />
                 <AntireFlextive
@@ -210,8 +251,9 @@ const CalculatorScreen = () => {
                     setCalValidations={setCalValidations}
                     calValidations={calValidations}
                     data={
-                        calculatorObj?.questions &&
-                        calculatorObj?.questions["VSP Signature"]
+                        calculatorObj?.questions?.find(
+                            (item) => item.title === "VSP Signature"
+                        )?.question_permissions
                     }
                 />
             </>
@@ -238,6 +280,7 @@ const CalculatorScreen = () => {
                                     userInfo={userInfo}
                                     calculatorObj={calculatorObj}
                                     invoiceId={editInvoiceState?.id || ""}
+                                    lensPrices={lensPrices}
                                 />
                             )}
                             <InvoiceInfo
@@ -272,10 +315,11 @@ const CalculatorScreen = () => {
                                         setCalValidations={setCalValidations}
                                         calValidations={calValidations}
                                         data={
-                                            calculatorObj?.data?.questions &&
-                                            calculatorObj?.questions[
-                                                "VSP Signature"
-                                            ]
+                                            calculatorObj?.questions?.find(
+                                                (item) =>
+                                                    item.title ===
+                                                    "VSP Signature"
+                                            )?.question_permissions
                                         }
                                         isFrame={true}
                                     />
@@ -292,10 +336,11 @@ const CalculatorScreen = () => {
                                         setCalValidations={setCalValidations}
                                         calValidations={calValidations}
                                         data={
-                                            calculatorObj?.data?.questions &&
-                                            calculatorObj?.questions[
-                                                "VSP Signature"
-                                            ]
+                                            calculatorObj?.questions?.find(
+                                                (item) =>
+                                                    item.title ===
+                                                    "VSP Signature"
+                                            )?.question_permissions
                                         }
                                     />
                                 </div>
@@ -323,11 +368,11 @@ const CalculatorScreen = () => {
                                             }
                                             calValidations={calValidations}
                                             data={
-                                                calculatorObj?.data
-                                                    ?.questions &&
-                                                calculatorObj?.questions[
-                                                    "VSP Signature"
-                                                ]
+                                                calculatorObj?.questions?.find(
+                                                    (item) =>
+                                                        item.title ===
+                                                        "VSP Signature"
+                                                )?.question_permissions
                                             }
                                         />
                                         {formProps?.values?.isFrameBenifit ===
@@ -345,10 +390,11 @@ const CalculatorScreen = () => {
                                                 }
                                                 calValidations={calValidations}
                                                 data={
-                                                    calculatorObj?.questions &&
-                                                    calculatorObj?.questions[
-                                                        "VSP Signature"
-                                                    ]
+                                                    calculatorObj?.questions?.find(
+                                                        (item) =>
+                                                            item.title ===
+                                                            "VSP Signature"
+                                                    )?.question_permissions
                                                 }
                                             />
                                         )}
@@ -370,11 +416,11 @@ const CalculatorScreen = () => {
                                                         calValidations
                                                     }
                                                     data={
-                                                        calculatorObj?.questions &&
-                                                        calculatorObj
-                                                            ?.questions[
-                                                            "VSP Signature"
-                                                        ]
+                                                        calculatorObj?.questions?.find(
+                                                            (item) =>
+                                                                item.title ===
+                                                                "VSP Signature"
+                                                        )?.question_permissions
                                                     }
                                                 />
                                                 <RenderLensFields
@@ -390,11 +436,11 @@ const CalculatorScreen = () => {
                                                         calValidations
                                                     }
                                                     data={
-                                                        calculatorObj?.questions &&
-                                                        calculatorObj
-                                                            ?.questions[
-                                                            "VSP Signature"
-                                                        ]
+                                                        calculatorObj?.questions?.find(
+                                                            (item) =>
+                                                                item.title ===
+                                                                "VSP Signature"
+                                                        )?.question_permissions
                                                     }
                                                 />
                                             </>
@@ -409,10 +455,11 @@ const CalculatorScreen = () => {
                                             }
                                             calValidations={calValidations}
                                             data={
-                                                calculatorObj?.questions &&
-                                                calculatorObj?.questions[
-                                                    "VSP Signature"
-                                                ]
+                                                calculatorObj?.questions?.find(
+                                                    (item) =>
+                                                        item.title ===
+                                                        "VSP Signature"
+                                                )?.question_permissions
                                             }
                                         />
                                         <GlassesProtection

@@ -23,6 +23,7 @@ const OutPackPrices = ({
     totalPrice,
     calculatorObj,
     withoutTaxPrice,
+    lensPrices,
 }) => {
     const getCoatingPrice = () => {
         if (
@@ -124,16 +125,27 @@ const OutPackPrices = ({
     };
     const renderLensTypePrice = () => {
         if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
-            return getPriceFromDB(receipt, calculatorObj).lensPrice || 0;
+            return (
+                getPriceFromDB(receipt, calculatorObj, lensPrices).lensPrice ||
+                0
+            );
         } else {
-            return getLensFee(receipt, calculatorObj)?.lensPrice || 0;
+            return (
+                getLensFee(receipt, calculatorObj, lensPrices).lensPrice || 0
+            );
         }
     };
     const renderLensMaterialPrice = () => {
         if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
-            return getPriceFromDB(receipt, calculatorObj).materialPrice || 0;
+            return (
+                getPriceFromDB(receipt, calculatorObj, lensPrices)
+                    .materialPrice || 0
+            );
         } else {
-            return getLensFee(receipt, calculatorObj)?.materialPrice || 0;
+            return (
+                getLensFee(receipt, calculatorObj, lensPrices)?.materialPrice ||
+                0
+            );
         }
     };
     const getDiscountPercent = () => {
@@ -255,9 +267,9 @@ const OutPackPrices = ({
                         title={"Protection Plan Fee"}
                         subTitle={
                             "$" +
-                                (receipt?.values?.protectionPlan?.price).toFixed(
-                                    2
-                                ) || 0
+                                (
+                                    receipt?.values?.protectionPlan?.price || 0
+                                ).toFixed(2) || 0
                         }
                     />
                 )}
@@ -314,24 +326,16 @@ export const getPriceByAntireflective = (value) => {
     }
 };
 
-export const getPriceFromDB = (receipt, calculatorObj) => {
+export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
     let lensPrice = 0;
     let materialPrice = 0;
-    const currentPlan = calculatorObj?.price_calculation_data?.find(
-        (plan) => plan.title === receipt?.values?.visionPlan
-    );
-    const currentLensType = currentPlan?.lensetypes?.find(
-        (lens) => lens.title === receipt?.values?.lensType?.type
-    );
-    let brands = null;
-    currentLensType?.brands.forEach((item) => {
-        item.collections?.forEach((val) => {
-            if (val.title === receipt?.values?.lensType?.brand) brands = val;
-        });
-    });
-    const materials = brands?.lenses?.filter(
-        (item) => item.lens_material_title === receipt?.values?.lensMaterial
-    );
+
+    const materials =
+        lensPrices?.lenses_price &&
+        lensPrices?.lenses_price[0]?.lenses?.filter(
+            (item) =>
+                item?.lens_material_title === receipt?.values?.lensMaterial
+        );
     if (materials?.length <= 0) {
         return { lensPrice: lensPrice, materialPrice: materialPrice };
     } else if (materials?.characteristics?.length === 1) {
@@ -358,7 +362,7 @@ export const getPriceFromDB = (receipt, calculatorObj) => {
     }
 };
 
-export const getLensFee = (receipt, calculatorObj) => {
+export const getLensFee = (receipt, calculatorObj, lensPrices) => {
     if (
         receipt?.values?.lensType?.type &&
         receipt?.values?.lensType?.brand &&
@@ -378,8 +382,11 @@ export const getLensFee = (receipt, calculatorObj) => {
                     if (isPholicarbinateActive?.copayType === "$0 Copay") {
                         return {
                             lensPrice: parseInt(
-                                getPriceFromDB(receipt, calculatorObj)
-                                    ?.lensPrice || 0
+                                getPriceFromDB(
+                                    receipt,
+                                    calculatorObj,
+                                    lensPrices
+                                )?.lensPrice || 0
                             ),
                             materialPrice: 0,
                         };
@@ -389,14 +396,17 @@ export const getLensFee = (receipt, calculatorObj) => {
                     ) {
                         return {
                             lensPrice: parseInt(
-                                getPriceFromDB(receipt, calculatorObj)
-                                    ?.lensPrice || 0
+                                getPriceFromDB(
+                                    receipt,
+                                    calculatorObj,
+                                    lensPrices
+                                )?.lensPrice || 0
                             ),
                             materialPrice: isPholicarbinateActive?.price || 0,
                         };
                     }
                 } else {
-                    return getPriceFromDB(receipt, calculatorObj);
+                    return getPriceFromDB(receipt, calculatorObj, lensPrices);
                 }
             } else {
                 const isHighIndexActive =
@@ -407,8 +417,11 @@ export const getLensFee = (receipt, calculatorObj) => {
                     if (isHighIndexActive?.copayType === "$0 Copay") {
                         return {
                             lensPrice: parseInt(
-                                getPriceFromDB(receipt, calculatorObj)
-                                    ?.lensPrice || 0
+                                getPriceFromDB(
+                                    receipt,
+                                    calculatorObj,
+                                    lensPrices
+                                )?.lensPrice || 0
                             ),
                             materialPrice: 0,
                         };
@@ -418,18 +431,21 @@ export const getLensFee = (receipt, calculatorObj) => {
                     ) {
                         return {
                             lensPrice: parseInt(
-                                getPriceFromDB(receipt, calculatorObj)
-                                    ?.lensPrice || 0
+                                getPriceFromDB(
+                                    receipt,
+                                    calculatorObj,
+                                    lensPrices
+                                )?.lensPrice || 0
                             ),
                             materialPrice: isHighIndexActive?.price || 0,
                         };
                     }
                 } else {
-                    return getPriceFromDB(receipt, calculatorObj);
+                    return getPriceFromDB(receipt, calculatorObj, lensPrices);
                 }
             }
         } else {
-            return getPriceFromDB(receipt, calculatorObj);
+            return getPriceFromDB(receipt, calculatorObj, lensPrices);
         }
     } else {
         return { lensPrice: 0, materialPrice: 0 };

@@ -15,9 +15,11 @@ const Photochromics = ({
     data,
 }) => {
     const { values, handleChange, handleBlur } = formProps;
-    const photochromicsVisibility =
-        calculatorObj?.questions &&
-        calculatorObj?.questions["VSP Signature"]?.photochromics?.visibility;
+    const photochromicsVisibility = calculatorObj?.questions
+        ?.find((item) => item.title === "VSP Signature")
+        ?.question_permissions?.find(
+            (ques) => ques.question === "Photochromics"
+        )?.visibility;
     const [error, setError] = useState("");
 
     const handleActiveState = () => {
@@ -33,7 +35,10 @@ const Photochromics = ({
 
     const handlePhotochromicsChange = (e) => {
         handleChange(e);
-        if (e?.target?.value === "Yes" && !data?.photochromics?.optional) {
+        if (
+            e?.target?.value === "Yes" &&
+            !data?.find((ques) => ques.question === "Photochromics")?.optional
+        ) {
             const photochromicsType =
                 Yup.string().required("Option is required");
             setCalValidations({

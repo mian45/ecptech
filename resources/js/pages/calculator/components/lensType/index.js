@@ -8,9 +8,11 @@ import lensIcon from "../../../../../images/calculator/lens.svg";
 
 const LensType = ({ formProps, calculatorObj }) => {
     const { values, handleChange, handleBlur } = formProps;
-    const lensTypeVisibility =
-        calculatorObj?.questions &&
-        calculatorObj?.questions["VSP Signature"]?.lensType?.visibility;
+    const lensTypeVisibility = calculatorObj?.questions
+        ?.find((item) => item.title === "VSP Signature")
+        ?.question_permissions?.find(
+            (ques) => ques.question === "Lens Type"
+        )?.visibility;
     const showActiveState = () => {
         if (values?.lensType && values?.lensTypeValue) {
             return true;

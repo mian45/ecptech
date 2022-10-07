@@ -17,9 +17,11 @@ const FrameOrder = ({
     isFrame,
 }) => {
     const { values, handleChange, handleBlur } = formProps;
-    const frameOrderVisibility =
-        calculatorObj?.questions &&
-        calculatorObj?.questions["VSP Signature"]?.frameOrder?.visibility;
+    const frameOrderVisibility = calculatorObj?.questions
+        ?.find((item) => item.title === "VSP Signature")
+        ?.question_permissions?.find(
+            (ques) => ques.question === "Frame Order"
+        )?.visibility;
 
     const frameDetails = () => {
         return (
@@ -125,7 +127,7 @@ const FrameOrder = ({
         handleChange(e);
         if (
             e?.target?.value === "New Frame Purchase" &&
-            !data?.frameOrder?.optional
+            !data?.find((ques) => ques.question === "Frame Order")?.optional
         ) {
             const validationObject = {
                 frameRetailFee: Yup.string().required("Retail fee is required"),

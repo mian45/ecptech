@@ -24,15 +24,21 @@ const VisionBenifits = ({
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const [err, setErr] = useState("");
     const [privatePayError, setPrivatePayError] = useState("");
-    const frameBenifitVisibility =
-        calculatorObj?.questions &&
-        calculatorObj?.questions["VSP Signature"]?.frameBenefit?.visibility;
-    const lensBenifitVisibility =
-        calculatorObj?.questions &&
-        calculatorObj?.questions["VSP Signature"]?.lensBenefit?.visibility;
-    const materialCopayVisibility =
-        calculatorObj?.questions &&
-        calculatorObj?.questions["VSP Signature"]?.materialCopay?.visibility;
+    const frameBenifitVisibility = calculatorObj?.questions
+        ?.find((item) => item.title === "VSP Signature")
+        ?.question_permissions?.find(
+            (ques) => ques.question === "Frame Benefit Available"
+        )?.visibility;
+    const lensBenifitVisibility = calculatorObj?.questions
+        ?.find((item) => item.title === "VSP Signature")
+        ?.question_permissions?.find(
+            (ques) => ques.question === "Lens Benefit Available"
+        )?.visibility;
+    const materialCopayVisibility = calculatorObj?.questions
+        ?.find((item) => item.title === "VSP Signature")
+        ?.question_permissions?.find(
+            (ques) => ques.question === "Material Copay"
+        )?.visibility;
 
     const handleMaterialCopayChange = (e) => {
         handleChange(e);
@@ -59,7 +65,11 @@ const VisionBenifits = ({
             });
         } else {
             setPrivatePayError("");
-            if (!data?.frameOrder?.optional) {
+            if (
+                !data?.find(
+                    (ques) => ques.question === "Frame Benefit Available"
+                )?.optional
+            ) {
                 const validationObject = {
                     frameOrderType: Yup.string().required(
                         "Frame Order is required"
@@ -233,35 +243,43 @@ export default VisionBenifits;
 
 export const GetValidations = (data, isLoweredCopay) => {
     const validationObject = {};
-    if (!data?.copayDollarAmount?.optional && isLoweredCopay) {
+    if (
+        !data?.find(
+            (ques) => ques.question === "Any copay lowered than standard"
+        )?.optional &&
+        isLoweredCopay
+    ) {
         validationObject.isloweredCopay =
             Yup.string().required("Option is required");
     }
-    if (!data?.lensType?.optional) {
+    if (!data?.find((ques) => ques.question === "Lens Type")?.optional) {
         validationObject.lensType = Yup.string().required(
             "Lens type is required"
         );
     }
-    if (!data?.lensType?.optional) {
+    if (!data?.find((ques) => ques.question === "Lens Type")?.optional) {
         validationObject.lensTypeValue =
             Yup.string().required("Option is required");
     }
-    if (!data?.lensMaterial?.optional) {
+    if (!data?.find((ques) => ques.question === "Lens Material")?.optional) {
         validationObject.lensMaterial = Yup.string().required(
             "Lens material is required"
         );
     }
-    if (!data?.photochromics?.optional) {
+    if (!data?.find((ques) => ques.question === "Photochromics")?.optional) {
         validationObject.isPhotochromics = Yup.string().required(
             "Photochromics is required"
         );
     }
-    if (!data?.sunglassLens?.optional) {
+    if (!data?.find((ques) => ques.question === "Sunglass Lens")?.optional) {
         validationObject.isSunglasses = Yup.string().required(
             "Sunglass lens is required"
         );
     }
-    if (!data?.antireflective?.optional) {
+    if (
+        !data?.find((ques) => ques.question === "Antireflective Properties")
+            ?.optional
+    ) {
         validationObject.isAntireflective = Yup.string().required(
             "Antireflective is required"
         );
