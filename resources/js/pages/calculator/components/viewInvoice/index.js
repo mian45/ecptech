@@ -119,29 +119,6 @@ const ViewInvoice = ({
             total = total + (receipt?.values?.shipping?.price || 0);
         }
 
-        if (receipt?.values?.antiReflectiveProperties?.status === "Yes") {
-            const isAntireflectiveActive =
-                receipt?.values?.lowerCopaythanStandard?.copayList?.find(
-                    (item) => item?.type === "Anti-Reflective Properties"
-                );
-            if (isAntireflectiveActive?.status) {
-                if (isAntireflectiveActive?.copayType === "$0 Copay") {
-                    total = total + 0;
-                } else if (
-                    isAntireflectiveActive?.copayType ===
-                    "Lowered copay dollar amount"
-                ) {
-                    total = total + (isAntireflectiveActive?.price || 0);
-                }
-            } else {
-                const price = getPriceByAntireflective(
-                    receipt?.values?.antiReflectiveProperties?.type
-                );
-                total = total + (price || 0);
-            }
-        } else {
-            total = total + 0;
-        }
         if (receipt?.values?.shipping?.status === "Yes") {
             total = total + (parseInt(calculatorObj?.shipping) || 0);
         }
@@ -235,11 +212,11 @@ export const getPriceByPhotochromicMaterial = (value) => {
 const getPriceByAntireflective = (value) => {
     switch (value) {
         case "Shamir Glacier Plus UV":
-            return 0;
+            return SHAMIR_GLACIER_PLUS_UV;
         case "TechShield Plus UVR":
-            return 0;
+            return TECHSHIELD_PLUS_UVR;
         case "Crizal Sunshield (Backside AR Only)":
-            return 0;
+            return CRIZAL_SUNSHIELD;
     }
 };
 
