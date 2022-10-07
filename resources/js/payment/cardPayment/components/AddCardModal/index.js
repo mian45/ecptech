@@ -51,7 +51,7 @@ const AddCardModal = ({ show, onClose }) => {
                 return
             }
             const data = new FormData();
-                    data.append('card_no', cardNumber);
+                    data.append('card_no', new Number(cardNumber.replace(/ /g, '')));
                     data.append('card_name', name);
                     data.append('card_expiry', date);
       const res=  await Axios.post(
