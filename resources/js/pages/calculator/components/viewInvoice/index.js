@@ -443,10 +443,7 @@ const GetFrameFee = (receipt) => {
             const actualPrice =
                 receipt?.values?.frameOrder?.retailFee -
                 receipt?.values?.frameOrder?.frameContribution;
-            const discount =
-                (receipt?.values?.frameOrder?.frameContribution /
-                    receipt?.values?.frameOrder?.retailFee) *
-                20;
+            const discount = actualPrice * 0.2;
             const payableFramePrice = actualPrice - discount;
             total = total + (payableFramePrice || 0);
         }
