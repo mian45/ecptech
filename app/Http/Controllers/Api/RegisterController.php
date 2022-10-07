@@ -81,7 +81,7 @@ class RegisterController extends Controller
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
-        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember_me)) {
             $user = Auth::user();
 
             $success['id'] =  $user->id;
@@ -267,19 +267,8 @@ class RegisterController extends Controller
     }
 
     public function getUser(Request $request){
-        
-                $validator = Validator::make($request->all(), [
-                    'userId' => 'required'
-                ]);
-        
-                if ($validator->fails()) {
-                    return $this->sendError('Validation Error.', $validator->errors());
-                }
-        
-                $user_id = $request->userId;
-                if($user_id != auth()->user()->id){
-                    return $this->sendError('invalid user id!');
-                }
+    
+                $user_id = auth()->user()->id;
         
                  $user = Auth::user();
         

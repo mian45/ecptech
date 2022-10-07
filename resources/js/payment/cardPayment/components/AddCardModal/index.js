@@ -51,7 +51,7 @@ const AddCardModal = ({ show, onClose }) => {
                 return
             }
             const data = new FormData();
-                    data.append('card_no', cardNumber);
+                    data.append('card_no', new Number(cardNumber.replace(/ /g, '')));
                     data.append('card_name', name);
                     data.append('card_expiry', date);
       const res=  await Axios.post(
@@ -84,12 +84,12 @@ const AddCardModal = ({ show, onClose }) => {
                         <input
                             placeholder="Enter Card Number"
                             className={classes["input"]}
-                            type="number"
+                            type="text"
                             value={cardNumber}
-                            onChange={(e)=>{if(e.target.value.length<=16){
-                                setCardNumber(e.target.value)
+                            onChange={(e)=>{if(e.target.value.length<20){
+                                setCardNumber(e.target.value.replace(/[^\dA-Z]/g, '').replace(/(.{4})/g, '$1 ').trim())
                             }}}
-                            onBlur={(e)=>{stripeCardNumberValidation(e.target.value)}}
+                            onBlur={(e)=>{stripeCardNumberValidation(e.target.value.replace(" ",""))}}
                         />
                         {validNumber?<label className={classes["validation-error"]}>Please enter valid card number</label>:""}
                         <div className={classes["input-label"]}>
@@ -104,6 +104,8 @@ const AddCardModal = ({ show, onClose }) => {
                                 if(e.target.value.match(letters))
                                   {
                                     setName(e.target.value)
+                                  }else if(e.target.value==""){
+                                    setName("")
                                   }
                                 
                                 }}
@@ -154,7 +156,7 @@ const AddCardModal = ({ show, onClose }) => {
                                         setValidCvc(true)
                                     }else{setValidCvc(false)}}}
                                 />
-                                {validCvc?<label  className={classes["validation-error"]}>Please enter valid Cvc</label>:""}
+                                {validCvc?<label  className={classes["validation-error"]}>Please enter valid Ccv</label>:""}
                             </div>
                         </div>
                         <div className={classes["terms"]}>
