@@ -157,14 +157,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
 
     const prescriptionResult = () => {
         if (!showResult) return <></>;
-        if (
-            !suggestedMaterial?.rightEye?.materialToUse ||
-            !suggestedMaterial?.leftEye?.materialToUse
-        ) {
-            return (
-                <div className={classes["top-label"]}>No suggession found</div>
-            );
-        }
+
         return (
             <>
                 <div className={classes["top-label"]}>
@@ -185,7 +178,8 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                         <AnswerSlot
                             title={"Lens material to use?:"}
                             value={
-                                suggestedMaterial?.rightEye?.materialToUse || ""
+                                suggestedMaterial?.rightEye?.materialToUse ||
+                                "No suggession found"
                             }
                         />
                     </div>
@@ -205,7 +199,8 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                         <AnswerSlot
                             title={"Lens material to use?:"}
                             value={
-                                suggestedMaterial?.leftEye?.materialToUse || ""
+                                suggestedMaterial?.leftEye?.materialToUse ||
+                                "No suggession found"
                             }
                         />
                     </div>
