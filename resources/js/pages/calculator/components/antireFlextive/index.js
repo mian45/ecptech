@@ -16,9 +16,11 @@ const AntireFlextive = ({
     data,
 }) => {
     const { values, handleChange, handleBlur } = formProps;
-    const antireflectiveVisibility =
-        calculatorObj?.questions &&
-        calculatorObj?.questions["VSP Signature"]?.antireflective?.visibility;
+    const antireflectiveVisibility = calculatorObj?.questions
+        ?.find((item) => item.title === "VSP Signature")
+        ?.question_permissions?.find(
+            (ques) => ques.question === "Antireflective Properties"
+        )?.visibility;
     const [error, setError] = useState("");
 
     const handleActiveFields = () => {
@@ -34,7 +36,11 @@ const AntireFlextive = ({
 
     const handleAntireflectiveChange = (e) => {
         handleChange(e);
-        if (e?.target?.value === "Yes" && !data?.antireflective?.optional) {
+        if (
+            e?.target?.value === "Yes" &&
+            !data?.find((ques) => ques.question === "Antireflective Properties")
+                .optional
+        ) {
             const antireflectiveType =
                 Yup.string().required("Option is required");
             setCalValidations({

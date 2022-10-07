@@ -19,7 +19,7 @@
     color: #ffffff;
     border: none;
     margin-bottom: 20px;
-    background-color: #90b0c6;
+    background-color: #6fa5cb;
     width: 178px;
     align-self: flex-end;
     margin-top: 130px;
@@ -27,4 +27,13 @@
     &:disabled {
         background-color: #cbcbcb;
     }
+}
+.private-pay-title {
+    font-size: 18px;
+    color: #2a2a2a;
+    font-weight: bold;
+    font-family: Montserrat;
+    padding: 55px;
+    padding-bottom: 0px;
+    text-align: center;
 }

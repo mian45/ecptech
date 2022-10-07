@@ -8,9 +8,11 @@ import icon from "../../../../../images/calculator/shipping.svg";
 
 const GlassesProtection = ({ formProps, calculatorObj }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
-    const shippingVisibility =
-        calculatorObj?.questions &&
-        calculatorObj?.questions["VSP Signature"]?.shipping?.visibility;
+    const shippingVisibility = calculatorObj?.questions
+        ?.find((item) => item.title === "VSP Signature")
+        ?.question_permissions?.find(
+            (ques) => ques.question === "Add Shipping"
+        )?.visibility;
 
     useEffect(() => {
         setFieldValue("shippingAmount", calculatorObj?.shipping);

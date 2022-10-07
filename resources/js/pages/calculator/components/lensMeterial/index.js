@@ -11,9 +11,11 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
     const { values, handleChange, handleBlur } = formProps;
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState("");
-    const lensMaterialVisibility =
-        calculatorObj?.questions &&
-        calculatorObj?.questions["VSP Signature"]?.lensMaterial?.visibility;
+    const lensMaterialVisibility = calculatorObj?.questions
+        ?.find((item) => item.title === "VSP Signature")
+        ?.question_permissions?.find(
+            (ques) => ques.question === "Lens Material"
+        )?.visibility;
 
     const handleLensMererialChange = (e) => {
         handleChange(e);

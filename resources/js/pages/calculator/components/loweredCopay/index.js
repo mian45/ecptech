@@ -24,13 +24,19 @@ const LoweredCopay = ({
     data,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
-    const copayDollarAmountVisibility =
-        calculatorObj?.questions &&
-        calculatorObj?.questions["VSP Signature"]?.copayDollarAmount
-            ?.visibility;
+    const copayDollarAmountVisibility = calculatorObj?.questions
+        ?.find((item) => item.title === "VSP Signature")
+        ?.question_permissions?.find(
+            (ques) => ques.question === "Any copay lowered than standard"
+        )?.visibility;
     const handleLoweredCopayClick = (e) => {
         handleChange(e);
-        if (e?.target?.value === "Yes" && !data?.copayDollarAmount?.optional) {
+        if (
+            e?.target?.value === "Yes" &&
+            !data?.find(
+                (ques) => ques.question === "Any copay lowered than standard"
+            ).optional
+        ) {
             if (
                 !values?.isCopayPolycarbonate ||
                 !values?.isCopayPhotochromic ||
@@ -67,7 +73,12 @@ const LoweredCopay = ({
 
     const handleCopoayCheckChange = (value, key) => {
         setFieldValue(key, value);
-        if (value === true && !data?.copayDollarAmount?.optional) {
+        if (
+            value === true &&
+            !data?.find(
+                (ques) => ques.question === "Any copay lowered than standard"
+            ).optional
+        ) {
             if (key === "isCopayPolycarbonate") {
                 const isCopayPolycarbonateAmount =
                     Yup.string().required("Option is required");
@@ -330,7 +341,9 @@ const SpecialCopaySlot = ({
         handleChange(e);
         if (
             e?.target?.value === LowerCopayAmountTypeEnum.amount &&
-            !data?.isCopayPremiumProgressives?.optional
+            !data?.find(
+                (ques) => ques.question === "Any copay lowered than standard"
+            ).optional
         ) {
             const validationObject = {
                 [inputValue]: Yup.string().required("Amount is required"),

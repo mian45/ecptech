@@ -1,4 +1,6 @@
 export const CalculatorInitialValues = {
+    benifitType: "",
+    submitBenifitType: "",
     invoiceName: "",
     staffName: "",
     staffId: "",
@@ -45,3 +47,10 @@ export const CalculatorInitialValues = {
     shipping: "",
     shippingAmount: "0",
 };
+
+export const BenifitTypeEnums = Object.freeze({
+    none: "",
+    frame: "frame",
+    lens: "lens",
+    both: "both",
+});

@@ -57,11 +57,12 @@ const SelectVisionPlan = ({ formProps, calculatorObj }) => {
         );
     };
     const renderVisionPlan = () => {
-        if (
-            calculatorObj?.questions &&
-            calculatorObj?.questions["VSP Signature"]?.visionPlan?.visibility
-        )
-            return visionPlan();
+        const permission = calculatorObj?.questions
+            ?.find((item) => item.title === "VSP Signature")
+            ?.question_permissions?.find(
+                (ques) => ques.question === "Select Vision Plan"
+            )?.visibility;
+        if (permission) return visionPlan();
         else {
             return null;
         }

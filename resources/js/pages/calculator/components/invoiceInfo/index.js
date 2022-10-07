@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import Select from "react-select";
 import downArrow from "../../../../../images/down-arrow.png";
 
-const InvoiceInfo = ({ formProps, userId, userInfo }) => {
+const InvoiceInfo = ({ formProps, userId, userInfo, disable }) => {
     const { values, setFieldValue, handleBlur } = formProps;
     const [staff, setStaff] = useState([]);
     const [staffData, setStaffData] = useState([]);
@@ -49,6 +49,7 @@ const InvoiceInfo = ({ formProps, userId, userInfo }) => {
                     value={values?.invoiceName}
                     id="invoiceName"
                     name="invoiceName"
+                    disabled={disable}
                 />
                 <FormikError name={"invoiceName"} />
             </div>
@@ -68,6 +69,7 @@ const InvoiceInfo = ({ formProps, userId, userInfo }) => {
                     }
                     id="staffName"
                     name="staffName"
+                    disabled={disable}
                     components={{
                         DropdownIndicator: () => (
                             <img
