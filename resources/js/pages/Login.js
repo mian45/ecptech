@@ -182,10 +182,10 @@ class Login extends Component {
         const { response, errors, loading } = this.state;
 
         return (
-            <div>
-                <div className="d-flex flex-column flex-md-row align-items-md-center py-container">
+     
+                <div className="d-flex flex-column flex-md-row align-items-md-center py-container" style={{height:"100%",width:"100%"}}>
                     <div className="container">
-                        <div className="row" style={{ marginTop: "30px" }}>
+                        <div className="row">
                             <div className="section-login col-lg-6">
                                 <div className="card-login  mb-3">
                                     <div>
@@ -403,7 +403,7 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
+         
         );
     }
 }

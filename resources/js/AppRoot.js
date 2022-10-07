@@ -7,7 +7,7 @@ import Header from "./Header";
 import SideBar from "./Side-bar";
 const AppRoot = ({ isAuthenticated }) => {
     return (
-        <div>
+
             <Router>
                 {isAuthenticated && <Header />}
                 {isAuthenticated && <SideBar />}
@@ -15,7 +15,6 @@ const AppRoot = ({ isAuthenticated }) => {
                     <Routes />
                 </Switch>
             </Router>
-        </div>
     );
 };
 
