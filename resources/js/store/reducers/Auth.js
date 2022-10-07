@@ -41,7 +41,6 @@ const authLogin = (state, payload) => {
 };
 
 const checkAuth = (state) => {
-    console.log("the remmber here is ",localStorage.getItem("remember"),typeof localStorage.getItem("remember"))
     const token =localStorage.getItem("access_token")
     console.log("the token is here",token)
     const stateObj = {

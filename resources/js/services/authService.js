@@ -1,13 +1,12 @@
 import Http from "../Http";
 import * as action from "../store/actions";
 import axios from "axios";
-import { useDispatch } from "react-redux";
 
 export function login({email, password ,remember}) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
             axios
-                .post(`${process.env.MIX_REACT_APP_URL}/api/login`, {email,password})
+                .post(`${process.env.MIX_REACT_APP_URL}/api/login`, {email,password, remember_me:remember})
                 .then((res) => {
                     localStorage.setItem("access_token", res.data.data.token)
                     localStorage.setItem("remember",remember);
@@ -26,10 +25,8 @@ export function login({email, password ,remember}) {
                 });
         });
 }
-export function remember(){
+export function remember(dispatch){
     const token = localStorage.getItem("access_token")
-    return (dispatch) =>
-    new Promise((resolve, reject) => {
         Http.get('/api/get-user-details')
             .then((response) => {
                 let res=response
@@ -38,14 +35,9 @@ export function remember(){
                 return resolve();
             })
             .catch((err) => {
-                const { status, errors } = err.response.data;
-                const data = {
-                    status,
-                    errors,
-                };
-                return reject(data);
+              console.log(err)
             });
-    });
+
 }
 export function activeSetting(res) {
     return (dispatch) =>
