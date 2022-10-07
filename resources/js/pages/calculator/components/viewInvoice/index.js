@@ -3,15 +3,18 @@ import CustomModal from "../../../../components/customModal";
 import classes from "./styles.module.scss";
 import closeIcon from "../../../../../images/cross.png";
 import {
+    CRIZAL_SUNSHIELD,
     DRILL_MOUNT,
     GRADIENT_TINT,
     POLARIZED,
     SENSITY_PHOTOCHROMIC,
+    SHAMIR_GLACIER_PLUS_UV,
     SKI_TYPE_MIRROR,
     SOLID_SINGLE_GRADIENT,
     SOLID_TINT,
     SUNSYNC_DRIVEXT,
     SUNSYNC_ELITE_XT,
+    TECHSHIELD_PLUS_UVR,
     TRANSITION_SIGNATURE,
     TRANSITION_VANTAGE,
     TRANSITION_XTRACTION,
