@@ -95,9 +95,6 @@ const InvoiceTableActions = ({ data }) => {
                         EDIT
                     </div>
                 )}
-                <div className={classes["more-icon"]} onClick={handleClose}>
-                    DUPLICATE
-                </div>
             </div>
         );
     };
