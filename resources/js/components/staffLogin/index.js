@@ -150,6 +150,6 @@ export default connect(mapStateToProps)(StaffLogin);
 const LoginValidation = Yup.object().shape({
     email: Yup.string().email().required("Email is required"),
     password: Yup.string()
-        .min(8, "Must have 8 characters")
+        .min(6, "Must have 6 characters")
         .required("Password is required"),
 });
