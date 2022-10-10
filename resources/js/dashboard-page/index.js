@@ -138,6 +138,7 @@ const DEFAULT_INVOICES_DATA = [
 ];
 
 const mappedGraphStats = (response) => {
+    console.log("response", response);
     const stats = [
         {
             x: "Generated",
@@ -157,10 +158,10 @@ const mappedGraphStats = (response) => {
         {
             x: "Capture Rate",
             y:
-                Math.floor(
+                (Math.floor(
                     (response["office_paid"] + response["online_paid"]) /
                         (response["generated"] || 1)
-                ) || 0,
+                ) || 0) * 100,
             percentage: response["capture_rate"],
         },
 

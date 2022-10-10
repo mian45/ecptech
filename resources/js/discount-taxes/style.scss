@@ -1,7 +1,6 @@
 .discount-container {
     font-family: Montserrat;
 
-
     &_first {
         padding-left: 221px;
 
@@ -16,23 +15,21 @@
             }
 
             &_section {
-
                 input {
                     min-width: 284px;
                     padding-block: 13px;
                     padding-inline-start: 22px;
-                    border: 1px solid #DFDFDF;
+                    border: 1px solid #dfdfdf;
                     border-radius: 23px;
 
                     &::placeholder {
-                        color: rgba($color: #DFDFDF, $alpha: 1.0);
+                        color: rgba($color: #dfdfdf, $alpha: 1);
                     }
 
                     &:focus-visible {
                         outline: 0;
                     }
                 }
-
             }
         }
     }
@@ -47,13 +44,12 @@
                     min-width: 284px;
                     padding-block: 13px;
                     padding-inline-start: 22px;
-                    border: 1px solid #DFDFDF;
+                    border: 1px solid #dfdfdf;
                     border-radius: 23px;
 
                     &::placeholder {
-                        color: rgba($color: #DFDFDF, $alpha: 1.0);
+                        color: rgba($color: #dfdfdf, $alpha: 1);
                     }
-
                 }
 
                 p {
@@ -67,10 +63,10 @@
 .ant-select {
     min-width: 284px;
     height: 50px;
-    border: 1px solid #DFDFDF;
+    border: 1px solid #dfdfdf;
     border-radius: 23px;
     background-color: white;
-    color: rgba($color: #DFDFDF, $alpha: 1.0);
+    color: rgba($color: #dfdfdf, $alpha: 1);
 
     &.ant-select-focused {
         color: black;
@@ -97,32 +93,29 @@
     }
 }
 
-
-.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+    .ant-select-selector {
     border-color: unset !important;
     box-shadow: none !important;
 }
 
 .ant-select-arrow {
-    border-left:
-        8px solid transparent;
-    border-right:
-        8px solid transparent;
-    border-top:
-        8px solid #d8d8d8;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #d8d8d8;
     font-size: 0 !important;
 }
 
 .save-button {
     padding: 13px 32px;
-    background-color: #4F8DB8;
+    background-color: #4f8db8;
     border: none;
     border-radius: 28px;
     color: white;
     cursor: pointer;
 
     &.disable {
-        background-color: #CBCBCB;
+        background-color: #cbcbcb;
         pointer-events: none;
     }
 }
@@ -136,7 +129,7 @@
     &_head {
         padding-block: 13px;
         padding-inline-start: 32px;
-        background-color: #E8E8E8;
+        background-color: #e8e8e8;
         border-radius: 10px 10px 0 0;
     }
 
@@ -163,9 +156,13 @@
     }
 }
 
-.heading {
+.discount-tax .heading {
     font-weight: bold;
     margin-bottom: 16px;
+    font-family: Montserrat !important;
+    color: #2a2a2a !important;
+    margin-top: 36px !important;
+    margin-bottom: 36px !important;
 }
 
 .main {
@@ -181,7 +178,6 @@ table {
     width: 710px;
     background-color: white;
     border-radius: 10px 10px 0 0;
-
 }
 
 td,
@@ -191,7 +187,7 @@ th {
 }
 
 th {
-    background-color: #E8E8E8;
+    background-color: #e8e8e8;
     padding-block: 14px;
     padding-inline-start: 32px;
 
@@ -215,12 +211,12 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
-input[type=number]::-webkit-outer-spin-button,
-input[type=number]::-webkit-inner-spin-button {
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
 }
 
-input[type=number] {
+input[type="number"] {
     -moz-appearance: textfield;
 }
