@@ -1,21 +1,20 @@
 import React, { useState } from "react";
 import Profile from "../components/profile/Profile";
 import classes from "./styles.module.scss";
-import { useEffect } from 'react';
-import {remember as rememberme} from "../services/authService";
+import { useEffect } from "react";
+import { remember as rememberme } from "../services/authService";
 import { useDispatch } from "react-redux";
 
 const Header = () => {
-    const dispatch=useDispatch()
+    const dispatch = useDispatch();
     const [showProfile, setShowProfile] = useState(false);
     const closeModal = () => setShowProfile(false);
-    useEffect(()=>{
-        console.log("the use Effect is working")
+    useEffect(() => {
         getAuthentication();
-    },[])
-    const getAuthentication=async ()=>{
-        rememberme(dispatch)
-    }
+    }, []);
+    const getAuthentication = async () => {
+        rememberme(dispatch);
+    };
     return (
         <div className={classes["container"]}>
             <img src="logo.png" alt="logo" className={classes["logo-icon"]} />

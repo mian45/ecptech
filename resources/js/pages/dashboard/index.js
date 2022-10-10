@@ -8,7 +8,6 @@ import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
 import quarterOfYear from "dayjs/plugin/quarterOfYear";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
-import axios from "axios";
 import classes from "./styles.module.scss";
 import DashboardPage from "../../dashboard-page";
 
@@ -88,7 +87,6 @@ const Dashboard = () => {
                         cursor: "pointer",
                         display: "flex",
                         flexDirection: "row",
-                        marginTop: "10px",
                         justifyContent: "space-evenly",
                         border: "1px solid #E8E8E8",
                     }}
@@ -96,7 +94,7 @@ const Dashboard = () => {
                     <div style={{ fontSize: 17 }}>{label}</div>
                     <FontAwesomeIcon
                         icon={faCaretDown}
-                        size={17}
+                        size={"1x"}
                         color="#ccc"
                         style={{ alignSelf: "center" }}
                     />
@@ -105,8 +103,10 @@ const Dashboard = () => {
             {showDatePicker ? (
                 <div
                     style={{
-                        boxShadow: "5px 10px 11px 5px #ccc",
+                        boxShadow: "0px 11px 20px #00000029",
                         width: "882px",
+                        marginBottom: "20px",
+                        marginTop: "-30px",
                     }}
                 >
                     <DateRangePicker

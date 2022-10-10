@@ -29,7 +29,7 @@ const InvoiceInfo = ({ formProps, userId, userInfo, disable }) => {
             }
         };
         getStaffList();
-    }, []);
+    }, [userId]);
 
     const handleStaffChange = (value) => {
         const selectedStaff = staff.find((ele) => ele.name === value.value);

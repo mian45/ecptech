@@ -68,13 +68,13 @@ const InvoicesForm = ({ formProps, isSearched, handleSearch }) => {
                     id="phoneNo"
                     name="phoneNo"
                     value={values.phoneNo}
-                    onChange={(e)=>{if(e.target.value.length<=10)
-                    {
-                        handleChange(e)
-                    }}}
+                    onChange={(e) => {
+                        if (e.target.value.length <= 10) {
+                            handleChange(e);
+                        }
+                    }}
                     onBlur={handleBlur}
                     type={"number"}
-                   
                 />
             </div>
             <div className={classes["form-slot-button"]}>
