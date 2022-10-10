@@ -8,6 +8,8 @@ const CustomCheckbox = ({
     label,
     style,
     active,
+    labelClass,
+    containerClass,
     ...rest
 }) => {
     const [isChecked, setCheckedStatus] = useState(defaultChecked || false);
@@ -16,7 +18,7 @@ const CustomCheckbox = ({
         setCheckedStatus(defaultChecked);
     }, [defaultChecked]);
     return (
-        <div className={classes["container"]}>
+        <div className={`${classes["container"]} ${containerClass}`}>
             <div
                 style={{
                     ...style,
@@ -31,7 +33,7 @@ const CustomCheckbox = ({
                 {defaultChecked ? <SVG /> : <SVGBlack />}
             </div>
             <div
-                className={classes["label"]}
+                className={`${classes["label"]} ${labelClass}`}
                 style={{ fontWeight: active ? "bold" : "normal" }}
             >
                 {label}
