@@ -66,7 +66,6 @@ const SignInForm = ({ userRole, dispatch }) => {
                                             value={values.email}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            autoComplete={"off"}
                                         />
                                         <ErrorMessage
                                             name={"email"}
@@ -90,7 +89,6 @@ const SignInForm = ({ userRole, dispatch }) => {
                                             }
                                         >
                                             <input
-                                                autocomplete="new-password"
                                                 className={
                                                     classes["password-input"]
                                                 }
@@ -130,6 +128,7 @@ const SignInForm = ({ userRole, dispatch }) => {
                                 <div className={classes["divider"]} />
                                 <div className={classes["submit-wrapper"]}>
                                     <CustomCheckbox
+                                        style={{ transform: "scale(1.2)" }}
                                         label={"Remember me"}
                                         defaultChecked={
                                             values?.remember || false

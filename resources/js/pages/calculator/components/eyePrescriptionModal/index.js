@@ -76,7 +76,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
         if (!userId) return;
 
         getEyePrescriprion();
-    }, []);
+    }, [userId]);
     const getEyePrescriprion = async () => {
         try {
             const res = await Axios.get(`/api/prescriptions`, {

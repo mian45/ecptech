@@ -31,7 +31,7 @@ const TeamPerformanceChart = (userId) => {
             }
         };
         getStats();
-    }, []);
+    }, [userId]);
     const manageValues = (data) => {
         let current = [];
         let prev = [];

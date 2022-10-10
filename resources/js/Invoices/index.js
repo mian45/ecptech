@@ -6,7 +6,6 @@ import { InvoiceInitialValues } from "./data/initialValues";
 import InvoiceValidation from "./data/validations";
 import InvoicesTable from "../components/invoiceTable";
 import { connect } from "react-redux";
-import dayjs from "dayjs";
 import { useHistory } from "react-router";
 import Axios from "../Http";
 import { CREATE_INVOICE_ROUTE } from "../appRoutes/routeConstants";
@@ -25,7 +24,7 @@ const Invoices = ({ userId }) => {
             setTableData(res?.data?.data);
         };
         getAllInvoices();
-    }, []);
+    }, [userId]);
 
     const handleClick = (values) => {
         history.push({
@@ -85,6 +84,6 @@ const Invoices = ({ userId }) => {
     );
 };
 const mapStateToProps = (state) => ({
-    userId: state.Auth.user?.id,
+    userId: state.Auth?.user?.id,
 });
 export default connect(mapStateToProps)(Invoices);

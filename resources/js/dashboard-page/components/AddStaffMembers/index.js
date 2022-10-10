@@ -34,7 +34,7 @@ const AddStaffMember = ({ userId }) => {
             }
         };
         getAllStaff();
-    }, []);
+    }, [userId]);
     const handleEdit = async () => {
         try {
             const payload = { userId: userId, id: editId, name: staffInput };
