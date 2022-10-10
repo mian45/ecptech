@@ -22,6 +22,14 @@ const FrameOrder = ({
         ?.question_permissions?.find(
             (ques) => ques.question === "Frame Order"
         )?.visibility;
+    const handleInputChange = (e) => {
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value)) {
+            handleChange(e);
+        } else if (e.target.value == "") {
+            handleChange(e);
+        }
+    };
 
     const frameDetails = () => {
         return (
@@ -35,9 +43,9 @@ const FrameOrder = ({
                             <div className={classes["input-label"]}>$</div>
                             <input
                                 className={classes["input"]}
-                                type={"number"}
+                                type={"text"}
                                 onBlur={handleBlur}
-                                onChange={handleChange}
+                                onChange={handleInputChange}
                                 value={values?.frameRetailFee}
                                 id="frameRetailFee"
                                 name="frameRetailFee"
@@ -59,9 +67,9 @@ const FrameOrder = ({
                                 <div className={classes["input-label"]}>$</div>
                                 <input
                                     className={classes["input"]}
-                                    type={"number"}
+                                    type={"text"}
                                     onBlur={handleBlur}
-                                    onChange={handleChange}
+                                    onChange={handleInputChange}
                                     value={values?.frameContribution}
                                     id="frameContribution"
                                     name="frameContribution"

@@ -107,6 +107,14 @@ const ProtectionPlan = ({
             });
         }
     };
+    const handleInputChange = (e) => {
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value)) {
+            handleChange(e);
+        } else if (e.target.value == "") {
+            handleChange(e);
+        }
+    };
 
     return (
         <>
@@ -247,9 +255,11 @@ const ProtectionPlan = ({
                                                         className={
                                                             classes["input"]
                                                         }
-                                                        type={"number"}
+                                                        type={"text"}
                                                         onBlur={handleBlur}
-                                                        onChange={handleChange}
+                                                        onChange={
+                                                            handleInputChange
+                                                        }
                                                         value={
                                                             values?.protectionPlanAmount
                                                         }

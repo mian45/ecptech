@@ -53,12 +53,11 @@ const InvoiceInfo = ({ formProps, userId, userInfo, disable }) => {
                 />
                 <FormikError name={"invoiceName"} />
             </div>
-            <div className={classes["info-section"]}>
+            <div className={classes["info-section-1"]}>
                 <div className={classes["label"]}>Staff Name</div>
                 <Select
                     options={staffData}
                     placeholder="Select Staff Name"
-                    className={classes["dropdown-styles"]}
                     onBlur={handleBlur}
                     onChange={handleStaffChange}
                     value={

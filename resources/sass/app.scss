@@ -67,7 +67,7 @@ $btn-size-base: 1rem;
         }
     }
 }
-.ArZPToihndVTucvsNQeItg\=\={
+.ArZPToihndVTucvsNQeItg\=\= {
     background-color: #ffffff;
     border-radius: 10px;
     border: 1px solid #e8e8e8;
@@ -231,6 +231,19 @@ input::-webkit-inner-spin-button {
     margin: 0;
 }
 
-input[type=number] {
-    -moz-appearance:textfield;
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+.ant-tabs-tab {
+    color: #2a2a2a !important;
+    &:nth-child(1) {
+        color: #2a2a2a !important;
+    }
+}
+
+.ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    color: #6fa5cb !important;
+    &:nth-child(1) {
+        color: #6fa5cb !important;
+    }
 }

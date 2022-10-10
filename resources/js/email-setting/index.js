@@ -26,7 +26,7 @@ const EmailSetting = (props) => {
     const [emailSettingProps, setEmailSettingProps] = useState(false);
 
     const [idState, setIdState] = useState("");
-    const token =localStorage.getItem("access_token")
+    const token = localStorage.getItem("access_token");
     const [reminderType, setReminderType] = useState("");
     const [sentTo, setSentTo] = useState("");
     const [subject, setSubject] = useState("");
@@ -331,7 +331,9 @@ const EmailSetting = (props) => {
                                                               }
                                                     }
                                                 >
-                                                    {obj.type == "reminder"?obj.type:"Order Success"}
+                                                    {obj.type == "reminder"
+                                                        ? obj.type
+                                                        : "Order Success"}
                                                 </p>
                                                 <p
                                                     className="email-setting-content-section-subsection-subheading"
@@ -489,47 +491,57 @@ const EmailSetting = (props) => {
                                         </p>
                                         <div className="email-remainder_input-sections_input-section">
                                             <p>Send date</p>
-                                            {reminderType=="custom"?
-                                            <input
-                                            
-                                            className="email-remainder_input-sections_input-section_input"
-                                            
-                                            value={dates}
-                                            onChange={(e) => {
-                                                setDates(e.target.value);
-                                            }}
-                                            type={"date"}
-                                            required
-                                        />:<Select
-                                                defaultValue="Select"
-                                                style={{
-                                                    width: 120,
-                                                }}
-                                                onChange={handleDateClick}
-                                                value={dates || "Select"}
-                                            >
-                                                <Option value={1}>
-                                                    1 days after invoice sent
-                                                </Option>
-                                                <Option value={2}>
-                                                    2 days after invoice sent
-                                                </Option>
-                                                <Option value={3}>
-                                                    3 days after invoice sent
-                                                </Option>
-                                                <Option value={4}>
-                                                    4 days after invoice sent
-                                                </Option>
-                                                <Option value={5}>
-                                                    5 days after invoice sent
-                                                </Option>
-                                                <Option value={6}>
-                                                    6 days after invoice sent
-                                                </Option>
-                                                <Option value={7}>
-                                                    7 days after invoice sent
-                                                </Option>
-                                            </Select>}
+                                            {reminderType == "custom" ? (
+                                                <input
+                                                    className="email-remainder_input-sections_input-section_input"
+                                                    value={dates}
+                                                    onChange={(e) => {
+                                                        setDates(
+                                                            e.target.value
+                                                        );
+                                                    }}
+                                                    type={"date"}
+                                                    required
+                                                />
+                                            ) : (
+                                                <Select
+                                                    defaultValue="Select"
+                                                    style={{
+                                                        width: 120,
+                                                    }}
+                                                    onChange={handleDateClick}
+                                                    value={dates || "Select"}
+                                                >
+                                                    <Option value={1}>
+                                                        1 days after invoice
+                                                        sent
+                                                    </Option>
+                                                    <Option value={2}>
+                                                        2 days after invoice
+                                                        sent
+                                                    </Option>
+                                                    <Option value={3}>
+                                                        3 days after invoice
+                                                        sent
+                                                    </Option>
+                                                    <Option value={4}>
+                                                        4 days after invoice
+                                                        sent
+                                                    </Option>
+                                                    <Option value={5}>
+                                                        5 days after invoice
+                                                        sent
+                                                    </Option>
+                                                    <Option value={6}>
+                                                        6 days after invoice
+                                                        sent
+                                                    </Option>
+                                                    <Option value={7}>
+                                                        7 days after invoice
+                                                        sent
+                                                    </Option>
+                                                </Select>
+                                            )}
                                         </div>
                                         <div className="email-remainder_input-sections_input-section">
                                             <p>Send Time</p>
@@ -584,6 +596,7 @@ const EmailSetting = (props) => {
                                             : handleSubmit(e);
                                     }}
                                     className="email-remainder_save-button"
+                                    style={{ marginBottom: "50px" }}
                                 >
                                     Save
                                 </button>

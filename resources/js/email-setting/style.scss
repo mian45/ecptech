@@ -42,7 +42,6 @@
                     margin-left: 10px !important;
                 }
             }
-
         }
     }
 
@@ -55,16 +54,13 @@
             padding-inline: 2em;
             border: none;
             border-radius: 28px;
-            background-color: #6FA5CB;
+            background-color: #6fa5cb;
             color: white;
         }
     }
-
-
 }
 
 .email-remainder {
-
     font-family: Montserrat;
 
     &_heading {
@@ -122,18 +118,14 @@
             }
 
             .ant-select-arrow {
-                border-left:
-                    8px solid transparent;
-                border-right:
-                    8px solid transparent;
-                border-top:
-                    8px solid #d8d8d8;
-                ;
+                border-left: 8px solid transparent;
+                border-right: 8px solid transparent;
+                border-top: 8px solid #d8d8d8;
                 font-size: 0 !important;
             }
 
-
-            .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+            .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+                .ant-select-selector {
                 border-color: unset !important;
                 box-shadow: none !important;
             }
@@ -148,16 +140,15 @@
 
             &_input {
                 background-color: white;
-                border: 1px solid #DFDFDF;
+                border: 1px solid #dfdfdf;
                 border-radius: 1.43em;
                 padding-inline-start: 1.375em;
                 padding-block: 0.8125em;
                 width: 23.68em;
                 height: 2.8125em;
 
-
                 &:focus-visible {
-                    border: 1px solid #DFDFDF;
+                    border: 1px solid #dfdfdf;
                     outline: none;
                 }
             }
@@ -176,19 +167,18 @@
         padding-inline: 2em;
         border: none;
         border-radius: 28px;
-        background-color: #6FA5CB;
+        background-color: #6fa5cb;
         color: white;
     }
 }
 
 .dropdown-email {
     background-color: white;
-    border: 1px solid #DFDFDF;
+    border: 1px solid #dfdfdf;
     border-radius: 1.43em;
     padding-inline-start: 1.375em;
     width: 23.68em;
     height: 2.8125em;
-
 }
 
 .ant-space {
@@ -203,23 +193,22 @@
 
 .tags {
     border-radius: 23px;
-    background-color: #E8E8E8;
-    color: #2A2A2A;
+    background-color: #e8e8e8;
+    color: #2a2a2a;
 }
 
 .rdw-editor-wrapper {
     width: 514px;
 }
 
-.public-DraftEditor-content[contenteditable=true] {
+.public-DraftEditor-content[contenteditable="true"] {
     padding-inline: 20px !important;
 }
 
 .rdw-editor-toolbar {
-    background-color: #F9F9FB !important;
+    background-color: #f9f9fb !important;
     border: none !important;
     padding-left: 0 !important;
-
 }
 
 .rdw-editor-main {
@@ -227,16 +216,17 @@
     height: 175px !important;
     overflow: hidden;
     border-radius: 23px;
+    border: 1px solid #dfdfdf;
 }
 
 .rdw-fontsize-dropdown {
-    background-color: #F9F9FB;
+    background-color: #f9f9fb;
     min-width: 100px !important;
     border: none;
     margin-left: 0 !important;
 
     &:hover {
-        background-color: #F9F9FB;
+        background-color: #f9f9fb;
         min-width: 100px !important;
         border: none !important;
     }
@@ -244,11 +234,11 @@
 
 .rdw-dropdown-selectedtext {
     padding-left: 0 !important;
-    color: black !important; 
+    color: black !important;
 }
 
 .rdw-option-wrapper {
-    background-color: #F9F9FB;
+    background-color: #f9f9fb;
     border: none !important;
 
     img {
@@ -258,7 +248,7 @@
 }
 
 .rdw-text-align-dropdown {
-    background-color: #F9F9FB;
+    background-color: #f9f9fb;
     border: none !important;
 }
 
