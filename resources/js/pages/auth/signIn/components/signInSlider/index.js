@@ -1,85 +1,61 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import classes from "./styles.module.scss";
-import sliderArrow from "../../../../../../images/slider-arrow.png";
 import sliderCard from "../../../../../../images/slider-card.png";
 
+import "swiper/css/bundle";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, {
+    Navigation,
+    Pagination,
+    Mousewheel,
+    Keyboard,
+    Autoplay,
+} from "swiper";
+
 const SignInSlider = () => {
-    const [activeCard, setActiveCard] = useState(0);
-
-    const onBackClick = () => {
-        if (activeCard === 0) {
-            setActiveCard(2);
-        } else {
-            setActiveCard(activeCard - 1);
-        }
-    };
-    const onNextClick = () => {
-        if (activeCard === 2) {
-            setActiveCard(0);
-        } else {
-            setActiveCard(activeCard + 1);
-        }
-    };
-
+    SwiperCore.use([Autoplay]);
     return (
         <div className={classes["container"]}>
-            <SliderCard
-                activeIndex={activeCard}
-                onBackClick={onBackClick}
-                onNextClick={onNextClick}
-            />
+            <Swiper
+                cssMode={true}
+                navigation={true}
+                pagination={true}
+                mousewheel={true}
+                keyboard={true}
+                modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+                className="mySwiper"
+                loop
+                autoplay={true}
+            >
+                {SLIDER_DATA.map((item, index) => {
+                    return (
+                        <SwiperSlide key={index}>
+                            <div className={`${classes["card-container"]}`}>
+                                <img
+                                    src={item?.icon}
+                                    alt={"icon"}
+                                    className={classes["card-image"]}
+                                />
+                            </div>
+                            <div className={classes["text-box"]}>
+                                <div className={classes["title"]}>
+                                    {item?.title}
+                                </div>
+                                <div className={classes["subtitle"]}>
+                                    {item?.subtitle}
+                                </div>
+                            </div>
+                        </SwiperSlide>
+                    );
+                })}
+            </Swiper>
         </div>
     );
 };
 export default SignInSlider;
-
-const SliderCard = ({ onNextClick, onBackClick, activeIndex }) => {
-    return (
-        <div className={`${classes["card-container"]}`}>
-            <div className={classes["image-container"]}>
-                <img
-                    src={sliderArrow}
-                    alt={"icon"}
-                    className={classes["left-icon"]}
-                    onClick={onBackClick}
-                />
-                <img
-                    src={SLIDER_DATA[activeIndex]?.icon}
-                    alt={"icon"}
-                    className={classes["card-image"]}
-                />
-                <img
-                    src={sliderArrow}
-                    alt={"icon"}
-                    className={classes["right-icon"]}
-                    onClick={onNextClick}
-                />
-            </div>
-            <div className={classes["text-box"]}>
-                <div className={classes["title"]}>
-                    {SLIDER_DATA[activeIndex]?.title}
-                </div>
-                <div className={classes["subtitle"]}>
-                    {SLIDER_DATA[activeIndex]?.subtitle}
-                </div>
-            </div>
-            <div className={classes["dot-container"]}>
-                {[1, 2, 3]?.map((_, index) => {
-                    return (
-                        <div
-                            key={index}
-                            className={
-                                SLIDER_DATA[activeIndex]?.id === index
-                                    ? classes["active-dot"]
-                                    : classes["dot"]
-                            }
-                        />
-                    );
-                })}
-            </div>
-        </div>
-    );
-};
 
 const SLIDER_DATA = [
     {

@@ -4,7 +4,7 @@ import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
-import frameIcon from "../../../../../images/calculator/frame.svg";
+import frameIcon from "../../../../../images/calculator/frame-glass.svg";
 import { DrillMountTypeEnum, FrameOrderTypeEnum } from "../../data/enums";
 import * as Yup from "yup";
 
