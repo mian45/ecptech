@@ -40,7 +40,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
         var sphere = [];
         for (var i = -16; i <= 10; i++) {
             if (i === 10 || i === -16) {
-                sphere.push(i);
+                sphere.push(i + ".00");
             } else {
                 for (var j = 0; j < 4; j++) {
                     const key = `${i + "." + quarterHours[j]}`;
@@ -51,7 +51,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
         var cylinder = [];
         for (var i = -7; i <= 0; i++) {
             if (i === 0 || i === -7) {
-                cylinder.push(i);
+                cylinder.push(i + ".00");
             } else {
                 for (var j = 0; j < 4; j++) {
                     const key = `${i + "." + quarterHours[j]}`;
