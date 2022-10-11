@@ -1,0 +1,85 @@
+.container {
+    width: 810px;
+    border-radius: 10px;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0px 0px 6px #00000008;
+    display: flex;
+}
+.left-container {
+    width: 341px;
+    background-color: #f9f9fb;
+    border: 1px solid #e8e8e8;
+
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+.right-container {
+    width: 469px;
+    background-color: #ffffff;
+    border-top-right-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.lenses-list-title {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Montserrat;
+    color: #6fa5cb;
+    margin-bottom: 24px;
+    padding-top: 39px;
+    padding-left: 41px;
+}
+.lenses-list-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.lenses-label-slot-container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    cursor: pointer;
+    justify-content: space-between;
+    background-color: #f9f9fb;
+}
+.slot-color {
+    background-color: #e8e8e8;
+}
+.lenses-label-slot-title {
+    color: #2a2a2a;
+    font-size: 16px;
+    font-family: Montserrat;
+    font-weight: 400;
+    padding-left: 41px;
+}
+.lenses-label-slot-icon {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    transform: rotate(-90deg);
+    margin-right: 20px;
+}
+.black-icon {
+    width: 15px;
+    height: 15px;
+    object-fit: contain;
+    margin-right: 19.5px;
+    cursor: pointer;
+}
+.lenses-list-back {
+    margin-bottom: 25px;
+    padding-top: 39px;
+    padding-left: 41px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+.lenses-list-brand-title {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Montserrat;
+    color: #6fa5cb;
+    cursor: pointer;
+}
