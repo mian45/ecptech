@@ -23,7 +23,7 @@ import {
 import Axios from "../../../../Http";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
-import { INVOICES_ROUTE } from "../../../../appRoutes/routeConstants";
+import { HOME_ROUTE } from "../../../../appRoutes/routeConstants";
 import UserInfo from "./components/userInfo";
 import OutPackPrices, { getPriceFromDB } from "./components/outPackPrices";
 import InPackPrices from "./components/inPackPrices";
@@ -61,7 +61,7 @@ const ViewInvoice = ({
                 createNewInvoice();
             }
 
-            history.push(INVOICES_ROUTE);
+            history.push(HOME_ROUTE);
         } catch (err) {
             console.log("error while save Invoice");
         }
