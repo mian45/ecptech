@@ -475,7 +475,7 @@ const DiscountTaxes = (props) => {
                     </form>
                 </div>
                 <div className="discount-output">
-                    <table style={{ backgroundColor: "#f9f9fb" }}>
+                    <table className="table-color">
                         {discounts && (
                             <tr className="discount-output_head">
                                 <th>Discount Name</th>
@@ -489,13 +489,7 @@ const DiscountTaxes = (props) => {
                                     <tr className="discount-output_body discount-row">
                                         <td className="row-1">{dis.name}</td>
                                         <td>{dis.value} %</td>
-                                        <td
-                                            style={{
-                                                paddingRight: "0px",
-                                                textAlign: "center",
-                                                borderBottomRightRadius: "10px",
-                                            }}
-                                        >
+                                        <td className="discount-col-3">
                                             <img
                                                 style={{
                                                     width: "18px",
@@ -619,7 +613,7 @@ const DiscountTaxes = (props) => {
                     </form>
                 </div>
                 <div className="discount-output">
-                    <table style={{ backgroundColor: "#f9f9fb" }}>
+                    <table className="table-color">
                         {tax?.length > 0 && (
                             <tr className="discount-output_head">
                                 <th>Tax Name</th>
