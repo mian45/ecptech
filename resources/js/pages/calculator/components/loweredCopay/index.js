@@ -328,17 +328,12 @@ const SpecialCopaySlot = ({
     const [err, setErr] = useState("");
 
     const handleInputChange = (e) => {
-        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
-        if (regix.test(e.target.value)) {
-            handleChange(e);
-            const price = getPrice(inputValue);
-            if (e.target.value > price) {
-                setErr("You enter a greater amount then total");
-            } else {
-                setErr("");
-            }
-        } else if (e.target.value == "") {
-            handleChange(e);
+        handleChange(e);
+        const price = getPrice(inputValue);
+        if (e.target.value > price) {
+            setErr("You enter a greater amount then total");
+        } else {
+            setErr("");
         }
     };
 
@@ -400,7 +395,7 @@ const SpecialCopaySlot = ({
                         <div className={classes["slot-input-label"]}>$</div>
                         <input
                             className={classes["slot-input"]}
-                            type={"text"}
+                            type={"number"}
                             onBlur={handleBlur}
                             onChange={handleInputChange}
                             value={values[inputValue]}

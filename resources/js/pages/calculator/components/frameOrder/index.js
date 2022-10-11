@@ -43,9 +43,9 @@ const FrameOrder = ({
                             <div className={classes["input-label"]}>$</div>
                             <input
                                 className={classes["input"]}
-                                type={"text"}
+                                type={"number"}
                                 onBlur={handleBlur}
-                                onChange={handleInputChange}
+                                onChange={handleChange}
                                 value={values?.frameRetailFee}
                                 id="frameRetailFee"
                                 name="frameRetailFee"

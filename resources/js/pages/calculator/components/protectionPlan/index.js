@@ -255,11 +255,9 @@ const ProtectionPlan = ({
                                                         className={
                                                             classes["input"]
                                                         }
-                                                        type={"text"}
+                                                        type={"number"}
                                                         onBlur={handleBlur}
-                                                        onChange={
-                                                            handleInputChange
-                                                        }
+                                                        onChange={handleChange}
                                                         value={
                                                             values?.protectionPlanAmount
                                                         }
