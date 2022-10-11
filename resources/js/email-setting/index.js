@@ -400,7 +400,9 @@ const EmailSetting = (props) => {
                                 </div>
                             );
                         })}
-                    <div className="email-setting_button-section">
+                    <div
+                        className="email-setting_button-section button-margin"
+                    >
                         <button
                             onClick={() => {
                                 setEmailSettingProps(true);

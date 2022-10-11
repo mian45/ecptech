@@ -475,7 +475,7 @@ const DiscountTaxes = (props) => {
                     </form>
                 </div>
                 <div className="discount-output">
-                    <table>
+                    <table className="table-color">
                         {discounts && (
                             <tr className="discount-output_head">
                                 <th>Discount Name</th>
@@ -486,10 +486,10 @@ const DiscountTaxes = (props) => {
                         {discounts.length > 0 &&
                             discounts.map((dis, index) => {
                                 return (
-                                    <tr className="discount-output_body">
-                                        <td>{dis.name}</td>
+                                    <tr className="discount-output_body discount-row">
+                                        <td className="row-1">{dis.name}</td>
                                         <td>{dis.value} %</td>
-                                        <td>
+                                        <td className="discount-col-3">
                                             <img
                                                 style={{
                                                     width: "18px",
@@ -515,7 +515,9 @@ const DiscountTaxes = (props) => {
                                             />
                                             <Switch
                                                 {...label}
-                                                style={{ marginLeft: "10px" }}
+                                                style={{
+                                                    marginLeft: "20px",
+                                                }}
                                                 checked={
                                                     dis?.status == "active"
                                                         ? true
@@ -611,7 +613,7 @@ const DiscountTaxes = (props) => {
                     </form>
                 </div>
                 <div className="discount-output">
-                    <table>
+                    <table className="table-color">
                         {tax?.length > 0 && (
                             <tr className="discount-output_head">
                                 <th>Tax Name</th>
@@ -623,8 +625,8 @@ const DiscountTaxes = (props) => {
                         {tax?.length > 0 &&
                             tax?.map((obj) => {
                                 return (
-                                    <tr className="discount-output_body">
-                                        <td>{obj.name}</td>
+                                    <tr className="discount-output_body discount-row">
+                                        <td className="row-1">{obj.name}</td>
                                         <td>
                                             {taxState &&
                                                 taxState
@@ -638,7 +640,7 @@ const DiscountTaxes = (props) => {
                                                     })}
                                         </td>
                                         <td>{obj.value}%</td>
-                                        <td>
+                                        <td className="col-3">
                                             <img
                                                 style={{
                                                     width: "18px",
