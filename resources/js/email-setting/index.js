@@ -19,6 +19,7 @@ import cross from "../../images/cross.png";
 import iconRemainder from "../../images/remainder.svg";
 import bellIcon from "../../images/bell-icon.svg";
 import emailButton from "../../images/email.svg";
+import Axios from "../Http";
 
 import "./style.scss";
 
@@ -293,6 +294,19 @@ const EmailSetting = (props) => {
         setEmailSettingProps(false);
     };
 
+    const activeInActiveReminder = async (data) => {
+        try {
+            await axios.post(
+                process.env.MIX_REACT_APP_URL + "/api/active-inactive-reminder",
+                {
+                    id: data?.id,
+                    isActive: data?.is_active,
+                }
+            );
+        } catch (err) {
+            console.log("error");
+        }
+    };
     return (
         <div>
             {!emailSettingProps && (
@@ -367,6 +381,9 @@ const EmailSetting = (props) => {
                                                 cursor: "pointer",
                                             }}
                                             src={bellIcon}
+                                            onClick={() => {
+                                                activeInActiveReminder(obj);
+                                            }}
                                         />
                                         <img
                                             style={{
