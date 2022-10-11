@@ -41,16 +41,11 @@ const VisionBenifits = ({
         )?.visibility;
 
     const handleMaterialCopayChange = (e) => {
-        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
-        if (regix.test(e.target.value)) {
-            handleChange(e);
-            if (e?.target?.value > 50) {
-                setErr("Current enter amount is more than $50");
-            } else {
-                setErr("");
-            }
-        } else if (e.target.value == "") {
-            handleChange(e);
+        handleChange(e);
+        if (e?.target?.value > 50) {
+            setErr("Current enter amount is more than $50");
+        } else {
+            setErr("");
         }
     };
     const handleFrameBenifitAvailableChange = (event) => {
@@ -227,7 +222,7 @@ const VisionBenifits = ({
                             <div className={classes["input-label"]}>$</div>
                             <input
                                 className={classes["input"]}
-                                type={"text"}
+                                type={"number"}
                                 onBlur={handleBlur}
                                 onChange={handleMaterialCopayChange}
                                 value={values?.materialCopay}

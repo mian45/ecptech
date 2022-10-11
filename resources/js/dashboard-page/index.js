@@ -138,7 +138,6 @@ const DEFAULT_INVOICES_DATA = [
 ];
 
 const mappedGraphStats = (response) => {
-    console.log("response", response);
     const stats = [
         {
             x: "Generated",

@@ -352,6 +352,7 @@ const EmailSetting = (props) => {
                                                 width: "18px",
                                                 height: "18px",
                                                 marginRight: "35.4px",
+                                                cursor: "pointer",
                                             }}
                                             src={edit}
                                             onClick={() => {
@@ -363,6 +364,7 @@ const EmailSetting = (props) => {
                                                 width: "16px",
                                                 height: "18px",
                                                 marginRight: "35.6px",
+                                                cursor: "pointer",
                                             }}
                                             src={bellIcon}
                                         />
@@ -370,6 +372,7 @@ const EmailSetting = (props) => {
                                             style={{
                                                 width: "16px",
                                                 height: "16px",
+                                                cursor: "pointer",
                                             }}
                                             src={cross}
                                             onClick={() => {

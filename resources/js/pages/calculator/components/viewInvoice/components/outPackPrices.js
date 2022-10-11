@@ -283,7 +283,7 @@ const OutPackPrices = ({
                 </div>
                 <div className={classes["invoice-slot-title"]}>
                     <span className={classes["light-title"]}>
-                        {`(${(getDiscountPercent() || 0).toFixed(2)}%) `}
+                        {`(${(getDiscountPercent() || 0)?.toFixed(2)}%) `}
                     </span>
 
                     {`$${parseInt(getDiscountPrice() || 0)?.toFixed(2)}`}
