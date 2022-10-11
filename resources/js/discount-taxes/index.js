@@ -486,20 +486,8 @@ const DiscountTaxes = (props) => {
                         {discounts.length > 0 &&
                             discounts.map((dis, index) => {
                                 return (
-                                    <tr
-                                        className="discount-output_body"
-                                        style={{
-                                            borderBottomLeftRadius: "10px",
-                                            borderBottomRightRadius: "10px",
-                                        }}
-                                    >
-                                        <td
-                                            style={{
-                                                borderBottomLeftRadius: "10px",
-                                            }}
-                                        >
-                                            {dis.name}
-                                        </td>
+                                    <tr className="discount-output_body discount-row">
+                                        <td className="row-1">{dis.name}</td>
                                         <td>{dis.value} %</td>
                                         <td
                                             style={{
@@ -643,20 +631,8 @@ const DiscountTaxes = (props) => {
                         {tax?.length > 0 &&
                             tax?.map((obj) => {
                                 return (
-                                    <tr
-                                        className="discount-output_body"
-                                        style={{
-                                            borderBottomLeftRadius: "10px",
-                                            borderBottomRightRadius: "10px",
-                                        }}
-                                    >
-                                        <td
-                                            style={{
-                                                borderBottomLeftRadius: "10px",
-                                            }}
-                                        >
-                                            {obj.name}
-                                        </td>
+                                    <tr className="discount-output_body discount-row">
+                                        <td className="row-1">{obj.name}</td>
                                         <td>
                                             {taxState &&
                                                 taxState
@@ -670,12 +646,7 @@ const DiscountTaxes = (props) => {
                                                     })}
                                         </td>
                                         <td>{obj.value}%</td>
-                                        <td
-                                            style={{
-                                                borderBottomRightRadius: "10px",
-                                                paddingRight: "0px",
-                                            }}
-                                        >
+                                        <td className="col-3">
                                             <img
                                                 style={{
                                                     width: "18px",

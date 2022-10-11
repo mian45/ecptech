@@ -220,3 +220,14 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
 }
+.discount-row {
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
+.row-1 {
+    border-bottom-left-radius: 10px !important;
+}
+.col-3 {
+    border-bottom-right-radius: 10px;
+    padding-right: 0px;
+}
