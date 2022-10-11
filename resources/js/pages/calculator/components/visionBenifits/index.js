@@ -4,7 +4,7 @@ import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
 import CustomRadio from "../../../../components/customRadio";
-import glassesIcon from "../../../../../images/calculator/sunglasses.svg";
+import glassesIcon from "../../../../../images/calculator/frame.svg";
 import lensIcon from "../../../../../images/calculator/lens.svg";
 import materialIcon from "../../../../../images/calculator/material.svg";
 import {
