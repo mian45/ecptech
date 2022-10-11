@@ -475,7 +475,7 @@ const DiscountTaxes = (props) => {
                     </form>
                 </div>
                 <div className="discount-output">
-                    <table>
+                    <table style={{ backgroundColor: "#f9f9fb" }}>
                         {discounts && (
                             <tr className="discount-output_head">
                                 <th>Discount Name</th>
@@ -486,10 +486,28 @@ const DiscountTaxes = (props) => {
                         {discounts.length > 0 &&
                             discounts.map((dis, index) => {
                                 return (
-                                    <tr className="discount-output_body">
-                                        <td>{dis.name}</td>
+                                    <tr
+                                        className="discount-output_body"
+                                        style={{
+                                            borderBottomLeftRadius: "10px",
+                                            borderBottomRightRadius: "10px",
+                                        }}
+                                    >
+                                        <td
+                                            style={{
+                                                borderBottomLeftRadius: "10px",
+                                            }}
+                                        >
+                                            {dis.name}
+                                        </td>
                                         <td>{dis.value} %</td>
-                                        <td>
+                                        <td
+                                            style={{
+                                                paddingRight: "0px",
+                                                textAlign: "center",
+                                                borderBottomRightRadius: "10px",
+                                            }}
+                                        >
                                             <img
                                                 style={{
                                                     width: "18px",
@@ -515,7 +533,9 @@ const DiscountTaxes = (props) => {
                                             />
                                             <Switch
                                                 {...label}
-                                                style={{ marginLeft: "10px" }}
+                                                style={{
+                                                    marginLeft: "20px",
+                                                }}
                                                 checked={
                                                     dis?.status == "active"
                                                         ? true
@@ -611,7 +631,7 @@ const DiscountTaxes = (props) => {
                     </form>
                 </div>
                 <div className="discount-output">
-                    <table>
+                    <table style={{ backgroundColor: "#f9f9fb" }}>
                         {tax?.length > 0 && (
                             <tr className="discount-output_head">
                                 <th>Tax Name</th>
@@ -623,8 +643,20 @@ const DiscountTaxes = (props) => {
                         {tax?.length > 0 &&
                             tax?.map((obj) => {
                                 return (
-                                    <tr className="discount-output_body">
-                                        <td>{obj.name}</td>
+                                    <tr
+                                        className="discount-output_body"
+                                        style={{
+                                            borderBottomLeftRadius: "10px",
+                                            borderBottomRightRadius: "10px",
+                                        }}
+                                    >
+                                        <td
+                                            style={{
+                                                borderBottomLeftRadius: "10px",
+                                            }}
+                                        >
+                                            {obj.name}
+                                        </td>
                                         <td>
                                             {taxState &&
                                                 taxState
@@ -638,7 +670,12 @@ const DiscountTaxes = (props) => {
                                                     })}
                                         </td>
                                         <td>{obj.value}%</td>
-                                        <td>
+                                        <td
+                                            style={{
+                                                borderBottomRightRadius: "10px",
+                                                paddingRight: "0px",
+                                            }}
+                                        >
                                             <img
                                                 style={{
                                                     width: "18px",

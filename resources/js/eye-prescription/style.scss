@@ -13,9 +13,8 @@
         &-bar {
             width: 46.75em;
 
-
             &-first {
-                background-color: #6FA5CB;
+                background-color: #6fa5cb;
                 color: white;
                 padding: 0.875em 2.06em;
                 border-radius: 0.625em 0.625em 0 0;
@@ -53,10 +52,9 @@
         margin-bottom: 69px;
         border: none;
         border-radius: 28px;
-        background-color: #6FA5CB;
+        background-color: #6fa5cb;
         color: white;
     }
-
 }
 
 .columns {
@@ -73,13 +71,9 @@
     }
 
     .ant-select-arrow {
-        border-left:
-            8px solid transparent;
-        border-right:
-            8px solid transparent;
-        border-top:
-            8px solid #d8d8d8;
-        ;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid #d8d8d8;
         font-size: 0 !important;
     }
 
@@ -88,7 +82,8 @@
         line-height: 45px !important;
     }
 
-    .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+    .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+        .ant-select-selector {
         border-color: unset !important;
         box-shadow: none !important;
     }
@@ -97,6 +92,15 @@
 .sections-divider {
     margin-block: 2.25em;
 }
-.ant-select-selection-item{
-    color:#000 !important
+.ant-select-selection-item {
+    color: #000 !important;
+}
+.eye-prescription_section-bar-second {
+    border-bottom-left-radius: 10px !important;
+    border-bottom-right-radius: 10px !important;
+}
+.eye-prescription_section-bar {
+    box-shadow: 0px 0px 6px #00000008;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
 }
