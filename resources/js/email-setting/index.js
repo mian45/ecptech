@@ -311,7 +311,9 @@ const EmailSetting = (props) => {
         <div>
             {!emailSettingProps && (
                 <div className="email-setting">
-                    <p className="email-setting_heading">Email Settings</p>
+                    <p className="email-setting_heading email-settings-title">
+                        Email Settings
+                    </p>
                     {emailArray &&
                         emailArray.map((obj, i) => {
                             return (
@@ -400,9 +402,7 @@ const EmailSetting = (props) => {
                                 </div>
                             );
                         })}
-                    <div
-                        className="email-setting_button-section button-margin"
-                    >
+                    <div className="email-setting_button-section button-margin">
                         <button
                             onClick={() => {
                                 setEmailSettingProps(true);
@@ -423,6 +423,7 @@ const EmailSetting = (props) => {
                             <div
                                 onClick={handleClick}
                                 className="email-remainder_arrow-section"
+                                style={{ cursor: "pointer" }}
                             >
                                 <img src={"/arrow-back.svg"} alt="arrow" />
                                 <p className="email-remainder_arrow-section_back">
@@ -618,7 +619,9 @@ const EmailSetting = (props) => {
                                             : handleSubmit(e);
                                     }}
                                     className="email-remainder_save-button"
-                                    style={{ marginBottom: "50px" }}
+                                    style={{
+                                        marginBottom: "50px",
+                                    }}
                                 >
                                     Save
                                 </button>

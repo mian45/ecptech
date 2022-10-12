@@ -3,6 +3,7 @@ import Chart from "react-apexcharts";
 import classes from "./styles.module.scss";
 
 const InvoicesStatsChart = ({ data }) => {
+    console.log("data", data);
     const options = {
         chart: {
             type: "bar",
@@ -45,7 +46,11 @@ const InvoicesStatsChart = ({ data }) => {
         },
         yaxis: {
             labels: {
+                align: "left",
                 style: {
+                    fontSize: "14px",
+                    maxWidth: 130,
+                    fontFamily: "Montserrat",
                     colors: [
                         "#6FA5CB",
                         "#61C77B",

@@ -31,11 +31,7 @@ const SignInForm = ({ userRole, dispatch }) => {
     return (
         <div className={classes["container"]}>
             <img src="logo.png" alt="logo" className={classes["page-logo"]} />
-            <div className={classes["login-title"]}>Log in</div>
-            <div className={classes["login-subtitle"]}>
-                Welcome to Urban Optics. Please put your login credentials below
-                to start using the app.
-            </div>
+
             <Formik
                 initialValues={LoginInitialValues}
                 validationSchema={LoginValidation}
@@ -54,6 +50,14 @@ const SignInForm = ({ userRole, dispatch }) => {
                     return (
                         <form onSubmit={handleSubmit} autoComplete="off">
                             <div className={classes["login-form"]}>
+                                <div className={classes["login-title"]}>
+                                    Log in
+                                </div>
+                                <div className={classes["login-subtitle"]}>
+                                    Welcome to Urban Optics. Please put your
+                                    login credentials below to start using the
+                                    app.
+                                </div>
                                 <div className={classes["login-wrapper"]}>
                                     <div className={classes["label"]}>
                                         Email

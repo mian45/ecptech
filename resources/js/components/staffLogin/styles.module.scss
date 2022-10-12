@@ -10,7 +10,8 @@
     font-size: 1.1em;
     font-weight: bold;
     color: #2a2a2a;
-    margin-bottom: 30px;
+    margin-bottom: 31.5px;
+    font-family: Montserrat;
 }
 .sub-container {
     width: 100%;
@@ -27,7 +28,8 @@
 .subtitle {
     font-size: 1em;
     color: #2a2a2a;
-    margin-bottom: 5px;
+    margin-bottom: 13.5px;
+    font-family: Montserrat;
 }
 .input {
     width: 100%;
@@ -44,8 +46,9 @@
     border-radius: 28px;
     border: none;
     color: #ffffff;
-    margin-top: 10px;
-    padding: 10px 15px;
+    margin-top: 29.5px;
+    padding: 13px 51px;
+    font-family: Montserrat;
     &:disabled {
         background-color: #ccc;
     }
@@ -59,7 +62,8 @@
     border-radius: 28px;
     border: none;
     color: #ffffff;
-    margin-top: 10px;
+    margin-top: 29.5px;
     padding: 10px 25px;
     margin-left: 10px;
+    font-family: Montserrat;
 }

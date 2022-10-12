@@ -58,6 +58,27 @@
 }
 
 .columns {
+    .ant-select {
+        min-width: 120px !important;
+        height: 50px;
+        border: 1px solid #dfdfdf;
+        border-radius: 23px;
+        background-color: white;
+        color: rgba($color: #dfdfdf, $alpha: 1);
+
+        &.ant-select-focused {
+            color: black;
+        }
+
+        &.ant-select-single:not(.ant-select-customize-input)
+            .ant-select-selector {
+            border: none;
+            padding: 0;
+            background-color: unset;
+            height: 50px;
+        }
+    }
+
     display: flex;
     align-items: center;
 
@@ -91,6 +112,7 @@
 
 .sections-divider {
     margin-block: 2.25em;
+    margin-bottom: 20px;
 }
 .ant-select-selection-item {
     color: #000 !important;
