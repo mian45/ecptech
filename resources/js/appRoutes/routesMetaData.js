@@ -9,7 +9,7 @@ import {
     SETTINGS_ROUTE,
 } from "./routeConstants";
 import { Redirect, Route } from "react-router-dom";
-const Home = React.lazy(() => import("../pages/dashboard"));
+const Home = React.lazy(() => import("../pages/dashboard/index"));
 const signIn = React.lazy(() => import("../pages/auth/signIn"));
 const Invoices = React.lazy(() => import("../Invoices"));
 const Payment = React.lazy(() => import("../payment"));
