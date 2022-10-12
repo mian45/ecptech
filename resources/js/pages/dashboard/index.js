@@ -53,18 +53,27 @@ const Dashboard = () => {
             } else {
                 setLabel("Last Week");
             }
-        } else if (date2.diff(date1, "day", true) == 29) {
+        } else if (new Date().getMonth()=== new Date(date1).getMonth() && 
+        new Date(date1).getMonth()=== new Date(date2).getMonth() ) {
             setLabel("This Month");
-        } else if (date2.diff(date1, "day", true) == 30) {
+        } else if (new Date().getMonth() !== new Date(date1).getMonth() &&
+        new Date(date1).getMonth()=== new Date(date2).getMonth()) {
             setLabel("Last Month");
         } else if (
             new Date(date1).getFullYear() == new Date().getFullYear() - 1 &&
             new Date(date2).getFullYear() == new Date().getFullYear() - 1
         ) {
-            //last Year
             setLabel("Last Year");
-        } else {
-            // custom
+        }else if(new Date(endDate).getMonth()-new Date(startDate).getMonth()==2){
+            if(new Date(startDate).getMonth()<=new Date().getMonth() && new Date().getMonth()<=new Date(endDate).getMonth())
+            {setLabel("This Quarter")}
+            else{
+
+                setLabel("Last Quarter")
+            }
+        }
+        
+         else {
             setLabel("Custom");
         }
         setApiDates({
