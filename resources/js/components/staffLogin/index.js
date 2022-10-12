@@ -115,7 +115,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                     />
                                 </div>
                             </div>
-                            <div className="form-group ">
+                            <div>
                                 <button
                                     type="submit"
                                     className={classes["button"]}

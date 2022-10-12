@@ -5,58 +5,64 @@ import Axios from "../../../Http";
 import { connect } from "react-redux";
 import dayjs from "dayjs";
 
-const ProfitStatsChart = ({ userId , dates}) => {
-    const {startDate,endDate} = dates
+const ProfitStatsChart = ({ userId, dates }) => {
+    const { startDate, endDate } = dates;
     const options = getChartOptions();
-    const [data,setData]=useState([])
-    const [startTag,setStartTag]=useState("")
-    const [endTag,setEndTag]=useState("")
+    const [data, setData] = useState([]);
+    const [startTag, setStartTag] = useState("");
+    const [endTag, setEndTag] = useState("");
     const getProfitStats = async () => {
         try {
-            const formData= new FormData();
-            formData.append("start_date",`${dayjs(startDate).format("MM/DD/YYYY")}`)
-            formData.append("end_date",`${dayjs(endDate).format("MM/DD/YYYY")}`)
-            
+            const formData = new FormData();
+            formData.append(
+                "start_date",
+                `${dayjs(startDate).format("MM/DD/YYYY")}`
+            );
+            formData.append(
+                "end_date",
+                `${dayjs(endDate).format("MM/DD/YYYY")}`
+            );
+
             const res = await Axios.post(
                 process.env.MIX_REACT_APP_URL + "/api/profit-comparison",
                 formData
             );
-            if(res.data.statusCode===200){
-                const range=res?.data?.data?.range
-                const details= Object.keys(range).map((key)=>{
-                    const item =range[key];
-                    return item.total
+            if (res.data.statusCode === 200) {
+                const range = res?.data?.data?.range;
+                const details = Object.keys(range).map((key) => {
+                    const item = range[key];
+                    return item.total;
                 });
-                const det= Object.keys(range).map((key)=>{
-                    const item =range[key];
-                    return item[res?.data?.data?.type]
+                const det = Object.keys(range).map((key) => {
+                    const item = range[key];
+                    return item[res?.data?.data?.type];
                 });
-                setData(details)
-                setStartTag(det[0])
-                setEndTag(det[det.length-1])
-        }
+                setData(details);
+                setStartTag(det[0]);
+                setEndTag(det[det.length - 1]);
+            }
         } catch (err) {
             console.log("Error while getting profit stats", err);
         }
     };
     useEffect(() => {
-        console.log(dates)
-       
+        console.log(dates);
+
         getProfitStats();
     }, [dates]);
 
     return (
-        <div className={classes["container"]}>
+        <div className={`${classes["container"]} profit-chart`}>
             <div className={classes["label"]}>Profit Comparison</div>
             <Chart
                 options={options}
-                series={[{data:data}]}
+                series={[{ data: data }]}
                 type="area"
                 height={200}
             />
             <div className={classes["y-axis-label"]}>
                 <div className={classes["date"]}>{startTag}</div>
-                <div className={classes["date"]}>{endTag}</div>
+                <div className={classes["date-end"]}>{endTag}</div>
             </div>
         </div>
     );

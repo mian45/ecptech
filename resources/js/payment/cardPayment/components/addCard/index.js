@@ -12,7 +12,9 @@ const AddNewCard = ({ onClick }) => {
                     className={classes["add-icon"]}
                 />
             </div>
-            <div className={classes["title"]}>Add New Card</div>
+            <div className={classes["title"]}>
+                Add <br /> New Card
+            </div>
         </div>
     );
 };
