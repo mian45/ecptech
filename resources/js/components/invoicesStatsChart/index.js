@@ -3,13 +3,28 @@ import Chart from "react-apexcharts";
 import classes from "./styles.module.scss";
 
 const InvoicesStatsChart = ({ data }) => {
-    console.log("data", data);
     const options = {
         chart: {
             type: "bar",
             toolbar: {
                 show: false,
             },
+            dropShadow: {
+                enabled: true,
+                top: 0,
+                left: 0,
+                blur: 6,
+                opacity: 0.5,
+                color: "#00000029",
+            },
+        },
+        dropShadow: {
+            enabled: true,
+            top: 0,
+            left: 0,
+            blur: 3,
+            opacity: 0.5,
+            color: "yellow",
         },
         legend: {
             show: false,

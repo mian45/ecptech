@@ -234,6 +234,8 @@ input[type="number"] {
 }
 .ant-tabs-tab {
     color: #2a2a2a !important;
+    font-size: 16px !important;
+    font-family: Montserrat !important;
     &:nth-child(1) {
         color: #2a2a2a !important;
     }
@@ -241,6 +243,8 @@ input[type="number"] {
 
 .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
     color: #6fa5cb !important;
+    font-size: 16px !important;
+    font-family: Montserrat !important;
     &:nth-child(1) {
         color: #6fa5cb !important;
     }
@@ -257,4 +261,14 @@ input[type="number"] {
 }
 .performance-chart .apexcharts-canvas {
     left: -14px !important;
+}
+.ant-tabs-top > .ant-tabs-nav::before {
+    width: 635px !important;
+}
+
+.ant-popover-inner {
+    border-radius: 10px !important;
+}
+.ant-popover-inner-content {
+    border-radius: 10px !important;
 }

@@ -314,103 +314,111 @@ const EmailSetting = (props) => {
                     <p className="email-setting_heading email-settings-title">
                         Email Settings
                     </p>
-                    {emailArray &&
-                        emailArray.map((obj, i) => {
-                            return (
-                                <div className="email-setting-content">
-                                    <div className="email-setting-content-section">
-                                        <div className="email-setting-content-section-image">
-                                            <img
-                                                src={
-                                                    obj.type == "reminder"
-                                                        ? iconRemainder
-                                                        : emailButton
-                                                }
-                                            />
+                    <div className="email-setting-slots-container">
+                        {emailArray &&
+                            emailArray.map((obj, i) => {
+                                return (
+                                    <div className="email-setting-content">
+                                        <div className="email-setting-content-section">
+                                            <div className="email-setting-content-section-image">
+                                                <img
+                                                    src={
+                                                        obj.type == "reminder"
+                                                            ? iconRemainder
+                                                            : emailButton
+                                                    }
+                                                />
+                                            </div>
+                                            <div>
+                                                <div>
+                                                    <p className="email-setting-content-section-heading">
+                                                        {obj.subject}
+                                                    </p>
+                                                </div>
+                                                <div className="email-setting-content-section-subsection">
+                                                    <p
+                                                        className="email-setting-content-section-subsection-subheading"
+                                                        style={
+                                                            obj.type ==
+                                                            "reminder"
+                                                                ? {
+                                                                      color: "#61C77B",
+                                                                  }
+                                                                : {
+                                                                      color: "#6FA5CB",
+                                                                  }
+                                                        }
+                                                    >
+                                                        {obj.type == "reminder"
+                                                            ? obj.type
+                                                            : "Order Success"}
+                                                    </p>
+                                                    <p
+                                                        className="email-setting-content-section-subsection-subheading"
+                                                        style={{
+                                                            color: "#CBCBCB",
+                                                        }}
+                                                    >
+                                                        {obj.type == "reminder"
+                                                            ? `${obj.send_after_day} days after invoice`
+                                                            : "Payment Completed"}
+                                                    </p>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div>
-                                            <div>
-                                                <p className="email-setting-content-section-heading">
-                                                    {obj.subject}
-                                                </p>
-                                            </div>
-                                            <div className="email-setting-content-section-subsection">
-                                                <p
-                                                    className="email-setting-content-section-subsection-subheading"
-                                                    style={
-                                                        obj.type == "reminder"
-                                                            ? {
-                                                                  color: "#61C77B",
-                                                              }
-                                                            : {
-                                                                  color: "#6FA5CB",
-                                                              }
-                                                    }
-                                                >
-                                                    {obj.type == "reminder"
-                                                        ? obj.type
-                                                        : "Order Success"}
-                                                </p>
-                                                <p
-                                                    className="email-setting-content-section-subsection-subheading"
-                                                    style={{ color: "#CBCBCB" }}
-                                                >
-                                                    {obj.type == "reminder"
-                                                        ? `${obj.send_after_day} days after invoice`
-                                                        : "Payment Completed"}
-                                                </p>
-                                            </div>
+                                            <img
+                                                style={{
+                                                    width: "18px",
+                                                    height: "18px",
+                                                    marginRight: "35.4px",
+                                                    cursor: "pointer",
+                                                }}
+                                                src={edit}
+                                                onClick={() => {
+                                                    updateHandler(obj);
+                                                }}
+                                            />
+                                            <img
+                                                style={{
+                                                    width: "16px",
+                                                    height: "18px",
+                                                    marginRight: "35.6px",
+                                                    cursor: "pointer",
+                                                }}
+                                                src={bellIcon}
+                                                onClick={() => {
+                                                    activeInActiveReminder(obj);
+                                                }}
+                                            />
+                                            <img
+                                                style={{
+                                                    width: "16px",
+                                                    height: "16px",
+                                                    cursor: "pointer",
+                                                }}
+                                                src={cross}
+                                                onClick={() => {
+                                                    handleDelete(obj.id);
+                                                }}
+                                            />
                                         </div>
                                     </div>
-                                    <div>
-                                        <img
-                                            style={{
-                                                width: "18px",
-                                                height: "18px",
-                                                marginRight: "35.4px",
-                                                cursor: "pointer",
-                                            }}
-                                            src={edit}
-                                            onClick={() => {
-                                                updateHandler(obj);
-                                            }}
-                                        />
-                                        <img
-                                            style={{
-                                                width: "16px",
-                                                height: "18px",
-                                                marginRight: "35.6px",
-                                                cursor: "pointer",
-                                            }}
-                                            src={bellIcon}
-                                            onClick={() => {
-                                                activeInActiveReminder(obj);
-                                            }}
-                                        />
-                                        <img
-                                            style={{
-                                                width: "16px",
-                                                height: "16px",
-                                                cursor: "pointer",
-                                            }}
-                                            src={cross}
-                                            onClick={() => {
-                                                handleDelete(obj.id);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    <div className="email-setting_button-section button-margin">
-                        <button
-                            onClick={() => {
-                                setEmailSettingProps(true);
-                            }}
-                            className="email-setting_button-section_save-button"
-                        >
-                            Add New
-                        </button>
+                                );
+                            })}
+                        <div className="save-button-wrpper">
+                            <div className="email-setting_button-section button-margin">
+                                <button
+                                    onClick={() => {
+                                        setEmailSettingProps(true);
+                                    }}
+                                    className="email-setting_button-section_save-button"
+                                    style={{ float: "left" }}
+                                >
+                                    Add New
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             )}
@@ -430,7 +438,7 @@ const EmailSetting = (props) => {
                                     Back
                                 </p>
                             </div>
-                            <div className="email-remainder_input-sections">
+                            <div className="email-remainder_input-sections reminders-container">
                                 <div className="email-remainder_input-sections_input-section">
                                     <p>Email Type</p>
                                     <Select
@@ -509,14 +517,19 @@ const EmailSetting = (props) => {
                                 </div>
                                 {reminderType != "orderComplete" && (
                                     <>
-                                        <p className="email-remainder_schedule">
-                                            Schedule
-                                        </p>
+                                        <div className="reminders-container-schedule">
+                                            <p className="email-remainder_schedule">
+                                                Schedule
+                                            </p>
+                                        </div>
                                         <div className="email-remainder_input-sections_input-section">
-                                            <p>Send date</p>
+                                            <p>Send Date</p>
                                             {reminderType == "custom" ? (
                                                 <input
-                                                    className="email-remainder_input-sections_input-section_input"
+                                                    className="email-remainder_input-sections_input-section_input picker-padding"
+                                                    style={{
+                                                        paddingRight: "10px",
+                                                    }}
                                                     value={dates}
                                                     onChange={(e) => {
                                                         setDates(
@@ -612,19 +625,21 @@ const EmailSetting = (props) => {
                                         </div>
                                     </>
                                 )}
-                                <button
-                                    onClick={(e) => {
-                                        idState
-                                            ? handleEdit(e)
-                                            : handleSubmit(e);
-                                    }}
-                                    className="email-remainder_save-button"
-                                    style={{
-                                        marginBottom: "50px",
-                                    }}
-                                >
-                                    Save
-                                </button>
+                                <div className="reminders-container-schedule">
+                                    <button
+                                        onClick={(e) => {
+                                            idState
+                                                ? handleEdit(e)
+                                                : handleSubmit(e);
+                                        }}
+                                        className="email-remainder_save-button"
+                                        style={{
+                                            marginBottom: "50px",
+                                        }}
+                                    >
+                                        Save
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
