@@ -1,7 +1,10 @@
 import React from "react";
 import classes from "../styles.module.scss";
+import dayjs from "dayjs";
 
 const UserInfo = ({ receipt }) => {
+    const date = new Date(receipt?.userInfo?.dob || new Date());
+    const dob = dayjs(date).format("MMM DD, YYYY");
     return (
         <div className={classes["sub-left-container"]}>
             <InfoSlot
@@ -12,10 +15,7 @@ const UserInfo = ({ receipt }) => {
                 title={"Customer Name"}
                 subTitle={`${receipt?.userInfo?.firstName} ${receipt?.userInfo?.lastName}`}
             />
-            <InfoSlot
-                title={"Date of Birth"}
-                subTitle={receipt?.userInfo?.dob}
-            />
+            <InfoSlot title={"Date of Birth"} subTitle={dob || ""} />
             <InfoSlot
                 title={"Email"}
                 subTitle={(receipt?.userInfo?.email || "").slice(0, 20)}

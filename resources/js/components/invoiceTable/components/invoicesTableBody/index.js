@@ -24,8 +24,8 @@ const InvoicesTableBodySlot = ({ data }) => {
                 <div
                     className={
                         data?.status === "paid" || data?.status === "discard"
-                            ? classes["paid-tatus-tag"]
-                            : classes["un-paid-tatus-tag"]
+                            ? classes["paid-status-tag"]
+                            : classes["un-paid-status-tag"]
                     }
                 >
                     {data?.status}
