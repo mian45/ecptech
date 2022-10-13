@@ -160,7 +160,7 @@ const mappedGraphStats = (response) => {
         },
         {
             x: "Capture Rate",
-            y: Math.ceil(percent) || 1,
+            y: Math.ceil(percent) || 0,
             percentage: response["capture_rate"],
         },
 
