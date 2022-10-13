@@ -18,6 +18,7 @@ import fontColor from "../../images/color.png";
 import cross from "../../images/cross.png";
 import iconRemainder from "../../images/remainder.svg";
 import bellIcon from "../../images/bell-icon.svg";
+import bellCloseIcon from "../../images/bell-close.svg";
 import emailButton from "../../images/email.svg";
 import Axios from "../Http";
 
@@ -300,9 +301,19 @@ const EmailSetting = (props) => {
                 process.env.MIX_REACT_APP_URL + "/api/active-inactive-reminder",
                 {
                     id: data?.id,
-                    isActive: data?.is_active,
+                    isActive: data?.is_active === 1 ? 0 : 1,
                 }
             );
+            const emails = [...emailArray];
+            const selectedValue = [...emails].find(
+                (singleEmail) => data?.id === singleEmail.id
+            );
+            selectedValue.is_active = data?.is_active === 1 ? 0 : 1;
+            const editIndex = [...emails].indexOf(
+                (singleEmail) => data?.id === singleEmail.id
+            );
+            [...emails].splice(editIndex, 1, selectedValue);
+            setEmailArray([...emails]);
         } catch (err) {
             console.log("error");
         }
@@ -386,7 +397,11 @@ const EmailSetting = (props) => {
                                                     marginRight: "35.6px",
                                                     cursor: "pointer",
                                                 }}
-                                                src={bellIcon}
+                                                src={
+                                                    obj?.is_active === 1
+                                                        ? bellIcon
+                                                        : bellCloseIcon
+                                                }
                                                 onClick={() => {
                                                     activeInActiveReminder(obj);
                                                 }}
