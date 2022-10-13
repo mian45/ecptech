@@ -12,6 +12,7 @@ const LensesType = ({ userId }) => {
     const [isBrands, setIsBrands] = useState(false);
     const [lensesList, setLensesList] = useState([]);
     const [selectedLensType, setSelectedLensType] = useState("");
+    const [selectedRow, setSelectedRow] = useState("");
 
     useEffect(() => {
         const getLenses = async () => {
@@ -22,7 +23,6 @@ const LensesType = ({ userId }) => {
                         params: { userId: userId },
                     }
                 );
-                console.log("res", res?.data?.data);
                 setLensesList(res?.data?.data || []);
             } catch (err) {
                 console.log("error while get lenses");
@@ -30,6 +30,21 @@ const LensesType = ({ userId }) => {
         };
         getLenses();
     }, []);
+
+    const submitLensesData = async () => {
+        try {
+            const payload = {
+                user_id: userId,
+                data: lensesList,
+            };
+            await Axios.post(
+                `${process.env.MIX_REACT_APP_URL}/api/update-lense-setting`,
+                payload
+            );
+        } catch (err) {
+            console.log("error while update lenses");
+        }
+    };
 
     const onLensTypeClick = (value) => {
         setIsBrands(true);
@@ -39,25 +54,42 @@ const LensesType = ({ userId }) => {
         setIsBrands(false);
     };
     return (
-        <div className={classes["container"]}>
-            <div className={classes["left-container"]}>
-                {isBrands ? (
-                    <LensesTypeBrandsList
-                        onBackClick={onGoBackClick}
+        <>
+            <div className={classes["container"]}>
+                <div className={classes["left-container"]}>
+                    {isBrands ? (
+                        <LensesTypeBrandsList
+                            onBackClick={onGoBackClick}
+                            selectedLensType={selectedLensType}
+                            lenses={lensesList}
+                            selectedRow={selectedRow}
+                            setSelectedRow={setSelectedRow}
+                        />
+                    ) : (
+                        <LensesTypeList
+                            onClick={onLensTypeClick}
+                            lenses={lensesList}
+                        />
+                    )}
+                </div>
+                <div className={classes["right-container"]}>
+                    <CollectionSection
+                        selectedRow={selectedRow}
+                        lenses={lensesList}
                         selectedLensType={selectedLensType}
-                        lenses={lensesList}
+                        setLensesList={setLensesList}
                     />
-                ) : (
-                    <LensesTypeList
-                        onClick={onLensTypeClick}
-                        lenses={lensesList}
-                    />
-                )}
+                </div>
             </div>
-            <div className={classes["right-container"]}>
-                <CollectionSection />
+            <div className={classes["save-button-wrapper"]}>
+                <button
+                    className={classes["save-button"]}
+                    onClick={submitLensesData}
+                >
+                    Save
+                </button>
             </div>
-        </div>
+        </>
     );
 };
 
@@ -66,33 +98,116 @@ const mapStateToProps = (state) => ({
 });
 export default connect(mapStateToProps)(LensesType);
 
-const CollectionSection = () => {
+const CollectionSection = ({
+    selectedRow,
+    lenses,
+    selectedLensType,
+    setLensesList,
+}) => {
+    const getCollections = () => {
+        const brand = lenses.find((lens) => lens?.title === selectedLensType);
+        const collection = brand?.brands.find(
+            (singleBrand) => singleBrand?.title === selectedRow
+        );
+        return collection?.collections;
+    };
+    const handleCheckbox = (value, collection) => {
+        const lens = [...lenses];
+
+        const lensType = [...lens].find(
+            (lens) => lens?.title === selectedLensType
+        );
+        const brand = lensType?.brands.find(
+            (singleBrand) => singleBrand?.title === selectedRow
+        );
+        const selectedCollection = brand?.collections.find(
+            (collec) => collec?.id === collection?.id
+        );
+        selectedCollection.status = value === true ? "active" : "inactive";
+        setLensesList([...lens]);
+    };
+    const handleDisplayNameChange = (value, collection) => {
+        const lens = [...lenses];
+
+        const lensType = [...lens].find(
+            (lens) => lens?.title === selectedLensType
+        );
+        const brand = lensType?.brands.find(
+            (singleBrand) => singleBrand?.title === selectedRow
+        );
+        const selectedCollection = brand?.collections.find(
+            (collec) => collec?.id === collection?.id
+        );
+        selectedCollection.display_name = value;
+        setLensesList([...lens]);
+    };
+    const handleAmountNameChange = (value, collection) => {
+        const lens = [...lenses];
+
+        const lensType = [...lens].find(
+            (lens) => lens?.title === selectedLensType
+        );
+        const brand = lensType?.brands.find(
+            (singleBrand) => singleBrand?.title === selectedRow
+        );
+        const selectedCollection = brand?.collections.find(
+            (collec) => collec?.id === collection?.id
+        );
+        selectedCollection.custom_price = value;
+        setLensesList([...lens]);
+    };
+    if (!selectedRow) return <></>;
     return (
         <div className={classes["collection-container"]}>
-            <div className={classes["collection-label"]}>Shamir Collection</div>
-            <CollectionSlot />
+            <div
+                className={classes["collection-label"]}
+            >{`${selectedRow} Brands`}</div>
+            {getCollections()?.map((collection, index) => {
+                return (
+                    <CollectionSlot
+                        key={`${collection?.title || ""}+${index}`}
+                        collection={collection}
+                        handleCheckbox={handleCheckbox}
+                        handleDisplayNameChange={handleDisplayNameChange}
+                        handleAmountNameChange={handleAmountNameChange}
+                    />
+                );
+            })}
         </div>
     );
 };
 
-const CollectionSlot = () => {
+const CollectionSlot = ({
+    collection,
+    handleCheckbox,
+    handleDisplayNameChange,
+    handleAmountNameChange,
+}) => {
     const [isEdit, setIsEdit] = useState(false);
+
     return (
         <>
             {isEdit ? (
-                <div className={classes["collection-edit-container"]}>
+                <div
+                    className={classes["collection-edit-container"]}
+                    id={collection?.title}
+                >
                     <div className={classes["collection-edit-header-slot"]}>
                         <div className={classes["collection-left-container"]}>
                             <CustomCheckbox
                                 label={""}
-                                defaultChecked={true || false}
-                                onValueChange={(value) => {}}
-                                id="isCopayHighIndex"
-                                name="isCopayHighIndex"
+                                defaultChecked={
+                                    collection?.status === "active"
+                                        ? true
+                                        : false
+                                }
+                                onValueChange={(value) => {
+                                    handleCheckbox(value, collection);
+                                }}
                                 containerClass={classes["checkbox"]}
                             />
                             <div className={classes["edit-content-title"]}>
-                                Shamir Autograph III
+                                {collection?.title || ""}
                             </div>
                         </div>
                         <img
@@ -108,6 +223,13 @@ const CollectionSlot = () => {
                     <input
                         className={classes["edit-slot-input"]}
                         placeholder={"Enter Display Name"}
+                        value={collection?.display_name || ""}
+                        onChange={(e) =>
+                            handleDisplayNameChange(
+                                e?.target?.value,
+                                collection
+                            )
+                        }
                     />
                     <div className={classes["edit-slot-title"]}>
                         Retail Amount
@@ -115,10 +237,17 @@ const CollectionSlot = () => {
                     <input
                         className={classes["edit-slot-input"]}
                         placeholder={"Enter Amount"}
+                        value={collection?.custom_price || ""}
+                        onChange={(e) =>
+                            handleAmountNameChange(e?.target?.value, collection)
+                        }
                     />
                 </div>
             ) : (
-                <div className={classes["collection-show-container"]}>
+                <div
+                    className={classes["collection-show-container"]}
+                    id={collection?.title}
+                >
                     <div className={classes["collection-left-container"]}>
                         <div
                             className={
@@ -127,14 +256,19 @@ const CollectionSlot = () => {
                         >
                             <CustomCheckbox
                                 label={""}
-                                defaultChecked={true || false}
-                                onValueChange={(value) => {}}
-                                id="isCopayHighIndex"
-                                name="isCopayHighIndex"
+                                defaultChecked={
+                                    collection?.status === "active"
+                                        ? true
+                                        : false
+                                }
+                                onValueChange={(value) => {
+                                    handleCheckbox(value, collection);
+                                }}
+                                containerClass={classes["checkbox"]}
                             />
                             <div className={classes["collection-content"]}>
                                 <div className={classes["show-content-title"]}>
-                                    Shamir Autograph III
+                                    {collection?.title || ""}
                                 </div>
                                 <div
                                     className={classes["show-content-heading"]}
@@ -145,7 +279,7 @@ const CollectionSlot = () => {
                                             classes["show-content-value"]
                                         }
                                     >
-                                        ---
+                                        {collection?.display_name || "---"}
                                     </span>
                                 </div>
                                 <div
@@ -157,7 +291,7 @@ const CollectionSlot = () => {
                                             classes["show-content-value"]
                                         }
                                     >
-                                        ---
+                                        {collection?.custom_price || "---"}
                                     </span>
                                 </div>
                             </div>
@@ -192,8 +326,13 @@ const LensesTypeList = ({ onClick, lenses }) => {
     );
 };
 
-const LensesTypeBrandsList = ({ onBackClick, selectedLensType, lenses }) => {
-    const [selectedRow, setSelectedRow] = useState("");
+const LensesTypeBrandsList = ({
+    onBackClick,
+    selectedLensType,
+    lenses,
+    setSelectedRow,
+    selectedRow,
+}) => {
     const getBrandsList = () => {
         const brand = lenses.find((lens) => lens?.title === selectedLensType);
         return brand?.brands || [];
@@ -209,7 +348,9 @@ const LensesTypeBrandsList = ({ onBackClick, selectedLensType, lenses }) => {
                     alt={"icon"}
                     className={classes["black-icon"]}
                 />
-                <div className={classes["lenses-list-brand-title"]}>Brands</div>
+                <div className={classes["lenses-list-brand-title"]}>
+                    Manufacturers
+                </div>
             </div>
             {getBrandsList()?.map((brand, index) => {
                 return (

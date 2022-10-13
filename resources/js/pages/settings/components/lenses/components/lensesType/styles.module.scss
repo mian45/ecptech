@@ -33,6 +33,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding-bottom: 39px;
 }
 .lenses-label-slot-container {
     display: flex;
@@ -136,6 +137,7 @@
     font-family: Montserrat;
     color: #2a2a2a;
     margin-bottom: 10px;
+    user-select: none;
 }
 .show-content-heading {
     font-size: 16px;
@@ -143,12 +145,15 @@
     font-family: Montserrat;
     color: #2a2a2a;
     margin-bottom: 10px;
+    user-select: none;
 }
 .edit-content-title {
     font-size: 16px;
     font-weight: bold;
     font-family: Montserrat;
     color: #2a2a2a;
+    user-select: none;
+    user-select: none;
 }
 .show-content-value {
     font-size: 16px;
@@ -179,6 +184,7 @@
     height: 13px;
     object-fit: contain;
     cursor: pointer;
+    user-select: none;
 }
 .checkbox {
     margin-bottom: 0px !important;
@@ -201,9 +207,32 @@
     height: 45px;
     padding-left: 19px;
     padding-right: 19px;
+    outline: none;
     & ::placeholder {
         color: #dfdfdf;
         font-size: 16px;
         font-family: Montserrat;
+    }
+}
+.save-button-wrapper {
+    margin-top: 40px;
+    width: 810px;
+    text-align: right;
+}
+.save-button {
+    color: #fff;
+    font-size: 16px;
+    font-family: Montserrat;
+    padding: 8px 30px;
+    background-color: #6fa5cb;
+    border-radius: 28px;
+    border: none;
+    height: 45px;
+    margin-bottom: 100px;
+    &:hover {
+        background-color: #518fbb;
+    }
+    &:disabled {
+        background-color: #cbcbcb;
     }
 }

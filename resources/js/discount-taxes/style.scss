@@ -19,7 +19,7 @@
                     padding-inline-start: 22px;
                     border: 1px solid #dfdfdf;
                     border-radius: 23px;
-
+                    outline: none;
                     &::placeholder {
                         color: rgba($color: #cbcbcb, $alpha: 1);
                     }
@@ -45,7 +45,7 @@
                     padding-inline-start: 22px;
                     border: 1px solid #dfdfdf;
                     border-radius: 23px;
-
+                    outline: none;
                     &::placeholder {
                         color: rgba($color: #cbcbcb, $alpha: 1);
                     }
@@ -89,7 +89,6 @@
 .ant-select-single .ant-select-selector .ant-select-selection-item {
     line-height: 20px;
     padding-left: 22px;
-    margin-top: -8px !important;
 
     &:focus-visible {
         outline: 0;

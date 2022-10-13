@@ -14,7 +14,8 @@
     font-size: 16px;
     padding: 10px 20px;
     color: #747474;
-    &::placeholder {
+    outline: none;
+    & ::placeholder {
         color: #cbcbcb;
     }
 }
