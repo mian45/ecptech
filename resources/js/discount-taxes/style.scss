@@ -2,8 +2,6 @@
     font-family: Montserrat;
 
     &_first {
-        padding-left: 221px;
-
         &-form {
             display: flex;
             align-items: flex-end;
@@ -23,7 +21,7 @@
                     border-radius: 23px;
 
                     &::placeholder {
-                        color: rgba($color: #dfdfdf, $alpha: 1);
+                        color: rgba($color: #cbcbcb, $alpha: 1);
                     }
 
                     &:focus-visible {
@@ -42,13 +40,14 @@
             &_section {
                 input {
                     min-width: 284px;
+                    height: 45px;
                     padding-block: 13px;
                     padding-inline-start: 22px;
                     border: 1px solid #dfdfdf;
                     border-radius: 23px;
 
                     &::placeholder {
-                        color: rgba($color: #dfdfdf, $alpha: 1);
+                        color: rgba($color: #cbcbcb, $alpha: 1);
                     }
                 }
 
@@ -60,23 +59,26 @@
     }
 }
 
-.ant-select {
-    min-width: 284px;
-    height: 50px;
-    border: 1px solid #dfdfdf;
-    border-radius: 23px;
-    background-color: white;
-    color: rgba($color: #dfdfdf, $alpha: 1);
+.discount-tax {
+    .ant-select {
+        min-width: 284px !important;
+        height: 45px;
+        border: 1px solid #dfdfdf;
+        border-radius: 23px;
+        background-color: white;
+        color: rgba($color: #dfdfdf, $alpha: 1);
 
-    &.ant-select-focused {
-        color: black;
-    }
+        &.ant-select-focused {
+            color: black;
+        }
 
-    &.ant-select-single:not(.ant-select-customize-input) .ant-select-selector {
-        border: none;
-        padding: 0;
-        background-color: unset;
-        height: 50px;
+        &.ant-select-single:not(.ant-select-customize-input)
+            .ant-select-selector {
+            border: none;
+            padding: 0;
+            background-color: unset;
+            height: 50px;
+        }
     }
 }
 
@@ -87,6 +89,7 @@
 .ant-select-single .ant-select-selector .ant-select-selection-item {
     line-height: 20px;
     padding-left: 22px;
+    margin-top: -8px !important;
 
     &:focus-visible {
         outline: 0;
@@ -163,6 +166,7 @@
     color: #2a2a2a !important;
     margin-top: 36px !important;
     margin-bottom: 36px !important;
+    width: 710px;
 }
 
 .main {
@@ -223,6 +227,7 @@ input[type="number"] {
 .discount-row {
     border-bottom-left-radius: 10px !important;
     border-bottom-right-radius: 10px !important;
+    font-size: 16px !important;
 }
 .row-1 {
     border-bottom-left-radius: 10px !important;
@@ -238,4 +243,18 @@ input[type="number"] {
     padding-right: 0px !important;
     text-align: center !important;
     border-bottom-right-radius: 10px !important;
+}
+
+.discount-tax-con {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: column;
+}
+.input-title {
+    font-weight: 400 !important;
+    margin-bottom: 16px !important;
+    font-family: Montserrat !important;
+    color: #2a2a2a !important;
 }

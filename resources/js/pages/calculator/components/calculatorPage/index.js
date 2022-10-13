@@ -472,19 +472,19 @@ const CalculatorScreen = () => {
                                 ) : (
                                     <></>
                                 )}
-                                <button
-                                    className={classes["submit-button"]}
-                                    type={"submit"}
-                                    disabled={
-                                        formProps?.values?.isFrameBenifit ===
-                                            FrameBenifitAvailableEnum.onlyThisTime &&
-                                        formProps?.values?.isLensBenifit ===
-                                            LensBenifitAvailableEnum.onlyThisTime
-                                    }
-                                >
-                                    Create Invoice
-                                </button>
                             </div>
+                            <button
+                                className={classes["submit-button"]}
+                                type={"submit"}
+                                disabled={
+                                    formProps?.values?.isFrameBenifit ===
+                                        FrameBenifitAvailableEnum.onlyThisTime &&
+                                    formProps?.values?.isLensBenifit ===
+                                        LensBenifitAvailableEnum.onlyThisTime
+                                }
+                            >
+                                Create Invoice
+                            </button>
                         </form>
                     );
                 }}

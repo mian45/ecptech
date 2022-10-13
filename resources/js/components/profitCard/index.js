@@ -27,9 +27,9 @@ const ProfitCard = ({ cartData, stats }) => {
                     className={classes["tag-line"]}
                     style={{
                         color:
-                            stats?.diff[0] == 0 || stats?.diff[0]
+                            stats?.diff[0] == 0 || stats?.diff[0] == "+"
                                 ? "#61C77B"
-                                : "#61C77B",
+                                : "#FF0000",
                     }}
                 >
                     {stats?.diff} from last month

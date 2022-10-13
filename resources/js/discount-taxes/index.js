@@ -425,12 +425,12 @@ const DiscountTaxes = (props) => {
     return (
         <div className="discount-container discount-tax">
             <p className="main">{`Discounts & Taxes`}</p>
-            <div className="discount-container_first">
+            <div className="discount-container_first discount-tax-con">
                 <p className="heading">Discounts</p>
                 <div>
                     <form className="discount-container_first-form">
                         <div className="discount-container_first-form_section">
-                            <p>Discount Name</p>
+                            <p className="input-title">Discount Name</p>
                             <input
                                 placeholder="Discount Name"
                                 value={discountName}
@@ -440,7 +440,7 @@ const DiscountTaxes = (props) => {
                             />
                         </div>
                         <div className="discount-container_first-form_section">
-                            <p>Discount Value</p>
+                            <p className="input-title">Discount Value</p>
                             <input
                                 placeholder="Discount Value"
                                 value={`${discountTax}%`}
@@ -538,7 +538,7 @@ const DiscountTaxes = (props) => {
                     </table>
                 </div>
             </div>
-            <div className="discount-container_first">
+            <div className="discount-container_first discount-tax-con">
                 <p className="heading">Taxes</p>
                 <div className="sections">
                     <form
@@ -547,7 +547,7 @@ const DiscountTaxes = (props) => {
                     >
                         <div>
                             <div className="discount-container_second-form_section">
-                                <p>Tax Value</p>
+                                <p className="input-title">Tax Value</p>
                                 <input
                                     type={"number"}
                                     min={0}
@@ -561,7 +561,7 @@ const DiscountTaxes = (props) => {
                         </div>
                         <div className="second-section">
                             <div className="discount-container_second-form_section">
-                                <p>Tax Name</p>
+                                <p className="input-title">Tax Name</p>
                                 <input
                                     placeholder="Enter Tax Name"
                                     value={taxName}
@@ -571,7 +571,7 @@ const DiscountTaxes = (props) => {
                                 />
                             </div>
                             <div>
-                                <p>State</p>
+                                <p className="input-title">State</p>
                                 <Select
                                     defaultValue="Select State"
                                     style={{
@@ -671,12 +671,12 @@ const DiscountTaxes = (props) => {
                     </table>
                 </div>
             </div>
-            <div className="discount-container_first">
+            <div className="discount-container_first discount-tax-con">
                 <p className="heading">Shipping</p>
                 <div>
                     <form className="discount-container_first-form">
                         <div className="discount-container_first-form_section">
-                            <p>Enter Label</p>
+                            <p className="input-title">Enter Label</p>
                             <input
                                 placeholder="Enter Text"
                                 value={shippingName}
@@ -686,7 +686,7 @@ const DiscountTaxes = (props) => {
                             />
                         </div>
                         <div className="discount-container_first-form_section">
-                            <p>Add Shipping Amount</p>
+                            <p className="input-title">Add Shipping Amount</p>
                             <input
                                 placeholder="Enter Amount"
                                 type={"number"}

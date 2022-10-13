@@ -103,7 +103,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         value={values.password}
                                         className={classes["input"]}
                                         name="password"
-                                        placeholder="********"
+                                        placeholder="Enter Password"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         disabled={!isEdit && staffUser?.id}
@@ -115,7 +115,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                     />
                                 </div>
                             </div>
-                            <div className="form-group ">
+                            <div>
                                 <button
                                     type="submit"
                                     className={classes["button"]}

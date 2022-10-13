@@ -1,9 +1,6 @@
 .container {
-    border: 1px solid #e8e8e8;
     border-radius: 10px;
-    box-shadow: 0px 0px 11px #00000008;
     width: 907px;
-    box-shadow: 0px 0px 11px #00000008;
 }
 .sub-container {
     padding: 57px;
@@ -15,6 +12,9 @@
     padding-bottom: 52px;
     padding-left: 64px;
     padding-right: 30px;
+    border: 1px solid #e8e8e8;
+    box-shadow: 0px 0px 11px #00000008;
+    border-radius: 10px;
 }
 .submit-button {
     font-size: 16px;
@@ -25,8 +25,8 @@
     background-color: #6fa5cb;
     width: 178px;
     align-self: flex-end;
-    margin-top: 130px;
-    margin-right: 35px;
+    margin-top: 22px;
+    float: right;
     &:disabled {
         background-color: #cbcbcb;
     }

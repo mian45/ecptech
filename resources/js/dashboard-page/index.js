@@ -138,6 +138,10 @@ const DEFAULT_INVOICES_DATA = [
 ];
 
 const mappedGraphStats = (response) => {
+    const payable = response["office_paid"] + response["online_paid"];
+    const total = payable / (response["generated"] || 1);
+    const percent = Math.floor(total || 0) * 100;
+
     const stats = [
         {
             x: "Generated",
@@ -156,11 +160,7 @@ const mappedGraphStats = (response) => {
         },
         {
             x: "Capture Rate",
-            y:
-                (Math.floor(
-                    (response["office_paid"] + response["online_paid"]) /
-                        (response["generated"] || 1)
-                ) || 0) * 100,
+            y: Math.ceil(percent) || 0,
             percentage: response["capture_rate"],
         },
 
