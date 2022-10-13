@@ -83,3 +83,121 @@
     color: #6fa5cb;
     cursor: pointer;
 }
+.collection-container {
+    padding-top: 39px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-bottom: 30px;
+}
+.collection-label {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Montserrat;
+    color: #6fa5cb;
+    margin-bottom: 20px;
+    margin-left: 46px;
+}
+.collection-show-container {
+    padding-top: 14px;
+    width: 100%;
+    padding-left: 46px;
+    padding-right: 46px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.collection-left-container {
+    width: calc(100% - 25px);
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.edit-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    cursor: pointer;
+}
+.collection-show-content-container {
+    display: flex;
+    flex-direction: column;
+    margin-left: 21px;
+}
+.show-content-title {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Montserrat;
+    color: #2a2a2a;
+    margin-bottom: 10px;
+}
+.show-content-heading {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: Montserrat;
+    color: #2a2a2a;
+    margin-bottom: 10px;
+}
+.edit-content-title {
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Montserrat;
+    color: #2a2a2a;
+}
+.show-content-value {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: Montserrat;
+    color: #cbcbcb;
+    margin-bottom: 15px;
+}
+.collection-edit-container {
+    padding: 36px 46px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    border: 1px solid #e8e8e8;
+    background-color: #f9f9fb;
+    box-shadow: 0px 0px 6px #00000008;
+}
+.collection-edit-header-slot {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+}
+.tick-icon {
+    width: 17px;
+    height: 13px;
+    object-fit: contain;
+    cursor: pointer;
+}
+.checkbox {
+    margin-bottom: 0px !important;
+}
+.edit-slot-title {
+    font-size: 16px;
+    font-weight: 400;
+    font-family: Montserrat;
+    color: #2a2a2a;
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+.edit-slot-input {
+    width: 100%;
+    border: 1px solid #dfdfdf;
+    border-radius: 23px;
+    color: #2a2a2a;
+    font-size: 16px;
+    font-family: Montserrat;
+    height: 45px;
+    padding-left: 19px;
+    padding-right: 19px;
+    & ::placeholder {
+        color: #dfdfdf;
+        font-size: 16px;
+        font-family: Montserrat;
+    }
+}
