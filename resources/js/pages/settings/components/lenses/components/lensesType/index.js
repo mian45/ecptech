@@ -109,13 +109,13 @@ const CollectionSlot = () => {
                         className={classes["edit-slot-input"]}
                         placeholder={"Enter Display Name"}
                     />
-                    <div
-                        className={classes["edit-slot-title"]}
-                        placeholder={"Enter Amount"}
-                    >
+                    <div className={classes["edit-slot-title"]}>
                         Retail Amount
                     </div>
-                    <input className={classes["edit-slot-input"]} />
+                    <input
+                        className={classes["edit-slot-input"]}
+                        placeholder={"Enter Amount"}
+                    />
                 </div>
             ) : (
                 <div className={classes["collection-show-container"]}>
