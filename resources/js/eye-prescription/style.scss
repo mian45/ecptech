@@ -57,6 +57,9 @@
 }
 
 .columns {
+    .ant-select-arrow {
+        margin-top: 0px !important;
+    }
     .ant-select {
         min-width: 120px !important;
         height: 50px;
