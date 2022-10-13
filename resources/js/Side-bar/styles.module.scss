@@ -36,10 +36,10 @@
 
 .active-state {
     position: absolute;
-    top: -20%;
+    top: 0;
     right: -6.5%;
-    width: 10px;
-    height: 86px;
+    width: 7px;
+    height: 55px;
     background-color: #4f8db8;
 
     &::before {

@@ -12,6 +12,10 @@
         padding-top: 20px;
         padding-bottom: 20px;
         text-align: center;
+        font-size: 16px;
+        color: #2a2a2a;
+        font-weight: 400;
+        font-family: Montserrat;
     }
 }
 .first-column {
@@ -26,13 +30,18 @@
     text-align: center;
     background-color: #dcf5dd;
     color: #00940a;
+    display: inline-block;
+    height: 29px;
+    padding: 0px 16px;
 }
 .un-paid-tatus-tag {
     border-radius: 15px;
     text-align: center;
     background-color: #f5dcdc;
     color: #ff0000;
-    padding-bottom: 3px;
+    display: inline-block;
+    height: 29px;
+    padding: 0px 16px;
 }
 .more-icon {
     cursor: pointer;
