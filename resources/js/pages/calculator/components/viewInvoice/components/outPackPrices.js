@@ -184,7 +184,7 @@ const OutPackPrices = ({
             {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
                 <InvoiceSlot
                     title={`Frame: `}
-                    subTitle={`$${calculateFrameFee().toFixed(2) || 0}`}
+                    subTitle={`$${(calculateFrameFee() || 0).toFixed(2) || 0}`}
                 />
             )}
             {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
@@ -197,13 +197,17 @@ const OutPackPrices = ({
             {receipt?.values?.photochromics?.status === "Yes" && (
                 <InvoiceSlot
                     title={`Photochromic Option: ${receipt?.values?.photochromics?.type}`}
-                    subTitle={`$${getPhotochromicPrice().toFixed(2) || 0}`}
+                    subTitle={`$${
+                        (getPhotochromicPrice() || 0).toFixed(2) || 0
+                    }`}
                 />
             )}
             {receipt?.values?.antiReflectiveProperties?.status === "Yes" && (
                 <InvoiceSlot
                     title={`Antireflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
-                    subTitle={`$${getAntireflectivePrice().toFixed(2) || 0}`}
+                    subTitle={`$${
+                        (getAntireflectivePrice() || 0).toFixed(2) || 0
+                    }`}
                 />
             )}
             {receipt?.values?.sunGlassesLens?.status === "Yes" &&
