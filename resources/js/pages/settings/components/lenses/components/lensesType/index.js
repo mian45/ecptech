@@ -1,16 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import classes from "./styles.module.scss";
 import downIcon from "../../../../../../../images/down-arrow.png";
 import blackArrowIcon from "../../../../../../../images/black-arrow.svg";
 import CustomCheckbox from "../../../../../../components/customCheckbox";
 import editIcon from "../../../../../../../images/edit.png";
 import tickIcon from "../../../../../../../images/tick-green.svg";
+import Axios from "../../../../../../Http";
+import { connect } from "react-redux";
 
-const LensesType = () => {
+const LensesType = ({ userId }) => {
     const [isBrands, setIsBrands] = useState(false);
+    const [lensesList, setLensesList] = useState([]);
+    const [selectedLensType, setSelectedLensType] = useState("");
 
-    const onLensTypeClick = () => {
+    useEffect(() => {
+        const getLenses = async () => {
+            try {
+                const res = await Axios.get(
+                    `${process.env.MIX_REACT_APP_URL}/api/get-lense-features-brands`,
+                    {
+                        params: { userId: userId },
+                    }
+                );
+                console.log("res", res?.data?.data);
+                setLensesList(res?.data?.data || []);
+            } catch (err) {
+                console.log("error while get lenses");
+            }
+        };
+        getLenses();
+    }, []);
+
+    const onLensTypeClick = (value) => {
         setIsBrands(true);
+        setSelectedLensType(value);
     };
     const onGoBackClick = () => {
         setIsBrands(false);
@@ -19,9 +42,16 @@ const LensesType = () => {
         <div className={classes["container"]}>
             <div className={classes["left-container"]}>
                 {isBrands ? (
-                    <LensesTypeBrandsList onBackClick={onGoBackClick} />
+                    <LensesTypeBrandsList
+                        onBackClick={onGoBackClick}
+                        selectedLensType={selectedLensType}
+                        lenses={lensesList}
+                    />
                 ) : (
-                    <LensesTypeList onClick={onLensTypeClick} />
+                    <LensesTypeList
+                        onClick={onLensTypeClick}
+                        lenses={lensesList}
+                    />
                 )}
             </div>
             <div className={classes["right-container"]}>
@@ -31,7 +61,10 @@ const LensesType = () => {
     );
 };
 
-export default LensesType;
+const mapStateToProps = (state) => ({
+    userId: state.Auth?.user?.id,
+});
+export default connect(mapStateToProps)(LensesType);
 
 const CollectionSection = () => {
     return (
@@ -99,20 +132,34 @@ const CollectionSlot = () => {
                                 id="isCopayHighIndex"
                                 name="isCopayHighIndex"
                             />
-                            <div className={classes["show-content-title"]}>
-                                Shamir Autograph III
-                            </div>
-                            <div className={classes["show-content-heading"]}>
-                                Display Name:{" "}
-                                <span className={classes["show-content-value"]}>
-                                    ---
-                                </span>
-                            </div>
-                            <div className={classes["show-content-heading"]}>
-                                Retail Amount:{" "}
-                                <span className={classes["show-content-value"]}>
-                                    ---
-                                </span>
+                            <div className={classes["collection-content"]}>
+                                <div className={classes["show-content-title"]}>
+                                    Shamir Autograph III
+                                </div>
+                                <div
+                                    className={classes["show-content-heading"]}
+                                >
+                                    Display Name:{" "}
+                                    <span
+                                        className={
+                                            classes["show-content-value"]
+                                        }
+                                    >
+                                        ---
+                                    </span>
+                                </div>
+                                <div
+                                    className={classes["show-content-heading"]}
+                                >
+                                    Retail Amount:{" "}
+                                    <span
+                                        className={
+                                            classes["show-content-value"]
+                                        }
+                                    >
+                                        ---
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -128,20 +175,29 @@ const CollectionSlot = () => {
     );
 };
 
-const LensesTypeList = ({ onClick }) => {
+const LensesTypeList = ({ onClick, lenses }) => {
     return (
         <div className={classes["lenses-list-container"]}>
             <div className={classes["lenses-list-title"]}>Lens Types</div>
-            <LensLabelSlot title={"Single Vision"} onClick={onClick} />
-            <LensLabelSlot title={"PAL"} onClick={onClick} />
-            <LensLabelSlot title={"NVF"} onClick={onClick} />
-            <LensLabelSlot title={"Bifocal / Trifocal"} onClick={onClick} />
+            {lenses.map((lens, index) => {
+                return (
+                    <LensLabelSlot
+                        title={lens?.title || ""}
+                        onClick={() => onClick(lens?.title || "")}
+                        key={index}
+                    />
+                );
+            })}
         </div>
     );
 };
 
-const LensesTypeBrandsList = ({ onBackClick }) => {
+const LensesTypeBrandsList = ({ onBackClick, selectedLensType, lenses }) => {
     const [selectedRow, setSelectedRow] = useState("");
+    const getBrandsList = () => {
+        const brand = lenses.find((lens) => lens?.title === selectedLensType);
+        return brand?.brands || [];
+    };
     const onBrandRowClick = (value) => {
         setSelectedRow(value);
     };
@@ -155,31 +211,33 @@ const LensesTypeBrandsList = ({ onBackClick }) => {
                 />
                 <div className={classes["lenses-list-brand-title"]}>Brands</div>
             </div>
-            <LensLabelSlot title={"Shamir"} onRowClick={onBrandRowClick} />
-            <LensLabelSlot title={"Essilor"} onRowClick={onBrandRowClick} />
-            <LensLabelSlot title={"Hoya"} onRowClick={onBrandRowClick} />
-            <LensLabelSlot
-                title={"Signet Armorlite"}
-                onRowClick={onBrandRowClick}
-            />
-            <LensLabelSlot title={"Maui Jim"} onRowClick={onBrandRowClick} />
+            {getBrandsList()?.map((brand, index) => {
+                return (
+                    <LensLabelSlot
+                        key={index}
+                        title={brand?.title}
+                        onClick={() => onBrandRowClick(brand?.title)}
+                        active={brand?.title === selectedRow}
+                    />
+                );
+            })}
         </div>
     );
 };
 
-const LensLabelSlot = ({ title, onClick }) => {
+const LensLabelSlot = ({ title, onClick, active }) => {
     const [isHover, setIsHover] = useState(false);
     return (
         <div
             className={`${classes["lenses-label-slot-container"]} ${
-                isHover && classes["slot-color"]
+                (active || isHover) && classes["slot-color"]
             }`}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
             onClick={onClick}
         >
             <div className={classes["lenses-label-slot-title"]}>{title}</div>
-            {isHover && (
+            {(active || isHover) && (
                 <img
                     src={downIcon}
                     alt={"icon"}

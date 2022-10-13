@@ -38,14 +38,20 @@
     display: flex;
     width: 100%;
     align-items: center;
-    padding-top: 7px;
-    padding-bottom: 7px;
+    padding-top: 6px;
+    padding-bottom: 6px;
     cursor: pointer;
     justify-content: space-between;
     background-color: #f9f9fb;
+    margin-top: 1px;
+    margin-bottom: 1px;
 }
 .slot-color {
     background-color: #e8e8e8;
+}
+.collection-content {
+    display: flex;
+    flex-direction: column;
 }
 .lenses-label-slot-title {
     color: #2a2a2a;
@@ -121,8 +127,8 @@
 }
 .collection-show-content-container {
     display: flex;
-    flex-direction: column;
-    margin-left: 21px;
+    justify-content: flex-start;
+    align-items: flex-start;
 }
 .show-content-title {
     font-size: 16px;
