@@ -481,7 +481,7 @@ const EmailSetting = (props) => {
                                 <div className="email-remainder_input-sections_input-section">
                                     <p>Subject</p>
                                     <input
-                                        className="email-remainder_input-sections_input-section_input"
+                                        className="email-remainder_input-sections_input-section_input input-pad-val"
                                         value={subject}
                                         onChange={(e) => {
                                             setSubject(e.target.value);

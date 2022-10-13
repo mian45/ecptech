@@ -118,6 +118,7 @@
                 border-right: 8px solid transparent;
                 border-top: 8px solid #d8d8d8;
                 font-size: 0 !important;
+                margin-top: -3px;
             }
 
             .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
@@ -298,4 +299,8 @@ p {
 }
 .picker-padding {
     padding-right: 10px !important;
+    padding-left: 30px !important;
+}
+.input-pad-val {
+    padding-left: 27px !important;
 }
