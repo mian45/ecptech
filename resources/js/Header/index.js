@@ -27,7 +27,7 @@ const Header = () => {
                 <img
                     src="Profile.svg"
                     alt="Profile"
-                    className={classes["bell-icon"]}
+                    className={classes["profile-icon"]}
                     onClick={(e) => {
                         setShowProfile(!showProfile);
                     }}
