@@ -308,14 +308,186 @@ const EyePrescription = (props) => {
     return (
         <div className="eye-prescription">
             <p className="eye-prescription_heading">Eye Prescription Setting</p>
-            <div className="sections-divider">
+            <div className="eye-wrapper-container">
+                <div className="sections-divider">
+                    <div className="eye-prescription_section">
+                        <div className="eye-prescription_section-bar">
+                            <div className="eye-prescription_section-bar-first">
+                                <p>{"Show CR39 If"}</p>
+                            </div>
+                            <div className="eye-prescription_section-bar-second">
+                                <div>
+                                    <p>Sphere (SPH)</p>
+                                    <div className="columns">
+                                        <div>
+                                            <Select
+                                                className="eye-prescription_section-bar-second_dropdown"
+                                                // defaultValue="From"
+                                                style={{
+                                                    width: 120,
+                                                }}
+                                                value={crsphereFrom || "From"}
+                                                onChange={(e) => {
+                                                    console.log("respond", e);
+                                                    setCrSphereFrom(e);
+                                                }}
+                                            >
+                                                {sphere &&
+                                                    sphere
+                                                        .sort(
+                                                            (a, b) =>
+                                                                a - b ||
+                                                                a.localeCompare(
+                                                                    b,
+                                                                    undefined,
+                                                                    {
+                                                                        sensitivity:
+                                                                            "base",
+                                                                    }
+                                                                )
+                                                        )
+                                                        .map((obj, i) => {
+                                                            return (
+                                                                <Option
+                                                                    value={obj}
+                                                                >
+                                                                    {obj}
+                                                                </Option>
+                                                            );
+                                                        })}
+                                            </Select>
+                                        </div>
+                                        <p>to</p>
+                                        <div>
+                                            <Select
+                                                className="eye-prescription_section-bar-second_dropdown"
+                                                defaultValue="Select"
+                                                style={{
+                                                    width: 120,
+                                                }}
+                                                value={crsphereTo || "Select"}
+                                                onChange={(e) => {
+                                                    setCrSphereTo(e);
+                                                }}
+                                            >
+                                                {sphere &&
+                                                    sphere
+                                                        .sort(
+                                                            (a, b) =>
+                                                                a - b ||
+                                                                a.localeCompare(
+                                                                    b,
+                                                                    undefined,
+                                                                    {
+                                                                        sensitivity:
+                                                                            "base",
+                                                                    }
+                                                                )
+                                                        )
+                                                        .map((obj, i) => {
+                                                            return (
+                                                                <Option
+                                                                    value={obj}
+                                                                >
+                                                                    {obj}
+                                                                </Option>
+                                                            );
+                                                        })}
+                                            </Select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p>Cylinder (CYL)</p>
+                                    <div className="columns">
+                                        <div>
+                                            <Select
+                                                className="eye-prescription_section-bar-second_dropdown"
+                                                defaultValue="From"
+                                                style={{
+                                                    width: 120,
+                                                }}
+                                                value={crCylinderFrom || "From"}
+                                                onChange={(e) => {
+                                                    setCrCylinderFrom(e);
+                                                }}
+                                            >
+                                                {cylinder &&
+                                                    cylinder
+                                                        .sort(
+                                                            (a, b) =>
+                                                                a - b ||
+                                                                a.localeCompare(
+                                                                    b,
+                                                                    undefined,
+                                                                    {
+                                                                        sensitivity:
+                                                                            "base",
+                                                                    }
+                                                                )
+                                                        )
+                                                        .map((obj, i) => {
+                                                            return (
+                                                                <Option
+                                                                    value={obj}
+                                                                >
+                                                                    {obj}
+                                                                </Option>
+                                                            );
+                                                        })}
+                                            </Select>
+                                        </div>
+                                        <p>to</p>
+                                        <div>
+                                            <Select
+                                                className="eye-prescription_section-bar-second_dropdown"
+                                                defaultValue="Select"
+                                                style={{
+                                                    width: 120,
+                                                }}
+                                                value={crCylinderTo || "Select"}
+                                                onChange={(e) => {
+                                                    setCrCylinderTo(e);
+                                                }}
+                                            >
+                                                {cylinder &&
+                                                    cylinder
+                                                        .sort(
+                                                            (a, b) =>
+                                                                a - b ||
+                                                                a.localeCompare(
+                                                                    b,
+                                                                    undefined,
+                                                                    {
+                                                                        sensitivity:
+                                                                            "base",
+                                                                    }
+                                                                )
+                                                        )
+                                                        .map((obj, i) => {
+                                                            return (
+                                                                <Option
+                                                                    value={obj}
+                                                                >
+                                                                    {obj}
+                                                                </Option>
+                                                            );
+                                                        })}
+                                            </Select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div
-                    className="eye-prescription_section"
-                    style={{ marginBottom: "10px" }}
+                    className="eye-prescription_section "
+                    style={{ marginBottom: "20px" }}
                 >
                     <div className="eye-prescription_section-bar">
                         <div className="eye-prescription_section-bar-first">
-                            <p>{"Show CR39 If"}</p>
+                            <p>{"Show Plycarbonate If"}</p>
                         </div>
                         <div className="eye-prescription_section-bar-second">
                             <div>
@@ -324,14 +496,13 @@ const EyePrescription = (props) => {
                                     <div>
                                         <Select
                                             className="eye-prescription_section-bar-second_dropdown"
-                                            // defaultValue="From"
+                                            defaultValue="From"
                                             style={{
                                                 width: 120,
                                             }}
-                                            value={crsphereFrom || "From"}
+                                            value={pbsphereFrom || "From"}
                                             onChange={(e) => {
-                                                console.log("respond", e);
-                                                setCrSphereFrom(e);
+                                                setPbSphereFrom(e);
                                             }}
                                         >
                                             {sphere &&
@@ -365,9 +536,9 @@ const EyePrescription = (props) => {
                                             style={{
                                                 width: 120,
                                             }}
-                                            value={crsphereTo || "Select"}
+                                            value={pbsphereTo || "Select"}
                                             onChange={(e) => {
-                                                setCrSphereTo(e);
+                                                setPbSphereTo(e);
                                             }}
                                         >
                                             {sphere &&
@@ -405,9 +576,9 @@ const EyePrescription = (props) => {
                                             style={{
                                                 width: 120,
                                             }}
-                                            value={crCylinderFrom || "From"}
+                                            value={pbCylinderFrom || "From"}
                                             onChange={(e) => {
-                                                setCrCylinderFrom(e);
+                                                setPbCylinderFrom(e);
                                             }}
                                         >
                                             {cylinder &&
@@ -441,9 +612,9 @@ const EyePrescription = (props) => {
                                             style={{
                                                 width: 120,
                                             }}
-                                            value={crCylinderTo || "Select"}
+                                            value={pbCylinderTo || "Select"}
                                             onChange={(e) => {
-                                                setCrCylinderTo(e);
+                                                setPbCylinderTo(e);
                                             }}
                                         >
                                             {cylinder &&
@@ -474,838 +645,676 @@ const EyePrescription = (props) => {
                         </div>
                     </div>
                 </div>
-            </div>
-            <div
-                className="eye-prescription_section"
-                style={{ marginBottom: "10px" }}
-            >
-                <div className="eye-prescription_section-bar">
-                    <div className="eye-prescription_section-bar-first">
-                        <p>{"Show Plycarbonate If"}</p>
-                    </div>
-                    <div className="eye-prescription_section-bar-second">
-                        <div>
-                            <p>Sphere (SPH)</p>
-                            <div className="columns">
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="From"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={pbsphereFrom || "From"}
-                                        onChange={(e) => {
-                                            setPbSphereFrom(e);
-                                        }}
-                                    >
-                                        {sphere &&
-                                            sphere
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                                <p>to</p>
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="Select"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={pbsphereTo || "Select"}
-                                        onChange={(e) => {
-                                            setPbSphereTo(e);
-                                        }}
-                                    >
-                                        {sphere &&
-                                            sphere
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
+                <div
+                    className="eye-prescription_section"
+                    style={{ marginBottom: "20px" }}
+                >
+                    <div className="eye-prescription_section-bar">
+                        <div className="eye-prescription_section-bar-first">
+                            <p>{"Show Trivex If"}</p>
+                        </div>
+                        <div className="eye-prescription_section-bar-second">
+                            <div>
+                                <p>Sphere (SPH)</p>
+                                <div className="columns">
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="From"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={tvsphereFrom || "From"}
+                                            onChange={(e) => {
+                                                setTvSphereFrom(e);
+                                            }}
+                                        >
+                                            {sphere &&
+                                                sphere
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
+                                    <p>to</p>
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="Select"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={tvsphereTo || "Select"}
+                                            onChange={(e) => {
+                                                setTvSphereTo(e);
+                                            }}
+                                        >
+                                            {sphere &&
+                                                sphere
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            <p>Cylinder (CYL)</p>
-                            <div className="columns">
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="From"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={pbCylinderFrom || "From"}
-                                        onChange={(e) => {
-                                            setPbCylinderFrom(e);
-                                        }}
-                                    >
-                                        {cylinder &&
-                                            cylinder
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                                <p>to</p>
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="Select"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={pbCylinderTo || "Select"}
-                                        onChange={(e) => {
-                                            setPbCylinderTo(e);
-                                        }}
-                                    >
-                                        {cylinder &&
-                                            cylinder
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div
-                className="eye-prescription_section"
-                style={{ marginBottom: "10px" }}
-            >
-                <div className="eye-prescription_section-bar">
-                    <div className="eye-prescription_section-bar-first">
-                        <p>{"Show Trivex If"}</p>
-                    </div>
-                    <div className="eye-prescription_section-bar-second">
-                        <div>
-                            <p>Sphere (SPH)</p>
-                            <div className="columns">
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="From"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={tvsphereFrom || "From"}
-                                        onChange={(e) => {
-                                            setTvSphereFrom(e);
-                                        }}
-                                    >
-                                        {sphere &&
-                                            sphere
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                                <p>to</p>
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="Select"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={tvsphereTo || "Select"}
-                                        onChange={(e) => {
-                                            setTvSphereTo(e);
-                                        }}
-                                    >
-                                        {sphere &&
-                                            sphere
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Cylinder (CYL)</p>
-                            <div className="columns">
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="From"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={tvCylinderFrom || "From"}
-                                        onChange={(e) => {
-                                            setTvCylinderFrom(e);
-                                        }}
-                                    >
-                                        {cylinder &&
-                                            cylinder
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                                <p>to</p>
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="Select"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={tvCylinderTo || "Select"}
-                                        onChange={(e) => {
-                                            setTvCylinderTo(e);
-                                        }}
-                                    >
-                                        {cylinder &&
-                                            cylinder
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
+                            <div>
+                                <p>Cylinder (CYL)</p>
+                                <div className="columns">
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="From"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={tvCylinderFrom || "From"}
+                                            onChange={(e) => {
+                                                setTvCylinderFrom(e);
+                                            }}
+                                        >
+                                            {cylinder &&
+                                                cylinder
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
+                                    <p>to</p>
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="Select"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={tvCylinderTo || "Select"}
+                                            onChange={(e) => {
+                                                setTvCylinderTo(e);
+                                            }}
+                                        >
+                                            {cylinder &&
+                                                cylinder
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div
-                className="eye-prescription_section"
-                style={{ marginBottom: "10px" }}
-            >
-                <div className="eye-prescription_section-bar">
-                    <div className="eye-prescription_section-bar-first">
-                        <p>{"Show Hi Index 1.67If"}</p>
-                    </div>
-                    <div className="eye-prescription_section-bar-second">
-                        <div>
-                            <p>Sphere (SPH)</p>
-                            <div className="columns">
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="From"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={hisphereFrom || "From"}
-                                        onChange={(e) => {
-                                            setHiSphereFrom(e);
-                                        }}
-                                    >
-                                        {sphere &&
-                                            sphere
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                                <p>to</p>
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="Select"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={hisphereTo || "Select"}
-                                        onChange={(e) => {
-                                            setHiSphereTo(e);
-                                        }}
-                                    >
-                                        {sphere &&
-                                            sphere
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
+                <div
+                    className="eye-prescription_section"
+                    style={{ marginBottom: "20px" }}
+                >
+                    <div className="eye-prescription_section-bar">
+                        <div className="eye-prescription_section-bar-first">
+                            <p>{"Show Hi Index 1.67If"}</p>
+                        </div>
+                        <div className="eye-prescription_section-bar-second">
+                            <div>
+                                <p>Sphere (SPH)</p>
+                                <div className="columns">
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="From"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={hisphereFrom || "From"}
+                                            onChange={(e) => {
+                                                setHiSphereFrom(e);
+                                            }}
+                                        >
+                                            {sphere &&
+                                                sphere
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
+                                    <p>to</p>
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="Select"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={hisphereTo || "Select"}
+                                            onChange={(e) => {
+                                                setHiSphereTo(e);
+                                            }}
+                                        >
+                                            {sphere &&
+                                                sphere
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            <p>Cylinder (CYL)</p>
-                            <div className="columns">
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="From"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={hiCylinderFrom || "From"}
-                                        onChange={(e) => {
-                                            setHiCylinderFrom(e);
-                                        }}
-                                    >
-                                        {cylinder &&
-                                            cylinder
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                                <p>to</p>
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="Select"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={hiCylinderTo || "Select"}
-                                        onChange={(e) => {
-                                            setHiCylinderTo(e);
-                                        }}
-                                    >
-                                        {cylinder &&
-                                            cylinder
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div
-                className="eye-prescription_section"
-                style={{ marginBottom: "10px" }}
-            >
-                <div className="eye-prescription_section-bar">
-                    <div className="eye-prescription_section-bar-first">
-                        <p>{"Show Hi Index 1.70 & Above If"}</p>
-                    </div>
-                    <div className="eye-prescription_section-bar-second">
-                        <div>
-                            <p>Sphere (SPH)</p>
-                            <div className="columns">
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="From"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={hiasphereFrom || "From"}
-                                        onChange={(e) => {
-                                            setHiaSphereFrom(e);
-                                        }}
-                                    >
-                                        {sphere &&
-                                            sphere
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                                <p>to</p>
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="Select"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={hiasphereTo || "Select"}
-                                        onChange={(e) => {
-                                            setHiaSphereTo(e);
-                                        }}
-                                    >
-                                        {sphere &&
-                                            sphere
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                            </div>
-                        </div>
-                        <div>
-                            <p>Cylinder (CYL)</p>
-                            <div className="columns">
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="From"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={hiaCylinderFrom || "From"}
-                                        onChange={(e) => {
-                                            setHiaCylinderFrom(e);
-                                        }}
-                                    >
-                                        {cylinder &&
-                                            cylinder
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                                <p>to</p>
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="Select"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={hiaCylinderTo || "Select"}
-                                        onChange={(e) => {
-                                            setHiaCylinderTo(e);
-                                        }}
-                                    >
-                                        {cylinder &&
-                                            cylinder
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
+                            <div>
+                                <p>Cylinder (CYL)</p>
+                                <div className="columns">
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="From"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={hiCylinderFrom || "From"}
+                                            onChange={(e) => {
+                                                setHiCylinderFrom(e);
+                                            }}
+                                        >
+                                            {cylinder &&
+                                                cylinder
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
+                                    <p>to</p>
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="Select"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={hiCylinderTo || "Select"}
+                                            onChange={(e) => {
+                                                setHiCylinderTo(e);
+                                            }}
+                                        >
+                                            {cylinder &&
+                                                cylinder
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div
-                className="eye-prescription_section"
-                style={{ marginBottom: "10px" }}
-            >
-                <div className="eye-prescription_section-bar">
-                    <div className="eye-prescription_section-bar-first">
-                        <p>{"Show Hi Index 1.60If"}</p>
-                    </div>
-                    <div className="eye-prescription_section-bar-second">
-                        <div>
-                            <p>Sphere (SPH)</p>
-                            <div className="columns">
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="From"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={hifsphereFrom || "From"}
-                                        onChange={(e) => {
-                                            setHifSphereFrom(e);
-                                        }}
-                                    >
-                                        {sphere &&
-                                            sphere
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                                <p>to</p>
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="Select"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={hifsphereTo || "Select"}
-                                        onChange={(e) => {
-                                            setHifSphereTo(e);
-                                        }}
-                                    >
-                                        {sphere &&
-                                            sphere
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
+                <div
+                    className="eye-prescription_section"
+                    style={{ marginBottom: "20px" }}
+                >
+                    <div className="eye-prescription_section-bar">
+                        <div className="eye-prescription_section-bar-first">
+                            <p>{"Show Hi Index 1.70 & Above If"}</p>
+                        </div>
+                        <div className="eye-prescription_section-bar-second">
+                            <div>
+                                <p>Sphere (SPH)</p>
+                                <div className="columns">
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="From"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={hiasphereFrom || "From"}
+                                            onChange={(e) => {
+                                                setHiaSphereFrom(e);
+                                            }}
+                                        >
+                                            {sphere &&
+                                                sphere
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
+                                    <p>to</p>
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="Select"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={hiasphereTo || "Select"}
+                                            onChange={(e) => {
+                                                setHiaSphereTo(e);
+                                            }}
+                                        >
+                                            {sphere &&
+                                                sphere
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            <p>Cylinder (CYL)</p>
-                            <div className="columns">
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="From"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={hifCylinderFrom || "From"}
-                                        onChange={(e) => {
-                                            setHifCylinderFrom(e);
-                                        }}
-                                    >
-                                        {cylinder &&
-                                            cylinder
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
-                                </div>
-                                <p>to</p>
-                                <div>
-                                    <Select
-                                        className="eye-prescription_section-bar-second_dropdown"
-                                        defaultValue="Select"
-                                        style={{
-                                            width: 120,
-                                        }}
-                                        value={hifCylinderTo || "Select"}
-                                        onChange={(e) => {
-                                            setHifCylinderTo(e);
-                                        }}
-                                    >
-                                        {cylinder &&
-                                            cylinder
-                                                .sort(
-                                                    (a, b) =>
-                                                        a - b ||
-                                                        a.localeCompare(
-                                                            b,
-                                                            undefined,
-                                                            {
-                                                                sensitivity:
-                                                                    "base",
-                                                            }
-                                                        )
-                                                )
-                                                .map((obj, i) => {
-                                                    return (
-                                                        <Option value={obj}>
-                                                            {obj}
-                                                        </Option>
-                                                    );
-                                                })}
-                                    </Select>
+                            <div>
+                                <p>Cylinder (CYL)</p>
+                                <div className="columns">
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="From"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={hiaCylinderFrom || "From"}
+                                            onChange={(e) => {
+                                                setHiaCylinderFrom(e);
+                                            }}
+                                        >
+                                            {cylinder &&
+                                                cylinder
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
+                                    <p>to</p>
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="Select"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={hiaCylinderTo || "Select"}
+                                            onChange={(e) => {
+                                                setHiaCylinderTo(e);
+                                            }}
+                                        >
+                                            {cylinder &&
+                                                cylinder
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div
+                    className="eye-prescription_section"
+                    style={{ marginBottom: "20px" }}
+                >
+                    <div className="eye-prescription_section-bar">
+                        <div className="eye-prescription_section-bar-first">
+                            <p>{"Show Hi Index 1.60If"}</p>
+                        </div>
+                        <div className="eye-prescription_section-bar-second">
+                            <div>
+                                <p>Sphere (SPH)</p>
+                                <div className="columns">
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="From"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={hifsphereFrom || "From"}
+                                            onChange={(e) => {
+                                                setHifSphereFrom(e);
+                                            }}
+                                        >
+                                            {sphere &&
+                                                sphere
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
+                                    <p>to</p>
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="Select"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={hifsphereTo || "Select"}
+                                            onChange={(e) => {
+                                                setHifSphereTo(e);
+                                            }}
+                                        >
+                                            {sphere &&
+                                                sphere
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <p>Cylinder (CYL)</p>
+                                <div className="columns">
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="From"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={hifCylinderFrom || "From"}
+                                            onChange={(e) => {
+                                                setHifCylinderFrom(e);
+                                            }}
+                                        >
+                                            {cylinder &&
+                                                cylinder
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
+                                    <p>to</p>
+                                    <div>
+                                        <Select
+                                            className="eye-prescription_section-bar-second_dropdown"
+                                            defaultValue="Select"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            value={hifCylinderTo || "Select"}
+                                            onChange={(e) => {
+                                                setHifCylinderTo(e);
+                                            }}
+                                        >
+                                            {cylinder &&
+                                                cylinder
+                                                    .sort(
+                                                        (a, b) =>
+                                                            a - b ||
+                                                            a.localeCompare(
+                                                                b,
+                                                                undefined,
+                                                                {
+                                                                    sensitivity:
+                                                                        "base",
+                                                                }
+                                                            )
+                                                    )
+                                                    .map((obj, i) => {
+                                                        return (
+                                                            <Option value={obj}>
+                                                                {obj}
+                                                            </Option>
+                                                        );
+                                                    })}
+                                        </Select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style={{ width: "654px" }}>
+                    <button
+                        onClick={handleSubmit}
+                        className="eye-prescription_button"
+                        disabled={saveState}
+                        style={{
+                            backgroundColor: saveState ? "#ccc" : "",
+                            marginTop: "20px",
+                        }}
+                    >
+                        Save
+                    </button>
+                </div>
             </div>
-            <button
-                onClick={handleSubmit}
-                className="eye-prescription_button"
-                disabled={saveState}
-                style={{
-                    backgroundColor: saveState ? "#ccc" : "",
-                    marginTop: "20px",
-                }}
-            >
-                Save
-            </button>
         </div>
     );
 };

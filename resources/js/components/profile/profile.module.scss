@@ -1,5 +1,5 @@
 .profile {
-    top: 86px;
+    top: 99px;
     right: 0px;
     width: 409px;
     position: absolute;
@@ -11,10 +11,10 @@
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    padding: 1rem 0rem;
-    min-height: 90vh;
-    max-height: 90vh;
+    min-height: 85vh;
+    max-height: 85vh;
     overflow: auto;
+    font-family: Montserrat;
     &::-webkit-scrollbar {
         width: 5px;
     }

@@ -203,7 +203,7 @@ const AddCardModal = ({ show, onClose }) => {
                             </div>
                             <div className={classes["inline-right-input"]}>
                                 <div className={classes["input-label"]}>
-                                    CCV
+                                    CVV
                                 </div>
                                 <input
                                     placeholder="CVV No."
@@ -235,7 +235,7 @@ const AddCardModal = ({ show, onClose }) => {
                                     <label
                                         className={classes["validation-error"]}
                                     >
-                                        Please enter valid Cvv
+                                        Please enter valid CVV
                                     </label>
                                 ) : (
                                     ""

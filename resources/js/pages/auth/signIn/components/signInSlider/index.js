@@ -68,14 +68,14 @@ const SLIDER_DATA = [
     {
         id: 1,
         icon: sliderCard,
-        title: "Welcome to Urban Optics",
+        title: "Meet our new visual calculator",
         subtitle:
             "Welcome to Urban Optics. Please put your login credentials below to start using the app.",
     },
     {
         id: 2,
         icon: sliderCard,
-        title: "Meet our new benifits",
+        title: "Meet our new visual calculator",
         subtitle:
             "Welcome to Urban Optics. Please put your login credentials below to start using the app.",
     },

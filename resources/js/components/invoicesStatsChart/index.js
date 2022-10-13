@@ -9,6 +9,22 @@ const InvoicesStatsChart = ({ data }) => {
             toolbar: {
                 show: false,
             },
+            dropShadow: {
+                enabled: true,
+                top: 0,
+                left: 0,
+                blur: 6,
+                opacity: 0.5,
+                color: "#00000029",
+            },
+        },
+        dropShadow: {
+            enabled: true,
+            top: 0,
+            left: 0,
+            blur: 3,
+            opacity: 0.5,
+            color: "yellow",
         },
         legend: {
             show: false,
@@ -45,7 +61,11 @@ const InvoicesStatsChart = ({ data }) => {
         },
         yaxis: {
             labels: {
+                align: "left",
                 style: {
+                    fontSize: "14px",
+                    maxWidth: 130,
+                    fontFamily: "Montserrat",
                     colors: [
                         "#6FA5CB",
                         "#61C77B",

@@ -48,7 +48,7 @@ const TeamPerformanceChart = (userId) => {
         });
     };
     return (
-        <div className={classes["container"]}>
+        <div className={`${classes["container"]} performance-chart`}>
             <div className={classes["label"]}>Team Performance</div>
             <Chart
                 options={options}

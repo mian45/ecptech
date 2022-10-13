@@ -8,7 +8,7 @@
     width: 100%;
     justify-content: flex-start;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
     flex-wrap: wrap;
 }
 .input {
@@ -49,8 +49,9 @@
     width: 100%;
     justify-content: flex-start;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 34px;
     flex-wrap: wrap;
+    margin-top: 9px;
 }
 @media only screen and (max-width: 650px) {
     .form-slot-button {
