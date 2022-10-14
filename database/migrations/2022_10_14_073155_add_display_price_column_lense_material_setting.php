@@ -27,7 +27,9 @@ return new class extends Migration
     public function down()
     {
         Schema::table('user_lense_material_settings', function (Blueprint $table) {
-            //
+
+            $table->dropColumn('display_name');
+            $table->decimal('price',10,2)->nullable(false)->change();
         });
     }
 };
