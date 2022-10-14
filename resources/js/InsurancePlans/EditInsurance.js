@@ -9,51 +9,56 @@ import { connect } from "react-redux";
 function EditInsurance({ userId }) {
 
   const [selectedRow, setSelectedRow] = React.useState([])
-  const [isChecked, setIsChecked] = React.useState(false)
-  const [isCheckBox, setIsCheckBox] = React.useState(false)
-  const [obj , setObj] = useState([])
+  const [updateInsurancePlan , setUpdateInsurancePlan] = useState([])
   const [visionID , setVisionId] = useState('')
-  const [check , setCheck] = useState(false)
   const history = useHistory()
   const params = useParams();
 
   //for editing 
   React.useEffect(() => {
+    setVisionId(params?.id)
 
     Axios.get(process.env.MIX_REACT_APP_URL + `/api/get-client-plan-questions?visionPlanId=${params?.id}`).then((res) => {
 
       setSelectedRow(res.data?.data)
+      console.log(res.data?.data);
     }).catch((error) => console.log({ error }))
 
   }, [])
 
   //for toggle switch
 
-  const handleSwitch = async (value, e) => {
-    setVisionId(value?.vision_plan_id)
-    setObj([...obj,{
+  const handleSwitch = (value, toggleSwitch) => {
+    setUpdateInsurancePlan([...updateInsurancePlan,{
       id: value?.id,
       question_id: value?.id,
-      optional: e,
-      status: e,
+      optional: toggleSwitch,
+      status: value?.status,
     }])
 
   }
 
+  //for checkbox switch
+
+  const handleCheck = (value , toggleCheck) => {
+    setUpdateInsurancePlan([...updateInsurancePlan,{
+      id: value?.id,
+      question_id: value?.id,
+      optional: value?.optional,
+      status: toggleCheck.target.checked,
+    }])
+  } 
+
   const handleSubmit= async() => {
+    if(updateInsurancePlan.length == 0){
+      return
+    }
     const toggle = {
       user_id: userId,
       vision_plan_id:visionID,
-      data: obj
+      data: updateInsurancePlan
     }
-    const response = await Axios.post(process.env.MIX_REACT_APP_URL+`/api/update-user-plan-question-permission`,toggle)
-  }
-
-  //for toggle checkbox
-
-  const handleCheckbox = (e) => {
-    console.log(e.target.checked)
-    setIsCheckBox(e.target.checked)
+    await Axios.post(process.env.MIX_REACT_APP_URL+`/api/update-user-plan-question-permission`,toggle)
   }
 
   const label = { inputProps: { 'aria-label': 'Switch demo' } }
@@ -79,9 +84,9 @@ function EditInsurance({ userId }) {
                 selectedRow?.length > 0 && selectedRow.map((item) => {
                   return (
                     <div className='other-setting_section-first_switches-switch-edit' key={item?.id}>
-                      <Checkbox>{item?.title}</Checkbox>
+                      <Checkbox defaultChecked={item?.status} onChange={(e) => {handleCheck(item,e)}}>{item?.title}</Checkbox>
 
-                      <Switch {...label} defaultChecked={item?.optional === 0 ? false : true || isChecked} onChange={(e) => handleSwitch(item, e)} />
+                      <Switch {...label} defaultChecked={item?.optional == 0 ? false : true} onChange={(e) => handleSwitch(item, e)} />
                     </div>
                   )
                 })
@@ -90,11 +95,11 @@ function EditInsurance({ userId }) {
 
           </div>
           <button
-          onClick={() => handleSubmit()}
+          onClick={handleSubmit}
             type="submit"
             className={"button"}
           >
-            {"Save"}
+            Save
           </button>
         </div>
       </div>
