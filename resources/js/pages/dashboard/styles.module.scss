@@ -1,0 +1,57 @@
+.main-container {
+    width: calc(100% - 100px);
+    margin-left: 100px;
+    margin-top: 100px;
+    background-color: #f9f9fb;
+    min-height: 100vh;
+    padding: 34px;
+}
+.page-label {
+    font-size: 24px;
+    font-weight: bold;
+    font-family: Montserrat;
+    color: #2a2a2a;
+    margin-right: 13px;
+}
+.cal-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 30px;
+}
+.date-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+}
+.picker-container {
+    box-shadow: 0px 11px 20px #00000029;
+    width: 882px;
+    margin-bottom: 20px;
+    position: absolute;
+    background-color: #ffffff;
+    z-index: 2;
+    top: 36px;
+    left: 152px;
+}
+.date-selector {
+    background-color: #fff;
+    min-width: 107px;
+    width: auto;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    border: 1px solid #e8e8e8;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.date-label{
+    font-size: 17px;
+    padding-bottom: 6px;
+    margin-right: 10px;
+}

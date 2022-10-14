@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import classes from "./styles.module.scss";
 import { connect } from "react-redux";
-import * as actions from "../store/actions";
 import { useHistory } from "react-router-dom";
 import {
     HOME_ROUTE,
@@ -9,19 +8,30 @@ import {
     PAYMENT_ROUTE,
     SETTINGS_ROUTE,
 } from "../appRoutes/routeConstants";
-
 const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
     const [state, setState] = useState(isActiveState);
     const history = useHistory();
-
     useEffect(() => {
-        if (!userId) {
-            dispatch(actions.authLogout());
+        const currentPath = history.location.pathname;
+        switch (currentPath) {
+            case HOME_ROUTE: {
+                setState(1);
+                return;
+            }
+            case INVOICES_ROUTE: {
+                setState(2);
+                return;
+            }
+            case PAYMENT_ROUTE: {
+                setState(3);
+                return;
+            }
+            case SETTINGS_ROUTE: {
+                setState(4);
+                return;
+            }
         }
-        if (userRole === "staff") {
-            history.push(INVOICES_ROUTE);
-        }
-    }, []);
+    }, [history.location.pathname]);
 
     const handleSideBar = (value) => {
         switch (value) {

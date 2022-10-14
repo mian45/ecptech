@@ -4,19 +4,20 @@
     &_heading {
         font-weight: bold;
         font-size: 1.5em;
-        margin-bottom: 2.25em;
+        margin-bottom: 1.25em !important;
     }
 
     &-content {
         background-color: white;
-        margin-left: 144px;
         margin-bottom: 20px;
         padding-inline: 27px 40px;
         display: flex;
         justify-content: space-between;
         align-items: center;
         box-shadow: 2px 1px 5px 4px #ccc3;
-        border-radius: 20px;
+        border-radius: 7px;
+        height: 75px;
+        width: 60%;
 
         &-section {
             display: flex;
@@ -40,12 +41,10 @@
                     margin-left: 10px !important;
                 }
             }
-
         }
     }
 
     &_button-section {
-        margin-left: 144px;
         margin-top: 36px;
 
         &_save-button {
@@ -53,16 +52,13 @@
             padding-inline: 2em;
             border: none;
             border-radius: 28px;
-            background-color: #6FA5CB;
+            background-color: #6fa5cb;
             color: white;
         }
     }
-
-
 }
 
 .email-remainder {
-
     font-family: Montserrat;
 
     &_heading {
@@ -88,8 +84,6 @@
     }
 
     &_input-sections {
-        padding-left: 19.42em;
-
         &_input-section {
             display: flex;
             align-items: center;
@@ -120,18 +114,15 @@
             }
 
             .ant-select-arrow {
-                border-left:
-                    8px solid transparent;
-                border-right:
-                    8px solid transparent;
-                border-top:
-                    8px solid #d8d8d8;
-                ;
+                border-left: 8px solid transparent;
+                border-right: 8px solid transparent;
+                border-top: 8px solid #d8d8d8;
                 font-size: 0 !important;
+                margin-top: -3px;
             }
 
-
-            .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input) .ant-select-selector {
+            .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+                .ant-select-selector {
                 border-color: unset !important;
                 box-shadow: none !important;
             }
@@ -146,16 +137,15 @@
 
             &_input {
                 background-color: white;
-                border: 1px solid #DFDFDF;
+                border: 1px solid #dfdfdf;
                 border-radius: 1.43em;
                 padding-inline-start: 1.375em;
                 padding-block: 0.8125em;
                 width: 23.68em;
                 height: 2.8125em;
 
-
                 &:focus-visible {
-                    border: 1px solid #DFDFDF;
+                    border: 1px solid #dfdfdf;
                     outline: none;
                 }
             }
@@ -174,19 +164,18 @@
         padding-inline: 2em;
         border: none;
         border-radius: 28px;
-        background-color: #6FA5CB;
+        background-color: #6fa5cb;
         color: white;
     }
 }
 
 .dropdown-email {
     background-color: white;
-    border: 1px solid #DFDFDF;
+    border: 1px solid #dfdfdf;
     border-radius: 1.43em;
     padding-inline-start: 1.375em;
     width: 23.68em;
     height: 2.8125em;
-
 }
 
 .ant-space {
@@ -201,23 +190,22 @@
 
 .tags {
     border-radius: 23px;
-    background-color: #E8E8E8;
-    color: #2A2A2A;
+    background-color: #e8e8e8;
+    color: #2a2a2a;
 }
 
 .rdw-editor-wrapper {
-    width: 514px;
+    width: 450px;
 }
 
-.public-DraftEditor-content[contenteditable=true] {
+.public-DraftEditor-content[contenteditable="true"] {
     padding-inline: 20px !important;
 }
 
 .rdw-editor-toolbar {
-    background-color: #F9F9FB !important;
+    background-color: #f9f9fb !important;
     border: none !important;
     padding-left: 0 !important;
-
 }
 
 .rdw-editor-main {
@@ -225,16 +213,17 @@
     height: 175px !important;
     overflow: hidden;
     border-radius: 23px;
+    border: 1px solid #dfdfdf;
 }
 
 .rdw-fontsize-dropdown {
-    background-color: #F9F9FB;
+    background-color: #f9f9fb;
     min-width: 100px !important;
     border: none;
     margin-left: 0 !important;
 
     &:hover {
-        background-color: #F9F9FB;
+        background-color: #f9f9fb;
         min-width: 100px !important;
         border: none !important;
     }
@@ -242,11 +231,11 @@
 
 .rdw-dropdown-selectedtext {
     padding-left: 0 !important;
-    color: black !important; 
+    color: black !important;
 }
 
 .rdw-option-wrapper {
-    background-color: #F9F9FB;
+    background-color: #f9f9fb;
     border: none !important;
 
     img {
@@ -256,10 +245,62 @@
 }
 
 .rdw-text-align-dropdown {
-    background-color: #F9F9FB;
+    background-color: #f9f9fb;
     border: none !important;
 }
 
 p {
     margin-bottom: 0;
+}
+.email-setting-content {
+    box-shadow: 0px 0px 6px #00000008;
+    border: 1px solid #e8e8e8;
+    &:hover {
+        box-shadow: 0px 11px 30px #00000012;
+    }
+}
+.button-margin {
+    margin-bottom: 80px;
+}
+
+.email-settings-title {
+    font-family: Montserrat;
+    font-weight: bold;
+    font-size: 24px;
+    color: #2a2a2a;
+    margin-top: 36px;
+    margin-bottom: 36px;
+}
+.email-setting-slots-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.reminders-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.save-button-wrpper {
+    width: 60%;
+    display: flex;
+    justify-content: flex-start;
+}
+.reminders-container-schedule {
+    width: 450px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+}
+.picker-padding {
+    padding-right: 10px !important;
+    padding-left: 30px !important;
+}
+.input-pad-val {
+    padding-left: 27px !important;
 }

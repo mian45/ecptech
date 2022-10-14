@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import Select from "react-select";
 import downArrow from "../../../../../images/down-arrow.png";
 
-const InvoiceInfo = ({ formProps, userId, userInfo }) => {
+const InvoiceInfo = ({ formProps, userId, userInfo, disable }) => {
     const { values, setFieldValue, handleBlur } = formProps;
     const [staff, setStaff] = useState([]);
     const [staffData, setStaffData] = useState([]);
@@ -29,7 +29,7 @@ const InvoiceInfo = ({ formProps, userId, userInfo }) => {
             }
         };
         getStaffList();
-    }, []);
+    }, [userId]);
 
     const handleStaffChange = (value) => {
         const selectedStaff = staff.find((ele) => ele.name === value.value);
@@ -49,15 +49,15 @@ const InvoiceInfo = ({ formProps, userId, userInfo }) => {
                     value={values?.invoiceName}
                     id="invoiceName"
                     name="invoiceName"
+                    disabled={disable}
                 />
                 <FormikError name={"invoiceName"} />
             </div>
-            <div className={classes["info-section"]}>
+            <div className={classes["info-section-1"]}>
                 <div className={classes["label"]}>Staff Name</div>
                 <Select
                     options={staffData}
                     placeholder="Select Staff Name"
-                    className={classes["dropdown-styles"]}
                     onBlur={handleBlur}
                     onChange={handleStaffChange}
                     value={
@@ -68,6 +68,7 @@ const InvoiceInfo = ({ formProps, userId, userInfo }) => {
                     }
                     id="staffName"
                     name="staffName"
+                    disabled={disable}
                     components={{
                         DropdownIndicator: () => (
                             <img

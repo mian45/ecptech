@@ -27,7 +27,7 @@ const StaffListTable = ({ userId }) => {
         };
 
         getStaffList();
-    }, []);
+    }, [userId]);
 
     return (
         <div className={classes["container"]}>

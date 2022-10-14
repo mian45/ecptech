@@ -2,15 +2,17 @@ import React from 'react';
 import { Switch } from 'antd';
 import './style.scss'
 import { Checkbox } from 'antd';
+import { useHistory } from 'react-router';
 
 function EditInsurance(props) {
+  const history=useHistory()
     const label = { inputProps: { 'aria-label': 'Switch demo' } }
     return (
         <div className="root-container">
         <div className="setting-dashboard_container">
         <div className='other-setting'>
-            <p className='other-setting_heading'>Edit VSP Signature</p>
-            <div className='back-btn'>
+            <p className='other-setting_sub_heading'>Edit VSP Signature</p>
+            <div className='back-btn' onClick={()=>{history.goBack()}}>
             <img src={"/arrow-back.svg"} alt="arrow" />
             <h6 className='back-text'>
             Back
@@ -24,37 +26,37 @@ function EditInsurance(props) {
                 <div className='other-setting_section-first' >
                 {/* component to be used in map */}
                 <div className='other-setting_section-first_switches-switch-edit'>
-                          <Checkbox checked={true}>Select Vision Plan</Checkbox>
+                          <Checkbox  >Select Vision Plan</Checkbox>
                             
                             <Switch {...label} />
                             
                 </div>
                 <div className='other-setting_section-first_switches-switch-edit'>
-                          <Checkbox checked={true}>Select Vision Plan</Checkbox>
+                          <Checkbox  >Select Vision Plan</Checkbox>
                             
                             <Switch {...label} />
                             
                 </div>
                 <div className='other-setting_section-first_switches-switch-edit'>
-                          <Checkbox checked={true}>Select Vision Plan</Checkbox>
+                          <Checkbox  >Select Vision Plan</Checkbox>
                             
                             <Switch {...label} />
                             
                 </div>
                 <div className='other-setting_section-first_switches-switch-edit'>
-                          <Checkbox checked={true}>Select Vision Plan</Checkbox>
+                          <Checkbox  >Select Vision Plan</Checkbox>
                             
                             <Switch {...label} />
                             
                 </div>
                 <div className='other-setting_section-first_switches-switch-edit'>
-                          <Checkbox checked={true}>Select Vision Plan</Checkbox>
+                          <Checkbox  >Select Vision Plan</Checkbox>
                             
                             <Switch {...label} />
                             
                 </div>
                 <div className='other-setting_section-first_switches-switch-edit'>
-                          <Checkbox checked={true}>Select Vision Plan</Checkbox>
+                          <Checkbox  >Select Vision Plan</Checkbox>
                             
                             <Switch {...label} />
                             
@@ -66,7 +68,7 @@ function EditInsurance(props) {
                                     type="submit"
                                     className={"button"}
                                 >
-                                    {"Submit"}
+                                    {"Save"}
                                 </button>
         </div>
         </div>

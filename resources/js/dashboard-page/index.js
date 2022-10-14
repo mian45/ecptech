@@ -12,7 +12,7 @@ import TeamPerformanceChart from "./components/teamPerformanceChart";
 import ProfitStatsChart from "./components/profitStatsChart";
 import AddStaffMembers from "./components/AddStaffMembers";
 
-const Dashboard = ({ userRole,apiDates,userId }) => {
+const Dashboard = ({ userRole, apiDates, userId }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
     const [summaryStats, setSummaryStats] = useState([]);
     useEffect(() => {
@@ -36,7 +36,7 @@ const Dashboard = ({ userRole,apiDates,userId }) => {
         };
 
         getInvoiceStats();
-    }, [apiDates]);
+    }, [apiDates, userId]);
 
     useEffect(() => {
         if (!userId) return;
@@ -58,7 +58,7 @@ const Dashboard = ({ userRole,apiDates,userId }) => {
         };
 
         getSummaryStats();
-    }, [apiDates]);
+    }, [apiDates, userId]);
     return (
         <div className={classes["container"]}>
             <div className={classes["left-stats"]}>
@@ -79,7 +79,7 @@ const Dashboard = ({ userRole,apiDates,userId }) => {
                 {userRole !== "staff" && <StaffLogin />}
             </div>
             <div className={classes["right-stats"]}>
-                <ProfitStatsChart dates={apiDates}/>
+                <ProfitStatsChart dates={apiDates} />
                 <HotSellingProducts />
                 <TeamPerformanceChart />
                 {userRole !== "staff" && <AddStaffMembers />}
@@ -138,6 +138,10 @@ const DEFAULT_INVOICES_DATA = [
 ];
 
 const mappedGraphStats = (response) => {
+    const payable = response["office_paid"] + response["online_paid"];
+    const total = payable / (response["generated"] || 1);
+    const percent = Math.floor(total || 0) * 100;
+
     const stats = [
         {
             x: "Generated",
@@ -156,11 +160,7 @@ const mappedGraphStats = (response) => {
         },
         {
             x: "Capture Rate",
-            y:
-                Math.floor(
-                    (response["office_paid"] + response["online_paid"]) /
-                        (response["generated"] || 1)
-                ) || 0,
+            y: Math.ceil(percent) || 0,
             percentage: response["capture_rate"],
         },
 

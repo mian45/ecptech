@@ -1,13 +1,13 @@
 import React from "react";
-import { connect } from "react-redux";
+import { useEffect } from "react";
+import { connect,useDispatch } from "react-redux";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import Routes from "./appRoutes/routes";
 import Header from "./Header";
 import SideBar from "./Side-bar";
-
 const AppRoot = ({ isAuthenticated }) => {
     return (
-        <div>
+
             <Router>
                 {isAuthenticated && <Header />}
                 {isAuthenticated && <SideBar />}
@@ -15,7 +15,6 @@ const AppRoot = ({ isAuthenticated }) => {
                     <Routes />
                 </Switch>
             </Router>
-        </div>
     );
 };
 

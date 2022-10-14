@@ -103,7 +103,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         value={values.password}
                                         className={classes["input"]}
                                         name="password"
-                                        placeholder="********"
+                                        placeholder="Enter Password"
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         disabled={!isEdit && staffUser?.id}
@@ -115,7 +115,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                     />
                                 </div>
                             </div>
-                            <div className="form-group ">
+                            <div>
                                 <button
                                     type="submit"
                                     className={classes["button"]}
@@ -150,6 +150,6 @@ export default connect(mapStateToProps)(StaffLogin);
 const LoginValidation = Yup.object().shape({
     email: Yup.string().email().required("Email is required"),
     password: Yup.string()
-        .min(8, "Must have 8 characters")
+        .min(6, "Must have 6 characters")
         .required("Password is required"),
 });

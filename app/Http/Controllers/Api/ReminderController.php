@@ -150,7 +150,7 @@ class ReminderController extends Controller
 
     public function getTimeZone(){
        
-    $timezone  = Timezone::get();
+    $timezone  = Timezone::select('id','name')->get();
 
     return $this->sendResponse($timezone, 'Time zone get successfully');
     }

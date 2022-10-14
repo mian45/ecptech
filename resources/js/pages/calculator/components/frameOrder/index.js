@@ -4,7 +4,7 @@ import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
-import frameIcon from "../../../../../images/calculator/frame.svg";
+import frameIcon from "../../../../../images/calculator/frame-glass.svg";
 import { DrillMountTypeEnum, FrameOrderTypeEnum } from "../../data/enums";
 import * as Yup from "yup";
 
@@ -14,11 +14,22 @@ const FrameOrder = ({
     setCalValidations,
     calValidations,
     data,
+    isFrame,
 }) => {
     const { values, handleChange, handleBlur } = formProps;
-    const frameOrderVisibility =
-        calculatorObj?.questions &&
-        calculatorObj?.questions["VSP Signature"]?.frameOrder?.visibility;
+    const frameOrderVisibility = calculatorObj?.questions
+        ?.find((item) => item.title === "VSP Signature")
+        ?.question_permissions?.find(
+            (ques) => ques.question === "Frame Order"
+        )?.visibility;
+    const handleInputChange = (e) => {
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value)) {
+            handleChange(e);
+        } else if (e.target.value == "") {
+            handleChange(e);
+        }
+    };
 
     const frameDetails = () => {
         return (
@@ -44,29 +55,31 @@ const FrameOrder = ({
                         </div>
                         <FormikError name={"frameRetailFee"} />
                     </div>
-                    <div
-                        className={classes["amount-sub-container"]}
-                        style={{ marginLeft: "50px" }}
-                    >
-                        <div className={classes["sub-label"]}>
-                            Frame Contribution?
+                    {!isFrame && (
+                        <div
+                            className={classes["amount-sub-container"]}
+                            style={{ marginLeft: "50px" }}
+                        >
+                            <div className={classes["sub-label"]}>
+                                Frame Contribution?
+                            </div>
+                            <div className={classes["input-container"]}>
+                                <div className={classes["input-label"]}>$</div>
+                                <input
+                                    className={classes["input"]}
+                                    type={"text"}
+                                    onBlur={handleBlur}
+                                    onChange={handleInputChange}
+                                    value={values?.frameContribution}
+                                    id="frameContribution"
+                                    name="frameContribution"
+                                    step={0.01}
+                                    min={0.0}
+                                />
+                            </div>
+                            <FormikError name={"frameContribution"} />
                         </div>
-                        <div className={classes["input-container"]}>
-                            <div className={classes["input-label"]}>$</div>
-                            <input
-                                className={classes["input"]}
-                                type={"number"}
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values?.frameContribution}
-                                id="frameContribution"
-                                name="frameContribution"
-                                step={0.01}
-                                min={0.0}
-                            />
-                        </div>
-                        <FormikError name={"frameContribution"} />
-                    </div>
+                    )}
                 </div>
                 <div className={classes["frame-sub-container"]}>
                     <CalculatorHeading title="Drill Mount?" />
@@ -122,7 +135,7 @@ const FrameOrder = ({
         handleChange(e);
         if (
             e?.target?.value === "New Frame Purchase" &&
-            !data?.frameOrder?.optional
+            !data?.find((ques) => ques.question === "Frame Order")?.optional
         ) {
             const validationObject = {
                 frameRetailFee: Yup.string().required("Retail fee is required"),
@@ -131,6 +144,9 @@ const FrameOrder = ({
                 ),
                 drillMount: Yup.string().required("Drill mount is required"),
             };
+            if (isFrame) {
+                delete validationObject.frameContribution;
+            }
             setCalValidations({
                 ...calValidations,
                 ...validationObject,

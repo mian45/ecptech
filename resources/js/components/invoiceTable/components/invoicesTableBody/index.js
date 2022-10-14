@@ -5,21 +5,27 @@ import moreIcon from "../../../../../images/more-icon.svg";
 import { useHistory } from "react-router";
 import { CREATE_INVOICE_ROUTE } from "../../../../appRoutes/routeConstants";
 import ViewInvoice from "../../../../pages/calculator/components/viewInvoice";
+import dayjs from "dayjs";
 
 const InvoicesTableBodySlot = ({ data }) => {
+    const date = data?.created_at || new Date();
+    const year = dayjs(date).get("year");
+    const month = dayjs(date).get("month") + 1; // start 0
+    const day = dayjs(date).get("date");
+    const createdDate = `${month}/${day}/${year}`;
     return (
         <tr className={classes["container"]}>
             <td className={classes["first-column"]}>{data?.name}</td>
             <td>{`${data?.customer?.fname} ${data?.customer?.lname}`}</td>
             <td>{data?.customer?.email}</td>
-            <td>{data?.customer?.date}</td>
-            <td>{data?.amount}</td>
+            <td>{createdDate}</td>
+            <td>${data?.amount}</td>
             <td>
                 <div
                     className={
                         data?.status === "paid" || data?.status === "discard"
-                            ? classes["paid-tatus-tag"]
-                            : classes["un-paid-tatus-tag"]
+                            ? classes["paid-status-tag"]
+                            : classes["un-paid-status-tag"]
                     }
                 >
                     {data?.status}
@@ -95,9 +101,6 @@ const InvoiceTableActions = ({ data }) => {
                         EDIT
                     </div>
                 )}
-                <div className={classes["more-icon"]} onClick={handleClose}>
-                    DUPLICATE
-                </div>
             </div>
         );
     };

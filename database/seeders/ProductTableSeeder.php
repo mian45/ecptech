@@ -20,6 +20,28 @@ class ProductTableSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('products')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        Products::factory()->count(30)->create();
+        DB::table('products')->insert(array(
+            array(
+                'user_id' => 2,
+                'name' => 'Polycarbonate',
+                'price' => fake()->randomDigit,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+                'user_id' => 2,
+                'name' => 'Polarized',
+                'price' => fake()->randomDigit,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+                'user_id' => 2,
+                'name' => 'Ski Type Mirror',
+                'price' => fake()->randomDigit,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+        ));
     }
 }

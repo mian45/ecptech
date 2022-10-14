@@ -9,6 +9,7 @@
     box-shadow: 3px 0px 6px #00000008;
     min-height: 100vh;
     padding-top: 100px;
+    box-shadow: 3px 0px 6px #00000008;
 }
 .item-container {
     width: 100%;
@@ -35,10 +36,10 @@
 
 .active-state {
     position: absolute;
-    top: -20%;
+    top: 0;
     right: -6.5%;
-    width: 10px;
-    height: 86px;
+    width: 7px;
+    height: 55px;
     background-color: #4f8db8;
 
     &::before {

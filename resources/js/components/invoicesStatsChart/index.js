@@ -45,7 +45,11 @@ const InvoicesStatsChart = ({ data }) => {
         },
         yaxis: {
             labels: {
+                align: "left",
                 style: {
+                    fontSize: "14px",
+                    maxWidth: 130,
+                    fontFamily: "Montserrat",
                     colors: [
                         "#6FA5CB",
                         "#61C77B",

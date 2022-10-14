@@ -26,7 +26,7 @@ const HotSellingProducts = ({ userId }) => {
             }
         };
         getHotSellingProducts();
-    }, []);
+    }, [userId]);
     return (
         <div className={classes["container"]}>
             <div className={classes["label"]}>Hot Selling Products</div>

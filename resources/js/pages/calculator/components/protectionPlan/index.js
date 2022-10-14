@@ -16,9 +16,11 @@ const ProtectionPlan = ({
     data,
 }) => {
     const { values, handleChange, handleBlur } = formProps;
-    const protectionPlanVisibility =
-        calculatorObj?.questions &&
-        calculatorObj?.questions["VSP Signature"]?.protectionPlan?.visibility;
+    const protectionPlanVisibility = calculatorObj?.questions
+        ?.find((item) => item.title === "VSP Signature")
+        ?.question_permissions?.find(
+            (ques) => ques.question === "Protection Plan"
+        )?.visibility;
 
     const handleActiveFields = () => {
         if (values?.isProtectionPlan === "No") {
@@ -43,7 +45,10 @@ const ProtectionPlan = ({
 
     const handleProtectionPlanChange = (e) => {
         handleChange(e);
-        if (e?.target?.value === "Yes" && !data?.protectionPlan?.optional) {
+        if (
+            e?.target?.value === "Yes" &&
+            !data?.find((ques) => ques.question === "Protection Plan").optional
+        ) {
             const protectionPlanType =
                 Yup.string().required("Option is required");
             setCalValidations({
@@ -62,14 +67,19 @@ const ProtectionPlan = ({
     };
     const handleProtectionPlanTypeChange = (e) => {
         handleChange(e);
-        if (e?.target?.value && !data?.protectionPlan?.optional) {
+        if (
+            e?.target?.value &&
+            !data?.find((ques) => ques.question === "Protection Plan")?.optional
+        ) {
             const isProtectionPlanPaid =
                 Yup.string().required("Option is required");
             setCalValidations({
                 ...calValidations,
                 isProtectionPlanPaid,
             });
-        } else if (data?.protectionPlan?.optional) {
+        } else if (
+            data?.find((ques) => ques.question === "Protection Plan")?.optional
+        ) {
             const validations = { ...calValidations };
             delete validations.isProtectionPlanPaid;
             setCalValidations({
@@ -79,7 +89,10 @@ const ProtectionPlan = ({
     };
     const handleIsPaidClick = (e) => {
         handleChange(e);
-        if (e?.target?.value === "Paid" && !data?.protectionPlan?.optional) {
+        if (
+            e?.target?.value === "Paid" &&
+            !data?.find((ques) => ques.question === "Protection Plan")?.optional
+        ) {
             const protectionPlanAmount =
                 Yup.string().required("value is required");
             setCalValidations({
@@ -92,6 +105,14 @@ const ProtectionPlan = ({
             setCalValidations({
                 ...validations,
             });
+        }
+    };
+    const handleInputChange = (e) => {
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value)) {
+            handleChange(e);
+        } else if (e.target.value == "") {
+            handleChange(e);
         }
     };
 

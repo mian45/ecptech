@@ -12,6 +12,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper";
+import { Checkbox } from 'antd';
 import { INVOICES_ROUTE } from "../appRoutes/routeConstants";
 
 const items = [
@@ -52,7 +53,7 @@ class Login extends Component {
             email: "",
             password: "",
             errors: {},
-
+            remember:false,
             response: {
                 error: false,
                 message: "",
@@ -97,10 +98,11 @@ class Login extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
-        const { email, password } = this.state;
+        const { email, password ,remember } = this.state;
         const credentials = {
             email,
             password,
+            remember
         };
 
         this.validator.validateAll(credentials).then((success) => {
@@ -180,10 +182,10 @@ class Login extends Component {
         const { response, errors, loading } = this.state;
 
         return (
-            <div>
-                <div className="d-flex flex-column flex-md-row align-items-md-center py-container">
+     
+                <div className="d-flex flex-column flex-md-row align-items-md-center py-container" style={{height:"100%",width:"100%"}}>
                     <div className="container">
-                        <div className="row" style={{ marginTop: "30px" }}>
+                        <div className="row">
                             <div className="section-login col-lg-6">
                                 <div className="card-login  mb-3">
                                     <div>
@@ -326,9 +328,15 @@ class Login extends Component {
                                                     </div>
                                                 </div>
                                             </div>
-
+                                            
                                             <div className="login-invite-text ending-text">
-                                                <button
+                                            <div>
+                                            <Checkbox 
+                                            onChange={()=>{this.setState({remember:!this.state.remember})}} 
+                                            checked={this.state.remember}>Remember me</Checkbox>
+                                            </div>
+                                            <div>
+                                            <button
                                                     type="submit"
                                                     className={classNames(
                                                         "btn btn-primary",
@@ -340,6 +348,8 @@ class Login extends Component {
                                                 >
                                                     Login
                                                 </button>
+                                            </div>
+                                                
                                             </div>
                                         </form>
                                     </div>
@@ -393,7 +403,7 @@ class Login extends Component {
                         </div>
                     </div>
                 </div>
-            </div>
+         
         );
     }
 }

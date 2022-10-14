@@ -36,38 +36,14 @@ const activeSettingState = (state, payload) => {
 };
 
 const authLogin = (state, payload) => {
-    const userObject = {
-        id: payload?.data?.id,
-        name: payload?.data?.name,
-        email: payload?.data?.email,
-    };
-    const roleObject = {
-        id: payload?.data.role.id,
-        name: payload.data.role.name,
-    };
-    const staffObject = {
-        id: payload?.data?.staffAuth?.id || null,
-        name: payload?.data?.staffAuth?.name || null,
-        email: payload?.data?.staffAuth?.email || null,
-    };
-    const token = payload?.data?.token;
-
-    Http.defaults.headers.common.Authorization = `Bearer ${token}`;
-    const stateObj = {
-        ...state,
-        isAuthenticated: true,
-        user: userObject,
-        userRole: roleObject,
-        staffUser: staffObject,
-        token,
-    };
-    return stateObj;
+    consonle.log("the payload is here in auth login", payload);
 };
 
 const checkAuth = (state) => {
+    const token = localStorage.getItem("access_token");
     const stateObj = {
         ...state,
-        isAuthenticated: !!localStorage.getItem("access_token"),
+        isAuthenticated: !!token,
         user: JSON.parse(
             localStorage.getItem("user") || JSON.stringify(defaultUser)
         ),
@@ -82,7 +58,7 @@ const checkAuth = (state) => {
 
 const logout = (state) => {
     localStorage.removeItem("access_token");
-    localStorage.removeItem("user");
+    localStorage.removeItem("remember");
     const stateObj = {
         ...state,
         isAuthenticated: false,
@@ -119,8 +95,34 @@ const updateStaffLogin = (state, payload) => {
 
 const Auth = (state = initialState, { type, payload = null }) => {
     switch (type) {
-        case ActionTypes.AUTH_LOGIN:
-            return authLogin(state, payload);
+        case ActionTypes.AUTH_LOGIN: {
+            const userObject = {
+                id: payload?.data?.id,
+                name: payload?.data?.name,
+                email: payload?.data?.email,
+            };
+            const roleObject = {
+                id: payload?.data.role.id,
+                name: payload.data.role.name,
+            };
+            const staffObject = {
+                id: payload?.data?.staffAuth?.id || null,
+                name: payload?.data?.staffAuth?.name || null,
+                email: payload?.data?.staffAuth?.email || null,
+            };
+            const token = payload?.data?.token;
+
+            Http.defaults.headers.common.Authorization = `Bearer ${token}`;
+            const stateObj = {
+                ...state,
+                isAuthenticated: true,
+                user: userObject,
+                userRole: roleObject,
+                staffUser: staffObject,
+                token,
+            };
+            return stateObj;
+        }
         case ActionTypes.AUTH_CHECK:
             return checkAuth(state);
         case ActionTypes.AUTH_LOGOUT:

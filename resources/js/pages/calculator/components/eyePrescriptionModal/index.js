@@ -40,7 +40,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
         var sphere = [];
         for (var i = -16; i <= 10; i++) {
             if (i === 10 || i === -16) {
-                sphere.push(i);
+                sphere.push(i + ".00");
             } else {
                 for (var j = 0; j < 4; j++) {
                     const key = `${i + "." + quarterHours[j]}`;
@@ -51,7 +51,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
         var cylinder = [];
         for (var i = -7; i <= 0; i++) {
             if (i === 0 || i === -7) {
-                cylinder.push(i);
+                cylinder.push(i + ".00");
             } else {
                 for (var j = 0; j < 4; j++) {
                     const key = `${i + "." + quarterHours[j]}`;
@@ -76,7 +76,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
         if (!userId) return;
 
         getEyePrescriprion();
-    }, []);
+    }, [userId]);
     const getEyePrescriprion = async () => {
         try {
             const res = await Axios.get(`/api/prescriptions`, {
@@ -157,14 +157,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
 
     const prescriptionResult = () => {
         if (!showResult) return <></>;
-        if (
-            !suggestedMaterial?.rightEye?.materialToUse ||
-            !suggestedMaterial?.leftEye?.materialToUse
-        ) {
-            return (
-                <div className={classes["top-label"]}>No suggession found</div>
-            );
-        }
+
         return (
             <>
                 <div className={classes["top-label"]}>
@@ -185,7 +178,8 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                         <AnswerSlot
                             title={"Lens material to use?:"}
                             value={
-                                suggestedMaterial?.rightEye?.materialToUse || ""
+                                suggestedMaterial?.rightEye?.materialToUse ||
+                                "No suggession found"
                             }
                         />
                     </div>
@@ -205,7 +199,8 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
                         <AnswerSlot
                             title={"Lens material to use?:"}
                             value={
-                                suggestedMaterial?.leftEye?.materialToUse || ""
+                                suggestedMaterial?.leftEye?.materialToUse ||
+                                "No suggession found"
                             }
                         />
                     </div>

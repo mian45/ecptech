@@ -28,3 +28,11 @@ export const AntireflectiveTypeEnum = Object.freeze({
     techShieldPlusUVR: "TechShield Plus UVR",
     crizalSunshield: "Crizal Sunshield (Backside AR Only)",
 });
+export const FrameBenifitAvailableEnum = Object.freeze({
+    yes: "Yes",
+    onlyThisTime: "Only multiple pair benefit only at this time",
+});
+export const LensBenifitAvailableEnum = Object.freeze({
+    yes: "Yes",
+    onlyThisTime: "Only multiple pair benefit only at this time",
+});

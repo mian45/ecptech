@@ -4,6 +4,7 @@ import PrivateRoute from "./privateRoute/privateRoute";
 import { allRoutes } from "./routesMetaData";
 
 const Routes = () => {
+   
     return (
         <Suspense fallback={<></>}>
             <Switch>
