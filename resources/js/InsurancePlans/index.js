@@ -4,9 +4,10 @@ import "./style.scss";
 import bellIcon from "../../images/edit.png";
 import { useHistory } from "react-router";
 import axios from "axios";
+import { connect } from "react-redux";
 
 
-const InsurancePlans = () => {
+const InsurancePlans = ({userId}) => {
 
 const [getData,setGetData]=React.useState([])
 const [isChecked,setIsChecked]=React.useState(false)
@@ -20,8 +21,8 @@ const [isChecked,setIsChecked]=React.useState(false)
 React.useEffect(()=>{
 
 axios.get(process.env.MIX_REACT_APP_URL+"/api/get-client-vision-plans").then((res)=>{
-  
     setGetData(res.data?.data)
+
 }).catch((error)=>console.log({error}))
 
 },[])
@@ -29,12 +30,17 @@ axios.get(process.env.MIX_REACT_APP_URL+"/api/get-client-vision-plans").then((re
 
 //for toggle switch
 
-const handleSwitch=(checked)=>{
-    console.log({checked})
-setIsChecked(checked)
+const handleSwitch=async(value, toggleSwitch)=>{
+    const toggleState = {
+        userId: userId,
+        visionPlanId: value?.id,
+        status: toggleSwitch
+    }
+    const response  = await axios.post(process.env.MIX_REACT_APP_URL+"/api/update-user-vision-plan-permission", toggleState)
+    console.log(response,'response');
 }
     
-
+console.log('getData',getData);
 
     return (
         <div className="other-setting">
@@ -66,7 +72,7 @@ setIsChecked(checked)
                                     });
                                 }}
                             />
-                            <Switch {...label} defaultChecked={item?.status===0?false:true ||isChecked} onChange={handleSwitch} />
+                            <Switch {...label} defaultChecked={item?.status===0?false:true ||isChecked} onChange={(toggleSwitch) => handleSwitch(item, toggleSwitch)} />
                         </div>
                     </div>
                     </div> 
@@ -80,4 +86,7 @@ setIsChecked(checked)
         </div>
     );
 };
-export default InsurancePlans;
+const mapStateToProps = (state) => ({
+    userId: state.Auth?.user?.id,
+});
+export default connect(mapStateToProps) (InsurancePlans);
