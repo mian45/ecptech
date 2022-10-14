@@ -14,8 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('user_addon_settings', function (Blueprint $table) {
-            $table->dropColumn('name');
-            $table->string('display_name')->nullable();
+            $table->renameColumn('name', 'display_name');
         });
     }
 
@@ -27,8 +26,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('user_addon_settings', function (Blueprint $table) {
-            $table->string('name')->nullable();
-            $table->dropColumn('display_name');
+            $table->renameColumn('display_name', 'name');
         });
     }
 };
