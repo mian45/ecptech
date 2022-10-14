@@ -38,7 +38,6 @@
                 &-subheading {
                     font-size: 16px;
                     margin-right: 17px;
-                    margin-left: 10px !important;
                 }
             }
         }
@@ -54,6 +53,9 @@
             border-radius: 28px;
             background-color: #6fa5cb;
             color: white;
+            &:hover {
+                background-color: #518fbb;
+            }
         }
     }
 }
@@ -166,6 +168,9 @@
         border-radius: 28px;
         background-color: #6fa5cb;
         color: white;
+        &:hover {
+            background-color: #518fbb;
+        }
     }
 }
 

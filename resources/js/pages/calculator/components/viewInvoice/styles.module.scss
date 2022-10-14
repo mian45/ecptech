@@ -122,6 +122,9 @@
     background-color: #90b0c6;
     width: 160px;
     margin-top: 30px;
+    &:hover {
+        background-color: #518fbb !important;
+    }
     &:disabled {
         background-color: #cbcbcb;
     }

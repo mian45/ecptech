@@ -101,6 +101,9 @@
     margin-bottom: 20px;
     background-color: #90b0c6;
     width: 355px;
+    &:hover {
+        background-color: #518fbb;
+    }
     & :disabled {
         background-color: #cbcbcb !important;
     }

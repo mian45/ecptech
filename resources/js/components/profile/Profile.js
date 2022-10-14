@@ -84,6 +84,9 @@ const ProfileInfoSection = ({ userId }) => {
                 handleBlur,
                 setFieldValue,
                 setFieldError,
+                isValid,
+                dirty,
+                isSubmitting,
             }) => {
                 return (
                     <form onSubmit={handleSubmit} autoComplete="off">
@@ -105,6 +108,7 @@ const ProfileInfoSection = ({ userId }) => {
                             <CustomButton
                                 onClick={handleSubmit}
                                 type={"submit"}
+                                disabled={!(isValid && dirty) || isSubmitting}
                             >
                                 Save
                             </CustomButton>
@@ -169,7 +173,15 @@ const ProfilePasswordValidations = ({ userId }) => {
                 validationSchema={passwordValidations}
                 onSubmit={handleClick}
             >
-                {({ values, handleChange, handleSubmit, handleBlur }) => {
+                {({
+                    values,
+                    handleChange,
+                    handleSubmit,
+                    handleBlur,
+                    isValid,
+                    dirty,
+                    isSubmitting,
+                }) => {
                     return (
                         <form onSubmit={handleSubmit} autoComplete="off">
                             <ChangePassword
@@ -181,6 +193,9 @@ const ProfilePasswordValidations = ({ userId }) => {
                                 <CustomButton
                                     onClick={handleSubmit}
                                     type={"submit"}
+                                    disabled={
+                                        !(isValid && dirty) || isSubmitting
+                                    }
                                 >
                                     Save
                                 </CustomButton>
