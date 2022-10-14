@@ -177,7 +177,7 @@ const CollectionSection = ({
     );
 };
 
-const CollectionSlot = ({
+export const CollectionSlot = ({
     collection,
     handleCheckbox,
     handleDisplayNameChange,
@@ -366,7 +366,7 @@ const LensesTypeBrandsList = ({
     );
 };
 
-const LensLabelSlot = ({ title, onClick, active }) => {
+export const LensLabelSlot = ({ title, onClick, active }) => {
     const [isHover, setIsHover] = useState(false);
     return (
         <div

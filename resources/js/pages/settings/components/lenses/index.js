@@ -1,5 +1,7 @@
 import React, { useState } from "react";
+import AddonSettings from "./components/addons";
 import LensesType from "./components/lensesType";
+import MaterialSettings from "./components/material";
 import classes from "./styles.module.scss";
 
 const LensesSettings = () => {
@@ -46,6 +48,8 @@ const LensesSettings = () => {
                     <div className={classes["buttons-divider"]} />
                 </div>
                 {activeTab === 1 && <LensesType />}
+                {activeTab === 2 && <MaterialSettings />}
+                {activeTab === 3 && <AddonSettings />}
             </div>
         </div>
     );
