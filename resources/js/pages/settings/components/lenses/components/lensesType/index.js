@@ -51,7 +51,9 @@ const LensesType = ({ userId }) => {
         setSelectedLensType(value);
     };
     const onGoBackClick = () => {
+        setSelectedRow("")
         setIsBrands(false);
+
     };
     return (
         <>
@@ -238,8 +240,12 @@ export const CollectionSlot = ({
                         className={classes["edit-slot-input"]}
                         placeholder={"Enter Amount"}
                         value={collection?.custom_price || ""}
-                        onChange={(e) =>
-                            handleAmountNameChange(e?.target?.value, collection)
+                        onChange={(e) =>{
+                            const re = /^[0-9\b]+$/;
+                            if (e.target.value === '' || re.test(e.target.value)) {
+                                handleAmountNameChange(e?.target?.value, collection)
+                             }}
+                            
                         }
                     />
                 </div>

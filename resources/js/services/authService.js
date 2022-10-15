@@ -31,7 +31,7 @@ export function login({ email, password, remember }) {
 }
 export function remember(dispatch) {
     const token = localStorage.getItem("access_token");
-    Http.get("/api/get-user-details")
+    Http.get(`${process.env.MIX_REACT_APP_URL}/api/get-user-details`)
         .then((response) => {
             let res = response;
             res.data.data = { ...res.data.data, token: token };
