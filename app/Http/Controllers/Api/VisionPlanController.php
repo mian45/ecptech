@@ -35,11 +35,14 @@ class VisionPlanController extends Controller
         
            return response()->json(['error'=>$validator->errors()], 401);                        
         } 
+
         $user_id = $request->userId;
         $vision_plan_id = $request->visionPlanId;
         $status = $request->status;
         
-        
+        if($user_id != auth()->user()->id){
+            return $this->sendError('invalid user id!');
+        }
         $permission = VisionPlanPermission::select('id','user_id','vision_plan_id','status')->updateOrCreate(
             ['user_id' => $user_id, 'vision_plan_id' => $vision_plan_id],
             ['status' => $status]
