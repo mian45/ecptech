@@ -60,6 +60,7 @@ class VisionPlanController extends Controller
         
            return response()->json(['error'=>$validator->errors()], 401);                        
         } 
+       
       $vision_plan_id = $request->visionPlanId;
         $questions = Question::leftJoin('question_permissions as setting', function($join){
             $join->on('questions.id', '=', 'setting.question_id')
