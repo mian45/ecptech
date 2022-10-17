@@ -241,7 +241,7 @@ export const CollectionSlot = ({
                         placeholder={"Enter Amount"}
                         value={collection?.custom_price || ""}
                         onChange={(e) =>{
-                            const re = /^[0-9\b]+$/;
+                            const re = /^\d+(\d{3})*(\.\d{0,2})?$/;
                             if (e.target.value === '' || re.test(e.target.value)) {
                                 handleAmountNameChange(e?.target?.value, collection)
                              }}

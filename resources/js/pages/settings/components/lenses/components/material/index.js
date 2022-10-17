@@ -15,15 +15,7 @@ useEffect(()=>{
                     params: { userId: userId },
                 }
             );
-            const newData = res.data.data.map((item)=>{
-                if(item.price !=null && item.price != undefined && item.price!= ""){
-                    return {...item,price:item.price.split(".",2)[0]}
-                }else{
-                    return item
-                }
-                
-                })
-            setMaterials(newData ||[]);
+            setMaterials(res.data.data ||[]);
         } catch (err) {
             console.log("error while get lenses",err);
         }

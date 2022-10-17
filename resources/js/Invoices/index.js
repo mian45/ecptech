@@ -18,7 +18,7 @@ const Invoices = ({ userId }) => {
     useEffect(() => {
         if (!userId) return;
         const getAllInvoices = async () => {
-            const res = await Axios.get("/api/get-invoices", {
+            const res = await Axios.get(`${process.env.MIX_REACT_APP_URL}/api/get-invoices`, {
                 params: { userId: userId },
             });
             setTableData(res?.data?.data);
