@@ -29,24 +29,46 @@ function EditInsurance({ userId }) {
   //for toggle switch
 
   const handleSwitch = (value, toggleSwitch) => {
-    setUpdateInsurancePlan([...updateInsurancePlan,{
-      id: value?.id,
-      question_id: value?.id,
-      optional: toggleSwitch,
-      status: value?.status,
-    }])
+    setUpdateInsurancePlan((oldState)=> {
+      let oldStateCopy = [...oldState]
+    let current = oldStateCopy.find(insurance => insurance.id == value.id)
+    if(current) {
+       oldStateCopy.find(insurance => insurance.id == value.id).optional = toggleSwitch
+    } 
+    else {
+      oldStateCopy = [...oldStateCopy,{
+        id: value?.id,
+        question_id: value?.id,
+        optional: toggleSwitch,
+        status: value?.status,
+      }]
+    }
+    return oldStateCopy;
+    }
+    )
 
   }
 
   //for checkbox switch
 
   const handleCheck = (value , toggleCheck) => {
-    setUpdateInsurancePlan([...updateInsurancePlan,{
+    setUpdateInsurancePlan((oldState)=> {
+      let oldStateCopy = [...oldState]
+    let current = oldStateCopy.find(insurance => insurance.id == value.id)
+    if(current) {
+       oldStateCopy.find(insurance => insurance.id == value.id).status = toggleCheck.target.checked
+    } 
+    else {
+      oldStateCopy = [...oldStateCopy,{
       id: value?.id,
       question_id: value?.id,
       optional: value?.optional,
       status: toggleCheck.target.checked,
-    }])
+      }]
+    }
+    return oldStateCopy;
+    }
+    )
   } 
 
   const handleSubmit= async() => {
@@ -58,7 +80,9 @@ function EditInsurance({ userId }) {
       vision_plan_id:visionID,
       data: updateInsurancePlan
     }
-    await Axios.post(process.env.MIX_REACT_APP_URL+`/api/update-user-plan-question-permission`,toggle)
+    await Axios.post(process.env.MIX_REACT_APP_URL+`/api/update-user-plan-question-permission`,toggle).then(() => {
+      setUpdateInsurancePlan([])
+    })
   }
 
   const label = { inputProps: { 'aria-label': 'Switch demo' } }
