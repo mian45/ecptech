@@ -8,10 +8,10 @@ import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
 
-const  Addons = ({ userId }) => {
+const Addons = ({ userId }) => {
     const [addonsList, setAddonsList] = useState([]);
     const [changedAddOnList, setChangedAddOnList] = useState([]);
-    const [selectedAddons, setSelectedAddons] = useState('');
+    const [selectedAddons, setSelectedAddons] = useState("");
 
     useEffect(() => {
         const getLenses = async () => {
@@ -22,14 +22,17 @@ const  Addons = ({ userId }) => {
                         params: { userId: userId },
                     }
                 );
-                const newData = res.data.data.map((item)=>{
-                    if(item.price !=null && item.price != undefined && item.price!= ""){
-                        return {...item,price:item.price.split(".",2)[0]}
-                    }else{
-                        return item
+                const newData = res.data.data?.map((item) => {
+                    if (
+                        item.price != null &&
+                        item.price != undefined &&
+                        item.price != ""
+                    ) {
+                        return { ...item, price: item.price.split(".", 2)[0] };
+                    } else {
+                        return item;
                     }
-                    
-                    })
+                });
                 setAddonsList(newData);
             } catch (err) {
                 console.log("error while get lenses");
@@ -53,7 +56,6 @@ const  Addons = ({ userId }) => {
     };
 
     const onLensTypeClick = (value) => {
-        
         setSelectedAddons(value);
     };
 
@@ -61,11 +63,10 @@ const  Addons = ({ userId }) => {
         <>
             <div className={classes["container"]}>
                 <div className={classes["left-container"]}>
-                        <LensesTypeList
-                            onClick={onLensTypeClick}
-                            lenses={addonsList}
-                        />
-                  
+                    <LensesTypeList
+                        onClick={onLensTypeClick}
+                        lenses={addonsList}
+                    />
                 </div>
                 <div className={classes["right-container"]}>
                     <CollectionSection
@@ -92,107 +93,104 @@ const mapStateToProps = (state) => ({
 });
 export default connect(mapStateToProps)(Addons);
 
-const CollectionSection = ({
-    addons,
-    selectedAddons,
-    setLensesList,
-}) => {
-    const [addonsList,setAddonsList]=useState([])
+const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
+    const [addonsList, setAddonsList] = useState([]);
     const getCollections = () => {
-       const data= addons.filter((item,index)=>{
-        if(item.title===selectedAddons)
-        {return item.addons}
-       })
-       console.log(data)
-       if(data.length!=0){
-        const newData = data[0]?.addons.map((item)=>{
-            if(item.price !=null && item.price != undefined && item.price!= ""){
-                return {...item,price:item.price.split(".",2)[0]}
-            }else{
-                return item
+        const data = addons.filter((item, index) => {
+            if (item.title === selectedAddons) {
+                return item.addons;
             }
-            
-            })
-        setAddonsList(newData)
-       }else{
-        setAddonsList([])
-       }
-
+        });
+        console.log(data);
+        if (data.length != 0) {
+            const newData = data[0]?.addons?.map((item) => {
+                if (
+                    item.price != null &&
+                    item.price != undefined &&
+                    item.price != ""
+                ) {
+                    return { ...item, price: item.price.split(".", 2)[0] };
+                } else {
+                    return item;
+                }
+            });
+            setAddonsList(newData);
+        } else {
+            setAddonsList([]);
+        }
     };
-    useEffect(()=>{
+    useEffect(() => {
         getCollections();
-    },[selectedAddons])
+    }, [selectedAddons]);
     const handleCheckbox = (value, collection) => {
-        const newData= addonsList.map((item)=>{
-            if(item.id===collection.id){
-                return {...item,status:value?"active":"inactive"}
-            }else{
-                return item
+        const newData = addonsList?.map((item) => {
+            if (item.id === collection.id) {
+                return { ...item, status: value ? "active" : "inactive" };
+            } else {
+                return item;
             }
-        })
-        const data= addons.map((item,index)=>{
-            if(item.title===selectedAddons)
-            {return {...item,addons:newData}}
-            else{
-                return item
+        });
+        const data = addons?.map((item, index) => {
+            if (item.title === selectedAddons) {
+                return { ...item, addons: newData };
+            } else {
+                return item;
             }
-           })
-        setLensesList(data)
-        setAddonsList(newData)
+        });
+        setLensesList(data);
+        setAddonsList(newData);
     };
     const handleDisplayNameChange = (value, collection) => {
-        const newData= addonsList.map((item)=>{
-            if(item.id===collection.id){
-                return {...item,display_name:value}
-            }else{
-                return item
+        const newData = addonsList?.map((item) => {
+            if (item.id === collection.id) {
+                return { ...item, display_name: value };
+            } else {
+                return item;
             }
-        })
-        const data= addons.map((item,index)=>{
-            if(item.title===selectedAddons)
-            {return {...item,addons:newData}}
-            else{
-                return item
+        });
+        const data = addons?.map((item, index) => {
+            if (item.title === selectedAddons) {
+                return { ...item, addons: newData };
+            } else {
+                return item;
             }
-           })
-        setLensesList(data)
-        setAddonsList(newData)
-        
+        });
+        setLensesList(data);
+        setAddonsList(newData);
     };
     const handleAmountNameChange = (value, collection) => {
-        const newData= addonsList.map((item)=>{
-            if(item.id===collection.id){
-                return {...item,price:value}
-            }else{
-                return item
+        const newData = addonsList?.map((item) => {
+            if (item.id === collection.id) {
+                return { ...item, price: value };
+            } else {
+                return item;
             }
-        })
-        const data= addons.map((item,index)=>{
-            if(item.title===selectedAddons)
-            {return {...item,addons:newData}}
-            else{
-                return item
+        });
+        const data = addons?.map((item, index) => {
+            if (item.title === selectedAddons) {
+                return { ...item, addons: newData };
+            } else {
+                return item;
             }
-           })
-        setLensesList(data)
-        setAddonsList(newData)
-       };
+        });
+        setLensesList(data);
+        setAddonsList(newData);
+    };
     if (!selectedAddons) return <></>;
     return (
         <div className={classes["collection-container"]}>
             <div
                 className={classes["collection-label"]}
             >{`${selectedAddons}`}</div>
-            {addonsList.map((collection, index) =>
-                    <CollectionSlot
-                        key={index}
-                        collection={collection}
-                        handleCheckbox={handleCheckbox}
-                        handleDisplayNameChange={handleDisplayNameChange}
-                        handleAmountNameChange={handleAmountNameChange}
-                    />
-            
-            )}
+            {addonsList?.map((collection, index) => (
+                <CollectionSlot
+                    key={index}
+                    collection={collection}
+                    handleCheckbox={handleCheckbox}
+                    handleDisplayNameChange={handleDisplayNameChange}
+                    handleAmountNameChange={handleAmountNameChange}
+                />
+            ))}
         </div>
     );
 };
@@ -235,44 +233,50 @@ export const CollectionSlot = ({
                             className={classes["tick-icon"]}
                             onClick={() => setIsEdit(false)}
                         />
-                    </div> <div className={classes["edit-slot-sub-wrapper"]}>
-                    <div className={classes["edit-slot-title"]}>
-                        Display Name
+                    </div>{" "}
+                    <div className={classes["edit-slot-sub-wrapper"]}>
+                        <div className={classes["edit-slot-title"]}>
+                            Display Name
+                        </div>
+                        <input
+                            className={classes["edit-slot-input"]}
+                            placeholder={"Enter Display Name"}
+                            value={collection?.display_name || ""}
+                            onChange={(e) =>
+                                handleDisplayNameChange(
+                                    e?.target?.value,
+                                    collection
+                                )
+                            }
+                        />
+                        <div className={classes["edit-slot-title"]}>
+                            Retail Amount
+                        </div>
+                        <input
+                            className={classes["edit-slot-input"]}
+                            placeholder={"Enter Amount"}
+                            value={collection?.price}
+                            onChange={(e) => {
+                                const re = /^[0-9\b]+$/;
+                                if (
+                                    e.target.value === "" ||
+                                    re.test(e.target.value)
+                                ) {
+                                    handleAmountNameChange(
+                                        e?.target?.value,
+                                        collection
+                                    );
+                                }
+                            }}
+                        />
                     </div>
-                    <input
-                        className={classes["edit-slot-input"]}
-                        placeholder={"Enter Display Name"}
-                        value={collection?.display_name || ""}
-                        onChange={(e) =>
-                            handleDisplayNameChange(
-                                e?.target?.value,
-                                collection
-                            )
-                        }
-                    />
-                    <div className={classes["edit-slot-title"]}>
-                        Retail Amount
-                    </div>
-                    <input
-                        className={classes["edit-slot-input"]}
-                        placeholder={"Enter Amount"}
-                        value={collection?.price}
-                        onChange={(e) =>{
-                            const re = /^[0-9\b]+$/;
-                            if (e.target.value === '' || re.test(e.target.value)) {
-                                handleAmountNameChange(e?.target?.value, collection)
-                             }}
-                            
-                        }
-                    /></div>
                 </div>
             ) : (
                 <div
                     className={classes["collection-show-container"]}
                     id={collection?.title}
-                >{
-                    console.log("the collection is here",collection)
-                }
+                >
+                    {console.log("the collection is here", collection)}
                     <div className={classes["collection-left-container"]}>
                         <div
                             className={
@@ -338,7 +342,7 @@ const LensesTypeList = ({ onClick, lenses }) => {
     return (
         <div className={classes["lenses-list-container"]}>
             <div className={classes["lenses-list-title"]}>Add On</div>
-            {lenses.map((lens, index) => {
+            {lenses?.map((lens, index) => {
                 return (
                     <LensLabelSlot
                         title={lens?.title || ""}
@@ -350,7 +354,6 @@ const LensesTypeList = ({ onClick, lenses }) => {
         </div>
     );
 };
-
 
 const LensLabelSlot = ({ title, onClick, active }) => {
     const [isHover, setIsHover] = useState(false);

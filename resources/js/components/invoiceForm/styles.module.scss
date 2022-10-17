@@ -14,7 +14,6 @@
 .input {
     width: 284px;
     margin-right: 20px;
-    outline: none;
 }
 .dob-wrapper {
     display: flex;
@@ -34,7 +33,6 @@
     font-size: 16px;
     padding: 10px 20px;
     color: #747474;
-    outline: none;
     & ::placeholder {
         color: #cbcbcb;
     }
