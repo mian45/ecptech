@@ -219,6 +219,7 @@ export const CollectionSlot = ({
                             onClick={() => setIsEdit(false)}
                         />
                     </div>
+                    <div className={classes["edit-slot-sub-wrapper"]}>
                     <div className={classes["edit-slot-title"]}>
                         Display Name
                     </div>
@@ -247,7 +248,7 @@ export const CollectionSlot = ({
                              }}
                             
                         }
-                    />
+                    /></div>
                 </div>
             ) : (
                 <div

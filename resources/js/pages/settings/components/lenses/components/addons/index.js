@@ -235,7 +235,7 @@ export const CollectionSlot = ({
                             className={classes["tick-icon"]}
                             onClick={() => setIsEdit(false)}
                         />
-                    </div>
+                    </div> <div className={classes["edit-slot-sub-wrapper"]}>
                     <div className={classes["edit-slot-title"]}>
                         Display Name
                     </div>
@@ -264,7 +264,7 @@ export const CollectionSlot = ({
                              }}
                             
                         }
-                    />
+                    /></div>
                 </div>
             ) : (
                 <div
