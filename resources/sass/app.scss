@@ -38,6 +38,17 @@ input{
 }:focus-visible{
     border: 1px solid #dfdfdf !important;
 }
+.rdrStaticRange{
+    color: #000;
+    font-size: 16px;
+    font-family: Montserrat;
+    padding: 8px 30px;
+    background-color: #fff !important;
+    border-radius: 0px !important;
+    border: none;
+    height: auto !important;
+
+}
 button{
     color: #fff;
     font-size: 16px;
@@ -297,7 +308,4 @@ input[type="number"] {
 }
 .ant-popover-inner-content {
     border-radius: 10px !important;
-}
-input {
-    outline: none !important;
 }
