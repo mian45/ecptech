@@ -49,7 +49,6 @@ const InvoiceInfo = ({ formProps, userId, userInfo, disable }) => {
                     value={values?.invoiceName}
                     id="invoiceName"
                     name="invoiceName"
-                    disabled={disable}
                 />
                 <FormikError name={"invoiceName"} />
             </div>
@@ -68,7 +67,6 @@ const InvoiceInfo = ({ formProps, userId, userInfo, disable }) => {
                     }
                     id="staffName"
                     name="staffName"
-                    disabled={disable}
                     components={{
                         DropdownIndicator: () => (
                             <img

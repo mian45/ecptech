@@ -17,7 +17,7 @@ const SunglassLens = ({
     const { values, handleChange, handleBlur } = formProps;
 
     const sunglassLensVisibility = calculatorObj?.questions
-        ?.find((item) => item.title === "VSP Signature")
+        ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
             (ques) => ques.question === "Sunglass Lens"
         )?.visibility;

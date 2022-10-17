@@ -109,7 +109,7 @@ const ViewInvoice = ({
     const totalWithoutTax = () => {
         let total = 0;
         total = total + (receipt?.values?.materialCopay || 0);
-        total = total + GetFrameFee(receipt);
+        total = total + parseInt(GetFrameFee(receipt));
         total =
             total + parseInt(GetLensFee(receipt, calculatorObj, lensPrices));
         if (

@@ -18,7 +18,7 @@ const FrameOrder = ({
 }) => {
     const { values, handleChange, handleBlur } = formProps;
     const frameOrderVisibility = calculatorObj?.questions
-        ?.find((item) => item.title === "VSP Signature")
+        ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
             (ques) => ques.question === "Frame Order"
         )?.visibility;

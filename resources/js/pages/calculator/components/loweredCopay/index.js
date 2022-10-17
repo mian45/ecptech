@@ -25,7 +25,7 @@ const LoweredCopay = ({
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const copayDollarAmountVisibility = calculatorObj?.questions
-        ?.find((item) => item.title === "VSP Signature")
+        ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
             (ques) => ques.question === "Any copay lowered than standard"
         )?.visibility;

@@ -17,7 +17,7 @@ const ProtectionPlan = ({
 }) => {
     const { values, handleChange, handleBlur } = formProps;
     const protectionPlanVisibility = calculatorObj?.questions
-        ?.find((item) => item.title === "VSP Signature")
+        ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
             (ques) => ques.question === "Protection Plan"
         )?.visibility;

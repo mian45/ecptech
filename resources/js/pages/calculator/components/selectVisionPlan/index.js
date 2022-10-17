@@ -6,9 +6,63 @@ import tickIcon from "../../../../../images/tick-green.svg";
 import CustomRadio from "../../../../components/customRadio";
 import visionIcon from "../../../../../images/calculator/vision.svg";
 import { ErrorMessage } from "formik";
+import { BenifitTypeEnums } from "../../data/initialValues";
 
-const SelectVisionPlan = ({ formProps, calculatorObj }) => {
-    const { values, handleChange, handleBlur } = formProps;
+const SelectVisionPlan = ({
+    formProps,
+    calculatorObj,
+    setCalValidations,
+    calValidations,
+    data,
+}) => {
+    const { values, handleChange, handleBlur, setFieldValue, errors } =
+        formProps;
+    const plansList = calculatorObj?.questions?.map((plan) => plan?.title);
+    const handlePlanChange = (event) => {
+        if (event?.target?.value === "Private") {
+            const validations = { ...calValidations };
+            delete validations?.isloweredCopay;
+            delete validations?.isLensBenifit;
+            delete validations?.isFrameBenifit;
+            setCalValidations({ ...validations });
+            setFieldValue("benifitType", BenifitTypeEnums.both);
+        } else {
+            setFieldValue("benifitType", "");
+            const validationObject = {};
+            if (
+                !data?.find(
+                    (ques) =>
+                        ques.question === "Any copay lowered than standard"
+                )?.optional
+            ) {
+                validationObject.isloweredCopay =
+                    Yup.string().required("Option is required");
+            }
+            if (
+                !data?.find(
+                    (ques) => ques.question === "Frame Benefit Available"
+                )?.optional
+            ) {
+                validationObject.isFrameBenifit = Yup.string().required(
+                    "Frame benefit is required"
+                );
+            }
+            if (
+                !data?.find(
+                    (ques) => ques.question === "Lens Benefit Available"
+                )?.optional
+            ) {
+                validationObject.isLensBenifit = Yup.string().required(
+                    "Lens benefit is required"
+                );
+            }
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
+        }
+        handleChange(event);
+    };
 
     const visionPlan = () => {
         return (
@@ -21,35 +75,23 @@ const SelectVisionPlan = ({ formProps, calculatorObj }) => {
                     />
                     <Radio.Group
                         onBlur={handleBlur}
-                        onChange={handleChange}
+                        onChange={handlePlanChange}
                         value={values?.visionPlan}
                         className={classes["radio-group"]}
                         id="visionPlan"
                         name="visionPlan"
                     >
-                        <CustomRadio
-                            label={"VSP Signature"}
-                            value={"VSP Signature"}
-                            active={values?.visionPlan === "VSP Signature"}
-                        />
-                        <CustomRadio
-                            label={"VSP Choice"}
-                            value={"VSP Choice"}
-                            active={values?.visionPlan === "VSP Choice"}
-                            disabled={true}
-                        />
-                        <CustomRadio
-                            label={"VSP Advantage"}
-                            value={"VSP Advantage"}
-                            active={values?.visionPlan === "VSP Advantage"}
-                            disabled={true}
-                        />
-                        <CustomRadio
-                            label={"Eyemed"}
-                            value={"Eyemed"}
-                            active={values?.visionPlan === "Eyemed"}
-                            disabled={true}
-                        />
+                        {plansList?.map((plan, index) => {
+                            return (
+                                <CustomRadio
+                                    headClass={classes["radio"]}
+                                    key={index}
+                                    label={plan}
+                                    value={plan}
+                                    active={values?.visionPlan === plan}
+                                />
+                            );
+                        })}
                     </Radio.Group>
                     <FormikError name={"visionPlan"} />
                 </div>
@@ -58,7 +100,7 @@ const SelectVisionPlan = ({ formProps, calculatorObj }) => {
     };
     const renderVisionPlan = () => {
         const permission = calculatorObj?.questions
-            ?.find((item) => item.title === "VSP Signature")
+            ?.find((item) => item.title === values?.visionPlan)
             ?.question_permissions?.find(
                 (ques) => ques.question === "Select Vision Plan"
             )?.visibility;
