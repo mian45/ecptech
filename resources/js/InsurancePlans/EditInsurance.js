@@ -3,7 +3,6 @@ import { Switch } from 'antd';
 import './style.scss'
 import { Checkbox } from 'antd';
 import { useHistory, useParams } from 'react-router';
-// import axios from 'axios';
 import Axios from "../Http"
 import { connect } from "react-redux";
 function EditInsurance({ userId }) {
