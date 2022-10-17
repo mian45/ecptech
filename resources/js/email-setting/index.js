@@ -379,24 +379,14 @@ const EmailSetting = (props) => {
                                         </div>
                                         <div>
                                             <img
-                                                style={{
-                                                    width: "18px",
-                                                    height: "18px",
-                                                    marginRight: "35.4px",
-                                                    cursor: "pointer",
-                                                }}
+                                                className="edit-icon"
                                                 src={edit}
                                                 onClick={() => {
                                                     updateHandler(obj);
                                                 }}
                                             />
                                             {obj?.is_active === 1? <img
-                                                style={{
-                                                    width: "16px",
-                                                    height: "18px",
-                                                    marginRight: "35.6px",
-                                                    cursor: "pointer",
-                                                }}
+                                               className="bell-icon"
                                                 src={
                                                    
                                                    bellIcon
@@ -406,12 +396,7 @@ const EmailSetting = (props) => {
                                                     activeInActiveReminder(obj);
                                                 }}
                                             />:<img
-                                            style={{
-                                                width: "19px",
-                                                height: "18.88px",
-                                                marginRight: "35.6px",
-                                                cursor: "pointer",
-                                            }}
+                                           className="bell-icon"
                                             src={
                                                  bellCloseIcon
                                             }
@@ -422,11 +407,7 @@ const EmailSetting = (props) => {
                                             
                                             
                                             <img
-                                                style={{
-                                                    width: "16px",
-                                                    height: "16px",
-                                                    cursor: "pointer",
-                                                }}
+                                                className="delete-icon"
                                                 src={cross}
                                                 onClick={() => {
                                                     handleDelete(obj.id);
