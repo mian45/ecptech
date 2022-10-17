@@ -16,24 +16,28 @@ const Addons = ({ userId }) => {
     useEffect(() => {
         const getLenses = async () => {
             try {
-                const res = await Axios.get(
+                await Axios.get(
                     `${process.env.MIX_REACT_APP_URL}/api/addon-settings`,
                     {
                         params: { userId: userId },
                     }
-                );
-                const newData = res.data.data?.map((item) => {
-                    if (
-                        item.price != null &&
-                        item.price != undefined &&
-                        item.price != ""
-                    ) {
-                        return { ...item, price: item.price.split(".", 2)[0] };
-                    } else {
-                        return item;
-                    }
+                ).then((res) => {
+                    const newData = res.data.data?.map((item) => {
+                        if (
+                            item.price != null &&
+                            item.price != undefined &&
+                            item.price != ""
+                        ) {
+                            return {
+                                ...item,
+                                price: item.price.split(".", 2)[0],
+                            };
+                        } else {
+                            return item;
+                        }
+                    });
+                    setAddonsList(newData);
                 });
-                setAddonsList(newData);
             } catch (err) {
                 console.log("error while get lenses");
             }
