@@ -15,6 +15,10 @@
     color:red
 
 }
+.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #ccc !important;
+    border-color: transparent !important;
+}
 .container {
     width: 451px;
     background-color: #ffffff;
@@ -92,4 +96,8 @@
 .checkbox {
     width: 40px;
     height: 40px;
+}::selection{
+    color: #000;
+    background: #fff;
+    opacity: 0;
 }

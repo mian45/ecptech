@@ -81,7 +81,7 @@ const ViewInvoice = ({
             vpState: calculatorObj,
             userState: receipt?.values,
         };
-        await Axios.post("/api/save-invoice", payload);
+        await Axios.post(`${process.env.MIX_REACT_APP_URL}/api/save-invoice`, payload);
     };
 
     const onEditInvoice = async () => {
@@ -94,7 +94,7 @@ const ViewInvoice = ({
             vpState: calculatorObj,
             userState: receipt?.values,
         };
-        await Axios.post("/api/save-edit-invoice", payload);
+        await Axios.post(`${process.env.MIX_REACT_APP_URL}/api/save-edit-invoice`, payload);
     };
 
     const calculateTotalDue = () => {

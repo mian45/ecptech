@@ -85,7 +85,7 @@ const CalculatorScreen = () => {
     }, [history?.location?.state]);
     const getCalculatorObject = async () => {
         try {
-            const res = await Axios.get("/api/calculater-data");
+            const res = await Axios.get(`${process.env.MIX_REACT_APP_URL}/api/calculater-data`);
             setCalculatorObj(res?.data?.data);
             const questions = res?.data?.data?.questions;
             const validations = CreateCalculatorValidations(
@@ -126,7 +126,7 @@ const CalculatorScreen = () => {
                 vision_plan_id: planId,
             };
 
-            const res = await Axios.post("/api/get-lenses-price", payload);
+            const res = await Axios.post(`${process.env.MIX_REACT_APP_URL}/api/get-lenses-price`, payload);
             setLensPrices(res?.data?.data);
         } catch (err) {
             console.log("error while get data");

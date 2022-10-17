@@ -348,7 +348,7 @@ const EmailSetting = (props) => {
                                                 </div>
                                                 <div className="email-setting-content-section-subsection">
                                                     <p
-                                                        className="email-setting-content-section-subsection-subheading"
+                                                        className="email-setting-content-section-subsection-heading"
                                                         style={
                                                             obj.type ==
                                                             "reminder"
@@ -379,39 +379,35 @@ const EmailSetting = (props) => {
                                         </div>
                                         <div>
                                             <img
-                                                style={{
-                                                    width: "18px",
-                                                    height: "18px",
-                                                    marginRight: "35.4px",
-                                                    cursor: "pointer",
-                                                }}
+                                                className="edit-icon"
                                                 src={edit}
                                                 onClick={() => {
                                                     updateHandler(obj);
                                                 }}
                                             />
-                                            <img
-                                                style={{
-                                                    width: "16px",
-                                                    height: "18px",
-                                                    marginRight: "35.6px",
-                                                    cursor: "pointer",
-                                                }}
+                                            {obj?.is_active === 1? <img
+                                               className="bell-icon"
                                                 src={
-                                                    obj?.is_active === 1
-                                                        ? bellIcon
-                                                        : bellCloseIcon
+                                                   
+                                                   bellIcon
+                                                      
                                                 }
                                                 onClick={() => {
                                                     activeInActiveReminder(obj);
                                                 }}
-                                            />
+                                            />:<img
+                                           className="bell-icon"
+                                            src={
+                                                 bellCloseIcon
+                                            }
+                                            onClick={() => {
+                                                activeInActiveReminder(obj);
+                                            }}
+                                        />}
+                                            
+                                            
                                             <img
-                                                style={{
-                                                    width: "16px",
-                                                    height: "16px",
-                                                    cursor: "pointer",
-                                                }}
+                                                className="delete-icon"
                                                 src={cross}
                                                 onClick={() => {
                                                     handleDelete(obj.id);
