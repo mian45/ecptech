@@ -16,7 +16,7 @@ class Archive extends Component {
     };
 
     // API Endpoint
-    this.api = '/api/v1/todo';
+    this.api = `${process.env.MIX_REACT_APP_URL}/api/v1/todo`;
   }
 
   componentDidMount() {

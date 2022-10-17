@@ -348,7 +348,7 @@ const EmailSetting = (props) => {
                                                 </div>
                                                 <div className="email-setting-content-section-subsection">
                                                     <p
-                                                        className="email-setting-content-section-subsection-subheading"
+                                                        className="email-setting-content-section-subsection-heading"
                                                         style={
                                                             obj.type ==
                                                             "reminder"
@@ -390,7 +390,7 @@ const EmailSetting = (props) => {
                                                     updateHandler(obj);
                                                 }}
                                             />
-                                            <img
+                                            {obj?.is_active === 1? <img
                                                 style={{
                                                     width: "16px",
                                                     height: "18px",
@@ -398,14 +398,29 @@ const EmailSetting = (props) => {
                                                     cursor: "pointer",
                                                 }}
                                                 src={
-                                                    obj?.is_active === 1
-                                                        ? bellIcon
-                                                        : bellCloseIcon
+                                                   
+                                                   bellIcon
+                                                      
                                                 }
                                                 onClick={() => {
                                                     activeInActiveReminder(obj);
                                                 }}
-                                            />
+                                            />:<img
+                                            style={{
+                                                width: "19px",
+                                                height: "18.88px",
+                                                marginRight: "35.6px",
+                                                cursor: "pointer",
+                                            }}
+                                            src={
+                                                 bellCloseIcon
+                                            }
+                                            onClick={() => {
+                                                activeInActiveReminder(obj);
+                                            }}
+                                        />}
+                                            
+                                            
                                             <img
                                                 style={{
                                                     width: "16px",

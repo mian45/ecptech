@@ -32,7 +32,28 @@ label {
 
 // Buttons
 $btn-size-base: 1rem;
-
+input{
+    border:1px solid #dfdfdf !important;
+    outline: none !important;
+}:focus-visible{
+    border: 1px solid #dfdfdf !important;
+}
+button{
+    color: #fff;
+    font-size: 16px;
+    font-family: Montserrat;
+    padding: 8px 30px;
+    background-color: #6fa5cb;
+    border-radius: 28px;
+    border: none;
+    height: 45px;
+    &:hover {
+        background-color: #518fbb;
+    }
+    &:disabled {
+        background-color: #cbcbcb;
+    }
+}
 .btn {
     transition: all 0.2s ease;
 
