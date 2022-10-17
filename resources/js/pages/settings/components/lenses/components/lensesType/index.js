@@ -51,9 +51,8 @@ const LensesType = ({ userId }) => {
         setSelectedLensType(value);
     };
     const onGoBackClick = () => {
-        setSelectedRow("")
+        setSelectedRow("");
         setIsBrands(false);
-
     };
     return (
         <>
@@ -219,8 +218,41 @@ export const CollectionSlot = ({
                             onClick={() => setIsEdit(false)}
                         />
                     </div>
-                    <div className={classes["edit-slot-title"]}>
-                        Display Name
+                    <div className={classes["edit-slot-sub-wrapper"]}>
+                        <div className={classes["edit-slot-title"]}>
+                            Display Name
+                        </div>
+                        <input
+                            className={classes["edit-slot-input"]}
+                            placeholder={"Enter Display Name"}
+                            value={collection?.display_name || ""}
+                            onChange={(e) =>
+                                handleDisplayNameChange(
+                                    e?.target?.value,
+                                    collection
+                                )
+                            }
+                        />
+                        <div className={classes["edit-slot-title"]}>
+                            Retail Amount
+                        </div>
+                        <input
+                            className={classes["edit-slot-input"]}
+                            placeholder={"Enter Amount"}
+                            value={collection?.custom_price || ""}
+                            onChange={(e) => {
+                                const re = /^\d+(\d{3})*(\.\d{0,2})?$/;
+                                if (
+                                    e.target.value === "" ||
+                                    re.test(e.target.value)
+                                ) {
+                                    handleAmountNameChange(
+                                        e?.target?.value,
+                                        collection
+                                    );
+                                }
+                            }}
+                        />
                     </div>
                     <input
                         className={classes["edit-slot-input"]}
@@ -319,7 +351,7 @@ const LensesTypeList = ({ onClick, lenses }) => {
     return (
         <div className={classes["lenses-list-container"]}>
             <div className={classes["lenses-list-title"]}>Lens Types</div>
-            {lenses.map((lens, index) => {
+            {lenses?.map((lens, index) => {
                 return (
                     <LensLabelSlot
                         title={lens?.title || ""}

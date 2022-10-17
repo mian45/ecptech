@@ -34,7 +34,6 @@
     border: 1px solid #dfdfdf;
     font-size: 1em;
     padding: 10px 20px;
-    outline: none;
 }
 .toggle-wrapper {
     padding-left: 0px;
@@ -46,7 +45,6 @@
     background: none;
     border-radius: 50%;
     cursor: pointer;
-    outline: none;
     &::-webkit-color-swatch-wrapper {
         padding: 0;
     }
