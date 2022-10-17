@@ -28,21 +28,26 @@ function EditInsurance({ userId }) {
   //for toggle switch
 
   const handleSwitch = (value, toggleSwitch) => {
+    setSelectedRow((oldState) => {
+      let rowCopy = [...oldState]
+      rowCopy.find(insurance => insurance.id == value.id).optional = toggleSwitch
+      return rowCopy
+    })
     setUpdateInsurancePlan((oldState)=> {
       let oldStateCopy = [...oldState]
-    let current = oldStateCopy.find(insurance => insurance.id == value.id)
-    if(current) {
-       oldStateCopy.find(insurance => insurance.id == value.id).optional = toggleSwitch
-    } 
-    else {
-      oldStateCopy = [...oldStateCopy,{
-        id: value?.id,
-        question_id: value?.id,
-        optional: toggleSwitch,
-        status: value?.status,
-      }]
-    }
-    return oldStateCopy;
+      let current = oldStateCopy.find(insurance => insurance.id == value.id)
+      if(current) {
+        oldStateCopy.find(insurance => insurance.id == value.id).optional = toggleSwitch
+      } 
+      else {
+        oldStateCopy = [...oldStateCopy,{
+            id: value?.id,
+            question_id: value?.id,
+            optional: toggleSwitch,
+            status: value?.status,
+        }]
+      }
+      return oldStateCopy;
     }
     )
 
@@ -51,24 +56,27 @@ function EditInsurance({ userId }) {
   //for checkbox switch
 
   const handleCheck = (value , toggleCheck) => {
+    setSelectedRow((oldState) => {
+      let rowCopy = [...oldState]
+      rowCopy.find(insurance => insurance.id == value.id).status = toggleCheck.target.checked
+    return rowCopy
+    })
     setUpdateInsurancePlan((oldState)=> {
       let oldStateCopy = [...oldState]
-    let current = oldStateCopy.find(insurance => insurance.id == value.id)
-    if(current) {
-       oldStateCopy.find(insurance => insurance.id == value.id).status = toggleCheck.target.checked
-    } 
-    else {
-      oldStateCopy = [...oldStateCopy,{
-      id: value?.id,
-      question_id: value?.id,
-      optional: value?.optional,
-      status: toggleCheck.target.checked,
-      }]
-    }
-    return oldStateCopy;
-    }
-    )
-  } 
+      let current = oldStateCopy.find(insurance => insurance.id == value.id)
+      if(current) {
+        oldStateCopy.find(insurance => insurance.id == value.id).status = toggleCheck.target.checked
+      } 
+      else {
+        oldStateCopy = [...oldStateCopy,{
+          id: value?.id,
+          question_id: value?.id,
+          optional: value?.optional,
+          status: toggleCheck.target.checked,
+        }]
+      }
+      return oldStateCopy;
+    })} 
 
   const handleSubmit= async() => {
     if(updateInsurancePlan.length == 0){
@@ -109,7 +117,7 @@ function EditInsurance({ userId }) {
                     <div className='other-setting_section-first_switches-switch-edit' key={item?.id}>
                       <Checkbox defaultChecked={item?.status} onChange={(e) => {handleCheck(item,e)}}>{item?.title}</Checkbox>
 
-                      <Switch {...label} defaultChecked={item?.optional == 0 ? false : true} onChange={(e) => handleSwitch(item, e)} />
+                      <Switch disabled= {item?.status == 0 ? true : false} defaultChecked={item?.optional == 0 ? false : true} onChange={(e) => handleSwitch(item, e)} />
                     </div>
                   )
                 })
