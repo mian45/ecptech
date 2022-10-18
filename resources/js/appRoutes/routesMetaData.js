@@ -13,7 +13,7 @@ const Home = React.lazy(() => import("../pages/dashboard/index"));
 const signIn = React.lazy(() => import("../pages/auth/signIn"));
 const Invoices = React.lazy(() => import("../Invoices"));
 const Payment = React.lazy(() => import("../payment"));
-const Settings = React.lazy(() => import("../setting-dashboard"));
+const Seetings = React.lazy(() => import("../setting-dashboard"));
 const CreateInvoice = React.lazy(() => import("../pages/calculator"));
 const EditInsurance = React.lazy(() =>
     import("../InsurancePlans/EditInsurance")
@@ -51,7 +51,7 @@ export const allRoutes = [
     },
     {
         path: SETTINGS_ROUTE,
-        component: Settings,
+        component: Seetings,
         exact: true,
         isPrivate: true,
     },

@@ -11,8 +11,13 @@
     justify-content: center;
     align-items: center;
 }
-.validation-error {
-    color: red;
+.validation-error{
+    color:red
+
+}
+.ant-checkbox-checked .ant-checkbox-inner {
+    background-color: #ccc !important;
+    border-color: transparent !important;
 }
 .container {
     width: 451px;
@@ -91,4 +96,8 @@
 .checkbox {
     width: 40px;
     height: 40px;
+}::selection{
+    color: #000;
+    background: #fff;
+    opacity: 0;
 }

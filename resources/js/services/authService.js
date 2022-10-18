@@ -31,7 +31,7 @@ export function login({ email, password, remember }) {
 }
 export function remember(dispatch) {
     const token = localStorage.getItem("access_token");
-    Http.get(`${process.env.MIX_REACT_APP_URL}/api/get-user-details`)
+    Http.get("/api/get-user-details")
         .then((response) => {
             let res = response;
             res.data.data = { ...res.data.data, token: token };
@@ -52,7 +52,7 @@ export function activeSetting(res) {
 export function register(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post("/api/auth/register", credentials)
+            Http.post(`${process.env.MIX_REACT_APP_URL}/api/auth/register`, credentials)
                 .then((res) => resolve(res.data))
                 .catch((err) => {
                     const { status, errors } = err.response.data;
@@ -87,7 +87,7 @@ export function resetPassword(credentials) {
 export function updatePassword(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post("/api/auth/password-reset", credentials)
+            Http.post(`${process.env.MIX_REACT_APP_URL}/api/auth/password-reset`, credentials)
                 .then((res) => {
                     const { status } = res.data.status;
                     if (status === 202) {
@@ -113,7 +113,7 @@ export function updatePassword(credentials) {
 export function staffLogin(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post("/api/register", credentials)
+            Http.post(`${process.env.MIX_REACT_APP_URL}/api/register`, credentials)
                 .then((res) => {
                     dispatch(action.staffLogin(res.data));
                     return resolve();
@@ -132,7 +132,7 @@ export function staffLogin(credentials) {
 export function updateStaffLogin(credentials) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-            Http.post("/api/updateStaffLogin", credentials)
+            Http.post(`${process.env.MIX_REACT_APP_URL}/api/updateStaffLogin`, credentials)
                 .then((res) => {
                     dispatch(action.updateStaffLogin(res.data));
                     return resolve();

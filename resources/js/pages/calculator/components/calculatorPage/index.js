@@ -30,7 +30,7 @@ import {
     FrameBenifitAvailableEnum,
     LensBenifitAvailableEnum,
 } from "../../data/enums";
-import backArrow from "../../../../../images/black-arrow.svg";
+import backArrow from  "../../../../../images/black-arrow.svg";
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -86,9 +86,13 @@ const CalculatorScreen = () => {
     }, [history?.location?.state]);
     const getCalculatorObject = async (values) => {
         try {
+<<<<<<< HEAD
             const res = await Axios.get(
                 process.env.MIX_REACT_APP_URL + "/api/calculater-data"
             );
+=======
+            const res = await Axios.get(`${process.env.MIX_REACT_APP_URL}/api/calculater-data`);
+>>>>>>> d8f66722d238f4f43fe991ca909bb83277d60bdf
             setCalculatorObj(res?.data?.data);
             const questions = res?.data?.data?.questions;
             const validations = CreateCalculatorValidations(
@@ -135,7 +139,7 @@ const CalculatorScreen = () => {
                 vision_plan_id: planId,
             };
 
-            const res = await Axios.post("/api/get-lenses-price", payload);
+            const res = await Axios.post(`${process.env.MIX_REACT_APP_URL}/api/get-lenses-price`, payload);
             setLensPrices(res?.data?.data);
         } catch (err) {
             console.log("error while get data");

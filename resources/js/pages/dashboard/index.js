@@ -102,7 +102,10 @@ const Dashboard = () => {
                     </div>
                 </div>
                 {showDatePicker ? (
-                    <div className={classes["picker-container"]}>
+                   <div className={classes["backdrop"]} onClick={()=>{
+                    setShowDatePicker(false)
+                   }}>
+                     <div className={classes["picker-container"]}>
                         <DateRangePicker
                             onChange={(item) => {
                                 setDate([item.selection]);
@@ -189,6 +192,7 @@ const Dashboard = () => {
                                 },
                             ]}
                         />
+                    </div>
                     </div>
                 ) : null}
             </div>

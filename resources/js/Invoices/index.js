@@ -18,7 +18,7 @@ const Invoices = ({ userId }) => {
     useEffect(() => {
         if (!userId) return;
         const getAllInvoices = async () => {
-            const res = await Axios.get(`${process.env.MIX_REACT_APP_URL}/api/get-invoices`, {
+            const res = await Axios.get("/api/get-invoices", {
                 params: { userId: userId },
             });
             setTableData(res?.data?.data);
@@ -44,7 +44,7 @@ const Invoices = ({ userId }) => {
                 dob: values?.dob,
             };
 
-            const res = await Axios.post("/api/search-invoices", invoiceObject);
+            const res = await Axios.post(`${process.env.MIX_REACT_APP_URL}/api/search-invoices`, invoiceObject);
             setTableData(res?.data?.data);
         } catch (err) {
             setIsSearched(false);

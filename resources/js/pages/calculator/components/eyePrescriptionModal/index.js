@@ -79,7 +79,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
     }, [userId]);
     const getEyePrescriprion = async () => {
         try {
-            const res = await Axios.get(`/api/prescriptions`, {
+            const res = await Axios.get(`${process.env.MIX_REACT_APP_URL}/api/prescriptions`, {
                 params: { user_id: userId },
             });
             const prescriptionDetails = res?.data?.data;
@@ -130,7 +130,7 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
             formData.append("left_eye_cylinder", eyeValues?.leftEyeCYL);
             formData.append("user_id", userId);
             const res = await Axios.post(
-                "/api/eye-prescriptions-calculator",
+                `${process.env.MIX_REACT_APP_URL}/api/eye-prescriptions-calculator`,
                 formData
             );
             const materialData = res?.data?.data?.use_material;
