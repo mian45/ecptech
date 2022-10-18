@@ -331,7 +331,7 @@ const SpecialCopaySlot = ({
         handleChange(e);
         const price = getPrice(inputValue);
         if (e.target.value > price) {
-            setErr("You enter a greater amount then total");
+            setErr("Entered amount is greater than actual amount.");
         } else {
             setErr("");
         }

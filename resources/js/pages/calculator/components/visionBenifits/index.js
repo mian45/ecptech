@@ -43,7 +43,7 @@ const VisionBenifits = ({
     const handleMaterialCopayChange = (e) => {
         handleChange(e);
         if (e?.target?.value > 50) {
-            setErr("Current enter amount is more than $50");
+            setErr("Entered amount is greater than $50");
         } else {
             setErr("");
         }
