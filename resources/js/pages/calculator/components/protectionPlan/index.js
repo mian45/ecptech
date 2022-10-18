@@ -7,6 +7,7 @@ import CustomRadio from "../../../../components/customRadio";
 import icon from "../../../../../images/calculator/protection.svg";
 import { ProtectionPlanTypeEnum } from "../../data/enums";
 import * as Yup from "yup";
+import { BenifitTypeEnums } from "../../data/initialValues";
 
 const ProtectionPlan = ({
     formProps,
@@ -115,7 +116,6 @@ const ProtectionPlan = ({
             handleChange(e);
         }
     };
-
     return (
         <>
             {protectionPlanVisibility && (
@@ -164,39 +164,54 @@ const ProtectionPlan = ({
                                     name="protectionPlanType"
                                     className={classes["radio-group"]}
                                 >
-                                    <CustomRadio
-                                        label={
-                                            ProtectionPlanTypeEnum.lensesProtectionPlan
-                                        }
-                                        value={
-                                            ProtectionPlanTypeEnum.lensesProtectionPlan
-                                        }
-                                        active={
-                                            values?.protectionPlanType ===
-                                            ProtectionPlanTypeEnum.lensesProtectionPlan
-                                        }
-                                    />
+                                    {values?.benifitType !==
+                                        BenifitTypeEnums?.lens && (
+                                        <CustomRadio
+                                            label={
+                                                ProtectionPlanTypeEnum.lensesProtectionPlan
+                                            }
+                                            value={
+                                                ProtectionPlanTypeEnum.lensesProtectionPlan
+                                            }
+                                            active={
+                                                values?.protectionPlanType ===
+                                                ProtectionPlanTypeEnum.lensesProtectionPlan
+                                            }
+                                        />
+                                    )}
 
-                                    <CustomRadio
-                                        label={
-                                            ProtectionPlanTypeEnum.glassesProtectionPlan
-                                        }
-                                        value={
-                                            ProtectionPlanTypeEnum.glassesProtectionPlan
-                                        }
-                                        active={
-                                            values?.protectionPlanType ===
-                                            ProtectionPlanTypeEnum.glassesProtectionPlan
-                                        }
-                                    />
-                                    <CustomRadio
-                                        label={ProtectionPlanTypeEnum.both}
-                                        value={ProtectionPlanTypeEnum.both}
-                                        active={
-                                            values?.protectionPlanType ===
-                                            ProtectionPlanTypeEnum.both
-                                        }
-                                    />
+                                    {values?.benifitType !==
+                                        BenifitTypeEnums?.frame && (
+                                        <CustomRadio
+                                            label={
+                                                ProtectionPlanTypeEnum.glassesProtectionPlan
+                                            }
+                                            value={
+                                                ProtectionPlanTypeEnum.glassesProtectionPlan
+                                            }
+                                            active={
+                                                values?.protectionPlanType ===
+                                                ProtectionPlanTypeEnum.glassesProtectionPlan
+                                            }
+                                        />
+                                    )}
+                                    {values?.benifitType !==
+                                        BenifitTypeEnums?.frame &&
+                                        values?.benifitType !==
+                                            BenifitTypeEnums?.lens && (
+                                            <CustomRadio
+                                                label={
+                                                    ProtectionPlanTypeEnum.both
+                                                }
+                                                value={
+                                                    ProtectionPlanTypeEnum.both
+                                                }
+                                                active={
+                                                    values?.protectionPlanType ===
+                                                    ProtectionPlanTypeEnum.both
+                                                }
+                                            />
+                                        )}
                                 </Radio.Group>
                                 <FormikError name={"protectionPlanType"} />
                                 {values?.protectionPlanType && (

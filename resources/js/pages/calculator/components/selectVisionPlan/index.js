@@ -7,6 +7,7 @@ import CustomRadio from "../../../../components/customRadio";
 import visionIcon from "../../../../../images/calculator/vision.svg";
 import { ErrorMessage } from "formik";
 import { BenifitTypeEnums } from "../../data/initialValues";
+import * as Yup from "yup";
 
 const SelectVisionPlan = ({
     formProps,
@@ -15,8 +16,7 @@ const SelectVisionPlan = ({
     calValidations,
     data,
 }) => {
-    const { values, handleChange, handleBlur, setFieldValue, errors } =
-        formProps;
+    const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const plansList = calculatorObj?.questions?.map((plan) => plan?.title);
     const handlePlanChange = (event) => {
         if (event?.target?.value === "Private") {

@@ -109,9 +109,9 @@ const ViewInvoice = ({
     const totalWithoutTax = () => {
         let total = 0;
         total = total + (receipt?.values?.materialCopay || 0);
-        total = total + parseInt(GetFrameFee(receipt));
+        total = total + parseFloat(GetFrameFee(receipt));
         total =
-            total + parseInt(GetLensFee(receipt, calculatorObj, lensPrices));
+            total + parseFloat(GetLensFee(receipt, calculatorObj, lensPrices));
         if (
             receipt?.values?.protectionPlan?.status === "Yes" &&
             receipt?.values?.protectionPlan?.paymentStatus === "Paid"
@@ -123,12 +123,12 @@ const ViewInvoice = ({
         }
 
         if (receipt?.values?.shipping?.status === "Yes") {
-            total = total + (parseInt(calculatorObj?.shipping) || 0);
+            total = total + (parseFloat(calculatorObj?.shipping) || 0);
         }
 
         total =
             total +
-            (parseInt(getLensPrice(receipt, calculatorObj, lensPrices)) || 0);
+            (parseFloat(getLensPrice(receipt, calculatorObj, lensPrices)) || 0);
         return total;
     };
 
@@ -150,7 +150,11 @@ const ViewInvoice = ({
                 <div className={classes["sub-container"]}>
                     <UserInfo receipt={receipt} />
                     <div className={classes["sub-right-container"]}>
-                        <InPackPrices receipt={receipt} />
+                        <InPackPrices
+                            receipt={receipt}
+                            calculatorObj={calculatorObj}
+                            lensPrices={lensPrices}
+                        />
                         <OutPackPrices
                             withoutTaxPrice={totalWithoutTax()}
                             totalPrice={calculateTotalDue()}
@@ -224,10 +228,10 @@ const getPriceByAntireflective = (value) => {
 };
 
 const getLensPrice = (receipt, calculatorObj, lensPrices) => {
-    const lensPrice = parseInt(
+    const lensPrice = parseFloat(
         getPriceFromDB(receipt, calculatorObj, lensPrices).lensPrice || 0
     );
-    const materialPrice = parseInt(
+    const materialPrice = parseFloat(
         getPriceFromDB(receipt, calculatorObj, lensPrices).materialPrice || 0
     );
     if (
@@ -247,7 +251,7 @@ const getLensPrice = (receipt, calculatorObj, lensPrices) => {
                     );
                 if (isPholicarbinateActive?.status) {
                     if (isPholicarbinateActive?.copayType === "$0 Copay") {
-                        return parseInt(
+                        return parseFloat(
                             getPriceFromDB(receipt, calculatorObj, lensPrices)
                                 ?.lensPrice || 0
                         );
@@ -257,7 +261,7 @@ const getLensPrice = (receipt, calculatorObj, lensPrices) => {
                     ) {
                         return (
                             (isPholicarbinateActive?.price || 0) +
-                            parseInt(
+                            parseFloat(
                                 getPriceFromDB(
                                     receipt,
                                     calculatorObj,
@@ -276,7 +280,7 @@ const getLensPrice = (receipt, calculatorObj, lensPrices) => {
                     );
                 if (isHighIndexActive?.status) {
                     if (isHighIndexActive?.copayType === "$0 Copay") {
-                        return parseInt(
+                        return parseFloat(
                             getPriceFromDB(receipt, calculatorObj, lensPrices)
                                 ?.lensPrice || 0
                         );
@@ -286,7 +290,7 @@ const getLensPrice = (receipt, calculatorObj, lensPrices) => {
                     ) {
                         return (
                             (isHighIndexActive?.price || 0) +
-                            parseInt(
+                            parseFloat(
                                 getPriceFromDB(
                                     receipt,
                                     calculatorObj,
@@ -329,8 +333,12 @@ const GetLensFee = (receipt, calculatorObj, lensPrices) => {
         }
         total =
             total +
-            getPriceFromDB(receipt, calculatorObj, lensPrices).lensPrice +
-            getPriceFromDB(receipt, calculatorObj, lensPrices).materialPrice;
+            parseFloat(
+                getPrivatePayLensPices(calculatorObj, receipt, lensPrices)
+            ) +
+            parseFloat(
+                getPrivatePayMaterialPices(calculatorObj, receipt, lensPrices)
+            );
     } else {
         if (receipt?.values?.antiReflectiveProperties?.status === "Yes") {
             const isAntireflectiveActive =
@@ -382,6 +390,50 @@ const GetLensFee = (receipt, calculatorObj, lensPrices) => {
         total = total + getGlassesPrice(receipt);
     }
     return total;
+};
+
+export const getPrivatePayMaterialPices = (values, receipt, lensPrices) => {
+    let price = 0;
+    const material = values?.lens_material?.find(
+        (material) =>
+            material?.lens_material_title === receipt?.values?.lensMaterial
+    );
+    if (!material?.retail_price) {
+        getPriceFromDB(receipt, calculatorObj, lensPrices).materialPrice;
+    } else {
+        price = parseFloat(material?.retail_price || 0) || 0;
+    }
+
+    return price;
+};
+export const getPrivatePayLensPices = (values, receipt, lensPrices) => {
+    let price = 0;
+    if (values?.lens_types) {
+        values?.lens_types[0].brands?.forEach((item) => {
+            item.collections?.forEach((val) => {
+                if (val?.display_name) {
+                    if (val.display_name == receipt?.values?.lensType?.brand) {
+                        if (!val?.price) {
+                            getPriceFromDB(receipt, values, lensPrices)
+                                .lensPrice;
+                        } else {
+                            price = parseFloat(val?.price || 0) || 0;
+                        }
+                    }
+                } else {
+                    if (val.title == receipt?.values?.lensType?.brand) {
+                        if (!val?.price) {
+                            getPriceFromDB(receipt, values, lensPrices)
+                                .lensPrice;
+                        } else {
+                            price = parseFloat(val?.price || 0) || 0;
+                        }
+                    }
+                }
+            });
+        });
+    }
+    return price;
 };
 
 const getGlassesPrice = (receipt) => {

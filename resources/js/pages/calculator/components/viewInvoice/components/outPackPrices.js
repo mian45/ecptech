@@ -1,6 +1,8 @@
 import React from "react";
 import {
     getPriceByPhotochromicMaterial,
+    getPrivatePayLensPices,
+    getPrivatePayMaterialPices,
     InvoiceBoldSlot,
     InvoiceSlot,
 } from "..";
@@ -123,8 +125,7 @@ const OutPackPrices = ({
     const renderLensTypePrice = () => {
         if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
             return (
-                getPriceFromDB(receipt, calculatorObj, lensPrices).lensPrice ||
-                0
+                getPrivatePayLensPices(calculatorObj, receipt, lensPrices) || 0
             );
         } else {
             return (
@@ -135,8 +136,11 @@ const OutPackPrices = ({
     const renderLensMaterialPrice = () => {
         if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
             return (
-                getPriceFromDB(receipt, calculatorObj, lensPrices)
-                    .materialPrice || 0
+                getPrivatePayMaterialPices(
+                    calculatorObj,
+                    receipt,
+                    lensPrices
+                ) || 0
             );
         } else {
             return (

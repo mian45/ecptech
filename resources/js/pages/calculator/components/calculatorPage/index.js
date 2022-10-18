@@ -30,6 +30,7 @@ import {
     FrameBenifitAvailableEnum,
     LensBenifitAvailableEnum,
 } from "../../data/enums";
+import backArrow from "../../../../../images/black-arrow.svg";
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -194,6 +195,7 @@ const CalculatorScreen = () => {
             const arrangedValues = GetMappedPayload(values);
             setCalValues(arrangedValues);
             actions.setFieldValue("submitBenifitType", BenifitTypeEnums.both);
+            actions.setFieldValue("benifitType", "");
         }
     };
     const RenderFrameOrder = ({
@@ -316,14 +318,48 @@ const CalculatorScreen = () => {
                                         BenifitTypeEnums.frame ||
                                         formProps.values?.submitBenifitType ===
                                             BenifitTypeEnums.lens) && (
-                                        <div
-                                            className={
-                                                classes["private-pay-title"]
-                                            }
-                                            ref={scrollRef}
-                                        >{`Please choose ${getPrivatePayTitle(
-                                            formProps.values?.submitBenifitType
-                                        )} under private pay.`}</div>
+                                        <>
+                                            <div
+                                                className={
+                                                    classes["back-container"]
+                                                }
+                                                onClick={() => {
+                                                    formProps?.setFieldValue(
+                                                        "benifitType",
+                                                        formProps?.values
+                                                            ?.submitBenifitType
+                                                    );
+                                                    formProps?.setFieldValue(
+                                                        "submitBenifitType",
+                                                        ""
+                                                    );
+                                                }}
+                                            >
+                                                <img
+                                                    src={backArrow}
+                                                    alt={"back icon"}
+                                                    className={
+                                                        classes["back-icon"]
+                                                    }
+                                                />
+                                                <div
+                                                    className={
+                                                        classes["back-text"]
+                                                    }
+                                                >
+                                                    Back
+                                                </div>
+                                            </div>
+                                            <div
+                                                className={
+                                                    classes["private-pay-title"]
+                                                }
+                                                ref={scrollRef}
+                                            >{`Please choose ${getPrivatePayTitle(
+                                                formProps.values
+                                                    ?.submitBenifitType
+                                            )} under private pay.`}</div>
+                                        </>
                                     )}
                                     <RenderFrameOrder
                                         formProps={formProps}
@@ -351,14 +387,49 @@ const CalculatorScreen = () => {
                                         BenifitTypeEnums.frame ||
                                         formProps.values?.submitBenifitType ===
                                             BenifitTypeEnums.lens) && (
-                                        <div
-                                            className={
-                                                classes["private-pay-title"]
-                                            }
-                                            ref={scrollRef}
-                                        >{`Please choose ${getPrivatePayTitle(
-                                            formProps.values?.submitBenifitType
-                                        )} under private pay.`}</div>
+                                        <>
+                                            <div
+                                                className={
+                                                    classes["back-container"]
+                                                }
+                                                onClick={() => {
+                                                    formProps?.setFieldValue(
+                                                        "benifitType",
+                                                        formProps?.values
+                                                            ?.submitBenifitType
+                                                    );
+                                                    formProps?.setFieldValue(
+                                                        "submitBenifitType",
+                                                        ""
+                                                    );
+                                                }}
+                                            >
+                                                <img
+                                                    src={backArrow}
+                                                    alt={"back icon"}
+                                                    className={
+                                                        classes["back-icon"]
+                                                    }
+                                                />
+                                                <div
+                                                    className={
+                                                        classes["back-text"]
+                                                    }
+                                                >
+                                                    Back
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                className={
+                                                    classes["private-pay-title"]
+                                                }
+                                                ref={scrollRef}
+                                            >{`Please choose ${getPrivatePayTitle(
+                                                formProps.values
+                                                    ?.submitBenifitType
+                                            )} under private pay.`}</div>
+                                        </>
                                     )}
                                     <RenderLensFields
                                         formProps={formProps}
