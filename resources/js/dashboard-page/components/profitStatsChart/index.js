@@ -77,6 +77,7 @@ export default connect(mapStateToProps)(ProfitStatsChart);
 const getChartOptions = () => {
     return {
         chart: {
+            offsetX:6,
             type: "area",
             toolbar: {
                 show: false,
@@ -107,6 +108,10 @@ const getChartOptions = () => {
                 style: {
                     color: ["#E8E8E8"],
                 },
+            },
+            labels: {
+                offsetX: -8,
+                offsetY: 1,
             },
         },
         states: {

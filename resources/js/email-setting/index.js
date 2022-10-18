@@ -453,6 +453,7 @@ const EmailSetting = (props) => {
                                 <div className="email-remainder_input-sections_input-section">
                                     <p>Email Type</p>
                                     <Select
+                                    className="no-outline"
                                         defaultValue="Select"
                                         style={{
                                             width: 120,
@@ -460,19 +461,20 @@ const EmailSetting = (props) => {
                                         onChange={handleRemainderClick}
                                         value={reminderType || "Select"}
                                     >
-                                        <Option value={"reminder"}>
+                                        <Option className="ant-select-item-option-content" value={"reminder"}>
                                             Reminder
                                         </Option>
-                                        <Option value={"orderComplete"}>
+                                        <Option className="ant-select-item-option-content" value={"orderComplete"}>
                                             Order Complete
                                         </Option>
-                                        <Option value={"custom"}>Custom</Option>
+                                        <Option className="ant-select-item-option-content" value={"custom"}>Custom</Option>
                                     </Select>
                                 </div>
                                 {reminderType != "orderComplete" ? (
                                     <div className="email-remainder_input-sections_input-section">
                                         <p>Send to</p>
                                         <Select
+                                        className="no-outline"
                                             defaultValue="Select"
                                             style={{
                                                 width: 120,
@@ -480,11 +482,11 @@ const EmailSetting = (props) => {
                                             onChange={handleSentToClick}
                                             value={sentTo || "Select"}
                                         >
-                                            <Option value={"paid"}>Paid</Option>
-                                            <Option value={"unpaid"}>
+                                            <Option className="ant-select-item-option-content" value={"paid"}>Paid</Option>
+                                            <Option className="ant-select-item-option-content" value={"unpaid"}>
                                                 Unpaid
                                             </Option>
-                                            <Option value={"all"}>All</Option>
+                                            <Option className="ant-select-item-option-content" value={"all"}>All</Option>
                                         </Select>
                                     </div>
                                 ) : null}
@@ -492,7 +494,7 @@ const EmailSetting = (props) => {
                                 <div className="email-remainder_input-sections_input-section">
                                     <p>Subject</p>
                                     <input
-                                        className="email-remainder_input-sections_input-section_input input-pad-val"
+                                        className="email-remainder_input-sections_input-section_input input-pad-val no-outline"
                                         value={subject}
                                         onChange={(e) => {
                                             setSubject(e.target.value);
@@ -537,7 +539,7 @@ const EmailSetting = (props) => {
                                             <p>Send Date</p>
                                             {reminderType == "custom" ? (
                                                 <input
-                                                    className="email-remainder_input-sections_input-section_input picker-padding"
+                                                    className="email-remainder_input-sections_input-section_input picker-padding no-outline"
                                                     style={{
                                                         paddingRight: "10px",
                                                     }}
@@ -552,6 +554,7 @@ const EmailSetting = (props) => {
                                                 />
                                             ) : (
                                                 <Select
+                                                className="no-outline"
                                                     defaultValue="Select"
                                                     style={{
                                                         width: 120,
@@ -559,31 +562,31 @@ const EmailSetting = (props) => {
                                                     onChange={handleDateClick}
                                                     value={dates || "Select"}
                                                 >
-                                                    <Option value={1}>
+                                                    <Option className="ant-select-item-option-content" value={1}>
                                                         1 days after invoice
                                                         sent
                                                     </Option>
-                                                    <Option value={2}>
+                                                    <Option className="ant-select-item-option-content" value={2}>
                                                         2 days after invoice
                                                         sent
                                                     </Option>
-                                                    <Option value={3}>
+                                                    <Option className="ant-select-item-option-content" value={3}>
                                                         3 days after invoice
                                                         sent
                                                     </Option>
-                                                    <Option value={4}>
+                                                    <Option className="ant-select-item-option-content" value={4}>
                                                         4 days after invoice
                                                         sent
                                                     </Option>
-                                                    <Option value={5}>
+                                                    <Option className="ant-select-item-option-content" value={5}>
                                                         5 days after invoice
                                                         sent
                                                     </Option>
-                                                    <Option value={6}>
+                                                    <Option className="ant-select-item-option-content" value={6}>
                                                         6 days after invoice
                                                         sent
                                                     </Option>
-                                                    <Option value={7}>
+                                                    <Option className="ant-select-item-option-content" value={7}>
                                                         7 days after invoice
                                                         sent
                                                     </Option>
@@ -593,6 +596,7 @@ const EmailSetting = (props) => {
                                         <div className="email-remainder_input-sections_input-section">
                                             <p>Send Time</p>
                                             <Select
+                                            className="no-outline"
                                                 defaultValue="Select"
                                                 style={{
                                                     width: 120,
@@ -603,7 +607,7 @@ const EmailSetting = (props) => {
                                                 {time &&
                                                     time?.map((e, key) => {
                                                         return (
-                                                            <Option value={e}>
+                                                            <Option className="ant-select-item-option-content" value={e}>
                                                                 {e}
                                                             </Option>
                                                         );
@@ -624,7 +628,7 @@ const EmailSetting = (props) => {
                                                 {timeZones.map(
                                                     (zone, index) => {
                                                         return (
-                                                            <Option
+                                                            <Option className="ant-select-item-option-content"
                                                                 value={zone.id}
                                                             >
                                                                 {zone.name}
