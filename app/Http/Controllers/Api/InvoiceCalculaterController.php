@@ -15,6 +15,7 @@ use App\Models\Characteristic;
 use App\Models\LensMaterial;
 use App\Models\Shipping;
 use App\Models\Tax;
+use App\Models\Discount;
 use App\Models\AddonType;
 use App\Models\AddOn;
 use App\Models\AddonExtra;
@@ -27,16 +28,31 @@ class InvoiceCalculaterController extends Controller
 
         $data['shipping'] = "";
         $data['tax'] = "";
+        $data['discount'] = "";
 
         $shipping = Shipping::where('user_id',auth()->user()->id)->orderBy('created_at', 'desc')->first();
         if($shipping){
             $data['shipping'] = $shipping->value;
         }
 
+        $discount = Discount::select('id','user_id','name','value','status')->where('user_id',auth()->user()->id)->orderBy('created_at', 'desc')->get();
+        if($discount){
+            $data['discount'] = $discount;
+        }
+
         $tax = Tax::where('user_id',auth()->user()->id)->orderBy('created_at', 'desc')->first();
         if($tax){
             $data['tax'] = $tax->value;
         }
+
+        $data['addons'] = AddonType::with(['addons' => function($q){
+            $q->leftjoin('user_addon_settings as setting','setting.addon_id','=','addons.id');
+            $q->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id');
+            $q->where('setting.user_id',auth()->user()->id)->where('setting.status','active');
+        }])->select('id','title')->get();
+        
+        
+        
         
         $data['questions'] = VisionPlan::with(['question_permissions' => function($q){
                 $q->join('questions as q','q.id','=','question_permissions.question_id');
@@ -59,7 +75,11 @@ class InvoiceCalculaterController extends Controller
                 $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price');
                 $q->where('cp.user_id',auth()->user()->id)->where('cp.status','active');
             }]);
-       }])->select('id','vision_plan_id','title')->get();
+       }])->selectRaw("MIN(id) AS id,title,MIN(vision_plan_id) AS vision_plan_id")->groupby('title')->get();
+       
+    //    ->select(DB::raw('min(id)'))->groupby('title')->get();
+
+    //    ,'id','vision_plan_id','title'
 
        $data['lens_material'] = LensMaterial::leftjoin('user_lense_material_settings as setting','setting.lens_material_id','=','lens_materials.id')
                                             ->select('lens_materials.id','lens_materials.lens_material_title','setting.price as retail_price')    
