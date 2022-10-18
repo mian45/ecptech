@@ -11,9 +11,8 @@
     justify-content: center;
     align-items: center;
 }
-.validation-error{
-    color:red
-
+.validation-error {
+    color: red;
 }
 .ant-checkbox-checked .ant-checkbox-inner {
     background-color: #ccc !important;
@@ -53,6 +52,7 @@
     color: #747474;
     width: 100%;
     margin-bottom: 20px;
+    outline: none;
     &::placeholder {
         color: #c4c4c4;
     }
@@ -91,6 +91,9 @@
     border: none;
     &:disabled {
         background-color: #90b0c6;
+    }
+    &:hover {
+        background-color: #518fbb !important;
     }
 }
 .checkbox {

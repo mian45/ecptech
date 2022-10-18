@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import classes from "./styles.module.scss";
 import eyeIcon from "../../../../../../images/eye.svg";
+import eyeCloseIcon from "../../../../../../images/eye-close.svg";
 import CustomCheckbox from "../../../../../components/customCheckbox";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -30,8 +31,6 @@ const SignInForm = ({ userRole, dispatch }) => {
     };
     return (
         <div className={classes["container"]}>
-            <img src="logo.png" alt="logo" className={classes["page-logo"]} />
-
             <Formik
                 initialValues={LoginInitialValues}
                 validationSchema={LoginValidation}
@@ -50,6 +49,11 @@ const SignInForm = ({ userRole, dispatch }) => {
                     return (
                         <form onSubmit={handleSubmit} autoComplete="off">
                             <div className={classes["login-form"]}>
+                                <img
+                                    src="logo.png"
+                                    alt="logo"
+                                    className={classes["page-logo"]}
+                                />
                                 <div className={classes["login-title"]}>
                                     Log in
                                 </div>
@@ -108,7 +112,11 @@ const SignInForm = ({ userRole, dispatch }) => {
                                                 onBlur={handleBlur}
                                             />
                                             <img
-                                                src={eyeIcon}
+                                                src={
+                                                    isShowPassword
+                                                        ? eyeCloseIcon
+                                                        : eyeIcon
+                                                }
                                                 alt={"icon"}
                                                 className={classes["eye-icon"]}
                                                 onClick={() =>
@@ -173,11 +181,11 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(SignInForm);
 
 const LoginValidation = Yup.object().shape({
-    email: Yup.string().email().required("Email is required"),
+    email: Yup.string().email().required("Please enter a valid email address"),
     password: Yup.string()
         .min(6, "Must have 6 characters")
         .max(15, "Maximum 15 charecter allowed")
-        .required("Password is Required"),
+        .required("Please enter a valid password"),
 });
 
 const LoginInitialValues = {

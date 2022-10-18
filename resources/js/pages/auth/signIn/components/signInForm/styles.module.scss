@@ -13,9 +13,9 @@
     width: 194px;
     height: 37px;
     object-fit: contain;
-    position: fixed;
+    position: absolute;
     top: 27px;
-    left: 70px;
+    left: -28px;
 }
 .login-title {
     font-size: 24px;
@@ -39,6 +39,8 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    min-height: 100vh;
+    position: relative;
 }
 .login-wrapper {
     width: 100%;

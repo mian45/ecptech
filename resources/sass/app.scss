@@ -29,6 +29,9 @@ img {
 label {
     margin-bottom: 0.5rem;
 }
+.ant-select-item-option-content{
+    margin-left: 10px !important;
+}
 
 // Buttons
 $btn-size-base: 1rem;
@@ -149,7 +152,9 @@ header {
     justify-content: center;
     align-items: center;
 }
-
+.rdw-dropdown-optionwrapper{
+overflow-y: hidden !important;
+}
 // Login Form
 .section-login {
     height: 37em !important;
@@ -308,4 +313,7 @@ input[type="number"] {
 }
 .ant-popover-inner-content {
     border-radius: 10px !important;
+}
+.ant-popover-inner-content {
+    padding: 11px !important;
 }
