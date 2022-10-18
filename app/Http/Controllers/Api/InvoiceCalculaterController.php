@@ -46,7 +46,7 @@ class InvoiceCalculaterController extends Controller
         }
 
         $data['addons'] = AddonType::with(['addons' => function($q){
-            $q->leftjoin('user_addon_settings as setting','setting.addon_id','=','addons.id');
+            $q->join('user_addon_settings as setting','setting.addon_id','=','addons.id');
             $q->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id');
             $q->where('setting.user_id',auth()->user()->id)->where('setting.status','active');
         }])->select('id','title')->get();
