@@ -20,12 +20,12 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
     const handleLensMererialChange = (e) => {
         handleChange(e);
         if (values.isCopayPolycarbonate && e.target.value !== "Polycarbonate") {
-            setError("Are you sure? You don't want to avail discount");
+            setError("Are you sure you don't want to avail the discount");
         } else if (
             values.isCopayHighIndex &&
             e.target.value.includes("Hi Index")
         ) {
-            setError("Are you sure? You don't want to avail discount");
+            setError("Are you sure you don't want to avail the discount");
         } else {
             setError("");
         }

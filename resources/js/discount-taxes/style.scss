@@ -117,7 +117,9 @@
     border-radius: 28px;
     color: white;
     cursor: pointer;
-
+    &:hover {
+        background-color: #518fbb;
+    }
     &.disable {
         background-color: #cbcbcb;
         pointer-events: none;
