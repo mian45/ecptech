@@ -1,20 +1,33 @@
 import React from "react";
-import { InvoiceBoldSlot, InvoiceSlot } from "..";
+import {
+    getPrivatePayLensPices,
+    getPrivatePayMaterialPices,
+    InvoiceBoldSlot,
+    InvoiceSlot,
+} from "..";
+import { BenifitTypeEnums } from "../../../data/initialValues";
 import classes from "../styles.module.scss";
 
 const InPackPrices = ({ receipt, calculatorObj, lensPrices }) => {
     const getLensRetailFee = () => {
         let price = 0;
-        price =
-            price +
-            parseFloat(
-                getPrivatePayLensPices(calculatorObj, receipt, lensPrices)
-            );
-        price =
-            price +
-            parseFloat(
-                getPrivatePayMaterialPices(calculatorObj, receipt, lensPrices)
-            );
+        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            price =
+                price +
+                parseFloat(
+                    getPrivatePayLensPices(calculatorObj, receipt, lensPrices)
+                );
+            price =
+                price +
+                parseFloat(
+                    getPrivatePayMaterialPices(
+                        calculatorObj,
+                        receipt,
+                        lensPrices
+                    )
+                );
+        }
+
         return (price || 0).toFixed(2);
     };
     return (
