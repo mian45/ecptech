@@ -52,7 +52,7 @@ const ProfileInfoSection = ({ userId }) => {
             personalInfo.append("theme_mode", values.themeType);
             personalInfo.append("userId", userId);
 
-            await axios.post("/api/edit-profile", personalInfo);
+            await axios.post(`${process.env.MIX_REACT_APP_URL}/api/edit-profile`, personalInfo);
         } catch (err) {
             console.log("error while save changes", err);
         }
@@ -150,7 +150,7 @@ const ProfilePasswordValidations = ({ userId }) => {
                 password_confirmation: values.confirmPassword,
                 user_id: userId,
             };
-            await axios.post("/api/change-password", passwordObject);
+            await axios.post(`${process.env.MIX_REACT_APP_URL}/api/change-password`, passwordObject);
         } catch (err) {
             console.log("error while save password", err);
         }
