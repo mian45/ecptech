@@ -56,6 +56,9 @@
         border-radius: 28px;
         background-color: #6fa5cb;
         color: white;
+        &:hover {
+            background-color: #518fbb;
+        }
     }
 }
 

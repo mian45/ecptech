@@ -52,6 +52,9 @@
     &:disabled {
         background-color: #ccc;
     }
+    &:hover {
+        background-color: #518fbb;
+    }
 }
 .error {
     color: red;
@@ -66,4 +69,8 @@
     padding: 13px 51px;
     margin-left: 10px;
     font-family: Montserrat;
+    outline: none;
+    &:hover {
+        background-color: #518fbb;
+    }
 }
