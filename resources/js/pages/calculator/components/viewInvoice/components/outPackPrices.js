@@ -277,6 +277,21 @@ const OutPackPrices = ({
                         subTitle={`$${renderLensMaterialPrice()}`}
                     />
                 )}
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
+                    <InvoiceSlot
+                        title={`Frame: `}
+                        subTitle={`$${
+                            (calculateFrameFee() || 0).toFixed(2) || 0
+                        }`}
+                    />
+                )}
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
+                    receipt?.values?.frameOrder?.drillMount === "Yes" && (
+                        <InvoiceSlot
+                            title={`Drill Mount: `}
+                            subTitle={`$${DRILL_MOUNT}`}
+                        />
+                    )}
                 {receipt?.values?.photochromics?.status === "Yes" && (
                     <InvoiceSlot
                         title={`Photochromic Option: ${receipt?.values?.photochromics?.type}`}
@@ -347,16 +362,66 @@ const OutPackPrices = ({
                             }
                         />
                     )}
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
+                    <InvoiceSlot
+                        title={`Frame: `}
+                        subTitle={`$${
+                            (calculateFrameFee() || 0).toFixed(2) || 0
+                        }`}
+                    />
+                )}
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
+                    receipt?.values?.frameOrder?.drillMount === "Yes" && (
+                        <InvoiceSlot
+                            title={`Drill Mount: `}
+                            subTitle={`$${DRILL_MOUNT}`}
+                        />
+                    )}
             </>
         );
+    };
+    const underFramePay = () => {
+        return (
+            <>
+                <div
+                    className={classes["plan-sub-label"]}
+                >{`Estimates under Private Pay`}</div>
+
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
+                    <InvoiceSlot
+                        title={`Frame: `}
+                        subTitle={`$${
+                            (calculateFrameFee() || 0).toFixed(2) || 0
+                        }`}
+                    />
+                )}
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
+                    receipt?.values?.frameOrder?.drillMount === "Yes" && (
+                        <InvoiceSlot
+                            title={`Drill Mount: `}
+                            subTitle={`$${DRILL_MOUNT}`}
+                        />
+                    )}
+            </>
+        );
+    };
+
+    const renderReceiptByType = () => {
+        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            return underPrivatePay();
+        } else if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.frame
+        ) {
+            return underFramePay();
+        } else {
+            return underLensPlan();
+        }
     };
 
     return (
         <>
             <div className={classes["page-sub-label"]}>Out of pocket Fees</div>
-            {receipt?.values?.submitBenifitType === BenifitTypeEnums.lens
-                ? underPrivatePay()
-                : underLensPlan()}
+            {renderReceiptByType()}
             {receipt?.values?.submitBenifitType === BenifitTypeEnums.lens && (
                 <div
                     style={{ marginTop: "20px" }}
@@ -368,19 +433,7 @@ const OutPackPrices = ({
                 title={"Material Copay"}
                 subTitle={`$${receipt?.values?.materialCopay || 0}`}
             />
-            {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
-                <InvoiceSlot
-                    title={`Frame: `}
-                    subTitle={`$${(calculateFrameFee() || 0).toFixed(2) || 0}`}
-                />
-            )}
-            {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
-                receipt?.values?.frameOrder?.drillMount === "Yes" && (
-                    <InvoiceSlot
-                        title={`Drill Mount: `}
-                        subTitle={`$${DRILL_MOUNT}`}
-                    />
-                )}
+
             {receipt?.values?.protectionPlan?.status === "Yes" &&
                 receipt?.values?.protectionPlan?.paymentStatus === "Paid" && (
                     <InvoiceSlot
