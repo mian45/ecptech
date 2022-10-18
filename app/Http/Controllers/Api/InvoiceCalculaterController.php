@@ -77,9 +77,7 @@ class InvoiceCalculaterController extends Controller
             }]);
        }])->selectRaw("MIN(id) AS id,title,MIN(vision_plan_id) AS vision_plan_id")->groupby('title')->get();
        
-    //    ->select(DB::raw('min(id)'))->groupby('title')->get();
 
-    //    ,'id','vision_plan_id','title'
 
        $data['lens_material'] = LensMaterial::leftjoin('user_lense_material_settings as setting','setting.lens_material_id','=','lens_materials.id')
                                             ->select('lens_materials.id','lens_materials.lens_material_title','setting.price as retail_price')    
