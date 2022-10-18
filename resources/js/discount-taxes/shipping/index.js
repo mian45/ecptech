@@ -9,6 +9,7 @@ const ShippingSettings = ({ userId }) => {
     const [shippingName, setShippingName] = useState("");
     const [shippingAmount, setShippingAmount] = useState("");
     const [shipping, setShipping] = useState({});
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
     useEffect(() => {
         const getShipping = async () => {
@@ -29,6 +30,7 @@ const ShippingSettings = ({ userId }) => {
     const handlUpdateShipping = async (data) => {
         setShippingName(data?.name);
         setShippingAmount(data?.value);
+        setIsSubmitted(false);
     };
     const handleDeleteShipping = async (id) => {
         try {
@@ -37,6 +39,7 @@ const ShippingSettings = ({ userId }) => {
                 { id: id }
             );
             setShipping({});
+            setIsSubmitted(false);
         } catch (err) {
             console.log("error while delete shipping");
         }
@@ -57,6 +60,7 @@ const ShippingSettings = ({ userId }) => {
             setShipping(res?.data?.data);
             setShippingName("");
             setShippingAmount("");
+            setIsSubmitted(true);
         } catch (err) {
             console.log("error while adding shipping");
         }
@@ -75,6 +79,7 @@ const ShippingSettings = ({ userId }) => {
                             onChange={(e) => {
                                 setShippingName(e.target.value);
                             }}
+                            disabled={isSubmitted}
                         />
                     </div>
                     <div className="discount-container_first-form_section">
@@ -87,6 +92,7 @@ const ShippingSettings = ({ userId }) => {
                             onChange={(e) => {
                                 setShippingAmount(e.target.value);
                             }}
+                            disabled={isSubmitted}
                         />
                     </div>
                     <div>
