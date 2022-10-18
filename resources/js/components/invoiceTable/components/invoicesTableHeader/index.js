@@ -5,11 +5,11 @@ const InvoicesTableHeader = () => {
     return (
         <tr className={classes["t-head"]}>
             <th className={classes["invoice-column"]}>Invoice</th>
-            <th>Customer Name</th>
-            <th>Email</th>
-            <th>Date</th>
-            <th>Price</th>
-            <th>Status</th>
+            <th className={classes['invoice-second']}>Customer Name</th>
+            <th className={classes['invoice-second']}>Email</th>
+            <th className={classes['invoice-second']}>Date</th>
+            <th className={classes['invoice-second']}>Price</th>
+            <th >Status</th>
             <th className={classes["action-column"]}>Action</th>
         </tr>
     );

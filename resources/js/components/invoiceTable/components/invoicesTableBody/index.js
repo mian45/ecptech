@@ -16,10 +16,10 @@ const InvoicesTableBodySlot = ({ data }) => {
     return (
         <tr className={classes["container"]}>
             <td className={classes["first-column"]}>{data?.name}</td>
-            <td>{`${data?.customer?.fname} ${data?.customer?.lname}`}</td>
-            <td>{data?.customer?.email}</td>
-            <td>{createdDate}</td>
-            <td>${data?.amount}</td>
+            <td className={classes["first-column"]}>{`${data?.customer?.fname} ${data?.customer?.lname}`}</td>
+            <td className={classes["first-column"]}>{data?.customer?.email}</td>
+            <td className={classes["first-column"]}>{createdDate}</td>
+            <td className={classes["first-column"]}>${data?.amount}</td>
             <td>
                 <div
                     className={
