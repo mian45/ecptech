@@ -160,12 +160,10 @@ const OutPackPrices = ({
             (receipt?.values?.frameOrder?.retailFee || 0) + 200;
         return totalRetailFee - (totalPrice || 0);
     };
-    const underPrivatePay = () => {
+
+    const LensPayInvoice = () => {
         return (
             <>
-                <div className={classes["plan-sub-label"]}>
-                    Estimates under Private Pay
-                </div>
                 {calculatorObj && (
                     <InvoiceSlot
                         title={`${
@@ -255,7 +253,39 @@ const OutPackPrices = ({
             </>
         );
     };
-    const underLensPlan = () => {
+
+    const FramePayInvoice = () => {
+        return (
+            <>
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
+                    <InvoiceSlot
+                        title={`Frame: `}
+                        subTitle={`$${
+                            (calculateFrameFee() || 0).toFixed(2) || 0
+                        }`}
+                    />
+                )}
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
+                    receipt?.values?.frameOrder?.drillMount === "Yes" && (
+                        <InvoiceSlot
+                            title={`Drill Mount: `}
+                            subTitle={`$${DRILL_MOUNT}`}
+                        />
+                    )}
+            </>
+        );
+    };
+    const underPrivatePay = () => {
+        return (
+            <>
+                <div className={classes["plan-sub-label"]}>
+                    Estimates under Private Pay
+                </div>
+                {LensPayInvoice()}
+            </>
+        );
+    };
+    const underPlanPay = () => {
         return (
             <>
                 <div
@@ -386,22 +416,7 @@ const OutPackPrices = ({
                 <div
                     className={classes["plan-sub-label"]}
                 >{`Estimates under Private Pay`}</div>
-
-                {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
-                    <InvoiceSlot
-                        title={`Frame: `}
-                        subTitle={`$${
-                            (calculateFrameFee() || 0).toFixed(2) || 0
-                        }`}
-                    />
-                )}
-                {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
-                    receipt?.values?.frameOrder?.drillMount === "Yes" && (
-                        <InvoiceSlot
-                            title={`Drill Mount: `}
-                            subTitle={`$${DRILL_MOUNT}`}
-                        />
-                    )}
+                {LensPayInvoice()}
             </>
         );
     };
@@ -414,7 +429,7 @@ const OutPackPrices = ({
         ) {
             return underFramePay();
         } else {
-            return underLensPlan();
+            return underPlanPay();
         }
     };
 
@@ -422,12 +437,19 @@ const OutPackPrices = ({
         <>
             <div className={classes["page-sub-label"]}>Out of pocket Fees</div>
             {renderReceiptByType()}
-            {receipt?.values?.submitBenifitType === BenifitTypeEnums.lens && (
+            {(receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+                receipt?.values?.submitBenifitType ===
+                    BenifitTypeEnums.frame) && (
                 <div
                     style={{ marginTop: "20px" }}
                     className={classes["plan-sub-label"]}
                 >{`Estimates under ${receipt?.values?.visionPlan}`}</div>
             )}
+            {receipt?.values?.submitBenifitType === BenifitTypeEnums.frame &&
+                LensPayInvoice()}
+
+            {receipt?.values?.submitBenifitType === BenifitTypeEnums.lens &&
+                FramePayInvoice()}
 
             <InvoiceSlot
                 title={"Material Copay"}
