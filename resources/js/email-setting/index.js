@@ -71,7 +71,6 @@ const EmailSetting = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 setTimeZones(response.data.data);
             })
             .catch(function (error) {
@@ -80,7 +79,6 @@ const EmailSetting = (props) => {
     };
 
     const onEditorStateChange = (editorState) => {
-        console.log(editorState, "value");
         setEditorState(editorState);
     };
 
@@ -120,7 +118,6 @@ const EmailSetting = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 getReminder();
             })
             .catch(function (error) {
@@ -153,7 +150,6 @@ const EmailSetting = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 getReminder();
                 setReminderType("");
                 setSentTo("");
@@ -183,9 +179,7 @@ const EmailSetting = (props) => {
         };
 
         axios(config)
-            .then(function (response) {
-                console.log(JSON.stringify(response.data));
-            })
+            .then(function (response) {})
             .catch(function (error) {
                 console.log(error);
             });
@@ -205,7 +199,6 @@ const EmailSetting = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(JSON.stringify(response.data));
                 let res = response.data.data;
                 setEmailArray(res);
             })
@@ -385,27 +378,28 @@ const EmailSetting = (props) => {
                                                     updateHandler(obj);
                                                 }}
                                             />
-                                            {obj?.is_active === 1? <img
-                                               className="bell-icon"
-                                                src={
-                                                   
-                                                   bellIcon
-                                                      
-                                                }
-                                                onClick={() => {
-                                                    activeInActiveReminder(obj);
-                                                }}
-                                            />:<img
-                                           className="bell-icon"
-                                            src={
-                                                 bellCloseIcon
-                                            }
-                                            onClick={() => {
-                                                activeInActiveReminder(obj);
-                                            }}
-                                        />}
-                                            
-                                            
+                                            {obj?.is_active === 1 ? (
+                                                <img
+                                                    className="bell-icon"
+                                                    src={bellIcon}
+                                                    onClick={() => {
+                                                        activeInActiveReminder(
+                                                            obj
+                                                        );
+                                                    }}
+                                                />
+                                            ) : (
+                                                <img
+                                                    className="bell-icon"
+                                                    src={bellCloseIcon}
+                                                    onClick={() => {
+                                                        activeInActiveReminder(
+                                                            obj
+                                                        );
+                                                    }}
+                                                />
+                                            )}
+
                                             <img
                                                 className="delete-icon"
                                                 src={cross}
@@ -453,7 +447,7 @@ const EmailSetting = (props) => {
                                 <div className="email-remainder_input-sections_input-section">
                                     <p>Email Type</p>
                                     <Select
-                                    className="no-outline"
+                                        className="no-outline"
                                         defaultValue="Select"
                                         style={{
                                             width: 120,
@@ -461,20 +455,31 @@ const EmailSetting = (props) => {
                                         onChange={handleRemainderClick}
                                         value={reminderType || "Select"}
                                     >
-                                        <Option className="ant-select-item-option-content" value={"reminder"}>
+                                        <Option
+                                            className="ant-select-item-option-content"
+                                            value={"reminder"}
+                                        >
                                             Reminder
                                         </Option>
-                                        <Option className="ant-select-item-option-content" value={"orderComplete"}>
+                                        <Option
+                                            className="ant-select-item-option-content"
+                                            value={"orderComplete"}
+                                        >
                                             Order Complete
                                         </Option>
-                                        <Option className="ant-select-item-option-content" value={"custom"}>Custom</Option>
+                                        <Option
+                                            className="ant-select-item-option-content"
+                                            value={"custom"}
+                                        >
+                                            Custom
+                                        </Option>
                                     </Select>
                                 </div>
                                 {reminderType != "orderComplete" ? (
                                     <div className="email-remainder_input-sections_input-section">
                                         <p>Send to</p>
                                         <Select
-                                        className="no-outline"
+                                            className="no-outline"
                                             defaultValue="Select"
                                             style={{
                                                 width: 120,
@@ -482,11 +487,24 @@ const EmailSetting = (props) => {
                                             onChange={handleSentToClick}
                                             value={sentTo || "Select"}
                                         >
-                                            <Option className="ant-select-item-option-content" value={"paid"}>Paid</Option>
-                                            <Option className="ant-select-item-option-content" value={"unpaid"}>
+                                            <Option
+                                                className="ant-select-item-option-content"
+                                                value={"paid"}
+                                            >
+                                                Paid
+                                            </Option>
+                                            <Option
+                                                className="ant-select-item-option-content"
+                                                value={"unpaid"}
+                                            >
                                                 Unpaid
                                             </Option>
-                                            <Option className="ant-select-item-option-content" value={"all"}>All</Option>
+                                            <Option
+                                                className="ant-select-item-option-content"
+                                                value={"all"}
+                                            >
+                                                All
+                                            </Option>
                                         </Select>
                                     </div>
                                 ) : null}
@@ -554,7 +572,7 @@ const EmailSetting = (props) => {
                                                 />
                                             ) : (
                                                 <Select
-                                                className="no-outline"
+                                                    className="no-outline"
                                                     defaultValue="Select"
                                                     style={{
                                                         width: 120,
@@ -562,31 +580,52 @@ const EmailSetting = (props) => {
                                                     onChange={handleDateClick}
                                                     value={dates || "Select"}
                                                 >
-                                                    <Option className="ant-select-item-option-content" value={1}>
+                                                    <Option
+                                                        className="ant-select-item-option-content"
+                                                        value={1}
+                                                    >
                                                         1 days after invoice
                                                         sent
                                                     </Option>
-                                                    <Option className="ant-select-item-option-content" value={2}>
+                                                    <Option
+                                                        className="ant-select-item-option-content"
+                                                        value={2}
+                                                    >
                                                         2 days after invoice
                                                         sent
                                                     </Option>
-                                                    <Option className="ant-select-item-option-content" value={3}>
+                                                    <Option
+                                                        className="ant-select-item-option-content"
+                                                        value={3}
+                                                    >
                                                         3 days after invoice
                                                         sent
                                                     </Option>
-                                                    <Option className="ant-select-item-option-content" value={4}>
+                                                    <Option
+                                                        className="ant-select-item-option-content"
+                                                        value={4}
+                                                    >
                                                         4 days after invoice
                                                         sent
                                                     </Option>
-                                                    <Option className="ant-select-item-option-content" value={5}>
+                                                    <Option
+                                                        className="ant-select-item-option-content"
+                                                        value={5}
+                                                    >
                                                         5 days after invoice
                                                         sent
                                                     </Option>
-                                                    <Option className="ant-select-item-option-content" value={6}>
+                                                    <Option
+                                                        className="ant-select-item-option-content"
+                                                        value={6}
+                                                    >
                                                         6 days after invoice
                                                         sent
                                                     </Option>
-                                                    <Option className="ant-select-item-option-content" value={7}>
+                                                    <Option
+                                                        className="ant-select-item-option-content"
+                                                        value={7}
+                                                    >
                                                         7 days after invoice
                                                         sent
                                                     </Option>
@@ -596,7 +635,7 @@ const EmailSetting = (props) => {
                                         <div className="email-remainder_input-sections_input-section">
                                             <p>Send Time</p>
                                             <Select
-                                            className="no-outline"
+                                                className="no-outline"
                                                 defaultValue="Select"
                                                 style={{
                                                     width: 120,
@@ -607,7 +646,10 @@ const EmailSetting = (props) => {
                                                 {time &&
                                                     time?.map((e, key) => {
                                                         return (
-                                                            <Option className="ant-select-item-option-content" value={e}>
+                                                            <Option
+                                                                className="ant-select-item-option-content"
+                                                                value={e}
+                                                            >
                                                                 {e}
                                                             </Option>
                                                         );
@@ -628,7 +670,8 @@ const EmailSetting = (props) => {
                                                 {timeZones.map(
                                                     (zone, index) => {
                                                         return (
-                                                            <Option className="ant-select-item-option-content"
+                                                            <Option
+                                                                className="ant-select-item-option-content"
                                                                 value={zone.id}
                                                             >
                                                                 {zone.name}
