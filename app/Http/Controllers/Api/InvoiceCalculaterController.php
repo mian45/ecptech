@@ -61,6 +61,7 @@ class InvoiceCalculaterController extends Controller
                     DB::raw('IF(question_permissions.optional, "true", "false") as optional')
                 );
                 $q->where('question_permissions.user_id',auth()->user()->id);
+                $q->where('question_permissions.status',1);
         }])->join('vision_plan_permissions as vsp','vsp.vision_plan_id','=','vision_plans.id')
             ->where('vsp.user_id',auth()->user()->id)
             ->select('vision_plans.id','vision_plans.title')->get();
@@ -166,7 +167,12 @@ class InvoiceCalculaterController extends Controller
                                 $code_id = null;
                                 if(!empty($data[7])){
                                     
-                                    $code = Code::where('name',$data[7])->first();
+                                    if(!empty($data[1]) AND strtolower($data[1]) == 'bifocal' ){
+                                        $code = Code::where('name',$data[7])->where('vision_plan_id',$vision_plan->id)->where('lense_type','bifocal')->first();
+                                    }else{
+                                        $code = Code::where('name',$data[7])->where('vision_plan_id',$vision_plan->id)->where('lense_type','!=','bifocal')->first();
+                                    }
+
                                     if($code){
                                         $code_id = $code->id;
                                     }
@@ -255,6 +261,63 @@ class InvoiceCalculaterController extends Controller
                     DB::commit();
 
                     return $this->sendResponse([], 'Addon CSV data uploaded');
+                }catch(\Exception $e){
+                    DB::rollback();
+                    return $this->sendError($e->getMessage());
+                    
+                }
+                
+            }
+        }
+    
+       
+    }
+
+    public function storeCodeCSVData(Request $request){
+        $validator = Validator::make($request->all(), [
+            'csv' => 'required|mimes:csv,txt'
+        ]);
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+        
+        $csv = array();
+    
+        if($_FILES['csv']['error'] == 0){
+            $tmpName = $_FILES['csv']['tmp_name'];
+    
+            if(($handle = fopen($tmpName, 'r')) !== FALSE) {
+                
+                DB::beginTransaction();
+                $row = 0;
+                try{
+                    while(($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
+                        if($row==0){
+                            // number of fields in the csv
+                            $col_count = count($data);
+                        }else{
+                            $data = $this->clear_encoding_str($data);
+                            if(!empty($data[0])){
+                                $vision_plan = VisionPlan::where('title', $data[0])->first();
+                            }
+                            
+                            if(!empty($data[1])){
+                                $code = Code::updateOrCreate(
+                                    ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$data[1]],
+                                    ['price'=> $data[2]]
+                                );
+                                $code_bifocal = Code::updateOrCreate(
+                                    ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$data[1]],
+                                    ['price'=> $data[3]]
+                                );
+                            }
+                        }
+                        
+                        $row++;
+                    }
+                    fclose($handle);
+                    DB::commit();
+                    return $this->sendResponse([], 'Code CSV data uploaded');
                 }catch(\Exception $e){
                     DB::rollback();
                     return $this->sendError($e->getMessage());

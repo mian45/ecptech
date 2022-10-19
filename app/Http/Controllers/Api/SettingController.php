@@ -44,7 +44,7 @@ class SettingController extends Controller
                 });
                 $q->select('collections.id','collections.brand_id','title','collection_setting.name as display_name','collection_setting.price as custom_price',DB::raw('IFNULL(status,"inactive") as status'));
             }]);
-       }])->select('id','title')->get();
+        }])->selectRaw("MIN(id) AS id,title")->groupby('title')->get();
  
 
        return $this->sendResponse($data, 'Lense data');
