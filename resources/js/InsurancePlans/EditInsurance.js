@@ -13,6 +13,7 @@ function EditInsurance({ userId }) {
   const history = useHistory()
   const params = useParams();
 
+
   //for editing 
   React.useEffect(() => {
     setVisionId(params?.id)
@@ -97,7 +98,7 @@ function EditInsurance({ userId }) {
     <div className="root-container">
       <div className="setting-dashboard_container">
         <div className='other-setting'>
-          <p className='other-setting_sub_heading'>Edit VSP Signature</p>
+          <p className='other-setting_sub_heading'>Edit {history?.location?.state}</p>
           <div className='back-btn' onClick={() => { history.goBack() }}>
             <img src={"/arrow-back.svg"} alt="arrow" />
             <h6 className='back-text'>

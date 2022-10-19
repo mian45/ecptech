@@ -69,6 +69,7 @@ console.log('getData',getData);
                                 onClick={() => {
                                     history.push({
                                         pathname: `/edit-insurance/${item?.id}`,
+                                        state : item?.title,
                                     });
                                 }}
                             />
