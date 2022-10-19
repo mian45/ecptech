@@ -70,7 +70,7 @@ class InvoiceCalculaterController extends Controller
        $data['lens_types'] = LenseType::with(['brands'=>function($q){
             $q->join('brand_permissions as bp','bp.brand_id','=','brands.id');
             $q->select('brands.id','lens_type_id','title');
-            $q->where('bp.user_id',auth()->user()->id)->where('bp.status','active');
+            $q->where('bp.user_id',auth()->user()->id);
             $q->with(['collections'=>function($q){
                 $q->join('collections_permissions as cp','cp.collection_id','=','collections.id');
                 $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price');
