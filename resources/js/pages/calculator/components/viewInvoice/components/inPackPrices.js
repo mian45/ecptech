@@ -1,5 +1,6 @@
 import React from "react";
 import {
+    getPrivatePayGlasses,
     getPrivatePayLensPices,
     getPrivatePayMaterialPices,
     InvoiceBoldSlot,
@@ -11,22 +12,39 @@ import classes from "../styles.module.scss";
 const InPackPrices = ({ receipt, calculatorObj, lensPrices }) => {
     const getLensRetailFee = () => {
         let price = 0;
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        price =
+            price +
+            parseFloat(
+                getPrivatePayLensPices(calculatorObj, receipt, lensPrices)
+            );
+        price =
+            price +
+            parseFloat(
+                getPrivatePayMaterialPices(calculatorObj, receipt, lensPrices)
+            );
+        if (receipt?.values?.photochromics?.status === "Yes") {
             price =
                 price +
                 parseFloat(
-                    getPrivatePayLensPices(calculatorObj, receipt, lensPrices)
-                );
-            price =
-                price +
-                parseFloat(
-                    getPrivatePayMaterialPices(
-                        calculatorObj,
-                        receipt,
-                        lensPrices
+                    getPrivatePayPhotochromic(
+                        receipt?.values?.photochromics?.type,
+                        calculatorObj
                     )
                 );
+        } else {
+            price = price + 0;
         }
+
+        if (receipt?.values?.antiReflectiveProperties?.status === "Yes") {
+            const total = getPrivatePayAntireflective(
+                receipt?.values?.antiReflectiveProperties?.type,
+                calculatorObj
+            );
+            price = price + (total || 0);
+        } else {
+            price = price + 0;
+        }
+        price = price + getPrivatePayGlasses(receipt, calculatorObj);
 
         return (price || 0).toFixed(2);
     };
@@ -44,8 +62,8 @@ const InPackPrices = ({ receipt, calculatorObj, lensPrices }) => {
             <InvoiceBoldSlot
                 title={"Total"}
                 subTitle={`$${
-                    receipt?.values?.frameOrder?.retailFee +
-                    (getLensRetailFee() || 0)
+                    parseFloat(receipt?.values?.frameOrder?.retailFee || 0) +
+                    parseFloat(getLensRetailFee() || 0)
                 }`}
             />
         </>

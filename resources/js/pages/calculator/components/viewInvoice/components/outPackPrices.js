@@ -1,8 +1,10 @@
 import React from "react";
 import {
     getPriceByPhotochromicMaterial,
+    getPrivatePayAntireflective,
     getPrivatePayLensPices,
     getPrivatePayMaterialPices,
+    getPrivatePayPhotochromic,
     InvoiceBoldSlot,
     InvoiceSlot,
 } from "..";
@@ -28,24 +30,46 @@ const OutPackPrices = ({
     lensPrices,
 }) => {
     const getCoatingPrice = () => {
+        const glassesAddons = calculatorObj?.addons.find(
+            (item) => item?.title === "SunGlasses"
+        );
         if (
             receipt?.values?.sunGlassesLens?.coatingType === "Ski Type Mirror"
         ) {
-            return SKI_TYPE_MIRROR;
+            if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+                const skiTypePrice = glassesAddons?.addons?.find(
+                    (item) => item.title === "Ski Type Mirror"
+                )?.price;
+                return parseFloat(skiTypePrice || 0) || 0;
+            } else {
+                return SKI_TYPE_MIRROR;
+            }
         } else if (
             receipt?.values?.sunGlassesLens?.coatingType ===
             "Solid/Single Gradient"
         ) {
-            return SOLID_SINGLE_GRADIENT;
+            if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+                const solidGradientPrice = glassesAddons?.addons?.find(
+                    (item) => item.title === "Solid/Single Gradient"
+                )?.price;
+                return parseFloat(solidGradientPrice || 0) || 0;
+            } else {
+                return SOLID_SINGLE_GRADIENT;
+            }
         } else {
             return 0;
         }
     };
     const getAntireflectivePrice = () => {
         if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
-            return getPriceByAntireflective(
-                receipt?.values?.antiReflectiveProperties?.type
-            );
+            if (receipt?.values?.antiReflectiveProperties?.status === "Yes") {
+                return getPrivatePayAntireflective(
+                    receipt?.values?.antiReflectiveProperties?.type,
+                    calculatorObj
+                );
+            } else {
+                return 0;
+            }
         } else {
             if (receipt?.values?.antiReflectiveProperties?.status === "Yes") {
                 const isAntireflectiveActive =
@@ -74,9 +98,14 @@ const OutPackPrices = ({
 
     const getPhotochromicPrice = () => {
         if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
-            return getPriceByPhotochromicMaterial(
-                receipt?.values?.photochromics?.type
-            );
+            if (receipt?.values?.photochromics?.status === "Yes") {
+                return getPrivatePayPhotochromic(
+                    receipt?.values?.photochromics?.type,
+                    calculatorObj
+                );
+            } else {
+                return 0;
+            }
         } else {
             if (receipt?.values?.photochromics?.status === "Yes") {
                 const isPhotochromicActive =
@@ -161,6 +190,50 @@ const OutPackPrices = ({
         return totalRetailFee - (totalPrice || 0);
     };
 
+    const getPolirizedFee = () => {
+        const glassesAddons = calculatorObj?.addons.find(
+            (item) => item?.title === "SunGlasses"
+        );
+        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            const polirizedPrice = glassesAddons?.addons?.find(
+                (item) => item.title === "Polarized"
+            )?.price;
+
+            return parseFloat(polirizedPrice || 0) || 0;
+        } else {
+            return POLARIZED;
+        }
+    };
+
+    const getSolidTintFee = () => {
+        const glassesAddons = calculatorObj?.addons.find(
+            (item) => item?.title === "SunGlasses"
+        );
+        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            const solidTindPrice = glassesAddons?.addons?.find(
+                (item) => item.title === "Solid Tint"
+            )?.price;
+
+            return parseFloat(solidTindPrice || 0) || 0;
+        } else {
+            return SOLID_TINT;
+        }
+    };
+    const getGradientTintFee = () => {
+        const glassesAddons = calculatorObj?.addons.find(
+            (item) => item?.title === "SunGlasses"
+        );
+        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            const gradientTindPrice = glassesAddons?.addons?.find(
+                (item) => item.title === "Gradient Tint"
+            )?.price;
+
+            return parseFloat(gradientTindPrice || 0) || 0;
+        } else {
+            return GRADIENT_TINT;
+        }
+    };
+
     const LensPayInvoice = () => {
         return (
             <>
@@ -233,7 +306,7 @@ const OutPackPrices = ({
                             subTitle={
                                 receipt?.values?.sunGlassesLens?.lensType ===
                                 "Polarized"
-                                    ? `$${POLARIZED}`
+                                    ? `$${getPolirizedFee()}`
                                     : "$0.00"
                             }
                         />
@@ -245,8 +318,8 @@ const OutPackPrices = ({
                             subTitle={
                                 receipt?.values?.sunGlassesLens?.tintType ===
                                 "Solid Tint"
-                                    ? `$${SOLID_TINT}`
-                                    : `$${GRADIENT_TINT}`
+                                    ? `$${getSolidTintFee()}`
+                                    : `$${getGradientTintFee()}`
                             }
                         />
                     )}
@@ -375,7 +448,7 @@ const OutPackPrices = ({
                             subTitle={
                                 receipt?.values?.sunGlassesLens?.lensType ===
                                 "Polarized"
-                                    ? `$${POLARIZED}`
+                                    ? `$${getPolirizedFee()}`
                                     : "$0.00"
                             }
                         />
@@ -387,8 +460,8 @@ const OutPackPrices = ({
                             subTitle={
                                 receipt?.values?.sunGlassesLens?.tintType ===
                                 "Solid Tint"
-                                    ? `$${SOLID_TINT}`
-                                    : `$${GRADIENT_TINT}`
+                                    ? `$${getSolidTintFee()}`
+                                    : `$${getGradientTintFee()}`
                             }
                         />
                     )}
@@ -433,6 +506,27 @@ const OutPackPrices = ({
         }
     };
 
+    const appliedDiscountsList = () => {
+        let price = withoutTaxPrice;
+        calculatorObj?.discount?.map((item, index) => {
+            price = (withoutTaxPrice * parseFloat(item?.value || 0)) / 100;
+            return (
+                <div className={classes["invoice-slot-container"]} key={index}>
+                    <div className={classes["invoice-slot-title"]}>
+                        {`Discount ${item?.name}`}
+                    </div>
+                    <div className={classes["invoice-slot-title"]}>
+                        <span className={classes["light-title"]}>
+                            {`(${parseFloat(item?.value || 0)?.toFixed(2)}%) `}
+                        </span>
+
+                        {`$${parseFloat(price || 0)?.toFixed(2)}`}
+                    </div>
+                </div>
+            );
+        });
+    };
+
     return (
         <>
             <div className={classes["page-sub-label"]}>Out of pocket Fees</div>
@@ -474,6 +568,7 @@ const OutPackPrices = ({
                     subTitle={"$" + (calculatorObj?.shipping || 0)}
                 />
             )}
+            {appliedDiscountsList()}
 
             <div className={classes["invoice-slot-container"]}>
                 <div className={classes["invoice-slot-title"]}>
