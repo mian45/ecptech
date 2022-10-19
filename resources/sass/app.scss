@@ -29,10 +29,45 @@ img {
 label {
     margin-bottom: 0.5rem;
 }
+.ant-select-item-option-content{
+    margin-left: 10px !important;
+}
 
 // Buttons
 $btn-size-base: 1rem;
+input{
+    border:1px solid #dfdfdf !important;
+    outline: none !important;
+}:focus-visible{
+    border: 1px solid #dfdfdf !important;
+}
+.rdrStaticRange{
+    color: #000;
+    font-size: 16px;
+    font-family: Montserrat;
+    padding: 8px 30px;
+    background-color: #fff !important;
+    border-radius: 0px !important;
+    border: none;
+    height: auto !important;
 
+}
+button{
+    color: #fff;
+    font-size: 16px;
+    font-family: Montserrat;
+    padding: 8px 30px;
+    background-color: #6fa5cb;
+    border-radius: 28px;
+    border: none;
+    height: 45px;
+    &:hover {
+        background-color: #518fbb;
+    }
+    &:disabled {
+        background-color: #cbcbcb;
+    }
+}
 .btn {
     transition: all 0.2s ease;
 
@@ -117,7 +152,9 @@ header {
     justify-content: center;
     align-items: center;
 }
-
+.rdw-dropdown-optionwrapper{
+overflow-y: hidden !important;
+}
 // Login Form
 .section-login {
     height: 37em !important;
@@ -276,4 +313,7 @@ input[type="number"] {
 }
 .ant-popover-inner-content {
     border-radius: 10px !important;
+}
+.ant-popover-inner-content {
+    padding: 11px !important;
 }

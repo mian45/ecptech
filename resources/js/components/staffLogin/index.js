@@ -148,8 +148,8 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(StaffLogin);
 
 const LoginValidation = Yup.object().shape({
-    email: Yup.string().email().required("Email is required"),
+    email: Yup.string().email().required("Please enter a valid email address"),
     password: Yup.string()
-        .min(6, "Must have 6 characters")
-        .required("Password is required"),
+        .min(6, "Password must have 6 characters")
+        .required("Please enter a valid password"),
 });

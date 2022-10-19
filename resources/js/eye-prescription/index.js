@@ -815,7 +815,7 @@ const EyePrescription = (props) => {
                 >
                     <div className="eye-prescription_section-bar">
                         <div className="eye-prescription_section-bar-first">
-                            <p>{"Show Hi Index 1.67If"}</p>
+                            <p>{"Show Hi Index 1.67 If"}</p>
                         </div>
                         <div className="eye-prescription_section-bar-second">
                             <div>
@@ -1143,7 +1143,7 @@ const EyePrescription = (props) => {
                 >
                     <div className="eye-prescription_section-bar">
                         <div className="eye-prescription_section-bar-first">
-                            <p>{"Show Hi Index 1.60If"}</p>
+                            <p>{"Show Hi Index 1.60 If"}</p>
                         </div>
                         <div className="eye-prescription_section-bar-second">
                             <div>

@@ -27,6 +27,7 @@
     font-size: 16px;
     padding: 10px 20px;
     color: #747474;
+    outline: none;
     &::placeholder {
         color: #cbcbcb;
     }
@@ -39,6 +40,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
+    &:hover {
+        background-color: #518fbb !important;
+    }
 }
 .tick-icon {
     width: 16px;
