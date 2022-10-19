@@ -7,6 +7,7 @@ import PropTypes from "prop-types";
 import AuthServices from "../services";
 import DiscountTaxes from "../discount-taxes/index";
 import EyePrescription from "../eye-prescription";
+import LensesSettings from "../pages/settings/components/lenses";
 
 const TabsSection = (props) => {
     return (
@@ -19,7 +20,7 @@ const TabsSection = (props) => {
                 )}
             </Tabs.TabPane>
             <Tabs.TabPane tab="Lenses" key="2">
-                Content of Tab Pane 2
+                <LensesSettings />
             </Tabs.TabPane>
             <Tabs.TabPane tab={`Discounts & Taxes`} key="3">
                 <DiscountTaxes />
