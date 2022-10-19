@@ -9,7 +9,7 @@ import icon from "../../../../../images/calculator/shipping.svg";
 const GlassesProtection = ({ formProps, calculatorObj }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const shippingVisibility = calculatorObj?.questions
-        ?.find((item) => item.title === "VSP Signature")
+        ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
             (ques) => ques.question === "Add Shipping"
         )?.visibility;

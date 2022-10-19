@@ -12,7 +12,7 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState("");
     const lensMaterialVisibility = calculatorObj?.questions
-        ?.find((item) => item.title === "VSP Signature")
+        ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
             (ques) => ques.question === "Lens Material"
         )?.visibility;

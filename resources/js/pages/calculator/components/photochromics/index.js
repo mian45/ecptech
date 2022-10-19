@@ -16,7 +16,7 @@ const Photochromics = ({
 }) => {
     const { values, handleChange, handleBlur } = formProps;
     const photochromicsVisibility = calculatorObj?.questions
-        ?.find((item) => item.title === "VSP Signature")
+        ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
             (ques) => ques.question === "Photochromics"
         )?.visibility;

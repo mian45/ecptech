@@ -9,7 +9,7 @@ import lensIcon from "../../../../../images/calculator/lens.svg";
 const LensType = ({ formProps, calculatorObj }) => {
     const { values, handleChange, handleBlur } = formProps;
     const lensTypeVisibility = calculatorObj?.questions
-        ?.find((item) => item.title === "VSP Signature")
+        ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
             (ques) => ques.question === "Lens Type"
         )?.visibility;
@@ -29,7 +29,11 @@ const LensType = ({ formProps, calculatorObj }) => {
         let lenses = [];
         selectedLensType?.brands?.forEach((element) => {
             element?.collections?.forEach((lens) => {
-                lenses.push(lens?.title);
+                if (lens?.display_name) {
+                    lenses.push(lens?.display_name);
+                } else {
+                    lenses.push(lens?.title);
+                }
             });
         });
         return lenses;

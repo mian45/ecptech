@@ -14,7 +14,6 @@
     padding-right: 30px;
     border: 1px solid #e8e8e8;
     box-shadow: 0px 0px 11px #00000008;
-    border-radius: 10px;
 }
 .submit-button {
     font-size: 16px;
@@ -36,7 +35,24 @@
     color: #2a2a2a;
     font-weight: bold;
     font-family: Montserrat;
-    padding: 55px;
-    padding-bottom: 0px;
-    text-align: center;
+}
+.back-icon {
+    width: 10px;
+    height: 10px;
+    object-fit: contain;
+    cursor: pointer;
+}
+.back-container {
+    display: flex;
+    cursor: pointer;
+    margin-bottom: 20px;
+    justify-content: flex-start;
+    align-items: center;
+}
+.back-text {
+    font-size: 16px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+    cursor: pointer;
+    margin-left: 5px;
 }

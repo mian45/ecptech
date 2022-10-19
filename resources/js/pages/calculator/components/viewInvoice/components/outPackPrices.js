@@ -1,6 +1,10 @@
 import React from "react";
 import {
     getPriceByPhotochromicMaterial,
+    getPrivatePayAntireflective,
+    getPrivatePayLensPices,
+    getPrivatePayMaterialPices,
+    getPrivatePayPhotochromic,
     InvoiceBoldSlot,
     InvoiceSlot,
 } from "..";
@@ -26,24 +30,46 @@ const OutPackPrices = ({
     lensPrices,
 }) => {
     const getCoatingPrice = () => {
+        const glassesAddons = calculatorObj?.addons.find(
+            (item) => item?.title === "SunGlasses"
+        );
         if (
             receipt?.values?.sunGlassesLens?.coatingType === "Ski Type Mirror"
         ) {
-            return SKI_TYPE_MIRROR;
+            if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+                const skiTypePrice = glassesAddons?.addons?.find(
+                    (item) => item.title === "Ski Type Mirror"
+                )?.price;
+                return parseFloat(skiTypePrice || 0) || 0;
+            } else {
+                return SKI_TYPE_MIRROR;
+            }
         } else if (
             receipt?.values?.sunGlassesLens?.coatingType ===
             "Solid/Single Gradient"
         ) {
-            return SOLID_SINGLE_GRADIENT;
+            if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+                const solidGradientPrice = glassesAddons?.addons?.find(
+                    (item) => item.title === "Solid/Single Gradient"
+                )?.price;
+                return parseFloat(solidGradientPrice || 0) || 0;
+            } else {
+                return SOLID_SINGLE_GRADIENT;
+            }
         } else {
             return 0;
         }
     };
     const getAntireflectivePrice = () => {
         if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
-            return getPriceByAntireflective(
-                receipt?.values?.antiReflectiveProperties?.type
-            );
+            if (receipt?.values?.antiReflectiveProperties?.status === "Yes") {
+                return getPrivatePayAntireflective(
+                    receipt?.values?.antiReflectiveProperties?.type,
+                    calculatorObj
+                );
+            } else {
+                return 0;
+            }
         } else {
             if (receipt?.values?.antiReflectiveProperties?.status === "Yes") {
                 const isAntireflectiveActive =
@@ -72,9 +98,14 @@ const OutPackPrices = ({
 
     const getPhotochromicPrice = () => {
         if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
-            return getPriceByPhotochromicMaterial(
-                receipt?.values?.photochromics?.type
-            );
+            if (receipt?.values?.photochromics?.status === "Yes") {
+                return getPrivatePayPhotochromic(
+                    receipt?.values?.photochromics?.type,
+                    calculatorObj
+                );
+            } else {
+                return 0;
+            }
         } else {
             if (receipt?.values?.photochromics?.status === "Yes") {
                 const isPhotochromicActive =
@@ -123,8 +154,7 @@ const OutPackPrices = ({
     const renderLensTypePrice = () => {
         if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
             return (
-                getPriceFromDB(receipt, calculatorObj, lensPrices).lensPrice ||
-                0
+                getPrivatePayLensPices(calculatorObj, receipt, lensPrices) || 0
             );
         } else {
             return (
@@ -135,8 +165,11 @@ const OutPackPrices = ({
     const renderLensMaterialPrice = () => {
         if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
             return (
-                getPriceFromDB(receipt, calculatorObj, lensPrices)
-                    .materialPrice || 0
+                getPrivatePayMaterialPices(
+                    calculatorObj,
+                    receipt,
+                    lensPrices
+                ) || 0
             );
         } else {
             return (
@@ -157,111 +190,366 @@ const OutPackPrices = ({
         return totalRetailFee - (totalPrice || 0);
     };
 
+    const getPolirizedFee = () => {
+        const glassesAddons = calculatorObj?.addons.find(
+            (item) => item?.title === "SunGlasses"
+        );
+        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            const polirizedPrice = glassesAddons?.addons?.find(
+                (item) => item.title === "Polarized"
+            )?.price;
+
+            return parseFloat(polirizedPrice || 0) || 0;
+        } else {
+            return POLARIZED;
+        }
+    };
+
+    const getSolidTintFee = () => {
+        const glassesAddons = calculatorObj?.addons.find(
+            (item) => item?.title === "SunGlasses"
+        );
+        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            const solidTindPrice = glassesAddons?.addons?.find(
+                (item) => item.title === "Solid Tint"
+            )?.price;
+
+            return parseFloat(solidTindPrice || 0) || 0;
+        } else {
+            return SOLID_TINT;
+        }
+    };
+    const getGradientTintFee = () => {
+        const glassesAddons = calculatorObj?.addons.find(
+            (item) => item?.title === "SunGlasses"
+        );
+        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            const gradientTindPrice = glassesAddons?.addons?.find(
+                (item) => item.title === "Gradient Tint"
+            )?.price;
+
+            return parseFloat(gradientTindPrice || 0) || 0;
+        } else {
+            return GRADIENT_TINT;
+        }
+    };
+
+    const LensPayInvoice = () => {
+        return (
+            <>
+                {calculatorObj && (
+                    <InvoiceSlot
+                        title={`${
+                            receipt?.values?.lensType?.brand || ""
+                        } ( Base fee )`}
+                        subTitle={`$${renderLensTypePrice()}`}
+                    />
+                )}
+                {calculatorObj && (
+                    <InvoiceSlot
+                        title={`${
+                            receipt?.values?.lensType?.brand || ""
+                        } ( Lens Material ${receipt?.values?.lensMaterial} )`}
+                        subTitle={`$${renderLensMaterialPrice()}`}
+                    />
+                )}
+                {receipt?.values?.photochromics?.status === "Yes" && (
+                    <InvoiceSlot
+                        title={`Photochromic Option: ${receipt?.values?.photochromics?.type}`}
+                        subTitle={`$${
+                            (getPhotochromicPrice() || 0).toFixed(2) || 0
+                        }`}
+                    />
+                )}
+                {receipt?.values?.antiReflectiveProperties?.status ===
+                    "Yes" && (
+                    <InvoiceSlot
+                        title={`Antireflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
+                        subTitle={`$${
+                            (getAntireflectivePrice() || 0).toFixed(2) || 0
+                        }`}
+                    />
+                )}
+                {receipt?.values?.sunGlassesLens?.status === "Yes" &&
+                    receipt?.values?.sunGlassesLens?.status === "Yes" && (
+                        <InvoiceSlot
+                            title={`Mirror Coating: ${receipt?.values?.sunGlassesLens?.coatingType}`}
+                            subTitle={`$${getCoatingPrice() || 0}`}
+                        />
+                    )}
+                {receipt?.values?.sunGlassesLens?.status === "Yes" && (
+                    <InvoiceSlot
+                        title={"Is Sunglass Lens Polarized?"}
+                        subTitle={
+                            receipt?.values?.sunGlassesLens?.lensType ===
+                            "Polarized"
+                                ? "Yes"
+                                : "No"
+                        }
+                    />
+                )}
+                {receipt?.values?.sunGlassesLens?.status === "Yes" && (
+                    <InvoiceSlot
+                        title={"Is Sunglass Lens Tint?"}
+                        subTitle={
+                            receipt?.values?.sunGlassesLens?.lensType === "Tint"
+                                ? "Yes"
+                                : "No"
+                        }
+                    />
+                )}
+                {receipt?.values?.sunGlassesLens?.status === "Yes" &&
+                    receipt?.values?.sunGlassesLens?.lensType ===
+                        "Polarized" && (
+                        <InvoiceSlot
+                            title={"Polarized Fee"}
+                            subTitle={
+                                receipt?.values?.sunGlassesLens?.lensType ===
+                                "Polarized"
+                                    ? `$${getPolirizedFee()}`
+                                    : "$0.00"
+                            }
+                        />
+                    )}
+                {receipt?.values?.sunGlassesLens?.status === "Yes" &&
+                    receipt?.values?.sunGlassesLens?.lensType === "Tint" && (
+                        <InvoiceSlot
+                            title={"Tint Fee"}
+                            subTitle={
+                                receipt?.values?.sunGlassesLens?.tintType ===
+                                "Solid Tint"
+                                    ? `$${getSolidTintFee()}`
+                                    : `$${getGradientTintFee()}`
+                            }
+                        />
+                    )}
+            </>
+        );
+    };
+
+    const FramePayInvoice = () => {
+        return (
+            <>
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
+                    <InvoiceSlot
+                        title={`Frame: `}
+                        subTitle={`$${
+                            (calculateFrameFee() || 0).toFixed(2) || 0
+                        }`}
+                    />
+                )}
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
+                    receipt?.values?.frameOrder?.drillMount === "Yes" && (
+                        <InvoiceSlot
+                            title={`Drill Mount: `}
+                            subTitle={`$${DRILL_MOUNT}`}
+                        />
+                    )}
+            </>
+        );
+    };
+    const underPrivatePay = () => {
+        return (
+            <>
+                <div className={classes["plan-sub-label"]}>
+                    Estimates under Private Pay
+                </div>
+                {LensPayInvoice()}
+            </>
+        );
+    };
+    const underPlanPay = () => {
+        return (
+            <>
+                <div
+                    className={classes["plan-sub-label"]}
+                >{`Estimates under ${receipt?.values?.visionPlan}`}</div>
+                {calculatorObj && (
+                    <InvoiceSlot
+                        title={`${
+                            receipt?.values?.lensType?.brand || ""
+                        } ( Base fee )`}
+                        subTitle={`$${renderLensTypePrice()}`}
+                    />
+                )}
+                {calculatorObj && (
+                    <InvoiceSlot
+                        title={`${
+                            receipt?.values?.lensType?.brand || ""
+                        } ( Lens Material ${receipt?.values?.lensMaterial} )`}
+                        subTitle={`$${renderLensMaterialPrice()}`}
+                    />
+                )}
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
+                    <InvoiceSlot
+                        title={`Frame: `}
+                        subTitle={`$${
+                            (calculateFrameFee() || 0).toFixed(2) || 0
+                        }`}
+                    />
+                )}
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
+                    receipt?.values?.frameOrder?.drillMount === "Yes" && (
+                        <InvoiceSlot
+                            title={`Drill Mount: `}
+                            subTitle={`$${DRILL_MOUNT}`}
+                        />
+                    )}
+                {receipt?.values?.photochromics?.status === "Yes" && (
+                    <InvoiceSlot
+                        title={`Photochromic Option: ${receipt?.values?.photochromics?.type}`}
+                        subTitle={`$${
+                            (getPhotochromicPrice() || 0).toFixed(2) || 0
+                        }`}
+                    />
+                )}
+                {receipt?.values?.antiReflectiveProperties?.status ===
+                    "Yes" && (
+                    <InvoiceSlot
+                        title={`Antireflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
+                        subTitle={`$${
+                            (getAntireflectivePrice() || 0).toFixed(2) || 0
+                        }`}
+                    />
+                )}
+                {receipt?.values?.sunGlassesLens?.status === "Yes" &&
+                    receipt?.values?.sunGlassesLens?.status === "Yes" && (
+                        <InvoiceSlot
+                            title={`Mirror Coating: ${receipt?.values?.sunGlassesLens?.coatingType}`}
+                            subTitle={`$${getCoatingPrice() || 0}`}
+                        />
+                    )}
+                {receipt?.values?.sunGlassesLens?.status === "Yes" && (
+                    <InvoiceSlot
+                        title={"Is Sunglass Lens Polarized?"}
+                        subTitle={
+                            receipt?.values?.sunGlassesLens?.lensType ===
+                            "Polarized"
+                                ? "Yes"
+                                : "No"
+                        }
+                    />
+                )}
+                {receipt?.values?.sunGlassesLens?.status === "Yes" && (
+                    <InvoiceSlot
+                        title={"Is Sunglass Lens Tint?"}
+                        subTitle={
+                            receipt?.values?.sunGlassesLens?.lensType === "Tint"
+                                ? "Yes"
+                                : "No"
+                        }
+                    />
+                )}
+                {receipt?.values?.sunGlassesLens?.status === "Yes" &&
+                    receipt?.values?.sunGlassesLens?.lensType ===
+                        "Polarized" && (
+                        <InvoiceSlot
+                            title={"Polarized Fee"}
+                            subTitle={
+                                receipt?.values?.sunGlassesLens?.lensType ===
+                                "Polarized"
+                                    ? `$${getPolirizedFee()}`
+                                    : "$0.00"
+                            }
+                        />
+                    )}
+                {receipt?.values?.sunGlassesLens?.status === "Yes" &&
+                    receipt?.values?.sunGlassesLens?.lensType === "Tint" && (
+                        <InvoiceSlot
+                            title={"Tint Fee"}
+                            subTitle={
+                                receipt?.values?.sunGlassesLens?.tintType ===
+                                "Solid Tint"
+                                    ? `$${getSolidTintFee()}`
+                                    : `$${getGradientTintFee()}`
+                            }
+                        />
+                    )}
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
+                    <InvoiceSlot
+                        title={`Frame: `}
+                        subTitle={`$${
+                            (calculateFrameFee() || 0).toFixed(2) || 0
+                        }`}
+                    />
+                )}
+                {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
+                    receipt?.values?.frameOrder?.drillMount === "Yes" && (
+                        <InvoiceSlot
+                            title={`Drill Mount: `}
+                            subTitle={`$${DRILL_MOUNT}`}
+                        />
+                    )}
+            </>
+        );
+    };
+    const underFramePay = () => {
+        return (
+            <>
+                <div
+                    className={classes["plan-sub-label"]}
+                >{`Estimates under Private Pay`}</div>
+                {LensPayInvoice()}
+            </>
+        );
+    };
+
+    const renderReceiptByType = () => {
+        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            return underPrivatePay();
+        } else if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.frame
+        ) {
+            return underFramePay();
+        } else {
+            return underPlanPay();
+        }
+    };
+
+    const appliedDiscountsList = () => {
+        let price = withoutTaxPrice;
+        calculatorObj?.discount?.map((item, index) => {
+            price = (withoutTaxPrice * parseFloat(item?.value || 0)) / 100;
+            return (
+                <div className={classes["invoice-slot-container"]} key={index}>
+                    <div className={classes["invoice-slot-title"]}>
+                        {`Discount ${item?.name}`}
+                    </div>
+                    <div className={classes["invoice-slot-title"]}>
+                        <span className={classes["light-title"]}>
+                            {`(${parseFloat(item?.value || 0)?.toFixed(2)}%) `}
+                        </span>
+
+                        {`$${parseFloat(price || 0)?.toFixed(2)}`}
+                    </div>
+                </div>
+            );
+        });
+    };
+
     return (
         <>
             <div className={classes["page-sub-label"]}>Out of pocket Fees</div>
-            {calculatorObj && (
-                <InvoiceSlot
-                    title={`${
-                        receipt?.values?.lensType?.brand || ""
-                    } ( Base fee )`}
-                    subTitle={`$${renderLensTypePrice()}`}
-                />
+            {renderReceiptByType()}
+            {(receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+                receipt?.values?.submitBenifitType ===
+                    BenifitTypeEnums.frame) && (
+                <div
+                    style={{ marginTop: "20px" }}
+                    className={classes["plan-sub-label"]}
+                >{`Estimates under ${receipt?.values?.visionPlan}`}</div>
             )}
-            {calculatorObj && (
-                <InvoiceSlot
-                    title={`${
-                        receipt?.values?.lensType?.brand || ""
-                    } ( Lens Material ${receipt?.values?.lensMaterial} )`}
-                    subTitle={`$${renderLensMaterialPrice()}`}
-                />
-            )}
+            {receipt?.values?.submitBenifitType === BenifitTypeEnums.frame &&
+                LensPayInvoice()}
+
+            {receipt?.values?.submitBenifitType === BenifitTypeEnums.lens &&
+                FramePayInvoice()}
 
             <InvoiceSlot
                 title={"Material Copay"}
                 subTitle={`$${receipt?.values?.materialCopay || 0}`}
             />
-            {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
-                <InvoiceSlot
-                    title={`Frame: `}
-                    subTitle={`$${(calculateFrameFee() || 0).toFixed(2) || 0}`}
-                />
-            )}
-            {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
-                receipt?.values?.frameOrder?.drillMount === "Yes" && (
-                    <InvoiceSlot
-                        title={`Drill Mount: `}
-                        subTitle={`$${DRILL_MOUNT}`}
-                    />
-                )}
-            {receipt?.values?.photochromics?.status === "Yes" && (
-                <InvoiceSlot
-                    title={`Photochromic Option: ${receipt?.values?.photochromics?.type}`}
-                    subTitle={`$${
-                        (getPhotochromicPrice() || 0).toFixed(2) || 0
-                    }`}
-                />
-            )}
-            {receipt?.values?.antiReflectiveProperties?.status === "Yes" && (
-                <InvoiceSlot
-                    title={`Antireflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
-                    subTitle={`$${
-                        (getAntireflectivePrice() || 0).toFixed(2) || 0
-                    }`}
-                />
-            )}
-            {receipt?.values?.sunGlassesLens?.status === "Yes" &&
-                receipt?.values?.sunGlassesLens?.status === "Yes" && (
-                    <InvoiceSlot
-                        title={`Mirror Coating: ${receipt?.values?.sunGlassesLens?.coatingType}`}
-                        subTitle={`$${getCoatingPrice() || 0}`}
-                    />
-                )}
-            {receipt?.values?.sunGlassesLens?.status === "Yes" && (
-                <InvoiceSlot
-                    title={"Is Sunglass Lens Polarized?"}
-                    subTitle={
-                        receipt?.values?.sunGlassesLens?.lensType ===
-                        "Polarized"
-                            ? "Yes"
-                            : "No"
-                    }
-                />
-            )}
-            {receipt?.values?.sunGlassesLens?.status === "Yes" && (
-                <InvoiceSlot
-                    title={"Is Sunglass Lens Tint?"}
-                    subTitle={
-                        receipt?.values?.sunGlassesLens?.lensType === "Tint"
-                            ? "Yes"
-                            : "No"
-                    }
-                />
-            )}
-            {receipt?.values?.sunGlassesLens?.status === "Yes" &&
-                receipt?.values?.sunGlassesLens?.lensType === "Polarized" && (
-                    <InvoiceSlot
-                        title={"Polarized Fee"}
-                        subTitle={
-                            receipt?.values?.sunGlassesLens?.lensType ===
-                            "Polarized"
-                                ? `$${POLARIZED}`
-                                : "$0.00"
-                        }
-                    />
-                )}
-            {receipt?.values?.sunGlassesLens?.status === "Yes" &&
-                receipt?.values?.sunGlassesLens?.lensType === "Tint" && (
-                    <InvoiceSlot
-                        title={"Tint Fee"}
-                        subTitle={
-                            receipt?.values?.sunGlassesLens?.tintType ===
-                            "Solid Tint"
-                                ? `$${SOLID_TINT}`
-                                : `$${GRADIENT_TINT}`
-                        }
-                    />
-                )}
+
             {receipt?.values?.protectionPlan?.status === "Yes" &&
                 receipt?.values?.protectionPlan?.paymentStatus === "Paid" && (
                     <InvoiceSlot
@@ -280,6 +568,7 @@ const OutPackPrices = ({
                     subTitle={"$" + (calculatorObj?.shipping || 0)}
                 />
             )}
+            {appliedDiscountsList()}
 
             <div className={classes["invoice-slot-container"]}>
                 <div className={classes["invoice-slot-title"]}>

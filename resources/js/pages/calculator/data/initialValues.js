@@ -4,7 +4,7 @@ export const CalculatorInitialValues = {
     invoiceName: "",
     staffName: "",
     staffId: "",
-    visionPlan: "",
+    visionPlan: "VSP Signature",
     isFrameBenifit: "",
     isLensBenifit: "",
     materialCopay: "",

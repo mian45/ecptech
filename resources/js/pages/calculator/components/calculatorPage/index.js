@@ -30,6 +30,7 @@ import {
     FrameBenifitAvailableEnum,
     LensBenifitAvailableEnum,
 } from "../../data/enums";
+import backArrow from "../../../../../images/black-arrow.svg";
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -71,7 +72,7 @@ const CalculatorScreen = () => {
             if (editInvoiceState && editInvoiceState?.vp_state) {
                 const parsedJson = JSON.parse(editInvoiceState?.vp_state);
                 const questionsData = parsedJson?.questions?.find(
-                    (item) => item.title === "VSP Signature"
+                    (item) => item.title === values?.visionPlan
                 )?.question_permissions;
 
                 const validations = CreateCalculatorValidations(questionsData);
@@ -80,16 +81,18 @@ const CalculatorScreen = () => {
         } else {
             const userDetails = history.location?.state?.user;
             setUserInfo(userDetails || {});
-            getCalculatorObject();
+            getCalculatorObject(calculatorState);
         }
     }, [history?.location?.state]);
-    const getCalculatorObject = async () => {
+    const getCalculatorObject = async (values) => {
         try {
-            const res = await Axios.get(`${process.env.MIX_REACT_APP_URL}/api/calculater-data`);
+            const res = await Axios.get(
+                process.env.MIX_REACT_APP_URL + "/api/calculater-data"
+            );
             setCalculatorObj(res?.data?.data);
             const questions = res?.data?.data?.questions;
             const validations = CreateCalculatorValidations(
-                questions && questions["VSP Signature"]
+                questions && questions[values?.visionPlan]
             );
             setCalValidations(validations);
         } catch (err) {
@@ -103,7 +106,7 @@ const CalculatorScreen = () => {
     const getBaseValues = async (values) => {
         try {
             const planId = calculatorObj?.questions?.find(
-                (item) => item.title === "VSP Signature"
+                (item) => item.title === values?.visionPlan
             )?.id;
             const lensType = calculatorObj?.lens_types?.find(
                 (item) => item.title === values?.lensType
@@ -114,8 +117,14 @@ const CalculatorScreen = () => {
             let collectionId = null;
             lensType?.brands?.forEach((item) => {
                 item.collections?.forEach((val) => {
-                    if (val.title == values?.lensTypeValue) {
-                        collectionId = val?.id;
+                    if (val?.display_name) {
+                        if (val.display_name == values?.lensTypeValue) {
+                            collectionId = val?.id;
+                        }
+                    } else {
+                        if (val.title == values?.lensTypeValue) {
+                            collectionId = val?.id;
+                        }
                     }
                 });
             });
@@ -126,7 +135,10 @@ const CalculatorScreen = () => {
                 vision_plan_id: planId,
             };
 
-            const res = await Axios.post(`${process.env.MIX_REACT_APP_URL}/api/get-lenses-price`, payload);
+            const res = await Axios.post(
+                `${process.env.MIX_REACT_APP_URL}/api/get-lenses-price`,
+                payload
+            );
             setLensPrices(res?.data?.data);
         } catch (err) {
             console.log("error while get data");
@@ -139,10 +151,9 @@ const CalculatorScreen = () => {
             setShowInvoice(true);
             const arrangedValues = GetMappedPayload(values);
             setCalValues(arrangedValues);
-            submitBenifitType;
         } else if (values?.benifitType === BenifitTypeEnums?.frame) {
             const permission = calculatorObj?.questions
-                ?.find((item) => item.title === "VSP Signature")
+                ?.find((item) => item.title === values?.visionPlan)
                 ?.question_permissions?.find(
                     (ques) => ques.question === "Frame Order"
                 )?.optional;
@@ -167,7 +178,7 @@ const CalculatorScreen = () => {
             actions.setTouched({}, false);
         } else if (values?.benifitType === BenifitTypeEnums?.lens) {
             const permissions = calculatorObj?.questions?.find(
-                (item) => item.title === "VSP Signature"
+                (item) => item.title === values?.visionPlan
             )?.question_permissions;
             const validationObject = GetValidations(permissions, false);
             setCalValidations({
@@ -182,6 +193,12 @@ const CalculatorScreen = () => {
             });
             actions.setErrors({});
             actions.setTouched({}, false);
+        } else if (values?.benifitType === BenifitTypeEnums?.both) {
+            setShowInvoice(true);
+            const arrangedValues = GetMappedPayload(values);
+            setCalValues(arrangedValues);
+            actions.setFieldValue("submitBenifitType", BenifitTypeEnums.both);
+            actions.setFieldValue("benifitType", "");
         }
     };
     const RenderFrameOrder = ({
@@ -199,7 +216,7 @@ const CalculatorScreen = () => {
                 calValidations={calValidations}
                 data={
                     calculatorObj?.questions?.find(
-                        (item) => item.title === "VSP Signature"
+                        (item) => item.title === formProps?.values?.visionPlan
                     )?.question_permissions
                 }
                 isFrame={isFrame}
@@ -230,7 +247,8 @@ const CalculatorScreen = () => {
                     calValidations={calValidations}
                     data={
                         calculatorObj?.questions?.find(
-                            (item) => item.title === "VSP Signature"
+                            (item) =>
+                                item.title === formProps?.values?.visionPlan
                         )?.question_permissions
                     }
                 />
@@ -241,7 +259,8 @@ const CalculatorScreen = () => {
                     calValidations={calValidations}
                     data={
                         calculatorObj?.questions?.find(
-                            (item) => item.title === "VSP Signature"
+                            (item) =>
+                                item.title === formProps?.values?.visionPlan
                         )?.question_permissions
                     }
                 />
@@ -252,7 +271,8 @@ const CalculatorScreen = () => {
                     calValidations={calValidations}
                     data={
                         calculatorObj?.questions?.find(
-                            (item) => item.title === "VSP Signature"
+                            (item) =>
+                                item.title === formProps?.values?.visionPlan
                         )?.question_permissions
                     }
                 />
@@ -293,20 +313,57 @@ const CalculatorScreen = () => {
                                 }
                                 userInfo={userInfo}
                             />
-                            {(formProps.values?.submitBenifitType ===
-                                BenifitTypeEnums.frame ||
-                                formProps.values?.submitBenifitType ===
-                                    BenifitTypeEnums.lens) && (
-                                <div
-                                    className={classes["private-pay-title"]}
-                                    ref={scrollRef}
-                                >{`Please choose ${getPrivatePayTitle(
-                                    formProps.values?.submitBenifitType
-                                )} under private pay.`}</div>
-                            )}
+
                             {formProps.values?.submitBenifitType ===
                                 BenifitTypeEnums.frame && (
                                 <div className={classes["sub-container"]}>
+                                    {(formProps.values?.submitBenifitType ===
+                                        BenifitTypeEnums.frame ||
+                                        formProps.values?.submitBenifitType ===
+                                            BenifitTypeEnums.lens) && (
+                                        <>
+                                            <div
+                                                className={
+                                                    classes["back-container"]
+                                                }
+                                                onClick={() => {
+                                                    formProps?.setFieldValue(
+                                                        "benifitType",
+                                                        formProps?.values
+                                                            ?.submitBenifitType
+                                                    );
+                                                    formProps?.setFieldValue(
+                                                        "submitBenifitType",
+                                                        ""
+                                                    );
+                                                }}
+                                            >
+                                                <img
+                                                    src={backArrow}
+                                                    alt={"back icon"}
+                                                    className={
+                                                        classes["back-icon"]
+                                                    }
+                                                />
+                                                <div
+                                                    className={
+                                                        classes["back-text"]
+                                                    }
+                                                >
+                                                    Back
+                                                </div>
+                                            </div>
+                                            <div
+                                                className={
+                                                    classes["private-pay-title"]
+                                                }
+                                                ref={scrollRef}
+                                            >{`Please choose ${getPrivatePayTitle(
+                                                formProps.values
+                                                    ?.submitBenifitType
+                                            )} under private pay.`}</div>
+                                        </>
+                                    )}
                                     <RenderFrameOrder
                                         formProps={formProps}
                                         calculatorObj={
@@ -318,7 +375,8 @@ const CalculatorScreen = () => {
                                             calculatorObj?.questions?.find(
                                                 (item) =>
                                                     item.title ===
-                                                    "VSP Signature"
+                                                    formProps?.values
+                                                        ?.visionPlan
                                             )?.question_permissions
                                         }
                                         isFrame={true}
@@ -328,6 +386,54 @@ const CalculatorScreen = () => {
                             {formProps.values?.submitBenifitType ===
                                 BenifitTypeEnums.lens && (
                                 <div className={classes["sub-container"]}>
+                                    {(formProps.values?.submitBenifitType ===
+                                        BenifitTypeEnums.frame ||
+                                        formProps.values?.submitBenifitType ===
+                                            BenifitTypeEnums.lens) && (
+                                        <>
+                                            <div
+                                                className={
+                                                    classes["back-container"]
+                                                }
+                                                onClick={() => {
+                                                    formProps?.setFieldValue(
+                                                        "benifitType",
+                                                        formProps?.values
+                                                            ?.submitBenifitType
+                                                    );
+                                                    formProps?.setFieldValue(
+                                                        "submitBenifitType",
+                                                        ""
+                                                    );
+                                                }}
+                                            >
+                                                <img
+                                                    src={backArrow}
+                                                    alt={"back icon"}
+                                                    className={
+                                                        classes["back-icon"]
+                                                    }
+                                                />
+                                                <div
+                                                    className={
+                                                        classes["back-text"]
+                                                    }
+                                                >
+                                                    Back
+                                                </div>
+                                            </div>
+
+                                            <div
+                                                className={
+                                                    classes["private-pay-title"]
+                                                }
+                                                ref={scrollRef}
+                                            >{`Please choose ${getPrivatePayTitle(
+                                                formProps.values
+                                                    ?.submitBenifitType
+                                            )} under private pay.`}</div>
+                                        </>
+                                    )}
                                     <RenderLensFields
                                         formProps={formProps}
                                         calculatorObj={
@@ -339,47 +445,24 @@ const CalculatorScreen = () => {
                                             calculatorObj?.questions?.find(
                                                 (item) =>
                                                     item.title ===
-                                                    "VSP Signature"
+                                                    formProps?.values
+                                                        ?.visionPlan
                                             )?.question_permissions
                                         }
                                     />
                                 </div>
                             )}
 
-                            <div className={classes["sub-container"]}>
-                                {formProps.values?.submitBenifitType !==
-                                    BenifitTypeEnums.frame &&
-                                formProps.values?.submitBenifitType !==
-                                    BenifitTypeEnums.lens ? (
-                                    <>
-                                        <SelectVisionPlan
-                                            formProps={formProps}
-                                            calculatorObj={
-                                                calculatorObj && calculatorObj
-                                            }
-                                        />
-                                        <VisionBenifits
-                                            formProps={formProps}
-                                            calculatorObj={
-                                                calculatorObj && calculatorObj
-                                            }
-                                            setCalValidations={
-                                                setCalValidations
-                                            }
-                                            calValidations={calValidations}
-                                            data={
-                                                calculatorObj?.questions?.find(
-                                                    (item) =>
-                                                        item.title ===
-                                                        "VSP Signature"
-                                                )?.question_permissions
-                                            }
-                                        />
-                                        {formProps?.values?.isFrameBenifit ===
-                                        FrameBenifitAvailableEnum.onlyThisTime ? (
-                                            <></>
-                                        ) : (
-                                            <RenderFrameOrder
+                            {(formProps.values?.submitBenifitType === "" ||
+                                formProps.values?.submitBenifitType ===
+                                    BenifitTypeEnums.both) && (
+                                <div className={classes["sub-container"]}>
+                                    {formProps.values?.submitBenifitType !==
+                                        BenifitTypeEnums.frame &&
+                                    formProps.values?.submitBenifitType !==
+                                        BenifitTypeEnums.lens ? (
+                                        <>
+                                            <SelectVisionPlan
                                                 formProps={formProps}
                                                 calculatorObj={
                                                     calculatorObj &&
@@ -393,17 +476,36 @@ const CalculatorScreen = () => {
                                                     calculatorObj?.questions?.find(
                                                         (item) =>
                                                             item.title ===
-                                                            "VSP Signature"
+                                                            formProps?.values
+                                                                ?.visionPlan
                                                     )?.question_permissions
                                                 }
                                             />
-                                        )}
-                                        {formProps?.values?.isLensBenifit ===
-                                        LensBenifitAvailableEnum.onlyThisTime ? (
-                                            <></>
-                                        ) : (
-                                            <>
-                                                <LoweredCopay
+                                            <VisionBenifits
+                                                formProps={formProps}
+                                                calculatorObj={
+                                                    calculatorObj &&
+                                                    calculatorObj
+                                                }
+                                                setCalValidations={
+                                                    setCalValidations
+                                                }
+                                                calValidations={calValidations}
+                                                data={
+                                                    calculatorObj?.questions?.find(
+                                                        (item) =>
+                                                            item.title ===
+                                                            formProps?.values
+                                                                ?.visionPlan
+                                                    )?.question_permissions
+                                                }
+                                            />
+                                            {formProps?.values
+                                                ?.isFrameBenifit ===
+                                            FrameBenifitAvailableEnum.onlyThisTime ? (
+                                                <></>
+                                            ) : (
+                                                <RenderFrameOrder
                                                     formProps={formProps}
                                                     calculatorObj={
                                                         calculatorObj &&
@@ -419,60 +521,105 @@ const CalculatorScreen = () => {
                                                         calculatorObj?.questions?.find(
                                                             (item) =>
                                                                 item.title ===
-                                                                "VSP Signature"
+                                                                formProps
+                                                                    ?.values
+                                                                    ?.visionPlan
                                                         )?.question_permissions
                                                     }
                                                 />
-                                                <RenderLensFields
-                                                    formProps={formProps}
-                                                    calculatorObj={
-                                                        calculatorObj &&
-                                                        calculatorObj
-                                                    }
-                                                    setCalValidations={
-                                                        setCalValidations
-                                                    }
-                                                    calValidations={
-                                                        calValidations
-                                                    }
-                                                    data={
-                                                        calculatorObj?.questions?.find(
-                                                            (item) =>
-                                                                item.title ===
-                                                                "VSP Signature"
-                                                        )?.question_permissions
-                                                    }
-                                                />
-                                            </>
-                                        )}
-                                        <ProtectionPlan
-                                            formProps={formProps}
-                                            calculatorObj={
-                                                calculatorObj && calculatorObj
-                                            }
-                                            setCalValidations={
-                                                setCalValidations
-                                            }
-                                            calValidations={calValidations}
-                                            data={
-                                                calculatorObj?.questions?.find(
-                                                    (item) =>
-                                                        item.title ===
-                                                        "VSP Signature"
-                                                )?.question_permissions
-                                            }
-                                        />
-                                        <GlassesProtection
-                                            formProps={formProps}
-                                            calculatorObj={
-                                                calculatorObj && calculatorObj
-                                            }
-                                        />
-                                    </>
-                                ) : (
-                                    <></>
-                                )}
-                            </div>
+                                            )}
+                                            {formProps?.values
+                                                ?.isLensBenifit ===
+                                            LensBenifitAvailableEnum.onlyThisTime ? (
+                                                <></>
+                                            ) : (
+                                                <>
+                                                    {formProps?.values
+                                                        ?.benifitType !==
+                                                        BenifitTypeEnums.both && (
+                                                        <LoweredCopay
+                                                            formProps={
+                                                                formProps
+                                                            }
+                                                            calculatorObj={
+                                                                calculatorObj &&
+                                                                calculatorObj
+                                                            }
+                                                            setCalValidations={
+                                                                setCalValidations
+                                                            }
+                                                            calValidations={
+                                                                calValidations
+                                                            }
+                                                            data={
+                                                                calculatorObj?.questions?.find(
+                                                                    (item) =>
+                                                                        item.title ===
+                                                                        formProps
+                                                                            ?.values
+                                                                            ?.visionPlan
+                                                                )
+                                                                    ?.question_permissions
+                                                            }
+                                                        />
+                                                    )}
+                                                    <RenderLensFields
+                                                        formProps={formProps}
+                                                        calculatorObj={
+                                                            calculatorObj &&
+                                                            calculatorObj
+                                                        }
+                                                        setCalValidations={
+                                                            setCalValidations
+                                                        }
+                                                        calValidations={
+                                                            calValidations
+                                                        }
+                                                        data={
+                                                            calculatorObj?.questions?.find(
+                                                                (item) =>
+                                                                    item.title ===
+                                                                    formProps
+                                                                        ?.values
+                                                                        ?.visionPlan
+                                                            )
+                                                                ?.question_permissions
+                                                        }
+                                                    />
+                                                </>
+                                            )}
+                                            <ProtectionPlan
+                                                formProps={formProps}
+                                                calculatorObj={
+                                                    calculatorObj &&
+                                                    calculatorObj
+                                                }
+                                                setCalValidations={
+                                                    setCalValidations
+                                                }
+                                                calValidations={calValidations}
+                                                data={
+                                                    calculatorObj?.questions?.find(
+                                                        (item) =>
+                                                            item.title ===
+                                                            formProps?.values
+                                                                ?.visionPlan
+                                                    )?.question_permissions
+                                                }
+                                            />
+                                            <GlassesProtection
+                                                formProps={formProps}
+                                                calculatorObj={
+                                                    calculatorObj &&
+                                                    calculatorObj
+                                                }
+                                            />
+                                        </>
+                                    ) : (
+                                        <></>
+                                    )}
+                                </div>
+                            )}
                             <button
                                 className={classes["submit-button"]}
                                 type={"submit"}

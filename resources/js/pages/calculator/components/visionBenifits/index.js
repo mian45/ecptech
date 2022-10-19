@@ -25,17 +25,17 @@ const VisionBenifits = ({
     const [err, setErr] = useState("");
     const [privatePayError, setPrivatePayError] = useState("");
     const frameBenifitVisibility = calculatorObj?.questions
-        ?.find((item) => item.title === "VSP Signature")
+        ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
             (ques) => ques.question === "Frame Benefit Available"
         )?.visibility;
     const lensBenifitVisibility = calculatorObj?.questions
-        ?.find((item) => item.title === "VSP Signature")
+        ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
             (ques) => ques.question === "Lens Benefit Available"
         )?.visibility;
     const materialCopayVisibility = calculatorObj?.questions
-        ?.find((item) => item.title === "VSP Signature")
+        ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
             (ques) => ques.question === "Material Copay"
         )?.visibility;
@@ -117,96 +117,104 @@ const VisionBenifits = ({
 
     return (
         <div className={classes["container"]}>
-            {frameBenifitVisibility && (
-                <div className={classes["frame-container"]}>
-                    <QuestionIcon
-                        icon={glassesIcon}
-                        active={values?.isFrameBenifit}
-                    />
-                    <div className={classes["question-container"]}>
-                        <CalculatorHeading
-                            title="Frame Benefit Available?"
+            {frameBenifitVisibility &&
+                values?.benifitType !== BenifitTypeEnums.both && (
+                    <div className={classes["frame-container"]}>
+                        <QuestionIcon
+                            icon={glassesIcon}
                             active={values?.isFrameBenifit}
                         />
-                        <Radio.Group
-                            onBlur={handleBlur}
-                            onChange={handleFrameBenifitAvailableChange}
-                            value={values?.isFrameBenifit}
-                            id="isFrameBenifit"
-                            name="isFrameBenifit"
-                            className={classes["radio-group"]}
-                        >
-                            <CustomRadio
-                                label={FrameBenifitAvailableEnum.yes}
-                                value={FrameBenifitAvailableEnum.yes}
-                                active={
-                                    values?.isFrameBenifit ===
-                                    FrameBenifitAvailableEnum.yes
-                                }
+                        <div className={classes["question-container"]}>
+                            <CalculatorHeading
+                                title="Frame Benefit Available?"
+                                active={values?.isFrameBenifit}
                             />
+                            <Radio.Group
+                                onBlur={handleBlur}
+                                onChange={handleFrameBenifitAvailableChange}
+                                value={values?.isFrameBenifit}
+                                id="isFrameBenifit"
+                                name="isFrameBenifit"
+                                className={classes["radio-group"]}
+                            >
+                                <CustomRadio
+                                    label={FrameBenifitAvailableEnum.yes}
+                                    value={FrameBenifitAvailableEnum.yes}
+                                    active={
+                                        values?.isFrameBenifit ===
+                                        FrameBenifitAvailableEnum.yes
+                                    }
+                                />
 
-                            <CustomRadio
-                                label={FrameBenifitAvailableEnum.onlyThisTime}
-                                value={FrameBenifitAvailableEnum.onlyThisTime}
-                                active={
-                                    values?.isFrameBenifit ===
-                                    FrameBenifitAvailableEnum.onlyThisTime
-                                }
-                                disabled={true}
-                            />
-                        </Radio.Group>
-                        <FormikError name={"isFrameBenifit"} />
-                        <div className={classes["error"]}>
-                            {privatePayError}
+                                <CustomRadio
+                                    label={
+                                        FrameBenifitAvailableEnum.onlyThisTime
+                                    }
+                                    value={
+                                        FrameBenifitAvailableEnum.onlyThisTime
+                                    }
+                                    active={
+                                        values?.isFrameBenifit ===
+                                        FrameBenifitAvailableEnum.onlyThisTime
+                                    }
+                                />
+                            </Radio.Group>
+                            <FormikError name={"isFrameBenifit"} />
+                            <div className={classes["error"]}>
+                                {privatePayError}
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
-            {lensBenifitVisibility && (
-                <div className={classes["frame-container"]}>
-                    <QuestionIcon
-                        icon={lensIcon}
-                        active={values?.isLensBenifit}
-                    />
-                    <div className={classes["question-container"]}>
-                        <CalculatorHeading
-                            title="Lens Benefit Available?"
+                )}
+            {lensBenifitVisibility &&
+                values?.benifitType !== BenifitTypeEnums.both && (
+                    <div className={classes["frame-container"]}>
+                        <QuestionIcon
+                            icon={lensIcon}
                             active={values?.isLensBenifit}
                         />
-                        <Radio.Group
-                            onBlur={handleBlur}
-                            onChange={handleLensBenifitsAvailableChange}
-                            value={values?.isLensBenifit}
-                            id="isLensBenifit"
-                            name="isLensBenifit"
-                            className={classes["radio-group"]}
-                        >
-                            <CustomRadio
-                                label={LensBenifitAvailableEnum.yes}
-                                value={LensBenifitAvailableEnum.yes}
-                                active={
-                                    values?.isLensBenifit ===
-                                    LensBenifitAvailableEnum.yes
-                                }
+                        <div className={classes["question-container"]}>
+                            <CalculatorHeading
+                                title="Lens Benefit Available?"
+                                active={values?.isLensBenifit}
                             />
+                            <Radio.Group
+                                onBlur={handleBlur}
+                                onChange={handleLensBenifitsAvailableChange}
+                                value={values?.isLensBenifit}
+                                id="isLensBenifit"
+                                name="isLensBenifit"
+                                className={classes["radio-group"]}
+                            >
+                                <CustomRadio
+                                    label={LensBenifitAvailableEnum.yes}
+                                    value={LensBenifitAvailableEnum.yes}
+                                    active={
+                                        values?.isLensBenifit ===
+                                        LensBenifitAvailableEnum.yes
+                                    }
+                                />
 
-                            <CustomRadio
-                                label={LensBenifitAvailableEnum.onlyThisTime}
-                                value={LensBenifitAvailableEnum.onlyThisTime}
-                                active={
-                                    values?.isLensBenifit ===
-                                    LensBenifitAvailableEnum.onlyThisTime
-                                }
-                                disabled={true}
-                            />
-                        </Radio.Group>
-                        <FormikError name={"isLensBenifit"} />
-                        <div className={classes["error"]}>
-                            {privatePayError}
+                                <CustomRadio
+                                    label={
+                                        LensBenifitAvailableEnum.onlyThisTime
+                                    }
+                                    value={
+                                        LensBenifitAvailableEnum.onlyThisTime
+                                    }
+                                    active={
+                                        values?.isLensBenifit ===
+                                        LensBenifitAvailableEnum.onlyThisTime
+                                    }
+                                />
+                            </Radio.Group>
+                            <FormikError name={"isLensBenifit"} />
+                            <div className={classes["error"]}>
+                                {privatePayError}
+                            </div>
                         </div>
                     </div>
-                </div>
-            )}
+                )}
             {materialCopayVisibility && (
                 <div className={classes["frame-container"]}>
                     <QuestionIcon
