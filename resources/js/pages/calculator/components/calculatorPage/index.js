@@ -156,12 +156,13 @@ const CalculatorScreen = () => {
             const arrangedValues = GetMappedPayload(values);
             setCalValues(arrangedValues);
         } else if (values?.benifitType === BenifitTypeEnums?.frame) {
-            const permission = calculatorObj?.questions
-                ?.find((item) => item.title === values?.visionPlan)
-                ?.question_permissions?.find(
-                    (ques) => ques.question === "Frame Order"
-                )?.optional;
-            if (!permission) {
+            const permission =
+                calculatorObj?.questions
+                    ?.find((item) => item.title === values?.visionPlan)
+                    ?.question_permissions?.find(
+                        (ques) => ques.question === "Frame Order"
+                    )?.optional === "true";
+            if (permission) {
                 const validationObject = {
                     frameOrderType: Yup.string().required(
                         "Frame Order is required"
