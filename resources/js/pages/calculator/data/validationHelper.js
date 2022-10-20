@@ -9,84 +9,107 @@ export const CreateCalculatorValidations = (data) => {
         "Staff name is required"
     );
     if (
-        !data?.find((ques) => ques.question === "Select Vision Plan")?.optional
+        data?.find((ques) => ques.question == "Select Vision Plan")
+            ?.optional === "true"
     ) {
         validationObject.visionPlan = Yup.string().required(
             "Vision plan is required"
         );
     }
     if (
-        !data?.find((ques) => ques.question === "Frame Benefit Available")
-            ?.optional
+        data?.find((ques) => ques.question == "Frame Benefit Available")
+            ?.optional === "true"
     ) {
         validationObject.isFrameBenifit = Yup.string().required(
             "Frame benefit is required"
         );
     }
     if (
-        !data?.find((ques) => ques.question === "Lens Benefit Available")
-            ?.optional
+        data?.find((ques) => ques.question == "Lens Benefit Available")
+            ?.optional === "true"
     ) {
         validationObject.isLensBenifit = Yup.string().required(
             "Lens benefit is required"
         );
     }
-    if (!data?.find((ques) => ques.question === "Material Copay")?.optional) {
+    if (
+        data?.find((ques) => ques.question == "Material Copay")?.optional ===
+        "true"
+    ) {
         validationObject.materialCopay = Yup.string().required(
             "Material copay is required"
         );
     }
-    if (!data?.find((ques) => ques.question === "Frame Order")?.optional) {
+    if (
+        data?.find((ques) => ques.question == "Frame Order")?.optional ===
+        "true"
+    ) {
         validationObject.frameOrderType = Yup.string().required(
             "Frame Order is required"
         );
     }
     if (
-        !data?.find(
-            (ques) => ques.question === "Any copay lowered than standard"
-        )?.optional
+        data?.find((ques) => ques.question == "Any copay lowered than standard")
+            ?.optional === "true"
     ) {
         validationObject.isloweredCopay =
             Yup.string().required("Option is required");
     }
-    if (!data?.find((ques) => ques.question === "Lens Type")?.optional) {
+    if (
+        data?.find((ques) => ques.question == "Lens Type")?.optional === "true"
+    ) {
         validationObject.lensType = Yup.string().required(
             "Lens type is required"
         );
     }
-    if (!data?.find((ques) => ques.question === "Lens Type")?.optional) {
+    if (
+        data?.find((ques) => ques.question == "Lens Type")?.optional === "true"
+    ) {
         validationObject.lensTypeValue =
             Yup.string().required("Option is required");
     }
-    if (!data?.find((ques) => ques.question === "Lens Material")?.optional) {
+    if (
+        data?.find((ques) => ques.question == "Lens Material")?.optional ===
+        "true"
+    ) {
         validationObject.lensMaterial = Yup.string().required(
             "Lens material is required"
         );
     }
-    if (!data?.find((ques) => ques.question === "Photochromics")?.optional) {
+    if (
+        data?.find((ques) => ques.question == "Photochromics")?.optional ===
+        "true"
+    ) {
         validationObject.isPhotochromics = Yup.string().required(
             "Photochromics is required"
         );
     }
-    if (!data?.find((ques) => ques.question === "Sunglass Lens")?.optional) {
+    if (
+        data?.find((ques) => ques.question == "Sunglass Lens")?.optional ===
+        "true"
+    ) {
         validationObject.isSunglasses = Yup.string().required(
             "Sunglass lens is required"
         );
     }
     if (
-        !data?.find((ques) => ques.question === "Antireflective Properties")
-            ?.optional
+        data?.find((ques) => ques.question == "Antireflective Properties")
+            ?.optional === "true"
     ) {
         validationObject.isAntireflective = Yup.string().required(
             "Antireflective is required"
         );
     }
-    if (!data?.find((ques) => ques.question === "Protection Plan")?.optional) {
+    if (
+        data?.find((ques) => ques.question == "Protection Plan")?.optional ===
+        "true"
+    ) {
         validationObject.isProtectionPlan = Yup.string().required(
             "Protection plan is required"
         );
     }
-    if (!data?.find((ques) => ques.question === "Add Shipping")?.optional) {
+    const shipping = data?.find((ques) => ques.question == "Add Shipping");
+    if (shipping?.optional === "true") {
         validationObject.shipping = Yup.string().required(
             "Add Shipping is required"
         );

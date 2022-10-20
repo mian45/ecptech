@@ -66,9 +66,9 @@ const VisionBenifits = ({
         } else {
             setPrivatePayError("");
             if (
-                !data?.find(
+                data?.find(
                     (ques) => ques.question === "Frame Benefit Available"
-                )?.optional
+                )?.optional === "true"
             ) {
                 const validationObject = {
                     frameOrderType: Yup.string().required(
@@ -254,41 +254,54 @@ export default VisionBenifits;
 export const GetValidations = (data, isLoweredCopay) => {
     const validationObject = {};
     if (
-        !data?.find(
+        data?.find(
             (ques) => ques.question === "Any copay lowered than standard"
-        )?.optional &&
+        )?.optional === "true" &&
         isLoweredCopay
     ) {
         validationObject.isloweredCopay =
             Yup.string().required("Option is required");
     }
-    if (!data?.find((ques) => ques.question === "Lens Type")?.optional) {
+    if (
+        data?.find((ques) => ques.question === "Lens Type")?.optional === "true"
+    ) {
         validationObject.lensType = Yup.string().required(
             "Lens type is required"
         );
     }
-    if (!data?.find((ques) => ques.question === "Lens Type")?.optional) {
+    if (
+        data?.find((ques) => ques.question === "Lens Type")?.optional === "true"
+    ) {
         validationObject.lensTypeValue =
             Yup.string().required("Option is required");
     }
-    if (!data?.find((ques) => ques.question === "Lens Material")?.optional) {
+    if (
+        data?.find((ques) => ques.question === "Lens Material")?.optional ===
+        "true"
+    ) {
         validationObject.lensMaterial = Yup.string().required(
             "Lens material is required"
         );
     }
-    if (!data?.find((ques) => ques.question === "Photochromics")?.optional) {
+    if (
+        data?.find((ques) => ques.question === "Photochromics")?.optional ===
+        "true"
+    ) {
         validationObject.isPhotochromics = Yup.string().required(
             "Photochromics is required"
         );
     }
-    if (!data?.find((ques) => ques.question === "Sunglass Lens")?.optional) {
+    if (
+        data?.find((ques) => ques.question === "Sunglass Lens")?.optional ===
+        "true"
+    ) {
         validationObject.isSunglasses = Yup.string().required(
             "Sunglass lens is required"
         );
     }
     if (
-        !data?.find((ques) => ques.question === "Antireflective Properties")
-            ?.optional
+        data?.find((ques) => ques.question === "Antireflective Properties")
+            ?.optional === "true"
     ) {
         validationObject.isAntireflective = Yup.string().required(
             "Antireflective is required"

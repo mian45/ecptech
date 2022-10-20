@@ -26,7 +26,8 @@ const SunglassLens = ({
         handleChange(e);
         if (
             e?.target?.value === "Yes" &&
-            !data?.find((ques) => ques.question === "Sunglass Lens")?.optional
+            data?.find((ques) => ques.question === "Sunglass Lens")
+                ?.optional === "true"
         ) {
             const sunglassesType = Yup.string().required("Option is required");
             setCalValidations({
@@ -48,7 +49,8 @@ const SunglassLens = ({
         handleChange(e);
         if (
             e?.target?.value === "Polarized" &&
-            !data?.find((ques) => ques.question === "Sunglass Lens")?.optional
+            data?.find((ques) => ques.question === "Sunglass Lens")
+                ?.optional === "true"
         ) {
             const validations = { ...calValidations };
             delete validations.tintType;
@@ -59,7 +61,8 @@ const SunglassLens = ({
             });
         } else if (
             e?.target?.value === "Tint" &&
-            !data?.find((ques) => ques.question === "Sunglass Lens")?.optional
+            data?.find((ques) => ques.question === "Sunglass Lens")
+                ?.optional === "true"
         ) {
             const validationObj = {
                 tintType: Yup.string().required("Option is required"),
@@ -76,7 +79,8 @@ const SunglassLens = ({
         handleChange(e);
         if (
             e?.target?.value === "Yes" &&
-            !data?.find((ques) => ques.question === "Sunglass Lens")?.optional
+            data?.find((ques) => ques.question === "Sunglass Lens")
+                ?.optional === "true"
         ) {
             const mirrorCoatingType =
                 Yup.string().required("Option is required");
