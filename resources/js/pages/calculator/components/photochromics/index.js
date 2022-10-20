@@ -37,7 +37,8 @@ const Photochromics = ({
         handleChange(e);
         if (
             e?.target?.value === "Yes" &&
-            !data?.find((ques) => ques.question === "Photochromics")?.optional
+            data?.find((ques) => ques.question === "Photochromics")
+                ?.optional === "true"
         ) {
             const photochromicsType =
                 Yup.string().required("Option is required");

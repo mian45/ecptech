@@ -30,27 +30,27 @@ const SelectVisionPlan = ({
             setFieldValue("benifitType", "");
             const validationObject = {};
             if (
-                !data?.find(
+                data?.find(
                     (ques) =>
                         ques.question === "Any copay lowered than standard"
-                )?.optional
+                )?.optional === "true"
             ) {
                 validationObject.isloweredCopay =
                     Yup.string().required("Option is required");
             }
             if (
-                !data?.find(
+                data?.find(
                     (ques) => ques.question === "Frame Benefit Available"
-                )?.optional
+                )?.optional === "true"
             ) {
                 validationObject.isFrameBenifit = Yup.string().required(
                     "Frame benefit is required"
                 );
             }
             if (
-                !data?.find(
+                data?.find(
                     (ques) => ques.question === "Lens Benefit Available"
-                )?.optional
+                ) === "true"
             ) {
                 validationObject.isLensBenifit = Yup.string().required(
                     "Lens benefit is required"

@@ -70,7 +70,8 @@ const ProtectionPlan = ({
         handleChange(e);
         if (
             e?.target?.value &&
-            !data?.find((ques) => ques.question === "Protection Plan")?.optional
+            data?.find((ques) => ques.question === "Protection Plan")
+                ?.optional === "true"
         ) {
             const isProtectionPlanPaid =
                 Yup.string().required("Option is required");
@@ -79,7 +80,8 @@ const ProtectionPlan = ({
                 isProtectionPlanPaid,
             });
         } else if (
-            data?.find((ques) => ques.question === "Protection Plan")?.optional
+            data?.find((ques) => ques.question === "Protection Plan")
+                ?.optional === "true"
         ) {
             const validations = { ...calValidations };
             delete validations.isProtectionPlanPaid;
@@ -92,7 +94,8 @@ const ProtectionPlan = ({
         handleChange(e);
         if (
             e?.target?.value === "Paid" &&
-            !data?.find((ques) => ques.question === "Protection Plan")?.optional
+            data?.find((ques) => ques.question === "Protection Plan")
+                ?.optional === "true"
         ) {
             const protectionPlanAmount =
                 Yup.string().required("value is required");

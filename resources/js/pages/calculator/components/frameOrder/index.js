@@ -135,7 +135,8 @@ const FrameOrder = ({
         handleChange(e);
         if (
             e?.target?.value === "New Frame Purchase" &&
-            !data?.find((ques) => ques.question === "Frame Order")?.optional
+            data?.find((ques) => ques.question === "Frame Order")?.optional ===
+                "true"
         ) {
             const validationObject = {
                 frameRetailFee: Yup.string().required("Retail fee is required"),
