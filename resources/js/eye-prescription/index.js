@@ -322,7 +322,7 @@ const EyePrescription = (props) => {
                     )
                 })
             }
-            <div style={{ width: "654px" }}>
+            <div className='eye-prescription_block'>
                     <button
                         onClick={handleSubmit}
                         className="eye-prescription_button"
