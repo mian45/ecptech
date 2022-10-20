@@ -91,8 +91,12 @@ const CalculatorScreen = () => {
             );
             setCalculatorObj(res?.data?.data);
             const questions = res?.data?.data?.questions;
+            const currentPlan = questions?.find(
+                (plan) => plan?.title === values?.visionPlan
+            );
+
             const validations = CreateCalculatorValidations(
-                questions && questions[values?.visionPlan]
+                currentPlan?.question_permissions
             );
             setCalValidations(validations);
         } catch (err) {
