@@ -42,7 +42,7 @@ const CalculatorScreen = () => {
     const [calculatorState, setCalculatorState] = useState({
         ...CalculatorInitialValues,
     });
-    const [lensPrices, setLensPrices] = useState([]);
+    const [lensPrices, setLensPrices] = useState({});
     const editInvoiceState = history?.location?.state?.invoice;
     let scrollRef = useRef();
 
@@ -149,8 +149,8 @@ const CalculatorScreen = () => {
         }
     };
 
-    const handleClick = (values, actions) => {
-        getBaseValues(values);
+    const handleClick = async (values, actions) => {
+        await getBaseValues(values);
         if (values?.benifitType === "") {
             setShowInvoice(true);
             const arrangedValues = GetMappedPayload(values);

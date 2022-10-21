@@ -627,7 +627,10 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                 item?.lens_material_title === receipt?.values?.lensMaterial
         );
     if (materials?.length <= 0) {
-        return { lensPrice: lensPrice, materialPrice: materialPrice };
+        return {
+            lensPrice: lensPrice,
+            materialPrice: materialPrice,
+        };
     } else if (materials?.characteristics?.length === 1) {
         if (receipt?.values?.visionPlan === "VSP Advantage") {
             if (materials[0]?.characteristics?.price === "80% of U&C") {
@@ -640,12 +643,29 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                         )
                     ) * 0.8;
             } else {
-                lensPrice = materials[0]?.characteristics?.price;
+                if (materials[0]?.characteristics?.price === "NULL") {
+                    lensPrice = 0;
+                } else {
+                    lensPrice = materials[0]?.characteristics?.price?.slice(
+                        1,
+                        lensPrice?.length - 1
+                    );
+                }
             }
         } else {
-            lensPrice = materials[0]?.characteristics?.price;
+            if (materials[0]?.characteristics?.price === "NULL") {
+                lensPrice = 0;
+            } else {
+                lensPrice = materials[0]?.characteristics?.price?.slice(
+                    1,
+                    lensPrice?.length - 1
+                );
+            }
         }
-        return { lensPrice: lensPrice, materialPrice: materialPrice };
+        return {
+            lensPrice: lensPrice,
+            materialPrice: materialPrice,
+        };
     } else {
         const baseCharecterstics = materials[0]?.characteristics?.filter(
             (item) => item.type !== "add-on"
@@ -665,7 +685,14 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                             )
                         ) * 0.8;
                 } else {
-                    lensPrice = baseCharecterstics[0]?.price;
+                    if (materials[0]?.characteristics?.price === "NULL") {
+                        lensPrice = 0;
+                    } else {
+                        lensPrice = baseCharecterstics[0]?.price?.slice(
+                            1,
+                            lensPrice?.length - 1
+                        );
+                    }
                 }
                 baseCharecterstics.splice(0, 1);
                 const restBases = [...baseCharecterstics, ...TACharecterstics];
@@ -680,17 +707,43 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                                 )
                             ) * 0.8;
                     } else {
-                        materialPrice = materialPrice + parseInt(item.price);
+                        if (item?.price === "NULL") {
+                            lensPrice = 0;
+                        } else {
+                            materialPrice =
+                                materialPrice +
+                                parseInt(
+                                    item?.price?.slice(1, lensPrice?.length - 1)
+                                );
+                        }
                     }
                 });
             } else {
-                lensPrice = baseCharecterstics[0]?.price;
+                if (baseCharecterstics[0]?.price === "NULL") {
+                    lensPrice = 0;
+                } else {
+                    lensPrice = baseCharecterstics[0]?.price?.slice(
+                        1,
+                        baseCharecterstics[0]?.price?.length - 1
+                    );
+                }
                 baseCharecterstics.splice(0, 1);
                 const restBases = [...baseCharecterstics, ...TACharecterstics];
                 restBases.forEach((item) => {
-                    materialPrice = materialPrice + parseInt(item.price);
+                    if (item?.price === "NULL") {
+                        lensPrice = 0;
+                    } else {
+                        materialPrice =
+                            materialPrice +
+                            parseInt(
+                                item.price?.slice(1, lensPrice?.length - 1)
+                            );
+                    }
                 });
-                return { lensPrice: lensPrice, materialPrice: materialPrice };
+                return {
+                    lensPrice: lensPrice,
+                    materialPrice: materialPrice,
+                };
             }
         } else {
             return { lensPrice: 0, materialPrice: 0 };
