@@ -55,30 +55,36 @@ const FrameOrder = ({
                         </div>
                         <FormikError name={"frameRetailFee"} />
                     </div>
-                    {!isFrame && (
-                        <div
-                            className={classes["amount-sub-container"]}
-                            style={{ marginLeft: "50px" }}
-                        >
-                            <div className={classes["sub-label"]}>
-                                Frame Contribution?
-                            </div>
-                            <div className={classes["input-container"]}>
-                                <div className={classes["input-label"]}>$</div>
-                                <input
-                                    className={classes["input"]}
-                                    type={"text"}
-                                    onBlur={handleBlur}
-                                    onChange={handleInputChange}
-                                    value={values?.frameContribution}
-                                    id="frameContribution"
-                                    name="frameContribution"
-                                    step={0.01}
-                                    min={0.0}
-                                />
-                            </div>
-                            <FormikError name={"frameContribution"} />
-                        </div>
+                    {values?.visionPlan !== "Private Pay" && (
+                        <>
+                            {!isFrame && (
+                                <div
+                                    className={classes["amount-sub-container"]}
+                                    style={{ marginLeft: "50px" }}
+                                >
+                                    <div className={classes["sub-label"]}>
+                                        Frame Contribution?
+                                    </div>
+                                    <div className={classes["input-container"]}>
+                                        <div className={classes["input-label"]}>
+                                            $
+                                        </div>
+                                        <input
+                                            className={classes["input"]}
+                                            type={"text"}
+                                            onBlur={handleBlur}
+                                            onChange={handleInputChange}
+                                            value={values?.frameContribution}
+                                            id="frameContribution"
+                                            name="frameContribution"
+                                            step={0.01}
+                                            min={0.0}
+                                        />
+                                    </div>
+                                    <FormikError name={"frameContribution"} />
+                                </div>
+                            )}{" "}
+                        </>
                     )}
                 </div>
                 <div className={classes["frame-sub-container"]}>
