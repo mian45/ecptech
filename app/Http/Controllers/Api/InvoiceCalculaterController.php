@@ -64,6 +64,7 @@ class InvoiceCalculaterController extends Controller
                 $q->where('question_permissions.status',1);
         }])->join('vision_plan_permissions as vsp','vsp.vision_plan_id','=','vision_plans.id')
             ->where('vsp.user_id',auth()->user()->id)
+            ->where('vsp.status',1)
             ->select('vision_plans.id','vision_plans.title')->get();
 
 
@@ -167,7 +168,7 @@ class InvoiceCalculaterController extends Controller
                                 $code_id = null;
                                 if(!empty($data[7])){
                                     
-                                    if(!empty($data[1]) AND strtolower($data[1]) == 'bifocal' ){
+                                    if(!empty($data[1]) AND (strtolower($data[1]) == 'bifocal' OR strtolower($data[1]) == 'trifocal' )){
                                         $code = Code::where('name',$data[7])->where('vision_plan_id',$vision_plan->id)->where('lense_type','bifocal')->first();
                                     }else{
                                         $code = Code::where('name',$data[7])->where('vision_plan_id',$vision_plan->id)->whereNull('lense_type')->first();
