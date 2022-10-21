@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('characteristics', function (Blueprint $table) {
-            $table->string('type')->nullable()->change();
+            $table->string('type',50)->nullable()->change();
         });
     }
 
