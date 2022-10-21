@@ -64,6 +64,13 @@ const VisionBenifits = ({
                 ...validations,
             });
         } else {
+            if (
+                values?.isLensBenifit === LensBenifitAvailableEnum.onlyThisTime
+            ) {
+                setFieldValue("benifitType", BenifitTypeEnums.lens);
+            } else {
+                setFieldValue("benifitType", "");
+            }
             setPrivatePayError("");
             if (
                 data?.find(
@@ -105,6 +112,14 @@ const VisionBenifits = ({
                 ...validations,
             });
         } else {
+            if (
+                values?.isFrameBenifit ===
+                FrameBenifitAvailableEnum.onlyThisTime
+            ) {
+                setFieldValue("benifitType", BenifitTypeEnums.frame);
+            } else {
+                setFieldValue("benifitType", "");
+            }
             setPrivatePayError("");
             const validationObject = GetValidations(data, false);
             setCalValidations({

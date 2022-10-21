@@ -248,10 +248,10 @@ const getPriceByAntireflective = (value) => {
 
 const getLensPrice = (receipt, calculatorObj, lensPrices) => {
     const lensPrice = parseFloat(
-        getPriceFromDB(receipt, calculatorObj, lensPrices).lensPrice || 0
+        getPriceFromDB(receipt, calculatorObj, lensPrices)?.lensPrice || 0
     );
     const materialPrice = parseFloat(
-        getPriceFromDB(receipt, calculatorObj, lensPrices).materialPrice || 0
+        getPriceFromDB(receipt, calculatorObj, lensPrices)?.materialPrice || 0
     );
     if (
         receipt?.values?.lensType?.type &&
@@ -503,7 +503,7 @@ export const getPrivatePayMaterialPices = (values, receipt, lensPrices) => {
             material?.lens_material_title === receipt?.values?.lensMaterial
     );
     if (!material?.retail_price) {
-        getPriceFromDB(receipt, values, lensPrices).materialPrice;
+        price = 0;
     } else {
         price = parseFloat(material?.retail_price || 0) || 0;
     }
@@ -518,8 +518,7 @@ export const getPrivatePayLensPices = (values, receipt, lensPrices) => {
                 if (val?.display_name) {
                     if (val.display_name == receipt?.values?.lensType?.brand) {
                         if (!val?.price) {
-                            getPriceFromDB(receipt, values, lensPrices)
-                                .lensPrice;
+                            price = 0;
                         } else {
                             price = parseFloat(val?.price || 0) || 0;
                         }
@@ -527,8 +526,7 @@ export const getPrivatePayLensPices = (values, receipt, lensPrices) => {
                 } else {
                     if (val.title == receipt?.values?.lensType?.brand) {
                         if (!val?.price) {
-                            getPriceFromDB(receipt, values, lensPrices)
-                                .lensPrice;
+                            price = 0;
                         } else {
                             price = parseFloat(val?.price || 0) || 0;
                         }
