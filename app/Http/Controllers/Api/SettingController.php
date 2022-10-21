@@ -94,10 +94,10 @@ class SettingController extends Controller
             $permission[$i] = $lense_type;
             $i++;
 
-            return $this->sendResponse($permission, 'Lense setting updated successfully');
+            
         }
 
-
+        return $this->sendResponse($permission, 'Lense setting updated successfully');
         
     }
     public function getLenseMaterial(Request $request){
