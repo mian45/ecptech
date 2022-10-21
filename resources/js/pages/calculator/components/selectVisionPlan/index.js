@@ -19,7 +19,7 @@ const SelectVisionPlan = ({
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const plansList = calculatorObj?.questions?.map((plan) => plan?.title);
     const handlePlanChange = (event) => {
-        if (event?.target?.value === "Private") {
+        if (event?.target?.value === "Private Pay") {
             const validations = { ...calValidations };
             delete validations?.isloweredCopay;
             delete validations?.isLensBenifit;
