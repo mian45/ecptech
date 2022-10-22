@@ -158,7 +158,7 @@ const OutPackPrices = ({
             );
         } else {
             return (
-                getLensFee(receipt, calculatorObj, lensPrices).lensPrice || 0
+                getLensFee(receipt, calculatorObj, lensPrices)?.lensPrice || 0
             );
         }
     };
@@ -643,7 +643,10 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                         )
                     ) * 0.8;
             } else {
-                if (materials[0]?.characteristics?.price === "NULL") {
+                if (
+                    materials[0]?.characteristics?.price === "NULL" ||
+                    !materials[0]?.characteristics?.price
+                ) {
                     lensPrice = 0;
                 } else {
                     lensPrice = materials[0]?.characteristics?.price?.slice(
@@ -653,7 +656,10 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                 }
             }
         } else {
-            if (materials[0]?.characteristics?.price === "NULL") {
+            if (
+                materials[0]?.characteristics?.price === "NULL" ||
+                materials[0]?.characteristics?.price
+            ) {
                 lensPrice = 0;
             } else {
                 lensPrice = materials[0]?.characteristics?.price?.slice(
@@ -685,7 +691,10 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                             )
                         ) * 0.8;
                 } else {
-                    if (materials[0]?.characteristics?.price === "NULL") {
+                    if (
+                        materials[0]?.characteristics?.price === "NULL" ||
+                        !materials[0]?.characteristics?.price
+                    ) {
                         lensPrice = 0;
                     } else {
                         lensPrice = baseCharecterstics[0]?.price?.slice(
@@ -707,7 +716,7 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                                 )
                             ) * 0.8;
                     } else {
-                        if (item?.price === "NULL") {
+                        if (item?.price === "NULL" || !item?.price) {
                             lensPrice = 0;
                         } else {
                             materialPrice =
@@ -719,7 +728,10 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                     }
                 });
             } else {
-                if (baseCharecterstics[0]?.price === "NULL") {
+                if (
+                    baseCharecterstics[0]?.price === "NULL" ||
+                    !baseCharecterstics[0]?.price
+                ) {
                     lensPrice = 0;
                 } else {
                     lensPrice = baseCharecterstics[0]?.price?.slice(
@@ -730,7 +742,7 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                 baseCharecterstics.splice(0, 1);
                 const restBases = [...baseCharecterstics, ...TACharecterstics];
                 restBases.forEach((item) => {
-                    if (item?.price === "NULL") {
+                    if (item?.price === "NULL" || !item?.price) {
                         lensPrice = 0;
                     } else {
                         materialPrice =
