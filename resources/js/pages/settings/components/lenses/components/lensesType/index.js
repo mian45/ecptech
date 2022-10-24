@@ -194,7 +194,9 @@ export const CollectionSlot = ({
                     id={collection?.title}
                 >
                     <div className={classes["collection-edit-header-slot"]}>
-                        <div className={classes["collection-left-container"]}>
+                        <div
+                            className={`${classes["collection-left-container"]} ${classes["animated-title"]}`}
+                        >
                             <CustomCheckbox
                                 label={""}
                                 defaultChecked={

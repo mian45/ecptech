@@ -15,9 +15,12 @@ const InvoiceInfo = ({ formProps, userId, userInfo, disable }) => {
         if (!userId) return;
         const getStaffList = async () => {
             try {
-                const res = await Axios.post(`${process.env.MIX_REACT_APP_URL}/api/getStaff`, {
-                    userId: userId,
-                });
+                const res = await Axios.post(
+                    `${process.env.MIX_REACT_APP_URL}/api/getStaff`,
+                    {
+                        userId: userId,
+                    }
+                );
                 const resData = res?.data?.data;
                 setStaff(resData);
                 const mappedData = resData.map((value) => {

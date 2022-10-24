@@ -102,8 +102,8 @@
     color: #747474;
     width: 329px;
     height: 100%;
-    border: none;
-    outline: none;
+    border: none !important;
+    outline: none !important;
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus {
