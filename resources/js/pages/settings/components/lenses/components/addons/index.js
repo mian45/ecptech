@@ -12,6 +12,7 @@ const Addons = ({ userId }) => {
     const [addonsList, setAddonsList] = useState([]);
     const [changedAddOnList, setChangedAddOnList] = useState([]);
     const [selectedAddons, setSelectedAddons] = useState("");
+    const [selectedRow, setSelectedRow] = useState("");
 
     useEffect(() => {
         const getLenses = async () => {
@@ -61,6 +62,7 @@ const Addons = ({ userId }) => {
 
     const onLensTypeClick = (value) => {
         setSelectedAddons(value);
+        setSelectedRow(value);
     };
 
     return (
@@ -70,6 +72,7 @@ const Addons = ({ userId }) => {
                     <LensesTypeList
                         onClick={onLensTypeClick}
                         lenses={addonsList}
+                        selectedRow={selectedRow}
                     />
                 </div>
                 <div className={classes["right-container"]}>
@@ -105,7 +108,6 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
                 return item.addons;
             }
         });
-        console.log(data);
         if (data.length != 0) {
             const newData = data[0]?.addons?.map((item) => {
                 if (
@@ -214,7 +216,9 @@ export const CollectionSlot = ({
                     id={collection?.title}
                 >
                     <div className={classes["collection-edit-header-slot"]}>
-                        <div className={classes["collection-left-container"]}>
+                        <div
+                            className={`${classes["collection-left-container"]} ${classes["animated-title"]}`}
+                        >
                             <CustomCheckbox
                                 label={""}
                                 defaultChecked={
@@ -261,7 +265,7 @@ export const CollectionSlot = ({
                             placeholder={"Enter Amount"}
                             value={collection?.price}
                             onChange={(e) => {
-                            const re = /^\d+(\d{3})*(\.\d{0,2})?$/;
+                                const re = /^\d+(\d{3})*(\.\d{0,2})?$/;
                                 if (
                                     e.target.value === "" ||
                                     re.test(e.target.value)
@@ -280,7 +284,6 @@ export const CollectionSlot = ({
                     className={classes["collection-show-container"]}
                     id={collection?.title}
                 >
-                    {console.log("the collection is here", collection)}
                     <div className={classes["collection-left-container"]}>
                         <div
                             className={
@@ -342,7 +345,7 @@ export const CollectionSlot = ({
     );
 };
 
-const LensesTypeList = ({ onClick, lenses }) => {
+const LensesTypeList = ({ onClick, lenses, selectedRow }) => {
     return (
         <div className={classes["lenses-list-container"]}>
             <div className={classes["lenses-list-title"]}>Add On</div>
@@ -352,6 +355,7 @@ const LensesTypeList = ({ onClick, lenses }) => {
                         title={lens?.title || ""}
                         onClick={() => onClick(lens?.title)}
                         key={index}
+                        active={lens?.title === selectedRow}
                     />
                 );
             })}

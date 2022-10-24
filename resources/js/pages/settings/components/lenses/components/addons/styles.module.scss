@@ -120,6 +120,20 @@
     justify-content: flex-start;
     align-items: flex-start;
 }
+.animated-title {
+    position: relative;
+    animation: myfirst 0.7s;
+    animation-direction: alternate;
+}
+@keyframes myfirst {
+    0% {
+        top: -22px;
+    }
+
+    100% {
+        top: 0px;
+    }
+}
 .edit-icon {
     width: 18px;
     height: 18px;

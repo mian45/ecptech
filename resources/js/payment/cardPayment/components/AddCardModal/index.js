@@ -2,7 +2,8 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
-import { DatePicker, Space,Checkbox } from "antd";
+import { DatePicker, Space } from "antd";
+import CustomCheckbox from "../../../../components/customCheckbox";
 const AddCardModal = ({ show, onClose }) => {
     const [cardNumber, setCardNumber] = useState("");
     const [validNumber, setValidNumber] = useState(false);
@@ -243,12 +244,14 @@ const AddCardModal = ({ show, onClose }) => {
                             </div>
                         </div>
                         <div className={classes["terms"]}>
-                            <Checkbox value={checked}
-                                className={classes["checkbox"]}
-                                onChange={(e) => {
-                                    setChecked(!checked);
-                                }}/>
-                           
+                            <CustomCheckbox
+                                label={""}
+                                defaultChecked={checked || false}
+                                onValueChange={(value) => {
+                                    setChecked(value);
+                                }}
+                                containerClass={classes["payment-checkbox"]}
+                            />
 
                             <div className={classes["term-line"]}>
                                 By adding card you are agreed with us to charge
