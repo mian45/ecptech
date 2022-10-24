@@ -1,10 +1,10 @@
-import React, { useState ,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import AddNewCard from "./components/addCard";
 import AddCardModal from "./components/AddCardModal";
 import CreditCard from "./components/creditCard";
 import Subscriptions from "./components/subscriptions";
 import classes from "./styles.module.scss";
-import Axios from "../../Http"
+import Axios from "../../Http";
 const CardPayment = () => {
     const [showAddCard, setShowAddCard] = useState(false);
     const handleOpenModal = () => {
@@ -13,15 +13,16 @@ const CardPayment = () => {
     const handleCloseModal = () => {
         setShowAddCard(false);
     };
-    const [cardData,setCardData]=useState({});
-    useEffect(()=>{
-        getPaymentMethod()
-    },[showAddCard])
-    const getPaymentMethod=async ()=>{
-        const res = await Axios.get(`${process.env.MIX_REACT_APP_URL}/api/get-card`)
-        console.log("the response is here",res)
-        setCardData(res.data.data)
-    }
+    const [cardData, setCardData] = useState({});
+    useEffect(() => {
+        getPaymentMethod();
+    }, [showAddCard]);
+    const getPaymentMethod = async () => {
+        const res = await Axios.get(
+            `${process.env.MIX_REACT_APP_URL}/api/get-card`
+        );
+        setCardData(res.data.data);
+    };
     return (
         <div className={classes["container"]}>
             {showAddCard && (

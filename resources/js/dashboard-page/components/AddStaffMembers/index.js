@@ -11,6 +11,7 @@ const AddStaffMember = ({ userId }) => {
     const [staffList, setStaffList] = useState([]);
     const [staffInput, setStaffInput] = useState("");
     const [editId, setEditId] = useState(null);
+    const [isHover, setIsHover] = useState(false);
 
     useEffect(() => {
         if (!userId) return;
@@ -113,6 +114,15 @@ const AddStaffMember = ({ userId }) => {
         setStaffInput(data?.name || "");
         setEditId(data?.id || "");
     };
+    const getBackgroundButton = () => {
+        if (isHover && staffInput?.length) {
+            return "#518fbb";
+        } else if (staffInput?.length) {
+            return "#6fa5cb";
+        } else {
+            return "#CBCBCB";
+        }
+    };
     return (
         <div className={classes["container"]}>
             <div className={classes["label"]}>Add Staff Members</div>
@@ -127,9 +137,10 @@ const AddStaffMember = ({ userId }) => {
                     className={classes["tick-wrapper"]}
                     onClick={handleSubmit}
                     style={{
-                        backgroundColor:
-                            staffInput?.length < 3 ? "#CBCBCB" : "#6fa5cb",
+                        backgroundColor: getBackgroundButton(),
                     }}
+                    onMouseEnter={() => setIsHover(true)}
+                    onMouseLeave={() => setIsHover(false)}
                 >
                     <img
                         src={tickIcon}

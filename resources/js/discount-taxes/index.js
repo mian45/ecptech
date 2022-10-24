@@ -569,7 +569,7 @@ const DiscountTaxes = (props) => {
                                     }}
                                 />
                             </div>
-                            <div>
+                            <div className={"state-select"}>
                                 <p className="input-title">State</p>
                                 <Select
                                     defaultValue="Select State"
