@@ -5,10 +5,10 @@
     color: #ffffff;
     border: none;
     background-color: #6fa5cb;
-    &:disabled {
-        background-color: #cbcbcb;
-    }
     &:hover {
         background-color: #518fbb !important;
+    }
+    &:disabled {
+        background-color: #cbcbcb;
     }
 }

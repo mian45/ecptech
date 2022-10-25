@@ -423,7 +423,7 @@ const DiscountTaxes = (props) => {
     };
     return (
         <div className="discount-container discount-tax">
-            <p className="main">{`Discounts & Taxes`}</p>
+            <p className="main discount-container-page-title">{`Discounts & Taxes`}</p>
             <div className="discount-container_first discount-tax-con">
                 <p className="heading">Discounts</p>
                 <div>

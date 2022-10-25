@@ -12,6 +12,7 @@ import {
     HOME_ROUTE,
     INVOICES_ROUTE,
 } from "../../../../../appRoutes/routeConstants";
+import logo from "../../../../../../images/logo.png";
 const SignInForm = ({ userRole, dispatch }) => {
     const history = useHistory();
     const [isShowPassword, setShowPassword] = useState(false);
@@ -50,7 +51,7 @@ const SignInForm = ({ userRole, dispatch }) => {
                         <form onSubmit={handleSubmit} autoComplete="off">
                             <div className={classes["login-form"]}>
                                 <img
-                                    src="logo.png"
+                                    src={logo}
                                     alt="logo"
                                     className={classes["page-logo"]}
                                 />

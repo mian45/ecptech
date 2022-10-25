@@ -82,7 +82,7 @@ class InvoiceCalculaterController extends Controller
 
 
        $data['lens_material'] = LensMaterial::leftjoin('user_lense_material_settings as setting','setting.lens_material_id','=','lens_materials.id')
-                                            ->select('lens_materials.id','lens_materials.lens_material_title','setting.price as retail_price')    
+                                            ->select('lens_materials.id','lens_materials.lens_material_title','setting.price as retail_price','setting.display_name')    
                                             ->where('setting.user_id',auth()->user()->id)
                                             ->where('setting.status','active')
                                             ->get();

@@ -4,6 +4,9 @@ import classes from "./styles.module.scss";
 import { useEffect } from "react";
 import { remember as rememberme } from "../services/authService";
 import { useDispatch } from "react-redux";
+import logo from "../../images/logo.png";
+import profileIcon from "../../images/profile.svg";
+import notificationIcon from "../../images/notification.svg";
 
 const Header = () => {
     const dispatch = useDispatch();
@@ -17,15 +20,15 @@ const Header = () => {
     };
     return (
         <div className={classes["container"]}>
-            <img src="logo.png" alt="logo" className={classes["logo-icon"]} />
+            <img src={logo} alt="logo" className={classes["logo-icon"]} />
             <div className={classes["sub-container"]}>
                 <img
-                    src="notification.svg"
+                    src={notificationIcon}
                     alt="notification"
                     className={classes["bell-icon"]}
                 />
                 <img
-                    src="Profile.svg"
+                    src={profileIcon}
                     alt="Profile"
                     className={classes["profile-icon"]}
                     onClick={(e) => {
