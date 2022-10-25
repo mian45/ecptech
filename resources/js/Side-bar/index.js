@@ -9,6 +9,11 @@ import {
     PAYMENT_ROUTE,
     SETTINGS_ROUTE,
 } from "../appRoutes/routeConstants";
+import homeIcon from "../../images/home.svg";
+import invoicesIcon from "../../images/invoices.svg";
+import paymentIcon from "../../images/payments.svg";
+import settingsIcon from "../../images/settings.svg";
+
 const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
     const [state, setState] = useState(isActiveState);
     const [currentRoute, setCurrentRoute] = useState("");
@@ -83,7 +88,7 @@ const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
                         history.push(INVOICES_ROUTE);
                     }}
                 >
-                    <img src={"invoices.svg"} className={classes["icon"]} />
+                    <img src={invoicesIcon} className={classes["icon"]} />
                     <label className={classes["sidebar-label"]}>Invoices</label>
 
                     <span className={classes["active-state"]}></span>
@@ -140,22 +145,22 @@ export default connect(mapStateToProps)(SideBar);
 
 const SIDE_BAR_DATA = [
     {
-        icon: "home.svg",
+        icon: homeIcon,
         name: "Dashboard",
         index: 1,
     },
     {
-        icon: "invoices.svg",
+        icon: invoicesIcon,
         name: "Invoices",
         index: 2,
     },
     {
-        icon: "payments.svg",
+        icon: paymentIcon,
         name: "Payments",
         index: 3,
     },
     {
-        icon: "settings.svg",
+        icon: settingsIcon,
         name: "Settings",
         index: 4,
     },

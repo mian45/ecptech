@@ -1,0 +1,112 @@
+.root-container {
+    width: calc(100% - 100px);
+    margin-left: 100px;
+    margin-top: 100px;
+    background-color: #f9f9fb;
+    min-height: 100vh;
+}
+.container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.page-title {
+    color: #2a2a2a;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: Montserrat;
+    margin-top: 36px;
+    margin-left: 45px;
+}
+.back-container {
+    margin-top: 38px;
+    margin-left: 45px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 50px;
+}
+.back-image {
+    width: 9px;
+    height: 15px;
+    object-fit: contain;
+    margin-right: 21px;
+    cursor: pointer;
+}
+.back-text {
+    color: #2a2a2a;
+    font-size: 16px;
+    font-family: Montserrat;
+    cursor: pointer;
+}
+.content-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.content-box {
+    border: 1px solid #e8e8e8;
+    background-color: #ffffff;
+    box-shadow: 0px 0px 6px #00000008;
+    border-radius: 10px;
+    padding: 45px 32px 38px 42px;
+    display: flex;
+    flex-direction: column;
+    width: 53.1%;
+}
+.content-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 36px;
+}
+.content-header-text {
+    color: #cbcbcb;
+    font-size: 16px;
+    font-family: Montserrat;
+    font-style: italic;
+}
+.content-body-slot {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.button-container {
+    width: 53.1%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-top: 36px;
+}
+.save-button {
+    background-color: #6fa5cb;
+    border-radius: 28px;
+    border: none;
+    width: 102px;
+    height: 45px;
+    color: #ffffff;
+    font-size: 16px;
+    font-family: Montserrat;
+    margin-bottom: 100px;
+    &:hover {
+        background-color: #518fbb !important;
+    }
+    &:disabled {
+        background-color: #90b0c6;
+    }
+}
+.checkbox-label {
+    color: #2a2a2a !important;
+    font-size: 16px !important;
+    font-family: Montserrat !important;
+    margin-left: 30px !important;
+}
+.checkbox-container {
+    margin-right: 0px !important;
+    margin-bottom: 0px !important;
+}

@@ -46,8 +46,6 @@ const ProfitStatsChart = ({ userId, dates }) => {
         }
     };
     useEffect(() => {
-        console.log(dates);
-
         getProfitStats();
     }, [dates]);
 
@@ -77,7 +75,7 @@ export default connect(mapStateToProps)(ProfitStatsChart);
 const getChartOptions = () => {
     return {
         chart: {
-            offsetX:6,
+            offsetX: 6,
             type: "area",
             toolbar: {
                 show: false,
