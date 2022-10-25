@@ -261,3 +261,21 @@ input[type="number"] {
     font-family: Montserrat !important;
     color: #2a2a2a !important;
 }
+.state-select {
+    .ant-select-single .ant-select-selector .ant-select-selection-item {
+        line-height: 20px;
+        padding-left: 22px;
+        margin-bottom: 7px !important;
+
+        &:focus-visible {
+            outline: 0;
+        }
+    }
+    .ant-select-arrow {
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 8px solid #d8d8d8;
+        font-size: 0 !important;
+        margin-top: -2px !important;
+    }
+}

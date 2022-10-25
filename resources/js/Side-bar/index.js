@@ -3,6 +3,7 @@ import classes from "./styles.module.scss";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import {
+    CREATE_INVOICE_ROUTE,
     HOME_ROUTE,
     INVOICES_ROUTE,
     PAYMENT_ROUTE,
@@ -10,7 +11,15 @@ import {
 } from "../appRoutes/routeConstants";
 const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
     const [state, setState] = useState(isActiveState);
+    const [currentRoute, setCurrentRoute] = useState("");
     const history = useHistory();
+
+    useEffect(() => {
+        history.listen((location) => {
+            setCurrentRoute(location?.pathname);
+        });
+    }, []);
+
     useEffect(() => {
         const currentPath = history.location.pathname;
         switch (currentPath) {
@@ -18,7 +27,8 @@ const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
                 setState(1);
                 return;
             }
-            case INVOICES_ROUTE: {
+            case INVOICES_ROUTE:
+            case CREATE_INVOICE_ROUTE: {
                 setState(2);
                 return;
             }
@@ -31,7 +41,7 @@ const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
                 return;
             }
         }
-    }, [history.location.pathname]);
+    }, [history.location.pathname, currentRoute]);
 
     const handleSideBar = (value) => {
         switch (value) {

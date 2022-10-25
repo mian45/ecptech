@@ -41,10 +41,8 @@
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    &:hover {
-        background-color: #518fbb !important;
-    }
 }
+
 .tick-icon {
     width: 16px;
     height: 12px;
@@ -111,4 +109,13 @@
         background: #f1f1f1;
         margin-top: 20px;
     }
+}
+.default-button {
+    background-color: #6fa5cb !important;
+}
+.disabled-button {
+    background-color: #cbcbcb !important;
+}
+.active-button {
+    background-color: #518fbb !important;
 }

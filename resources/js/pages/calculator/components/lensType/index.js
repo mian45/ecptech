@@ -20,7 +20,30 @@ const LensType = ({ formProps, calculatorObj }) => {
         return false;
     };
     const lensTypeValues = () => {
-        return calculatorObj["lens_types"]?.map((value) => value?.title);
+        const sortedLenses = [];
+        const singleVision = calculatorObj["lens_types"].find(
+            (val) => val?.title === "Single Vision"
+        )?.title;
+        singleVision && sortedLenses.push(singleVision);
+        const PAL = calculatorObj["lens_types"].find(
+            (val) => val?.title === "PAL"
+        )?.title;
+        PAL && sortedLenses.push(PAL);
+        const NVF = calculatorObj["lens_types"].find(
+            (val) => val?.title === "NVF"
+        )?.title;
+        NVF && sortedLenses.push(NVF);
+        const restLenses = calculatorObj["lens_types"].filter(
+            (val) =>
+                val?.title !== "NVF" &&
+                val?.title !== "PAL" &&
+                val?.title !== "Single Vision"
+        );
+        restLenses?.forEach((item) => {
+            item && sortedLenses.push(item?.title);
+        });
+
+        return sortedLenses;
     };
     const getLensSubValues = () => {
         const selectedLensType = calculatorObj["lens_types"]?.find(

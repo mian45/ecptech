@@ -41,10 +41,10 @@ class StaffController extends Controller
         $staffExist = Staff::where([
             ['user_id', '=' ,$user_id],
             ['name', '=' ,$name]
-        ])->first();
-
+        ])->exists();
+        
         if ($staffExist) {
-            return $this->sendError('The staff name already exists.');
+            return response()->json(['message'=>"Staff name already exists"], 422);
         }
 
         $staff = new Staff;
@@ -78,10 +78,10 @@ class StaffController extends Controller
             ['user_id', '=' ,$user_id],
             ['name', '=' ,$name],
             ['id', '!=' , $id]
-        ])->first();
+        ])->exists();
 
         if ($staffExist) {
-            return $this->sendError('The staff name already exists.');
+            return response()->json(['message'=>"Staff name already exists"], 422);
         }
 
         $staff = Staff::find($id);

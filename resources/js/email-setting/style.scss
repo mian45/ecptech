@@ -62,22 +62,26 @@
             }
         }
     }
-}          .ant-select-item-option-content{padding-left: 18px !important;margin-left:0px !important} 
-        .delete-icon{
-            width: 16px;
-            height: 16px;
-            cursor: pointer;
-        }
-        .edit-icon{
-            width: 18px;
-            margin-right: 35.4px;
-            cursor: pointer;
-        }
-        .bell-icon{
-            height: 18px;
-            margin-right: 35.6px;
-            cursor: pointer
-        }
+}
+.ant-select-item-option-content {
+    padding-left: 18px !important;
+    margin-left: 0px !important;
+}
+.delete-icon {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+}
+.edit-icon {
+    width: 18px;
+    margin-right: 35.4px;
+    cursor: pointer;
+}
+.bell-icon {
+    height: 18px;
+    margin-right: 35.6px;
+    cursor: pointer;
+}
 .email-remainder {
     font-family: Montserrat;
 
@@ -329,7 +333,14 @@ p {
 .input-pad-val {
     padding-left: 27px !important;
 }
-.no-outline{
+.no-outline {
     outline: none !important;
     border: 0px solid !important;
+}
+.email-input-border {
+    border: 1px solid #dfdfdf !important;
+}
+.email-reminder-tag {
+    text-transform: capitalize;
+    margin-right: 17px !important;
 }
