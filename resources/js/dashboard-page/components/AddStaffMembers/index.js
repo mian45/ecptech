@@ -115,12 +115,12 @@ const AddStaffMember = ({ userId }) => {
         setEditId(data?.id || "");
     };
     const getBackgroundButton = () => {
-        if (isHover && staffInput?.length) {
-            return "#518fbb";
-        } else if (staffInput?.length) {
-            return "#6fa5cb";
+        if (isHover && staffInput?.length > 3) {
+            return classes["active-button"];
+        } else if (staffInput?.length < 3) {
+            return classes["disabled-button"];
         } else {
-            return "#CBCBCB";
+            return classes["default-button"];
         }
     };
     return (
@@ -134,11 +134,10 @@ const AddStaffMember = ({ userId }) => {
                     value={staffInput}
                 />
                 <div
-                    className={classes["tick-wrapper"]}
+                    className={`${
+                        classes["tick-wrapper"]
+                    } ${getBackgroundButton()}`}
                     onClick={handleSubmit}
-                    style={{
-                        backgroundColor: getBackgroundButton(),
-                    }}
                     onMouseEnter={() => setIsHover(true)}
                     onMouseLeave={() => setIsHover(false)}
                 >
