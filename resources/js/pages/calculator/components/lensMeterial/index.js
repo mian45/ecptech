@@ -8,7 +8,7 @@ import icon from "../../../../../images/calculator/lens-material.svg";
 import EyePrescriptionModal from "../eyePrescriptionModal";
 
 const LensMeterials = ({ formProps, calculatorObj }) => {
-    const { values, handleChange, handleBlur } = formProps;
+    const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState("");
     const lensMaterialVisibility = calculatorObj?.questions
@@ -18,12 +18,26 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
         )?.visibility;
 
     const handleLensMererialChange = (e) => {
-        handleChange(e);
+        let currentValue = "";
+        if (isLenseTitle(e.target.value)) {
+            currentValue = e.target.value;
+            handleChange(e);
+        } else {
+            const selectedMaterial = calculatorObj["lens_material"]?.find(
+                (item) => item?.lens_material_title === e?.target?.value
+            );
+            setFieldValue(
+                "lensMaterial",
+                selectedMaterial?.lens_material_title
+            );
+            currentValue = selectedMaterial?.lens_material_title;
+        }
+
         if (values.isCopayPolycarbonate && e.target.value !== "Polycarbonate") {
             setError("Are you sure you don't want to avail the discount");
         } else if (
             values.isCopayHighIndex &&
-            e.target.value.includes("Hi Index")
+            !e.target.value.toLowerCase().includes("Hi Index".toLowerCase())
         ) {
             setError("Are you sure you don't want to avail the discount");
         } else {
@@ -37,6 +51,15 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
     const handleCloseModal = () => {
         setShowModal(false);
     };
+
+    const getMaterialName = (material) => {
+        if (!!material?.display_name) {
+            return material?.display_name;
+        } else {
+            return material?.lens_material_title;
+        }
+    };
+
     return (
         <>
             {lensMaterialVisibility ? (
@@ -63,9 +86,7 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
                                     return (
                                         <CustomRadio
                                             key={index}
-                                            label={
-                                                lensName?.lens_material_title
-                                            }
+                                            label={getMaterialName(lensName)}
                                             value={
                                                 lensName?.lens_material_title
                                             }
@@ -103,12 +124,17 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
 };
 
 export default LensMeterials;
+const isLenseTitle = (value) => {
+    switch (value) {
+        case "CR39":
+        case "Polycarbonate":
+        case "Trivex":
+        case "Hi Index 1.67":
+        case "Hi Index 1.70 & Above":
+        case "Hi Index 1.60":
+            return true;
 
-const LEND_MATERIAL_DATA = [
-    "CR39",
-    "Polycarbonate",
-    "Trivex",
-    "Hi Index 1.67",
-    "Hi Index 1.70 & Above",
-    "Hi Index 1.60",
-];
+        default:
+            return false;
+    }
+};
