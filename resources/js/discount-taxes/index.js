@@ -439,22 +439,30 @@ const DiscountTaxes = (props) => {
                             />
                         </div>
                         <div className="discount-container_first-form_section">
-                            <p className="input-title">Discount Value</p>
+                            <p className="input-title">
+                                Discount Value (Percentage)
+                            </p>
                             <input
+                                type={"text"}
                                 placeholder="Discount Value"
-                                value={`${discountTax}%`}
+                                value={`${discountTax}`}
                                 onChange={(e) => {
-                                    setDiscountTax(
-                                        new Number(
-                                            e.target.value.replace(/\D/g, "") >
-                                            100
-                                                ? 100
-                                                : e.target.value.replace(
-                                                      /\D/g,
-                                                      ""
-                                                  )
-                                        )
+                                    const regix = new RegExp(
+                                        "^[0-9]*[/.]?([0-9]*)?$"
                                     );
+
+                                    if (regix.test(e.target.value)) {
+                                        if (
+                                            e.target.value <= 100 &&
+                                            e.target.value >= 0
+                                        ) {
+                                            setDiscountTax(e.target.value);
+                                        } else if (!e.target.value) {
+                                            setDiscountTax("");
+                                        }
+                                    } else if (!e.target.value) {
+                                        setDiscountTax("");
+                                    }
                                 }}
                             />
                         </div>

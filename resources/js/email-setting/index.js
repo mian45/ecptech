@@ -341,7 +341,7 @@ const EmailSetting = (props) => {
                                                 </div>
                                                 <div className="email-setting-content-section-subsection">
                                                     <p
-                                                        className="email-setting-content-section-subsection-heading"
+                                                        className="email-setting-content-section-subsection-heading email-reminder-tag"
                                                         style={
                                                             obj.type ==
                                                             "reminder"

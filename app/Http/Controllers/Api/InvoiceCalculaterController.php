@@ -168,7 +168,7 @@ class InvoiceCalculaterController extends Controller
                                 $code_id = null;
                                 if(!empty($data[7])){
                                     
-                                    if(!empty($data[1]) AND (strtolower($data[1]) == 'bifocal/trifocal')){
+                                    if(!empty($data[1]) AND (strtolower($data[1]) == 'bifocal' OR strtolower($data[1]) == 'trifocal' )){
                                         $code = Code::where('name',$data[7])->where('vision_plan_id',$vision_plan->id)->where('lense_type','bifocal')->first();
                                     }else{
                                         $code = Code::where('name',$data[7])->where('vision_plan_id',$vision_plan->id)->whereNull('lense_type')->first();
