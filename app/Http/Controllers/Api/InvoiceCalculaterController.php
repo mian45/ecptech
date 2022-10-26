@@ -30,9 +30,11 @@ class InvoiceCalculaterController extends Controller
         $data['tax'] = "";
         $data['discount'] = "";
 
-        $userId=auth()->user()->id;
-        if(auth()->user()->role_id===3){
-            $userId=  auth()->user()->client_id;
+        $user=auth()->user();
+
+        $userId=$user->id;
+        if($user->role_id===3){
+            $userId=  $user->client_id;
         }
        
 
