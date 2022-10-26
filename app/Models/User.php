@@ -36,7 +36,7 @@ class User extends Authenticatable
 
     public function client()
     {
-        return $this->hasOne(Client::class,'user_id');
+        return $this->belongsTo(User::class);
     }
     public function staff()
     {

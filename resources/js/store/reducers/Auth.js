@@ -16,6 +16,10 @@ const defaultUserRole = {
     id: null,
     name: null,
 };
+const defaultClientUser = {
+    id: null,
+    name: null,
+};
 
 const initialState = {
     isAuthenticated: false,
@@ -23,7 +27,9 @@ const initialState = {
     isActiveSettingState: 1,
     user: defaultUser,
     staffUser: defaultStaffUser,
+    clientUser: defaultClientUser,
     userRole: defaultUserRole,
+    activeSettingsIndex: 1,
 };
 
 const activeState = (state, payload) => {
@@ -33,6 +39,10 @@ const activeState = (state, payload) => {
 
 const activeSettingState = (state, payload) => {
     return { ...state, isActiveSettingState: payload };
+};
+
+const updateSettingsTab = (state, payload) => {
+    return { ...state, activeSettingsIndex: payload };
 };
 
 const authLogin = (state, payload) => {
@@ -96,6 +106,10 @@ const updateStaffLogin = (state, payload) => {
 const Auth = (state = initialState, { type, payload = null }) => {
     switch (type) {
         case ActionTypes.AUTH_LOGIN: {
+            const clientObject = {
+                id: payload?.data?.client?.id || null,
+                name: payload?.data?.client?.name || null,
+            };
             const userObject = {
                 id: payload?.data?.id,
                 name: payload?.data?.name,
@@ -119,6 +133,7 @@ const Auth = (state = initialState, { type, payload = null }) => {
                 user: userObject,
                 userRole: roleObject,
                 staffUser: staffObject,
+                clientUser: clientObject,
                 token,
             };
             return stateObj;
@@ -131,6 +146,9 @@ const Auth = (state = initialState, { type, payload = null }) => {
             return activeState(state, payload);
         case ActionTypes.ACTIVE_SETTING_STATE: {
             return activeSettingState(state, payload);
+        }
+        case ActionTypes.ACTIVE_SETTINGS_TAB: {
+            return updateSettingsTab(state, payload);
         }
         case ActionTypes.STAFF_LOGIN:
             return staffLogin(state, payload);

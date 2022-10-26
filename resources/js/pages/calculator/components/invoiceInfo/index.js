@@ -7,7 +7,13 @@ import { connect } from "react-redux";
 import Select from "react-select";
 import downArrow from "../../../../../images/down-arrow.png";
 
-const InvoiceInfo = ({ formProps, userId, userInfo, disable }) => {
+const InvoiceInfo = ({
+    formProps,
+    userId,
+    userInfo,
+    clientUserId,
+    userRole,
+}) => {
     const { values, setFieldValue, handleBlur } = formProps;
     const [staff, setStaff] = useState([]);
     const [staffData, setStaffData] = useState([]);
@@ -15,10 +21,14 @@ const InvoiceInfo = ({ formProps, userId, userInfo, disable }) => {
         if (!userId) return;
         const getStaffList = async () => {
             try {
+                let clientId = userId;
+                if (userRole === "staff") {
+                    clientId = clientUserId;
+                }
                 const res = await Axios.post(
                     `${process.env.MIX_REACT_APP_URL}/api/getStaff`,
                     {
-                        userId: userId,
+                        userId: clientId,
                     }
                 );
                 const resData = res?.data?.data;
@@ -104,6 +114,8 @@ const InvoiceInfo = ({ formProps, userId, userInfo, disable }) => {
 
 const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
+    userRole: state.Auth.userRole?.name,
+    clientUserId: state.Auth.clientUser?.id,
 });
 export default connect(mapStateToProps)(InvoiceInfo);
 

@@ -7,13 +7,14 @@
     display: flex;
     width: 100%;
     justify-content: flex-start;
-    align-items: center;
+    align-items: flex-start;
     margin-bottom: 24px;
     flex-wrap: wrap;
 }
 .input {
     width: 284px;
     margin-right: 20px;
+    height: 45px;
 }
 .dob-wrapper {
     display: flex;
@@ -34,6 +35,7 @@
     padding: 10px 20px;
     color: #747474;
     outline: none;
+    height: 45px;
     &::placeholder {
         color: #cbcbcb;
     }

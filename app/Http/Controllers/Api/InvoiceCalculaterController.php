@@ -30,52 +30,60 @@ class InvoiceCalculaterController extends Controller
         $data['tax'] = "";
         $data['discount'] = "";
 
-        $shipping = Shipping::where('user_id',auth()->user()->id)->orderBy('created_at', 'desc')->first();
+        $user=auth()->user();
+
+        $userId=$user->id;
+        if($user->role_id===3){
+            $userId=  $user->client_id;
+        }
+       
+
+        $shipping = Shipping::where('user_id',$userId)->orderBy('created_at', 'desc')->first();
         if($shipping){
             $data['shipping'] = $shipping->value;
         }
 
-        $discount = Discount::select('id','user_id','name','value','status')->where('user_id',auth()->user()->id)->orderBy('created_at', 'desc')->get();
+        $discount = Discount::select('id','user_id','name','value','status')->where('user_id',$userId)->orderBy('created_at', 'desc')->get();
         if($discount){
             $data['discount'] = $discount;
         }
 
-        $tax = Tax::where('user_id',auth()->user()->id)->orderBy('created_at', 'desc')->first();
+        $tax = Tax::where('user_id',$userId)->orderBy('created_at', 'desc')->first();
         if($tax){
             $data['tax'] = $tax->value;
         }
 
-        $data['addons'] = AddonType::with(['addons' => function($q){
+        $data['addons'] = AddonType::with(['addons' => function($q)use($userId){
             $q->join('user_addon_settings as setting','setting.addon_id','=','addons.id');
             $q->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id');
-            $q->where('setting.user_id',auth()->user()->id)->where('setting.status','active');
+            $q->where('setting.user_id',$userId)->where('setting.status','active');
         }])->select('id','title')->get();
         
         
         
         
-        $data['questions'] = VisionPlan::with(['question_permissions' => function($q){
+        $data['questions'] = VisionPlan::with(['question_permissions' => function($q)use($userId){
                 $q->join('questions as q','q.id','=','question_permissions.question_id');
                 $q->select('q.id as q_id','question_permissions.vision_plan_id','q.title as question',
                     DB::raw('IF(question_permissions.status, "true", "false") as visibility'),
                     DB::raw('IF(question_permissions.optional, "true", "false") as optional')
                 );
-                $q->where('question_permissions.user_id',auth()->user()->id);
+                $q->where('question_permissions.user_id',$userId);
                 $q->where('question_permissions.status',1);
         }])->join('vision_plan_permissions as vsp','vsp.vision_plan_id','=','vision_plans.id')
-            ->where('vsp.user_id',auth()->user()->id)
+            ->where('vsp.user_id',$userId)
             ->where('vsp.status',1)
             ->select('vision_plans.id','vision_plans.title')->get();
 
 
-       $data['lens_types'] = LenseType::with(['brands'=>function($q){
+       $data['lens_types'] = LenseType::with(['brands'=>function($q)use($userId){
             $q->join('brand_permissions as bp','bp.brand_id','=','brands.id');
             $q->select('brands.id','lens_type_id','title');
-            $q->where('bp.user_id',auth()->user()->id);
-            $q->with(['collections'=>function($q){
+            $q->where('bp.user_id',$userId);
+            $q->with(['collections'=>function($q)use($userId){
                 $q->join('collections_permissions as cp','cp.collection_id','=','collections.id');
                 $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price');
-                $q->where('cp.user_id',auth()->user()->id)->where('cp.status','active');
+                $q->where('cp.user_id',$userId)->where('cp.status','active');
             }]);
        }])->selectRaw("MIN(id) AS id,title,MIN(vision_plan_id) AS vision_plan_id")->groupby('title')->get();
        
@@ -83,7 +91,7 @@ class InvoiceCalculaterController extends Controller
 
        $data['lens_material'] = LensMaterial::leftjoin('user_lense_material_settings as setting','setting.lens_material_id','=','lens_materials.id')
                                             ->select('lens_materials.id','lens_materials.lens_material_title','setting.price as retail_price','setting.display_name')    
-                                            ->where('setting.user_id',auth()->user()->id)
+                                            ->where('setting.user_id',$userId)
                                             ->where('setting.status','active')
                                             ->get();
 

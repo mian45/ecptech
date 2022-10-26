@@ -8,10 +8,14 @@ import AuthServices from "../services";
 import DiscountTaxes from "../discount-taxes/index";
 import EyePrescription from "../eye-prescription";
 import LensesSettings from "../pages/settings/components/lenses";
+import * as action from "../store/actions";
 
 const TabsSection = (props) => {
     return (
-        <Tabs defaultActiveKey="1">
+        <Tabs
+            defaultActiveKey={props?.activeSettingsIndex || "1"}
+            onChange={(e) => props.dispatch(action.updateSettingsTab(e))}
+        >
             <Tabs.TabPane tab="Emails" key="1">
                 {props.isActiveSettingState == 1 ? (
                     <EmailSetting />
@@ -42,6 +46,7 @@ TabsSection.propTypes = {
 
 const mapStateToProps = (state) => ({
     isActiveSettingState: state.Auth.isActiveSettingState,
+    activeSettingsIndex: state.Auth.activeSettingsIndex,
 });
 
 export default connect(mapStateToProps)(TabsSection);
