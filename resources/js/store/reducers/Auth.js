@@ -16,6 +16,10 @@ const defaultUserRole = {
     id: null,
     name: null,
 };
+const defaultClientUser = {
+    id: null,
+    name: null,
+};
 
 const initialState = {
     isAuthenticated: false,
@@ -23,6 +27,7 @@ const initialState = {
     isActiveSettingState: 1,
     user: defaultUser,
     staffUser: defaultStaffUser,
+    clientUser: defaultClientUser,
     userRole: defaultUserRole,
     activeSettingsIndex: 1,
 };
@@ -101,6 +106,10 @@ const updateStaffLogin = (state, payload) => {
 const Auth = (state = initialState, { type, payload = null }) => {
     switch (type) {
         case ActionTypes.AUTH_LOGIN: {
+            const clientObject = {
+                id: payload?.data?.client?.id || null,
+                name: payload?.data?.client?.name || null,
+            };
             const userObject = {
                 id: payload?.data?.id,
                 name: payload?.data?.name,
@@ -124,6 +133,7 @@ const Auth = (state = initialState, { type, payload = null }) => {
                 user: userObject,
                 userRole: roleObject,
                 staffUser: staffObject,
+                clientUser: clientObject,
                 token,
             };
             return stateObj;
