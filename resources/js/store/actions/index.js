@@ -42,3 +42,9 @@ export function updateStaffLogin(payload) {
         payload,
     };
 }
+export function updateSettingsTab(payload) {
+    return {
+        type: ActionTypes.ACTIVE_SETTINGS_TAB,
+        payload,
+    };
+}

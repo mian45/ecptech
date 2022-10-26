@@ -24,6 +24,7 @@ const initialState = {
     user: defaultUser,
     staffUser: defaultStaffUser,
     userRole: defaultUserRole,
+    activeSettingsIndex: 1,
 };
 
 const activeState = (state, payload) => {
@@ -33,6 +34,10 @@ const activeState = (state, payload) => {
 
 const activeSettingState = (state, payload) => {
     return { ...state, isActiveSettingState: payload };
+};
+
+const updateSettingsTab = (state, payload) => {
+    return { ...state, activeSettingsIndex: payload };
 };
 
 const authLogin = (state, payload) => {
@@ -131,6 +136,9 @@ const Auth = (state = initialState, { type, payload = null }) => {
             return activeState(state, payload);
         case ActionTypes.ACTIVE_SETTING_STATE: {
             return activeSettingState(state, payload);
+        }
+        case ActionTypes.ACTIVE_SETTINGS_TAB: {
+            return updateSettingsTab(state, payload);
         }
         case ActionTypes.STAFF_LOGIN:
             return staffLogin(state, payload);
