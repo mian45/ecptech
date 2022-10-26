@@ -46,7 +46,7 @@
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 .error {
     font-size: 14px;
@@ -64,6 +64,7 @@
     font-family: Montserrat;
     color: #747474;
     font-weight: 400;
+    margin-top: 9px;
 }
 .email-input {
     border: 1px solid #dfdfdf;
