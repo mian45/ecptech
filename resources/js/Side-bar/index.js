@@ -27,6 +27,7 @@ const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
 
     useEffect(() => {
         const currentPath = history.location.pathname;
+        redirectStaffRoute(currentPath);
         switch (currentPath) {
             case HOME_ROUTE: {
                 setState(1);
@@ -46,7 +47,20 @@ const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
                 return;
             }
         }
-    }, [history.location.pathname, currentRoute]);
+    }, [history.location.pathname, currentRoute, userRole]);
+
+    const redirectStaffRoute = (currentPath) => {
+        if (userRole === "staff") {
+            switch (currentPath) {
+                case HOME_ROUTE:
+                case PAYMENT_ROUTE:
+                case SETTINGS_ROUTE:
+                case INVOICES_ROUTE:
+                    history.push(INVOICES_ROUTE);
+                    return;
+            }
+        }
+    };
 
     const handleSideBar = (value) => {
         switch (value) {

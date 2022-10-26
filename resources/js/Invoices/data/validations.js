@@ -2,12 +2,12 @@ import * as Yup from "yup";
 
 const InvoiceValidation = Yup.object().shape({
     firstName: Yup.string()
-        .min(3, "Must have 3 characters")
-        .required("First Name is Required"),
+        .min(3, "Please provide a valid First Name.")
+        .required("Please provide a valid First Name."),
     lastName: Yup.string()
-        .min(3, "Must have 3 characters")
-        .required("Last Name is Required"),
-    dob: Yup.string().required("Date of Birth is Required"),
-    email: Yup.string().email().required("Email is Required"),
+        .min(3, "Please provide a valid Last Name.")
+        .required("Please provide a valid Last Name."),
+    dob: Yup.string().required(" Please provide valid Date of Birth."),
+    email: Yup.string().email().required("Please provide a valid Email."),
 });
 export default InvoiceValidation;
