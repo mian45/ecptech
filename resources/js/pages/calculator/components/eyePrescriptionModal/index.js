@@ -28,7 +28,7 @@ const defaultSuggession = {
     leftEye: { CYL: "", SPH: "", materialToUse: "" },
 };
 
-const EyePrescriptionModal = ({ onClose, userId }) => {
+const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole }) => {
     const [eyeValues, setEyeValues] = useState({ ...defaultEyeValues });
     const [eyeData, setEyeData] = useState({ ...defaultEyeResponse });
     const [showResult, setShowResult] = useState(false);
@@ -79,9 +79,16 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
     }, [userId]);
     const getEyePrescriprion = async () => {
         try {
-            const res = await Axios.get(`${process.env.MIX_REACT_APP_URL}/api/prescriptions`, {
-                params: { user_id: userId },
-            });
+            let clientId = userId;
+            if (userRole === "staff") {
+                clientId = clientUserId;
+            }
+            const res = await Axios.get(
+                `${process.env.MIX_REACT_APP_URL}/api/prescriptions`,
+                {
+                    params: { user_id: clientId },
+                }
+            );
             const prescriptionDetails = res?.data?.data;
 
             let rightEyeSPH = [];
@@ -123,12 +130,16 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
     };
     const handleSubmit = async () => {
         try {
+            let clientId = userId;
+            if (userRole === "staff") {
+                clientId = clientUserId;
+            }
             const formData = new FormData();
             formData.append("right_eye_sphere", eyeValues?.rightEyeSPH);
             formData.append("right_eye_cylinder", eyeValues?.rightEyeCYL);
             formData.append("left_eye_sphere", eyeValues?.leftEyeSPH);
             formData.append("left_eye_cylinder", eyeValues?.leftEyeCYL);
-            formData.append("user_id", userId);
+            formData.append("user_id", clientId);
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/eye-prescriptions-calculator`,
                 formData
@@ -325,6 +336,8 @@ const EyePrescriptionModal = ({ onClose, userId }) => {
 
 const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
+    userRole: state.Auth.userRole?.name,
+    clientUserId: state.Auth.clientUser?.id,
 });
 export default connect(mapStateToProps)(EyePrescriptionModal);
 
