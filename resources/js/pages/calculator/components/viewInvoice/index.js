@@ -448,7 +448,7 @@ export const getPrivatePayPhotochromic = (value, calculatorObj) => {
 };
 
 export const getPrivatePayGlasses = (receipt, calculatorObj) => {
-    const glassesAddons = calculatorObj?.addons.find(
+    const glassesAddons = calculatorObj?.addons?.find(
         (item) => item?.title === "SunGlasses"
     );
     let total = 0;
