@@ -133,7 +133,23 @@ class RegisterController extends Controller
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }
     }
+    
+    public function logout(Request $request){
+        $validator = Validator::make($request->all(), [
+            'userId' => 'required'
+        ]);
 
+        if ($validator->fails()) {
+            return $this->sendError('Validation Error.', $validator->errors());
+        }
+        if(auth()->user()->id != $request->userId){
+            return $this->sendError('invalid User id',[],403);
+        }
+        $user = Auth::user()->token();
+        $user->revoke();
+        $success['user_id'] = $user->user_id;
+        return $this->sendResponse($success, 'logout successfully.');
+    }
     public function forgotPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
