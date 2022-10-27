@@ -9,7 +9,8 @@ use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-use Illuminate\Validation\Rule;
+// use Illuminate\Validation\Rule;
+use App\Rules\IsValidPassword;
 use Illuminate\Support\Facades\Hash;
 class RegisterController extends Controller
 {
@@ -24,13 +25,23 @@ class RegisterController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'email' => 'required|email',
-            'password' => 'required',
-            'roleId' => 'required'
+            'roleId' => 'required',
+            'password' => [
+                'required',
+                'string',
+                'min:8',             // must be at least 10 characters in length
+                'regex:/[a-z]/',      // must contain at least one lowercase letter
+                'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                'regex:/[0-9]/',      // must contain at least one digit
+                'regex:/[@$!%*#?&]/', // must contain a special character
+                new isValidPassword(),
+            ],
+
 
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(),400);
         }
         $name = $request->name;
         $email = $request->email;
