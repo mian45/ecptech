@@ -38,6 +38,8 @@ const ViewInvoice = ({
     mode,
     invoiceId = "",
     lensPrices,
+    clientUserId,
+    userRole,
 }) => {
     const history = useHistory();
     const [receipt, setReceipt] = useState(null);
@@ -68,8 +70,12 @@ const ViewInvoice = ({
     };
 
     const createNewInvoice = async () => {
+        let clientId = userId;
+        if (userRole === "staff") {
+            clientId = clientUserId;
+        }
         const payload = {
-            userId: userId,
+            userId: clientId,
             staffId: receipt?.values?.staffId,
             invoiceName: receipt?.values?.invoiceName,
             fname: receipt?.userInfo?.firstName,
@@ -88,9 +94,13 @@ const ViewInvoice = ({
     };
 
     const onEditInvoice = async () => {
+        let clientId = userId;
+        if (userRole === "staff") {
+            clientId = clientUserId;
+        }
         const payload = {
             id: invoiceId,
-            userId: userId,
+            userId: clientId,
             staffId: receipt?.values?.staffId,
             invoiceName: receipt?.values?.invoiceName,
             amount: calculateTotalDue(),
@@ -196,6 +206,8 @@ const ViewInvoice = ({
 
 const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
+    userRole: state.Auth.userRole?.name,
+    clientUserId: state.Auth.clientUser?.id,
 });
 export default connect(mapStateToProps)(ViewInvoice);
 
