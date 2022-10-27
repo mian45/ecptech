@@ -144,7 +144,7 @@ const EyePrescription = (props) => {
     return (
         <div className="eye-prescription">
             <p className="eye-prescription_heading">
-                Eye Prescription Settings
+            Glasses prescription Settings
             </p>
             <div className="eye-wrapper-container">
                 {showData &&
