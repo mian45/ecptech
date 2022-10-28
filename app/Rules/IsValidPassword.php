@@ -51,7 +51,7 @@ class IsValidPassword implements Rule
         $this->lowercasePasses = (Str::upper($value) !== $value);
         $this->numericPasses = ((bool) preg_match('/[0-9]/', $value));
         $this->specialCharacterPasses = ((bool) preg_match('/[^A-Za-z0-9]/', $value));
-        return ($this->lengthPasses && $this->uppercasePasses && $this->lowercasePassess && $this->numericPasses && $this->specialCharacterPasses);
+        return ($this->lengthPasses && $this->uppercasePasses && $this->lowercasePasses && $this->numericPasses && $this->specialCharacterPasses);
     }
 
     /**
