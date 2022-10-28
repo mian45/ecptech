@@ -23,11 +23,11 @@ class UserController extends Controller
     { 
 
         $validator = Validator::make($request->all(),[ 
-         'userId' => 'required'
+         'userId' => 'required',
+         'logo' => 'sometimes|mimes:jpeg,jpg,png,gif|max:1000'
         ]);   
 
         if($validator->fails()) {          
-            
             return response()->json(['error'=>$validator->errors()], 401);                        
         }  
 
