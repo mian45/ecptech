@@ -1,0 +1,120 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+}
+.page-title {
+    font-size: 24px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+    font-weight: bold;
+    margin-bottom: 30px;
+    margin-top: 30px;
+    width: 100%;
+}
+.content-map-container {
+    display: flex;
+    flex-direction: column;
+    width: 46.02%;
+}
+.slot-container {
+    width: 100%;
+    border: 1px solid #e8e8e8;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 6px #00000008;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+.button-wrapper {
+    width: 100%;
+    margin-top: 29px;
+    margin-left: 10px;
+    margin-bottom: 100px;
+}
+.button {
+    background-color: #6fa5cb;
+    border-radius: 28px;
+    border: none;
+    width: 102px;
+    height: 45px;
+    color: #ffffff;
+    font-size: 16px;
+    font-family: Montserrat;
+    margin-bottom: 100px;
+    &:hover {
+        background-color: #518fbb !important;
+    }
+    &:disabled {
+        background-color: #90b0c6;
+    }
+}
+.slot-header {
+    width: 100%;
+    height: 45px;
+    padding-left: 33px;
+    background-color: #6fa5cb;
+    display: flex;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.header-title {
+    font-size: 14px;
+    color: #f9f9fb;
+    font-family: Montserrat;
+    font-weight: bold;
+}
+.slot-body {
+    padding: 23px 22px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.slot-body-content {
+    width: 48.7%;
+    display: flex;
+    flex-direction: column;
+}
+.slot-body-label {
+    font-size: 16px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+    font-weight: 400;
+    margin-bottom: 13px;
+}
+.slot-body-input-section {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+.input {
+    width: 44% !important;
+    border: 1px solid #dfdfdf;
+    border-radius: 23px;
+    font-size: 16px;
+    font-family: Montserrat;
+    padding: 0px 10px 0px 20px;
+    color: #2a2a2a;
+    outline: none;
+    height: 45px;
+    &::placeholder {
+        color: #c4c4c4;
+        font-size: 16px;
+        font-family: Montserrat;
+    }
+    &:focus {
+        box-shadow: none !important;
+    }
+}
+.to-label {
+    font-size: 16px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+    font-weight: 400;
+    margin-left: 10px;
+    margin-right: 10px;
+}
