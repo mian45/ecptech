@@ -104,7 +104,7 @@ const ShippingSettings = ({ userId }) => {
                                     : ""
                             } `}
                         >
-                            Save
+                            Add
                         </button>
                     </div>
                 </form>
