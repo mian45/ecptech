@@ -147,3 +147,6 @@ export function updateStaffLogin(credentials) {
                 });
         });
 }
+export function logout() {
+    return (dispatch) =>dispatch(action.authLogout());
+}
