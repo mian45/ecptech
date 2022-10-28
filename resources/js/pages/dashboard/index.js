@@ -191,6 +191,7 @@ const Dashboard = () => {
                                     },
                                 },
                             ]}
+                            inputRanges={[]}
                         />
                     </div>
                     </div>
