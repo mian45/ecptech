@@ -45,10 +45,10 @@
     font-size: 16px;
     font-family: Montserrat;
     margin-bottom: 100px;
-    &:hover {
+    & :hover {
         background-color: #518fbb !important;
     }
-    &:disabled {
+    & :disabled {
         background-color: #90b0c6;
     }
 }
@@ -117,4 +117,10 @@
     font-weight: 400;
     margin-left: 10px;
     margin-right: 10px;
+}
+.error {
+    color: red !important;
+    font-size: 14px !important;
+    font-family: Montserrat !important;
+    margin-top: 10px !important;
 }
