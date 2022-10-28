@@ -29,6 +29,7 @@ class RegisterController extends Controller
             'password' => [
                 'required',
                 'string',
+                'confirmed',
                 'min:8',             // must be at least 8 characters in length
                 'regex:/[a-z]/',      // must contain at least one lowercase letter
                 'regex:/[A-Z]/',      // must contain at least one uppercase letter
@@ -186,8 +187,18 @@ class RegisterController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required',
-            'id' => 'required'
+            'id' => 'required',
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                'min:8',             // must be at least 8 characters in length
+                'regex:/[a-z]/',      // must contain at least one lowercase letter
+                'regex:/[A-Z]/',      // must contain at least one uppercase letter
+                'regex:/[0-9]/',      // must contain at least one digit
+                'regex:/[@$!%*#?&]/', // must contain a special character
+                new isValidPassword(),
+            ],
 
         ]);
 
