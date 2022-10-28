@@ -106,7 +106,6 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 setTaxName("");
-                setStateSetting("");
                 setTaxValue("");
                 setIdState(null);
                 getTaxes();
@@ -223,6 +222,7 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 setTaxState(response.data.data);
+                setStateSetting(response.data.data[0].id)
             })
             .catch(function (error) {
                 console.log(error);
@@ -553,18 +553,7 @@ const DiscountTaxes = (props) => {
                         onSubmit={handleTaxSubmit}
                     >
                         <div>
-                            <div className="discount-container_second-form_section">
-                                <p className="input-title">Tax Value</p>
-                                <input
-                                    type={"number"}
-                                    min={0}
-                                    placeholder="Add Percentage"
-                                    value={taxValue}
-                                    onChange={(e) => {
-                                        setTaxValue(e.target.value);
-                                    }}
-                                />
-                            </div>
+                           
                         </div>
                         <div className="second-section">
                             <div className="discount-container_second-form_section">
@@ -577,27 +566,33 @@ const DiscountTaxes = (props) => {
                                     }}
                                 />
                             </div>
-                            <div className={"state-select"}>
-                                <p className="input-title">State</p>
-                                <Select
-                                    defaultValue="Select State"
-                                    style={{
-                                        width: 120,
-                                    }}
-                                    value={stateSetting || "Select State"}
+                            <div className="discount-container_second-form_section">
+                                <p className="input-title">Tax Value (Percentage)</p>
+                                <input
+                                    type={"number"}
+                                    min={0}
+                                    placeholder="Add Percentage"
+                                    value={taxValue}
+                                   
                                     onChange={(e) => {
-                                        setStateSetting(e);
+                                        const regix = new RegExp(
+                                            "^[0-9]*[/.]?([0-9]*)?$"
+                                        );
+    
+                                        if (regix.test(e.target.value)) {
+                                            if (
+                                                e.target.value <= 100 &&
+                                                e.target.value >= 0
+                                            ) {
+                                                setTaxValue(e.target.value);
+                                            } else if (!e.target.value) {
+                                                setTaxValue("");
+                                            }
+                                        } else if (!e.target.value) {
+                                            setTaxValue("");
+                                        }
                                     }}
-                                >
-                                    {taxState &&
-                                        taxState.map((obj, i) => {
-                                            return (
-                                                <Option key={i} value={obj.id}>
-                                                    {obj.name}
-                                                </Option>
-                                            );
-                                        })}
-                                </Select>
+                                />
                             </div>
                             <div>
                                 <button
@@ -607,7 +602,7 @@ const DiscountTaxes = (props) => {
                                             : handleTaxSubmit(e);
                                     }}
                                     className={`save-button ${
-                                        !taxName || !stateSetting || !taxValue
+                                        !taxName  || !taxValue
                                             ? "disable"
                                             : ""
                                     } `}
@@ -624,7 +619,6 @@ const DiscountTaxes = (props) => {
                         {tax?.length > 0 && (
                             <tr className="discount-output_head">
                                 <th>Tax Name</th>
-                                <th>State</th>
                                 <th>Tax Value</th>
                                 <th></th>
                             </tr>
@@ -634,18 +628,6 @@ const DiscountTaxes = (props) => {
                                 return (
                                     <tr className="discount-output_body discount-row">
                                         <td className="row-1">{obj.name}</td>
-                                        <td>
-                                            {taxState &&
-                                                taxState
-                                                    .filter(
-                                                        (state, i) =>
-                                                            state.id ==
-                                                            obj.state_id
-                                                    )
-                                                    .map((state) => {
-                                                        return state.name;
-                                                    })}
-                                        </td>
                                         <td>{obj.value}%</td>
                                         <td className="col-3">
                                             <img
@@ -669,6 +651,12 @@ const DiscountTaxes = (props) => {
                                                 src={cross}
                                                 onClick={() => {
                                                     handleDeleteTax(obj.id);
+                                                }}
+                                            />
+                                            <Switch
+                                                {...label}
+                                                style={{
+                                                    marginLeft: "20px",
                                                 }}
                                             />
                                         </td>
