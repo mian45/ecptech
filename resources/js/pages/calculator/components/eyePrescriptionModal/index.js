@@ -242,10 +242,7 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole }) => {
                         />
                         <AnswerSlot
                             title={"Lens material to use?:"}
-                            value={
-                                suggestedMaterial?.leftEye?.materialToUse ||
-                                "No suggession found"
-                            }
+                            value={getResult() || "No suggession found"}
                         />
                     </div>
                 </LensSlot>
