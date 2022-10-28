@@ -115,7 +115,29 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole }) => {
     };
 
     const handleValueChange = (value, key) => {
-        setEyeValues({ ...eyeValues, [key]: value });
+        if (
+            key === "rightEyeSPH" &&
+            (parseFloat(value) <= -21 || parseFloat(value) >= 21)
+        ) {
+            return;
+        } else if (
+            key === "rightEyeCYL" &&
+            (parseFloat(value) <= -11 || parseFloat(value) >= 11)
+        ) {
+            return;
+        } else if (
+            key === "leftEyeSPH" &&
+            (parseFloat(value) <= -21 || parseFloat(value) >= 21)
+        ) {
+            return;
+        } else if (
+            key === "leftEyeCYL" &&
+            (parseFloat(value) <= -21 || parseFloat(value) >= 21)
+        ) {
+            return;
+        } else {
+            setEyeValues({ ...eyeValues, [key]: value });
+        }
     };
     const handleDisable = () => {
         if (
@@ -169,6 +191,20 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole }) => {
     const prescriptionResult = () => {
         if (!showResult) return <></>;
 
+        const getResult = () => {
+            const rightMaterial = getIndexByMaterial(
+                suggestedMaterial?.rightEye?.SPH
+            );
+            const leftMaterial = getIndexByMaterial(
+                suggestedMaterial?.rightEye?.SPH
+            );
+            if (leftMaterial < rightMaterial) {
+                return suggestedMaterial?.rightEye?.SPH;
+            } else {
+                return suggestedMaterial?.rightEye?.SPH;
+            }
+        };
+
         return (
             <>
                 <div className={classes["top-label"]}>
@@ -188,10 +224,7 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole }) => {
                         />
                         <AnswerSlot
                             title={"Lens material to use?:"}
-                            value={
-                                suggestedMaterial?.rightEye?.materialToUse ||
-                                "No suggession found"
-                            }
+                            value={getResult() || "No suggession found"}
                         />
                     </div>
                 </LensSlot>
@@ -246,8 +279,23 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole }) => {
                             <div className={classes["select-label"]}>
                                 Sphere (SPH)
                             </div>
+                            <input
+                                placeholder="Select Spherical"
+                                className={classes["input"]}
+                                value={eyeValues?.rightEyeSPH}
+                                onChange={(value) =>
+                                    handleValueChange(
+                                        value.target?.value,
+                                        "rightEyeSPH"
+                                    )
+                                }
+                                type={"number"}
+                                step={0.01}
+                                min={-20}
+                                max={20}
+                            />
 
-                            <SelectSlot
+                            {/* <SelectSlot
                                 placeholder="Select Spherical"
                                 value={eyeValues?.rightEyeSPH}
                                 options={values?.sphare}
@@ -257,13 +305,28 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole }) => {
                                         "rightEyeSPH"
                                     )
                                 }
-                            />
+                            /> */}
                         </div>
                         <div className={classes["info-section"]}>
                             <div className={classes["select-label"]}>
                                 Cylinder (CYL)
                             </div>
-                            <SelectSlot
+                            <input
+                                placeholder="Select Cylinder"
+                                className={classes["input"]}
+                                value={eyeValues?.rightEyeCYL}
+                                onChange={(value) =>
+                                    handleValueChange(
+                                        value.target?.value,
+                                        "rightEyeCYL"
+                                    )
+                                }
+                                type={"number"}
+                                step={0.01}
+                                min={-10}
+                                max={10}
+                            />
+                            {/* <SelectSlot
                                 placeholder="Select Cylinder"
                                 value={eyeValues?.rightEyeCYL}
                                 options={values?.cylinder}
@@ -273,7 +336,7 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole }) => {
                                         "rightEyeCYL"
                                     )
                                 }
-                            />
+                            /> */}
                         </div>
                     </div>
                 </LensSlot>
@@ -286,7 +349,22 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole }) => {
                             <div className={classes["select-label"]}>
                                 Sphere (SPH)
                             </div>
-                            <SelectSlot
+                            <input
+                                placeholder="Select Spherical"
+                                className={classes["input"]}
+                                value={eyeValues?.leftEyeSPH}
+                                onChange={(value) =>
+                                    handleValueChange(
+                                        value.target?.value,
+                                        "leftEyeSPH"
+                                    )
+                                }
+                                type={"number"}
+                                step={0.01}
+                                min={-20}
+                                max={20}
+                            />
+                            {/* <SelectSlot
                                 placeholder="Select Spherical"
                                 value={eyeValues?.leftEyeSPH}
                                 options={values?.sphare}
@@ -296,13 +374,28 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole }) => {
                                         "leftEyeSPH"
                                     )
                                 }
-                            />
+                            /> */}
                         </div>
                         <div className={classes["info-section"]}>
                             <div className={classes["select-label"]}>
                                 Cylinder (CYL)
                             </div>
-                            <SelectSlot
+                            <input
+                                placeholder="Select Cylinder"
+                                className={classes["input"]}
+                                value={eyeValues?.leftEyeCYL}
+                                onChange={(value) =>
+                                    handleValueChange(
+                                        value.target?.value,
+                                        "leftEyeCYL"
+                                    )
+                                }
+                                type={"number"}
+                                step={0.01}
+                                min={-10}
+                                max={10}
+                            />
+                            {/* <SelectSlot
                                 placeholder="Select Cylinder"
                                 value={eyeValues?.leftEyeCYL}
                                 options={values?.cylinder}
@@ -312,7 +405,7 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole }) => {
                                         "leftEyeCYL"
                                     )
                                 }
-                            />
+                            /> */}
                         </div>
                     </div>
                 </LensSlot>
@@ -383,4 +476,21 @@ const SelectSlot = ({ options, ...rest }) => {
             ))}
         </select>
     );
+};
+
+const getIndexByMaterial = (value) => {
+    switch (value) {
+        case "Hi index 1.70 & above":
+            return 1;
+        case "Hi index 1.67":
+            return 2;
+        case "Hi index 1.60":
+            return 3;
+        case "Trivex":
+            return 4;
+        case "Polycarbonate":
+            return 5;
+        case "CR39":
+            return 6;
+    }
 };
