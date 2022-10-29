@@ -14,6 +14,7 @@ use App\Models\AddonType;
 use App\Models\UserAddOnSetting;
 use Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 
 class SettingController extends Controller
@@ -25,7 +26,7 @@ class SettingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $user_id = $request->userId;
         if(auth()->user()->id != $user_id){
@@ -58,7 +59,7 @@ class SettingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $user_id = $request->user_id;
         $data = $request->data;
@@ -120,7 +121,7 @@ class SettingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $data = $request->data;
@@ -156,8 +157,9 @@ class SettingController extends Controller
                 ]);
         
                 if ($validator->fails()) {
-                    return $this->sendError('Validation Error.', $validator->errors());
+                    throw (new ValidationException($validator));
                 }
+
                 $user_id = $request->userId;
                 $price = $request->price;
                 $brand_id = $request->brandId;
@@ -197,7 +199,7 @@ class SettingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $data = $request->data;

@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
+
 class RegisterController extends Controller
 {
 
@@ -31,7 +34,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $name = $request->name;
         $email = $request->email;
@@ -80,7 +83,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember_me)) {
             $user = Auth::user();
@@ -142,7 +145,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
       $user = User::where('email',$request->email)->first();
         if ($user) {
@@ -166,7 +169,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $email = $request->email;
@@ -207,7 +210,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $user = User::where(['email' => $request->email, 'verification_code' => $request->code])->first();
         if ($user) {
@@ -243,7 +246,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $user_id = $request->user_id;
         $old_password = $request->old_password;

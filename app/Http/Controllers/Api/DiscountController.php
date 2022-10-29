@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Discount;
 use Validator;
+use Illuminate\Validation\ValidationException;
+
 class DiscountController extends Controller
 {
 
@@ -17,7 +19,7 @@ class DiscountController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $user_id = $request->userId;
@@ -38,7 +40,7 @@ class DiscountController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $user_id = $request->userId;
@@ -69,7 +71,7 @@ class DiscountController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $id = $request->id;
@@ -99,7 +101,7 @@ class DiscountController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $discount =  Discount::find($request->id);
@@ -122,7 +124,7 @@ class DiscountController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $discount =  Discount::where('id',$request->discount_id)->where('user_id',auth()->user()->id)->first();

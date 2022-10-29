@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Validator;
+use Illuminate\Validation\ValidationException;
 
 class ProductController extends Controller
 {
@@ -19,7 +20,7 @@ class ProductController extends Controller
         ]);
         
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $user_id = $request->user_id;

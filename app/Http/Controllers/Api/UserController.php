@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Auth;
 use Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
+
+
 class UserController extends Controller
 {
     /**
@@ -23,11 +26,11 @@ class UserController extends Controller
     { 
 
         $validator = Validator::make($request->all(),[ 
-         'userId' => 'required',
-         'logo' => 'sometimes|mimes:jpeg,jpg,png,gif|max:1000'
+         'userId' => 'required'
         ]);   
 
         if($validator->fails()) {          
+            
             return response()->json(['error'=>$validator->errors()], 401);                        
         }  
 
@@ -85,7 +88,7 @@ class UserController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $client_card = Client::where('user_id',auth()->user()->id)->first();
