@@ -476,7 +476,7 @@ const DiscountTaxes = (props) => {
                                 } `}
                                 type="submit"
                             >
-                                Save
+                                Add
                             </button>
                         </div>
                     </form>
@@ -613,7 +613,7 @@ const DiscountTaxes = (props) => {
                                     } `}
                                     type="submit"
                                 >
-                                    Save
+                                    Add
                                 </button>
                             </div>
                         </div>

@@ -32,7 +32,7 @@ const TabsSection = (props) => {
             <Tabs.TabPane tab="Insurance Plans" key="4">
                 <InsurancePlans />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Eye Prescription" key="5">
+            <Tabs.TabPane tab="Glasses Prescription" key="5">
                 <EyePrescription />
             </Tabs.TabPane>
         </Tabs>
