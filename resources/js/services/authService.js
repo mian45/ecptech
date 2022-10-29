@@ -147,6 +147,26 @@ export function updateStaffLogin(credentials) {
                 });
         });
 }
-export function logout() {
-    return (dispatch) =>dispatch(action.authLogout());
+export function logout(userId) {
+    return (dispatch) =>{
+        new Promise((resolve, reject) => {
+            Http.post(`${process.env.MIX_REACT_APP_URL}/api/logout`, {
+                userId:userId
+                })
+                .then((res) => {
+                    dispatch(action.authLogout());
+                    return resolve();
+                })
+                .catch((err) => {
+                    const { status, errors } = err.response.data;
+                    const data = {
+                        status,
+                        errors,
+                    };
+                    return reject(data);
+                });
+        });
+        
+        
+        }
 }
