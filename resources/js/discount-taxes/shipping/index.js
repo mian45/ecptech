@@ -122,7 +122,7 @@ const ShippingSettings = ({ userId }) => {
                         <tr className="discount-output_body">
                             <td>{shipping.name}</td>
                             <td>${shipping.value}</td>
-                            <td>
+                            <td className="shipping-custom-col-3">
                                 <img
                                     style={{
                                         width: "18px",

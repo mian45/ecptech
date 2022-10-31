@@ -647,7 +647,7 @@ const DiscountTaxes = (props) => {
                                                     })}
                                         </td>
                                         <td>{obj.value}%</td>
-                                        <td className="col-3">
+                                        <td className="col-3 custom-tax-col-3">
                                             <img
                                                 style={{
                                                     width: "18px",
