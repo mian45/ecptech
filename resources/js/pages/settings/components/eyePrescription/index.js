@@ -59,128 +59,127 @@ const EyePrescription = ({ userId }) => {
         ) {
             return;
         } else {
+            handleInputValues(value, name, key);
+        }
+    };
+    const handleInputValues = (value, name, key) => {
+        if (key === "cylinder_from" || key === "cylinder_to") {
             const regix = new RegExp("[+-]?([0-9]*[.])?[0-9]+");
-            if (!regix.test(value)) {
+            if (regix.test(value) || value === "") {
+                handleCyl(value, name, key, +value);
+            } else {
+                return;
+            }
+        } else {
+            const regix = new RegExp("[+-]?([0-9]*[.])?[0-9]+");
+            if (regix.test(value) || value === "") {
+                handleSph(value, name, key, +value);
+            } else {
                 return;
             }
         }
     };
 
-    const handleInputBlur = (value, name, key) => {
-        const regix = new RegExp("[+-]?([0-9]*[.])?[0-9]+");
-        if (!regix.test(value)) {
-            const error = [...sphError];
-            const selectedError = [...error].find(
-                (item) => item?.label === name
-            );
-            selectedError.value = "Please choose a valid range";
-            setSphError([...error]);
+    const setEyeValue = (value, name, key) => {
+        const eyePrescription = [...eyeDetails];
+        const selectedMaterial = [...eyePrescription].find(
+            (material) => material?.name === name
+        );
+        selectedMaterial[key] = value;
+        setEyeDetails([...eyePrescription]);
+    };
+    const handleCYLError = (name) => {
+        const error = [...cylError];
+        const selectedError = [...error].find((item) => item?.label === name);
+        selectedError.value = "Please choose a valid range";
+        setCylError([...error]);
+    };
+    const handleSPHError = (name) => {
+        const error = [...sphError];
+        const selectedError = [...error].find((item) => item?.label === name);
+        selectedError.value = "Please choose a valid range";
+        setSphError([...error]);
+    };
+    const handleCyl = (value, name, key, parsedValue) => {
+        if (value > 10 || value < -10) {
+            handleCYLError(name);
             return;
         }
-        const parsedValue = +value;
-        if (key === "cylinder_from" || key === "cylinder_to") {
-            if (value > 10 || value < -10) {
-                const error = [...cylError];
-                const selectedError = [...error].find(
-                    (item) => item?.label === name
-                );
-                selectedError.value = "Please choose a valid range";
-                setCylError([...error]);
-                return;
+
+        const isError = eyeDetails?.some((item) => {
+            if (
+                item?.cylinder_from <= parsedValue &&
+                item?.cylinder_to >= parsedValue
+            ) {
+                return true;
             }
-            const isError = eyeDetails?.some((item) => {
-                if (
-                    item?.cylinder_from <= parsedValue &&
-                    item?.cylinder_to >= parsedValue
-                ) {
-                    return true;
-                }
-            });
-            const error = [...cylError];
-            const selectedError = [...error].find(
-                (item) => item?.label === name
-            );
-            if (isError) {
-                if (key === "cylinder_from") {
-                    selectedError.from = true;
-                }
-                if (key === "cylinder_to") {
-                    selectedError.to = true;
-                }
-                selectedError.value = "Please choose a valid range";
-                setCylError([...error]);
-            } else {
-                if (key === "cylinder_from") {
-                    selectedError.from = false;
-                }
-                if (key === "cylinder_to") {
-                    selectedError.to = false;
-                }
-                if (
-                    (key === "cylinder_from" && selectedError.to === false) ||
-                    (key === "cylinder_to" && selectedError.from === false)
-                ) {
-                    selectedError.value = "";
-                    setCylError([...error]);
-                    const eyePrescription = [...eyeDetails];
-                    const selectedMaterial = [...eyePrescription].find(
-                        (material) => material?.name === name
-                    );
-                    selectedMaterial[key] = value;
-                    setEyeDetails([...eyePrescription]);
-                }
+        });
+        const error = [...cylError];
+        const selectedError = [...error].find((item) => item?.label === name);
+        if (isError) {
+            if (key === "cylinder_from") {
+                selectedError.from = true;
             }
+            if (key === "cylinder_to") {
+                selectedError.to = true;
+            }
+            handleCYLError(name);
+            setEyeValue(value, name, key);
         } else {
-            if (value > 20 || value < -20) {
-                const error = [...sphError];
-                const selectedError = [...error].find(
-                    (item) => item?.label === name
-                );
-                selectedError.value = "Please choose a valid range";
-                setSphError([...error]);
-                return;
+            if (key === "cylinder_from") {
+                selectedError.from = false;
             }
-            const isError = eyeDetails?.some((item) => {
-                if (
-                    item?.sphere_from <= parsedValue &&
-                    item?.sphere_to >= parsedValue
-                ) {
-                    return true;
-                }
-            });
-            const error = [...sphError];
-            const selectedError = [...error].find(
-                (item) => item?.label === name
-            );
-            if (isError) {
-                if (key === "sphere_from") {
-                    selectedError.from = true;
-                }
-                if (key === "sphere_to") {
-                    selectedError.to = true;
-                }
-                selectedError.value = "Please choose a valid range";
+            if (key === "cylinder_to") {
+                selectedError.to = false;
+            }
+            if (
+                (key === "cylinder_from" && selectedError.to === false) ||
+                (key === "cylinder_to" && selectedError.from === false)
+            ) {
+                selectedError.value = "";
+                setCylError([...error]);
+                setEyeValue(value, name, key);
+            }
+        }
+    };
+    const handleSph = (value, name, key, parsedValue) => {
+        if (value > 20 || value < -20) {
+            handleSPHError(name);
+            return;
+        }
+        const isError = eyeDetails?.some((item) => {
+            if (
+                item?.sphere_from <= parsedValue &&
+                item?.sphere_to >= parsedValue
+            ) {
+                return true;
+            }
+        });
+        const error = [...sphError];
+        const selectedError = [...error].find((item) => item?.label === name);
+        if (isError) {
+            if (key === "sphere_from") {
+                selectedError.from = true;
+            }
+            if (key === "sphere_to") {
+                selectedError.to = true;
+            }
+            handleSPHError(name);
+            setEyeValue(value, name, key);
+        } else {
+            if (key === "sphere_from") {
+                selectedError.from = false;
+            }
+            if (key === "sphere_to") {
+                selectedError.to = false;
+            }
+            if (
+                (key === "sphere_from" && selectedError.to === false) ||
+                (key === "sphere_to" && selectedError.from === false)
+            ) {
+                selectedError.value = "";
                 setSphError([...error]);
-            } else {
-                if (key === "sphere_from") {
-                    selectedError.from = false;
-                }
-                if (key === "sphere_to") {
-                    selectedError.to = false;
-                }
-                if (
-                    (key === "sphere_from" && selectedError.to === false) ||
-                    (key === "sphere_to" && selectedError.from === false)
-                ) {
-                    selectedError.value = "";
-                    setSphError([...error]);
-                    const eyePrescription = [...eyeDetails];
-                    const selectedMaterial = [...eyePrescription].find(
-                        (material) => material?.name === name
-                    );
-                    selectedMaterial[key] = value;
-                    setEyeDetails([...eyePrescription]);
-                }
+                setEyeValue(value, name, key);
             }
         }
     };
@@ -213,7 +212,6 @@ const EyePrescription = ({ userId }) => {
                             onChange={handleInputChange}
                             sphError={sphError}
                             cylError={cylError}
-                            onBlur={handleInputBlur}
                         />
                     );
                 })}
@@ -236,13 +234,7 @@ const mapStateToProps = (state) => ({
 });
 export default connect(mapStateToProps)(EyePrescription);
 
-const EyePrescriptionSlot = ({
-    data,
-    onChange,
-    sphError,
-    cylError,
-    onBlur,
-}) => {
+const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
     const sphErrValue = sphError?.find(
         (item) => data?.name === item?.label
     )?.value;
@@ -269,15 +261,9 @@ const EyePrescriptionSlot = ({
                             step={0.01}
                             min={-20}
                             max={20}
+                            value={data["sphere_from"] || ""}
                             onChange={(e) =>
                                 onChange(
-                                    e.target?.value,
-                                    data?.name,
-                                    "sphere_from"
-                                )
-                            }
-                            onBlur={(e) =>
-                                onBlur(
                                     e.target?.value,
                                     data?.name,
                                     "sphere_from"
@@ -292,15 +278,13 @@ const EyePrescriptionSlot = ({
                             step={0.01}
                             min={-20}
                             max={20}
+                            value={data["sphere_to"] || ""}
                             onChange={(e) =>
                                 onChange(
                                     e.target?.value,
                                     data?.name,
                                     "sphere_to"
                                 )
-                            }
-                            onBlur={(e) =>
-                                onBlur(e.target?.value, data?.name, "sphere_to")
                             }
                         />
                     </div>
@@ -320,15 +304,9 @@ const EyePrescriptionSlot = ({
                             step={0.01}
                             min={-10}
                             max={10}
+                            value={data["cylinder_from"] || ""}
                             onChange={(e) =>
                                 onChange(
-                                    e.target?.value,
-                                    data?.name,
-                                    "cylinder_from"
-                                )
-                            }
-                            onBlur={(e) =>
-                                onBlur(
                                     e.target?.value,
                                     data?.name,
                                     "cylinder_from"
@@ -343,15 +321,9 @@ const EyePrescriptionSlot = ({
                             step={0.01}
                             min={-10}
                             max={10}
+                            value={data["cylinder_to"] || ""}
                             onChange={(e) =>
                                 onChange(
-                                    e.target?.value,
-                                    data?.name,
-                                    "cylinder_to"
-                                )
-                            }
-                            onBlur={(e) =>
-                                onBlur(
                                     e.target?.value,
                                     data?.name,
                                     "cylinder_to"
