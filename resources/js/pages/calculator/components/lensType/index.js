@@ -108,22 +108,27 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                     }
                 });
             });
-            if (values.isCopayStandardProgressives) {
-                handleError(collection?.category, "Standard");
-            } else if (values.isCopayPremiumProgressives) {
-                handleError(collection?.category, "Premium");
-            } else if (values.isCopayCustomProgressives) {
-                handleError(collection?.category, "Custom");
+            if (
+                values.isCopayStandardProgressives &&
+                collection?.category === "Standard"
+            ) {
+                setError("");
+            } else if (
+                values.isCopayPremiumProgressives &&
+                collection?.category === "Premium"
+            ) {
+                setError("");
+            } else if (
+                values.isCopayCustomProgressives &&
+                collection?.category === "Custom"
+            ) {
+                setError("");
+            } else {
+                setError("Are you sure? You don't want to avail discount");
             }
         }
     };
-    const handleError = (category, value = "") => {
-        if (category !== value) {
-            setError("Are you sure? You don't want to avail discount");
-        } else {
-            setError("");
-        }
-    };
+
     return (
         <>
             {lensTypeVisibility ? (
