@@ -39,7 +39,7 @@ class Controller extends BaseController
     public function sendError($error, $errorMessages = [], $code = 200)
     { 
         $response = [
-            'statusCode' => 200,
+            'statusCode' => $code,
             'message' => $error,
         ];
 
