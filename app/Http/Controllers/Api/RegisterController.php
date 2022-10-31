@@ -22,27 +22,24 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+       
+        $validator =  Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'roleId' => 'required',
-            'password' => [
-                'required',
-                'string',
-                'confirmed',
-                'min:8',             // must be at least 8 characters in length
-                'regex:/[a-z]/',      // must contain at least one lowercase letter
-                'regex:/[A-Z]/',      // must contain at least one uppercase letter
-                'regex:/[0-9]/',      // must contain at least one digit
-                'regex:/[@$!%*#?&]/', // must contain a special character
-                new isValidPassword(),
-            ],
-
-
+            'password' => 'required|string|min:8|regex:/^.*(?=.*[a-z]*[a-z])(?=.*[A-Z]*[A-Z])(?=.*[\d])(?=.*[@#!$%&*()_+}{><?":;`]).*$/|confirmed',
+        ],[
+            'regex'=>'Password must be at least 8 characters and contain at least one Uppercase and Lowercase letters, digits and special characters like @#!$%&*()_+}{><?":;`'
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors(),400);
+
+            // $response = [
+            //     'message' => $validator->customMessages['regex']
+            // ];
+            // return response()->json($response,422);
+            return response()->json(['errors' => $validator->errors()], 422);
+            // return $this->sendError('Validation Error.', $validator->customMessages['regex'],400);
         }
         $name = $request->name;
         $email = $request->email;
@@ -185,23 +182,14 @@ class RegisterController extends Controller
 
     public function updateStaffLogin(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+       
+        $validator =  Validator::make($request->all(), [
             'email' => 'required|email',
             'id' => 'required',
-            'password' => [
-                'required',
-                'string',
-                'confirmed',
-                'min:8',             // must be at least 8 characters in length
-                'regex:/[a-z]/',      // must contain at least one lowercase letter
-                'regex:/[A-Z]/',      // must contain at least one uppercase letter
-                'regex:/[0-9]/',      // must contain at least one digit
-                'regex:/[@$!%*#?&]/', // must contain a special character
-                new isValidPassword(),
-            ],
-
+            'password' => 'required|string|min:8|regex:/^.*(?=.*[a-z]*[a-z])(?=.*[A-Z]*[A-Z])(?=.*[\d])(?=.*[@#!$%&*()_+}{><?":;`]).*$/|confirmed',
+        ],[
+            'regex'=>'Password must be at least 8 characters and contain at least one Uppercase and Lowercase letters, digits and special characters like @#!$%&*()_+}{><?":;`'
         ]);
-
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
@@ -272,13 +260,13 @@ class RegisterController extends Controller
 
     public function changePassword(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validator =  Validator::make($request->all(), [
             'old_password' => 'required',
-            'password' => 'required',
-            'password_confirmation' => 'required|required_with:password|same:password'
-
+            'password' => 'required|string|min:8|regex:/^.*(?=.*[a-z]*[a-z])(?=.*[A-Z]*[A-Z])(?=.*[\d])(?=.*[@#!$%&*()_+}{><?":;`]).*$/|confirmed',
+        ],[
+            'regex'=>'Password must be at least 8 characters and contain at least one Uppercase and Lowercase letters, digits and special characters like @#!$%&*()_+}{><?":;`'
         ]);
-
+        
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
