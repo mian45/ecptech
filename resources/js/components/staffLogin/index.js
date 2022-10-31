@@ -8,6 +8,7 @@ import AuthService from "../../services";
 const defaultValues = {
     email: "",
     password: "",
+    confirmPassword:"",
 };
 
 const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
@@ -115,6 +116,30 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                     />
                                 </div>
                             </div>
+                            <div className={classes["sub-container"]}>
+                              
+                                <div className={`${classes["input-wrapper"]} ${classes['margin-top-container']}`}>
+                                    <div className={classes["subtitle"]}>
+                                        Confirm Password
+                                    </div>
+                                    <input
+                                        id="confirmPassword"
+                                        type="password"
+                                        value={values.confirmPassword}
+                                        className={classes["input"]}
+                                        name="confirmPassword"
+                                        placeholder="Confirm Password"
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        disabled={!isEdit && staffUser?.id}
+                                    />
+                                    <ErrorMessage
+                                        name="confirmPassword"
+                                        component="div"
+                                        className={classes["error"]}
+                                    />
+                                </div>
+                            </div>
                             <div>
                                 <button
                                     type="submit"
@@ -204,5 +229,6 @@ const LoginValidation = Yup.object().shape({
               return true;
             }
             return false;
-          })
+          }),
+    confirmPassword: Yup.string().oneOf([Yup.ref('password'), null], "Passwords don't match").required('Confirm Password is required'),
 });
