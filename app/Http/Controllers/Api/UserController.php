@@ -24,7 +24,7 @@ class UserController extends Controller
 
         $validator = Validator::make($request->all(),[ 
          'userId' => 'required',
-         'logo' => 'sometimes|mimes:jpeg,jpg,png,gif|max:2000'
+         'logo' => 'sometimes|mimes:jpeg,jpg,png,gif|max:'.config('app.logo_size')
         ]);   
 
         if($validator->fails()) {          
