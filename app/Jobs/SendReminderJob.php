@@ -22,6 +22,7 @@ class SendReminderJob implements ShouldQueue
     protected $details;
     public function __construct($details)
     {
+        Log::info('ReminderMail'); 
         $this->details = $details;
     }
 
@@ -32,7 +33,7 @@ class SendReminderJob implements ShouldQueue
      */
     public function handle()
     {
-      
+        Log::info('ReminderMail'); 
         $email = $this->details['email'];
         Mail::to($email)->send(new \App\Mail\ReminderMail($this->details));
      

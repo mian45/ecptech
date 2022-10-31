@@ -33,13 +33,21 @@ class UnPaidReminderCron extends Command
     {
       
        $reminders = Reminder::where('is_active',1)->where('invoice_type','unpaid')->where('type', '!=' , 'orderComplete')->get();
+       $details = [
+         'email' => 'waseem.mushtaq@wadic.dev',
+         'title' => 'Mail from ECPTech.com',
+         'body' => 'hi this is testing mail'
+        ];
+
+        dispatch(new SendReminderJob($details));
        foreach($reminders as $reminder){
-             
+         Log::info('This is some useful information.');    
          $invoice_type = $reminder->invoice_type;
          $body = $reminder->body;
          $TimeZone = $reminder->TimeZone;
          $timezone = $TimeZone->name;
          $day_after = $reminder->send_after_day;
+         $after_send_type = $reminder->after_send_type;
          $invoices = Invoice::where('status','unpaid')->get();
         
          foreach($invoices as $invoice){
@@ -47,8 +55,23 @@ class UnPaidReminderCron extends Command
             config(['app.timezone' => $timezone]);
             $invoice_created =Carbon::createFromFormat('Y-m-d H:i:s', $invoice->created_at)->format('Y-m-d');
             $current_date = Carbon::now()->format('Y-m-d');
-            $invoice_date = Carbon::parse($invoice_created)->addDays($day_after);
-            $day_after_date = Carbon::parse($invoice_created)->addDays($day_after + 1);
+            if($after_send_type == "hour"){
+               $invoice_date = Carbon::parse($invoice_created)->addHours($day_after);
+               $day_after_date = Carbon::parse($invoice_created)->addHours($day_after + 1);
+              }elseif($after_send_type == "day"){
+               Log::info('day');
+               $invoice_date = Carbon::parse($invoice_created)->addDays($day_after);
+               $day_after_date = Carbon::parse($invoice_created)->addDays($day_after + 1);
+              }elseif($after_send_type == "week"){
+               $invoice_date = Carbon::parse($invoice_created)->addWeeks($day_after);
+               $day_after_date = Carbon::parse($invoice_created)->addWeeks($day_after + 1);
+              }elseif($after_send_type == "month"){
+               $invoice_date = Carbon::parse($invoice_created)->addMonths($day_after);
+               $day_after_date = Carbon::parse($invoice_created)->addMonths($day_after + 1);
+              }elseif($after_send_type == "year"){
+               $invoice_date = Carbon::parse($invoice_created)->addYears($day_after);
+               $day_after_date = Carbon::parse($invoice_created)->addYears($day_after + 1);
+              }
              $send_time = date("H:i", strtotime($invoice->send_time));
              if($current_date > $invoice_date && $current_date < $day_after_date){
 
@@ -56,7 +79,7 @@ class UnPaidReminderCron extends Command
               $today_date = Carbon::now();
               $result = $sending_date->eq($today_date);
              if($result && $invoice->customer->email){
-              
+               Log::info('inside ');
                   $email = $invoice->customer->email;
                   $details = [
                    'email' => $email,
