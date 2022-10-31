@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import { Radio } from "antd";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
 import CustomRadio from "../../../../components/customRadio";
 import lensIcon from "../../../../../images/calculator/lens.svg";
+import Axios from "../../../../Http";
 
-const LensType = ({ formProps, calculatorObj }) => {
+const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
     const { values, handleChange, handleBlur } = formProps;
     const lensTypeVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
             (ques) => ques.question === "Lens Type"
         )?.visibility;
+    const [error, setError] = useState("");
     const showActiveState = () => {
         if (values?.lensType && values?.lensTypeValue) {
             return true;
@@ -45,6 +47,31 @@ const LensType = ({ formProps, calculatorObj }) => {
 
         return sortedLenses;
     };
+    const getBrandByLens = async (e) => {
+        try {
+            handleChange(e);
+            const targetedLens = calculatorObj["lens_types"]?.find(
+                (val) => val?.title === e?.target?.value
+            );
+            if (targetedLens?.brands && targetedLens?.brands.length > 0) {
+                return;
+            } else {
+                const lensId = targetedLens?.id;
+                const res = await Axios.post(
+                    `${process.env.MIX_REACT_APP_URL}/api/get-brands`,
+                    { lense_type_id: lensId }
+                );
+                const calculatorValues = { ...calculatorObj };
+                const selectedLens = calculatorValues["lens_types"]?.find(
+                    (item) => item.id === lensId
+                );
+                selectedLens.brands = res?.data?.data?.brands;
+                setCalculatorObj(calculatorValues);
+            }
+        } catch (err) {
+            console.log("error while getting brands");
+        }
+    };
     const getLensSubValues = () => {
         const selectedLensType = calculatorObj["lens_types"]?.find(
             (value) => value?.title === values.lensType
@@ -60,6 +87,42 @@ const LensType = ({ formProps, calculatorObj }) => {
             });
         });
         return lenses;
+    };
+    const handleBrandSelection = (e) => {
+        handleChange(e);
+        if (values?.lensType === "PAL") {
+            const targetedLens = calculatorObj["lens_types"]?.find(
+                (val) => val?.title === "PAL"
+            );
+            let collection = null;
+            targetedLens?.brands?.forEach((item) => {
+                item.collections?.forEach((val) => {
+                    if (val?.display_name) {
+                        if (val.display_name == e.target?.value) {
+                            collection = val;
+                        }
+                    } else {
+                        if (val.title == e.target?.value) {
+                            collection = val;
+                        }
+                    }
+                });
+            });
+            if (values.isCopayStandardProgressives) {
+                handleError(collection?.category, "Standard");
+            } else if (values.isCopayPremiumProgressives) {
+                handleError(collection?.category, "Premium");
+            } else if (values.isCopayCustomProgressives) {
+                handleError(collection?.category, "Custom");
+            }
+        }
+    };
+    const handleError = (category, value = "") => {
+        if (category !== value) {
+            setError("Are you sure? You don't want to avail discount");
+        } else {
+            setError("");
+        }
     };
     return (
         <>
@@ -77,7 +140,7 @@ const LensType = ({ formProps, calculatorObj }) => {
                             />
                             <Radio.Group
                                 onBlur={handleBlur}
-                                onChange={handleChange}
+                                onChange={getBrandByLens}
                                 value={values?.lensType}
                                 id="lensType"
                                 name="lensType"
@@ -102,7 +165,7 @@ const LensType = ({ formProps, calculatorObj }) => {
                                     </div>
                                     <Radio.Group
                                         onBlur={handleBlur}
-                                        onChange={handleChange}
+                                        onChange={handleBrandSelection}
                                         value={values?.lensTypeValue}
                                         id="lensTypeValue"
                                         name="lensTypeValue"
@@ -129,6 +192,11 @@ const LensType = ({ formProps, calculatorObj }) => {
                                             }
                                         )}
                                     </Radio.Group>
+                                    {error && (
+                                        <div className={classes["error"]}>
+                                            {error}
+                                        </div>
+                                    )}
                                     <FormikError name={"lensTypeValue"} />
                                 </>
                             )}
