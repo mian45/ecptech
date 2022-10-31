@@ -11,3 +11,7 @@ Route::post('store-addon-csv-data', [InvoiceCalculaterController::class, 'storeA
 Route::post('store-code-csv-data', [InvoiceCalculaterController::class, 'storeCodeCSVData']);
 
 Route::post('get-lenses-price', [InvoiceCalculaterController::class, 'getLensePrices']);
+
+Route::post('get-brands', [InvoiceCalculaterController::class, 'getBrands']);
+
+

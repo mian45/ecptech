@@ -465,7 +465,7 @@ const EmailSetting = (props) => {
                                             className="ant-select-item-option-content"
                                             value={"orderComplete"}
                                         >
-                                            Order Complete
+                                           Order Paid
                                         </Option>
                                         <Option
                                             className="ant-select-item-option-content"
