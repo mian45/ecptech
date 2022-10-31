@@ -193,15 +193,15 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole }) => {
 
         const getResult = () => {
             const rightMaterial = getIndexByMaterial(
-                suggestedMaterial?.rightEye?.SPH
+                suggestedMaterial?.rightEye?.materialToUse
             );
             const leftMaterial = getIndexByMaterial(
-                suggestedMaterial?.rightEye?.SPH
+                suggestedMaterial?.leftEye?.materialToUse
             );
-            if (leftMaterial < rightMaterial) {
-                return suggestedMaterial?.rightEye?.SPH;
+            if (leftMaterial <= rightMaterial) {
+                return suggestedMaterial?.leftEye?.materialToUse;
             } else {
-                return suggestedMaterial?.rightEye?.SPH;
+                return suggestedMaterial?.rightEye?.materialToUse;
             }
         };
 
