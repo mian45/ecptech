@@ -653,9 +653,7 @@ const DiscountTaxes = (props) => {
                                             />
                                             <Switch
                                                 {...label}
-                                                style={{
-                                                    marginLeft: "20px",
-                                                }}
+                                                className="switch-margin"
                                             />
                                         </td>
                                     </tr>
