@@ -27,9 +27,18 @@ class RegisterController extends Controller
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'roleId' => 'required',
-            'password' => 'required|string|min:8|regex:/^.*(?=.*[a-z]*[a-z])(?=.*[A-Z]*[A-Z])(?=.*[\d])(?=.*[@#!$%&*()_+}{><?":;`]).*$/|confirmed',
-        ],[
-            'regex'=>'Password must be at least 8 characters and contain at least one Uppercase and Lowercase letters, digits and special characters like @#!$%&*()_+}{><?":;`'
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                'min:8',             
+                'regex:/[a-z]/',      
+                'regex:/[A-Z]/',     
+                'regex:/[0-9]/',     
+                'regex:/[@$!%*#?&]/', 
+                new isValidPassword(),
+            ],
+            
         ]);
 
         if ($validator->fails()) {
