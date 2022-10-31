@@ -522,9 +522,7 @@ const DiscountTaxes = (props) => {
                                             />
                                             <Switch
                                                 {...label}
-                                                style={{
-                                                    marginLeft: "20px",
-                                                }}
+                                               className="switch-margin"
                                                 checked={
                                                     dis?.status == "active"
                                                         ? true
