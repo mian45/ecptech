@@ -101,10 +101,17 @@ class RegisterController extends Controller
 
                 $profile = Client::where('user_id',$client->id)->first();
                 
-                $success['business_name'] = $profile->business_name;
-                $success['theme_color'] = $profile->theme_color;
-                $success['theme_mode'] = $profile->theme_mode;
-                $success['logo'] = url('uploads/'.$user_id.'/'.$profile->logo);
+                if ($profile) {
+                    $success['business_name'] = $profile->business_name;
+                    $success['theme_color'] = $profile->theme_color;
+                    $success['theme_mode'] = $profile->theme_mode;
+                    $success['logo'] = url('uploads/'.$user_id.'/'.$profile->logo);
+                }else{
+                    $success['business_name'] = null;
+                    $success['theme_color'] = null;
+                    $success['theme_mode'] = null;
+                    $success['logo'] = null;
+                }
 
 
             $role['id'] = $user->role_id;
