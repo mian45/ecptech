@@ -626,6 +626,7 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
             (item) =>
                 item?.lens_material_title === receipt?.values?.lensMaterial
         );
+    console.log("materials", materials);
     if (materials?.length <= 0) {
         return {
             lensPrice: lensPrice,
@@ -633,7 +634,10 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
         };
     } else if (materials?.characteristics?.length === 1) {
         if (receipt?.values?.visionPlan === "VSP Advantage") {
-            if (materials[0]?.characteristics?.price?.trim() === "80% of U&C") {
+            if (
+                (materials[0]?.characteristics?.price || "")?.trim() ===
+                "80% of U&C"
+            ) {
                 lensPrice =
                     parseFloat(
                         getPrivatePayLensPices(
@@ -644,26 +648,28 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                     ) * 0.8;
             } else {
                 if (
-                    materials[0]?.characteristics?.price?.trim() === "NULL" ||
-                    !materials[0]?.characteristics?.price?.trim()
+                    (materials[0]?.characteristics?.price || "")?.trim() ===
+                        "NULL" ||
+                    !(materials[0]?.characteristics?.price || "")?.trim()
                 ) {
                     lensPrice = 0;
                 } else {
-                    lensPrice = materials[0]?.characteristics?.price
+                    lensPrice = (materials[0]?.characteristics?.price || "")
                         ?.trim()
                         ?.slice(1, lensPrice?.length);
                 }
             }
         } else {
             if (
-                materials[0]?.characteristics?.price?.trim() === "NULL" ||
-                !materials[0]?.characteristics?.price?.trim()
+                (materials[0]?.characteristics?.price || "")?.trim() ===
+                    "NULL" ||
+                !(materials[0]?.characteristics?.price || "")?.trim()
             ) {
                 lensPrice = 0;
             } else {
-                lensPrice = materials[0]?.characteristics?.price
+                lensPrice = (materials[0]?.characteristics?.price || "")
                     ?.trim()
-                    ?.slice(1, lensPrice?.trim()?.length);
+                    ?.slice(1, (lensPrice || "")?.trim()?.length);
             }
         }
         return {
@@ -679,7 +685,10 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
         );
         if (materials) {
             if (receipt?.values?.visionPlan === "VSP Advantage") {
-                if (baseCharecterstics[0]?.price?.trim() === "80% of U&C") {
+                if (
+                    (baseCharecterstics[0]?.price || "")?.trim() ===
+                    "80% of U&C"
+                ) {
                     lensPrice =
                         parseFloat(
                             getPrivatePayLensPices(
@@ -690,21 +699,21 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                         ) * 0.8;
                 } else {
                     if (
-                        materials[0]?.characteristics?.price?.trim() ===
+                        (materials[0]?.characteristics?.price || "")?.trim() ===
                             "NULL" ||
-                        !materials[0]?.characteristics?.price?.trim()
+                        !(materials[0]?.characteristics?.price || "")?.trim()
                     ) {
                         lensPrice = 0;
                     } else {
-                        lensPrice = baseCharecterstics[0]?.price
+                        lensPrice = (baseCharecterstics[0]?.price || "")
                             ?.trim()
-                            ?.slice(1, lensPrice?.trim()?.length);
+                            ?.slice(1, (lensPrice || "")?.trim()?.length);
                     }
                 }
                 baseCharecterstics.splice(0, 1);
                 const restBases = [...baseCharecterstics, ...TACharecterstics];
                 restBases.forEach((item) => {
-                    if (item?.price?.trim() === "80% of U&C") {
+                    if ((item?.price || "")?.trim() === "80% of U&C") {
                         lensPrice =
                             parseFloat(
                                 getPrivatePayMaterialPices(
@@ -715,51 +724,59 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                             ) * 0.8;
                     } else {
                         if (
-                            item?.price?.trim() === "NULL" ||
-                            !item?.price?.trim()
+                            (item?.price || "")?.trim() === "NULL" ||
+                            !(item?.price || "")?.trim()
                         ) {
                             lensPrice = 0;
                         } else {
                             materialPrice =
                                 materialPrice +
                                 parseInt(
-                                    item?.price
+                                    (item?.price || "")
                                         ?.trim()
-                                        ?.slice(1, lensPrice?.trim()?.length)
+                                        ?.slice(
+                                            1,
+                                            (item?.price || "")?.trim()?.length
+                                        )
                                 );
                         }
                     }
                 });
             } else {
                 if (
-                    baseCharecterstics[0]?.price?.trim() === "NULL" ||
-                    !baseCharecterstics[0]?.price?.trim()
+                    (baseCharecterstics[0]?.price || "")?.trim() === "NULL" ||
+                    !(baseCharecterstics[0]?.price || "")?.trim()
                 ) {
                     lensPrice = 0;
                 } else {
-                    lensPrice = baseCharecterstics[0]?.price
+                    lensPrice = (baseCharecterstics[0]?.price || "")
                         ?.trim()
                         ?.slice(
                             1,
-                            baseCharecterstics[0]?.price?.trim()?.length
+                            (baseCharecterstics[0]?.price || "")?.trim()?.length
                         );
                 }
                 baseCharecterstics.splice(0, 1);
                 const restBases = [...baseCharecterstics, ...TACharecterstics];
                 restBases.forEach((item) => {
                     if (
-                        item?.price?.trim() === "NULL" ||
-                        !item?.price?.trim()
+                        (item?.price || "")?.trim() === "NULL" ||
+                        !(item?.price || "")?.trim()
                     ) {
                         lensPrice = 0;
                     } else {
-                        materialPrice =
-                            materialPrice +
-                            parseInt(
-                                item?.price
+                        let currentPrice = 0;
+                        if (!!item?.price) {
+                            currentPrice = parseInt(
+                                (item?.price || "")
                                     ?.trim()
-                                    ?.slice(1, lensPrice?.trim()?.length)
+                                    ?.slice(
+                                        1,
+                                        (item?.price || "")?.trim()?.length
+                                    ) || 0
                             );
+                        }
+                        materialPrice = materialPrice + currentPrice;
                     }
                 });
                 return {

@@ -437,7 +437,7 @@ export const getPrivatePayAntireflective = (value, calculatorObj) => {
 };
 
 export const getPrivatePayPhotochromic = (value, calculatorObj) => {
-    const photochromicAddons = calculatorObj?.addons.find(
+    const photochromicAddons = calculatorObj?.addons?.find(
         (item) => item?.title === "Photochromoics"
     );
     let total = 0;
