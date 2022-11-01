@@ -440,11 +440,10 @@ export const getPrivatePayPhotochromic = (value, calculatorObj) => {
     const photochromicAddons = calculatorObj?.addons?.find(
         (item) => item?.title === "Photochromoics"
     );
-    let total = 0;
     const selectedPhotochromic = photochromicAddons?.addons?.find(
         (item) => item.title === value
     )?.price;
-    total = total + parseFloat(selectedPhotochromic || 0) || 0;
+    return parseFloat(selectedPhotochromic || 0) || 0;
 };
 
 export const getPrivatePayGlasses = (receipt, calculatorObj) => {
