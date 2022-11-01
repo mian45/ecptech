@@ -96,7 +96,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/addTax`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/add-tax`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -124,7 +124,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/editTax`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/edit-tax`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -151,7 +151,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/deleteTax`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/delete-tax`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -212,7 +212,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "get",
-            url: `${process.env.MIX_REACT_APP_URL}/api/getStates`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/get-states`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -355,7 +355,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "get",
-            url: `${process.env.MIX_REACT_APP_URL}/api/getTaxes?userId=${props.userID}`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/get-taxes?userId=${props.userID}`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -402,8 +402,9 @@ const DiscountTaxes = (props) => {
     };
     const onChangeDiscountActive = (e, disc, index) => {
         let data = new FormData();
-        data.append("discount_id", disc.id);
+        data.append("discountId", disc.id);
         data.append("status", e ? "active" : "inactive");
+        data.append("userId", props.userID);
         let config = {
             method: "post",
             url: `${process.env.MIX_REACT_APP_URL}/api/discount-status`,
@@ -421,6 +422,28 @@ const DiscountTaxes = (props) => {
                 console.log(error);
             });
     };
+    const onChangeTaxActive=(e,obj,index)=>{
+        let data = new FormData();
+        data.append("TaxId", obj.id);
+        data.append("status", e ? "active" : "inactive");
+        data.append("userId", props.userID);
+        let config = {
+            method: "post",
+            url: `${process.env.MIX_REACT_APP_URL}/api/change-tax-status`,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            data: data,
+        };
+
+        axios(config)
+            .then(function (response) {
+                getTaxes();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
     return (
         <div className="discount-container discount-tax">
             <p className="main discount-container-page-title">{`Discounts & Taxes`}</p>
@@ -622,12 +645,12 @@ const DiscountTaxes = (props) => {
                             </tr>
                         )}
                         {tax?.length > 0 &&
-                            tax?.map((obj) => {
+                            tax?.map((obj,index) => {
                                 return (
                                     <tr className="discount-output_body discount-row">
                                         <td className="row-1">{obj.name}</td>
                                         <td>{obj.value}%</td>
-                                        <td className="col-3 custom-tax-col-3">
+                                        <td className="col-4 custom-tax-col-3">
                                             <img
                                                 style={{
                                                     width: "18px",
@@ -648,12 +671,15 @@ const DiscountTaxes = (props) => {
                                                 }}
                                                 src={cross}
                                                 onClick={() => {
-                                                    handleDeleteTax(obj.id);
+                                                    handleDeleteTax(obj.id);    
                                                 }}
                                             />
+                                            {console.log("the data is here",obj)}
                                             <Switch
                                                 {...label}
                                                 className="switch-margin"
+                                                checked={obj?.status==='active'?true:false}
+                                                onChange={(e)=>{onChangeTaxActive(e,obj,index)}}
                                             />
                                         </td>
                                     </tr>
