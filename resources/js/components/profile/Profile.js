@@ -9,14 +9,14 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-const Profile = ({ userId, closeModal }) => {
+const Profile = ({ userId, closeModal,user }) => {
     return (
         <div className={classes["backdrop"]} onClick={closeModal}>
             <div
                 className={classes["profile"]}
                 onClick={(e) => e.stopPropagation()}
             >
-                <ProfileInfoSection userId={userId} />
+                <ProfileInfoSection userId={userId} user={user}/>
                 <ProfilePasswordValidations userId={userId} />
             </div>
         </div>
@@ -25,6 +25,7 @@ const Profile = ({ userId, closeModal }) => {
 
 const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
+    user:state.Auth.user
 });
 export default connect(mapStateToProps)(Profile);
 
@@ -35,11 +36,11 @@ const profileValidations = Yup.object().shape({
         .required("Name is Required"),
 });
 
-const ProfileInfoSection = ({ userId }) => {
+const ProfileInfoSection = ({ userId,user }) => {
     const defaultProfileState = {
-        businessName: "",
+        businessName: user?.buisnessName?user?.buisnessName:'',
         profileImage: null,
-        themeColor: "#6FA5CB",
+        themeColor: user?.themeColor?user?.themeColor:"#6FA5CB",
         themeType: 0,
     };
 
