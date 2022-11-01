@@ -10,7 +10,6 @@ use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-// use Illuminate\Validation\Rule;
 use App\Rules\IsValidPassword;
 use Illuminate\Support\Facades\Hash;
 class RegisterController extends Controller
@@ -75,7 +74,6 @@ class RegisterController extends Controller
         if ($role == 'staff') {
             $userData['client_id'] = $request->clientId;
         }
-        //return $this->sendResponse($userData, 'User register successfully.');
         $user = User::create($userData);
 
         $success['id'] =  $user->id;
