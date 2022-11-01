@@ -51,6 +51,7 @@ class DiscountController extends Controller
         $discount->user_id = $user_id;
         $discount->name = $name;
         $discount->value = $value;
+        $discount->status = 'active';
         $discount->save();
 
         if($discount){
@@ -58,6 +59,7 @@ class DiscountController extends Controller
             $success['user_id'] = $discount->user_id;
             $success['name'] = $discount->name;
             $success['value'] = $discount->value;
+            $success['status'] = $discount->status;
             return $this->sendResponse($success, 'Discount add successfully');
         }
         return $this->sendError('Something went wrong!');
@@ -67,7 +69,8 @@ class DiscountController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'name' => 'required',
-            'value' => 'required'
+            'value' => 'required',
+            'status' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -77,16 +80,18 @@ class DiscountController extends Controller
         $id = $request->id;
         $name = $request->name;
         $value = $request->value;
-
+        $status = $request->status;
         $discount = Discount::where('id',$id)->first();
         if($discount){
         $discount->name = $name;
         $discount->value = $value;
+        $discount->status = $status;
         $discount->save();
         $success['id'] = $discount->id;
         $success['user_id'] = $discount->user_id;
         $success['name'] = $discount->name;
         $success['value'] = $discount->value;
+        $success['status'] = $discount->status;
         return $this->sendResponse($success, 'Discount Edit successfully');
 
         }
@@ -118,7 +123,8 @@ class DiscountController extends Controller
     public function changeStatus(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'discount_id' => 'required',
+            'userId' => 'required',
+            'discountId' => 'required',
             'status' => "required|in:active,inactive",
 
         ]);
@@ -127,12 +133,19 @@ class DiscountController extends Controller
             throw (new ValidationException($validator));
         }
 
-        $discount =  Discount::where('id',$request->discount_id)->where('user_id',auth()->user()->id)->first();
+        $user_id = $request->userId;
+        $discount =  Discount::where('id',$request->discountId)->first();
+       
         if($discount){
             $discount->status = $request->status;
             $discount->save();
-            return $this->sendResponse([], 'Discount Status Changed Successfully');
+            $success['id'] = $discount->id;
+            $success['user_id'] = $discount->user_id;
+            $success['name'] = $discount->name;
+            $success['value'] = $discount->value;
+            $success['status'] = $discount->status;
+            return $this->sendResponse($success, 'Discount Status Changed Successfully');
         }
-        return $this->sendError('Discount not found');
+        return $this->sendError('Discount not found',[],402);
     }
 }
