@@ -58,6 +58,8 @@ return [
 
     'asset_url' => env('ASSET_URL'),
 
+    'logo_size' => env('LOGO_SIZE'),
+
     /*
     |--------------------------------------------------------------------------
     | Application Timezone
