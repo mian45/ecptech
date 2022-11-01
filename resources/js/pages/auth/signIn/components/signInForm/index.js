@@ -157,9 +157,7 @@ const SignInForm = ({ userRole, dispatch }) => {
                                         }
                                     />
                                     <button
-                                        disabled={
-                                            !(isValid && dirty) || isSubmitting
-                                        }
+                                        disabled={!(isValid && dirty)}
                                         className={classes["submit-button"]}
                                     >
                                         Login

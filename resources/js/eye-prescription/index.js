@@ -393,7 +393,7 @@ const EyePrescription = (props) => {
                 <div className="eye-prescription_block">
                     <button
                         onClick={handleSubmit}
-                        className="eye-prescription_button"
+                        className="eye-prescription_button presc-custom-button"
                         disabled={saveState}
                         style={{
                             backgroundColor: saveState ? "#ccc" : "",

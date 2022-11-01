@@ -190,7 +190,7 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
             >{`${selectedAddons}`}</div>
             {addonsList?.map((collection, index) => (
                 <CollectionSlot
-                    key={index}
+                    key={`${collection?.title || ""}+${index}`}
                     collection={collection}
                     handleCheckbox={handleCheckbox}
                     handleDisplayNameChange={handleDisplayNameChange}

@@ -70,7 +70,7 @@ const InvoicesStatsChart = ({ data }) => {
         dataLabels: {
             enabled: true,
             textAnchor: "end",
-            offsetX: 0,
+            offsetX: -10,
             formatter: function (val, opt) {
                 let isPercentage = "";
                 if (data[opt.dataPointIndex]?.percentage)
