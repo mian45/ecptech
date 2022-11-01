@@ -108,7 +108,7 @@ class RegisterController extends Controller
                     $success['business_name'] = $profile->business_name;
                     $success['theme_color'] = $profile->theme_color;
                     $success['theme_mode'] = $profile->theme_mode;
-                    $success['logo'] = url('uploads/'.$user_id.'/'.$profile->logo);
+                    $success['logo'] = isset($profile->logo)?url('uploads/'.$user_id.'/'.$profile->logo):null;
                 }else{
                     $success['business_name'] = null;
                     $success['theme_color'] = null;
@@ -307,7 +307,7 @@ class RegisterController extends Controller
                         $success['business_name'] = $profile->business_name;
                         $success['theme_color'] = $profile->theme_color;
                         $success['theme_mode'] = $profile->theme_mode;
-                        $success['logo'] = url('uploads/'.$user_id.'/'.$profile->logo);
+                        $success['logo'] = isset($profile->logo)?url('uploads/'.$user_id.'/'.$profile->logo):null;
                     }else{
                         $success['business_name'] = null;
                         $success['theme_color'] = null;
