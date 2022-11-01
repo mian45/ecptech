@@ -51,7 +51,7 @@ const ProfitStatsChart = ({ userId, dates }) => {
 
     return (
         <div className={`${classes["container"]} profit-chart`}>
-            <div className={classes["label"]}>Profit Comparison</div>
+            <div className={classes["label"]}>Profit Sales</div>
             <Chart
                 options={options}
                 series={[{ data: data }]}

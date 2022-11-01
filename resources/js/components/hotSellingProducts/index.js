@@ -29,7 +29,7 @@ const HotSellingProducts = ({ userId }) => {
     }, [userId]);
     return (
         <div className={classes["container"]}>
-            <div className={classes["label"]}>Hot Selling Products</div>
+            <div className={classes["label"]}>Top Selling products</div>
             <div className={classes["products"]}>
                 {products.map((product, index) => {
                     return (
