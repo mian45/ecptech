@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Client;
 use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -87,18 +88,32 @@ class RegisterController extends Controller
             $success['id'] =  $user->id;
             $success['name'] =  $user->name;
             $success['email'] =  $user->email;
-            if($user->client){
-                $profile = $user->client;
-                $success['business_name'] = $profile->business_name;
-                $success['theme_color'] = $profile->theme_color;
-                $success['theme_mode'] = $profile->theme_mode;
-                $success['logo'] = $profile->logo;
+
+
+            $user_id = auth()->user()->id;
+        
+            
+                if($user->role->name == 'staff'){
+                    $client =  User::find($user->client_id);
                 }else{
-                $success['business_name'] = null;
-                $success['theme_color'] = null;
-                $success['theme_mode'] = null;
-                $success['logo'] = null;
+                    $client = $user;
                 }
+
+                $profile = Client::where('user_id',$client->id)->first();
+                
+                if ($profile) {
+                    $success['business_name'] = $profile->business_name;
+                    $success['theme_color'] = $profile->theme_color;
+                    $success['theme_mode'] = $profile->theme_mode;
+                    $success['logo'] = url('uploads/'.$user_id.'/'.$profile->logo);
+                }else{
+                    $success['business_name'] = null;
+                    $success['theme_color'] = null;
+                    $success['theme_mode'] = null;
+                    $success['logo'] = null;
+                }
+
+
             $role['id'] = $user->role_id;
             $role['name'] =  $user->role->name;
             $success['role'] =  $role;
@@ -271,22 +286,34 @@ class RegisterController extends Controller
                 $user_id = auth()->user()->id;
         
                  $user = Auth::user();
+
+                 
+                 
         
                     $success['id'] =  $user->id;
                     $success['name'] =  $user->name;
                     $success['email'] =  $user->email;
-                    if($user->client){
-                        $profile = $user->client;
+                    if($user->role->name == 'staff'){
+                        $client =  User::find($user->client_id);
+                    }else{
+                        $client = $user;
+                    }
+
+                    $profile = Client::where('user_id',$client->id)->first();
+                    if ($profile) {
                         $success['business_name'] = $profile->business_name;
                         $success['theme_color'] = $profile->theme_color;
                         $success['theme_mode'] = $profile->theme_mode;
-                        $success['logo'] = $profile->logo;
+                        $success['logo'] = url('uploads/'.$user_id.'/'.$profile->logo);
                     }else{
                         $success['business_name'] = null;
                         $success['theme_color'] = null;
                         $success['theme_mode'] = null;
                         $success['logo'] = null;
                     }
+                    
+                    
+
                     $role['id'] = $user->role_id;
                     $role['name'] =  $user->role->name;
                     $success['role'] =  $role;
