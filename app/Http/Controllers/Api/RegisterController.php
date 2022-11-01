@@ -43,12 +43,8 @@ class RegisterController extends Controller
 
         if ($validator->fails()) {
 
-            // $response = [
-            //     'message' => $validator->customMessages['regex']
-            // ];
-            // return response()->json($response,422);
-            return response()->json(['errors' => $validator->errors()], 422);
-            // return $this->sendError('Validation Error.', $validator->customMessages['regex'],400);
+            return $this->sendError('Validation Error.', $validator->errors(),422);
+            
         }
         $name = $request->name;
         $email = $request->email;
