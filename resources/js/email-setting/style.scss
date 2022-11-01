@@ -148,7 +148,7 @@
 
             .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
                 .ant-select-selector {
-                border-color: unset !important;
+                border-color: #dfdfdf !important;
                 box-shadow: none !important;
             }
 
@@ -317,13 +317,13 @@ p {
 .save-button-wrpper {
     width: 60%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
 }
 .reminders-container-schedule {
     width: 450px;
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: flex-end;
+    align-items: flex-end;
     flex-direction: column;
 }
 .picker-padding {
