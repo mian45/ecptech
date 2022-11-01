@@ -60,6 +60,7 @@ class TaxController extends Controller
             $success['user_id'] = $tax->user_id;
             $success['name'] = $tax->name;
             $success['value'] = $tax->value;
+            $success['status'] = $tax->status;
             return $this->sendResponse($success, 'Tax add successfully');
         }
         return $this->sendError('Something went wrong!');
