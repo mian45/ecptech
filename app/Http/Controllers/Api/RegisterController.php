@@ -42,9 +42,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-
             return $this->sendError('Validation Error.', $validator->errors(),422);
-            
         }
         $name = $request->name;
         $email = $request->email;
@@ -204,12 +202,20 @@ class RegisterController extends Controller
         $validator =  Validator::make($request->all(), [
             'email' => 'required|email',
             'id' => 'required',
-            'password' => 'required|string|min:8|regex:/^.*(?=.*[a-z]*[a-z])(?=.*[A-Z]*[A-Z])(?=.*[\d])(?=.*[@#!$%&*()_+}{><?":;`]).*$/|confirmed',
-        ],[
-            'regex'=>'Password must be at least 8 characters and contain at least one Uppercase and Lowercase letters, digits and special characters like @#!$%&*()_+}{><?":;`'
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                'min:8',             
+                'regex:/[a-z]/',      
+                'regex:/[A-Z]/',     
+                'regex:/[0-9]/',     
+                'regex:/[@$!%*#?&]/', 
+                new isValidPassword(),
+            ],
         ]);
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(),422);
         }
 
         $email = $request->email;
@@ -280,13 +286,20 @@ class RegisterController extends Controller
     {
         $validator =  Validator::make($request->all(), [
             'old_password' => 'required',
-            'password' => 'required|string|min:8|regex:/^.*(?=.*[a-z]*[a-z])(?=.*[A-Z]*[A-Z])(?=.*[\d])(?=.*[@#!$%&*()_+}{><?":;`]).*$/|confirmed',
-        ],[
-            'regex'=>'Password must be at least 8 characters and contain at least one Uppercase and Lowercase letters, digits and special characters like @#!$%&*()_+}{><?":;`'
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                'min:8',             
+                'regex:/[a-z]/',      
+                'regex:/[A-Z]/',     
+                'regex:/[0-9]/',     
+                'regex:/[@$!%*#?&]/', 
+                new isValidPassword(),
+            ],
         ]);
-        
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(),422);
         }
         $user_id = $request->user_id;
         $old_password = $request->old_password;
