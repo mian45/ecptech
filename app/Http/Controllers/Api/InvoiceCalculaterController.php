@@ -20,6 +20,8 @@ use App\Models\AddonType;
 use App\Models\AddOn;
 use App\Models\AddonExtra;
 use Validator;
+use Illuminate\Validation\ValidationException;
+
 
 
 class InvoiceCalculaterController extends Controller
@@ -96,7 +98,7 @@ class InvoiceCalculaterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         
         $csv = array();
@@ -224,7 +226,7 @@ class InvoiceCalculaterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         
         $csv = array();
@@ -286,7 +288,7 @@ class InvoiceCalculaterController extends Controller
             'csv' => 'required|mimes:csv,txt'
         ]);
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         
         $csv = array();
@@ -364,7 +366,7 @@ class InvoiceCalculaterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $data['lenses_price'] = Collection::where('id',$request->collection_id)->with(['lenses'=>function($q){

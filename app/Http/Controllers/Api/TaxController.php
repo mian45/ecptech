@@ -9,6 +9,7 @@ use App\Models\State;
 use Illuminate\Http\Request;
 
 use Validator;
+use Illuminate\Validation\ValidationException;
 
 class TaxController extends Controller
 {
@@ -20,7 +21,7 @@ class TaxController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $tax =  Tax::select('id','user_id','name','value','state_id')->with('state')->where('user_id',$request->userId)->get();
@@ -43,7 +44,7 @@ class TaxController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $tax = new Tax;
@@ -76,7 +77,7 @@ class TaxController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $tax =  Tax::find($request->id);
@@ -115,7 +116,7 @@ class TaxController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $tax =  tax::find($request->id);
