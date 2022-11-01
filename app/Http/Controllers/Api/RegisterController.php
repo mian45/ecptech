@@ -10,7 +10,6 @@ use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-// use Illuminate\Validation\Rule;
 use App\Rules\IsValidPassword;
 use Illuminate\Support\Facades\Hash;
 class RegisterController extends Controller
@@ -43,13 +42,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-
-            // $response = [
-            //     'message' => $validator->customMessages['regex']
-            // ];
-            // return response()->json($response,422);
-            return response()->json(['errors' => $validator->errors()], 422);
-            // return $this->sendError('Validation Error.', $validator->customMessages['regex'],400);
+            return $this->sendError('Validation Error.', $validator->errors(),422);
         }
         $name = $request->name;
         $email = $request->email;
@@ -79,7 +72,6 @@ class RegisterController extends Controller
         if ($role == 'staff') {
             $userData['client_id'] = $request->clientId;
         }
-        //return $this->sendResponse($userData, 'User register successfully.');
         $user = User::create($userData);
 
         $success['id'] =  $user->id;
@@ -210,12 +202,20 @@ class RegisterController extends Controller
         $validator =  Validator::make($request->all(), [
             'email' => 'required|email',
             'id' => 'required',
-            'password' => 'required|string|min:8|regex:/^.*(?=.*[a-z]*[a-z])(?=.*[A-Z]*[A-Z])(?=.*[\d])(?=.*[@#!$%&*()_+}{><?":;`]).*$/|confirmed',
-        ],[
-            'regex'=>'Password must be at least 8 characters and contain at least one Uppercase and Lowercase letters, digits and special characters like @#!$%&*()_+}{><?":;`'
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                'min:8',             
+                'regex:/[a-z]/',      
+                'regex:/[A-Z]/',     
+                'regex:/[0-9]/',     
+                'regex:/[@$!%*#?&]/', 
+                new isValidPassword(),
+            ],
         ]);
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(),422);
         }
 
         $email = $request->email;
@@ -286,13 +286,20 @@ class RegisterController extends Controller
     {
         $validator =  Validator::make($request->all(), [
             'old_password' => 'required',
-            'password' => 'required|string|min:8|regex:/^.*(?=.*[a-z]*[a-z])(?=.*[A-Z]*[A-Z])(?=.*[\d])(?=.*[@#!$%&*()_+}{><?":;`]).*$/|confirmed',
-        ],[
-            'regex'=>'Password must be at least 8 characters and contain at least one Uppercase and Lowercase letters, digits and special characters like @#!$%&*()_+}{><?":;`'
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                'min:8',             
+                'regex:/[a-z]/',      
+                'regex:/[A-Z]/',     
+                'regex:/[0-9]/',     
+                'regex:/[@$!%*#?&]/', 
+                new isValidPassword(),
+            ],
         ]);
-        
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            return $this->sendError('Validation Error.', $validator->errors(),422);
         }
         $user_id = $request->user_id;
         $old_password = $request->old_password;
