@@ -24,7 +24,7 @@ class TaxController extends Controller
             throw (new ValidationException($validator));
         }
 
-        $tax =  Tax::select('id','user_id','name','value','state_id')->with('state')->where('user_id',$request->userId)->get();
+        $tax =  Tax::select()->with('state')->where('user_id',$request->userId)->get();
         if($tax){
             return $this->sendResponse($tax, 'Tax list get successfully');
         }
@@ -93,7 +93,7 @@ class TaxController extends Controller
             $success['status'] = $tax->status;
             return $this->sendResponse($success, 'Tax Status Changed Successfully');
         }
-        return $this->sendError('Tax not found',[],402);
+        return $this->sendError('Tax not found');
     }
     public function editTax(Request $request)
     {
