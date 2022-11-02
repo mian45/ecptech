@@ -7,8 +7,10 @@ import { useDispatch } from "react-redux";
 import logo from "../../images/logo.png";
 import profileIcon from "../../images/profile.svg";
 import notificationIcon from "../../images/notification.svg";
-import Http from "../Http"
-const Header = () => {
+import AuthService from "../services";
+import { connect } from "react-redux";
+
+const Header = ({}) => {
     const dispatch = useDispatch();
     const [showProfile, setShowProfile] = useState(false);
     const [user,setUser]=useState({})
@@ -31,15 +33,13 @@ const Header = () => {
             });
         
     };
+    const Logout=()=>{
+        dispatch(AuthService.logout(user.id))
+    }
     return (
         <div className={classes["container"]}>
             <img src={user?.logo?user?.logo:logo} alt="logo" className={classes["logo-icon"]} />
             <div className={classes["sub-container"]}>
-                <img
-                    src={notificationIcon}
-                    alt="notification"
-                    className={classes["bell-icon"]}
-                />
                 <img
                     src={profileIcon}
                     alt="Profile"
@@ -48,9 +48,13 @@ const Header = () => {
                         setShowProfile(!showProfile);
                     }}
                 />
+                <h6 className={classes["logout"]} onClick={()=>{Logout()}}>Logout</h6>
                 {showProfile && <Profile closeModal={closeModal} />}
             </div>
         </div>
     );
 };
-export default Header;
+const mapStateToProps = (state) => ({
+    user: state.Auth.user,
+});
+export default connect(mapStateToProps)(Header);

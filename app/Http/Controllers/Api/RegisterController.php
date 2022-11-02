@@ -10,8 +10,11 @@ use App\Models\UserRole;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
-use Illuminate\Validation\Rule;
+use App\Rules\IsValidPassword;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
+
 class RegisterController extends Controller
 {
 
@@ -22,16 +25,27 @@ class RegisterController extends Controller
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+       
+        $validator =  Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',
-            'roleId' => 'required'
-
+            'email' => 'required|email|unique:users,email',
+            'roleId' => 'required',
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                'min:8',             
+                'regex:/[a-z]/',      
+                'regex:/[A-Z]/',     
+                'regex:/[0-9]/',     
+                'regex:/[@$!%*#?&]/', 
+                new isValidPassword(),
+            ],
+            
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $name = $request->name;
         $email = $request->email;
@@ -61,7 +75,6 @@ class RegisterController extends Controller
         if ($role == 'staff') {
             $userData['client_id'] = $request->clientId;
         }
-        //return $this->sendResponse($userData, 'User register successfully.');
         $user = User::create($userData);
 
         $success['id'] =  $user->id;
@@ -80,7 +93,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember_me)) {
             $user = Auth::user();
@@ -105,7 +118,7 @@ class RegisterController extends Controller
                     $success['business_name'] = $profile->business_name;
                     $success['theme_color'] = $profile->theme_color;
                     $success['theme_mode'] = $profile->theme_mode;
-                    $success['logo'] = url('uploads/'.$user_id.'/'.$profile->logo);
+                    $success['logo'] = isset($profile->logo)?url('uploads/'.$user_id.'/'.$profile->logo):null;
                 }else{
                     $success['business_name'] = null;
                     $success['theme_color'] = null;
@@ -148,7 +161,23 @@ class RegisterController extends Controller
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }
     }
+    
+    public function logout(Request $request){
+        $validator = Validator::make($request->all(), [
+            'userId' => 'required'
+        ]);
 
+        if ($validator->fails()) {
+            throw (new ValidationException($validator));
+        }
+        if(auth()->user()->id != $request->userId){
+            return $this->sendError('invalid User id',[],403);
+        }
+        $user = Auth::user()->token();
+        $user->revoke();
+        $success['user_id'] = $user->user_id;
+        return $this->sendResponse($success, 'logout successfully.');
+    }
     public function forgotPassword(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -156,7 +185,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
       $user = User::where('email',$request->email)->first();
         if ($user) {
@@ -172,15 +201,24 @@ class RegisterController extends Controller
 
     public function updateStaffLogin(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+       
+        $validator =  Validator::make($request->all(), [
             'email' => 'required|email',
-            'password' => 'required',
-            'id' => 'required'
-
+            'id' => 'required',
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                'min:8',             
+                'regex:/[a-z]/',      
+                'regex:/[A-Z]/',     
+                'regex:/[0-9]/',     
+                'regex:/[@$!%*#?&]/', 
+                new isValidPassword(),
+            ],
         ]);
-
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $email = $request->email;
@@ -221,7 +259,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $user = User::where(['email' => $request->email, 'verification_code' => $request->code])->first();
         if ($user) {
@@ -249,15 +287,22 @@ class RegisterController extends Controller
 
     public function changePassword(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validator =  Validator::make($request->all(), [
             'old_password' => 'required',
-            'password' => 'required',
-            'password_confirmation' => 'required|required_with:password|same:password'
-
+            'password' => [
+                'required',
+                'string',
+                'confirmed',
+                'min:8',             
+                'regex:/[a-z]/',      
+                'regex:/[A-Z]/',     
+                'regex:/[0-9]/',     
+                'regex:/[@$!%*#?&]/', 
+                new isValidPassword(),
+            ],
         ]);
-
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $user_id = $request->user_id;
         $old_password = $request->old_password;
@@ -304,7 +349,7 @@ class RegisterController extends Controller
                         $success['business_name'] = $profile->business_name;
                         $success['theme_color'] = $profile->theme_color;
                         $success['theme_mode'] = $profile->theme_mode;
-                        $success['logo'] = url('uploads/'.$user_id.'/'.$profile->logo);
+                        $success['logo'] = isset($profile->logo)?url('uploads/'.$user_id.'/'.$profile->logo):null;
                     }else{
                         $success['business_name'] = null;
                         $success['theme_color'] = null;

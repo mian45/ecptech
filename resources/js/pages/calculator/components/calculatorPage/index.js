@@ -240,6 +240,7 @@ const CalculatorScreen = () => {
                 <LensType
                     formProps={formProps}
                     calculatorObj={calculatorObj && calculatorObj}
+                    setCalculatorObj={setCalculatorObj}
                 />
                 <LensMeterials
                     formProps={formProps}

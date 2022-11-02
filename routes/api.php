@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Api\RegisterController;
-use App\Http\Controllers\Api\TaxController;
 use App\Http\Controllers\Api\ShippingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Client\SettingController;
@@ -33,14 +32,6 @@ Route::middleware('auth:api')->group( function () {
     includeRouteFiles(__DIR__ . '/apis/');
 
     Route::post('updateStaffLogin', [RegisterController::class, 'updateStaffLogin']);
-
-    Route::get('getTaxes', [TaxController::class, 'getTaxes']);
-    Route::post('addTax', [TaxController::class, 'addTax']);
-    Route::post('editTax', [TaxController::class, 'editTax']);
-    Route::post('deleteTax', [TaxController::class, 'deleteTax']);
-
-    Route::get('getStates', [TaxController::class, 'getStates']);
-
 
     Route::get('getShipping', [ShippingController::class, 'getShipping']);
     Route::post('addShipping', [ShippingController::class, 'addShipping']);

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use Validator;
 use Carbon\Carbon;
+use Illuminate\Validation\ValidationException;
+
 
 class DashboardController extends Controller
 {
@@ -19,7 +21,7 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         
@@ -89,7 +91,7 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $request->start_date = Carbon::parse($request->start_date)->toDateString();
@@ -128,7 +130,7 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $request->start_date = Carbon::parse($request->start_date)->toDateString();
@@ -163,7 +165,7 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $request->start_date = Carbon::parse($request->start_date)->toDateString();
