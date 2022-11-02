@@ -29,7 +29,6 @@ class DatabaseSeeder extends Seeder
             InvoiceReminderTableSeeder::class,
             ProductTableSeeder::class,
             TransactionTableSeeder::class,
-            PrescriptionTableSeeder::class,
             VisionPlansTableSeeder::class,
             VisionPlanPermissionTableSeeder::class,
             QuestionsTableSeeder::class,
