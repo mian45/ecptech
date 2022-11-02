@@ -24,7 +24,7 @@ class TaxController extends Controller
             throw (new ValidationException($validator));
         }
 
-        $tax =  Tax::select('id','user_id','name','value','state_id')->with('state')->where('user_id',$request->userId)->get();
+        $tax =  Tax::select()->with('state')->where('user_id',$request->userId)->get();
         if($tax){
             return $this->sendResponse($tax, 'Tax list get successfully');
         }
@@ -52,6 +52,7 @@ class TaxController extends Controller
         $tax->name = $request->name;
         $tax->value = $request->value;
         $tax->state_id = $request->stateId;
+        $tax->status = 'active';
         $tax->save();
 
         if($tax){
@@ -59,6 +60,7 @@ class TaxController extends Controller
             $success['user_id'] = $tax->user_id;
             $success['name'] = $tax->name;
             $success['value'] = $tax->value;
+            $success['status'] = $tax->status;
             return $this->sendResponse($success, 'Tax add successfully');
         }
         return $this->sendError('Something went wrong!');
@@ -66,6 +68,34 @@ class TaxController extends Controller
 
     }
 
+    public function changeTaxStatus(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'userId' => 'required',
+            'TaxId' => 'required',
+            'status' => "required|in:active,inactive",
+
+        ]);
+
+        if ($validator->fails()) {
+            throw (new ValidationException($validator));
+        }
+
+        $user_id = $request->userId;
+        $tax =  Tax::where('id',$request->TaxId)->first();
+       
+        if($tax){
+            $tax->status = $request->status;
+            $tax->save();
+            $success['id'] = $tax->id;
+            $success['user_id'] = $tax->user_id;
+            $success['name'] = $tax->name;
+            $success['value'] = $tax->value;
+            $success['status'] = $tax->status;
+            return $this->sendResponse($success, 'Tax Status Changed Successfully');
+        }
+        return $this->sendError('Tax not found');
+    }
     public function editTax(Request $request)
     {
 
@@ -74,6 +104,7 @@ class TaxController extends Controller
             'name' => 'required',
             'value' => 'required',
             'stateId' => 'required',
+            'status' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -86,12 +117,13 @@ class TaxController extends Controller
             $tax->name = $request->name;
             $tax->value = $request->value;
             $tax->state_id = $request->stateId;
+            $tax->status = $request->status;
             $tax->save();
             $success['id'] = $tax->id;
             $success['user_id'] = $tax->user_id;
             $success['name'] = $tax->name;
             $success['value'] = $tax->value;
-
+            $success['status'] = $tax->status;
 
             $state['id'] =  $tax->state_id;
             if($tax->state->name){
