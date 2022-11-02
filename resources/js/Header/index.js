@@ -9,7 +9,7 @@ import profileIcon from "../../images/profile.svg";
 import notificationIcon from "../../images/notification.svg";
 import AuthService from "../services";
 import { connect } from "react-redux";
-
+import Http from "../Http"
 const Header = ({}) => {
     const dispatch = useDispatch();
     const [showProfile, setShowProfile] = useState(false);
