@@ -313,18 +313,19 @@ class InvoiceCalculaterController extends Controller
                             
                             if(!empty($data[1])){
                                 $price = str_replace('$','',$data[2]);
-
+                                $code = str_replace(' ', '', $data[1]);
+                                
                                 if(is_numeric($price)){
 
                                     $price = $price + 0;
                                     $code = Code::updateOrCreate(
-                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$data[1]],
+                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$code],
                                         ['price'=> $price]
                                     );
 
                                 }else{
                                     $code = Code::updateOrCreate(
-                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$data[1]],
+                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$code],
                                         ['price_formula'=> $price]
                                     );
                                 }
@@ -335,13 +336,13 @@ class InvoiceCalculaterController extends Controller
 
                                     $price_bifocal = $price_bifocal + 0;
                                     $code = Code::updateOrCreate(
-                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$data[1]],
+                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$code],
                                         ['price'=> $price_bifocal]
                                     );
 
                                 }else{
                                     $code = Code::updateOrCreate(
-                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$data[1]],
+                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$code],
                                         ['price_formula'=> $price_bifocal]
                                     );
                                 }
@@ -373,7 +374,7 @@ class InvoiceCalculaterController extends Controller
         if (is_array($value)) {
             $clean = [];
             foreach ($value as $key => $val) {
-                $clean[$key] = trim(mb_convert_encoding($val, 'UTF-8', 'UTF-8'));
+                $clean[$key] = trim(preg_replace('/[\t\n\r\s]+/', ' ', mb_convert_encoding($val, 'UTF-8', 'UTF-8')));
             }
             return $clean;
         }
