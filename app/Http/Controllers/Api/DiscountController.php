@@ -70,7 +70,6 @@ class DiscountController extends Controller
             'id' => 'required',
             'name' => 'required',
             'value' => 'required',
-            'status' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -80,12 +79,10 @@ class DiscountController extends Controller
         $id = $request->id;
         $name = $request->name;
         $value = $request->value;
-        $status = $request->status;
         $discount = Discount::where('id',$id)->first();
         if($discount){
         $discount->name = $name;
         $discount->value = $value;
-        $discount->status = $status;
         $discount->save();
         $success['id'] = $discount->id;
         $success['user_id'] = $discount->user_id;
@@ -123,8 +120,7 @@ class DiscountController extends Controller
     public function changeStatus(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'userId' => 'required',
-            'discountId' => 'required',
+            'discount_id' => 'required',
             'status' => "required|in:active,inactive",
 
         ]);
@@ -133,8 +129,7 @@ class DiscountController extends Controller
             throw (new ValidationException($validator));
         }
 
-        $user_id = $request->userId;
-        $discount =  Discount::where('id',$request->discountId)->first();
+        $discount =  Discount::where('id',$request->discount_id)->first();
        
         if($discount){
             $discount->status = $request->status;
