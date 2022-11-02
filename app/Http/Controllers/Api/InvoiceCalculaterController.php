@@ -317,7 +317,7 @@ class InvoiceCalculaterController extends Controller
                                 
                                 if(is_numeric($price)){
 
-                                    $price = $price + 0;
+                                    $price = (float)$price;
                                     $code = Code::updateOrCreate(
                                         ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$code],
                                         ['price'=> $price]
@@ -334,7 +334,7 @@ class InvoiceCalculaterController extends Controller
                                 $price_bifocal = str_replace('$','',$data[3]);
                                 if(is_numeric($price_bifocal)){
 
-                                    $price_bifocal = $price_bifocal + 0;
+                                    $price_bifocal = (float)$price_bifocal;
                                     $code = Code::updateOrCreate(
                                         ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$code],
                                         ['price'=> $price_bifocal]
