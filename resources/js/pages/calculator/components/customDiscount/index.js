@@ -75,7 +75,7 @@ const CustomDiscount = ({
             />
             <div className={classes["vision-container"]}>
                 <CalculatorHeading
-                    title="Percent Discount"
+                    title="Discount"
                     active={values?.discountType && values?.discountValue}
                 />
                 <select
@@ -89,7 +89,7 @@ const CustomDiscount = ({
                     name="discountTypeDropdown"
                     className={classes["discount-select"]}
                 >
-                    <option value={""}></option>
+                    <option value={""}>None</option>
                     {getActiveDiscounts()?.map((item, index) => {
                         return (
                             <option key={index} value={item?.id}>
