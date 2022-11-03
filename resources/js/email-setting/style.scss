@@ -67,6 +67,10 @@
     padding-left: 18px !important;
     margin-left: 0px !important;
 }
+.reminder-select-date-container{
+    display: flex;
+    flex: 1;
+}
 .delete-icon {
     width: 16px;
     height: 16px;
@@ -128,6 +132,12 @@
                 padding: 0;
                 color: black;
             }
+            .ant-select-short {
+                width: 11.68em !important;
+                height: 2.8125em !important;
+                padding: 0;
+                color: black;
+            }
 
             .ant-select-selection-item {
                 padding-left: 22px !important;
@@ -170,6 +180,21 @@
                 width: 23.68em;
                 height: 2.8125em;
 
+                &:focus-visible {
+                    border: 1px solid #dfdfdf;
+                    outline: none;
+                }
+            }
+            &_input-short {
+                outline: none !important;
+                background-color: white;
+                border: 1px solid #dfdfdf;
+                border-radius: 1.43em;
+                padding-inline-start: 1.375em;
+                padding-block: 0.8125em;
+                width: 11.68em;
+                height: 2.8125em;
+                margin-right: 2px;
                 &:focus-visible {
                     border: 1px solid #dfdfdf;
                     outline: none;

@@ -114,6 +114,20 @@ const LoweredCopay = ({
                     ...calValidations,
                     isCopaypremiumProgressiveAmount,
                 });
+            } else if (key === "isCopayStandardProgressives") {
+                const isCopayStandardProgressiveAmount =
+                    Yup.string().required("Option is required");
+                setCalValidations({
+                    ...calValidations,
+                    isCopayStandardProgressiveAmount,
+                });
+            } else if (key === "isCopayCustomProgressives") {
+                const isCopayCustomProgressiveAmount =
+                    Yup.string().required("Option is required");
+                setCalValidations({
+                    ...calValidations,
+                    isCopayCustomProgressiveAmount,
+                });
             }
         } else if (value === false) {
             if (key === "isCopayPolycarbonate") {
@@ -143,6 +157,18 @@ const LoweredCopay = ({
             } else if (key === "isCopayPremiumProgressives") {
                 const validations = { ...calValidations };
                 delete validations.isCopaypremiumProgressiveAmount;
+                setCalValidations({
+                    ...validations,
+                });
+            } else if (key === "isCopayStandardProgressives") {
+                const validations = { ...calValidations };
+                delete validations.isCopayStandardProgressiveAmount;
+                setCalValidations({
+                    ...validations,
+                });
+            } else if (key === "isCopayCustomProgressives") {
+                const validations = { ...calValidations };
+                delete validations.isCopayCustomProgressiveAmount;
                 setCalValidations({
                     ...validations,
                 });
@@ -199,6 +225,20 @@ const LoweredCopay = ({
                         name="isCopayAntiReflective"
                     />
                     <CustomCheckbox
+                        label={LowerCopayTypeEnum.standardProgressives}
+                        defaultChecked={
+                            values?.isCopayStandardProgressives || false
+                        }
+                        onValueChange={(value) => {
+                            handleCopoayCheckChange(
+                                value,
+                                "isCopayStandardProgressives"
+                            );
+                        }}
+                        id="isCopayStandardProgressives"
+                        name="isCopayStandardProgressives"
+                    />
+                    <CustomCheckbox
                         label={LowerCopayTypeEnum.premiumProgressives}
                         defaultChecked={
                             values?.isCopayPremiumProgressives || false
@@ -211,6 +251,20 @@ const LoweredCopay = ({
                         }}
                         id="isCopayPremiumProgressives"
                         name="isCopayPremiumProgressives"
+                    />
+                    <CustomCheckbox
+                        label={LowerCopayTypeEnum.customProgressives}
+                        defaultChecked={
+                            values?.isCopayCustomProgressives || false
+                        }
+                        onValueChange={(value) => {
+                            handleCopoayCheckChange(
+                                value,
+                                "isCopayCustomProgressives"
+                            );
+                        }}
+                        id="isCopayCustomProgressives"
+                        name="isCopayCustomProgressives"
                     />
                 </div>
                 <FormikError name={"isCopayPolycarbonate"} />
@@ -258,12 +312,34 @@ const LoweredCopay = ({
                         data={data}
                     />
                 )}
+                {values?.isCopayStandardProgressives && (
+                    <SpecialCopaySlot
+                        title={"standardProgressives"}
+                        formProps={formProps}
+                        radioValue={"isCopayStandardProgressiveAmount"}
+                        inputValue={"copayStandardProgressiveAmount"}
+                        setCalValidations={setCalValidations}
+                        calValidations={calValidations}
+                        data={data}
+                    />
+                )}
                 {values?.isCopayPremiumProgressives && (
                     <SpecialCopaySlot
                         title={"premiumProgressives"}
                         formProps={formProps}
                         radioValue={"isCopaypremiumProgressiveAmount"}
                         inputValue={"copaypremiumProgressiveAmount"}
+                        setCalValidations={setCalValidations}
+                        calValidations={calValidations}
+                        data={data}
+                    />
+                )}
+                {values?.isCopayCustomProgressives && (
+                    <SpecialCopaySlot
+                        title={"customProgressives"}
+                        formProps={formProps}
+                        radioValue={"isCopayCustomProgressiveAmount"}
+                        inputValue={"copayCustomProgressiveAmount"}
                         setCalValidations={setCalValidations}
                         calValidations={calValidations}
                         data={data}
@@ -415,6 +491,10 @@ const SpecialCopaySlot = ({
 
 const getPrice = (value) => {
     switch (value) {
+        case "copayStandardProgressiveAmount":
+            return PREMIUM_PROGRESSIVE;
+        case "copayCustomProgressiveAmount":
+            return PREMIUM_PROGRESSIVE;
         case "copaypremiumProgressiveAmount":
             return PREMIUM_PROGRESSIVE;
         case "copayAntiReflectiveAmount":
