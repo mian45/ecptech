@@ -26,7 +26,6 @@ import "./style.scss";
 
 const EmailSetting = (props) => {
     const [emailSettingProps, setEmailSettingProps] = useState(false);
-
     const [idState, setIdState] = useState("");
     const token = localStorage.getItem("access_token");
     const [reminderType, setReminderType] = useState("");
@@ -38,6 +37,8 @@ const EmailSetting = (props) => {
     const [timeZone, setTimeZone] = useState("");
     const [emailArray, setEmailArray] = useState([]);
     const [timeZones, setTimeZones] = useState([]);
+    const [timeSelector,setTimeSelector]=useState("")
+    const [timeSelectorValue,setTimeSelectorValue]=useState("")
     const blockStyleFn = (block) => {
         let alignment = "left";
         block.findStyleRanges((e) => {
@@ -50,7 +51,6 @@ const EmailSetting = (props) => {
         });
         return `editor-alignment-${alignment}`;
     };
-
     useEffect(() => {
         getTimeZones();
     }, []);
@@ -77,11 +77,9 @@ const EmailSetting = (props) => {
                 console.log(error);
             });
     };
-
     const onEditorStateChange = (editorState) => {
         setEditorState(editorState);
     };
-
     const addReminder = () => {
         var data = new FormData();
         if (reminderType === "orderComplete") {
@@ -93,7 +91,21 @@ const EmailSetting = (props) => {
                 "body",
                 draftToMarkdown(convertToRaw(editorState.getCurrentContent()))
             );
-        } else {
+        } else if (reminderType ==='reminder' ){
+            data.append("userId", props.userID);
+            data.append("type", reminderType);
+            data.append("invoiceType", sentTo);
+            data.append("subject", subject);
+            data.append(
+                "body",
+                draftToMarkdown(convertToRaw(editorState.getCurrentContent()))
+            );
+            data.append("afterSend", timeSelectorValue);
+            data.append("afterSendType", timeSelector);
+            data.append("sendTime", times);
+            data.append("TimeZone", timeZone);
+        }
+        else {
             data.append("userId", props.userID);
             data.append("type", reminderType);
             data.append("invoiceType", sentTo);
@@ -106,7 +118,6 @@ const EmailSetting = (props) => {
             data.append("sendTime", times);
             data.append("TimeZone", timeZone);
         }
-
         var config = {
             method: "post",
             url: `${process.env.MIX_REACT_APP_URL}/api/add-reminder`,
@@ -127,18 +138,42 @@ const EmailSetting = (props) => {
 
     const editReminder = (value) => {
         var data = new FormData();
-        data.append("id", idState);
-        data.append("type", reminderType);
-        data.append("invoiceType", sentTo);
-        data.append("subject", subject);
-        data.append(
-            "body",
-            draftToMarkdown(convertToRaw(editorState.getCurrentContent()))
-        );
-        data.append("sendDate", dates);
-        data.append("sendTime", times);
-        data.append("TimeZone", timeZone);
-
+        if (reminderType === "orderComplete") {
+            data.append("id", idState);
+            data.append("type", reminderType);
+            data.append("invoiceType", reminderType);
+            data.append("subject", subject);
+            data.append(
+                "body",
+                draftToMarkdown(convertToRaw(editorState.getCurrentContent()))
+            );
+        }
+        else if(reminderType ==='reminder'){
+            data.append("id", idState);
+            data.append("type", reminderType);
+            data.append("invoiceType", sentTo);
+            data.append("subject", subject);
+            data.append(
+                "body",
+                draftToMarkdown(convertToRaw(editorState.getCurrentContent()))
+            );
+            data.append("afterSend", timeSelectorValue);
+            data.append("afterSendType", timeSelector);
+            data.append("sendTime", times);
+            data.append("TimeZone", timeZone);
+        }else{
+            data.append("id", idState);
+            data.append("type", reminderType);
+            data.append("invoiceType", sentTo);
+            data.append("subject", subject);
+            data.append(
+                "body",
+                draftToMarkdown(convertToRaw(editorState.getCurrentContent()))
+            );
+            data.append("sendDate", dates);
+            data.append("sendTime", times);
+            data.append("TimeZone", timeZone);
+        }
         var config = {
             method: "post",
             url: `${process.env.MIX_REACT_APP_URL}/api/edit-reminder`,
@@ -147,7 +182,6 @@ const EmailSetting = (props) => {
             },
             data: data,
         };
-
         axios(config)
             .then(function (response) {
                 getReminder();
@@ -159,6 +193,8 @@ const EmailSetting = (props) => {
                 setTimes("");
                 setTimeZone("");
                 setIdState(null);
+                setTimeSelector("");
+                setTimeSelectorValue("")
             })
             .catch(function (error) {
                 console.log(error);
@@ -269,7 +305,7 @@ const EmailSetting = (props) => {
     };
 
     const handleDateClick = (value) => {
-        setDates(value);
+        setTimeSelector(value);
     };
 
     const handleTimeClick = (value) => {
@@ -285,6 +321,16 @@ const EmailSetting = (props) => {
     };
 
     const handleClick = () => {
+        setReminderType("");
+        setSentTo("");
+        setSubject("");
+        setEditorState("");
+        setDates("");
+        setTimes("");
+        setTimeZone("");
+        setIdState(null);
+        setTimeSelector("");
+        setTimeSelectorValue("")
         setEmailSettingProps(false);
     };
 
@@ -571,65 +617,51 @@ const EmailSetting = (props) => {
                                                     required
                                                 />
                                             ) : (
-                                                <Select
-                                                    className="no-outline"
-                                                    defaultValue="Select"
-                                                    style={{
-                                                        width: 120,
-                                                    }}
-                                                    onChange={handleDateClick}
-                                                    value={dates || "Select"}
-                                                >
-                                                    <Option
-                                                        className="ant-select-item-option-content"
-                                                        value={1}
-                                                    >
-                                                        1 days after invoice
-                                                        sent
-                                                    </Option>
-                                                    <Option
-                                                        className="ant-select-item-option-content"
-                                                        value={2}
-                                                    >
-                                                        2 days after invoice
-                                                        sent
-                                                    </Option>
-                                                    <Option
-                                                        className="ant-select-item-option-content"
-                                                        value={3}
-                                                    >
-                                                        3 days after invoice
-                                                        sent
-                                                    </Option>
-                                                    <Option
-                                                        className="ant-select-item-option-content"
-                                                        value={4}
-                                                    >
-                                                        4 days after invoice
-                                                        sent
-                                                    </Option>
-                                                    <Option
-                                                        className="ant-select-item-option-content"
-                                                        value={5}
-                                                    >
-                                                        5 days after invoice
-                                                        sent
-                                                    </Option>
-                                                    <Option
-                                                        className="ant-select-item-option-content"
-                                                        value={6}
-                                                    >
-                                                        6 days after invoice
-                                                        sent
-                                                    </Option>
-                                                    <Option
-                                                        className="ant-select-item-option-content"
-                                                        value={7}
-                                                    >
-                                                        7 days after invoice
-                                                        sent
-                                                    </Option>
-                                                </Select>
+                                                <div className="reminder-select-date-container">
+                                                    <input
+                                                className="email-remainder_input-sections_input-section_input-short input-pad-val no-outline email-input-border"
+                                                value={timeSelectorValue}
+                                                onChange={(e) => {
+                                                    setTimeSelectorValue(e.target.value);
+                                                }}
+                                                type='number'
+                                                required
+                                            /><Select
+                                            className="no-outline ant-select-short"
+                                            defaultValue="Select"
+                                            style={{
+                                                width: 120,
+                                            }}
+                                            onChange={handleDateClick}
+                                            value={timeSelector || "Select"}
+                                        >
+                                            <Option
+                                                className="ant-select-item-option-content "
+                                                value={"day"}
+                                            >
+                                                Day
+                                            </Option>
+                                            <Option
+                                                className="ant-select-item-option-content"
+                                                value={'hour'}
+                                            >
+                                                Hour
+                                            </Option>
+                                            <Option
+                                                className="ant-select-item-option-content"
+                                                value={'month'}
+                                            >
+                                               Month
+                                            </Option>
+                                            <Option
+                                                className="ant-select-item-option-content"
+                                                value={'year'}
+                                            >
+                                               Year
+                                            </Option>
+                                         
+                                        </Select></div>
+                                                
                                             )}
                                         </div>
                                         <div className="email-remainder_input-sections_input-section">
