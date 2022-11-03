@@ -31,6 +31,7 @@ import {
     LensBenifitAvailableEnum,
 } from "../../data/enums";
 import backArrow from "../../../../../images/black-arrow.svg";
+import CustomDiscount from "../customDiscount";
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -619,6 +620,17 @@ const CalculatorScreen = () => {
                                                     calculatorObj &&
                                                     calculatorObj
                                                 }
+                                            />
+                                            <CustomDiscount
+                                                formProps={formProps}
+                                                calculatorObj={
+                                                    calculatorObj &&
+                                                    calculatorObj
+                                                }
+                                                setCalValidations={
+                                                    setCalValidations
+                                                }
+                                                calValidations={calValidations}
                                             />
                                         </>
                                     ) : (

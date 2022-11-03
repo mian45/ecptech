@@ -52,6 +52,8 @@ export const CalculatorInitialValues = {
     protectionPlanAmount: "",
     shipping: "",
     shippingAmount: "0",
+    discountType: "",
+    discountValue: "",
 };
 
 export const BenifitTypeEnums = Object.freeze({
