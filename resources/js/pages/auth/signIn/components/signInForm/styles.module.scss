@@ -1,30 +1,7 @@
-.container {
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    height: 100%;
-    padding-left: 94px;
-    padding-right: 94px;
-}
-.page-logo {
-    width: 194px;
-    height: 37px;
-    object-fit: contain;
-    position: absolute;
-    top: 27px;
-    left: -28px;
-}
 .login-title {
-    font-size: 24px;
     font-family: Montserrat;
     color: #000000;
     font-weight: bold;
-    margin-bottom: 20px;
-    text-align: start;
-    width: 100%;
 }
 .login-subtitle {
     font-size: 16px;
@@ -34,19 +11,10 @@
     margin-bottom: 30px;
 }
 .login-form {
-    width: 485px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    position: relative;
+
 }
 .login-wrapper {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+
 }
 .error {
     font-size: 14px;
