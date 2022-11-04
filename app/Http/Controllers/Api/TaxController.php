@@ -34,13 +34,11 @@ class TaxController extends Controller
 
     public function addTax(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'userId' => 'required',
             'name' => 'required',
             'value' => 'required',
-            'stateId' => 'required',
-
+            'stateId' => 'nullable',
         ]);
 
         if ($validator->fails()) {
@@ -83,7 +81,7 @@ class TaxController extends Controller
 
         $user_id = $request->userId;
         $tax =  Tax::where('id',$request->TaxId)->first();
-       
+
         if($tax){
             $tax->status = $request->status;
             $tax->save();
@@ -103,7 +101,7 @@ class TaxController extends Controller
             'id' => 'required',
             'name' => 'required',
             'value' => 'required',
-            'stateId' => 'required',
+            'stateId' => 'nullable',
             'status' => 'required',
         ]);
 

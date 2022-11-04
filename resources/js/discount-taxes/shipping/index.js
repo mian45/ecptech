@@ -16,7 +16,7 @@ const ShippingSettings = ({ userId }) => {
         const getShipping = async () => {
             try {
                 const res = await Axios.get(
-                    process.env.MIX_REACT_APP_URL + "/api/getShipping",
+                    process.env.MIX_REACT_APP_URL + "/api/get-shipping",
                     { params: { userId: userId } }
                 );
                 const shippingData = res?.data?.data;
@@ -28,7 +28,7 @@ const ShippingSettings = ({ userId }) => {
         getShipping();
     }, []);
 
-    const handlUpdateShipping = async (data) => {
+    const handleUpdateShipping = async (data) => {
         setShippingName(data?.name);
         setShippingAmount(data?.value);
         setIsSubmitted(false);
@@ -36,7 +36,7 @@ const ShippingSettings = ({ userId }) => {
     const deleteShipping=async(id)=>{
         try {
             await Axios.post(
-                process.env.MIX_REACT_APP_URL + "/api/deleteShipping",
+                process.env.MIX_REACT_APP_URL + "/api/delete-shipping",
                 { id: id }
             );
             setShipping({});
@@ -60,7 +60,7 @@ const ShippingSettings = ({ userId }) => {
                 value: shippingAmount,
             };
             const res = await Axios.post(
-                process.env.MIX_REACT_APP_URL + "/api/addShipping",
+                process.env.MIX_REACT_APP_URL + "/api/add-shipping",
                 payload
             );
             setShipping(res?.data?.data);
@@ -145,7 +145,7 @@ const ShippingSettings = ({ userId }) => {
                                     }}
                                     src={edit}
                                     onClick={() => {
-                                        handlUpdateShipping(shipping);
+                                        handleUpdateShipping(shipping);
                                     }}
                                 />
                                 <img
