@@ -507,24 +507,34 @@ const OutPackPrices = ({
     };
 
     const appliedDiscountsList = () => {
-        let price = withoutTaxPrice;
-        calculatorObj?.discount?.map((item, index) => {
-            price = (withoutTaxPrice * parseFloat(item?.value || 0)) / 100;
-            return (
-                <div className={classes["invoice-slot-container"]} key={index}>
-                    <div className={classes["invoice-slot-title"]}>
-                        {`Discount ${item?.name}`}
-                    </div>
-                    <div className={classes["invoice-slot-title"]}>
-                        <span className={classes["light-title"]}>
-                            {`(${parseFloat(item?.value || 0)?.toFixed(2)}%) `}
-                        </span>
+        let price = 0;
+        // let price = withoutTaxPrice;
+        // calculatorObj?.discount?.map((item, index) => {
+        //     price = (withoutTaxPrice * parseFloat(item?.value || 0)) / 100;
 
-                        {`$${parseFloat(price || 0)?.toFixed(2)}`}
-                    </div>
+        const discountToApply = parseFloat(
+            receipt?.values?.discount?.value || ""
+        );
+        if (discountToApply != 0) {
+            price = (withoutTaxPrice * discountToApply) / 100;
+        }
+        return (
+            <div className={classes["invoice-slot-container"]}>
+                <div className={classes["invoice-slot-title"]}>
+                    {`Discount ${receipt?.values?.discount?.type}`}
                 </div>
-            );
-        });
+                <div className={classes["invoice-slot-title"]}>
+                    <span className={classes["light-title"]}>
+                        {`(${parseFloat(
+                            receipt?.values?.discount?.value || 0
+                        )?.toFixed(2)}%) `}
+                    </span>
+
+                    {`$${parseFloat(price || 0)?.toFixed(2)}`}
+                </div>
+            </div>
+        );
+        // });
     };
 
     return (

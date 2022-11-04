@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import QuestionIcon from "../questionIcon";
 import classes from "./styles.module.scss";
 import icon from "../../../../../images/calculator/discount-icon.png";
@@ -10,10 +10,22 @@ const CustomDiscount = ({
     calculatorObj,
     setCalValidations,
     calValidations,
-    data,
 }) => {
     const [discount, setDiscount] = useState("");
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
+    const editInvoiceState = history?.location?.state?.invoice;
+
+    useEffect(() => {
+        if (editInvoiceState?.id) {
+            if (values?.discountType === "") {
+                setDiscount("None");
+            } else if (values?.discountType === "other") {
+                setDiscount("other");
+            } else {
+                setDiscount(values?.discountType);
+            }
+        }
+    }, [history?.location?.state]);
 
     const handleValueChange = (e) => {
         const removeValidations = () => {
@@ -97,7 +109,7 @@ const CustomDiscount = ({
                             </option>
                         );
                     })}
-                    <option value={"other"}>other</option>
+                    <option value={"other"}>Other</option>
                 </select>
                 {discount === "other" && (
                     <div className={classes["discount-input-container"]}>

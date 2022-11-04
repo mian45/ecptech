@@ -116,7 +116,9 @@ const ViewInvoice = ({
     const calculateTotalDue = () => {
         let total = 0;
         total = total + totalWithoutTax();
-        total = total + getAppliedDiscounts(totalWithoutTax());
+        console.log("total1", total);
+        total = total - getAppliedDiscounts(totalWithoutTax());
+        console.log("total2", total);
         //add tax
         const tax = (total * (calculatorObj.tax || 0)) / 100;
         total = total + tax;
@@ -124,15 +126,25 @@ const ViewInvoice = ({
     };
 
     const getAppliedDiscounts = (price) => {
-        let total = 0;
+        const discountToApply = parseFloat(
+            receipt?.values?.discount?.value || ""
+        );
 
-        calculatorObj?.discount?.forEach((element) => {
-            if (element?.status === "active") {
-                total = total + parseFloat(element?.value || 0);
-            }
-        });
-        const priceWithDiscount = (price * total) / 100;
-        return priceWithDiscount;
+        if (discountToApply == 0) {
+            return 0;
+        } else {
+            return (price * discountToApply) / 100;
+        }
+
+        // let total = 0;
+
+        // calculatorObj?.discount?.forEach((element) => {
+        //     if (element?.status === "active") {
+        //         total = total + parseFloat(element?.value || 0);
+        //     }
+        // });
+        // const priceWithDiscount = (price * total) / 100;
+        // return priceWithDiscount;
     };
 
     const totalWithoutTax = () => {
