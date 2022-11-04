@@ -31,25 +31,7 @@ function index(props) {
                             </div>
                         </div>
             </div>
-            <div className={Classes['btn-container']}>
-            <CustomCheckbox
-                                            containerClass={
-                                                Classes["checkbox-container"]
-                                            }
-                                            label={''}
-                                            defaultChecked={
-                                                // item?.status || false
-                                            true}
-                                            onValueChange={(value) =>
-                                                // handleCheck(item, value)
-                                                console.log(value)
-                                            }
-                                        />
-                <p className={Classes['check-text']}>
-                don't show this again
-                </p>
-
-            </div>
+            
             </div>
         </div>
     );
