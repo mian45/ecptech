@@ -6,7 +6,7 @@ import tickIcon from "../../../../images/tick.svg";
 import editIcon from "../../../../images/edit-icon.svg";
 import deleteIcon from "../../../../images/delete-icon.svg";
 import Axios from "../../../Http";
-
+import DeleteModal from "../../../components/deleteModal/index"
 const AddStaffMember = ({ userId }) => {
     const [staffList, setStaffList] = useState([]);
     const [staffInput, setStaffInput] = useState("");
@@ -171,8 +171,16 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(AddStaffMember);
 
 const StaffMemberSlot = ({ staff, handleEdit, handleDelete }) => {
+    const [showDelete,setShowDelete]=useState(false);
     return (
-        <div className={classes["slot-container"]}>
+        <>
+         {showDelete?
+            <DeleteModal accept={async ()=>{
+                await handleDelete(staff?.id)
+                setShowDelete(false)
+            }}
+            cancel={()=>{setShowDelete(false)}}/> :null}
+             <div className={classes["slot-container"]}>
             <div className={classes["slot-info"]}>
                 <img
                     src={userIcon}
@@ -192,9 +200,11 @@ const StaffMemberSlot = ({ staff, handleEdit, handleDelete }) => {
                     src={deleteIcon}
                     alt={"delete-icon"}
                     className={classes["delete-icon"]}
-                    onClick={() => handleDelete(staff?.id)}
+                    onClick={() => {setShowDelete(true)}}
                 />
             </div>
         </div>
+            </>
+       
     );
 };
