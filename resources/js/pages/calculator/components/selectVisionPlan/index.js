@@ -8,6 +8,7 @@ import visionIcon from "../../../../../images/calculator/vision.svg";
 import { ErrorMessage } from "formik";
 import { BenifitTypeEnums } from "../../data/initialValues";
 import * as Yup from "yup";
+import Axios from "../../../../Http";
 
 const SelectVisionPlan = ({
     formProps,
@@ -15,10 +16,29 @@ const SelectVisionPlan = ({
     setCalValidations,
     calValidations,
     data,
+    setCalculatorObj,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const plansList = calculatorObj?.questions?.map((plan) => plan?.title);
-    const handlePlanChange = (event) => {
+
+    const handlePlanClick = async (value) => {
+        try {
+            const currentPlan = calculatorObj?.questions?.find(
+                (item) => item?.title === value.target?.value || ""
+            );
+            const res = await Axios.post(
+                process.env.MIX_REACT_APP_URL + "/api/get-collections",
+                { vision_plan_id: currentPlan?.id }
+            );
+            calculatorObj.lens_types = res?.data?.data?.collection;
+            setCalculatorObj(calculatorObj);
+        } catch (err) {
+            console.log("error while get collections....");
+        }
+    };
+
+    const handlePlanChange = async (event) => {
+        await handlePlanClick(event);
         if (event?.target?.value === "Private Pay") {
             const validations = { ...calValidations };
             delete validations?.isloweredCopay;
