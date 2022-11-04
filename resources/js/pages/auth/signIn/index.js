@@ -21,8 +21,8 @@ const SignIn = ({ isAuthenticated, userRole }) => {
     }, []);
     return (
         <>
-            <Row>
-                <Col span={12}>
+            <Row justify='space-evenly' align='middle' >
+                <Col span={12} className={classes['container']} xs={24} sm={24} md={12} lg={12} xl={12}>
                     <Row>
                         <Col span={24}>
                             <img
@@ -36,7 +36,7 @@ const SignIn = ({ isAuthenticated, userRole }) => {
                         <SignInForm />
                     </Row>
                 </Col>
-                <Col span={12}>
+                <Col span={12} className={classes['slider-section']} xs={24} sm={24} md={12} lg={12} xl={12}>
                     <Row justify="space-around" align="middle">
                         <SignInSlider />
                     </Row>

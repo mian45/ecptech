@@ -1,11 +1,7 @@
-import { Button, Checkbox, Form, Input } from 'antd';
-import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
-import React, { useState } from "react";
+import { Button, Checkbox, Col, Form, Input,Row } from 'antd';
+import React from "react";
 import { connect } from "react-redux";
 import classes from "./styles.module.scss";
-import eyeSvg from "../../../../../../images/eye.svg";
-import eyeCloseSvg from "../../../../../../images/eye-close.svg";
-import CustomCheckbox from "../../../../../components/customCheckbox";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../../../../services";
@@ -51,8 +47,6 @@ const EyeCloseIcon = (props) => <Icon component={EyeCloseSVG} {...props} />;
 
 const SignInForm = ({ userRole, dispatch }) => {
     const history = useHistory();
-    const [isShowPassword, setShowPassword] = useState(false);
-
     const handleClick = async (values) => {
         try {
             await dispatch(AuthService.login(values));
@@ -65,19 +59,6 @@ const SignInForm = ({ userRole, dispatch }) => {
         } catch (err) {
             console.log("error while login");
         }
-    };
-    const onFinish = async (values) => {
-        await dispatch(AuthService.login(values));
-        if (userRole === "staff") {
-            history.push(INVOICES_ROUTE);
-            return;
-        } else {
-            history.push(HOME_ROUTE);
-        }
-        console.log('Success:', values);
-    };
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
     };
     return (
         <Formik
@@ -98,186 +79,115 @@ const SignInForm = ({ userRole, dispatch }) => {
                 return (
                     <>
 
-                        <div className={classes["login-title"]}>
+                       <Col xs={22}>
+                       <div className={classes["login-title"]}>
                             Log in
                         </div>
                         <div className={classes["login-subtitle"]}>
                             Welcome to Urban Optics. Please put your
                             login credentials below to start using the
                             app.
-                        </div>
-                        <form onSubmit={handleSubmit} autoComplete="off">
-                            <div className={classes["login-form"]}>
-                                <div className={classes["login-wrapper"]}>
-                                    <div className={classes["label"]}>
-                                        Email
-                                    </div>
-                                    <div className={classes["error-input"]}>
-                                        <input
-                                            className={classes["email-input"]}
-                                            id="email"
-                                            name="email"
-                                            value={values.email}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        />
-                                        <ErrorMessage
-                                            name={"email"}
-                                            component="div"
-                                            className={classes["error"]}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div
-                                    className={classes["login-wrapper"]}
-                                    style={{ marginTop: "30px" }}
-                                >
-                                    <div className={classes["label"]}>
-                                        Password
-                                    </div>
-                                    <div className={classes["error-input"]}>
-                                        <div
-                                            className={
-                                                classes["password-container"]
-                                            }
-                                        >
-                                            <input
-                                                className={
-                                                    classes["password-input"]
-                                                }
-                                                type={
-                                                    isShowPassword
-                                                        ? "text"
-                                                        : "password"
-                                                }
-                                                id="password"
-                                                name="password"
-                                                value={values.password}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
-                                            <img
-                                                src={
-                                                    isShowPassword
-                                                        ? eyeSvg
-                                                        : eyeCloseSvg
-                                                }
-                                                alt={"icon"}
-                                                className={classes["eye-icon"]}
-                                                onClick={() =>
-                                                    setShowPassword(
-                                                        !isShowPassword
-                                                    )
-                                                }
-                                            />
-                                        </div>
-                                        <ErrorMessage
-                                            name={"password"}
-                                            component="div"
-                                            className={classes["error"]}
-                                        />
-                                    </div>
-                                </div>
-
-                                <div className={classes["forgot-password"]}>
-                                    Forgot Password?
-                                </div>
-                                <div className={classes["divider"]} />
-                                <div className={classes["submit-wrapper"]}>
-                                    <CustomCheckbox
-                                        style={{ transform: "scale(1.2)" }}
-                                        label={"Remember me"}
-                                        defaultChecked={
-                                            values?.remember || false
-                                        }
-                                        onValueChange={(e) =>
-                                            setFieldValue("remember", e)
-                                        }
-                                        id="remember"
-                                        name="remember"
-                                        labelClass={classes["checkbox"]}
-                                        containerClass={
-                                            classes["checkbox-container"]
-                                        }
-                                    />
-                                    <button
-                                        disabled={!(isValid && dirty)}
-                                        className={classes["submit-button"]}
-                                    >
-                                        Login
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                        </div></Col>
                         <Form
                             name="basic"
                             labelCol={{span: 6,}}
                             wrapperCol={{span: 19,}}
-                            initialValues={{remember: true,}}
-                            onFinish={handleClick}
-                            onFinishFailed={onFinishFailed}
+                            onFinish={handleSubmit}
                             autoComplete="off"
+                            className={classes['form-width']}
                         >
+                            
                             <Form.Item
-                                label="Login"
-                                labelAlign="left"
                                 name="email"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your username!',
-                                    },
-                                ]}
+                                label="Email"
+                                labelAlign='left'
+                                labelCol={{
+                                    span: 4,
+                                }}
+                                wrapperCol={{
+                                    span: 20
+                                }}
                             >
-                                <Input
+                             <Row>
+                             <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+                             <Input
                                     size="large"
-                                    placeholder="large size"
-                                    className="email-input"
+                                    name='email'
+                                    className={classes["email-input"]}
                                     value={values.email}
                                     onChange={handleChange}
                                     onBlur={handleBlur}
                                 />
+                             </Col>
+                                 <ErrorMessage
+                                     name={"email"}
+                                     component="div"
+                                     className={classes["error"]}
+                                   />
+                             </Row>
                             </Form.Item>
-
                             <Form.Item
-                                label="Password"
-                                labelAlign="left"
                                 name="password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Please input your password!',
-                                    },
-                                ]}
+                                label='Password'
+                                labelAlign='left'
+                                labelCol={{
+                                    span: 4,
+                                }}
+                                wrapperCol={{
+                                    span: 20
+                                }}
                             >
                                 <Input.Password
-                                    placeholder="input password"
-                                    iconRender={(visible) => (visible ? <EyeIcon/> : <EyeCloseIcon/>)}
+                                    id="password"
+                                    name="password"
+                                    value={values.password}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    className={classes["password-container"]}
+                                    iconRender={(visible) => (visible ? <EyeCloseIcon/> : <EyeIcon/>)}
                                 />
+                                <ErrorMessage
+                                  name={"password"}
+                                  component="div"
+                                   className={classes["error"]}
+                                  />
                             </Form.Item>
-                            <Form.Item
+                            <div className={classes["forgot-password"]}>Forgot Password?</div> 
+                            <div className={classes["divider"]} />
+                          <Row>
+                         <Col xs={12}>
+                         <Form.Item
                                 name="remember"
                                 valuePropName="checked"
                                 wrapperCol={{
-                                    offset: 8,
                                     span: 16,
                                 }}
                             >
-                                <Checkbox>Remember me</Checkbox>
+                                <Checkbox checked={
+                                            values?.remember || false
+                                        }
+                                        id="remember"
+                                        name="remember"
+                                        onChange={(e) =>
+                                            setFieldValue("remember", e)}>
+                                        Remember me</Checkbox>
+                               
                             </Form.Item>
+                            </Col>
 
-                            <Form.Item
+                           <Col xs={12}>
+                           <Form.Item
 
-                                wrapperCol={{
-                                    offset: 8,
-                                    span: 16,
-                                }}
+                            wrapperCol={{
+                                offset: 8,
+                                span: 16,
+                            }}
                             >
-                                <Button type="primary" htmlType="submit">
-                                    Login
-                                </Button>
-                            </Form.Item>
+                            <Button type="primary" htmlType="submit" className={classes["submit-button"]}>
+                                Login
+                            </Button>
+                            </Form.Item></Col>
+                          </Row>
                         </Form>
                     </>
                 );

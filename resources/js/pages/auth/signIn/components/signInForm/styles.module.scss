@@ -3,18 +3,15 @@
     color: #000000;
     font-weight: bold;
 }
+.form-width{
+    width: 90%;
+}
 .login-subtitle {
     font-size: 16px;
     font-family: Montserrat;
     color: #747474;
     font-weight: 400;
     margin-bottom: 30px;
-}
-.login-form {
-
-}
-.login-wrapper {
-
 }
 .error {
     font-size: 14px;
@@ -38,12 +35,8 @@
     border: 1px solid #dfdfdf;
     border-radius: 23px;
     font-size: 16px;
-    padding: 10px 20px;
     color: #747474;
-    width: 379px;
-    height: 45px;
     outline: none;
-    background-color: #fff !important;
     &:-webkit-autofill,
     &:-webkit-autofill:hover,
     &:-webkit-autofill:focus {
@@ -58,19 +51,10 @@
     border-radius: 23px;
     font-size: 16px;
     color: #747474;
-    width: 379px;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #fff;
 }
 .password-input {
-    border-radius: 23px;
-    padding: 10px 20px;
+    width: 100%;
     color: #747474;
-    width: 329px;
-    height: 100%;
     border: none !important;
     outline: none !important;
     &:-webkit-autofill,
