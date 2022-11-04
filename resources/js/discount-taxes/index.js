@@ -96,7 +96,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/addTax`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/add-tax`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -124,7 +124,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/editTax`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/edit-tax`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -151,7 +151,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/deleteTax`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/delete-tax`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -173,7 +173,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/addShipping`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/add-shipping`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -193,7 +193,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/deleteShipping`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/delete-shipping`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -212,7 +212,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "get",
-            url: `${process.env.MIX_REACT_APP_URL}/api/getStates`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/get-states`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -355,7 +355,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "get",
-            url: `${process.env.MIX_REACT_APP_URL}/api/getTaxes?userId=${props.userID}`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/get-taxes?userId=${props.userID}`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -377,7 +377,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "get",
-            url: `${process.env.MIX_REACT_APP_URL}/api/getShipping?userId=${props.userID}`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/get-shipping?userId=${props.userID}`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -551,7 +551,7 @@ const DiscountTaxes = (props) => {
                         onSubmit={handleTaxSubmit}
                     >
                         <div>
-                           
+
                         </div>
                         <div className="second-section">
                             <div className="discount-container_second-form_section">
@@ -571,12 +571,12 @@ const DiscountTaxes = (props) => {
                                     min={0}
                                     placeholder="Add Percentage"
                                     value={taxValue}
-                                   
+
                                     onChange={(e) => {
                                         const regix = new RegExp(
                                             "^[0-9]*[/.]?([0-9]*)?$"
                                         );
-    
+
                                         if (regix.test(e.target.value)) {
                                             if (
                                                 e.target.value <= 100 &&
