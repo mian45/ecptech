@@ -112,7 +112,6 @@ class InvoiceCalculaterController extends Controller
                             $col_count = count($data);
                         }else{
                             $data = $this->clear_encoding_str($data);
-
                             if(!empty($data[0])){
                                 $vision_plan = VisionPlan::updateOrCreate(['title'=> $data[0]]);
                             }
@@ -122,6 +121,7 @@ class InvoiceCalculaterController extends Controller
                                     ['title'=> $data[1], 'vision_plan_id'=>$vision_plan->id]
                                 );
                             }
+
 
                             if(!empty($data[2])){
                                 if(strtolower($data[2]) == 'null'){
@@ -298,12 +298,14 @@ class InvoiceCalculaterController extends Controller
                             }
                             
                             if(!empty($data[1])){
+                                $code_cleaned = str_replace(' ', '', $data[1]);
+
                                 $code = Code::updateOrCreate(
-                                    ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$data[1]],
+                                    ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$code_cleaned],
                                     ['price'=> $data[2]]
                                 );
                                 $code_bifocal = Code::updateOrCreate(
-                                    ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$data[1]],
+                                    ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$code_cleaned],
                                     ['price'=> $data[3]]
                                 );
                             }
@@ -333,7 +335,7 @@ class InvoiceCalculaterController extends Controller
         if (is_array($value)) {
             $clean = [];
             foreach ($value as $key => $val) {
-                $clean[$key] = mb_convert_encoding($val, 'UTF-8', 'UTF-8');
+                $clean[$key] = trim(preg_replace('/[\t\n\r\s]+/', ' ', mb_convert_encoding($val, 'UTF-8', 'UTF-8')));
             }
             return $clean;
         }
