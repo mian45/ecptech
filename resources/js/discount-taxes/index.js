@@ -648,7 +648,7 @@ const DiscountTaxes = (props) => {
                                     <tr className="discount-output_body discount-row">
                                         <td className="row-1">{obj.name}</td>
                                         <td>{obj.value}%</td>
-                                        <td className="col-3 custom-tax-col-3">
+                                        <td className="col-4 custom-tax-col-3">
                                             <img
                                                 style={{
                                                     width: "18px",
