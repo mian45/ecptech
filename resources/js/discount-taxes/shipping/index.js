@@ -10,7 +10,7 @@ const ShippingSettings = ({ userId }) => {
     const [shippingAmount, setShippingAmount] = useState("");
     const [shipping, setShipping] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
-
+    const [editState,setEditState]=useState(false)
     useEffect(() => {
         const getShipping = async () => {
             try {
@@ -24,6 +24,7 @@ const ShippingSettings = ({ userId }) => {
                 console.log("error while get shipping");
             }
         };
+        setEditState(false)
         getShipping();
     }, []);
 
@@ -59,6 +60,7 @@ const ShippingSettings = ({ userId }) => {
             );
             setShipping(res?.data?.data);
             setShippingName("");
+            setEditState(false)
             setShippingAmount("");
             setIsSubmitted(true);
         } catch (err) {
@@ -104,7 +106,7 @@ const ShippingSettings = ({ userId }) => {
                                     : ""
                             } `}
                         >
-                            Add
+                            {editState?"Update":"Add"}
                         </button>
                     </div>
                 </form>
@@ -132,6 +134,7 @@ const ShippingSettings = ({ userId }) => {
                                     }}
                                     src={edit}
                                     onClick={() => {
+                                        setEditState(true)
                                         handleUpdateShipping(shipping);
                                     }}
                                 />

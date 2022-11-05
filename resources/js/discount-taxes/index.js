@@ -29,7 +29,7 @@ const DiscountTaxes = (props) => {
     const [shippingState, setShippingState] = useState("");
     const [shippingArray, setShippingArray] = useState([]);
     let [shipping, setShipping] = useState();
-
+    const [taxStatus,setTaxStatus]=useState("inactive")
     const [editId, setEditId] = useState("");
 
     useEffect(() => {
@@ -121,6 +121,7 @@ const DiscountTaxes = (props) => {
         data.append("stateId", stateSetting);
         data.append("name", taxName);
         data.append("value", taxValue);
+        data.append('status',taxStatus)
 
         let config = {
             method: "post",
@@ -399,10 +400,11 @@ const DiscountTaxes = (props) => {
         setTaxName(obj.name);
         setStateSetting(obj.state.id);
         setTaxValue(obj.value);
+        setTaxStatus(obj.status)
     };
     const onChangeDiscountActive = (e, disc, index) => {
         let data = new FormData();
-        data.append("discountId", disc.id);
+        data.append("discount_id", disc.id);
         data.append("status", e ? "active" : "inactive");
         data.append("userId", props.userID);
         let config = {
@@ -499,7 +501,7 @@ const DiscountTaxes = (props) => {
                                 } `}
                                 type="submit"
                             >
-                                Add
+                               {discountId==null?"Add":"Update"}
                             </button>
                         </div>
                     </form>
@@ -629,7 +631,7 @@ const DiscountTaxes = (props) => {
                                     } `}
                                     type="submit"
                                 >
-                                    Add
+                                    {idState==null?"Add":"Update"}
                                 </button>
                             </div>
                         </div>
