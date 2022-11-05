@@ -4,13 +4,14 @@ import Axios from "../../Http";
 import { connect } from "react-redux";
 import edit from "../../../images/edit.png";
 import cross from "../../../images/cross.png";
-
+import DeleteModal from "../../components/deleteModal/index"
 const ShippingSettings = ({ userId }) => {
     const [shippingName, setShippingName] = useState("");
     const [shippingAmount, setShippingAmount] = useState("");
     const [shipping, setShipping] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
-
+    const [showDeleteShipping,setShowDeleteShipping]=useState(false)
+    const [deleteShippingId,setDeleteShippingId]=useState(0)
     useEffect(() => {
         const getShipping = async () => {
             try {
@@ -32,7 +33,7 @@ const ShippingSettings = ({ userId }) => {
         setShippingAmount(data?.value);
         setIsSubmitted(false);
     };
-    const handleDeleteShipping = async (id) => {
+    const deleteShipping=async(id)=>{
         try {
             await Axios.post(
                 process.env.MIX_REACT_APP_URL + "/api/delete-shipping",
@@ -40,9 +41,14 @@ const ShippingSettings = ({ userId }) => {
             );
             setShipping({});
             setIsSubmitted(false);
+            setShowDeleteShipping(false)
         } catch (err) {
             console.log("error while delete shipping");
         }
+    }
+    const handleDeleteShipping = async (id) => {
+       setDeleteShippingId(id);
+       setShowDeleteShipping(true)
     };
     const handleShippingSubmit = async (e) => {
         e?.preventDefault();
@@ -67,7 +73,17 @@ const ShippingSettings = ({ userId }) => {
     };
 
     return (
-        <div className="discount-container_first discount-tax-con">
+        <>
+        {showDeleteShipping?
+            <DeleteModal accept={()=>{
+                deleteShipping(deleteShippingId);
+    
+            }}
+            cancel={()=>{setShowDeleteShipping(false)}}
+            open={showDeleteShipping}
+            
+            /> :null}
+            <div className="discount-container_first discount-tax-con">
             <p className="heading">Shipping</p>
             <div>
                 <form className="discount-container_first-form">
@@ -152,6 +168,8 @@ const ShippingSettings = ({ userId }) => {
                 </table>
             </div>
         </div>
+        </>
+        
     );
 };
 const mapStateToProps = (state) => ({
