@@ -398,7 +398,7 @@ class InvoiceCalculaterController extends Controller
                             $q->with(['collections'=>function($q)use($userId){
                                 $q->join('collections_permissions as cp','cp.collection_title','=','collections.title');
                                 $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price');
-                                $q->where('cp.user_id',$userId);
+                                $q->where('cp.user_id',$userId)->where('cp.status','active');
                                
 
                             }]);
