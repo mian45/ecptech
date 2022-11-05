@@ -79,7 +79,10 @@ const ShippingSettings = ({ userId }) => {
                 deleteShipping(deleteShippingId);
     
             }}
-            cancel={()=>{setShowDeleteShipping(false)}}/> :null}
+            cancel={()=>{setShowDeleteShipping(false)}}
+            open={showDeleteShipping}
+            
+            /> :null}
             <div className="discount-container_first discount-tax-con">
             <p className="heading">Shipping</p>
             <div>

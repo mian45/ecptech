@@ -20,7 +20,6 @@ import iconRemainder from "../../images/remainder.svg";
 import bellIcon from "../../images/bell-icon.svg";
 import bellCloseIcon from "../../images/bell-close.svg";
 import emailButton from "../../images/email.svg";
-import Axios from "../Http";
 import DeleteModal from "../components/deleteModal/index"
 import "./style.scss";
 
@@ -373,7 +372,10 @@ const EmailSetting = (props) => {
             deleteReminderbyPopup();
 
         }}
-        cancel={()=>{setShowDeleteReminder(false)}}/> :null}
+        cancel={()=>{setShowDeleteReminder(false)}}
+        open={showDeleteReminder}
+        /> :null}
+
        
         <div>
             

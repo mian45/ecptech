@@ -437,12 +437,15 @@ const DiscountTaxes = (props) => {
                     })
                 );
             }}
+            open={showDeleteTaxes}
             cancel={()=>{setShowDeleteTaxes(false)}}/> :null}
             {showDeleteDiscount?
             <DeleteModal accept={()=>{
                 deleteDiscount(deleteDiscountId);
             }}
-            cancel={()=>{setShowDeleteDiscount(false)}}/> :null}
+            cancel={()=>{setShowDeleteDiscount(false)}}
+            open={showDeleteDiscount}
+            /> :null}
               <div className="discount-container discount-tax">
             <p className="main discount-container-page-title">{`Discounts & Taxes`}</p>
             <div className="discount-container_first discount-tax-con">

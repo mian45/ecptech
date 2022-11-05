@@ -4,12 +4,12 @@ import Alert from "../../assets/Alert.png"
 import { Col, Modal, Row } from 'antd';
 function index(props) {
     const open=()=>{
-        console.log("open")
+        console.log("open",props.open)
     }    
     return (
         <Modal
         title=""
-        open={open}
+        open={props.open}
         closable={false}
         centered={true}
         bodyStyle={{justifyContent:"center",alignItems:"center",display:"flex"}}
