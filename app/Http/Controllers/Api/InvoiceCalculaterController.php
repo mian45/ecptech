@@ -76,19 +76,6 @@ class InvoiceCalculaterController extends Controller
             ->select('vision_plans.id','vision_plans.title')->get();
 
 
-       $data['lens_types'] = LenseType::with(['brands'=>function($q)use($userId){
-            $q->join('brand_permissions as bp','bp.brand_id','=','brands.id');
-            $q->select('brands.id','lens_type_id','title');
-            $q->where('bp.user_id',$userId);
-            $q->with(['collections'=>function($q)use($userId){
-                $q->join('collections_permissions as cp','cp.collection_id','=','collections.id');
-                $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price');
-                $q->where('cp.user_id',$userId)->where('cp.status','active');
-            }]);
-       }])->selectRaw("MIN(id) AS id,title,MIN(vision_plan_id) AS vision_plan_id")->groupby('title')->get();
-       
-
-
        $data['lens_material'] = LensMaterial::leftjoin('user_lense_material_settings as setting','setting.lens_material_id','=','lens_materials.id')
                                             ->select('lens_materials.id','lens_materials.lens_material_title','setting.price as retail_price','setting.display_name')    
                                             ->where('setting.user_id',$userId)
@@ -125,7 +112,6 @@ class InvoiceCalculaterController extends Controller
                             $col_count = count($data);
                         }else{
                             $data = $this->clear_encoding_str($data);
-
                             if(!empty($data[0])){
                                 $vision_plan = VisionPlan::updateOrCreate(['title'=> $data[0]]);
                             }
@@ -135,6 +121,7 @@ class InvoiceCalculaterController extends Controller
                                     ['title'=> $data[1], 'vision_plan_id'=>$vision_plan->id]
                                 );
                             }
+
 
                             if(!empty($data[2])){
                                 if(strtolower($data[2]) == 'null'){
@@ -311,12 +298,14 @@ class InvoiceCalculaterController extends Controller
                             }
                             
                             if(!empty($data[1])){
+                                $code_cleaned = str_replace(' ', '', $data[1]);
+
                                 $code = Code::updateOrCreate(
-                                    ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$data[1]],
+                                    ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$code_cleaned],
                                     ['price'=> $data[2]]
                                 );
                                 $code_bifocal = Code::updateOrCreate(
-                                    ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$data[1]],
+                                    ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$code_cleaned],
                                     ['price'=> $data[3]]
                                 );
                             }
@@ -346,7 +335,7 @@ class InvoiceCalculaterController extends Controller
         if (is_array($value)) {
             $clean = [];
             foreach ($value as $key => $val) {
-                $clean[$key] = mb_convert_encoding($val, 'UTF-8', 'UTF-8');
+                $clean[$key] = trim(preg_replace('/[\t\n\r\s]+/', ' ', mb_convert_encoding($val, 'UTF-8', 'UTF-8')));
             }
             return $clean;
         }
@@ -383,4 +372,41 @@ class InvoiceCalculaterController extends Controller
         return $this->sendResponse($data, 'Calculater Data');
 
     }
-}
+
+
+    public function getCollections(Request $request){
+        
+                $validator = Validator::make($request->all(), [
+                    'vision_plan_id' => 'required'            
+                ]);
+                
+                if ($validator->fails()) {
+                    return $this->sendError('Validation Error.', $validator->errors());
+                }
+                
+                $user=auth()->user();
+                
+                $userId=$user->id;
+                if($user->role_id===3){
+                    $userId=  $user->client_id;
+                }
+                
+                
+                $data['collection'] = LenseType::with(['brands'=>function($q)use($userId){
+                            $q->join('brand_permissions as bp','bp.brand_title','=','brands.title');
+                            $q->select('brands.id','lens_type_id','title');
+                            $q->where('bp.user_id',$userId);
+                            $q->groupby('brands.id');
+                            $q->with(['collections'=>function($q)use($userId){
+                                $q->join('collections_permissions as cp','cp.collection_title','=','collections.title');
+                                $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price');
+                                $q->where('cp.user_id',$userId)->where('cp.status','active');
+                               
+
+                            }]);
+                       }])->select('id','title','vision_plan_id')->where('vision_plan_id',request()->vision_plan_id)->get();
+                
+                return $this->sendResponse($data, 'Collections');
+                }
+
+};

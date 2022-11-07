@@ -9,15 +9,19 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-const Profile = ({ userId, closeModal }) => {
+const Profile = ({ userId, closeModal, userRole }) => {
     return (
         <div className={classes["backdrop"]} onClick={closeModal}>
             <div
-                className={classes["profile"]}
+                className={`${classes["profile"]} ${
+                    userRole === "staff" && classes["staff"]
+                }`}
                 onClick={(e) => e.stopPropagation()}
             >
                 <ProfileInfoSection userId={userId} />
-                <ProfilePasswordValidations userId={userId} />
+                {userRole !== "staff" && (
+                    <ProfilePasswordValidations userId={userId} />
+                )}
             </div>
         </div>
     );
@@ -25,6 +29,7 @@ const Profile = ({ userId, closeModal }) => {
 
 const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
+    userRole: state.Auth.userRole?.name,
 });
 export default connect(mapStateToProps)(Profile);
 
@@ -52,7 +57,10 @@ const ProfileInfoSection = ({ userId }) => {
             personalInfo.append("theme_mode", values.themeType);
             personalInfo.append("userId", userId);
 
-            await axios.post(`${process.env.MIX_REACT_APP_URL}/api/edit-profile`, personalInfo);
+            await axios.post(
+                `${process.env.MIX_REACT_APP_URL}/api/edit-profile`,
+                personalInfo
+            );
         } catch (err) {
             console.log("error while save changes", err);
         }
@@ -150,7 +158,10 @@ const ProfilePasswordValidations = ({ userId }) => {
                 password_confirmation: values.confirmPassword,
                 user_id: userId,
             };
-            await axios.post(`${process.env.MIX_REACT_APP_URL}/api/change-password`, passwordObject);
+            await axios.post(
+                `${process.env.MIX_REACT_APP_URL}/api/change-password`,
+                passwordObject
+            );
         } catch (err) {
             console.log("error while save password", err);
         }
