@@ -8,26 +8,37 @@ import CustomButton from "../customButton";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-
-const Profile = ({ userId, closeModal,user }) => {
+import {Row, Col, Drawer} from 'antd';
+const Profile = ({ userId, closeModal,user, userRole,open }) => {
     return (
-        <div className={classes["backdrop"]} onClick={closeModal}>
-            <div
+        <Drawer
+        title="Basic Drawer"
+        placement={"right"}
+        closable={false}
+        open={open}
+        key={"right"}
+        onClose={closeModal}
+        bodyStyle={{padding:"24px 0px"}}
+      > 
+            <Col
                 className={`${classes["profile"]} ${
                     userRole === "staff" && classes["staff"]
                 }`}
                 onClick={(e) => e.stopPropagation()}
             >
                 <ProfileInfoSection userId={userId} user={user}/>
-                <ProfilePasswordValidations userId={userId} />
-            </div>
-        </div>
+                {userRole !== "staff" && (
+                    <ProfilePasswordValidations userId={userId} />
+                )}
+            </Col>
+            </Drawer>
     );
 };
 
 const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
-    user:state.Auth.user
+    user:state.Auth.user,
+    userRole: state.Auth.userRole?.name,
 });
 export default connect(mapStateToProps)(Profile);
 

@@ -49,7 +49,7 @@ const Header = ({}) => {
                     }}
                 />
                 <h6 className={classes["logout"]} onClick={()=>{Logout()}}>Logout</h6>
-                {showProfile && <Profile closeModal={closeModal} />}
+                 <Profile closeModal={closeModal} open={showProfile}/>
             </div>
         </div>
     );
