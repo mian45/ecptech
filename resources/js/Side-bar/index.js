@@ -155,7 +155,7 @@ const SideBar = ({ userRole, isActiveState, dispatch,sidebar }) => {
         open={sidebar}
         key={"left"}
         bodyStyle={{backgroundColor:"#6fa5cb"}}
-        width={'20%'}
+        width={140}
       >
         {userRole === "staff" ? (
                 <div
