@@ -1,5 +1,8 @@
 import * as ActionTypes from "../action-types";
-
+export function showSideBar(payload){
+    return {type:ActionTypes.SHOW_SIDEBAR,
+    payload}
+}
 export function authLogin(payload) {
     return {
         type: ActionTypes.AUTH_LOGIN,

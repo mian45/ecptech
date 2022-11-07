@@ -13,19 +13,16 @@ import homeIcon from "../../images/home.svg";
 import invoicesIcon from "../../images/invoices.svg";
 import paymentIcon from "../../images/payments.svg";
 import settingsIcon from "../../images/settings.svg";
-import { Row,Col } from "antd";
-
-const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
+import { Row,Col, Drawer } from "antd";
+const SideBar = ({ userRole, isActiveState, dispatch,sidebar }) => {
     const [state, setState] = useState(isActiveState);
     const [currentRoute, setCurrentRoute] = useState("");
     const history = useHistory();
-
     useEffect(() => {
         history.listen((location) => {
             setCurrentRoute(location?.pathname);
         });
     }, []);
-
     useEffect(() => {
         const currentPath = history.location.pathname;
         redirectStaffRoute(currentPath);
@@ -93,10 +90,13 @@ const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
         }
         return true;
     };
-
+    const onClose=()=>{
+        dispatch(AuthService.showSideBar())
+    }
     return (
         <Row className={classes["side-box"]}>
             <Col>
+           {window.innerWidth>763?<>
             {userRole === "staff" ? (
                 <div
                     className={classes["item-container"]}
@@ -146,7 +146,68 @@ const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
                         );
                     })}
                 </>
+            )}</>:sidebar?<>
+            <Drawer
+        title="Basic Drawer"
+        placement={"left"}
+        closable={false}
+        onClose={onClose}
+        open={sidebar}
+        key={"left"}
+        bodyStyle={{backgroundColor:"#6fa5cb"}}
+        width={'20%'}
+      >
+        {userRole === "staff" ? (
+                <div
+                    className={classes["item-container"]}
+                    onClick={() => {
+                        history.push(INVOICES_ROUTE);
+                    }}
+                >
+                    <img src={invoicesIcon} className={classes["icon"]} />
+                    <label className={classes["sidebar-label"]}>Invoices</label>
+
+                    <span className={classes["active-state"]}></span>
+                </div>
+            ) : (
+                <>
+                    {SIDE_BAR_DATA.map((item, index) => {
+                        return (
+                            <Fragment key={index}>
+                                {checkStaffRoute(item?.index) ? (
+                                    <div
+                                        className={classes["item-container"]}
+                                        onClick={() => {
+                                            handleSideBar(item?.index);
+                                        }}
+                                        key={index}
+                                    >
+                                        <img
+                                            src={item.icon}
+                                            className={classes["icon"]}
+                                        />
+                                        <label
+                                            className={classes["sidebar-label"]}
+                                        >
+                                            {item.name}
+                                        </label>
+                                        {state === item?.index && (
+                                            <span
+                                                className={
+                                                    classes["active-state"]
+                                                }
+                                            ></span>
+                                        )}
+                                    </div>
+                                ) : (
+                                    <></>
+                                )}
+                            </Fragment>
+                        );
+                    })}
+                </>
             )}
+      </Drawer></>:null}
             </Col>
         </Row>
     );
@@ -156,6 +217,7 @@ const mapStateToProps = (state) => ({
     isActiveState: state.Auth.isActiveState,
     userRole: state.Auth.userRole?.name,
     userId: state.Auth?.user?.id,
+    sidebar:state.Auth.sidebar
 });
 
 export default connect(mapStateToProps)(SideBar);
