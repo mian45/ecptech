@@ -78,8 +78,6 @@ class InvoiceCalculaterController extends Controller
             ->select('vision_plans.id','vision_plans.title')->get();
 
 
-       $data['lens_types'] = LenseType::selectRaw("MIN(id) AS id,title,MIN(vision_plan_id) AS vision_plan_id")->groupby('title')->get();
-
 
 
        $data['lens_material'] = LensMaterial::leftjoin('user_lense_material_settings as setting','setting.lens_material_id','=','lens_materials.id')
@@ -412,31 +410,37 @@ class InvoiceCalculaterController extends Controller
 
     }
 
-    public function getBrands(Request $request){
-
+    public function getCollections(Request $request){
+        
         $validator = Validator::make($request->all(), [
-            'lense_type_id' => 'required'
+            'vision_plan_id' => 'required'            
         ]);
-
+        
         if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
-
+        
         $user=auth()->user();
-
+        
         $userId=$user->id;
         if($user->role_id===3){
             $userId=  $user->client_id;
         }
-
-        $data['brands'] = Brand::join('brand_permissions as bp','bp.brand_id','=','brands.id')
-                            ->with(['collections'=>function($q)use($userId){
-                                $q->join('collections_permissions as cp','cp.collection_id','=','collections.id');
-                                $q->select('collections.id','collections.brand_id','title','collections.category','cp.name as display_name','cp.price');
-                                $q->where('cp.user_id',$userId)->where('cp.status','active');
-                            }])->select('brands.id','brands.lens_type_id','title')->where('lens_type_id',$request->lense_type_id)
-                            ->where('bp.user_id',$userId)->get();
-
-        return $this->sendResponse($data, 'Brands');
+        
+        
+        $data['collection'] = LenseType::with(['brands'=>function($q)use($userId){
+                    $q->join('brand_permissions as bp','bp.brand_title','=','brands.title');
+                    $q->select('brands.id','lens_type_id','title');
+                    $q->where('bp.user_id',$userId);
+                    $q->groupby('brands.id');
+                    $q->with(['collections'=>function($q)use($userId){
+                        $q->join('collections_permissions as cp','cp.collection_title','=','collections.title');
+                        $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price');
+                        $q->where('cp.user_id',$userId)->where('cp.status','active');
+                       
+                    }]);
+               }])->select('id','title','vision_plan_id')->where('vision_plan_id',request()->vision_plan_id)->get();
+        
+        return $this->sendResponse($data, 'Collections');
     }
 }
