@@ -13,6 +13,7 @@ import homeIcon from "../../images/home.svg";
 import invoicesIcon from "../../images/invoices.svg";
 import paymentIcon from "../../images/payments.svg";
 import settingsIcon from "../../images/settings.svg";
+import { Row,Col } from "antd";
 
 const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
     const [state, setState] = useState(isActiveState);
@@ -94,7 +95,8 @@ const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
     };
 
     return (
-        <div className={classes["container"]}>
+        <Row className={classes["side-box"]}>
+            <Col>
             {userRole === "staff" ? (
                 <div
                     className={classes["item-container"]}
@@ -145,7 +147,8 @@ const SideBar = ({ userRole, isActiveState, userId, dispatch }) => {
                     })}
                 </>
             )}
-        </div>
+            </Col>
+        </Row>
     );
 };
 
