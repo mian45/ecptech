@@ -241,7 +241,14 @@ export const InvoiceBoldSlot = ({ title, subTitle }) => {
     );
 };
 
-export const getPriceByPhotochromicMaterial = (value) => {
+export const getPriceByPhotochromicMaterial = (plan, value) => {
+    if (plan === "VSP Signature" || plan === "VSP Advantage") {
+        return getSignaturePhotochromic(value);
+    } else if (plan === "VSP Choice") {
+        return 75;
+    }
+};
+const getSignaturePhotochromic = (value) => {
     switch (value) {
         case "Transition Signature":
             return TRANSITION_SIGNATURE;
@@ -259,14 +266,73 @@ export const getPriceByPhotochromicMaterial = (value) => {
             return TRANSITION_VANTAGE;
     }
 };
-const getPriceByAntireflective = (value) => {
+export const getPriceByAntireflective = (plan, value) => {
+    if (plan === "VSP Signature") {
+        return getSignatureAntireflective(value);
+    } else if (plan === "VSP Choice" || plan === "VSP Advantage") {
+        return getChoiceAntireflective(value);
+    }
+};
+
+const getChoiceAntireflective = (value) => {
     switch (value) {
-        case "Shamir Glacier Plus UV":
-            return SHAMIR_GLACIER_PLUS_UV;
-        case "TechShield Plus UVR":
-            return TECHSHIELD_PLUS_UVR;
-        case "Crizal Sunshield (Backside AR Only)":
-            return CRIZAL_SUNSHIELD;
+        case "Glacier Plus":
+        case "Crizal Sapphire 360 UV":
+        case "Crizal Avance UV":
+        case "Crizal Rock":
+        case "Crizal Sunshield":
+        case "DuraVision BlueProtect UV":
+        case "DuraVision Platinum UV":
+        case "DuraVision Sun UV":
+        case "Kodak Clean&CleAR":
+        case "Kodak Clean&CleAR UV":
+        case "Kodak Clean&CleAR with Silk":
+        case "Kodak Clean&CleAR UV with Silk":
+        case "Kodak Total Blue":
+        case "Maui Jim AR":
+            return 85;
+        case "Crizal Alize UV":
+        case "DuraVision Silver UV":
+        case "HiVision with ViewProtect":
+        case "Kodak CleAR":
+            return 69;
+        case "Crizal Prevencia":
+        case "DuraVision Chrome":
+        case "Crizal Easy UV":
+            return 58;
+        case "Crizal UV Kids":
+            return 41;
+    }
+};
+
+const getSignatureAntireflective = (value) => {
+    switch (value) {
+        case "Glacier Plus":
+        case "Crizal Sapphire 360 UV":
+        case "Crizal Avance UV":
+        case "Crizal Rock":
+        case "Crizal Sunshield":
+        case "DuraVision BlueProtect UV":
+        case "DuraVision Platinum UV":
+        case "DuraVision Sun UV":
+        case "Kodak Clean&CleAR":
+        case "Kodak Clean&CleAR UV":
+        case "Kodak Clean&CleAR with Silk":
+        case "Kodak Clean&CleAR UV with Silk":
+        case "Kodak Total Blue":
+        case "Maui Jim AR":
+            return 75;
+        case "Crizal Alize UV":
+        case "DuraVision Silver UV":
+        case "HiVision with ViewProtect":
+        case "Kodak CleAR":
+            return 61;
+        case "Crizal Prevencia":
+        case "DuraVision Chrome":
+        case "Crizal Easy UV":
+            return 51;
+        case "Crizal UV Kids":
+            return 37;
     }
 };
 
@@ -402,6 +468,7 @@ const GetLensFee = (receipt, calculatorObj, lensPrices) => {
                 }
             } else {
                 const price = getPriceByAntireflective(
+                    receipt?.values?.visionPlan,
                     receipt?.values?.antiReflectiveProperties?.type
                 );
                 total = total + (price || 0);
@@ -426,6 +493,7 @@ const GetLensFee = (receipt, calculatorObj, lensPrices) => {
                 }
             } else {
                 const price = getPriceByPhotochromicMaterial(
+                    receipt?.values?.visionPlan,
                     receipt?.values?.photochromics?.type
                 );
                 total = total + (price || 0);

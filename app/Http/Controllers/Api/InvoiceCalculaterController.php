@@ -38,7 +38,7 @@ class InvoiceCalculaterController extends Controller
         if($user->role_id===3){
             $userId=  $user->client_id;
         }
-       
+
 
         $shipping = Shipping::where('user_id',$userId)->orderBy('created_at', 'desc')->first();
         if($shipping){
@@ -60,10 +60,10 @@ class InvoiceCalculaterController extends Controller
             $q->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id');
             $q->where('setting.user_id',$userId)->where('setting.status','active');
         }])->select('id','title')->get();
-        
-        
-        
-        
+
+
+
+
         $data['questions'] = VisionPlan::with(['question_permissions' => function($q)use($userId){
                 $q->join('questions as q','q.id','=','question_permissions.question_id');
                 $q->select('q.id as q_id','question_permissions.vision_plan_id','q.title as question',
@@ -79,11 +79,11 @@ class InvoiceCalculaterController extends Controller
 
 
        $data['lens_types'] = LenseType::selectRaw("MIN(id) AS id,title,MIN(vision_plan_id) AS vision_plan_id")->groupby('title')->get();
-       
+
 
 
        $data['lens_material'] = LensMaterial::leftjoin('user_lense_material_settings as setting','setting.lens_material_id','=','lens_materials.id')
-                                            ->select('lens_materials.id','lens_materials.lens_material_title','setting.price as retail_price','setting.display_name')    
+                                            ->select('lens_materials.id','lens_materials.lens_material_title','setting.price as retail_price','setting.display_name')
                                             ->where('setting.user_id',$userId)
                                             ->where('setting.status','active')
                                             ->get();
@@ -100,14 +100,14 @@ class InvoiceCalculaterController extends Controller
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
-        
+
         $csv = array();
-    
+
         if($_FILES['csv']['error'] == 0){
             $tmpName = $_FILES['csv']['tmp_name'];
-    
+
             if(($handle = fopen($tmpName, 'r')) !== FALSE) {
-                
+
                 DB::beginTransaction();
 
                 $row = 0;
@@ -118,7 +118,6 @@ class InvoiceCalculaterController extends Controller
                             $col_count = count($data);
                         }else{
                             $data = $this->clear_encoding_str($data);
-
                             if(!empty($data[0])){
                                 $vision_plan = VisionPlan::updateOrCreate(['title'=> $data[0]]);
                             }
@@ -128,6 +127,7 @@ class InvoiceCalculaterController extends Controller
                                     ['title'=> $data[1], 'vision_plan_id'=>$vision_plan->id]
                                 );
                             }
+
 
                             if(!empty($data[2])){
                                 if(strtolower($data[2]) == 'null'){
@@ -155,7 +155,7 @@ class InvoiceCalculaterController extends Controller
                                     ))->id;
                                 }
 
-                                
+
                             }
 
                             if(!empty($data[5])){
@@ -165,10 +165,10 @@ class InvoiceCalculaterController extends Controller
                             }
 
                             if(!empty($data[6])){
-                                
+
                                 $code_id = null;
                                 if(!empty($data[7])){
-                                    
+
                                     if(!empty($data[1]) AND (strtolower($data[1]) == 'bifocal' OR strtolower($data[1]) == 'trifocal' )){
                                         $code = Code::where('name',$data[7])->where('vision_plan_id',$vision_plan->id)->where('lense_type','bifocal')->first();
                                     }else{
@@ -194,12 +194,12 @@ class InvoiceCalculaterController extends Controller
                                     $collection_obj = Collection::find($collection->id);
                                     $collection_obj->category = $category;
                                     $collection_obj->save();
-                                        
+
                                 }
                             }
 
                         }
-                        
+
                         $row++;
                     }
                     fclose($handle);
@@ -209,13 +209,13 @@ class InvoiceCalculaterController extends Controller
                 }catch(\Exception $e){
                     DB::rollback();
                     return $this->sendError($e->getMessage());
-                    
+
                 }
-                
+
             }
         }
-    
-       
+
+
     }
 
 
@@ -228,14 +228,14 @@ class InvoiceCalculaterController extends Controller
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
-        
+
         $csv = array();
-    
+
         if($_FILES['csv']['error'] == 0){
             $tmpName = $_FILES['csv']['tmp_name'];
-    
+
             if(($handle = fopen($tmpName, 'r')) !== FALSE) {
-                
+
                 DB::beginTransaction();
 
                 $row = 0;
@@ -264,7 +264,7 @@ class InvoiceCalculaterController extends Controller
                             }
 
                         }
-                        
+
                         $row++;
                     }
                     fclose($handle);
@@ -274,13 +274,13 @@ class InvoiceCalculaterController extends Controller
                 }catch(\Exception $e){
                     DB::rollback();
                     return $this->sendError($e->getMessage());
-                    
+
                 }
-                
+
             }
         }
-    
-       
+
+
     }
 
     public function storeCodeCSVData(Request $request){
@@ -290,14 +290,14 @@ class InvoiceCalculaterController extends Controller
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
-        
+
         $csv = array();
-    
+
         if($_FILES['csv']['error'] == 0){
             $tmpName = $_FILES['csv']['tmp_name'];
-    
+
             if(($handle = fopen($tmpName, 'r')) !== FALSE) {
-                
+
                 DB::beginTransaction();
                 $row = 0;
                 try{
@@ -310,19 +310,46 @@ class InvoiceCalculaterController extends Controller
                             if(!empty($data[0])){
                                 $vision_plan = VisionPlan::where('title', $data[0])->first();
                             }
-                            
+
                             if(!empty($data[1])){
-                                $code = Code::updateOrCreate(
-                                    ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$data[1]],
-                                    ['price'=> $data[2]]
-                                );
-                                $code_bifocal = Code::updateOrCreate(
-                                    ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$data[1]],
-                                    ['price'=> $data[3]]
-                                );
+                                $price = str_replace('$','',$data[2]);
+                                $code = str_replace(' ', '', $data[1]);
+
+                                if(is_numeric($price)){
+
+                                    $price = (float)$price;
+                                    $code = Code::updateOrCreate(
+                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$code],
+                                        ['price'=> $price]
+                                    );
+
+                                }else{
+                                    $code = Code::updateOrCreate(
+                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>NULL,'name'=>$code],
+                                        ['price_formula'=> $price]
+                                    );
+                                }
+
+
+                                $price_bifocal = str_replace('$','',$data[3]);
+                                if(is_numeric($price_bifocal)){
+
+                                    $price_bifocal = (float)$price_bifocal;
+                                    $code = Code::updateOrCreate(
+                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$code],
+                                        ['price'=> $price_bifocal]
+                                    );
+
+                                }else{
+                                    $code = Code::updateOrCreate(
+                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$code],
+                                        ['price_formula'=> $price_bifocal]
+                                    );
+                                }
+
                             }
                         }
-                        
+
                         $row++;
                     }
                     fclose($handle);
@@ -331,13 +358,13 @@ class InvoiceCalculaterController extends Controller
                 }catch(\Exception $e){
                     DB::rollback();
                     return $this->sendError($e->getMessage());
-                    
+
                 }
-                
+
             }
         }
-    
-       
+
+
     }
 
 
@@ -347,7 +374,7 @@ class InvoiceCalculaterController extends Controller
         if (is_array($value)) {
             $clean = [];
             foreach ($value as $key => $val) {
-                $clean[$key] = mb_convert_encoding($val, 'UTF-8', 'UTF-8');
+                $clean[$key] = trim(preg_replace('/[\t\n\r\s]+/', ' ', mb_convert_encoding($val, 'UTF-8', 'UTF-8')));
             }
             return $clean;
         }
@@ -356,13 +383,13 @@ class InvoiceCalculaterController extends Controller
 
 
     public function getLensePrices(Request $request){
-        
+
         $validator = Validator::make($request->all(), [
             'vision_plan_id' => 'required',
             'lense_type_id' => 'required',
             'collection_id' => 'required',
             'lense_material_id' => 'required'
-            
+
         ]);
 
         if ($validator->fails()) {
@@ -376,11 +403,11 @@ class InvoiceCalculaterController extends Controller
                         $q->select('lenses.id','collection_id','lens_material_id','title','lens_materials.lens_material_title');
                         $q->with(['characteristics' => function($q){
                             $q->leftjoin('codes', 'characteristics.code_id', '=', 'codes.id');
-                            $q->select('characteristics.id','characteristics.title','characteristics.lense_id','characteristics.type','characteristics.code_id','codes.name','codes.price');
+                            $q->select('characteristics.id','characteristics.title','characteristics.lense_id','characteristics.type','characteristics.code_id','codes.name','codes.price','codes.price_formula');
                         }]);
                     }])->select('id','title')->get();
-           
-            
+
+
         return $this->sendResponse($data, 'Calculater Data');
 
     }
@@ -388,7 +415,7 @@ class InvoiceCalculaterController extends Controller
     public function getBrands(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'lense_type_id' => 'required'            
+            'lense_type_id' => 'required'
         ]);
 
         if ($validator->fails()) {
