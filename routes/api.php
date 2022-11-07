@@ -28,15 +28,15 @@ Route::get('get-roles', [RegisterController::class, 'getRoles']);
 
 
 Route::middleware('auth:api')->group( function () {
-   
+
     includeRouteFiles(__DIR__ . '/apis/');
 
     Route::post('updateStaffLogin', [RegisterController::class, 'updateStaffLogin']);
 
-    Route::get('getShipping', [ShippingController::class, 'getShipping']);
-    Route::post('addShipping', [ShippingController::class, 'addShipping']);
-    Route::post('deleteShipping', [ShippingController::class, 'deleteShipping']);
-          
+    Route::get('get-shipping', [ShippingController::class, 'getShipping']);
+    Route::post('add-shipping', [ShippingController::class, 'addShipping']);
+    Route::post('delete-shipping', [ShippingController::class, 'deleteShipping']);
+
     Route::post('profit-comparison', [ProfitComparisonController::class, 'calculateProfitComparison']);
 });
 

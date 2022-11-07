@@ -9,6 +9,7 @@ import { Select } from "antd";
 import axios from "axios";
 const { Option } = Select;
 import { Switch } from "antd";
+import DeleteModal from "../components/deleteModal/index"
 const label = { inputProps: { "aria-label": "Switch demo" } };
 const DiscountTaxes = (props) => {
     const [discountName, setDiscountName] = useState("");
@@ -29,6 +30,11 @@ const DiscountTaxes = (props) => {
     const [shippingState, setShippingState] = useState("");
     const [shippingArray, setShippingArray] = useState([]);
     let [shipping, setShipping] = useState();
+    
+    const [showDeleteTaxes,setShowDeleteTaxes]=useState(false)
+    const [deleteTaxesId,setDeleteTaxesId]=useState(0)
+    const [showDeleteDiscount,setShowDeleteDiscount]=useState(false)
+    const [deleteDiscountId,setDeleteDiscountId]=useState(0)
 
     const [editId, setEditId] = useState("");
 
@@ -81,6 +87,7 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 getDiscount();
+                setShowDeleteDiscount(false)
             })
             .catch(function (error) {
                 console.log(error);
@@ -96,7 +103,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/addTax`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/add-tax`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -124,7 +131,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/editTax`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/edit-tax`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -151,7 +158,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/deleteTax`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/delete-tax`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -159,7 +166,9 @@ const DiscountTaxes = (props) => {
         };
 
         axios(config)
-            .then(function (response) {})
+            .then(function (response) {
+                setShowDeleteTaxes(false)
+            })
             .catch(function (error) {
                 console.log(error);
             });
@@ -173,7 +182,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/addShipping`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/add-shipping`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -193,7 +202,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/deleteShipping`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/delete-shipping`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -209,10 +218,9 @@ const DiscountTaxes = (props) => {
 
     const getState = () => {
         let data = new FormData();
-
         let config = {
             method: "get",
-            url: `${process.env.MIX_REACT_APP_URL}/api/getStates`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/get-states`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -270,7 +278,8 @@ const DiscountTaxes = (props) => {
     };
 
     const handleDelete = (id) => {
-        deleteDiscount(id);
+        setDeleteDiscountId(id)
+        setShowDeleteDiscount(true)
     };
 
     const handleTaxSubmit = (e) => {
@@ -289,14 +298,10 @@ const DiscountTaxes = (props) => {
     };
 
     const handleDeleteTax = (id) => {
-        deleteTax(id);
-        setTaxes(
-            [...tax].filter((taxObj) => {
-                return taxObj.id !== id;
-            })
-        );
+        setDeleteTaxesId(id)
+        setShowDeleteTaxes(true);
+       
     };
-
     const handleShippingSubmit = (e) => {
         e.preventDefault();
         if (editId) {
@@ -321,7 +326,7 @@ const DiscountTaxes = (props) => {
     };
 
     const handleDeleteShipping = (id) => {
-        deleteShipping(id);
+        // deleteShipping(id);
         setShippingArray(
             [...shippingArray].filter((discountobj) => {
                 return discountobj.id !== id;
@@ -355,7 +360,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "get",
-            url: `${process.env.MIX_REACT_APP_URL}/api/getTaxes?userId=${props.userID}`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/get-taxes?userId=${props.userID}`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -377,7 +382,7 @@ const DiscountTaxes = (props) => {
 
         let config = {
             method: "get",
-            url: `${process.env.MIX_REACT_APP_URL}/api/getShipping?userId=${props.userID}`,
+            url: `${process.env.MIX_REACT_APP_URL}/api/get-shipping?userId=${props.userID}`,
             headers: {
                 Authorization: `Bearer ${token}`,
             },
@@ -422,7 +427,26 @@ const DiscountTaxes = (props) => {
             });
     };
     return (
-        <div className="discount-container discount-tax">
+        <> 
+            {showDeleteTaxes?
+            <DeleteModal accept={()=>{
+                deleteTax(deleteTaxesId);
+                setTaxes(
+                    [...tax].filter((taxObj) => {
+                        return taxObj.id !== deleteTaxesId;
+                    })
+                );
+            }}
+            open={showDeleteTaxes}
+            cancel={()=>{setShowDeleteTaxes(false)}}/> :null}
+            {showDeleteDiscount?
+            <DeleteModal accept={()=>{
+                deleteDiscount(deleteDiscountId);
+            }}
+            cancel={()=>{setShowDeleteDiscount(false)}}
+            open={showDeleteDiscount}
+            /> :null}
+              <div className="discount-container discount-tax">
             <p className="main discount-container-page-title">{`Discounts & Taxes`}</p>
             <div className="discount-container_first discount-tax-con">
                 <p className="heading">Discounts</p>
@@ -551,7 +575,7 @@ const DiscountTaxes = (props) => {
                         onSubmit={handleTaxSubmit}
                     >
                         <div>
-                           
+
                         </div>
                         <div className="second-section">
                             <div className="discount-container_second-form_section">
@@ -571,12 +595,12 @@ const DiscountTaxes = (props) => {
                                     min={0}
                                     placeholder="Add Percentage"
                                     value={taxValue}
-                                   
+
                                     onChange={(e) => {
                                         const regix = new RegExp(
                                             "^[0-9]*[/.]?([0-9]*)?$"
                                         );
-    
+
                                         if (regix.test(e.target.value)) {
                                             if (
                                                 e.target.value <= 100 &&
@@ -627,7 +651,7 @@ const DiscountTaxes = (props) => {
                                     <tr className="discount-output_body discount-row">
                                         <td className="row-1">{obj.name}</td>
                                         <td>{obj.value}%</td>
-                                        <td className="col-3 custom-tax-col-3">
+                                        <td className="col-4 custom-tax-col-3">
                                             <img
                                                 style={{
                                                     width: "18px",
@@ -663,7 +687,8 @@ const DiscountTaxes = (props) => {
                 </div>
             </div>
             <ShippingSettings />
-        </div>
+        </div></>
+      
     );
 };
 

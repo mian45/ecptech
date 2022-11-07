@@ -33,6 +33,7 @@ class PaidReminderCron extends Command
     {
        
        $reminders = Reminder::where('is_active',1)->where('invoice_type','paid')->where('type', '!=' , 'orderComplete')->get();
+      
        foreach($reminders as $reminder){
              
          $invoice_type = $reminder->invoice_type;
@@ -40,6 +41,7 @@ class PaidReminderCron extends Command
          $TimeZone = $reminder->TimeZone;
          $timezone = $TimeZone->name;
          $day_after = $reminder->send_after_day;
+         $after_send_type = $reminder->after_send_type;
          $invoices = Invoice::where('status','paid')->get();
         
          foreach($invoices as $invoice){
@@ -48,8 +50,22 @@ class PaidReminderCron extends Command
             $invoice_created =Carbon::createFromFormat('Y-m-d H:i:s', $invoice->created_at)->format('Y-m-d');
             $current_date = Carbon::now()->format('Y-m-d');
             
-            $invoice_date = Carbon::parse($invoice_created)->addDays($day_after);
-            $day_after_date = Carbon::parse($invoice_created)->addDays($day_after + 1);
+            if($after_send_type == "hour"){
+               $invoice_date = Carbon::parse($invoice_created)->addHours($day_after);
+               $day_after_date = Carbon::parse($invoice_created)->addHours($day_after + 1);
+              }elseif($after_send_type == "day"){
+               $invoice_date = Carbon::parse($invoice_created)->addDays($day_after);
+               $day_after_date = Carbon::parse($invoice_created)->addDays($day_after + 1);
+              }elseif($after_send_type == "week"){
+               $invoice_date = Carbon::parse($invoice_created)->addWeeks($day_after);
+               $day_after_date = Carbon::parse($invoice_created)->addWeeks($day_after + 1);
+              }elseif($after_send_type == "month"){
+               $invoice_date = Carbon::parse($invoice_created)->addMonths($day_after);
+               $day_after_date = Carbon::parse($invoice_created)->addMonths($day_after + 1);
+              }elseif($after_send_type == "year"){
+               $invoice_date = Carbon::parse($invoice_created)->addYears($day_after);
+               $day_after_date = Carbon::parse($invoice_created)->addYears($day_after + 1);
+              }
             $send_time = date("H:i", strtotime($invoice->send_time));
             if($current_date > $invoice_date && $current_date < $day_after_date){
 
