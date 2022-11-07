@@ -1,5 +1,6 @@
 import React from "react";
 import {
+    getPriceByAntireflective,
     getPriceByPhotochromicMaterial,
     getPrivatePayAntireflective,
     getPrivatePayLensPices,
@@ -87,6 +88,7 @@ const OutPackPrices = ({
                     }
                 } else {
                     return getPriceByAntireflective(
+                        receipt?.values?.visionPlan,
                         receipt?.values?.antiReflectiveProperties?.type
                     );
                 }
@@ -123,6 +125,7 @@ const OutPackPrices = ({
                     }
                 } else {
                     return getPriceByPhotochromicMaterial(
+                        receipt?.values?.visionPlan,
                         receipt?.values?.photochromics?.type
                     );
                 }
@@ -604,17 +607,6 @@ const OutPackPrices = ({
 };
 
 export default OutPackPrices;
-
-export const getPriceByAntireflective = (value) => {
-    switch (value) {
-        case "Shamir Glacier Plus UV":
-            return SHAMIR_GLACIER_PLUS_UV;
-        case "TechShield Plus UVR":
-            return TECHSHIELD_PLUS_UVR;
-        case "Crizal Sunshield (Backside AR Only)":
-            return CRIZAL_SUNSHIELD;
-    }
-};
 
 export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
     let lensPrice = 0;

@@ -22,6 +22,14 @@ const Photochromics = ({
         )?.visibility;
     const [error, setError] = useState("");
 
+    const getPhotochromicList = () => {
+        return (
+            calculatorObj?.addons?.find(
+                (item) => item?.title === "Photochromoics"
+            )?.addons || []
+        );
+    };
+
     const handleActiveState = () => {
         if (values?.isPhotochromics === "No") {
             return true;
@@ -106,17 +114,21 @@ const Photochromics = ({
                                     name="photochromicsType"
                                     className={classes["radio-group"]}
                                 >
-                                    {PHOTOCHROMICS_VALUES.map(
+                                    {getPhotochromicList()?.map(
                                         (value, index) => {
                                             return (
                                                 <CustomRadio
                                                     key={index}
-                                                    label={value}
-                                                    value={value}
+                                                    label={
+                                                        value?.display_name
+                                                            ? value?.display_name
+                                                            : value?.title
+                                                    }
+                                                    value={value?.title}
                                                     headClass={classes["radio"]}
                                                     active={
                                                         values?.photochromicsType ===
-                                                        value
+                                                        value?.title
                                                     }
                                                 />
                                             );
