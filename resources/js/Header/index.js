@@ -9,9 +9,13 @@ import profileIcon from "../../images/profile.svg";
 import notificationIcon from "../../images/notification.svg";
 import AuthService from "../services";
 import { connect } from "react-redux";
+import 'antd/dist/antd.css';
+import {
+    MenuOutlined
+  } from '@ant-design/icons';
 import { Col, Row } from "antd";
 import Http from "../Http"
-const Header = () => {
+const Header = ({}) => {
     const dispatch = useDispatch();
     const [showProfile, setShowProfile] = useState(false);
     const [user,setUser]=useState({})
@@ -37,8 +41,12 @@ const Header = () => {
     const Logout=()=>{
         dispatch(AuthService.logout(user.id))
     }
+    const showSideBar=()=>{
+        dispatch(AuthService.showSideBar())
+    }
     return (
         <Row justify="space-between" align="middle" className={classes["header-box"]}>
+             {window.innerWidth<763?<MenuOutlined onClick={showSideBar}/>:null}
             <Col xs={12}  >
             <img src={user?.logo?user?.logo:logo} alt="logo" className={classes["logo-icon"]} />
             </Col>
