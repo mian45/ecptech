@@ -114,6 +114,9 @@ const Auth = (state = initialState, { type, payload = null }) => {
                 id: payload?.data?.id,
                 name: payload?.data?.name,
                 email: payload?.data?.email,
+                logo:payload?.data?.logo,
+                buisnessName:payload?.data.business_name,
+                themeColor:payload?.data?.theme_color
             };
             const roleObject = {
                 id: payload?.data.role.id,
