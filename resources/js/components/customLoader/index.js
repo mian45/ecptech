@@ -1,17 +1,27 @@
 import React from 'react'
 import ReactLoading from 'react-loading';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Spin } from 'antd';
 import "./style.scss";
 
 const CustomLoader = ({ buttonBool }) => {
+    const antIcon = (
+        <LoadingOutlined
+          style={{
+            color: 'white',
+          }}
+          spin
+        />
+      );
     return (
         buttonBool === true ?
             <div className='loader-button'>
-                <ReactLoading type='spin' color='white' height={30} width={3} />
+                <Spin indicator={antIcon} />
             </div>
             :
             <div className='loader'>
                 <div className='loader-section'>
-                    <ReactLoading type='spin' color='white' height={20} width={20} />
+                <Spin indicator={antIcon} />
                     <p>Please Wait</p>
                 </div>
             </div>
