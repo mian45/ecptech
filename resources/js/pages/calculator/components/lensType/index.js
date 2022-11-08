@@ -184,8 +184,7 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
             setShowInvoiceAlert(false);
         }
     };
-
-    const RenderModal = () => {
+    const RenderModal = React.useMemo(() => {
         return (
             <>
                 {showInvoiceAlert ? (
@@ -196,14 +195,14 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                         }}
                         open={showInvoiceAlert}
                     />
-                ) : null}
+                ) : <></>}
             </>
         );
-    };
+    }, [showInvoiceAlert]);
 
     return (
         <>
-            <RenderModal />
+            {RenderModal}
 
             {lensTypeVisibility ? (
                 <div className={classes["container"]}>
@@ -257,7 +256,7 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                                                     <CustomRadio
                                                         headClass={
                                                             classes[
-                                                                "radio-margin"
+                                                            "radio-margin"
                                                             ]
                                                         }
                                                         key={index}
