@@ -136,15 +136,6 @@ const ViewInvoice = ({
             return (price * discountToApply) / 100;
         }
 
-        // let total = 0;
-
-        // calculatorObj?.discount?.forEach((element) => {
-        //     if (element?.status === "active") {
-        //         total = total + parseFloat(element?.value || 0);
-        //     }
-        // });
-        // const priceWithDiscount = (price * total) / 100;
-        // return priceWithDiscount;
     };
 
     const totalWithoutTax = () => {
