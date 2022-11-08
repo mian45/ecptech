@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
 import { connect } from "react-redux";
+import { defaultMaterials } from "./data";
 
 const EyePrescription = ({ userId }) => {
     const [eyeDetails, setEyeDetails] = useState([]);
@@ -28,8 +29,19 @@ const EyePrescription = ({ userId }) => {
                         params: { user_id: userId },
                     }
                 );
-                const arrangedData = getArrangedMaterials(res?.data?.data);
-                setEyeDetails(arrangedData);
+                const material = defaultMaterials?.map(item => {
+                    const singleMaterial = res?.data?.data?.find(val => val?.name === item?.name)
+                    return {
+                        ...item,
+                        sphere_from: singleMaterial?.sphere_from || "",
+                        sphere_to: singleMaterial?.sphere_to || "",
+                        cylinder_from: singleMaterial?.cylinder_from || "",
+                        cylinder_to: singleMaterial?.cylinder_to || "",
+                    }
+                })
+                setEyeDetails(material);
+
+
             } catch (err) {
                 console.log("Error while getting lens Details");
             }
@@ -244,9 +256,8 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
     return (
         <div className={classes["slot-container"]}>
             <div className={classes["slot-header"]}>
-                <div className={classes["header-title"]}>{`Show ${
-                    data?.name || ""
-                } If`}</div>
+                <div className={classes["header-title"]}>{`Show ${data?.name || ""
+                    } If`}</div>
             </div>
             <div className={classes["slot-body"]}>
                 <div className={classes["slot-body-content"]}>
@@ -369,7 +380,8 @@ const getArrangedMaterials = (data) => {
     let materialsList = [];
     materialArrangement?.forEach((material) => {
         const targetedMaterial = data?.find((item) => item?.name === material);
-        materialsList.push(targetedMaterial);
+        if (targetedMaterial)
+            materialsList.push(targetedMaterial);
     });
     return materialsList;
 };
