@@ -18,41 +18,39 @@ import SwiperCore, {
 const SignInSlider = () => {
     SwiperCore.use([Autoplay]);
     return (
-        <div className={classes["container"]}>
-            <Swiper
-                cssMode={true}
-                navigation={true}
-                pagination={true}
-                mousewheel={true}
-                keyboard={true}
-                modules={[Navigation, Pagination, Mousewheel, Keyboard]}
-                className="mySwiper"
-                loop
-                autoplay={true}
-            >
-                {SLIDER_DATA.map((item, index) => {
-                    return (
-                        <SwiperSlide key={index}>
-                            <div className={`${classes["card-container"]}`}>
-                                <img
-                                    src={item?.icon}
-                                    alt={"icon"}
-                                    className={classes["card-image"]}
-                                />
+        <Swiper
+            cssMode={true}
+            navigation={true}
+            pagination={true}
+            mousewheel={true}
+            keyboard={true}
+            modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+            className="mySwiper"
+            loop
+            autoplay={true}
+        >
+            {SLIDER_DATA.map((item, index) => {
+                return (
+                    <SwiperSlide key={index}>
+                        <div className={`${classes["card-container"]}`}>
+                            <img
+                                src={item?.icon}
+                                alt={"icon"}
+                                className={classes["card-image"]}
+                            />
+                        </div>
+                        <div className={classes["text-box"]}>
+                            <div className={classes["title"]}>
+                                {item?.title}
                             </div>
-                            <div className={classes["text-box"]}>
-                                <div className={classes["title"]}>
-                                    {item?.title}
-                                </div>
-                                <div className={classes["subtitle"]}>
-                                    {item?.subtitle}
-                                </div>
+                            <div className={classes["subtitle"]}>
+                                {item?.subtitle}
                             </div>
-                        </SwiperSlide>
-                    );
-                })}
-            </Swiper>
-        </div>
+                        </div>
+                    </SwiperSlide>
+                );
+            })}
+        </Swiper>
     );
 };
 export default SignInSlider;
