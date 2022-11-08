@@ -97,7 +97,7 @@ const SignInForm = ({ userRole, dispatch }) => {
                             className={classes['form-width']}
                         >
                             <Row justify='center' align='middle'>
-                             <Col xs={24} sm={24} md={22} lg={22} xl={22}>
+                             <Col xs={22} sm={22} md={22} lg={22} xl={22}>
                             <Form.Item
                                 name="email"
                                 label="Email"
@@ -127,7 +127,7 @@ const SignInForm = ({ userRole, dispatch }) => {
                              
                             </Form.Item> </Col></Row>
                             <Row justify='center' align='middle'>
-                             <Col xs={24} sm={24} md={22} lg={22} xl={22}>
+                             <Col xs={22} sm={22} md={22} lg={22} xl={22}>
                             <Form.Item
                                 name="password"
                                 label='Password'
@@ -156,7 +156,7 @@ const SignInForm = ({ userRole, dispatch }) => {
                             </Form.Item>
                             </Col></Row>
                             <Row justify='center' align='middle'>
-                             <Col xs={24} sm={24} md={22} lg={22} xl={22}>
+                             <Col xs={22} sm={22} md={22} lg={22} xl={22}>
                             <div className={classes["forgot-password"]}>Forgot Password?</div> 
                             <div className={classes["divider"]} />
                             </Col></Row>
