@@ -10,18 +10,32 @@ import notificationIcon from "../../images/notification.svg";
 import AuthService from "../services";
 import { connect } from "react-redux";
 import 'antd/dist/antd.css';
+import Http from "../Http"
 import {
     MenuOutlined
   } from '@ant-design/icons';
-const Header = ({user}) => {
+const Header = ({}) => {
     const dispatch = useDispatch();
     const [showProfile, setShowProfile] = useState(false);
+    const [user,setUser]=useState({})
     const closeModal = () => setShowProfile(false);
     useEffect(() => {
         getAuthentication();
     }, []);
     const getAuthentication = async () => {
-        rememberme(dispatch);
+        const token = localStorage.getItem("access_token");
+        Http.get("/api/get-user-details")
+            .then((response) => {
+                let res = response;
+                res.data.data = { ...res.data.data, token: token };
+                setUser(res.data.data)
+                rememberme(dispatch);
+                return;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        
     };
     const Logout=()=>{
         dispatch(AuthService.logout(user.id))
@@ -32,7 +46,7 @@ const Header = ({user}) => {
     return (
         <div className={classes["container"]}>
             {window.innerWidth<763?<MenuOutlined onClick={showSideBar}/>:null}
-            <img src={logo} alt="logo" className={classes["logo-icon"]} />
+            <img src={user?.logo?user?.logo:logo} alt="logo" className={classes["logo-icon"]} />
             <div className={classes["sub-container"]}>
                 <img
                     src={profileIcon}

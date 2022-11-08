@@ -89,8 +89,17 @@ const CalculatorScreen = () => {
             const res = await Axios.get(
                 process.env.MIX_REACT_APP_URL + "/api/calculater-data"
             );
-            setCalculatorObj(res?.data?.data);
-            const questions = res?.data?.data?.questions;
+            const resData = res?.data?.data;
+            const firstPlan = resData?.questions?.find(
+                (item) => item?.title === "VSP Signature"
+            );
+            const colRes = await Axios.post(
+                process.env.MIX_REACT_APP_URL + "/api/get-collections",
+                { vision_plan_id: firstPlan?.id }
+            );
+            resData.lens_types = colRes?.data?.data?.collection;
+            setCalculatorObj(resData);
+            const questions = resData?.questions;
             const currentPlan = questions?.find(
                 (plan) => plan?.title === values?.visionPlan
             );
@@ -469,6 +478,9 @@ const CalculatorScreen = () => {
                                         BenifitTypeEnums.lens ? (
                                         <>
                                             <SelectVisionPlan
+                                                setCalculatorObj={
+                                                    setCalculatorObj
+                                                }
                                                 formProps={formProps}
                                                 calculatorObj={
                                                     calculatorObj &&
