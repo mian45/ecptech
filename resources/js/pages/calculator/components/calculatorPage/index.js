@@ -31,11 +31,8 @@ import {
     LensBenifitAvailableEnum,
 } from "../../data/enums";
 import backArrow from "../../../../../images/black-arrow.svg";
-<<<<<<< HEAD
 import CustomLoader from "../../../../components/customLoader";
-=======
 import CustomDiscount from "../customDiscount";
->>>>>>> 6cb12e36e26d3928151f606863d9c2b27728cfb1
 
 const CalculatorScreen = () => {
     const history = useHistory();
