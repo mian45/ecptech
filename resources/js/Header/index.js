@@ -10,7 +10,6 @@ import notificationIcon from "../../images/notification.svg";
 import AuthService from "../services";
 import { connect } from "react-redux";
 import 'antd/dist/antd.css';
-import Http from "../Http"
 import {
     MenuOutlined
   } from '@ant-design/icons';
