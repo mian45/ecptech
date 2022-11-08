@@ -181,12 +181,11 @@ const SignInForm = ({ userRole, dispatch }) => {
                             </Form.Item>
                             </Col>
                            <Col xs={12}>
-                          <Row justify='center' align='middle'>
+                          <Row justify={window.innerWidth<763?'center':"end"} align='middle'>
                             <Col xs={12}>
                             <Form.Item
 
 wrapperCol={{
-    offset:8,
     span: 16,
 }}
 >
