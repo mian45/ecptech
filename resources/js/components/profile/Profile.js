@@ -9,7 +9,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-const Profile = ({ userId, closeModal,user }) => {
+const Profile = ({ userId, closeModal,user,userRole }) => {
     return (
         <div className={classes["backdrop"]} onClick={closeModal}>
             <div
@@ -27,7 +27,8 @@ const Profile = ({ userId, closeModal,user }) => {
 
 const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
-    user:state.Auth.user
+    user:state.Auth.user,
+    userRole: state.Auth.userRole?.name,
 });
 export default connect(mapStateToProps)(Profile);
 

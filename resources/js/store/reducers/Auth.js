@@ -30,6 +30,7 @@ const initialState = {
     clientUser: defaultClientUser,
     userRole: defaultUserRole,
     activeSettingsIndex: 1,
+    sidebar:false
 };
 
 const activeState = (state, payload) => {
@@ -157,6 +158,12 @@ const Auth = (state = initialState, { type, payload = null }) => {
             return staffLogin(state, payload);
         case ActionTypes.UPDATE_STAFF_LOGIN:
             return updateStaffLogin(state, payload);
+        case ActionTypes.SHOW_SIDEBAR:{
+            const stateObj = {
+                ...state,
+                sidebar:!state.sidebar
+            };
+            return stateObj}
         default:
             return state;
     }
