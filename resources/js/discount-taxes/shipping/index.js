@@ -4,12 +4,14 @@ import Axios from "../../Http";
 import { connect } from "react-redux";
 import edit from "../../../images/edit.png";
 import cross from "../../../images/cross.png";
+import CustomLoader from "../../components/customLoader";
 
 const ShippingSettings = ({ userId }) => {
     const [shippingName, setShippingName] = useState("");
     const [shippingAmount, setShippingAmount] = useState("");
     const [shipping, setShipping] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [shippingButtonLoader , setShippingButtonLoader] = useState(false)
 
     useEffect(() => {
         const getShipping = async () => {
@@ -45,6 +47,7 @@ const ShippingSettings = ({ userId }) => {
         }
     };
     const handleShippingSubmit = async (e) => {
+        setShippingButtonLoader(true)
         e?.preventDefault();
 
         try {
@@ -61,8 +64,10 @@ const ShippingSettings = ({ userId }) => {
             setShippingName("");
             setShippingAmount("");
             setIsSubmitted(true);
+            setShippingButtonLoader(false)
         } catch (err) {
             console.log("error while adding shipping");
+            setShippingButtonLoader(false)
         }
     };
 
@@ -104,7 +109,14 @@ const ShippingSettings = ({ userId }) => {
                                     : ""
                             } `}
                         >
-                            Add
+                               {
+                                    shippingButtonLoader == true ? 
+                                  <>
+                                  <p>Add</p> 
+                                  <CustomLoader buttonBool={true}/>
+                                  </> :
+                                    'Add'
+                                }
                         </button>
                     </div>
                 </form>

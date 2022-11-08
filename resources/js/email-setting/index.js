@@ -21,6 +21,7 @@ import bellIcon from "../../images/bell-icon.svg";
 import bellCloseIcon from "../../images/bell-close.svg";
 import emailButton from "../../images/email.svg";
 import Axios from "../Http";
+import CustomLoader from "../components/customLoader";
 
 import "./style.scss";
 
@@ -39,6 +40,8 @@ const EmailSetting = (props) => {
     const [timeZones, setTimeZones] = useState([]);
     const [timeSelector,setTimeSelector]=useState("")
     const [timeSelectorValue,setTimeSelectorValue]=useState("")
+    const [loading , setLoading] = useState(false)
+    const [buttonLoader , setButtonLoader] = useState(false)
     const blockStyleFn = (block) => {
         let alignment = "left";
         block.findStyleRanges((e) => {
@@ -81,6 +84,7 @@ const EmailSetting = (props) => {
         setEditorState(editorState);
     };
     const addReminder = () => {
+        setButtonLoader(true)
         var data = new FormData();
         if (reminderType === "orderComplete") {
             data.append("userId", props.userID);
@@ -130,13 +134,17 @@ const EmailSetting = (props) => {
         axios(config)
             .then(function (response) {
                 getReminder();
+                setButtonLoader(false)
             })
             .catch(function (error) {
+                setButtonLoader(true)
                 console.log(error);
+                setButtonLoader(false)
             });
     };
 
     const editReminder = (value) => {
+        setButtonLoader(true)
         var data = new FormData();
         if (reminderType === "orderComplete") {
             data.append("id", idState);
@@ -195,9 +203,12 @@ const EmailSetting = (props) => {
                 setIdState(null);
                 setTimeSelector("");
                 setTimeSelectorValue("")
+                setButtonLoader(false)
             })
             .catch(function (error) {
+                setButtonLoader(true)
                 console.log(error);
+                setButtonLoader(false)
             });
     };
 
@@ -222,6 +233,7 @@ const EmailSetting = (props) => {
     };
 
     const getReminder = () => {
+        setLoading(true)
         var data = new FormData();
 
         var config = {
@@ -237,9 +249,12 @@ const EmailSetting = (props) => {
             .then(function (response) {
                 let res = response.data.data;
                 setEmailArray(res);
+                setLoading(false)
             })
             .catch(function (error) {
+                setLoading(true)
                 console.log(error);
+                setLoading(false)
             });
     };
 
@@ -358,6 +373,8 @@ const EmailSetting = (props) => {
         }
     };
     return (
+        loading == true ?
+        <CustomLoader buttonBool={false}/>  :
         <div>
             {!emailSettingProps && (
                 <div className="email-setting">
@@ -727,7 +744,13 @@ const EmailSetting = (props) => {
                                             marginBottom: "50px",
                                         }}
                                     >
-                                        Save
+                                     {buttonLoader == false ?
+                                        'Save' : 
+                                        <>
+                                        <p>Save</p> 
+                                        <CustomLoader buttonBool={true}/>
+                                        </>
+                                        }
                                     </button>
                                 </div>
                             </div>

@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { Switch } from "antd";
 import "./style.scss";
 import editIcon from "../../images/edit.png";
 import { useHistory } from "react-router";
 import axios from "axios";
 import { connect } from "react-redux";
+import CustomLoader from "../components/customLoader";
 
 const InsurancePlans = ({ userId }) => {
+    const [loading , setLoading] = useState(false)
     const [getData, setGetData] = React.useState([]);
     const [isChecked, setIsChecked] = React.useState(false);
 
@@ -16,12 +18,17 @@ const InsurancePlans = ({ userId }) => {
     // to fetch data from api
 
     React.useEffect(() => {
+        setLoading(true)
         axios
             .get(process.env.MIX_REACT_APP_URL + "/api/get-client-vision-plans")
             .then((res) => {
                 setGetData(res.data?.data);
+                setLoading(false)
             })
-            .catch((error) => console.log({ error }));
+            .catch((error) => { 
+            console.log({ error });
+            setLoading(true);
+            });
     }, []);
 
     //for toggle switch
@@ -40,11 +47,12 @@ const InsurancePlans = ({ userId }) => {
     };
 
     return (
+        loading == true ? <CustomLoader buttonBool={false}/> :
         <div className="other-setting">
             <p className="other-setting_heading">Insurance Plans</p>
 
             {/* component to be used in map */}
-            {getData?.length > 0 &&
+            { getData?.length > 0 &&
                 getData?.map((item) => {
                     return (
                         <div className="other-setting_section">
