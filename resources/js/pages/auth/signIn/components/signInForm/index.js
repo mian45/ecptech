@@ -174,12 +174,12 @@ const SignInForm = ({ userRole, dispatch }) => {
                                
                             </Form.Item>
                             </Col>
-
-                           <Col xs={12}>
+                            <Col xs={3}></Col>
+                           <Col xs={6}>
                            <Form.Item
 
                             wrapperCol={{
-                                offset: 8,
+                                offset:8,
                                 span: 16,
                             }}
                             >
@@ -187,6 +187,7 @@ const SignInForm = ({ userRole, dispatch }) => {
                                 Login
                             </Button>
                             </Form.Item></Col>
+                            <Col xs={3}></Col>
                           </Row>
                         </Form>
                     </>
