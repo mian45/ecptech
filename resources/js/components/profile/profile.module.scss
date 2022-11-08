@@ -1,18 +1,4 @@
 .profile {
-    top: 99px;
-    right: 0px;
-    width: 409px;
-    position: absolute;
-    background: #ffffff 0% 0% no-repeat padding-box;
-    box-shadow: -3px 0px 6px #00000008;
-    border: 1px solid #e8e8e8;
-    opacity: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    min-height: 85vh;
-    max-height: 85vh;
     overflow: auto;
     font-family: Montserrat;
     &::-webkit-scrollbar {
@@ -38,16 +24,4 @@
     height: 1px;
     background-color: #e8e8e8;
     margin-top: 20px;
-}
-.backdrop {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    z-index: 999;
-    left: 0;
-    top: 0;
-    background-color: rgba($color: #000, $alpha: 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
