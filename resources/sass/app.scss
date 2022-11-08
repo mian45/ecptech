@@ -85,8 +85,8 @@ button {
             left: 50%;
             width: calc($btn-size-base * 1.5);
             height: calc($btn-size-base * 1.5);
-            margin-top: calc(($btn-size-base * 1.5)/2);
-            margin-left: calc(($btn-size-base * 1.5)/2);
+            margin-top: calc(($btn-size-base * 1.5) / 2);
+            margin-left: calc(($btn-size-base * 1.5) / 2);
             border-radius: 100%;
             border: ($btn-size-base * 0.3) solid transparent;
         }
@@ -361,6 +361,12 @@ input[type="number"] {
     border-color: #dfdfdf !important;
     box-shadow: none !important;
 }
+.ant-input-number-input-wrap {
+    height: 100% !important;
+}
+.ant-input-number-handler-wrap {
+    display: none !important;
+}
 .ant-select-focused .ant-select-selector,
 .ant-select-selector:focus,
 .ant-select-selector:active,
@@ -384,14 +390,13 @@ input[type="number"] {
 }
 .ant-modal-content {
     border-radius: 19px !important;
-    
-  }
-.ant-modal-body{
-    height: 340px !important;
-  }
-.ant-modal-mask{
-    background-color:#D5D5D5CC !important;
 }
-.ant-drawer-body{
+.ant-modal-body {
+    height: 340px !important;
+}
+.ant-modal-mask {
+    background-color: #d5d5d5cc !important;
+}
+.ant-drawer-body {
     padding: 24px 5px !important;
 }

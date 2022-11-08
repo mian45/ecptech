@@ -6,9 +6,9 @@ import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import AuthServices from "../services";
 import DiscountTaxes from "../discount-taxes/index";
-import EyePrescription from "../eye-prescription";
 import LensesSettings from "../pages/settings/components/lenses";
 import * as action from "../store/actions";
+import EyePrescription from "../pages/settings/components/eyePrescription";
 
 const TabsSection = (props) => {
     return (

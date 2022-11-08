@@ -1,0 +1,118 @@
+.image-icon {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+}
+.confirmation-text {
+    text-align: center;
+    font: normal normal bold 18px Montserrat;
+    letter-spacing: 0px;
+    color: #2a2a2a;
+    text-transform: capitalize;
+    opacity: 1;
+}
+.confirmation-subtext {
+    /* UI Properties */
+    text-align: center;
+    font: normal normal medium 16px Montserrat;
+    letter-spacing: 0px;
+    color: #2a2a2a;
+    opacity: 1;
+}
+.btn-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-wrapper {
+    height: 50px;
+    margin-right: 10px;
+}
+.deactive {
+    background-color: #ccc !important;
+}
+.check-text {
+    text-align: center;
+    font: normal normal normal 14px Montserrat;
+    letter-spacing: 0px;
+    color: #2a2a2a;
+    text-transform: lowercase;
+    opacity: 1;
+}
+.checkbox-container {
+    margin-right: 0px !important;
+    margin-bottom: 0px !important;
+}
+.margin-container {
+    margin-bottom: 45px;
+}
+.email-setting {
+    font-family: Montserrat;
+
+    &_heading {
+        font-weight: bold;
+        font-size: 1.5em;
+        margin-bottom: 1.25em !important;
+    }
+
+    &-content {
+        background-color: white;
+        margin-bottom: 20px;
+        padding-inline: 27px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: 2px 1px 5px 4px #ccc3;
+        border-radius: 7px;
+        height: 75px;
+        width: 60%;
+
+        &-section {
+            display: flex;
+            align-items: center;
+
+            &-image {
+                padding-right: 24px;
+            }
+
+            &-heading {
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            &-subsection {
+                display: flex;
+
+                &-heading {
+                    font-size: 16px;
+                    margin-right: 17px;
+                }
+                &-subheading {
+                    font-size: 16px;
+                    margin-right: 17px;
+                }
+            }
+        }
+    }
+
+    &_button-section {
+        margin-top: 36px;
+
+        &_save-button {
+            padding-block: 0.8125em;
+            padding-inline: 2em;
+            border: none;
+            border-radius: 28px;
+            background-color: #6fa5cb;
+            color: white;
+            &:hover {
+                background-color: #518fbb;
+            }
+        }
+    }
+}
+.checkbox-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
