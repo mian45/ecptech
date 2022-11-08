@@ -49,7 +49,7 @@ const Addons = ({ userId }) => {
     const submitLensesData = async () => {
         try {
             const payload = {
-                data: changedAddOnList,
+                data: addonsList,
             };
             await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/add-addon-setting`,
@@ -79,7 +79,7 @@ const Addons = ({ userId }) => {
                     <CollectionSection
                         addons={addonsList}
                         selectedAddons={selectedAddons}
-                        setLensesList={setChangedAddOnList}
+                        setLensesList={setAddonsList}
                     />
                 </div>
             </div>
@@ -190,7 +190,7 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
             >{`${selectedAddons}`}</div>
             {addonsList?.map((collection, index) => (
                 <CollectionSlot
-                    key={index}
+                    key={`${collection?.title || ""}+${index}`}
                     collection={collection}
                     handleCheckbox={handleCheckbox}
                     handleDisplayNameChange={handleDisplayNameChange}
@@ -327,7 +327,7 @@ export const CollectionSlot = ({
                                             classes["show-content-value"]
                                         }
                                     >
-                                        {collection?.custom_price || "---"}
+                                        {collection?.price || "---"}
                                     </span>
                                 </div>
                             </div>

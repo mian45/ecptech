@@ -79,8 +79,8 @@
 .button-container {
     width: 53.1%;
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: flex-end;
+    align-items: flex-end;
     margin-top: 36px;
 }
 .save-button {
@@ -109,4 +109,9 @@
 .checkbox-container {
     margin-right: 0px !important;
     margin-bottom: 0px !important;
+}
+@media only screen and (max-width: 763px){
+    .root-container {
+        margin-left: 0px;
+    }
 }

@@ -1,3 +1,4 @@
+import { Col, Row } from 'antd';
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
@@ -5,6 +6,7 @@ import { HOME_ROUTE, INVOICES_ROUTE } from "../../../appRoutes/routeConstants";
 import SignInForm from "./components/signInForm";
 import SignInSlider from "./components/signInSlider";
 import classes from "./styles.module.scss";
+import logo from "../../../../images/logo.png";
 
 const SignIn = ({ isAuthenticated, userRole }) => {
     const history = useHistory();
@@ -18,14 +20,29 @@ const SignIn = ({ isAuthenticated, userRole }) => {
         }
     }, []);
     return (
-        <div className={classes["container"]}>
-            <div className={classes["login-section"]}>
-                <SignInForm />
-            </div>
-            <div className={classes["slider-section"]}>
-                <SignInSlider />
-            </div>
-        </div>
+        <>
+            <Row justify='space-evenly' align='middle' >
+                <Col span={12} className={classes['container']} xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <Row>
+                        <Col span={24}>
+                            <img
+                                src={logo}
+                                alt="logo"
+                                className={classes["page-logo"]}
+                            />
+                        </Col>
+                    </Row>
+                    <Row justify="space-around" align="middle">
+                        <SignInForm />
+                    </Row>
+                </Col>
+                <Col span={12} className={classes['slider-section']} xs={24} sm={24} md={12} lg={12} xl={12}>
+                    <Row justify="space-around" align="middle">
+                        <SignInSlider />
+                    </Row>
+                </Col>
+            </Row>
+        </>
     );
 };
 

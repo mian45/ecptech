@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Shipping;
 use Validator;
+use Illuminate\Validation\ValidationException;
+
+
 class ShippingController extends Controller
 {
     public function getShipping(Request $request)
@@ -16,7 +19,7 @@ class ShippingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $user_id = $request->userId;
@@ -42,7 +45,7 @@ class ShippingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $user_id = $request->userId;
@@ -77,7 +80,7 @@ class ShippingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $shipping =  Shipping::find($request->id);

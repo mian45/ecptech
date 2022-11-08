@@ -144,7 +144,7 @@ const EyePrescription = (props) => {
     return (
         <div className="eye-prescription">
             <p className="eye-prescription_heading">
-                Eye Prescription Settings
+            Glasses Prescription Settings
             </p>
             <div className="eye-wrapper-container">
                 {showData &&
@@ -393,7 +393,7 @@ const EyePrescription = (props) => {
                 <div className="eye-prescription_block">
                     <button
                         onClick={handleSubmit}
-                        className="eye-prescription_button"
+                        className="eye-prescription_button presc-custom-button"
                         disabled={saveState}
                         style={{
                             backgroundColor: saveState ? "#ccc" : "",

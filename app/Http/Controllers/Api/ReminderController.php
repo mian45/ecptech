@@ -8,7 +8,7 @@ use App\Models\Timezone;
 
 use Illuminate\Http\Request;
 use Validator;
-
+use Illuminate\Validation\ValidationException;
 
 class ReminderController extends Controller
 {
@@ -20,7 +20,7 @@ class ReminderController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $reminders =  Reminder::where('user_id',$request->userId)->get();
@@ -44,7 +44,7 @@ class ReminderController extends Controller
 
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
 
@@ -54,7 +54,8 @@ class ReminderController extends Controller
         $reminder->invoice_type = $request->invoiceType;
         $reminder->subject = $request->subject;
         $reminder->body = $request->body;
-        $reminder->send_after_day = $request->sendAfterDay;
+        $reminder->send_after_day = $request->afterSend;
+        $reminder->after_send_type = $request->afterSendType;
         $reminder->send_time = $request->sendTime;
         $reminder->timezone_id = $request->timezoneId;
         $reminder->is_active = 1;
@@ -77,7 +78,7 @@ class ReminderController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $reminder =  Reminder::find($request->id);
@@ -87,7 +88,8 @@ class ReminderController extends Controller
             $reminder->invoice_type = $request->invoiceType;
             $reminder->subject = $request->subject;
             $reminder->body = $request->body;
-            $reminder->send_after_day = $request->sendAfterDay;
+            $reminder->send_after_day = $request->afterSend;
+            $reminder->after_send_type = $request->afterSendType;
             $reminder->send_time = $request->sendTime;
             $reminder->timezone_id = $request->timezoneId;
             $reminder->is_active = true;
@@ -110,7 +112,7 @@ class ReminderController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $reminder =  Reminder::find($request->id);
@@ -134,7 +136,7 @@ class ReminderController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $reminder =  Reminder::find($request->id);

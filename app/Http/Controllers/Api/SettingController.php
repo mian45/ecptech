@@ -14,6 +14,7 @@ use App\Models\AddonType;
 use App\Models\UserAddOnSetting;
 use Validator;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\ValidationException;
 
 
 class SettingController extends Controller
@@ -25,7 +26,7 @@ class SettingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $user_id = $request->userId;
         if(auth()->user()->id != $user_id){
@@ -58,7 +59,7 @@ class SettingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $user_id = $request->user_id;
         $data = $request->data;
@@ -69,24 +70,26 @@ class SettingController extends Controller
         foreach($data as $lense_type){
             
             $lense_type_id = $lense_type['id'];
-            
+            $lense_type_title = $lense_type['title'];
             foreach($lense_type['brands'] as $brand){
                 $brand_id = $brand['id'];
+                $brand_title = $brand['title'];
                 $brandPermission = BrandPermission::updateOrCreate(
                     ['user_id' => $user_id, 'lense_type_id' => $lense_type_id,'brand_id'=>$brand_id],
-                    ['status' => $brand['status']]
+                    ['status' => $brand['status'],'lense_type_title' => $lense_type_title,'brand_title'=>$brand_title]
                 );
 
                 foreach($brand['collections'] as $collection){
 
                     
                     $collection_id = $collection['id'];
+                    $collection_title = $collection['title'];
                     $name = $collection['display_name'];
                     $price = $collection['custom_price'];
                     $status = $collection['status'];
                     $collectionPermission = CollectionPermission::updateOrCreate(
                         ['user_id' => $user_id, 'brand_id' => $brand_id, 'collection_id' => $collection_id],
-                        ['price' => $price,'name' => $name,'status' => $status]
+                        ['price' => $price,'name' => $name,'status' => $status, 'brand_title' => $brand_title, 'collection_title' => $collection_title],
                     );
                 }
             }
@@ -120,7 +123,7 @@ class SettingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $data = $request->data;
@@ -156,8 +159,9 @@ class SettingController extends Controller
                 ]);
         
                 if ($validator->fails()) {
-                    return $this->sendError('Validation Error.', $validator->errors());
+                    throw (new ValidationException($validator));
                 }
+
                 $user_id = $request->userId;
                 $price = $request->price;
                 $brand_id = $request->brandId;
@@ -197,7 +201,7 @@ class SettingController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $data = $request->data;

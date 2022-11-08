@@ -4,18 +4,19 @@ import Axios from "../../Http";
 import { connect } from "react-redux";
 import edit from "../../../images/edit.png";
 import cross from "../../../images/cross.png";
-
+import DeleteModal from "../../components/deleteModal/index"
 const ShippingSettings = ({ userId }) => {
     const [shippingName, setShippingName] = useState("");
     const [shippingAmount, setShippingAmount] = useState("");
     const [shipping, setShipping] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
-
+    const [showDeleteShipping,setShowDeleteShipping]=useState(false)
+    const [deleteShippingId,setDeleteShippingId]=useState(0)
     useEffect(() => {
         const getShipping = async () => {
             try {
                 const res = await Axios.get(
-                    process.env.MIX_REACT_APP_URL + "/api/getShipping",
+                    process.env.MIX_REACT_APP_URL + "/api/get-shipping",
                     { params: { userId: userId } }
                 );
                 const shippingData = res?.data?.data;
@@ -27,22 +28,27 @@ const ShippingSettings = ({ userId }) => {
         getShipping();
     }, []);
 
-    const handlUpdateShipping = async (data) => {
+    const handleUpdateShipping = async (data) => {
         setShippingName(data?.name);
         setShippingAmount(data?.value);
         setIsSubmitted(false);
     };
-    const handleDeleteShipping = async (id) => {
+    const deleteShipping=async(id)=>{
         try {
             await Axios.post(
-                process.env.MIX_REACT_APP_URL + "/api/deleteShipping",
+                process.env.MIX_REACT_APP_URL + "/api/delete-shipping",
                 { id: id }
             );
             setShipping({});
             setIsSubmitted(false);
+            setShowDeleteShipping(false)
         } catch (err) {
             console.log("error while delete shipping");
         }
+    }
+    const handleDeleteShipping = async (id) => {
+       setDeleteShippingId(id);
+       setShowDeleteShipping(true)
     };
     const handleShippingSubmit = async (e) => {
         e?.preventDefault();
@@ -54,7 +60,7 @@ const ShippingSettings = ({ userId }) => {
                 value: shippingAmount,
             };
             const res = await Axios.post(
-                process.env.MIX_REACT_APP_URL + "/api/addShipping",
+                process.env.MIX_REACT_APP_URL + "/api/add-shipping",
                 payload
             );
             setShipping(res?.data?.data);
@@ -67,7 +73,17 @@ const ShippingSettings = ({ userId }) => {
     };
 
     return (
-        <div className="discount-container_first discount-tax-con">
+        <>
+        {showDeleteShipping?
+            <DeleteModal accept={()=>{
+                deleteShipping(deleteShippingId);
+    
+            }}
+            cancel={()=>{setShowDeleteShipping(false)}}
+            open={showDeleteShipping}
+            
+            /> :null}
+            <div className="discount-container_first discount-tax-con">
             <p className="heading">Shipping</p>
             <div>
                 <form className="discount-container_first-form">
@@ -104,7 +120,7 @@ const ShippingSettings = ({ userId }) => {
                                     : ""
                             } `}
                         >
-                            Save
+                            Add
                         </button>
                     </div>
                 </form>
@@ -122,7 +138,7 @@ const ShippingSettings = ({ userId }) => {
                         <tr className="discount-output_body">
                             <td>{shipping.name}</td>
                             <td>${shipping.value}</td>
-                            <td>
+                            <td className="shipping-custom-col-3">
                                 <img
                                     style={{
                                         width: "18px",
@@ -132,7 +148,7 @@ const ShippingSettings = ({ userId }) => {
                                     }}
                                     src={edit}
                                     onClick={() => {
-                                        handlUpdateShipping(shipping);
+                                        handleUpdateShipping(shipping);
                                     }}
                                 />
                                 <img
@@ -152,6 +168,8 @@ const ShippingSettings = ({ userId }) => {
                 </table>
             </div>
         </div>
+        </>
+        
     );
 };
 const mapStateToProps = (state) => ({

@@ -60,7 +60,9 @@
         }
     }
 }
-
+.switch-margin{
+    margin-left: 20px;
+}
 .discount-tax {
     .ant-select {
         min-width: 284px !important;
@@ -243,8 +245,8 @@ input[type="number"] {
     background-color: #f9f9fb;
 }
 .discount-col-3 {
-    padding-right: 0px !important;
-    text-align: center !important;
+    padding-right: 32px !important;
+    text-align: right !important;
     border-bottom-right-radius: 10px !important;
 }
 
@@ -281,4 +283,12 @@ input[type="number"] {
 }
 .discount-container-page-title {
     margin-top: 30px !important;
+}
+.shipping-custom-col-3 {
+    text-align: right;
+    padding-right: 32px;
+}
+.custom-tax-col-3 {
+    text-align: right;
+    padding-right: 32px;
 }
