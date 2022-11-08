@@ -6,7 +6,7 @@ import { Col, Row } from "antd";
 
 const ProfitCard = ({ cartData, stats }) => {
     return (
-        <Row justify={window.innerWidth>763?"start":"center"} align="middle" className={`${classes["container"]} ${window.innerWidth>763?classes['margin-desktop']:''}`}>
+        <Row justify={window.innerWidth>763?"start":"center"} align={window.innerWidth<763?"middle":""} className={`${classes["container"]} ${window.innerWidth>763?classes['margin-desktop']:''}`}>
            <img
                 src={cartData.icon}
                 alt={"profile-icon"}
