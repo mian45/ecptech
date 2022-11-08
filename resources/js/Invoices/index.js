@@ -26,9 +26,12 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
             if (userRole === "staff") {
                 clientId = clientUserId;
             }
-            const res = await Axios.get("/api/get-invoices", {
-                params: { userId: clientId },
-            });
+            const res = await Axios.get(
+                process.env.MIX_REACT_APP_URL + "/api/get-invoices",
+                {
+                    params: { userId: clientId },
+                }
+            );
             setTableData(res?.data?.data);
             setLoading(false)
         };

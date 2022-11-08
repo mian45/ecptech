@@ -31,7 +31,11 @@ import {
     LensBenifitAvailableEnum,
 } from "../../data/enums";
 import backArrow from "../../../../../images/black-arrow.svg";
+<<<<<<< HEAD
 import CustomLoader from "../../../../components/customLoader";
+=======
+import CustomDiscount from "../customDiscount";
+>>>>>>> 6cb12e36e26d3928151f606863d9c2b27728cfb1
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -93,8 +97,17 @@ const CalculatorScreen = () => {
             const res = await Axios.get(
                 process.env.MIX_REACT_APP_URL + "/api/calculater-data"
             );
-            setCalculatorObj(res?.data?.data);
-            const questions = res?.data?.data?.questions;
+            const resData = res?.data?.data;
+            const firstPlan = resData?.questions?.find(
+                (item) => item?.title === "VSP Signature"
+            );
+            const colRes = await Axios.post(
+                process.env.MIX_REACT_APP_URL + "/api/get-collections",
+                { vision_plan_id: firstPlan?.id }
+            );
+            resData.lens_types = colRes?.data?.data?.collection;
+            setCalculatorObj(resData);
+            const questions = resData?.questions;
             const currentPlan = questions?.find(
                 (plan) => plan?.title === values?.visionPlan
             );
@@ -481,6 +494,9 @@ const CalculatorScreen = () => {
                                         BenifitTypeEnums.lens ? (
                                         <>
                                             <SelectVisionPlan
+                                                setCalculatorObj={
+                                                    setCalculatorObj
+                                                }
                                                 formProps={formProps}
                                                 calculatorObj={
                                                     calculatorObj &&
@@ -631,6 +647,17 @@ const CalculatorScreen = () => {
                                                     calculatorObj &&
                                                     calculatorObj
                                                 }
+                                            />
+                                            <CustomDiscount
+                                                formProps={formProps}
+                                                calculatorObj={
+                                                    calculatorObj &&
+                                                    calculatorObj
+                                                }
+                                                setCalValidations={
+                                                    setCalValidations
+                                                }
+                                                calValidations={calValidations}
                                             />
                                         </>
                                     ) : (

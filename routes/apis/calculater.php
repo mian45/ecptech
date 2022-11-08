@@ -12,6 +12,7 @@ Route::post('store-code-csv-data', [InvoiceCalculaterController::class, 'storeCo
 
 Route::post('get-lenses-price', [InvoiceCalculaterController::class, 'getLensePrices']);
 
-Route::post('get-brands', [InvoiceCalculaterController::class, 'getBrands']);
+Route::post('get-collections', [InvoiceCalculaterController::class, 'getCollections']);
+
 
 

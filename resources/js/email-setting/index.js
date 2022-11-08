@@ -23,6 +23,7 @@ import emailButton from "../../images/email.svg";
 import Axios from "../Http";
 import CustomLoader from "../components/customLoader";
 
+import DeleteModal from "../components/deleteModal/index"
 import "./style.scss";
 
 const EmailSetting = (props) => {
@@ -42,6 +43,9 @@ const EmailSetting = (props) => {
     const [timeSelectorValue,setTimeSelectorValue]=useState("")
     const [loading , setLoading] = useState(false)
     const [buttonLoader , setButtonLoader] = useState(false)
+    const [showDeleteReminder,setShowDeleteReminder]=useState(false)
+    const [deleteReminderId,setDeleteReminderId]=useState(0)
+    
     const blockStyleFn = (block) => {
         let alignment = "left";
         block.findStyleRanges((e) => {
@@ -226,7 +230,9 @@ const EmailSetting = (props) => {
         };
 
         axios(config)
-            .then(function (response) {})
+            .then(function (response) {
+                setShowDeleteReminder(false)
+            })
             .catch(function (error) {
                 console.log(error);
             });
@@ -289,14 +295,18 @@ const EmailSetting = (props) => {
     };
 
     const handleDelete = (id) => {
-        deleteReminder(id);
+        setShowDeleteReminder(true)
+        setDeleteReminderId(id)
+        
+    };
+    const deleteReminderbyPopup=()=>{
+        deleteReminder(deleteReminderId);
         setEmailArray(
             [...emailArray].filter((emailObj) => {
-                return emailObj.id !== id;
+                return emailObj.id !== deleteReminderId;
             })
         );
-    };
-
+    }
     var quarterHours = ["00", "15", "30", "45"];
     var time = [];
     for (var i = 0; i < 24; i++) {
@@ -375,7 +385,19 @@ const EmailSetting = (props) => {
     return (
         loading == true ?
         <CustomLoader buttonBool={false}/>  :
+        <>
+        {showDeleteReminder?
+        <DeleteModal accept={()=>{
+            deleteReminderbyPopup();
+
+        }}
+        cancel={()=>{setShowDeleteReminder(false)}}
+        open={showDeleteReminder}
+        /> :null}
+
+       
         <div>
+            
             {!emailSettingProps && (
                 <div className="email-setting">
                     <p className="email-setting_heading email-settings-title">
@@ -758,7 +780,7 @@ const EmailSetting = (props) => {
                     </div>
                 </form>
             )}
-        </div>
+        </div></>
     );
 };
 const mapStateToProps = (state) => ({
