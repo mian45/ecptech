@@ -51,7 +51,7 @@ const CustomDiscount = ({
             setFieldValue("discountValue", "");
             const discountValue = Yup.string().required("Discount is required");
             const discountType = Yup.string().required(
-                "Discount value is required"
+                "Discount name is required"
             );
             setCalValidations({
                 ...calValidations,
@@ -120,7 +120,7 @@ const CustomDiscount = ({
                     <div className={classes["discount-input-container"]}>
                         <div className={classes["discount-input-row"]}>
                             <div className={classes["input-label"]}>
-                                Discount Type
+                                Discount Name
                             </div>
                             <input
                                 className={classes["input"]}
