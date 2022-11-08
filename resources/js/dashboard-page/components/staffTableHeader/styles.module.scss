@@ -1,5 +1,7 @@
 .action-column {
     border-top-right-radius: 10px;
+    white-space: nowrap;
+    padding-left: 10px;
 }
 
 th {
@@ -14,4 +16,9 @@ th {
     border-top-left-radius: 10px;
     padding-left: 20px !important;
     text-align: left;
+    white-space: nowrap;
+}
+.invoice-column-text {
+    white-space: nowrap;
+    padding-left: 10px;
 }

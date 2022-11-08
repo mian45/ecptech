@@ -45,14 +45,14 @@ const Header = ({}) => {
         dispatch(AuthService.showSideBar())
     }
     return (
-        <Row justify="space-between" align="middle" className={classes["header-box"]}>
-             {window.innerWidth<763?<MenuOutlined onClick={showSideBar}/>:null}
-            <Col xs={12}  >
+        <Row align="middle" className={classes["header-box"]}>
+             {window.innerWidth<763?<Col xs={3}  ><MenuOutlined onClick={showSideBar}/></Col>:null}
+            <Col xs={12} md={12} >
             <img src={user?.logo?user?.logo:logo} alt="logo" className={classes["logo-icon"]} />
             </Col>
-            <Col xs={12}  >
-                <Row justify="end">
-                <Col xs={9} className={classes['logo-box']}>
+            <Col xs={9} md={12}>
+                <Row justify={window.innerWidth<763?"center":"end"}>
+                <Col md={4} xs={10} className={classes['logo-box']}>
                     <img
                     src={profileIcon}
                     alt="Profile"
@@ -62,7 +62,7 @@ const Header = ({}) => {
                     }}
                 />
                 </Col>
-                <Col xs={3} className={classes['logout-box']}>
+                <Col md={5} xs={12} className={classes['logout-box']}>
                 <h6 className={classes["logout"]} onClick={()=>{Logout()}}>Logout</h6>
                 {showProfile && <Profile closeModal={closeModal} />}
                 </Col>

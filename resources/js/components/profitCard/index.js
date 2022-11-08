@@ -2,11 +2,12 @@ import React from "react";
 import classes from "./styles.module.scss";
 import upIcon from "../../../images/up-graph.svg";
 import downIcon from "../../../images/down-graph.svg";
+import { Col, Row } from "antd";
 
 const ProfitCard = ({ cartData, stats }) => {
     return (
-        <div className={classes["container"]}>
-            <img
+        <Row justify={window.innerWidth>763?"start":"center"} align="middle" className={`${classes["container"]} ${window.innerWidth>763?classes['margin-desktop']:''}`}>
+           <img
                 src={cartData.icon}
                 alt={"profile-icon"}
                 className={classes["icon"]}
@@ -35,7 +36,7 @@ const ProfitCard = ({ cartData, stats }) => {
                     {stats?.diff} from last month
                 </div>
             </div>
-        </div>
+        </Row>
     );
 };
 
