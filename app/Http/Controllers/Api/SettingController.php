@@ -70,24 +70,26 @@ class SettingController extends Controller
         foreach($data as $lense_type){
             
             $lense_type_id = $lense_type['id'];
-            
+            $lense_type_title = $lense_type['title'];
             foreach($lense_type['brands'] as $brand){
                 $brand_id = $brand['id'];
+                $brand_title = $brand['title'];
                 $brandPermission = BrandPermission::updateOrCreate(
                     ['user_id' => $user_id, 'lense_type_id' => $lense_type_id,'brand_id'=>$brand_id],
-                    ['status' => $brand['status']]
+                    ['status' => $brand['status'],'lense_type_title' => $lense_type_title,'brand_title'=>$brand_title]
                 );
 
                 foreach($brand['collections'] as $collection){
 
                     
                     $collection_id = $collection['id'];
+                    $collection_title = $collection['title'];
                     $name = $collection['display_name'];
                     $price = $collection['custom_price'];
                     $status = $collection['status'];
                     $collectionPermission = CollectionPermission::updateOrCreate(
                         ['user_id' => $user_id, 'brand_id' => $brand_id, 'collection_id' => $collection_id],
-                        ['price' => $price,'name' => $name,'status' => $status]
+                        ['price' => $price,'name' => $name,'status' => $status, 'brand_title' => $brand_title, 'collection_title' => $collection_title],
                     );
                 }
             }

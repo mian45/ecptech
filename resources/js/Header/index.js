@@ -10,16 +10,29 @@ import notificationIcon from "../../images/notification.svg";
 import AuthService from "../services";
 import { connect } from "react-redux";
 import { Col, Row } from "antd";
-
-const Header = ({user}) => {
+import Http from "../Http"
+const Header = () => {
     const dispatch = useDispatch();
     const [showProfile, setShowProfile] = useState(false);
+    const [user,setUser]=useState({})
     const closeModal = () => setShowProfile(false);
     useEffect(() => {
         getAuthentication();
     }, []);
     const getAuthentication = async () => {
-        rememberme(dispatch);
+        const token = localStorage.getItem("access_token");
+        Http.get("/api/get-user-details")
+            .then((response) => {
+                let res = response;
+                res.data.data = { ...res.data.data, token: token };
+                setUser(res.data.data)
+                rememberme(dispatch);
+                return;
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        
     };
     const Logout=()=>{
         dispatch(AuthService.logout(user.id))
@@ -27,7 +40,7 @@ const Header = ({user}) => {
     return (
         <Row justify="space-between" align="middle" className={classes["header-box"]}>
             <Col xs={12}  >
-            <img src={logo} alt="logo" className={classes["logo-icon"]} />
+            <img src={user?.logo?user?.logo:logo} alt="logo" className={classes["logo-icon"]} />
             </Col>
             <Col xs={12}  >
                 <Row justify="end">

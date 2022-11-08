@@ -23,6 +23,14 @@ const AntireFlextive = ({
         )?.visibility;
     const [error, setError] = useState("");
 
+    const getAntireflectiveList = () => {
+        return (
+            calculatorObj?.addons?.find(
+                (item) => item?.title === "Anti Reflective"
+            )?.addons || []
+        );
+    };
+
     const handleActiveFields = () => {
         if (values?.isAntireflective === "No") {
             return true;
@@ -108,44 +116,26 @@ const AntireFlextive = ({
                                     name="antireflectiveType"
                                     className={classes["radio-group"]}
                                 >
-                                    <CustomRadio
-                                        headClass={classes["margin"]}
-                                        label={
-                                            AntireflectiveTypeEnum.shamirGlacierPlusUV
+                                    {getAntireflectiveList()?.map(
+                                        (value, index) => {
+                                            return (
+                                                <CustomRadio
+                                                    key={index}
+                                                    label={
+                                                        value?.display_name
+                                                            ? value?.display_name
+                                                            : value?.title
+                                                    }
+                                                    value={value?.title}
+                                                    headClass={classes["radio"]}
+                                                    active={
+                                                        values?.antireflectiveType ===
+                                                        value?.title
+                                                    }
+                                                />
+                                            );
                                         }
-                                        value={
-                                            AntireflectiveTypeEnum.shamirGlacierPlusUV
-                                        }
-                                        active={
-                                            values?.antireflectiveType ===
-                                            AntireflectiveTypeEnum.shamirGlacierPlusUV
-                                        }
-                                    />
-                                    <CustomRadio
-                                        headClass={classes["margin"]}
-                                        label={
-                                            AntireflectiveTypeEnum.techShieldPlusUVR
-                                        }
-                                        value={
-                                            AntireflectiveTypeEnum.techShieldPlusUVR
-                                        }
-                                        active={
-                                            values?.antireflectiveType ===
-                                            AntireflectiveTypeEnum.techShieldPlusUVR
-                                        }
-                                    />
-                                    <CustomRadio
-                                        label={
-                                            AntireflectiveTypeEnum.crizalSunshield
-                                        }
-                                        value={
-                                            AntireflectiveTypeEnum.crizalSunshield
-                                        }
-                                        active={
-                                            values?.antireflectiveType ===
-                                            AntireflectiveTypeEnum.crizalSunshield
-                                        }
-                                    />
+                                    )}
                                 </Radio.Group>
                                 <FormikError name={"antireflectiveType"} />
                             </>
