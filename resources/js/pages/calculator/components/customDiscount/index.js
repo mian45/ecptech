@@ -4,6 +4,7 @@ import classes from "./styles.module.scss";
 import icon from "../../../../../images/calculator/discount-icon.png";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import * as Yup from "yup";
+import { useHistory } from "react-router";
 
 const CustomDiscount = ({
     formProps,
@@ -11,21 +12,25 @@ const CustomDiscount = ({
     setCalValidations,
     calValidations,
 }) => {
+    const history = useHistory()
     const [discount, setDiscount] = useState("");
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const editInvoiceState = history?.location?.state?.invoice;
 
+
     useEffect(() => {
         if (editInvoiceState?.id) {
+            const isSelected = getActiveDiscounts()?.filter(item => item.name === values?.discountType)
+
             if (values?.discountType === "") {
-                setDiscount("None");
-            } else if (values?.discountType === "other") {
+                setDiscount("");
+            } else if (isSelected?.length === 0) {
                 setDiscount("other");
             } else {
                 setDiscount(values?.discountType);
             }
         }
-    }, [history?.location?.state]);
+    }, [history?.location?.state, values?.discountType]);
 
     const handleValueChange = (e) => {
         const removeValidations = () => {
