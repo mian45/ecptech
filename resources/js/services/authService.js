@@ -182,3 +182,12 @@ export function logout(userId) {
         
         }
 }
+export function showSideBar(){
+    return (dispatch) =>
+        new Promise((resolve, reject) => {
+           
+                    dispatch(action.showSideBar());
+                    return resolve();
+               
+        });
+}
