@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Rules\IsValidPassword;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+
+
 class RegisterController extends Controller
 {
 
@@ -42,7 +45,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors(),422);
+            throw (new ValidationException($validator));
         }
         $name = $request->name;
         $email = $request->email;
@@ -90,7 +93,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password], $request->remember_me)) {
             $user = Auth::user();
@@ -115,7 +118,7 @@ class RegisterController extends Controller
                     $success['business_name'] = $profile->business_name;
                     $success['theme_color'] = $profile->theme_color;
                     $success['theme_mode'] = $profile->theme_mode;
-                    $success['logo'] = url('uploads/'.$user_id.'/'.$profile->logo);
+                    $success['logo'] = isset($profile->logo)?url('uploads/'.$user_id.'/'.$profile->logo):null;
                 }else{
                     $success['business_name'] = null;
                     $success['theme_color'] = null;
@@ -165,7 +168,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         if(auth()->user()->id != $request->userId){
             return $this->sendError('invalid User id',[],403);
@@ -182,7 +185,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
       $user = User::where('email',$request->email)->first();
         if ($user) {
@@ -215,7 +218,7 @@ class RegisterController extends Controller
             ],
         ]);
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors(),422);
+            throw (new ValidationException($validator));
         }
 
         $email = $request->email;
@@ -256,7 +259,7 @@ class RegisterController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $user = User::where(['email' => $request->email, 'verification_code' => $request->code])->first();
         if ($user) {
@@ -299,7 +302,7 @@ class RegisterController extends Controller
             ],
         ]);
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors(),422);
+            throw (new ValidationException($validator));
         }
         $user_id = $request->user_id;
         $old_password = $request->old_password;
@@ -346,7 +349,7 @@ class RegisterController extends Controller
                         $success['business_name'] = $profile->business_name;
                         $success['theme_color'] = $profile->theme_color;
                         $success['theme_mode'] = $profile->theme_mode;
-                        $success['logo'] = url('uploads/'.$user_id.'/'.$profile->logo);
+                        $success['logo'] = isset($profile->logo)?url('uploads/'.$user_id.'/'.$profile->logo):null;
                     }else{
                         $success['business_name'] = null;
                         $success['theme_color'] = null;

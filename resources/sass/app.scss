@@ -83,10 +83,10 @@ button {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: $btn-size-base * 1.5;
-            height: $btn-size-base * 1.5;
-            margin-top: -(($btn-size-base * 1.5)/2);
-            margin-left: -(($btn-size-base * 1.5)/2);
+            width: calc($btn-size-base * 1.5);
+            height: calc($btn-size-base * 1.5);
+            margin-top: calc(($btn-size-base * 1.5)/2);
+            margin-left: calc(($btn-size-base * 1.5)/2);
             border-radius: 100%;
             border: ($btn-size-base * 0.3) solid transparent;
         }
@@ -123,7 +123,7 @@ button {
 header {
     border-bottom: 1px solid #ebedf8;
     z-index: 10;
-    padding: 20px $grid-gutter-width/2;
+    padding: 20px calc($grid-gutter-width/2);
     @include media-breakpoint-up(md) {
         display: grid;
         grid-template-columns: 1fr 4fr;
@@ -132,13 +132,13 @@ header {
 
     .logo {
         @include media-breakpoint-up(md) {
-            padding: 15px $grid-gutter-width/2;
+            padding: 15px calc($grid-gutter-width/2);
         }
     }
 
     .navigation {
         @include media-breakpoint-up(md) {
-            padding: 15px $grid-gutter-width/2;
+            padding: 15px calc($grid-gutter-width/2);
         }
     }
 }
@@ -381,4 +381,17 @@ input[type="number"] {
 }
 .rdrMonth {
     padding: 0 0em 1.666em 0.833em !important;
+}
+.ant-modal-content {
+    border-radius: 19px !important;
+    
+  }
+.ant-modal-body{
+    height: 340px !important;
+  }
+.ant-modal-mask{
+    background-color:#D5D5D5CC !important;
+}
+.ant-drawer-body{
+    padding: 24px 5px !important;
 }

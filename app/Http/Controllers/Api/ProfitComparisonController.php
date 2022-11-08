@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Validator;
 use App\Models\Invoice;
+use Illuminate\Validation\ValidationException;
 
 class ProfitComparisonController extends Controller
 {
@@ -21,7 +22,7 @@ class ProfitComparisonController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $user_id = auth()->user()->id;

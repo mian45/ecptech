@@ -9,14 +9,16 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 
-const Profile = ({ userId, closeModal }) => {
+const Profile = ({ userId, closeModal,user,userRole }) => {
     return (
         <div className={classes["backdrop"]} onClick={closeModal}>
             <div
-                className={classes["profile"]}
+                className={`${classes["profile"]} ${
+                    userRole === "staff" && classes["staff"]
+                }`}
                 onClick={(e) => e.stopPropagation()}
             >
-                <ProfileInfoSection userId={userId} />
+                <ProfileInfoSection userId={userId} user={user}/>
                 <ProfilePasswordValidations userId={userId} />
             </div>
         </div>
@@ -25,6 +27,8 @@ const Profile = ({ userId, closeModal }) => {
 
 const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
+    user:state.Auth.user,
+    userRole: state.Auth.userRole?.name,
 });
 export default connect(mapStateToProps)(Profile);
 
@@ -35,11 +39,11 @@ const profileValidations = Yup.object().shape({
         .required("Name is Required"),
 });
 
-const ProfileInfoSection = ({ userId }) => {
+const ProfileInfoSection = ({ userId,user }) => {
     const defaultProfileState = {
-        businessName: "",
+        businessName: user?.buisnessName?user?.buisnessName:'',
         profileImage: null,
-        themeColor: "#6FA5CB",
+        themeColor: user?.themeColor?user?.themeColor:"#6FA5CB",
         themeType: 0,
     };
 
@@ -52,7 +56,10 @@ const ProfileInfoSection = ({ userId }) => {
             personalInfo.append("theme_mode", values.themeType);
             personalInfo.append("userId", userId);
 
-            await axios.post(`${process.env.MIX_REACT_APP_URL}/api/edit-profile`, personalInfo);
+            await axios.post(
+                `${process.env.MIX_REACT_APP_URL}/api/edit-profile`,
+                personalInfo
+            );
         } catch (err) {
             console.log("error while save changes", err);
         }
@@ -150,7 +157,10 @@ const ProfilePasswordValidations = ({ userId }) => {
                 password_confirmation: values.confirmPassword,
                 user_id: userId,
             };
-            await axios.post(`${process.env.MIX_REACT_APP_URL}/api/change-password`, passwordObject);
+            await axios.post(
+                `${process.env.MIX_REACT_APP_URL}/api/change-password`,
+                passwordObject
+            );
         } catch (err) {
             console.log("error while save password", err);
         }

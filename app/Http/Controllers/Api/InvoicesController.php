@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Validator;
 use Carbon\Carbon;
+use Illuminate\Validation\ValidationException;
+
 class InvoicesController extends Controller
 {
     public function index(Request $request){
@@ -20,7 +22,7 @@ class InvoicesController extends Controller
         ]);
         
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $user_id = $request->userId;
         $invoices = Invoices::with('customer')->where('user_id',$user_id)->whereNot('status', 'discard')->latest()->take(10)->get();
@@ -42,7 +44,7 @@ class InvoicesController extends Controller
             'userState' => 'required',
         ]);
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
     
       $dob = Carbon::parse($request->dob)->format('Y-m-d');
@@ -84,7 +86,7 @@ class InvoicesController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $id = $request->id;
@@ -138,7 +140,7 @@ class InvoicesController extends Controller
             'userState' => 'required',
         ]);
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
   
       $invoice = Invoices::where('id',$request->id)->first();
@@ -190,7 +192,7 @@ class InvoicesController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         
         $where_clouse['user_id'] = $request->user_id;
