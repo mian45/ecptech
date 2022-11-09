@@ -36,18 +36,18 @@ const PrivateRoute = ({ component, exact, path, isAuthenticated }) => {
   const handlePause = () => pause();
   const handleResume = () => resume();
 
-  useEffect(() => {
-    setRemaining(getRemainingTime());
-    setLastActive(getLastActiveTime());
-    setElapsed(getElapsedTime());
+  // useEffect(() => {
+  //   setRemaining(getRemainingTime());
+  //   setLastActive(getLastActiveTime());
+  //   setElapsed(getElapsedTime());
 
-    setInterval(() => {
+  //   setInterval(() => {
 
-      setRemaining(getRemainingTime());
-      setLastActive(getLastActiveTime());
-      setElapsed(getElapsedTime());
-    }, 1000);
-  }, []);
+  //     setRemaining(getRemainingTime());
+  //     setLastActive(getLastActiveTime());
+  //     setElapsed(getElapsedTime());
+  //   }, 1000);
+  // }, []);
   return (
     <React.Fragment>
       {isAuthenticated ? (

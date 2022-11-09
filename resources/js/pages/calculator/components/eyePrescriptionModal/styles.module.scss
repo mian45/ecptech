@@ -34,6 +34,7 @@
     font-weight: bold;
     margin-top: 10px;
     margin-bottom: 30px;
+    text-align: center;
 }
 .close-icon {
     width: 16px;
@@ -107,8 +108,8 @@
     & :disabled {
         background-color: #cbcbcb !important;
     }
+    max-width:100%;
 }
-
 .answer-container {
     display: flex;
     align-items: center;
@@ -176,4 +177,5 @@
     &:focus {
         box-shadow: none !important;
     }
+    max-width:100%;
 }

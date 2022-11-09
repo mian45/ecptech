@@ -392,11 +392,15 @@ input[type="number"] {
     border-radius: 19px !important;
 }
 .ant-modal-body {
-    height: 340px !important;
+    height: auto !important;
 }
 .ant-modal-mask {
     background-color: #d5d5d5cc !important;
 }
 .ant-drawer-body {
     padding: 24px 5px !important;
+}
+
+button.ant-modal-close:hover{
+    background-color:transparent !important;
 }

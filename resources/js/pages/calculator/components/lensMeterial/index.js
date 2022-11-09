@@ -65,7 +65,7 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
             {lensMaterialVisibility ? (
                 <div className={classes["container"]}>
                     {showModal && (
-                        <EyePrescriptionModal onClose={handleCloseModal} />
+                        <EyePrescriptionModal onClose={handleCloseModal} onOpen={showModal}/>
                     )}
                     <QuestionIcon icon={icon} active={values?.lensMaterial} />
                     <div className={classes["vision-container"]}>
