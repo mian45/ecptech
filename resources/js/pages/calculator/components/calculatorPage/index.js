@@ -674,10 +674,10 @@ const CalculatorScreen = () => {
                             >
                                 {
                                     buttonLoader == true ? 
-                                    <>
+                                    <span>
                                     <p>Create Invoice</p> 
                                     <CustomLoader buttonBool={true}/>
-                                    </>
+                                    </span>
                                     : 
                                     'Create Invoice'
                                 }
