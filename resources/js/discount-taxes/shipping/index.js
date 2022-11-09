@@ -10,7 +10,7 @@ const ShippingSettings = ({ userId }) => {
     const [shippingAmount, setShippingAmount] = useState("");
     const [shipping, setShipping] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
-
+    let [shippingLoading,setShippingLoading]=useState(false)
     useEffect(() => {
         const getShipping = async () => {
             try {
@@ -79,7 +79,7 @@ const ShippingSettings = ({ userId }) => {
                             onChange={(e) => {
                                 setShippingName(e.target.value);
                             }}
-                            disabled={isSubmitted}
+                            disabled={isSubmitted||shippingLoading}
                         />
                     </div>
                     <div className="discount-container_first-form_section">
@@ -143,6 +143,7 @@ const ShippingSettings = ({ userId }) => {
                                     }}
                                     src={cross}
                                     onClick={() => {
+                                        setShippingLoading(true)
                                         handleDeleteShipping(shipping.id);
                                     }}
                                 />
