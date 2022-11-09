@@ -400,3 +400,25 @@ input[type="number"] {
 .ant-drawer-body {
     padding: 24px 5px !important;
 }
+.picker {
+    @media (min-width: 320px) and (max-width: 480px) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+.rdrCalendarWrapper, .rdrDateRangeWrapper {
+    @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;}
+}
+
+.rdrMonth {
+    @media (min-width: 320px) and (max-width: 480px) {
+    width: 100% !important;}
+}
+.rdrStaticRange{
+    @media (min-width: 320px) and (max-width: 480px) {
+    width: 100%;}
+}
+.rdrDefinedRangesWrapper{
+    width: unset !important;
+}

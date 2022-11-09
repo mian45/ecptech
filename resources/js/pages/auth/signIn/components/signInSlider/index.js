@@ -14,6 +14,7 @@ import SwiperCore, {
     Keyboard,
     Autoplay,
 } from "swiper";
+import { Col,Row } from "antd";
 
 const SignInSlider = () => {
     SwiperCore.use([Autoplay]);
@@ -32,21 +33,25 @@ const SignInSlider = () => {
             {SLIDER_DATA.map((item, index) => {
                 return (
                     <SwiperSlide key={index}>
-                        <div className={`${classes["card-container"]}`}>
+                        <Col>
+                        <Row className={`${classes["card-container"]}`} justify="center"align="middle">
+                            <Col xs={18}>
                             <img
                                 src={item?.icon}
                                 alt={"icon"}
                                 className={classes["card-image"]}
-                            />
-                        </div>
-                        <div className={classes["text-box"]}>
-                            <div className={classes["title"]}>
+                            /></Col>
+                        </Row>
+                        <Row xs={18} justify="center" align="middle" className={classes["title"]}>
+                            <Col xs={24}> 
                                 {item?.title}
-                            </div>
-                            <div className={classes["subtitle"]}>
+                           </Col>
+                            <Col xs={24} className={classes["subtitle"]}>
                                 {item?.subtitle}
-                            </div>
-                        </div>
+                            </Col>
+                        </Row>
+                        </Col>
+                        
                     </SwiperSlide>
                 );
             })}
