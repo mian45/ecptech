@@ -2,9 +2,8 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
-import { DatePicker, Space } from "antd";
+import { Button, Checkbox, Form, Input , DatePicker, Space } from "antd";
 import CustomCheckbox from "../../../../components/customCheckbox";
-import { Button, Checkbox, Form, Input } from 'antd';
 const AddCardModal = ({ show, onClose }) => {
     const [cardNumber, setCardNumber] = useState("");
     const [validNumber, setValidNumber] = useState(false);
@@ -107,8 +106,8 @@ const AddCardModal = ({ show, onClose }) => {
                         <div className={classes["input-label"]}>
                             Card Number
                         </div>
-
-                        <input
+                        <Form.Item>
+                        <Input
                             placeholder="Enter Card Number"
                             className={classes["input"]}
                             type="text"
@@ -129,6 +128,7 @@ const AddCardModal = ({ show, onClose }) => {
                                 );
                             }}
                         />
+                        </Form.Item>
                         {validNumber ? (
                             <label className={classes["validation-error"]}>
                                 Please enter valid card number
@@ -139,7 +139,8 @@ const AddCardModal = ({ show, onClose }) => {
                         <div className={classes["input-label"]}>
                             Card Holder Name
                         </div>
-                        <input
+                        <Form.Item>  
+                        <Input
                             value={name}
                             placeholder="Enter Card Holder Name"
                             className={classes["input"]}
@@ -159,6 +160,7 @@ const AddCardModal = ({ show, onClose }) => {
                                 }
                             }}
                         />
+                        </Form.Item>
                         {nameValidation ? (
                             <label className={classes["validation-error"]}>
                                 Name is required
