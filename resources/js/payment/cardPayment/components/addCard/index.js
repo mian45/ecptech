@@ -5,7 +5,7 @@ import { Col, Row } from "antd";
 
 const AddNewCard = ({ onClick }) => {
     return (
-        <Col xs={18} lg={6} className={classes["container"]} onClick={onClick}>
+        <Col offset={0} className={classes["container"]} onClick={onClick}>
             <div className={classes["icon-wrapper"]}>
                 <img
                     src={addIcon}

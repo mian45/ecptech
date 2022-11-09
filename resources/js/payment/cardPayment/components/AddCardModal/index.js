@@ -104,7 +104,7 @@ const AddCardModal = ({ show, onClose }) => {
                             By adding new card, your old card will be removed.
                         </Row>
                         <Row>
-                        <Col className={classes["input-label"]}>
+                        <Col xs={24} className={classes["input-label"]}>
                             Card Number
                         </Col>
                         <Form.Item>

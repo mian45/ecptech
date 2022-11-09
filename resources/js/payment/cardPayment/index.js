@@ -25,23 +25,23 @@ const CardPayment = () => {
         setCardData(res.data.data);
     };
     return (
-        <div className={classes["container"]}>
+        <Row className={classes["container"]}>
             {showAddCard && (
                 <AddCardModal show={showAddCard} onClose={handleCloseModal} />
             )}
-            <div className={classes["label"]}>Payment Details</div>
-            <div className={classes["subtitle"]}>
+            <Col offset={0} className={classes["label"]}>Payment Details</Col>
+            <Col offset={0} className={classes["subtitle"]}>
                 Your card is
                 <span className={classes["card-status"]}> Active</span>.
                 Subscription amount will be deducted from this card.
-            </div>
-            <Row gutter={[0,18]} className={classes["card-wrapper"]}>
+            </Col>
+            <Row gutter={[0,10]} className={classes["card-wrapper"]}>
                 <CreditCard data={cardData} />
                 <AddNewCard onClick={handleOpenModal} />
             </Row>
-            <div className={classes["label"]}>Subscription Details</div>
+            <Col offset={0} className={classes["label"]}>Subscription Details</Col>
             <Subscriptions />
-        </div>
+        </Row>
     );
 };
 
