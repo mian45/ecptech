@@ -641,14 +641,15 @@ const EmailSetting = (props) => {
                    <p className="email-setting_heading email-settings-title">
                         Email Settings
                     </p>
-                    <Row className="email-setting-slots-container" justify="center">
-                        <Col>
+                    <Row justify="center">
+                        <Col xs={24} md={18}>
                         {emailArray &&
                             emailArray.map((obj, i) => {
                                 return (
                                     <Row className="email-setting-content" justify="space-between" align="middle">
-                                        <Col className="email-setting-content-section">
-                                            <div className="email-setting-content-section-image">
+                                        <Col xs={24} md={20}>
+                                            <Row justify="center" align="middle">
+                                            <Col xs={6} md={4} className="email-setting-content-section-image" >
                                                 <img
                                                     src={
                                                         obj.type == "reminder"
@@ -656,14 +657,13 @@ const EmailSetting = (props) => {
                                                             : emailButton
                                                     }
                                                 />
-                                            </div>
-                                            <div>
-                                                <div>
+                                            </Col>
+                                            <Col xs={18} md={20}>
                                                     <p className="email-setting-content-section-heading">
                                                         {obj.subject}
                                                     </p>
-                                                </div>
-                                                <div className="email-setting-content-section-subsection">
+                                                <Row className="email-setting-content-section-subsection" align="middle">
+                                                    <Col xs={24} md={8} lg={6}>
                                                     <p
                                                         className="email-setting-content-section-subsection-heading email-reminder-tag"
                                                         style={
@@ -681,6 +681,9 @@ const EmailSetting = (props) => {
                                                             ? obj.type
                                                             : "Order Success"}
                                                     </p>
+                                                    </Col>
+                                                    <Col xs={24} md={16}>
+
                                                     <p
                                                         className="email-setting-content-section-subsection-subheading"
                                                         style={{
@@ -691,10 +694,14 @@ const EmailSetting = (props) => {
                                                             ? `${obj.send_after_day} days after invoice`
                                                             : "Payment Completed"}
                                                     </p>
-                                                </div>
-                                            </div>
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                            </Row>
                                         </Col>
-                                        <div>
+                                        <Col xs={24} md={3}>
+                                            <Row justify="space-between" align="middle">
+                                            <Col md={6}>
                                             <img
                                                 className="edit-icon"
                                                 src={edit}
@@ -702,6 +709,8 @@ const EmailSetting = (props) => {
                                                     updateHandler(obj);
                                                 }}
                                             />
+                                            </Col>
+                                            <Col md={6}>
                                             {obj?.is_active === 1 ? (
                                                 <img
                                                     className="bell-icon"
@@ -723,7 +732,8 @@ const EmailSetting = (props) => {
                                                     }}
                                                 />
                                             )}
-
+                                            </Col>
+                                            <Col md={6}>
                                             <img
                                                 className="delete-icon"
                                                 src={cross}
@@ -731,12 +741,14 @@ const EmailSetting = (props) => {
                                                     handleDelete(obj.id);
                                                 }}
                                             />
-                                        </div>
+                                            </Col>
+                                            </Row>
+                                        </Col>
                                     </Row>
                                 );
                             })}
-                            <div >
-                            <div className="email-setting_button-section button-margin">
+                         
+                            <Row className="email-setting_button-section button-margin" justify="end">
                                 <button
                                     onClick={() => {
                                         setEmailSettingProps(true);
@@ -746,8 +758,7 @@ const EmailSetting = (props) => {
                                 >
                                     Add New
                                 </button>
-                            </div>
-                        </div>
+                            </Row>
                             </Col>
                         
                     </Row>
