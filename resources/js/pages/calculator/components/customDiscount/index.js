@@ -5,6 +5,7 @@ import icon from "../../../../../images/calculator/discount-icon.png";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import * as Yup from "yup";
 import { useHistory } from "react-router";
+import { Col, Row } from "antd";
 
 const CustomDiscount = ({
     formProps,
@@ -12,15 +13,16 @@ const CustomDiscount = ({
     setCalValidations,
     calValidations,
 }) => {
-    const history = useHistory()
+    const history = useHistory();
     const [discount, setDiscount] = useState("");
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const editInvoiceState = history?.location?.state?.invoice;
 
-
     useEffect(() => {
         if (editInvoiceState?.id) {
-            const isSelected = getActiveDiscounts()?.filter(item => item.name === values?.discountType)
+            const isSelected = getActiveDiscounts()?.filter(
+                (item) => item.name === values?.discountType
+            );
 
             if (values?.discountType === "") {
                 setDiscount("");
@@ -85,78 +87,83 @@ const CustomDiscount = ({
         }
     };
     return (
-        <div className={classes["container"]}>
-            <QuestionIcon
-                icon={icon}
-                active={values?.discountType && values?.discountValue}
-            />
-            <div className={classes["vision-container"]}>
-                <CalculatorHeading
-                    title="Discount"
+        <Row className={classes["container"]}>
+            {" "}
+            <Col sx={0} sm={0} md={5}>
+                <QuestionIcon
+                    icon={icon}
                     active={values?.discountType && values?.discountValue}
-                />
-                <select
-                    placeholder="Select Discount"
-                    value={discount || ""}
-                    onChange={(value) => {
-                        setDiscount(value.target.value);
-                        handleValueChange(value.target.value);
-                    }}
-                    id="discountTypeDropdown"
-                    name="discountTypeDropdown"
-                    className={classes["discount-select"]}
-                >
-                    <option value={""}>None</option>
-                    {getActiveDiscounts()?.map((item, index) => {
-                        return (
-                            <option key={index} value={item?.id}>
-                                {item?.name || ""}
-                            </option>
-                        );
-                    })}
-                    <option value={"other"}>Other</option>
-                </select>
-                {discount === "other" && (
-                    <div className={classes["discount-input-container"]}>
-                        <div className={classes["discount-input-row"]}>
-                            <div className={classes["input-label"]}>
-                                Discount Name
-                            </div>
-                            <input
-                                className={classes["input"]}
-                                type={"text"}
-                                onBlur={handleBlur}
-                                onChange={handleChange}
-                                value={values?.discountType}
-                                id="discountType"
-                                name="discountType"
-                            />
+                />{" "}
+            </Col>
+            <Col sx={24} sm={24} md={19}>
+                <div className={classes["vision-container"]}>
+                    <CalculatorHeading
+                        title="Discount"
+                        active={values?.discountType && values?.discountValue}
+                    />
+                    <select
+                        placeholder="Select Discount"
+                        value={discount || ""}
+                        onChange={(value) => {
+                            setDiscount(value.target.value);
+                            handleValueChange(value.target.value);
+                        }}
+                        id="discountTypeDropdown"
+                        name="discountTypeDropdown"
+                        className={classes["discount-select"]}
+                    >
+                        <option value={""}>None</option>
+                        {getActiveDiscounts()?.map((item, index) => {
+                            return (
+                                <option key={index} value={item?.id}>
+                                    {item?.name || ""}
+                                </option>
+                            );
+                        })}
+                        <option value={"other"}>Other</option>
+                    </select>
+                    {discount === "other" && (
+                        <div className={classes["discount-input-container"]}>
+                            <div className={classes["discount-input-row"]}>
+                                <div className={classes["input-label"]}>
+                                    Discount Name
+                                </div>
+                                <input
+                                    className={classes["input"]}
+                                    type={"text"}
+                                    onBlur={handleBlur}
+                                    onChange={handleChange}
+                                    value={values?.discountType}
+                                    id="discountType"
+                                    name="discountType"
+                                />
 
-                            <FormikError name={"discountType"} />
-                        </div>
-                        <div className={classes["discount-input-row"]}>
-                            <div className={classes["input-label"]}>
-                                Discount Percentage
+                                <FormikError name={"discountType"} />
                             </div>
-                            <input
-                                className={classes["input"]}
-                                type={"text"}
-                                onBlur={handleBlur}
-                                onChange={handleDiscountValueChange}
-                                value={values?.discountValue}
-                                id="discountValue"
-                                name="discountValue"
-                                step={0.01}
-                                min={0.0}
-                                max={100.0}
-                            />
+                            <div className={classes["discount-input-row"]}>
+                                <div className={classes["input-label"]}>
+                                    Discount Percentage
+                                </div>
+                                <input
+                                    className={classes["input"]}
+                                    type={"text"}
+                                    onBlur={handleBlur}
+                                    onChange={handleDiscountValueChange}
+                                    value={values?.discountValue}
+                                    id="discountValue"
+                                    name="discountValue"
+                                    step={0.01}
+                                    min={0.0}
+                                    max={100.0}
+                                />
 
-                            <FormikError name={"discountValue"} />
+                                <FormikError name={"discountValue"} />
+                            </div>
                         </div>
-                    </div>
-                )}
-            </div>
-        </div>
+                    )}
+                </div>
+            </Col>
+        </Row>
     );
 };
 export default CustomDiscount;
