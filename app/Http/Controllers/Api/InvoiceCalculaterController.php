@@ -435,7 +435,7 @@ class InvoiceCalculaterController extends Controller
                     $q->groupby('brands.id');
                     $q->with(['collections'=>function($q)use($userId){
                         $q->join('collections_permissions as cp','cp.collection_title','=','collections.title');
-                        $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price');
+                        $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price','collections.category');
                         $q->where('cp.user_id',$userId)->where('cp.status','active');
                        
                     }]);

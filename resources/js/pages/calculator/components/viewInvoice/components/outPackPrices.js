@@ -606,6 +606,24 @@ export default OutPackPrices;
 export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
     let lensPrice = 0;
     let materialPrice = 0;
+    let progressiveCategory = "";
+
+    const categoryBrands = calculatorObj?.lens_types.find(
+        (item) => item?.title === "PAL"
+    )?.brands;
+    categoryBrands?.forEach((item) => {
+        item.collections?.forEach((val) => {
+            if (val?.display_name) {
+                if (val.display_name == receipt?.values?.lensType?.brand) {
+                    progressiveCategory = val?.category;
+                }
+            } else {
+                if (val.title == receipt?.values?.lensType?.brand) {
+                    progressiveCategory = val?.category;
+                }
+            }
+        });
+    });
 
     const materials =
         lensPrices?.lenses_price &&
@@ -613,8 +631,53 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
             (item) =>
                 item?.lens_material_title === receipt?.values?.lensMaterial
         );
+    const isStandardProg =
+        receipt?.values?.lowerCopaythanStandard?.copayList?.find(
+            (item) => item?.type === "Standard Progressives"
+        );
+    const isPremiumProg =
+        receipt?.values?.lowerCopaythanStandard?.copayList?.find(
+            (item) => item?.type === "Premium Progressives"
+        );
+    const isCustomProg =
+        receipt?.values?.lowerCopaythanStandard?.copayList?.find(
+            (item) => item?.type === "Custom Progressives"
+        );
     console.log("materials", materials);
     if (materials?.length <= 0) {
+        if (receipt?.values?.lensType?.type === "PAL") {
+            if (isCustomProg?.status && progressiveCategory === "Custom") {
+                if (isCustomProg?.copayType === "$0 Copay") {
+                    materialPrice = 0;
+                } else if (
+                    isCustomProg?.copayType === "Lowered copay dollar amount"
+                ) {
+                    materialPrice = isCustomProg?.price;
+                }
+            } else if (
+                isPremiumProg?.status &&
+                progressiveCategory === "Premium"
+            ) {
+                if (isPremiumProg?.copayType === "$0 Copay") {
+                    materialPrice = 0;
+                } else if (
+                    isPremiumProg?.copayType === "Lowered copay dollar amount"
+                ) {
+                    materialPrice = isPremiumProg?.price;
+                }
+            } else if (
+                isStandardProg?.status &&
+                progressiveCategory === "Standard"
+            ) {
+                if (isStandardProg?.copayType === "$0 Copay") {
+                    materialPrice = 0;
+                } else if (
+                    isStandardProg?.copayType === "Lowered copay dollar amount"
+                ) {
+                    materialPrice = isStandardProg?.price;
+                }
+            }
+        }
         return {
             lensPrice: lensPrice,
             materialPrice: materialPrice,
@@ -657,6 +720,39 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                 lensPrice = (materials[0]?.characteristics?.price || "")
                     ?.trim()
                     ?.slice(1, (lensPrice || "")?.trim()?.length);
+            }
+        }
+        if (receipt?.values?.lensType?.type === "PAL") {
+            if (isCustomProg?.status && progressiveCategory === "Custom") {
+                if (isCustomProg?.copayType === "$0 Copay") {
+                    materialPrice = 0;
+                } else if (
+                    isCustomProg?.copayType === "Lowered copay dollar amount"
+                ) {
+                    materialPrice = isCustomProg?.price;
+                }
+            } else if (
+                isPremiumProg?.status &&
+                progressiveCategory === "Premium"
+            ) {
+                if (isPremiumProg?.copayType === "$0 Copay") {
+                    materialPrice = 0;
+                } else if (
+                    isPremiumProg?.copayType === "Lowered copay dollar amount"
+                ) {
+                    materialPrice = isPremiumProg?.price;
+                }
+            } else if (
+                isStandardProg?.status &&
+                progressiveCategory === "Standard"
+            ) {
+                if (isStandardProg?.copayType === "$0 Copay") {
+                    materialPrice = 0;
+                } else if (
+                    isStandardProg?.copayType === "Lowered copay dollar amount"
+                ) {
+                    materialPrice = isStandardProg?.price;
+                }
             }
         }
         return {
@@ -766,6 +862,45 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                         materialPrice = materialPrice + currentPrice;
                     }
                 });
+                if (receipt?.values?.lensType?.type === "PAL") {
+                    if (
+                        isCustomProg?.status &&
+                        progressiveCategory === "Custom"
+                    ) {
+                        if (isCustomProg?.copayType === "$0 Copay") {
+                            materialPrice = 0;
+                        } else if (
+                            isCustomProg?.copayType ===
+                            "Lowered copay dollar amount"
+                        ) {
+                            materialPrice = isCustomProg?.price;
+                        }
+                    } else if (
+                        isPremiumProg?.status &&
+                        progressiveCategory === "Premium"
+                    ) {
+                        if (isPremiumProg?.copayType === "$0 Copay") {
+                            materialPrice = 0;
+                        } else if (
+                            isPremiumProg?.copayType ===
+                            "Lowered copay dollar amount"
+                        ) {
+                            materialPrice = isPremiumProg?.price;
+                        }
+                    } else if (
+                        isStandardProg?.status &&
+                        progressiveCategory === "Standard"
+                    ) {
+                        if (isStandardProg?.copayType === "$0 Copay") {
+                            materialPrice = 0;
+                        } else if (
+                            isStandardProg?.copayType ===
+                            "Lowered copay dollar amount"
+                        ) {
+                            materialPrice = isStandardProg?.price;
+                        }
+                    }
+                }
                 return {
                     lensPrice: lensPrice,
                     materialPrice: materialPrice,
