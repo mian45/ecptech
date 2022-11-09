@@ -4,6 +4,7 @@ import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
 import { DatePicker, Space } from "antd";
 import CustomCheckbox from "../../../../components/customCheckbox";
+import { Button, Checkbox, Form, Input } from 'antd';
 const AddCardModal = ({ show, onClose }) => {
     const [cardNumber, setCardNumber] = useState("");
     const [validNumber, setValidNumber] = useState(false);
@@ -92,7 +93,7 @@ const AddCardModal = ({ show, onClose }) => {
     return (
         <>
             {show ? (
-                <div className={classes["backdrop"]} onClick={onClose}>
+                <Form className={classes["backdrop"]} onClick={onClose}>
                     <div
                         className={classes["container"]}
                         onClick={(e) => e.stopPropagation()}
@@ -268,7 +269,7 @@ const AddCardModal = ({ show, onClose }) => {
                             Add Card
                         </button>
                     </div>
-                </div>
+                </Form>
             ) : (
                 <></>
             )}
