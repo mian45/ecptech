@@ -25,9 +25,11 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { INVOICES_ROUTE } from "../../../../appRoutes/routeConstants";
 import UserInfo from "./components/userInfo";
-import OutPackPrices, { getPriceFromDB } from "./components/outPackPrices";
+import OutPackPrices from "./components/outPackPrices";
 import InPackPrices from "./components/inPackPrices";
 import { BenifitTypeEnums } from "../../data/initialValues";
+import DetailsList from "./components/detailsList/detailsList";
+import { getPriceFromDB } from "./helpers/getPriceFromDB";
 
 const ViewInvoice = ({
     onClose,
@@ -116,26 +118,24 @@ const ViewInvoice = ({
     const calculateTotalDue = () => {
         let total = 0;
         total = total + totalWithoutTax();
-        console.log("total1", total);
-        total = total - getAppliedDiscounts(totalWithoutTax());
-        console.log("total2", total);
+
+        total = total - parseFloat(getAppliedDiscounts(totalWithoutTax()));
         //add tax
-        const tax = (total * (calculatorObj.tax || 0)) / 100;
+        const tax = (total * (calculatorObj?.tax || 0)) / 100;
         total = total + tax;
         return total || 0;
     };
 
     const getAppliedDiscounts = (price) => {
-        const discountToApply = parseFloat(
-            receipt?.values?.discount?.value || ""
-        );
+        const discountToApply =
+            parseFloat(receipt?.values?.discount?.value || "") || 0;
 
         if (discountToApply == 0) {
             return 0;
         } else {
-            return (price * discountToApply) / 100;
+            const result = (price * discountToApply) / 100;
+            return parseFloat(result);
         }
-
     };
 
     const totalWithoutTax = () => {
@@ -164,6 +164,24 @@ const ViewInvoice = ({
         return total;
     };
 
+    const oldPrices = () => {
+        return (
+            <>
+                <InPackPrices
+                    receipt={receipt}
+                    calculatorObj={calculatorObj}
+                    lensPrices={lensPrices}
+                />
+                <OutPackPrices
+                    withoutTaxPrice={totalWithoutTax()}
+                    totalPrice={calculateTotalDue()}
+                    receipt={receipt}
+                    calculatorObj={calculatorObj}
+                    lensPrices={lensPrices}
+                />
+            </>
+        );
+    };
     return (
         <CustomModal onClose={onClose}>
             <div
@@ -182,18 +200,14 @@ const ViewInvoice = ({
                 <div className={classes["sub-container"]}>
                     <UserInfo receipt={receipt} />
                     <div className={classes["sub-right-container"]}>
-                        <InPackPrices
+                        <DetailsList
                             receipt={receipt}
                             calculatorObj={calculatorObj}
                             lensPrices={lensPrices}
-                        />
-                        <OutPackPrices
                             withoutTaxPrice={totalWithoutTax()}
                             totalPrice={calculateTotalDue()}
-                            receipt={receipt}
-                            calculatorObj={calculatorObj}
-                            lensPrices={lensPrices}
                         />
+
                         <button
                             className={classes["send-button"]}
                             onClick={handleSendInvoiceClick}
@@ -497,12 +511,12 @@ const GetLensFee = (receipt, calculatorObj, lensPrices) => {
     return total;
 };
 export const getPrivatePayAntireflective = (value, calculatorObj) => {
-    const antiReflectiveAddons = calculatorObj?.addons.find(
+    const antiReflectiveAddons = calculatorObj?.addons?.find(
         (item) => item?.title === "Anti Reflective"
     );
     let total = 0;
     const selectedAntireflective = antiReflectiveAddons?.addons?.find(
-        (item) => item.title === value
+        (item) => item?.title === value
     )?.price;
     total = total + parseFloat(selectedAntireflective || 0) || 0;
 };
