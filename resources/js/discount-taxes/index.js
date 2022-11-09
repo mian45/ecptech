@@ -30,11 +30,13 @@ const DiscountTaxes = (props) => {
     const [shippingState, setShippingState] = useState("");
     const [shippingArray, setShippingArray] = useState([]);
     let [shipping, setShipping] = useState();
-    
+
     const [showDeleteTaxes,setShowDeleteTaxes]=useState(false)
     const [deleteTaxesId,setDeleteTaxesId]=useState(0)
     const [showDeleteDiscount,setShowDeleteDiscount]=useState(false)
     const [deleteDiscountId,setDeleteDiscountId]=useState(0)
+    let [discountLoading,setDiscountLoading]=useState(false)
+    let [taxLoading,setTaxLoading]=useState(false)
 
     const [editId, setEditId] = useState("");
 
@@ -65,6 +67,7 @@ const DiscountTaxes = (props) => {
                 setDiscountName("");
                 setDiscountTax("");
                 getDiscount();
+                setDiscountLoading(false)
             })
             .catch(function (error) {
                 console.log(error);
@@ -116,6 +119,7 @@ const DiscountTaxes = (props) => {
                 setTaxValue("");
                 setIdState(null);
                 getTaxes();
+                setTaxLoading(false)
             })
             .catch(function (error) {
                 console.log(error);
@@ -146,6 +150,7 @@ const DiscountTaxes = (props) => {
                 setStateSetting("");
                 setTaxValue("");
                 setIdState(null);
+                setTaxLoading(false)
             })
             .catch(function (error) {
                 console.log(error);
@@ -257,12 +262,14 @@ const DiscountTaxes = (props) => {
                 setDiscountTax("");
                 setDiscountId(null);
                 getDiscount();
+                setDiscountLoading(false)
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
     const handleSubmit = (e) => {
+        setDiscountLoading(true)
         e.preventDefault();
         if (discountId !== null) {
             updateDiscount();
@@ -284,7 +291,7 @@ const DiscountTaxes = (props) => {
 
     const handleTaxSubmit = (e) => {
         e.preventDefault();
-
+        setTaxLoading(true)
         addTax();
         setTaxes([
             ...tax,
@@ -294,13 +301,14 @@ const DiscountTaxes = (props) => {
 
     const handlUpdateTax = (e) => {
         e.preventDefault();
+        setTaxLoading(true)
         editTax();
     };
 
     const handleDeleteTax = (id) => {
         setDeleteTaxesId(id)
         setShowDeleteTaxes(true);
-       
+
     };
     const handleShippingSubmit = (e) => {
         e.preventDefault();
@@ -427,7 +435,7 @@ const DiscountTaxes = (props) => {
             });
     };
     return (
-        <> 
+        <>
             {showDeleteTaxes?
             <DeleteModal accept={()=>{
                 deleteTax(deleteTaxesId);
@@ -494,7 +502,7 @@ const DiscountTaxes = (props) => {
                             <button
                                 onClick={handleSubmit}
                                 className={`save-button ${
-                                    !discountName || !discountTax
+                                    !discountName || !discountTax || discountLoading
                                         ? "disable"
                                         : ""
                                 } `}
@@ -624,7 +632,7 @@ const DiscountTaxes = (props) => {
                                             : handleTaxSubmit(e);
                                     }}
                                     className={`save-button ${
-                                        !taxName  || !taxValue
+                                        !taxName || !stateSetting || !taxValue || taxLoading
                                             ? "disable"
                                             : ""
                                     } `}
@@ -688,7 +696,7 @@ const DiscountTaxes = (props) => {
             </div>
             <ShippingSettings />
         </div></>
-      
+
     );
 };
 

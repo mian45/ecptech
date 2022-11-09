@@ -24,7 +24,7 @@ import DeleteModal from "../components/deleteModal/index"
 import "./style.scss";
 import { Row,Col } from "antd";
 const EmailSetting = (props) => {
-    const [emailSettingProps, setEmailSettingProps] = useState(true);
+    const [emailSettingProps, setEmailSettingProps] = useState(false);
     const [idState, setIdState] = useState("");
     const token = localStorage.getItem("access_token");
     const [reminderType, setReminderType] = useState("");

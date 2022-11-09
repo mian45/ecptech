@@ -11,7 +11,7 @@ import StaffListTable from "./components/staffTable";
 import TeamPerformanceChart from "./components/teamPerformanceChart";
 import ProfitStatsChart from "./components/profitStatsChart";
 import AddStaffMembers from "./components/AddStaffMembers";
-
+import {Row,Col} from "antd"
 const Dashboard = ({ userRole, apiDates, userId }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
     const [summaryStats, setSummaryStats] = useState([]);
@@ -60,31 +60,33 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
         getSummaryStats();
     }, [apiDates, userId]);
     return (
-        <div className={classes["container"]}>
-            <div className={classes["left-stats"]}>
-                <div className={classes["cards-mapper"]}>
+        <Row className={classes["container"]} span={24} justify="space-between">
+            <Col xs={24} lg={17} className={classes["left-stats"]}>
+                <Row className={classes["cards-mapper"]} justify="space-between" align="middle">
                     {PROFIT_CARDS_DATA.map((card, index) => {
                         return (
+                           <Col xs={24} md={8}>
                             <ProfitCard
                                 key={index}
                                 cartData={card}
                                 stats={summaryStats[index]}
                             />
+                           </Col>
                         );
                     })}
-                </div>
+                </Row>
 
                 <InvoicesStatsChart data={invoiceStats} />
                 <StaffListTable />
                 {userRole !== "staff" && <StaffLogin />}
-            </div>
-            <div className={classes["right-stats"]}>
+            </Col>
+            <Col xs={24} lg={6}className={classes["left-stats"]}>
                 <ProfitStatsChart dates={apiDates} />
                 <HotSellingProducts />
                 <TeamPerformanceChart />
                 {userRole !== "staff" && <AddStaffMembers />}
-            </div>
-        </div>
+            </Col>
+        </Row>
     );
 };
 
