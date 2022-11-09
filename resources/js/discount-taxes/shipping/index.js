@@ -12,6 +12,7 @@ const ShippingSettings = ({ userId }) => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [showDeleteShipping,setShowDeleteShipping]=useState(false)
     const [deleteShippingId,setDeleteShippingId]=useState(0)
+    let [shippingLoading,setShippingLoading]=useState(false)
     useEffect(() => {
         const getShipping = async () => {
             try {
@@ -77,11 +78,11 @@ const ShippingSettings = ({ userId }) => {
         {showDeleteShipping?
             <DeleteModal accept={()=>{
                 deleteShipping(deleteShippingId);
-    
+
             }}
             cancel={()=>{setShowDeleteShipping(false)}}
             open={showDeleteShipping}
-            
+
             /> :null}
             <div className="discount-container_first discount-tax-con">
             <p className="heading">Shipping</p>
@@ -95,7 +96,7 @@ const ShippingSettings = ({ userId }) => {
                             onChange={(e) => {
                                 setShippingName(e.target.value);
                             }}
-                            disabled={isSubmitted}
+                            disabled={isSubmitted||shippingLoading}
                         />
                     </div>
                     <div className="discount-container_first-form_section">
@@ -159,6 +160,7 @@ const ShippingSettings = ({ userId }) => {
                                     }}
                                     src={cross}
                                     onClick={() => {
+                                        setShippingLoading(true)
                                         handleDeleteShipping(shipping.id);
                                     }}
                                 />
@@ -169,7 +171,7 @@ const ShippingSettings = ({ userId }) => {
             </div>
         </div>
         </>
-        
+
     );
 };
 const mapStateToProps = (state) => ({
