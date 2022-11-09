@@ -129,10 +129,10 @@ const ShippingSettings = ({ userId }) => {
                         >
                                {
                                     shippingButtonLoader == true ? 
-                                  <>
+                                  <span>
                                   <p>Add</p> 
                                   <CustomLoader buttonBool={true}/>
-                                  </> :
+                                  </span> :
                                     'Add'
                                 }
                         </button>

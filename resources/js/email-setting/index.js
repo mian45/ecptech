@@ -768,10 +768,10 @@ const EmailSetting = (props) => {
                                     >
                                      {buttonLoader == false ?
                                         'Save' : 
-                                        <>
+                                        <span>
                                         <p>Save</p> 
                                         <CustomLoader buttonBool={true}/>
-                                        </>
+                                        </span>
                                         }
                                     </button>
                                 </div>

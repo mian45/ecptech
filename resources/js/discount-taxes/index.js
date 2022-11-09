@@ -530,10 +530,10 @@ const DiscountTaxes = (props) => {
                             >
                                 {
                                     discountButtonLoader == true ? 
-                                    <>
+                                    <span>
                                     <p>Add</p> 
                                     <CustomLoader buttonBool={true}/>
-                                    </> :
+                                    </span> :
                                     'Add'
                                 }
                             </button>
@@ -667,10 +667,10 @@ const DiscountTaxes = (props) => {
                                 >
                                     {
                                     taxButtonLoader == true ? 
-                                    <>
+                                    <span>
                                     <p>Add</p> 
                                     <CustomLoader buttonBool={true}/>
-                                    </>  :
+                                    </span>  :
                                     'Add'
                                 }
                                 </button>

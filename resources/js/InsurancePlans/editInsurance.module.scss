@@ -99,6 +99,18 @@
     &:disabled {
         background-color: #90b0c6;
     }
+
+
+    span {
+        display: flex;
+        align-items: center;
+
+        p {
+            font-size: 14px;
+            margin: 0 !important;
+            margin-right: 5px !important;
+        }
+    }
 }
 .checkbox-label {
     color: #2a2a2a !important;
