@@ -36,19 +36,22 @@
 }
 .picker-container {
     box-shadow: 0px 11px 20px #00000029;
-    width: 882px;
     margin-bottom: 20px;
     position: absolute;
     background-color: #ffffff;
     z-index: 2;
     top: 36px;
     left: 152px;
+    @media (min-width: 320px) and (max-width: 480px) {
+        left: -14px;
+    }
+
 }
 .date-selector {
     background-color: #fff;
     min-width: 107px;
     width: auto;
-    height: 27px;
+    min-height: 27px;
     cursor: pointer;
     display: flex;
     flex-direction: row;
