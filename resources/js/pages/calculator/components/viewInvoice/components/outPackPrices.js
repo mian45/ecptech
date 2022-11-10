@@ -619,7 +619,8 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                 item?.lens_material_title === receipt?.values?.lensMaterial
         );
     console.log("materials", materials);
-    if (materials?.length <= 0) {
+
+    if (!materials || materials?.length <= 0) {
         return {
             lensPrice: lensPrice,
             materialPrice: materialPrice,
@@ -691,15 +692,19 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                         ) * 0.8;
                 } else {
                     if (
-                        (materials[0]?.characteristics?.price || "")?.trim() ===
+                        (baseCharecterstics[0]?.price || "")?.trim() ===
                             "NULL" ||
-                        !(materials[0]?.characteristics?.price || "")?.trim()
+                        !(baseCharecterstics[0]?.price || "")?.trim()
                     ) {
                         lensPrice = 0;
                     } else {
                         lensPrice = (baseCharecterstics[0]?.price || "")
                             ?.trim()
-                            ?.slice(1, (lensPrice || "")?.trim()?.length);
+                            ?.slice(
+                                1,
+                                (baseCharecterstics[0]?.price || "")?.trim()
+                                    ?.length
+                            );
                     }
                 }
                 baseCharecterstics.splice(0, 1);
@@ -707,30 +712,40 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                 restBases.forEach((item) => {
                     if ((item?.price || "")?.trim() === "80% of U&C") {
                         materialPrice =
+                            materialPrice +
                             parseFloat(
                                 getPrivatePayMaterialPices(
                                     calculatorObj,
                                     receipt,
                                     lensPrices
                                 )
-                            ) * 0.8;
+                            ) *
+                                0.8;
                     } else {
                         if (
-                            (item?.price || "")?.trim() === "NULL" ||
-                            !(item?.price || "")?.trim()
+                            !(item?.price || "")
+                                ?.trim()
+                                .includes("80% of U&C") ||
+                            !(item?.price || "")?.trim().includes("+")
                         ) {
-                            materialPrice = 0;
-                        } else {
-                            materialPrice =
-                                materialPrice +
-                                parseInt(
-                                    (item?.price || "")
-                                        ?.trim()
-                                        ?.slice(
-                                            1,
-                                            (item?.price || "")?.trim()?.length
-                                        )
-                                );
+                            if (
+                                (item?.price || "")?.trim() === "NULL" ||
+                                !(item?.price || "")?.trim()
+                            ) {
+                                materialPrice = materialPrice + 0;
+                            } else {
+                                materialPrice =
+                                    materialPrice +
+                                    parseInt(
+                                        (item?.price || "")
+                                            ?.trim()
+                                            ?.slice(
+                                                1,
+                                                (item?.price || "")?.trim()
+                                                    ?.length
+                                            )
+                                    );
+                            }
                         }
                     }
                 });
@@ -760,19 +775,17 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                         (item?.price || "")?.trim() === "NULL" ||
                         !(item?.price || "")?.trim()
                     ) {
-                        lensPrice = 0;
+                        materialPrice = materialPrice + 0;
                     } else {
                         let currentPrice = 0;
-                        if (!!item?.price) {
-                            currentPrice = parseInt(
-                                (item?.price || "")
-                                    ?.trim()
-                                    ?.slice(
-                                        1,
-                                        (item?.price || "")?.trim()?.length
-                                    ) || 0
-                            );
-                        }
+                        currentPrice = parseInt(
+                            (item?.price || "")
+                                ?.trim()
+                                ?.slice(
+                                    1,
+                                    (item?.price || "")?.trim()?.length
+                                ) || 0
+                        );
                         materialPrice = materialPrice + currentPrice;
                     }
                 });
