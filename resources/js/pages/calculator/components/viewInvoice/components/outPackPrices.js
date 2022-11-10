@@ -706,7 +706,7 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                 const restBases = [...baseCharecterstics, ...TACharecterstics];
                 restBases.forEach((item) => {
                     if ((item?.price || "")?.trim() === "80% of U&C") {
-                        lensPrice =
+                        materialPrice =
                             parseFloat(
                                 getPrivatePayMaterialPices(
                                     calculatorObj,
@@ -719,7 +719,7 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                             (item?.price || "")?.trim() === "NULL" ||
                             !(item?.price || "")?.trim()
                         ) {
-                            lensPrice = 0;
+                            materialPrice = 0;
                         } else {
                             materialPrice =
                                 materialPrice +
@@ -734,6 +734,11 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                         }
                     }
                 });
+
+                return {
+                    lensPrice: lensPrice,
+                    materialPrice: materialPrice,
+                };
             } else {
                 if (
                     (baseCharecterstics[0]?.price || "")?.trim() === "NULL" ||
