@@ -230,9 +230,9 @@ const EyePrescription = ({ userId }) => {
                     );
                 })}
               </Col>
-            <Col xs={24} className={classes["button-wrapper"]}>
+            <Col xs={24} md={14} className={classes["button-wrapper"]}>
                     <Row justify="end" align="middle">
-                        <Col xs={12} md={7}>
+                    <Col xs={10} md={7} className={classes['btn-grid']}>
                         <button
                         className={classes["button"]}
                         onClick={handleSubmit}
