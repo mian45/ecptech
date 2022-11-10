@@ -1,6 +1,5 @@
 import React from "react";
-import { useEffect } from "react";
-import { connect,useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch } from "react-router-dom";
 import Routes from "./appRoutes/routes";
 import Header from "./Header";

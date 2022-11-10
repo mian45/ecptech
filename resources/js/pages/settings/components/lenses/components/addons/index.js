@@ -7,7 +7,7 @@ import editIcon from "../../../../../../../images/edit.png";
 import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-
+import {Row,Col} from "antd"
 const Addons = ({ userId }) => {
     const [addonsList, setAddonsList] = useState([]);
     const [changedAddOnList, setChangedAddOnList] = useState([]);
@@ -67,30 +67,31 @@ const Addons = ({ userId }) => {
 
     return (
         <>
-            <div className={classes["container"]}>
-                <div className={classes["left-container"]}>
+            <Row className={classes["container"]}>
+                <Col xs={24} md={9} className={classes["left-container"]}>
                     <LensesTypeList
                         onClick={onLensTypeClick}
                         lenses={addonsList}
                         selectedRow={selectedRow}
                     />
-                </div>
-                <div className={classes["right-container"]}>
+                </Col>
+                <Col xs={24} md={9} className={classes["right-container"]}>
                     <CollectionSection
                         addons={addonsList}
                         selectedAddons={selectedAddons}
                         setLensesList={setAddonsList}
                     />
-                </div>
-            </div>
-            <div className={classes["save-button-wrapper"]}>
-                <button
+                </Col>
+            </Row>
+            <Row className={classes["save-button-wrapper"]}>
+               <Col xs={24}>
+               <button
                     className={classes["save-button"]}
                     onClick={submitLensesData}
                 >
                     Save
-                </button>
-            </div>
+                </button></Col>
+            </Row>
         </>
     );
 };
@@ -184,11 +185,12 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
     };
     if (!selectedAddons) return <></>;
     return (
-        <div className={classes["collection-container"]}>
+        <Row className={classes["collection-container"]}>
             <div
                 className={classes["collection-label"]}
             >{`${selectedAddons}`}</div>
             {addonsList?.map((collection, index) => (
+                <Col xs={24}>
                 <CollectionSlot
                     key={`${collection?.title || ""}+${index}`}
                     collection={collection}
@@ -196,8 +198,9 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
                     handleDisplayNameChange={handleDisplayNameChange}
                     handleAmountNameChange={handleAmountNameChange}
                 />
+                </Col>
             ))}
-        </div>
+        </Row>
     );
 };
 
@@ -211,14 +214,17 @@ export const CollectionSlot = ({
     return (
         <>
             {isEdit ? (
-                <div
+                <Row
+                justify="start"
+                align="middle"
                     className={classes["collection-edit-container"]}
                     id={collection?.title}
                 >
-                    <div className={classes["collection-edit-header-slot"]}>
-                        <div
+                    <Col xs={24} className={classes["collection-edit-header-slot"]}>
+                    <Row justify="center" className={classes['row-box']}>
+                    <Col xs={18}
                             className={`${classes["collection-left-container"]} ${classes["animated-title"]}`}
-                        >
+                        >   
                             <CustomCheckbox
                                 label={""}
                                 defaultChecked={
@@ -234,15 +240,19 @@ export const CollectionSlot = ({
                             <div className={classes["edit-content-title"]}>
                                 {collection?.title || ""}
                             </div>
-                        </div>
+                        </Col>
+                        <Col xs={6} className={classes['edit-tick']}>
                         <img
                             src={tickIcon}
                             alt={"icon"}
                             className={classes["tick-icon"]}
                             onClick={() => setIsEdit(false)}
                         />
-                    </div>{" "}
-                    <div className={classes["edit-slot-sub-wrapper"]}>
+                        </Col>
+                        </Row>
+                       
+                    </Col>{" "}
+                    <Row className={classes["edit-slot-sub-wrapper"]}>
                         <div className={classes["edit-slot-title"]}>
                             Display Name
                         </div>
@@ -277,19 +287,22 @@ export const CollectionSlot = ({
                                 }
                             }}
                         />
-                    </div>
-                </div>
+                    </Row>
+                </Row>
             ) : (
-                <div
+                <Row
                     className={classes["collection-show-container"]}
                     id={collection?.title}
+                    justify="space-between"
+                    
                 >
-                    <div className={classes["collection-left-container"]}>
-                        <div
+                    <Col  xs={18}className={classes["collection-left-container"]}>
+                        <Row
                             className={
                                 classes["collection-show-content-container"]
                             }
                         >
+                            <Col xs={6}>
                             <CustomCheckbox
                                 label={""}
                                 defaultChecked={
@@ -302,11 +315,13 @@ export const CollectionSlot = ({
                                 }}
                                 containerClass={classes["checkbox"]}
                             />
-                            <div className={classes["collection-content"]}>
-                                <div className={classes["show-content-title"]}>
+                            </Col>
+                            <Col xs={18}>
+                            <Row  className={classes["collection-content"]}>
+                            <Col xs={24}className={classes["show-content-title"]}>
                                     {collection?.title || ""}
-                                </div>
-                                <div
+                                </Col>
+                                <Col xs={24}
                                     className={classes["show-content-heading"]}
                                 >
                                     Display Name:{" "}
@@ -317,8 +332,8 @@ export const CollectionSlot = ({
                                     >
                                         {collection?.display_name || "---"}
                                     </span>
-                                </div>
-                                <div
+                                </Col>
+                                <Col xs={24}
                                     className={classes["show-content-heading"]}
                                 >
                                     Retail Amount:{" "}
@@ -329,17 +344,20 @@ export const CollectionSlot = ({
                                     >
                                         {collection?.price || "---"}
                                     </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <img
+                                </Col>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </Col>
+                   <Col xs={6} className={classes['edit-container']}>
+                   <img
                         src={editIcon}
                         alt={"icon"}
                         className={classes["edit-icon"]}
                         onClick={() => setIsEdit(true)}
                     />
-                </div>
+                   </Col>
+                </Row>
             )}
         </>
     );
