@@ -497,7 +497,7 @@ const GetLensFee = (receipt, calculatorObj, lensPrices) => {
     return total;
 };
 export const getPrivatePayAntireflective = (value, calculatorObj) => {
-    const antiReflectiveAddons = calculatorObj?.addons.find(
+    const antiReflectiveAddons = calculatorObj?.addons?.find(
         (item) => item?.title === "Anti Reflective"
     );
     let total = 0;
