@@ -481,7 +481,7 @@ const EmailSetting = (props) => {
                     </Col>
                     <Col xs={24}>
                         <Row justify="center" align="middle">
-                       <Col xs={24} md={14}>
+                       <Col xs={24} md={16} lg={16} xl={16}>
                        <Editor
                             toolbar={{
                                 options: [

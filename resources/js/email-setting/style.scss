@@ -243,7 +243,15 @@
 }
 
 .rdw-editor-wrapper {
-    max-width: 450px;
+    max-width: 100%;
+    @media only screen and (max-width: 1024px) and (min-width:763px){
+        max-width: 475px;
+    }
+    
+    @media only screen and  (min-width:1440px){
+        max-width: 541px;
+    }
+    
 }
 
 .public-DraftEditor-content[contenteditable="true"] {
