@@ -461,8 +461,8 @@ const DiscountTaxes = (props) => {
                     <p className="main discount-container-page-title">{`Discounts & Taxes`}</p>
                 </Col>
             </Row>
-            <Row>
-                <Col sm={18} offset={3}>
+            <Row justify="center">
+                <Col sm={18}>
                     <div className="discount-container_first discount-tax-con">
                         <Row>
                             <Col sm={24}>
