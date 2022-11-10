@@ -458,42 +458,41 @@ const DiscountTaxes = (props) => {
         
         <Row justify="center">
             <Col xs={24}>
-                <div className="discount-container discount-tax">
-                    <Row align="top">
-                        <Col sm={24}>
+                <Row justify="center" align="middle" className="discount-container discount-tax">
+                    <Col xs={24}>
                             <p className="main discount-container-page-title">{`Discounts & Taxes`}</p>
-                        </Col>
-                    </Row>
-                    <Row justify="center">
-                        <Col sm={24} md={18} offset={3}>
-                            <div className="discount-container_first discount-tax-con">
-                                <Row>
-                                    <Col sm={24}>
+                    </Col>
+                    <Col xs={24}>
+                        <Row justify="center" align="middle">
+                            <Col xs={24} md={24} lg={16}className="discount-container_first discount-tax-con">
+                                <Row justify="center" align="middle">
+                                    <Col xs={24} md={24}>
                                         <p className="heading">Discounts</p>
                                     </Col>
-                                </Row>
-                                <Row>
-                                    <Col sm={24}>
+                                    <Col xs={24}>
                                         <form>
-                                            <Row>
-                                                <Col sm={8}>
-                                                    <div className="discount-container_first-form_section">
-                                                        <p className="input-title">Discount Name</p>
-                                                        <input
+                                            <Row justify="space-between">
+                                                <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
+                                                       <Row justify="center" align="middle">
+                                                       <Col xs={24}><p className="input-title">Discount Name</p></Col>
+                                                       <Col xs={24}><input
                                                             placeholder="Discount Name"
                                                             value={discountName}
                                                             onChange={(e) => {
                                                                 setDiscountName(e.target.value);
                                                             }}
-                                                        />
-                                                    </div>
+                                                        /></Col>
+                                                       </Row>
                                                 </Col>
-                                                <Col sm={8}>
-                                                    <div className="discount-container_first-form_section">
-                                                        <p className="input-title">
-                                                            Discount Value (Percentage)
+                                                <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
+                                                        <Row>
+                                                            <Col xs={24}>
+                                                            <p className="input-title">
+                                                            Discount Value (%)
                                                         </p>
-                                                        <input
+                                                            </Col>
+                                                            <Col xs={24}>
+                                                            <input
                                                             type={"text"}
                                                             placeholder="Discount Value"
                                                             value={`${discountTax}`}
@@ -516,11 +515,16 @@ const DiscountTaxes = (props) => {
                                                                 }
                                                             }}
                                                         />
-                                                    </div>
-                                                </Col>
-                                                <Col sm={8}>
-                                                    <p class="input-title hidden-text">Discount Value (Percentage)</p>
-                                                    <button
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                <Col xs={24} lg={4} style={{justifyContent:"center"}}>
+                                                    <Row justify="center" align="middle">
+                                                        <Col xs={24}>
+                                                        <p class="input-title hidden-text">Value</p>
+                                                        </Col>
+                                                        <Col xs={12} md={4}>   
+                                                        <button
                                                             onClick={handleSubmit}
                                                             className={`save-button ${
                                                                 !discountName || !discountTax || discountLoading
@@ -531,123 +535,119 @@ const DiscountTaxes = (props) => {
                                                         >
                                                             Add
                                                         </button>
+                                                        </Col>
+                                                    </Row>
                                                 </Col>
                                             </Row>
-                                            
-                                            
-                                            
                                         </form>
                                     </Col>
-                                </Row>
-
-                            
-                                <Row >
-                                    <Col xs={24} md={18}>
-                                                                    
-                                <div className="discount-output">
-                                    <table className="table-color">
-                                        {discounts && (
-                                            <tr className="discount-output_head">
-                                                <th>Discount Name</th>
-                                                <th>Discount Value</th>
-                                                <th></th>
-                                            </tr>
-                                        )}
-                                        {discounts.length > 0 &&
-                                            discounts.map((dis, index) => {
-                                                return (
-                                                    <tr className="discount-output_body discount-row">
-                                                        <td className="row-1">{dis.name}</td>
-                                                        <td>{dis.value} %</td>
-                                                        <td className="discount-col-3">
-                                                            <img
-                                                                style={{
-                                                                    width: "18px",
-                                                                    height: "18px",
-                                                                    marginRight: "30px",
-                                                                    cursor: "pointer",
-                                                                }}
-                                                                src={edit}
-                                                                onClick={() => {
-                                                                    handlUpdate(dis);
-                                                                }}
-                                                            />
-                                                            <img
-                                                                style={{
-                                                                    width: "16px",
-                                                                    height: "16px",
-                                                                    cursor: "pointer",
-                                                                }}
-                                                                src={cross}
-                                                                onClick={() => {
-                                                                    handleDelete(dis.id);
-                                                                }}
-                                                            />
-                                                            <Switch
-                                                                {...label}
-                                                            className="switch-margin"
-                                                                checked={
-                                                                    dis?.status == "active"
-                                                                        ? true
-                                                                        : false
-                                                                }
-                                                                onChange={(e) => {
-                                                                    onChangeDiscountActive(
-                                                                        e,
-                                                                        dis,
-                                                                        index
-                                                                    );
-                                                                }}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })}
-                                    </table>
-                                </div>
-                                </Col>     
-                            </Row>
-                            </div>
-                        </Col>
-                    </Row>
-                    <Row justify="center">
-                        <Col sm={24} md={18} offset={3}>
-                            <div className="discount-container_first discount-tax-con">
-                                <Row>
-                                    <Col sm={24}>
-                                        <p className="heading">Taxes</p>
+                                    <Col xs={24}>
+                                        <Row>                       
+                                            <Col xs={24} className="discount-output">
+                                                <Row justify="center" align="middle">
+                                            <table className="table-color">
+                                                    {discounts && (
+                                                        <tr className="discount-output_head">
+                                                            <th>Discount Name</th>
+                                                            <th>Discount Value</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    )}
+                                                    {discounts.length > 0 &&
+                                                        discounts.map((dis, index) => {
+                                                            return (
+                                                                <tr className="discount-output_body discount-row">
+                                                                    <td className="row-1">{dis.name}</td>
+                                                                    <td>{dis.value} %</td>
+                                                                    <td className="discount-col-3">
+                                                                        <img
+                                                                            style={{
+                                                                                width: "18px",
+                                                                                height: "18px",
+                                                                                marginRight: "30px",
+                                                                                cursor: "pointer",
+                                                                            }}
+                                                                            src={edit}
+                                                                            onClick={() => {
+                                                                                handlUpdate(dis);
+                                                                            }}
+                                                                        />
+                                                                        <img
+                                                                            style={{
+                                                                                width: "16px",
+                                                                                height: "16px",
+                                                                                cursor: "pointer",
+                                                                            }}
+                                                                            src={cross}
+                                                                            onClick={() => {
+                                                                                handleDelete(dis.id);
+                                                                            }}
+                                                                        />
+                                                                        <Switch
+                                                                            {...label}
+                                                                        className="switch-margin"
+                                                                            checked={
+                                                                                dis?.status == "active"
+                                                                                    ? true
+                                                                                    : false
+                                                                            }
+                                                                            onChange={(e) => {
+                                                                                onChangeDiscountActive(
+                                                                                    e,
+                                                                                    dis,
+                                                                                    index
+                                                                                );
+                                                                            }}
+                                                                        />
+                                                                    </td>
+                                                                </tr>
+                                                            );
+                                                        })}
+                                                </table>
+                                                </Row>
+                                            </Col>
+                                        </Row>     
                                     </Col>
                                 </Row>
-                                <Row>
-                                    <Col sm={24}>
-                                        <div className="sections">
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col sm={24}>
+                        <Row justify="center" align="middle">
+                            <Col xs={24} md={24} lg={16} className="discount-container_first discount-tax-con">
+                            <Col xs={24} md={24}>
+                                        <p className="heading">Taxes</p>
+                                </Col>
+                                <Col xs={24}>
                                             <form
-                                                className="discount-container_second-form"
                                                 onSubmit={handleTaxSubmit}
                                             >
-                                                
-                                                        <div className="second-section">
-                                                            <Row>
-                                                                <Col sm={8}>
-                                                                    <div className="discount-container_second-form_section">
-                                                                        <p className="input-title">Tax Name</p>
-                                                                        <input
+                                                <Row justify="space-between">
+                                                    <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
+                                                        <Row justify="center" align="middle">
+                                                          <Col xs={24}>
+                                                          <p className="input-title">Tax Name</p>
+                                                                       </Col>  
+                                                          <Col xs={24}>
+                                                          <input
                                                                             placeholder="Enter Tax Name"
                                                                             value={taxName}
                                                                             onChange={(e) => {
                                                                                 setTaxName(e.target.value);
                                                                             }}
-                                                                        />
-                                                                    </div>
-                                                                </Col>
-                                                            
-                                                                <Col sm={8}>
-                                                                    <div className="discount-container_second-form_section">
-                                                                        <p className="input-title">Tax Value (Percentage)</p>
-                                                                        <input
+                                                                        /></Col>  
+                                                        </Row>
+                                                    </Col>    
+                                                    <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
+                                                        <Row justify="center" align="middle">
+                                                            <Col xs={24}>
+                                                            <p className="input-title">Tax Value (%)</p>
+                                                                                                                                    </Col>
+                                                            <Col xs={24}>
+                                                            <input
                                                                             type={"number"}
                                                                             min={0}
-                                                                            placeholder="Add Percentage"
+                                                                            placeholder="Add %"
                                                                             value={taxValue}
 
                                                                             onChange={(e) => {
@@ -669,12 +669,17 @@ const DiscountTaxes = (props) => {
                                                                                 }
                                                                             }}
                                                                         />
-                                                                    </div>
-                                                                </Col>
-                                                                <Col sm={8}>
-                                                                    <div>
-                                                                    <p class="input-title hidden-text">Discount Value (Percentage)</p>
-                                                                        <button
+
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col xs={24} lg={4} style={{justifyContent:"center"}}>
+                                                    <Row justify="center" align="middle">
+                                                        <Col xs={24}>
+                                                        <p class="input-title hidden-text">Value</p>
+                                                        </Col>
+                                                        <Col xs={12} md={4}>   
+                                                        <button
                                                                             onClick={(e) => {
                                                                                 idState !== null
                                                                                     ? handlUpdateTax(e)
@@ -689,17 +694,17 @@ const DiscountTaxes = (props) => {
                                                                         >
                                                                             Add
                                                                         </button>
-                                                                    </div>
-                                                                </Col>
-                                                            </Row>
-                                                        </div>
+                                                        </Col>
+                                                    </Row>                                                    </Col>
+                                                </Row>
                                                     
                                             </form>
-                                        </div>
-                                    </Col>
-                                </Row>
-                                <div className="discount-output">
-                                    <table className="table-color">
+                                </Col>
+                                <Col xs={24} className="discount-output">
+                                    <Row>
+                                        <Col xs={24} className="discount-output">
+                                            <Row justify="center" align="middle">
+                                            <table className="table-color">
                                         {tax?.length > 0 && (
                                             <tr className="discount-output_head">
                                                 <th>Tax Name</th>
@@ -746,12 +751,20 @@ const DiscountTaxes = (props) => {
                                                 );
                                             })}
                                     </table>
-                                </div>
-                            </div>
-                        </Col>
-                    </Row>
-                <ShippingSettings />
-                </div>
+
+                                            </Row>
+                                        
+                                        </Col>
+                                    </Row>
+                                </Col>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col xs={24}>
+                    <ShippingSettings />
+                    </Col>
+                
+                </Row>
             </Col>
         </Row>
         
