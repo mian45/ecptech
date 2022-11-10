@@ -498,21 +498,6 @@ const OutPackPrices = ({
                             }
                         />
                     )}
-                {receipt?.values?.frameOrder?.type === "New Frame Purchase" && (
-                    <InvoiceSlot
-                        title={`Frame: `}
-                        subTitle={`$${
-                            (calculateFrameFee() || 0).toFixed(2) || 0
-                        }`}
-                    />
-                )}
-                {receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
-                    receipt?.values?.frameOrder?.drillMount === "Yes" && (
-                        <InvoiceSlot
-                            title={`Drill Mount: `}
-                            subTitle={`$${DRILL_MOUNT}`}
-                        />
-                    )}
             </>
         );
     };
@@ -659,7 +644,13 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
         if (receipt?.values?.visionPlan === "VSP Advantage") {
             if (
                 (materials[0]?.characteristics?.price || "")?.trim() ===
-                "80% of U&C"
+                    "80% of U&C" ||
+                (materials[0]?.characteristics?.price || "")
+                    ?.trim()
+                    ?.includes("+") ||
+                (materials[0]?.characteristics?.price || "")
+                    ?.trim()
+                    ?.includes("^")
             ) {
                 lensPrice =
                     parseFloat(
@@ -710,7 +701,11 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
             if (receipt?.values?.visionPlan === "VSP Advantage") {
                 if (
                     (baseCharecterstics[0]?.price || "")?.trim() ===
-                    "80% of U&C"
+                        "80% of U&C" ||
+                    (baseCharecterstics[0]?.price || "")
+                        ?.trim()
+                        ?.includes("+") ||
+                    (baseCharecterstics[0]?.price || "")?.trim()?.includes("^")
                 ) {
                     lensPrice =
                         parseFloat(
@@ -740,7 +735,11 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
                 baseCharecterstics.splice(0, 1);
                 const restBases = [...baseCharecterstics, ...TACharecterstics];
                 restBases.forEach((item) => {
-                    if ((item?.price || "")?.trim() === "80% of U&C") {
+                    if (
+                        (item?.price || "")?.trim() === "80% of U&C" ||
+                        (item?.price || "")?.trim()?.includes("+") ||
+                        (item?.price || "")?.trim()?.includes("^")
+                    ) {
                         materialPrice =
                             materialPrice +
                             parseFloat(
