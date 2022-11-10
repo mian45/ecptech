@@ -37,7 +37,10 @@ const OutPackPrices = ({
         if (
             receipt?.values?.sunGlassesLens?.coatingType === "Ski Type Mirror"
         ) {
-            if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            if (
+                receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+                receipt?.values?.visionPlan === "Private Pay"
+            ) {
                 const skiTypePrice = glassesAddons?.addons?.find(
                     (item) => item.title === "Ski Type Mirror"
                 )?.price;
@@ -49,7 +52,10 @@ const OutPackPrices = ({
             receipt?.values?.sunGlassesLens?.coatingType ===
             "Solid/Single Gradient"
         ) {
-            if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            if (
+                receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+                receipt?.values?.visionPlan === "Private Pay"
+            ) {
                 const solidGradientPrice = glassesAddons?.addons?.find(
                     (item) => item.title === "Solid/Single Gradient"
                 )?.price;
@@ -62,7 +68,10 @@ const OutPackPrices = ({
         }
     };
     const getAntireflectivePrice = () => {
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             if (receipt?.values?.antiReflectiveProperties?.status === "Yes") {
                 return getPrivatePayAntireflective(
                     receipt?.values?.antiReflectiveProperties?.type,
@@ -99,7 +108,10 @@ const OutPackPrices = ({
     };
 
     const getPhotochromicPrice = () => {
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             if (receipt?.values?.photochromics?.status === "Yes") {
                 return getPrivatePayPhotochromic(
                     receipt?.values?.photochromics?.type,
@@ -136,7 +148,10 @@ const OutPackPrices = ({
     };
 
     const calculateFrameFee = () => {
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.frame) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.frame ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             return receipt?.values?.frameOrder?.retailFee || 0;
         } else {
             if (
@@ -155,7 +170,10 @@ const OutPackPrices = ({
         }
     };
     const renderLensTypePrice = () => {
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             return (
                 getPrivatePayLensPices(calculatorObj, receipt, lensPrices) || 0
             );
@@ -166,7 +184,10 @@ const OutPackPrices = ({
         }
     };
     const renderLensMaterialPrice = () => {
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             return (
                 getPrivatePayMaterialPices(
                     calculatorObj,
@@ -197,7 +218,10 @@ const OutPackPrices = ({
         const glassesAddons = calculatorObj?.addons.find(
             (item) => item?.title === "SunGlasses"
         );
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             const polirizedPrice = glassesAddons?.addons?.find(
                 (item) => item.title === "Polarized"
             )?.price;
@@ -212,7 +236,10 @@ const OutPackPrices = ({
         const glassesAddons = calculatorObj?.addons.find(
             (item) => item?.title === "SunGlasses"
         );
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             const solidTindPrice = glassesAddons?.addons?.find(
                 (item) => item.title === "Solid Tint"
             )?.price;
@@ -226,7 +253,10 @@ const OutPackPrices = ({
         const glassesAddons = calculatorObj?.addons.find(
             (item) => item?.title === "SunGlasses"
         );
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             const gradientTindPrice = glassesAddons?.addons?.find(
                 (item) => item.title === "Gradient Tint"
             )?.price;
