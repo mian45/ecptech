@@ -36,8 +36,12 @@ const CardPayment = () => {
                 Subscription amount will be deducted from this card.
             </Col>
             <Row gutter={[0,10]} className={classes["card-wrapper"]}>
+                <Col>
                 <CreditCard data={cardData} />
+                </Col>
+                <Col>
                 <AddNewCard onClick={handleOpenModal} />
+                </Col>
             </Row>
             <Col offset={0} className={classes["label"]}>Subscription Details</Col>
             <Subscriptions />
