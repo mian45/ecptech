@@ -12,7 +12,7 @@ import {Row, Col, Drawer} from 'antd';
 const Profile = ({ userId, closeModal,user, userRole,open }) => {
     return (
         <Drawer
-        title="Basic Drawer"
+        title=""
         placement={"right"}
         closable={false}
         open={open}

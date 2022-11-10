@@ -3,6 +3,7 @@ import { CollectionSlot } from "../lensesType";
 import classes from "./styles.module.scss";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
+import {Row,Col} from "antd"
 const MaterialSettings = ({ userId }) => {
     let [materials, setMaterials] = useState([]);
     useEffect(() => {
@@ -69,11 +70,12 @@ const MaterialSettings = ({ userId }) => {
     };
     return (
         <>
-            <div className={classes["container"]}>
-                <div className={classes["sub-container"]}>
-                    <div className={classes["material-label"]}>
+            <Row className={classes["container"]} justify="center" align="middle">
+                <Col xs={24} className={classes["sub-container"]}>
+                   <Row justify="center" align="middle">
+                   <Col xs={24} className={classes["material-label"]}>
                         Lens Material
-                    </div>
+                    </Col>
                     {materials?.map((item, index) => {
                         return (
                             <CollectionSlot
@@ -91,16 +93,18 @@ const MaterialSettings = ({ userId }) => {
                             />
                         );
                     })}
-                </div>
-            </div>
-            <div className={classes["save-button-wrapper"]}>
+                   </Row>
+                </Col>
+            </Row>
+            <Row className={classes["save-button-wrapper"]}>
+                <Col xs={24}>
                 <button
                     className={classes["save-button"]}
                     onClick={submitMaterialSettings}
                 >
                     Save
-                </button>
-            </div>
+                </button></Col>
+            </Row>
         </>
     );
 };

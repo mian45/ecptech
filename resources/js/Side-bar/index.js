@@ -13,6 +13,7 @@ import homeIcon from "../../images/home.svg";
 import invoicesIcon from "../../images/invoices.svg";
 import paymentIcon from "../../images/payments.svg";
 import settingsIcon from "../../images/settings.svg";
+import AuthService from "../services";
 import { Row,Col, Drawer } from "antd";
 const SideBar = ({ userRole, isActiveState, dispatch,sidebar }) => {
     const [state, setState] = useState(isActiveState);
@@ -91,7 +92,7 @@ const SideBar = ({ userRole, isActiveState, dispatch,sidebar }) => {
         return true;
     };
     const onClose=()=>{
-        dispatch(AuthService.showSideBar())
+        dispatch(AuthService.showSideBar(sidebar))
     }
     return (
         <Row className={classes["side-box"]}>
