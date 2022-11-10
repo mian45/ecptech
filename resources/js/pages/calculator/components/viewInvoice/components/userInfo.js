@@ -1,12 +1,13 @@
 import React from "react";
 import classes from "../styles.module.scss";
 import dayjs from "dayjs";
+import { Col } from "antd";
 
 const UserInfo = ({ receipt }) => {
     const date = new Date(receipt?.userInfo?.dob || new Date());
     const dob = dayjs(date).format("MMM DD, YYYY");
     return (
-        <div className={classes["sub-left-container"]}>
+        <Col className={classes["sub-left-container"]}>
             <InfoSlot
                 title={"Invoice Name"}
                 subTitle={`${receipt?.values?.invoiceName}`}
@@ -26,7 +27,7 @@ const UserInfo = ({ receipt }) => {
                     subTitle={receipt?.userInfo?.phoneNo}
                 />
             )}
-        </div>
+        </Col>
     );
 };
 

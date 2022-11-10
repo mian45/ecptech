@@ -391,9 +391,7 @@ input[type="number"] {
 .ant-modal-content {
     border-radius: 19px !important;
 }
-.ant-modal-body {
-    height: 340px !important;
-}
+
 .ant-modal-mask {
     background-color: #d5d5d5cc !important;
 }
@@ -402,23 +400,27 @@ input[type="number"] {
 }
 .picker {
     @media (min-width: 320px) and (max-width: 480px) {
-      display: flex;
-      flex-direction: column;
+        display: flex;
+        flex-direction: column;
     }
-  }
-.rdrCalendarWrapper, .rdrDateRangeWrapper {
+}
+.rdrCalendarWrapper,
+.rdrDateRangeWrapper {
     @media (min-width: 320px) and (max-width: 480px) {
-    width: 100%;}
+        width: 100%;
+    }
 }
 
 .rdrMonth {
     @media (min-width: 320px) and (max-width: 480px) {
-    width: 100% !important;}
+        width: 100% !important;
+    }
 }
-.rdrStaticRange{
+.rdrStaticRange {
     @media (min-width: 320px) and (max-width: 480px) {
-    width: 100%;}
+        width: 100%;
+    }
 }
-.rdrDefinedRangesWrapper{
+.rdrDefinedRangesWrapper {
     width: unset !important;
 }

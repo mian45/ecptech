@@ -30,6 +30,7 @@ import InPackPrices from "./components/inPackPrices";
 import { BenifitTypeEnums } from "../../data/initialValues";
 import DetailsList from "./components/detailsList/detailsList";
 import { getPriceFromDB } from "./helpers/getPriceFromDB";
+import { Col, Modal, Row } from "antd";
 
 const ViewInvoice = ({
     onClose,
@@ -182,42 +183,50 @@ const ViewInvoice = ({
             </>
         );
     };
+
     return (
-        <CustomModal onClose={onClose}>
-            <div
-                className={classes["container"]}
+        <Modal
+            onCancel={onClose}
+            title=""
+            open={true}
+            closable={true}
+            centered={true}
+            className={classes["container"]}
+            zIndex="99999"
+            bodyStyle={{
+                padding: 0,
+            }}
+            width={"80%"}
+            footer={null}
+        >
+            <Row
+                className={classes["sub-container"]}
                 onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                 }}
             >
-                <img
-                    src={closeIcon}
-                    alt={"close"}
-                    className={classes["close-icon"]}
-                    onClick={onClose}
-                />
-                <div className={classes["sub-container"]}>
+                <Col xs={8}>
                     <UserInfo receipt={receipt} />
-                    <div className={classes["sub-right-container"]}>
-                        <DetailsList
-                            receipt={receipt}
-                            calculatorObj={calculatorObj}
-                            lensPrices={lensPrices}
-                            withoutTaxPrice={totalWithoutTax()}
-                            totalPrice={calculateTotalDue()}
-                        />
+                </Col>
+                <Col xs={16} className={classes["sub-right-container"]}>
+                    <DetailsList
+                        receipt={receipt}
+                        calculatorObj={calculatorObj}
+                        lensPrices={lensPrices}
+                        withoutTaxPrice={totalWithoutTax()}
+                        totalPrice={calculateTotalDue()}
+                    />
 
-                        <button
-                            className={classes["send-button"]}
-                            onClick={handleSendInvoiceClick}
-                        >
-                            {mode === "view" ? "Close" : "Send Invoice"}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </CustomModal>
+                    <button
+                        className={classes["send-button"]}
+                        onClick={handleSendInvoiceClick}
+                    >
+                        {mode === "view" ? "Close" : "Send Invoice"}
+                    </button>
+                </Col>
+            </Row>
+        </Modal>
     );
 };
 

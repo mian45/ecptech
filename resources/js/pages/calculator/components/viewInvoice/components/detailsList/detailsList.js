@@ -1,3 +1,4 @@
+import { Col } from "antd";
 import React from "react";
 import {
     getPrivatePayAntireflective,
@@ -56,7 +57,7 @@ const DetailsList = ({
         return (price || 0).toFixed(2);
     };
     return (
-        <div className={classes["container"]}>
+        <Col className={classes["container"]}>
             <InvoiceSlot
                 title={"Frame:"}
                 subTitle={`$${receipt?.values?.frameOrder?.retailFee || 0}`}
@@ -83,7 +84,7 @@ const DetailsList = ({
                 title={"Your cost with insurance:"}
                 subTitle={`$${(totalPrice || 0).toFixed(2)}`}
             />
-        </div>
+        </Col>
     );
 };
 export default DetailsList;
