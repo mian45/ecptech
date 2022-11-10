@@ -68,6 +68,9 @@ const InsurancePlans = ({ userId }) => {
                                             {item?.title}
                                         </p>
                                         <div>
+                                            <Row>
+                                            <Col xs={12}>
+                                            
                                             <img
                                                 className="insurance-plan-setting-edit-icon"
                                                 src={editIcon}
@@ -78,6 +81,8 @@ const InsurancePlans = ({ userId }) => {
                                                     });
                                                 }}
                                             />
+                                            </Col>
+                                            <Col xs={12}>
                                             <Switch
                                                 {...label}
                                                 defaultChecked={
@@ -89,6 +94,9 @@ const InsurancePlans = ({ userId }) => {
                                                     handleSwitch(item, toggleSwitch)
                                                 }
                                             />
+                                            </Col>
+                                            </Row>
+
                                         </div>
                                     </div>
                                 </div>
