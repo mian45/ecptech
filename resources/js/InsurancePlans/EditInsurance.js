@@ -143,10 +143,10 @@ function EditInsurance({ userId }) {
                             <div className={classes["content-box"]}>
                                 <div className={classes["content-header"]}>
                                     <div className={classes["content-header-text"]}>
-                                        Select / De select questions
+                                        <p className={classes["header-text-left"]}>Select / De select questions</p>
                                     </div>
                                     <div className={classes["content-header-text"]}>
-                                        Optional / Mandatory
+                                        <p className={classes["header-text-right"]}>Optional / Mandatory</p>
                                     </div>
                                 </div>
                                 {selectedRow?.length > 0 &&
