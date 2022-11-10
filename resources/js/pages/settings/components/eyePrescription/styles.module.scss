@@ -1,9 +1,5 @@
 .container {
-    display: flex;
-    flex-direction: column;
     width: 100%;
-    align-items: center;
-    justify-content: flex-start;
 }
 .page-title {
     font-size: 24px;
@@ -15,9 +11,8 @@
     width: 100%;
 }
 .content-map-container {
-    display: flex;
-    flex-direction: column;
-    width: 46.02%;
+   
+    width: 100%;
 }
 .slot-container {
     width: 100%;
@@ -25,8 +20,6 @@
     background-color: #ffffff;
     border-radius: 10px;
     box-shadow: 0px 0px 6px #00000008;
-    display: flex;
-    flex-direction: column;
     margin-bottom: 20px;
 }
 .button-wrapper {
@@ -71,8 +64,6 @@
 .slot-body {
     padding: 23px 22px;
     width: 100%;
-    display: flex;
-    justify-content: space-between;
 }
 .slot-body-content {
     width: 48.7%;
