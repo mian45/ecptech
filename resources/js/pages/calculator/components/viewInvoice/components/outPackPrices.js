@@ -31,7 +31,7 @@ const OutPackPrices = ({
     lensPrices,
 }) => {
     const getCoatingPrice = () => {
-        const glassesAddons = calculatorObj?.addons.find(
+        const glassesAddons = calculatorObj?.addons?.find(
             (item) => item?.title === "SunGlasses"
         );
         if (
@@ -215,7 +215,7 @@ const OutPackPrices = ({
     };
 
     const getPolirizedFee = () => {
-        const glassesAddons = calculatorObj?.addons.find(
+        const glassesAddons = calculatorObj?.addons?.find(
             (item) => item?.title === "SunGlasses"
         );
         if (
@@ -233,7 +233,7 @@ const OutPackPrices = ({
     };
 
     const getSolidTintFee = () => {
-        const glassesAddons = calculatorObj?.addons.find(
+        const glassesAddons = calculatorObj?.addons?.find(
             (item) => item?.title === "SunGlasses"
         );
         if (
@@ -250,7 +250,7 @@ const OutPackPrices = ({
         }
     };
     const getGradientTintFee = () => {
-        const glassesAddons = calculatorObj?.addons.find(
+        const glassesAddons = calculatorObj?.addons?.find(
             (item) => item?.title === "SunGlasses"
         );
         if (
@@ -522,7 +522,7 @@ const OutPackPrices = ({
                 <div
                     className={classes["plan-sub-label"]}
                 >{`Estimates under Private Pay`}</div>
-                {LensPayInvoice()}
+                {FramePayInvoice()}
             </>
         );
     };
