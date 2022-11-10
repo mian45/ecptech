@@ -104,10 +104,10 @@ const AddCardModal = ({ show, onClose }) => {
                             By adding new card, your old card will be removed.
                         </Row>
                         <Row>
-                        <Col xs={24} className={classes["input-label"]}>
+                        <Col className={classes["input-label"]}>
                             Card Number
                         </Col>
-                        <Form.Item>
+                        <Col xs={24}>
                         <Input
                             placeholder="Enter Card Number"
                             className={classes["input"]}
@@ -129,7 +129,7 @@ const AddCardModal = ({ show, onClose }) => {
                                 );
                             }}
                         />
-                        </Form.Item>
+                        </Col>
                         </Row>
                         {validNumber ? (
                             <label className={classes["validation-error"]}>
@@ -142,7 +142,7 @@ const AddCardModal = ({ show, onClose }) => {
                         <Col className={classes["input-label"]}>
                             Card Holder Name
                         </Col>
-                        <Form.Item>  
+                        <Col xs={24}>
                         <Input
                             value={name}
                             placeholder="Enter Card Holder Name"
@@ -163,7 +163,7 @@ const AddCardModal = ({ show, onClose }) => {
                                 }
                             }}
                             />
-                        </Form.Item>
+                        </Col>
                             </Row>
                         {nameValidation ? (
                             <label className={classes["validation-error"]}>
