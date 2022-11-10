@@ -5,8 +5,9 @@ import { connect } from "react-redux";
 import edit from "../../images/edit.png";
 import cross from "../../images/cross.png";
 import ShippingSettings from "./shipping";
-import { Select } from "antd";
+import { Select, Col, Row } from "antd";
 import axios from "axios";
+
 const { Option } = Select;
 import { Switch } from "antd";
 import DeleteModal from "../components/deleteModal/index"
@@ -455,126 +456,150 @@ const DiscountTaxes = (props) => {
             open={showDeleteDiscount}
             /> :null}
               <div className="discount-container discount-tax">
-            <p className="main discount-container-page-title">{`Discounts & Taxes`}</p>
-            <div className="discount-container_first discount-tax-con">
-                <p className="heading">Discounts</p>
-                <div>
-                    <form className="discount-container_first-form">
-                        <div className="discount-container_first-form_section">
-                            <p className="input-title">Discount Name</p>
-                            <input
-                                placeholder="Discount Name"
-                                value={discountName}
-                                onChange={(e) => {
-                                    setDiscountName(e.target.value);
-                                }}
-                            />
-                        </div>
-                        <div className="discount-container_first-form_section">
-                            <p className="input-title">
-                                Discount Value (Percentage)
-                            </p>
-                            <input
-                                type={"text"}
-                                placeholder="Discount Value"
-                                value={`${discountTax}`}
-                                onChange={(e) => {
-                                    const regix = new RegExp(
-                                        "^[0-9]*[/.]?([0-9]*)?$"
-                                    );
+            <Row>
+                <Col sm={24}>
+                    <p className="main discount-container-page-title">{`Discounts & Taxes`}</p>
+                </Col>
+            </Row>
+            <Row>
+                <Col sm={18} offset={3}>
+                    <div className="discount-container_first discount-tax-con">
+                        <Row>
+                            <Col sm={24}>
+                                <p className="heading">Discounts</p>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col sm={24}>
+                                <form>
+                                    <Row>
+                                        <Col sm={8}>
+                                            <div className="discount-container_first-form_section">
+                                                <p className="input-title">Discount Name</p>
+                                                <input
+                                                    placeholder="Discount Name"
+                                                    value={discountName}
+                                                    onChange={(e) => {
+                                                        setDiscountName(e.target.value);
+                                                    }}
+                                                />
+                                            </div>
+                                        </Col>
+                                        <Col sm={8}>
+                                            <div className="discount-container_first-form_section">
+                                                <p className="input-title">
+                                                    Discount Value (Percentage)
+                                                </p>
+                                                <input
+                                                    type={"text"}
+                                                    placeholder="Discount Value"
+                                                    value={`${discountTax}`}
+                                                    onChange={(e) => {
+                                                        const regix = new RegExp(
+                                                            "^[0-9]*[/.]?([0-9]*)?$"
+                                                        );
 
-                                    if (regix.test(e.target.value)) {
-                                        if (
-                                            e.target.value <= 100 &&
-                                            e.target.value >= 0
-                                        ) {
-                                            setDiscountTax(e.target.value);
-                                        } else if (!e.target.value) {
-                                            setDiscountTax("");
-                                        }
-                                    } else if (!e.target.value) {
-                                        setDiscountTax("");
-                                    }
-                                }}
-                            />
-                        </div>
-                        <div>
-                            <button
-                                onClick={handleSubmit}
-                                className={`save-button ${
-                                    !discountName || !discountTax || discountLoading
-                                        ? "disable"
-                                        : ""
-                                } `}
-                                type="submit"
-                            >
-                                Add
-                            </button>
-                        </div>
-                    </form>
-                </div>
-                <div className="discount-output">
-                    <table className="table-color">
-                        {discounts && (
-                            <tr className="discount-output_head">
-                                <th>Discount Name</th>
-                                <th>Discount Value</th>
-                                <th></th>
-                            </tr>
-                        )}
-                        {discounts.length > 0 &&
-                            discounts.map((dis, index) => {
-                                return (
-                                    <tr className="discount-output_body discount-row">
-                                        <td className="row-1">{dis.name}</td>
-                                        <td>{dis.value} %</td>
-                                        <td className="discount-col-3">
-                                            <img
-                                                style={{
-                                                    width: "18px",
-                                                    height: "18px",
-                                                    marginRight: "30px",
-                                                    cursor: "pointer",
-                                                }}
-                                                src={edit}
-                                                onClick={() => {
-                                                    handlUpdate(dis);
-                                                }}
-                                            />
-                                            <img
-                                                style={{
-                                                    width: "16px",
-                                                    height: "16px",
-                                                    cursor: "pointer",
-                                                }}
-                                                src={cross}
-                                                onClick={() => {
-                                                    handleDelete(dis.id);
-                                                }}
-                                            />
-                                            <Switch
-                                                {...label}
-                                               className="switch-margin"
-                                                checked={
-                                                    dis?.status == "active"
-                                                        ? true
-                                                        : false
-                                                }
-                                                onChange={(e) => {
-                                                    onChangeDiscountActive(
-                                                        e,
-                                                        dis,
-                                                        index
-                                                    );
-                                                }}
-                                            />
-                                        </td>
+                                                        if (regix.test(e.target.value)) {
+                                                            if (
+                                                                e.target.value <= 100 &&
+                                                                e.target.value >= 0
+                                                            ) {
+                                                                setDiscountTax(e.target.value);
+                                                            } else if (!e.target.value) {
+                                                                setDiscountTax("");
+                                                            }
+                                                        } else if (!e.target.value) {
+                                                            setDiscountTax("");
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                        </Col>
+                                        <Col sm={8}>
+=                                                <button
+                                                    onClick={handleSubmit}
+                                                    className={`save-button ${
+                                                        !discountName || !discountTax || discountLoading
+                                                            ? "disable"
+                                                            : ""
+                                                    } `}
+                                                    type="submit"
+                                                >
+                                                    Add
+                                                </button>
+                                        </Col>
+                                    </Row>
+                                    
+                                    
+                                    
+                                </form>
+                            </Col>
+                        </Row>
+
+                        <div className="discount-output">
+                            <table className="table-color">
+                                {discounts && (
+                                    <tr className="discount-output_head">
+                                        <th>Discount Name</th>
+                                        <th>Discount Value</th>
+                                        <th></th>
                                     </tr>
-                                );
-                            })}
-                    </table>
-                </div>
-            </div>
+                                )}
+                                {discounts.length > 0 &&
+                                    discounts.map((dis, index) => {
+                                        return (
+                                            <tr className="discount-output_body discount-row">
+                                                <td className="row-1">{dis.name}</td>
+                                                <td>{dis.value} %</td>
+                                                <td className="discount-col-3">
+                                                    <img
+                                                        style={{
+                                                            width: "18px",
+                                                            height: "18px",
+                                                            marginRight: "30px",
+                                                            cursor: "pointer",
+                                                        }}
+                                                        src={edit}
+                                                        onClick={() => {
+                                                            handlUpdate(dis);
+                                                        }}
+                                                    />
+                                                    <img
+                                                        style={{
+                                                            width: "16px",
+                                                            height: "16px",
+                                                            cursor: "pointer",
+                                                        }}
+                                                        src={cross}
+                                                        onClick={() => {
+                                                            handleDelete(dis.id);
+                                                        }}
+                                                    />
+                                                    <Switch
+                                                        {...label}
+                                                    className="switch-margin"
+                                                        checked={
+                                                            dis?.status == "active"
+                                                                ? true
+                                                                : false
+                                                        }
+                                                        onChange={(e) => {
+                                                            onChangeDiscountActive(
+                                                                e,
+                                                                dis,
+                                                                index
+                                                            );
+                                                        }}
+                                                    />
+                                                </td>
+                                            </tr>
+                                        );
+                                    })}
+                            </table>
+                        </div>
+                    </div>
+                </Col>
+            </Row>
             <div className="discount-container_first discount-tax-con">
                 <p className="heading">Taxes</p>
                 <div className="sections">
