@@ -14,7 +14,7 @@
 
             &_section {
                 input {
-                    min-width: 284px;
+                    min-width: 95%;
                     padding-block: 13px;
                     padding-inline-start: 22px;
                     border: 1px solid #dfdfdf;
@@ -169,7 +169,7 @@
     color: #2a2a2a !important;
     margin-top: 36px !important;
     margin-bottom: 36px !important;
-    width: 710px;
+    width: 100%;
 }
 
 .main {
@@ -240,9 +240,7 @@ input[type="number"] {
     background-color: #f9f9fb;
 }
 .discount-col-3 {
-    padding-right: 32px !important;
     text-align: right !important;
-    border-bottom-right-radius: 10px !important;
 }
 
 .discount-tax-con {
