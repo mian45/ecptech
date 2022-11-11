@@ -297,7 +297,7 @@ const CalculatorScreen = () => {
         );
     };
     return (
-        <Col className={classes["container"]} sm={24} md={24} lg={16}>
+        <Col className={classes["container"]} sm={24} md={24} lg={18}>
             <Formik
                 initialValues={{ ...calculatorState }}
                 validationSchema={Yup.object().shape({ ...calValidations })}

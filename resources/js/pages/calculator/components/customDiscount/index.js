@@ -95,7 +95,12 @@ const CustomDiscount = ({
                     active={values?.discountType && values?.discountValue}
                 />{" "}
             </Col>
-            <Col sx={24} sm={24} md={19}>
+            <Col
+                sx={24}
+                sm={24}
+                md={19}
+                className={classes["vision-container-col"]}
+            >
                 <div className={classes["vision-container"]}>
                     <CalculatorHeading
                         title="Discount"
