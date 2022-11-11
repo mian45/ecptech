@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
@@ -71,75 +71,85 @@ const Photochromics = ({
     return (
         <>
             {photochromicsVisibility ? (
-                <div className={classes["container"]}>
-                    <QuestionIcon icon={icon} active={handleActiveState()} />
-                    <div className={classes["vision-container"]}>
-                        <CalculatorHeading
-                            title="Photochromics?"
+                <Row className={classes["container"]}>
+                    {" "}
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={icon}
                             active={handleActiveState()}
                         />
-                        <Radio.Group
-                            onBlur={handleBlur}
-                            onChange={handlePhotochromicsChange}
-                            value={values?.isPhotochromics}
-                            id="isPhotochromics"
-                            name="isPhotochromics"
-                            className={classes["radio-group"]}
-                        >
-                            <CustomRadio
-                                label={"Yes"}
-                                value={"Yes"}
-                                active={values?.isPhotochromics === "Yes"}
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
+                        <div className={classes["vision-container"]}>
+                            <CalculatorHeading
+                                title="Photochromics?"
+                                active={handleActiveState()}
                             />
-                            <CustomRadio
-                                label={"No"}
-                                value={"No"}
-                                active={values?.isPhotochromics === "No"}
-                            />
-                        </Radio.Group>
-                        <FormikError name={"isPhotochromics"} />
-                        {error && (
-                            <div className={classes["error"]}>{error}</div>
-                        )}
-                        {values?.isPhotochromics === "Yes" && (
-                            <>
-                                <div className={classes["label"]}>
-                                    Select Photochromics
-                                </div>
-                                <Radio.Group
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    value={values?.photochromicsType}
-                                    id="photochromicsType"
-                                    name="photochromicsType"
-                                    className={classes["radio-group"]}
-                                >
-                                    {getPhotochromicList()?.map(
-                                        (value, index) => {
-                                            return (
-                                                <CustomRadio
-                                                    key={index}
-                                                    label={
-                                                        value?.display_name
-                                                            ? value?.display_name
-                                                            : value?.title
-                                                    }
-                                                    value={value?.title}
-                                                    headClass={classes["radio"]}
-                                                    active={
-                                                        values?.photochromicsType ===
-                                                        value?.title
-                                                    }
-                                                />
-                                            );
-                                        }
-                                    )}
-                                </Radio.Group>
-                                <FormikError name={"photochromicsType"} />
-                            </>
-                        )}
-                    </div>
-                </div>
+                            <Radio.Group
+                                onBlur={handleBlur}
+                                onChange={handlePhotochromicsChange}
+                                value={values?.isPhotochromics}
+                                id="isPhotochromics"
+                                name="isPhotochromics"
+                                className={classes["radio-group"]}
+                            >
+                                <CustomRadio
+                                    label={"Yes"}
+                                    value={"Yes"}
+                                    active={values?.isPhotochromics === "Yes"}
+                                />
+                                <CustomRadio
+                                    label={"No"}
+                                    value={"No"}
+                                    active={values?.isPhotochromics === "No"}
+                                />
+                            </Radio.Group>
+                            <FormikError name={"isPhotochromics"} />
+                            {error && (
+                                <div className={classes["error"]}>{error}</div>
+                            )}
+                            {values?.isPhotochromics === "Yes" && (
+                                <>
+                                    <div className={classes["label"]}>
+                                        Select Photochromics
+                                    </div>
+                                    <Radio.Group
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values?.photochromicsType}
+                                        id="photochromicsType"
+                                        name="photochromicsType"
+                                        className={classes["radio-group"]}
+                                    >
+                                        {getPhotochromicList()?.map(
+                                            (value, index) => {
+                                                return (
+                                                    <CustomRadio
+                                                        key={index}
+                                                        label={
+                                                            value?.display_name
+                                                                ? value?.display_name
+                                                                : value?.title
+                                                        }
+                                                        value={value?.title}
+                                                        headClass={
+                                                            classes["radio"]
+                                                        }
+                                                        active={
+                                                            values?.photochromicsType ===
+                                                            value?.title
+                                                        }
+                                                    />
+                                                );
+                                            }
+                                        )}
+                                    </Radio.Group>
+                                    <FormikError name={"photochromicsType"} />
+                                </>
+                            )}
+                        </div>
+                    </Col>
+                </Row>
             ) : null}
         </>
     );

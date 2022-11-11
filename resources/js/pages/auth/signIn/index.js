@@ -1,5 +1,4 @@
-import { Col, Row } from 'antd';
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { HOME_ROUTE, INVOICES_ROUTE } from "../../../appRoutes/routeConstants";
@@ -7,9 +6,11 @@ import SignInForm from "./components/signInForm";
 import SignInSlider from "./components/signInSlider";
 import classes from "./styles.module.scss";
 import logo from "../../../../images/logo.png";
+import { Col, Row } from 'antd';
 
 const SignIn = ({ isAuthenticated, userRole }) => {
     const history = useHistory();
+    const [darkTheme, setDarkTheme] = useState(false);
     useEffect(() => {
         if (isAuthenticated) {
             if (userRole === "staff") {
@@ -19,6 +20,13 @@ const SignIn = ({ isAuthenticated, userRole }) => {
             }
         }
     }, []);
+  
+    useEffect(()=>{
+        const root = document.documentElement;
+        root?.style.setProperty("--text-color", darkTheme ? "#fff" : "#262833");
+        root?.style.setProperty("--login-background-color", darkTheme ? "#6FA5CB" : "#F9F9FB");
+        root?.style.setProperty("--slider-background-color", darkTheme ? "#F9F9FB" : "#6FA5CB");
+    },[darkTheme])
     return (
         <>
             <Row justify='space-evenly' align='middle' >

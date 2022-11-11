@@ -38,7 +38,10 @@ const OutPackPrices = ({
         if (
             receipt?.values?.sunGlassesLens?.coatingType === "Ski Type Mirror"
         ) {
-            if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            if (
+                receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+                receipt?.values?.visionPlan === "Private Pay"
+            ) {
                 const skiTypePrice = glassesAddons?.addons?.find(
                     (item) => item.title === "Ski Type Mirror"
                 )?.price;
@@ -50,7 +53,10 @@ const OutPackPrices = ({
             receipt?.values?.sunGlassesLens?.coatingType ===
             "Solid/Single Gradient"
         ) {
-            if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+            if (
+                receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+                receipt?.values?.visionPlan === "Private Pay"
+            ) {
                 const solidGradientPrice = glassesAddons?.addons?.find(
                     (item) => item?.title === "Solid/Single Gradient"
                 )?.price;
@@ -63,7 +69,10 @@ const OutPackPrices = ({
         }
     };
     const getAntireflectivePrice = () => {
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             if (receipt?.values?.antiReflectiveProperties?.status === "Yes") {
                 return getPrivatePayAntireflective(
                     receipt?.values?.antiReflectiveProperties?.type,
@@ -100,7 +109,10 @@ const OutPackPrices = ({
     };
 
     const getPhotochromicPrice = () => {
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             if (receipt?.values?.photochromics?.status === "Yes") {
                 return getPrivatePayPhotochromic(
                     receipt?.values?.photochromics?.type,
@@ -137,7 +149,10 @@ const OutPackPrices = ({
     };
 
     const calculateFrameFee = () => {
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.frame) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.frame ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             return receipt?.values?.frameOrder?.retailFee || 0;
         } else {
             if (
@@ -156,7 +171,10 @@ const OutPackPrices = ({
         }
     };
     const renderLensTypePrice = () => {
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             return (
                 getPrivatePayLensPices(calculatorObj, receipt, lensPrices) || 0
             );
@@ -167,7 +185,10 @@ const OutPackPrices = ({
         }
     };
     const renderLensMaterialPrice = () => {
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             return (
                 getPrivatePayMaterialPices(
                     calculatorObj,
@@ -198,7 +219,10 @@ const OutPackPrices = ({
         const glassesAddons = calculatorObj?.addons?.find(
             (item) => item?.title === "SunGlasses"
         );
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             const polirizedPrice = glassesAddons?.addons?.find(
                 (item) => item?.title === "Polarized"
             )?.price;
@@ -213,7 +237,10 @@ const OutPackPrices = ({
         const glassesAddons = calculatorObj?.addons?.find(
             (item) => item?.title === "SunGlasses"
         );
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             const solidTindPrice = glassesAddons?.addons?.find(
                 (item) => item.title === "Solid Tint"
             )?.price;
@@ -227,7 +254,10 @@ const OutPackPrices = ({
         const glassesAddons = calculatorObj?.addons?.find(
             (item) => item?.title === "SunGlasses"
         );
-        if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+        if (
+            receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+            receipt?.values?.visionPlan === "Private Pay"
+        ) {
             const gradientTindPrice = glassesAddons?.addons?.find(
                 (item) => item.title === "Gradient Tint"
             )?.price;
@@ -493,7 +523,7 @@ const OutPackPrices = ({
                 <div
                     className={classes["plan-sub-label"]}
                 >{`Estimates under Private Pay`}</div>
-                {LensPayInvoice()}
+                {FramePayInvoice()}
             </>
         );
     };
@@ -656,7 +686,7 @@ export const getPriceFromDBOld = (receipt, calculatorObj, lensPrices) => {
             (item) => item?.type === "Custom Progressives"
         );
     console.log("materials", materials);
-    if (materials?.length <= 0) {
+    if (!materials || materials?.length <= 0) {
         if (receipt?.values?.lensType?.type === "PAL") {
             if (isCustomProg?.status && progressiveCategory === "Custom") {
                 if (isCustomProg?.copayType === "$0 Copay") {
@@ -690,6 +720,7 @@ export const getPriceFromDBOld = (receipt, calculatorObj, lensPrices) => {
                 }
             }
         }
+
         return {
             lensPrice: lensPrice,
             materialPrice: materialPrice,
@@ -698,7 +729,13 @@ export const getPriceFromDBOld = (receipt, calculatorObj, lensPrices) => {
         if (receipt?.values?.visionPlan === "VSP Advantage") {
             if (
                 (materials[0]?.characteristics?.price || "")?.trim() ===
-                "80% of U&C"
+                    "80% of U&C" ||
+                (materials[0]?.characteristics?.price || "")
+                    ?.trim()
+                    ?.includes("+") ||
+                (materials[0]?.characteristics?.price || "")
+                    ?.trim()
+                    ?.includes("^")
             ) {
                 lensPrice =
                     parseFloat(
@@ -782,7 +819,11 @@ export const getPriceFromDBOld = (receipt, calculatorObj, lensPrices) => {
             if (receipt?.values?.visionPlan === "VSP Advantage") {
                 if (
                     (baseCharecterstics[0]?.price || "")?.trim() ===
-                    "80% of U&C"
+                        "80% of U&C" ||
+                    (baseCharecterstics[0]?.price || "")
+                        ?.trim()
+                        ?.includes("+") ||
+                    (baseCharecterstics[0]?.price || "")?.trim()?.includes("^")
                 ) {
                     lensPrice =
                         parseFloat(
@@ -797,46 +838,72 @@ export const getPriceFromDBOld = (receipt, calculatorObj, lensPrices) => {
                         (materials[0]?.characteristics?.price || "")?.trim() ===
                             "NULL" ||
                         !(materials[0]?.characteristics?.price || "")?.trim()
+                        (baseCharecterstics[0]?.price || "")?.trim() ===
+                            "NULL" ||
+                        !(baseCharecterstics[0]?.price || "")?.trim()
                     ) {
                         lensPrice = 0;
                     } else {
                         lensPrice = (baseCharecterstics[0]?.price || "")
                             ?.trim()
-                            ?.slice(1, (lensPrice || "")?.trim()?.length);
+                            ?.slice(
+                                1,
+                                (baseCharecterstics[0]?.price || "")?.trim()
+                                    ?.length
+                            );
                     }
                 }
                 baseCharecterstics.splice(0, 1);
                 const restBases = [...baseCharecterstics, ...TACharecterstics];
                 restBases.forEach((item) => {
-                    if ((item?.price || "")?.trim() === "80% of U&C") {
-                        lensPrice =
+                    if (
+                        (item?.price || "")?.trim() === "80% of U&C" ||
+                        (item?.price || "")?.trim()?.includes("+") ||
+                        (item?.price || "")?.trim()?.includes("^")
+                    ) {
+                        materialPrice =
+                            materialPrice +
                             parseFloat(
                                 getPrivatePayMaterialPices(
                                     calculatorObj,
                                     receipt,
                                     lensPrices
                                 )
-                            ) * 0.8;
+                            ) *
+                                0.8;
                     } else {
                         if (
-                            (item?.price || "")?.trim() === "NULL" ||
-                            !(item?.price || "")?.trim()
+                            !(item?.price || "")
+                                ?.trim()
+                                .includes("80% of U&C") ||
+                            !(item?.price || "")?.trim().includes("+")
                         ) {
-                            lensPrice = 0;
-                        } else {
-                            materialPrice =
-                                materialPrice +
-                                parseInt(
-                                    (item?.price || "")
-                                        ?.trim()
-                                        ?.slice(
-                                            1,
-                                            (item?.price || "")?.trim()?.length
-                                        )
-                                );
+                            if (
+                                (item?.price || "")?.trim() === "NULL" ||
+                                !(item?.price || "")?.trim()
+                            ) {
+                                materialPrice = materialPrice + 0;
+                            } else {
+                                materialPrice =
+                                    materialPrice +
+                                    parseInt(
+                                        (item?.price || "")
+                                            ?.trim()
+                                            ?.slice(
+                                                1,
+                                                (item?.price || "")?.trim()
+                                                    ?.length
+                                            )
+                                    );
+                            }
                         }
                     }
                 });
+
+                return {
+                    lensPrice: lensPrice,
+                    materialPrice: materialPrice,
+                };
             } else {
                 if (
                     (baseCharecterstics[0]?.price || "")?.trim() === "NULL" ||
@@ -858,19 +925,17 @@ export const getPriceFromDBOld = (receipt, calculatorObj, lensPrices) => {
                         (item?.price || "")?.trim() === "NULL" ||
                         !(item?.price || "")?.trim()
                     ) {
-                        lensPrice = 0;
+                        materialPrice = materialPrice + 0;
                     } else {
                         let currentPrice = 0;
-                        if (!!item?.price) {
-                            currentPrice = parseInt(
-                                (item?.price || "")
-                                    ?.trim()
-                                    ?.slice(
-                                        1,
-                                        (item?.price || "")?.trim()?.length
-                                    ) || 0
-                            );
-                        }
+                        currentPrice = parseInt(
+                            (item?.price || "")
+                                ?.trim()
+                                ?.slice(
+                                    1,
+                                    (item?.price || "")?.trim()?.length
+                                ) || 0
+                        );
                         materialPrice = materialPrice + currentPrice;
                     }
                 });

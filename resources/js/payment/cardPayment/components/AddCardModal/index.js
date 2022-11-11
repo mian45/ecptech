@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
-import { DatePicker, Space } from "antd";
+import { Button, Checkbox, Form, Input , DatePicker, Space, Row, Col } from "antd";
 import CustomCheckbox from "../../../../components/customCheckbox";
 const AddCardModal = ({ show, onClose }) => {
     const [cardNumber, setCardNumber] = useState("");
@@ -92,22 +92,23 @@ const AddCardModal = ({ show, onClose }) => {
     return (
         <>
             {show ? (
-                <div className={classes["backdrop"]} onClick={onClose}>
-                    <div
+                <Form className={classes["backdrop"]} onClick={onClose}>
+                    <Row
                         className={classes["container"]}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <div className={classes["label"]}>
+                        <Row className={classes["label"]}>
                             Enter your card details
-                        </div>
-                        <div className={classes["sub-label"]}>
+                        </Row>
+                        <Row className={classes["sub-label"]}>
                             By adding new card, your old card will be removed.
-                        </div>
-                        <div className={classes["input-label"]}>
+                        </Row>
+                        <Row>
+                        <Col className={classes["input-label"]}>
                             Card Number
-                        </div>
-
-                        <input
+                        </Col>
+                        <Col xs={24}>
+                        <Input
                             placeholder="Enter Card Number"
                             className={classes["input"]}
                             type="text"
@@ -128,6 +129,8 @@ const AddCardModal = ({ show, onClose }) => {
                                 );
                             }}
                         />
+                        </Col>
+                        </Row>
                         {validNumber ? (
                             <label className={classes["validation-error"]}>
                                 Please enter valid card number
@@ -135,10 +138,12 @@ const AddCardModal = ({ show, onClose }) => {
                         ) : (
                             ""
                         )}
-                        <div className={classes["input-label"]}>
+                        <Row>
+                        <Col className={classes["input-label"]}>
                             Card Holder Name
-                        </div>
-                        <input
+                        </Col>
+                        <Col xs={24}>
+                        <Input
                             value={name}
                             placeholder="Enter Card Holder Name"
                             className={classes["input"]}
@@ -157,7 +162,9 @@ const AddCardModal = ({ show, onClose }) => {
                                     setNameValidation(false);
                                 }
                             }}
-                        />
+                            />
+                        </Col>
+                            </Row>
                         {nameValidation ? (
                             <label className={classes["validation-error"]}>
                                 Name is required
@@ -165,11 +172,11 @@ const AddCardModal = ({ show, onClose }) => {
                         ) : (
                             ""
                         )}
-                        <div className={classes["inline-input"]}>
-                            <div className={classes["inline-left-input"]}>
-                                <div className={classes["input-label"]}>
+                        <Row className={classes["inline-input"]}>
+                            <Col className={classes["inline-left-input"]}>
+                                <Col className={classes["input-label"]}>
                                     Card Expiry
-                                </div>
+                                </Col>
                                 <Space direction="vertical">
                                     <DatePicker
                                         picker="month"
@@ -201,12 +208,13 @@ const AddCardModal = ({ show, onClose }) => {
                                 ) : (
                                     ""
                                 )}
-                            </div>
-                            <div className={classes["inline-right-input"]}>
-                                <div className={classes["input-label"]}>
+                            </Col>
+                            <Col className={classes["inline-right-input"]}>
+                                <Col className={classes["input-label"]}>
                                     CVV
-                                </div>
-                                <input
+                                </Col>
+                                <Form.Item>
+                                <Input
                                     placeholder="CVV No."
                                     type={"text"}
                                     className={classes["input"]}
@@ -232,6 +240,7 @@ const AddCardModal = ({ show, onClose }) => {
                                         }
                                     }}
                                 />
+                                </Form.Item>
                                 {validCvc ? (
                                     <label
                                         className={classes["validation-error"]}
@@ -241,10 +250,10 @@ const AddCardModal = ({ show, onClose }) => {
                                 ) : (
                                     ""
                                 )}
-                            </div>
-                        </div>
-                        <div className={classes["terms"]}>
-                            <CustomCheckbox
+                            </Col>
+                        </Row>
+                        <Row className={classes["terms"]}>
+                            <Checkbox
                                 label={""}
                                 defaultChecked={checked || false}
                                 onValueChange={(value) => {
@@ -253,11 +262,11 @@ const AddCardModal = ({ show, onClose }) => {
                                 containerClass={classes["payment-checkbox"]}
                             />
 
-                            <div className={classes["term-line"]}>
+                            <Col className={classes["term-line"]}>
                                 By adding card you are agreed with us to charge
                                 your card for subscription.
-                            </div>
-                        </div>
+                            </Col>
+                        </Row>
                         <button
                             className={classes["button"]}
                             onClick={(e) => {
@@ -267,8 +276,8 @@ const AddCardModal = ({ show, onClose }) => {
                         >
                             Add Card
                         </button>
-                    </div>
-                </div>
+                    </Row>
+                </Form>
             ) : (
                 <></>
             )}

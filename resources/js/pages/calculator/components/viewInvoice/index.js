@@ -436,7 +436,10 @@ const getLensPrice = (receipt, calculatorObj, lensPrices) => {
 
 const GetLensFee = (receipt, calculatorObj, lensPrices) => {
     let total = 0;
-    if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+    if (
+        receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+        receipt?.values?.visionPlan === "Private Pay"
+    ) {
         total = total + getPrivatePayGlasses(receipt, calculatorObj);
         if (receipt?.values?.photochromics?.status === "Yes") {
             const priceValue = getPrivatePayPhotochromic(
@@ -684,7 +687,10 @@ const getGlassesPrice = (receipt) => {
 };
 const GetFrameFee = (receipt) => {
     let total = 0;
-    if (receipt?.values?.submitBenifitType === BenifitTypeEnums.frame) {
+    if (
+        receipt?.values?.submitBenifitType === BenifitTypeEnums.frame ||
+        receipt?.values?.visionPlan === "Private Pay"
+    ) {
         total = total + receipt?.values?.frameOrder?.retailFee;
         if (
             receipt?.values?.frameOrder?.type === "New Frame Purchase" &&
