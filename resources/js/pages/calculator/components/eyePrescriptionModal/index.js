@@ -289,7 +289,7 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen 
                             <Col sm={12}>
                                 <div
                                     className={classes["info-section"]}
-                                    style={{ marginRight: "20px" }}
+                                   
                                 >
                                     <div className={classes["select-label"]}>
                                         Sphere (SPH)
@@ -355,7 +355,7 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen 
                                 <Col sm={12}>
                                     <div
                                         className={classes["info-section"]}
-                                        style={{ marginRight: "20px" }}
+                                        
                                     >
                                         <div className={classes["select-label"]}>
                                             Sphere (SPH)
