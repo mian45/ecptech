@@ -1,5 +1,5 @@
 .container {
-    padding: 36px 34px;
+    padding: 2.65vw 2.5vw;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,4 +20,10 @@
     margin-top: 100px;
     background-color: #f9f9fb;
     min-height: 100vh;
+}
+@media only screen and (max-width: 763px) {
+    .root-container {
+        margin-left: 0px;
+        width: 100%;
+    }
 }

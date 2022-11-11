@@ -1,0 +1,68 @@
+.container {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    margin-top: 40px;
+}
+.vision-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.discount-select {
+    width: 60%;
+    border-radius: 23px !important;
+    border: 1px solid #dfdfdf !important;
+    height: 45px !important;
+    padding: 0px 12px;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background: transparent;
+    background-image: url("../../../../../images/down-arrow.png");
+    background-repeat: no-repeat;
+    background-position-x: 94%;
+    background-position-y: 50%;
+    background-size: 20px;
+    margin-bottom: 20px;
+}
+.discount-input-container {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+}
+.discount-input-row {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-right: 20px;
+}
+.input-label {
+    font-size: 16px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+    font-weight: bold;
+    margin-bottom: 13px;
+}
+.input {
+    border: 1px solid #dfdfdf;
+    border-radius: 23px;
+    font-size: 16px;
+    padding: 10px 20px;
+    color: #747474;
+    width: 100%;
+    outline: none;
+    &::placeholder {
+        color: #cbcbcb;
+    }
+}
+.error {
+    font-size: 14px;
+    color: red;
+    margin-top: 10px;
+}
+.vision-container-col {
+    width: 100%;
+}

@@ -3,14 +3,17 @@ import classes from "./styles.module.scss";
 import calenderIcon from "../../../../../images/calender.svg";
 import clockIcon from "../../../../../images/clock.svg";
 import tickIcon from "../../../../../images/tick-blue.svg";
+import { Row, Col } from "antd";
 
 const Subscriptions = () => {
     return (
-        <div className={classes["container"]}>
+        <Row gutter={[0, 8]} className={classes["container"]}>
             {DATA?.map((card, index) => {
-                return <SubscriptionSlot key={index} data={card} />;
+                return (
+                    <SubscriptionSlot key={index} data={card} />
+                ) 
             })}
-        </div>
+        </Row>
     );
 };
 
@@ -18,13 +21,13 @@ export default Subscriptions;
 
 const SubscriptionSlot = ({ data }) => {
     return (
-        <div className={classes["slot-container"]}>
+        <Col xs={24} lg={6} className={classes["slot-container"]}>
             <img src={data?.image} alt={"icon"} className={classes["icon"]} />
             <div className={classes["info"]}>
                 <div className={classes["status-label"]}>{data?.title}</div>
                 <div className={classes["status"]}>{data?.subtitle}</div>
             </div>
-        </div>
+        </Col>
     );
 };
 

@@ -31,6 +31,8 @@ import {
     LensBenifitAvailableEnum,
 } from "../../data/enums";
 import backArrow from "../../../../../images/black-arrow.svg";
+import CustomDiscount from "../customDiscount";
+import { Col } from "antd";
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -89,8 +91,17 @@ const CalculatorScreen = () => {
             const res = await Axios.get(
                 process.env.MIX_REACT_APP_URL + "/api/calculater-data"
             );
-            setCalculatorObj(res?.data?.data);
-            const questions = res?.data?.data?.questions;
+            const resData = res?.data?.data;
+            const firstPlan = resData?.questions?.find(
+                (item) => item?.title === "VSP Signature"
+            );
+            const colRes = await Axios.post(
+                process.env.MIX_REACT_APP_URL + "/api/get-collections",
+                { vision_plan_id: firstPlan?.id }
+            );
+            resData.lens_types = colRes?.data?.data?.collection;
+            setCalculatorObj(resData);
+            const questions = resData?.questions;
             const currentPlan = questions?.find(
                 (plan) => plan?.title === values?.visionPlan
             );
@@ -286,10 +297,10 @@ const CalculatorScreen = () => {
         );
     };
     return (
-        <div className={classes["container"]}>
+        <Col className={classes["container"]} sm={24} md={24} lg={18}>
             <Formik
                 initialValues={{ ...calculatorState }}
-                validationSchema={Yup.object().shape({ ...calValidations })}
+                validationSchema={Yup.object().shape({})}
                 onSubmit={handleClick}
                 enableReinitialize
             >
@@ -469,6 +480,9 @@ const CalculatorScreen = () => {
                                         BenifitTypeEnums.lens ? (
                                         <>
                                             <SelectVisionPlan
+                                                setCalculatorObj={
+                                                    setCalculatorObj
+                                                }
                                                 formProps={formProps}
                                                 calculatorObj={
                                                     calculatorObj &&
@@ -620,6 +634,17 @@ const CalculatorScreen = () => {
                                                     calculatorObj
                                                 }
                                             />
+                                            <CustomDiscount
+                                                formProps={formProps}
+                                                calculatorObj={
+                                                    calculatorObj &&
+                                                    calculatorObj
+                                                }
+                                                setCalValidations={
+                                                    setCalValidations
+                                                }
+                                                calValidations={calValidations}
+                                            />
                                         </>
                                     ) : (
                                         <></>
@@ -642,7 +667,7 @@ const CalculatorScreen = () => {
                     );
                 }}
             </Formik>
-        </div>
+        </Col>
     );
 };
 

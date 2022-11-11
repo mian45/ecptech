@@ -1,14 +1,17 @@
 import React, { useState } from "react";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
 import CustomRadio from "../../../../components/customRadio";
 import lensIcon from "../../../../../images/calculator/lens.svg";
 import Axios from "../../../../Http";
+import InvoicePriceAlert from "../invoicePriceAlert";
 
 const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
     const { values, handleChange, handleBlur } = formProps;
+    const [showInvoiceAlert, setShowInvoiceAlert] = useState(false);
+
     const lensTypeVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -50,6 +53,7 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
     const getBrandByLens = async (e) => {
         try {
             handleChange(e);
+            return;
             const targetedLens = calculatorObj["lens_types"]?.find(
                 (val) => val?.title === e?.target?.value
             );
@@ -88,8 +92,44 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
         });
         return lenses;
     };
+
+    const showAlert = (e) => {
+        const targetedLens = calculatorObj["lens_types"]?.find(
+            (val) => val?.title === values?.lensType
+        );
+
+        let collection = null;
+        targetedLens?.brands?.forEach((item) => {
+            item.collections?.forEach((val) => {
+                if (val?.display_name) {
+                    if (val.display_name == e.target?.value) {
+                        collection = val;
+                    }
+                } else {
+                    if (val.title == e.target?.value) {
+                        collection = val;
+                    }
+                }
+            });
+        });
+        const invoiceData = localStorage.getItem("CALCULATOR_DATA");
+        let parsedInvoiceData = false;
+        if (invoiceData) {
+            const data = JSON.parse(invoiceData);
+            parsedInvoiceData = data?.invoicePriceData || false;
+        }
+
+        if (!collection?.price && !parsedInvoiceData) {
+            setShowInvoiceAlert(true);
+        }
+        if (!collection?.price && parsedInvoiceData) {
+            setError("Are you sure you want to continue without value");
+        }
+    };
+
     const handleBrandSelection = (e) => {
         handleChange(e);
+        showAlert(e);
         if (values?.lensType === "PAL") {
             const targetedLens = calculatorObj["lens_types"]?.find(
                 (val) => val?.title === "PAL"
@@ -108,6 +148,7 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                     }
                 });
             });
+
             if (
                 values.isCopayStandardProgressives &&
                 collection?.category === "Standard"
@@ -129,84 +170,127 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
         }
     };
 
+    const handleSaveClick = (dontShow) => {
+        if (dontShow) {
+            const calculatorData = {
+                invoicePriceData: true,
+            };
+            localStorage.setItem(
+                "CALCULATOR_DATA",
+                JSON.stringify(calculatorData)
+            );
+            setShowInvoiceAlert(false);
+        } else {
+            setShowInvoiceAlert(false);
+        }
+    };
+    const RenderModal = React.useMemo(() => {
+        return (
+            <>
+                {showInvoiceAlert ? (
+                    <InvoicePriceAlert
+                        accept={handleSaveClick}
+                        cancel={() => {
+                            setShowInvoiceAlert(false);
+                        }}
+                        open={showInvoiceAlert}
+                    />
+                ) : (
+                    <></>
+                )}
+            </>
+        );
+    }, [showInvoiceAlert]);
+
     return (
         <>
+            {RenderModal}
+
             {lensTypeVisibility ? (
                 <div className={classes["container"]}>
-                    <div className={classes["sub-container"]}>
-                        <QuestionIcon
-                            icon={lensIcon}
-                            active={showActiveState()}
-                        />
-                        <div className={classes["vision-container"]}>
-                            <CalculatorHeading
-                                title="Lens Type?"
+                    <Row className={classes["sub-container"]}>
+                        <Col sx={24} sm={24} md={5}>
+                            <QuestionIcon
+                                icon={lensIcon}
                                 active={showActiveState()}
-                            />
-                            <Radio.Group
-                                onBlur={handleBlur}
-                                onChange={getBrandByLens}
-                                value={values?.lensType}
-                                id="lensType"
-                                name="lensType"
-                                className={classes["radio-group"]}
-                            >
-                                {lensTypeValues()?.map((lens, index) => {
-                                    return (
-                                        <CustomRadio
-                                            key={index}
-                                            label={lens}
-                                            value={lens}
-                                            active={values?.lensType === lens}
-                                        />
-                                    );
-                                })}
-                            </Radio.Group>
-                            <FormikError name={"lensType"} />
-                            {values?.lensType && (
-                                <>
-                                    <div className={classes["choose-label"]}>
-                                        Please Choose
-                                    </div>
-                                    <Radio.Group
-                                        onBlur={handleBlur}
-                                        onChange={handleBrandSelection}
-                                        value={values?.lensTypeValue}
-                                        id="lensTypeValue"
-                                        name="lensTypeValue"
-                                        className={classes["radio-group"]}
-                                    >
-                                        {getLensSubValues()?.map(
-                                            (lens, index) => {
-                                                return (
-                                                    <CustomRadio
-                                                        headClass={
-                                                            classes[
-                                                                "radio-margin"
-                                                            ]
-                                                        }
-                                                        key={index}
-                                                        label={lens}
-                                                        value={lens}
-                                                        active={
-                                                            values?.lensTypeValue ===
-                                                            lens
-                                                        }
-                                                    />
-                                                );
-                                            }
-                                        )}
-                                    </Radio.Group>
-                                    {error && (
-                                        <div className={classes["error"]}>
-                                            {error}
+                            />{" "}
+                        </Col>
+                        <Col sx={24} sm={24} md={19}>
+                            <div className={classes["vision-container"]}>
+                                <CalculatorHeading
+                                    title="Lens Type?"
+                                    active={showActiveState()}
+                                />
+
+                                <Radio.Group
+                                    onBlur={handleBlur}
+                                    onChange={getBrandByLens}
+                                    value={values?.lensType}
+                                    id="lensType"
+                                    name="lensType"
+                                    className={classes["radio-group"]}
+                                >
+                                    {lensTypeValues()?.map((lens, index) => {
+                                        return (
+                                            <CustomRadio
+                                                key={index}
+                                                label={lens}
+                                                value={lens}
+                                                active={
+                                                    values?.lensType === lens
+                                                }
+                                            />
+                                        );
+                                    })}
+                                </Radio.Group>
+                                <FormikError name={"lensType"} />
+                                {values?.lensType && (
+                                    <>
+                                        <div
+                                            className={classes["choose-label"]}
+                                        >
+                                            Please Choose
                                         </div>
-                                    )}
-                                    <FormikError name={"lensTypeValue"} />
-                                </>
-                            )}
-                        </div>
-                    </div>
+                                        <Radio.Group
+                                            onBlur={handleBlur}
+                                            onChange={handleBrandSelection}
+                                            value={values?.lensTypeValue}
+                                            id="lensTypeValue"
+                                            name="lensTypeValue"
+                                            className={classes["radio-group"]}
+                                        >
+                                            {getLensSubValues()?.map(
+                                                (lens, index) => {
+                                                    return (
+                                                        <CustomRadio
+                                                            headClass={
+                                                                classes[
+                                                                    "radio-margin"
+                                                                ]
+                                                            }
+                                                            key={index}
+                                                            label={lens}
+                                                            value={lens}
+                                                            active={
+                                                                values?.lensTypeValue ===
+                                                                lens
+                                                            }
+                                                        />
+                                                    );
+                                                }
+                                            )}
+                                        </Radio.Group>
+                                        {error && (
+                                            <div className={classes["error"]}>
+                                                {error}
+                                            </div>
+                                        )}
+                                        <FormikError name={"lensTypeValue"} />
+                                    </>
+                                )}
+                            </div>
+                        </Col>
+                    </Row>
                 </div>
             ) : null}
         </>

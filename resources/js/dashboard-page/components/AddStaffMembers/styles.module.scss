@@ -21,7 +21,7 @@
     justify-content: space-between;
 }
 .input-field {
-    width: 80%;
+    width: 100%;
     border: 1px solid #dfdfdf;
     border-radius: 23px;
     font-size: 16px;
@@ -32,14 +32,24 @@
         color: #cbcbcb;
     }
 }
+@media only screen and (max-width: 763px){
+    .input-field {
+        width: 100%;
+        border: 1px solid #dfdfdf;
+        border-radius: 23px;
+        font-size: 9px;
+        padding: 10px 20px;
+        color: #747474;
+        outline: none;
+        &::placeholder {
+            color: #cbcbcb;
+        }
+    }
+}
 .tick-wrapper {
-    width: 45px;
     height: 45px;
     border-radius: 50%;
     background-color: #6fa5cb;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     cursor: pointer;
 }
 
@@ -50,19 +60,10 @@
 }
 
 .slot-container {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
     margin-top: 25px;
     padding-right: 15px;
 }
-.slot-info {
-    width: 75%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
+
 .user-icon {
     width: 18px;
     height: 16px;
@@ -72,24 +73,20 @@
     color: #2a2a2a;
     font-size: 16px;
     font-family: Montserrat;
-    margin-left: 20px;
 }
-.slot-actions {
-    width: 20%;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-}
+
 .edit-icon {
     width: 18px;
     height: 18px;
     object-fit: contain;
     margin-right: 30px;
+    cursor: pointer;
 }
 .delete-icon {
     width: 16px;
     height: 16px;
     object-fit: contain;
+    cursor: pointer;
 }
 .staff-map {
     display: flex;

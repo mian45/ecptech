@@ -166,6 +166,18 @@ export const GetMappedPayload = (data) => {
                     copayType: data?.isCopaypremiumProgressiveAmount,
                     price: data?.copaypremiumProgressiveAmount,
                 },
+                {
+                    type: "Standard Progressives",
+                    status: data?.isCopayStandardProgressives,
+                    copayType: data?.isCopayStandardProgressiveAmount,
+                    price: data?.copayStandardProgressiveAmount,
+                },
+                {
+                    type: "Custom Progressives",
+                    status: data?.isCopayCustomProgressives,
+                    copayType: data?.isCopayCustomProgressiveAmount,
+                    price: data?.copayCustomProgressiveAmount,
+                },
             ],
         },
         lensType: {
@@ -198,6 +210,10 @@ export const GetMappedPayload = (data) => {
             status: data?.shipping,
             price: data?.shippingAmount,
         },
+        discount: {
+            type: data?.discountType,
+            value: data?.discountValue,
+        },
     };
 };
 
@@ -216,6 +232,12 @@ export const mappedEditValues = (data) => {
     );
     const premiumProgresive = lowerCopay.find(
         (item) => item.type === "Premium Progressives"
+    );
+    const standardProgresive = lowerCopay.find(
+        (item) => item.type === "Standard Progressives"
+    );
+    const customProgresive = lowerCopay.find(
+        (item) => item.type === "Custom Progressives"
     );
 
     return {
@@ -238,6 +260,8 @@ export const mappedEditValues = (data) => {
         isCopayHighIndex: hignIndex?.status || null,
         isCopayAntiReflective: antiReflective?.status || null,
         isCopayPremiumProgressives: premiumProgresive?.status || null,
+        isCopayStandardProgressives: standardProgresive?.status || null,
+        isCopayCustomProgressives: customProgresive?.status || null,
         isCopayPolycarbonateAmount: polycarbonate?.copayType || "",
         copayPolycarbonateAmount: polycarbonate?.price || "",
         isCopayPhotochromicAmount: photochromic?.copayType || "",
@@ -246,8 +270,12 @@ export const mappedEditValues = (data) => {
         copayHighIndexAmount: hignIndex?.price || "",
         isCopayAntiReflectiveAmount: antiReflective?.copayType || "",
         copayAntiReflectiveAmount: antiReflective?.price || "",
-        isCopaypremiumProgressiveAmount: antiReflective?.copayType || "",
-        copaypremiumProgressiveAmount: antiReflective?.price || "",
+        isCopaypremiumProgressiveAmount: premiumProgresive?.copayType || "",
+        copaypremiumProgressiveAmount: premiumProgresive?.price || "",
+        isCopayStandardProgressiveAmount: standardProgresive?.copayType || "",
+        copayStandardProgressiveAmount: standardProgresive?.price || "",
+        isCopayCustomProgressiveAmount: customProgresive?.copayType || "",
+        copayCustomProgressiveAmount: customProgresive?.price || "",
         lensType: userState?.lensType?.type || "",
         lensTypeValue: userState?.lensType?.brand || "",
         lensMaterial: userState?.lensMaterial || "",
@@ -266,5 +294,7 @@ export const mappedEditValues = (data) => {
         protectionPlanAmount: userState?.protectionPlan?.price || "",
         shipping: userState?.shipping?.status || "",
         shippingAmount: userState?.shipping?.price || "",
+        discountType: userState?.discount?.type || "",
+        discountValue: userState?.discount?.value || "",
     };
 };

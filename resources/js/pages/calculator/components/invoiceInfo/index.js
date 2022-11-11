@@ -6,6 +6,7 @@ import Axios from "../../../../Http";
 import { connect } from "react-redux";
 import Select from "react-select";
 import downArrow from "../../../../../images/down-arrow.png";
+import { Col, Row } from "antd";
 
 const InvoiceInfo = ({
     formProps,
@@ -50,8 +51,8 @@ const InvoiceInfo = ({
         setFieldValue("staffId", selectedStaff?.id);
     };
     return (
-        <div className={classes["container"]}>
-            <div className={classes["info-section"]}>
+        <Row className={classes["container"]}>
+            <Col className={classes["info-section"]} sx={24} md={24} lg={12}>
                 <div className={classes["label"]}>Invoice Name</div>
                 <AutoCompleteSelect
                     placeholder="John Doe Sunglasses"
@@ -64,8 +65,8 @@ const InvoiceInfo = ({
                     name="invoiceName"
                 />
                 <FormikError name={"invoiceName"} />
-            </div>
-            <div className={classes["info-section-1"]}>
+            </Col>
+            <Col className={classes["info-section-1"]} sx={24} md={24} lg={12}>
                 <div className={classes["label"]}>Staff Name</div>
                 <Select
                     options={staffData}
@@ -95,7 +96,7 @@ const InvoiceInfo = ({
                             borderRadius: 23,
                             border: "1px solid #dfdfdf",
                             height: 45,
-                            width: 375,
+                            width: "100%",
                         }),
                         indicatorSeparator: () => ({ display: "none" }),
                         placeholder: (defaultStyles) => {
@@ -107,8 +108,8 @@ const InvoiceInfo = ({
                     }}
                 />
                 <FormikError name={"staffName"} />
-            </div>
-        </div>
+            </Col>
+        </Row>
     );
 };
 

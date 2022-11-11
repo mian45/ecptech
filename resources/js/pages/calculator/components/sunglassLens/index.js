@@ -1,5 +1,5 @@
 import React from "react";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
@@ -132,6 +132,11 @@ const SunglassLens = ({
             return false;
         }
     };
+    const getPolorized = () => {
+        return calculatorObj?.addons
+            ?.find((item) => item?.title === "SunGlasses")
+            ?.addons?.find((val) => val?.title === "Polarized");
+    };
 
     const renderSunGlassLens = () => {
         return (
@@ -147,9 +152,15 @@ const SunglassLens = ({
                     headClass={classes["margin"]}
                 >
                     <CustomRadio
-                        label={"Polarized"}
-                        value={"Polarized"}
-                        active={values?.sunglassesType === "Polarized"}
+                        label={
+                            getPolorized()?.display_name
+                                ? getPolorized()?.display_name
+                                : getPolorized()?.title
+                        }
+                        value={getPolorized()?.title}
+                        active={
+                            values?.sunglassesType === getPolorized()?.title
+                        }
                     />
 
                     <CustomRadio
@@ -163,6 +174,16 @@ const SunglassLens = ({
         );
     };
     const renderTintLens = () => {
+        const getSolid = () => {
+            return calculatorObj?.addons
+                ?.find((item) => item?.title === "SunGlasses")
+                ?.addons?.find((val) => val?.title === "Solid Tint");
+        };
+        const getGradient = () => {
+            return calculatorObj?.addons
+                ?.find((item) => item?.title === "SunGlasses")
+                ?.addons?.find((val) => val?.title === "Gradient Tint");
+        };
         return (
             <>
                 <div className={classes["label"]}>Select Tint Lens</div>
@@ -176,15 +197,23 @@ const SunglassLens = ({
                     headClass={classes["margin"]}
                 >
                     <CustomRadio
-                        label={"Solid Tint"}
-                        value={"Solid Tint"}
-                        active={values?.tintType === "Solid Tint"}
+                        label={
+                            getSolid()?.display_name
+                                ? getSolid()?.display_name
+                                : getSolid()?.title
+                        }
+                        value={getSolid()?.title}
+                        active={values?.tintType === getSolid()?.title}
                     />
 
                     <CustomRadio
-                        label={"Gradient Tint"}
-                        value={"Gradient Tint"}
-                        active={values?.tintType === "Gradient Tint"}
+                        label={
+                            getGradient()?.display_name
+                                ? getGradient()?.display_name
+                                : getGradient()?.title
+                        }
+                        value={getGradient()?.title}
+                        active={values?.tintType === getGradient()?.title}
                     />
                 </Radio.Group>
                 <FormikError name={"tintType"} />
@@ -220,6 +249,16 @@ const SunglassLens = ({
         );
     };
     const renderMirrorType = () => {
+        const getSkyType = () => {
+            return calculatorObj?.addons
+                ?.find((item) => item?.title === "SunGlasses")
+                ?.addons?.find((val) => val?.title === "Ski Type Mirror");
+        };
+        const getSolidSingle = () => {
+            return calculatorObj?.addons
+                ?.find((item) => item?.title === "SunGlasses")
+                ?.addons?.find((val) => val?.title === "Solid/Single Gradient");
+        };
         return (
             <>
                 <div className={classes["label"]}>Please Select</div>
@@ -233,17 +272,27 @@ const SunglassLens = ({
                     headClass={classes["margin"]}
                 >
                     <CustomRadio
-                        label={"Ski Type Mirror"}
-                        value={"Ski Type Mirror"}
-                        active={values?.mirrorCoatingType === "Ski Type Mirror"}
+                        label={
+                            getSkyType()?.display_name
+                                ? getSkyType()?.display_name
+                                : getSkyType()?.title
+                        }
+                        value={getSkyType()?.title}
+                        active={
+                            values?.mirrorCoatingType === getSkyType()?.title
+                        }
                     />
 
                     <CustomRadio
-                        label={"Solid/Single Gradient"}
-                        value={"Solid/Single Gradient"}
+                        label={
+                            getSolidSingle()?.display_name
+                                ? getSolidSingle()?.display_name
+                                : getSolidSingle()?.title
+                        }
+                        value={getSolidSingle()?.title}
                         active={
                             values?.mirrorCoatingType ===
-                            "Solid/Single Gradient"
+                            getSolidSingle()?.title
                         }
                     />
                 </Radio.Group>
@@ -254,51 +303,59 @@ const SunglassLens = ({
     return (
         <>
             {sunglassLensVisibility ? (
-                <div className={classes["container"]}>
-                    <QuestionIcon icon={icon} active={handleActiveState()} />
-                    <div className={classes["vision-container"]}>
-                        <CalculatorHeading
-                            title="Sunglass Lens?"
+                <Row className={classes["container"]}>
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={icon}
                             active={handleActiveState()}
                         />
-                        <Radio.Group
-                            onBlur={handleBlur}
-                            onChange={handleIsSunglassesLensChange}
-                            value={values?.isSunglasses}
-                            id="isSunglasses"
-                            name="isSunglasses"
-                            className={classes["radio-group"]}
-                        >
-                            <CustomRadio
-                                label={"Yes"}
-                                value={"Yes"}
-                                active={values?.isSunglasses === "Yes"}
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
+                        <div className={classes["vision-container"]}>
+                            <CalculatorHeading
+                                title="Sunglass Lens?"
+                                active={handleActiveState()}
                             />
+                            <Radio.Group
+                                onBlur={handleBlur}
+                                onChange={handleIsSunglassesLensChange}
+                                value={values?.isSunglasses}
+                                id="isSunglasses"
+                                name="isSunglasses"
+                                className={classes["radio-group"]}
+                            >
+                                <CustomRadio
+                                    label={"Yes"}
+                                    value={"Yes"}
+                                    active={values?.isSunglasses === "Yes"}
+                                />
 
-                            <CustomRadio
-                                label={"No"}
-                                value={"No"}
-                                active={values?.isSunglasses === "No"}
-                            />
-                        </Radio.Group>
-                        <FormikError name={"isSunglasses"} />
-                        {values?.isSunglasses === "Yes" && (
-                            <>
-                                {renderSunGlassLens()}
-                                {values?.sunglassesType && (
-                                    <>
-                                        {values?.sunglassesType === "Tint" &&
-                                            renderTintLens()}
-                                        {renderMirrorCoating()}
-                                        {values?.isMirrorCoating === "Yes" && (
-                                            <>{renderMirrorType()}</>
-                                        )}
-                                    </>
-                                )}
-                            </>
-                        )}
-                    </div>
-                </div>
+                                <CustomRadio
+                                    label={"No"}
+                                    value={"No"}
+                                    active={values?.isSunglasses === "No"}
+                                />
+                            </Radio.Group>
+                            <FormikError name={"isSunglasses"} />
+                            {values?.isSunglasses === "Yes" && (
+                                <>
+                                    {renderSunGlassLens()}
+                                    {values?.sunglassesType && (
+                                        <>
+                                            {values?.sunglassesType ===
+                                                "Tint" && renderTintLens()}
+                                            {renderMirrorCoating()}
+                                            {values?.isMirrorCoating ===
+                                                "Yes" && (
+                                                <>{renderMirrorType()}</>
+                                            )}
+                                        </>
+                                    )}
+                                </>
+                            )}
+                        </div>
+                    </Col>
+                </Row>
             ) : null}
         </>
     );

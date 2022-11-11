@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
@@ -22,6 +22,14 @@ const AntireFlextive = ({
             (ques) => ques.question === "Antireflective Properties"
         )?.visibility;
     const [error, setError] = useState("");
+
+    const getAntireflectiveList = () => {
+        return (
+            calculatorObj?.addons?.find(
+                (item) => item?.title === "Anti Reflective"
+            )?.addons || []
+        );
+    };
 
     const handleActiveFields = () => {
         if (values?.isAntireflective === "No") {
@@ -64,94 +72,86 @@ const AntireFlextive = ({
     return (
         <>
             {antireflectiveVisibility && (
-                <div className={classes["container"]}>
-                    <QuestionIcon icon={icon} active={handleActiveFields()} />
-                    <div className={classes["vision-container"]}>
-                        <CalculatorHeading
-                            title="Antireflective Properties?"
+                <Row className={classes["container"]}>
+                    {" "}
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={icon}
                             active={handleActiveFields()}
                         />
-                        <Radio.Group
-                            onBlur={handleBlur}
-                            onChange={handleAntireflectiveChange}
-                            value={values?.isAntireflective}
-                            id="isAntireflective"
-                            name="isAntireflective"
-                            className={classes["radio-group"]}
-                        >
-                            <CustomRadio
-                                label={"Yes"}
-                                value={"Yes"}
-                                active={values?.isAntireflective === "Yes"}
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
+                        <div className={classes["vision-container"]}>
+                            <CalculatorHeading
+                                title="Antireflective Properties?"
+                                active={handleActiveFields()}
                             />
+                            <Radio.Group
+                                onBlur={handleBlur}
+                                onChange={handleAntireflectiveChange}
+                                value={values?.isAntireflective}
+                                id="isAntireflective"
+                                name="isAntireflective"
+                                className={classes["radio-group"]}
+                            >
+                                <CustomRadio
+                                    label={"Yes"}
+                                    value={"Yes"}
+                                    active={values?.isAntireflective === "Yes"}
+                                />
 
-                            <CustomRadio
-                                label={"No"}
-                                value={"No"}
-                                active={values?.isAntireflective === "No"}
-                            />
-                        </Radio.Group>
-                        <FormikError name={"isAntireflective"} />
-                        {error && (
-                            <div className={classes["error"]}>{error}</div>
-                        )}
-                        {values?.isAntireflective === "Yes" && (
-                            <>
-                                <div className={classes["label"]}>
-                                    Select Properties
-                                </div>
-                                <Radio.Group
-                                    onBlur={handleBlur}
-                                    onChange={handleChange}
-                                    value={values?.antireflectiveType}
-                                    id="antireflectiveType"
-                                    name="antireflectiveType"
-                                    className={classes["radio-group"]}
-                                >
-                                    <CustomRadio
-                                        headClass={classes["margin"]}
-                                        label={
-                                            AntireflectiveTypeEnum.shamirGlacierPlusUV
-                                        }
-                                        value={
-                                            AntireflectiveTypeEnum.shamirGlacierPlusUV
-                                        }
-                                        active={
-                                            values?.antireflectiveType ===
-                                            AntireflectiveTypeEnum.shamirGlacierPlusUV
-                                        }
-                                    />
-                                    <CustomRadio
-                                        headClass={classes["margin"]}
-                                        label={
-                                            AntireflectiveTypeEnum.techShieldPlusUVR
-                                        }
-                                        value={
-                                            AntireflectiveTypeEnum.techShieldPlusUVR
-                                        }
-                                        active={
-                                            values?.antireflectiveType ===
-                                            AntireflectiveTypeEnum.techShieldPlusUVR
-                                        }
-                                    />
-                                    <CustomRadio
-                                        label={
-                                            AntireflectiveTypeEnum.crizalSunshield
-                                        }
-                                        value={
-                                            AntireflectiveTypeEnum.crizalSunshield
-                                        }
-                                        active={
-                                            values?.antireflectiveType ===
-                                            AntireflectiveTypeEnum.crizalSunshield
-                                        }
-                                    />
-                                </Radio.Group>
-                                <FormikError name={"antireflectiveType"} />
-                            </>
-                        )}
-                    </div>
-                </div>
+                                <CustomRadio
+                                    label={"No"}
+                                    value={"No"}
+                                    active={values?.isAntireflective === "No"}
+                                />
+                            </Radio.Group>
+                            <FormikError name={"isAntireflective"} />
+                            {error && (
+                                <div className={classes["error"]}>{error}</div>
+                            )}
+                            {values?.isAntireflective === "Yes" && (
+                                <>
+                                    <div className={classes["label"]}>
+                                        Select Properties
+                                    </div>
+                                    <Radio.Group
+                                        onBlur={handleBlur}
+                                        onChange={handleChange}
+                                        value={values?.antireflectiveType}
+                                        id="antireflectiveType"
+                                        name="antireflectiveType"
+                                        className={classes["radio-group"]}
+                                    >
+                                        {getAntireflectiveList()?.map(
+                                            (value, index) => {
+                                                return (
+                                                    <CustomRadio
+                                                        key={index}
+                                                        label={
+                                                            value?.display_name
+                                                                ? value?.display_name
+                                                                : value?.title
+                                                        }
+                                                        value={value?.title}
+                                                        headClass={
+                                                            classes["radio"]
+                                                        }
+                                                        active={
+                                                            values?.antireflectiveType ===
+                                                            value?.title
+                                                        }
+                                                    />
+                                                );
+                                            }
+                                        )}
+                                    </Radio.Group>
+                                    <FormikError name={"antireflectiveType"} />
+                                </>
+                            )}
+                        </div>
+                    </Col>
+                </Row>
             )}
         </>
     );
