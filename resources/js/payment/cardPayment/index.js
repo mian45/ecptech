@@ -4,6 +4,7 @@ import AddCardModal from "./components/AddCardModal";
 import CreditCard from "./components/creditCard";
 import Subscriptions from "./components/subscriptions";
 import classes from "./styles.module.scss";
+import { Col, Row} from 'antd';
 import Axios from "../../Http";
 const CardPayment = () => {
     const [showAddCard, setShowAddCard] = useState(false);
@@ -24,23 +25,27 @@ const CardPayment = () => {
         setCardData(res.data.data);
     };
     return (
-        <div className={classes["container"]}>
+        <Row className={classes["container"]}>
             {showAddCard && (
                 <AddCardModal show={showAddCard} onClose={handleCloseModal} />
             )}
-            <div className={classes["label"]}>Payment Details</div>
-            <div className={classes["subtitle"]}>
+            <Col offset={0} className={classes["label"]}>Payment Details</Col>
+            <Col offset={0} className={classes["subtitle"]}>
                 Your card is
                 <span className={classes["card-status"]}> Active</span>.
                 Subscription amount will be deducted from this card.
-            </div>
-            <div className={classes["card-wrapper"]}>
+            </Col>
+            <Row gutter={[0,10]} className={classes["card-wrapper"]}>
+                <Col>
                 <CreditCard data={cardData} />
+                </Col>
+                <Col>
                 <AddNewCard onClick={handleOpenModal} />
-            </div>
-            <div className={classes["label"]}>Subscription Details</div>
+                </Col>
+            </Row>
+            <Col offset={0} className={classes["label"]}>Subscription Details</Col>
             <Subscriptions />
-        </div>
+        </Row>
     );
 };
 
