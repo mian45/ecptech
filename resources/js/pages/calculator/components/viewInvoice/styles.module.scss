@@ -42,16 +42,16 @@
     font-family: Montserrat;
     margin-bottom: 10px;
     white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 .info-slot-subtitle {
     font-size: 16px;
     color: #2a2a2a;
     font-family: Montserrat;
     white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .page-label {
@@ -65,7 +65,7 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 .invoice-slot-title {
     font-size: 12px;
@@ -77,7 +77,7 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
 }
 .invoice-bold-slot-title {
     font-size: 14px;
@@ -121,4 +121,16 @@
     font-weight: bold;
     color: #2a2a2a;
     font-family: Montserrat;
+}
+@media only screen and (max-width: 767px) {
+    .sub-left-container {
+        border-top-right-radius: 20px;
+        border-bottom-left-radius: 0px;
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .send-button {
+        align-self: center;
+    }
 }

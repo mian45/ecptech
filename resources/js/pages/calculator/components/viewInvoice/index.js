@@ -206,10 +206,10 @@ const ViewInvoice = ({
                     e.stopPropagation();
                 }}
             >
-                <Col xs={8}>
+                <Col xs={24} sm={24} md={8} >
                     <UserInfo receipt={receipt} />
                 </Col>
-                <Col xs={16} className={classes["sub-right-container"]}>
+                <Col xs={24} sm={24} md={16} className={classes["sub-right-container"]}>
                     <DetailsList
                         receipt={receipt}
                         calculatorObj={calculatorObj}
