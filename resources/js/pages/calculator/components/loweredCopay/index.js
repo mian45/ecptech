@@ -3,7 +3,7 @@ import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import CustomCheckbox from "../../../../components/customCheckbox";
 import visionIcon from "../../../../../images/calculator/vision.svg";
 import { LowerCopayAmountTypeEnum, LowerCopayTypeEnum } from "../../data/enums";
@@ -351,39 +351,45 @@ const LoweredCopay = ({
     return (
         <>
             {copayDollarAmountVisibility ? (
-                <div className={classes["container"]}>
-                    <QuestionIcon
-                        icon={visionIcon}
-                        active={values?.isloweredCopay}
-                    />
-                    <div className={classes["vision-container"]}>
-                        <CalculatorHeading
-                            title="Any copay dollar amount lowered than standard?"
+                <Row className={classes["container"]}>
+                    {" "}
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={visionIcon}
                             active={values?.isloweredCopay}
                         />
-                        <Radio.Group
-                            onBlur={handleBlur}
-                            onChange={handleLoweredCopayClick}
-                            value={values?.isloweredCopay}
-                            id="isloweredCopay"
-                            name="isloweredCopay"
-                            className={classes["radio-group"]}
-                        >
-                            <CustomRadio
-                                label={"Yes"}
-                                value={"Yes"}
-                                active={values?.isloweredCopay === "Yes"}
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
+                        <div className={classes["vision-container"]}>
+                            <CalculatorHeading
+                                title="Any copay dollar amount lowered than standard?"
+                                active={values?.isloweredCopay}
                             />
-                            <CustomRadio
-                                label={"No"}
-                                value={"No"}
-                                active={values?.isloweredCopay === "No"}
-                            />
-                        </Radio.Group>
-                        <FormikError name={"isloweredCopay"} />
-                        {values?.isloweredCopay === "Yes" && copayProperties()}
-                    </div>
-                </div>
+                            <Radio.Group
+                                onBlur={handleBlur}
+                                onChange={handleLoweredCopayClick}
+                                value={values?.isloweredCopay}
+                                id="isloweredCopay"
+                                name="isloweredCopay"
+                                className={classes["radio-group"]}
+                            >
+                                <CustomRadio
+                                    label={"Yes"}
+                                    value={"Yes"}
+                                    active={values?.isloweredCopay === "Yes"}
+                                />
+                                <CustomRadio
+                                    label={"No"}
+                                    value={"No"}
+                                    active={values?.isloweredCopay === "No"}
+                                />
+                            </Radio.Group>
+                            <FormikError name={"isloweredCopay"} />
+                            {values?.isloweredCopay === "Yes" &&
+                                copayProperties()}
+                        </div>
+                    </Col>
+                </Row>
             ) : null}
         </>
     );

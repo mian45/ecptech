@@ -1,15 +1,16 @@
 import React from "react";
 import CalculatorScreen from "./components/calculatorPage";
 import classes from "./styles.module.scss";
+import { Col, Row } from "antd";
 
 const Calculator = () => {
     return (
-        <div className={classes["root-container"]}>
-            <div className={classes["container"]}>
+        <Row className={classes["root-container"]}>
+            <Col className={classes["container"]} xs={24}>
                 <div className={classes["page-title"]}>Create Invoice</div>
                 <CalculatorScreen />
-            </div>
-        </div>
+            </Col>
+        </Row>
     );
 };
 

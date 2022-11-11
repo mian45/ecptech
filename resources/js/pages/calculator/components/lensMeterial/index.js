@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
@@ -63,61 +63,70 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
     return (
         <>
             {lensMaterialVisibility ? (
-                <div className={classes["container"]}>
+                <Row className={classes["container"]}>
                     {showModal && (
                         <EyePrescriptionModal onClose={handleCloseModal} />
                     )}
-                    <QuestionIcon icon={icon} active={values?.lensMaterial} />
-                    <div className={classes["vision-container"]}>
-                        <CalculatorHeading
-                            title="Lens Material?"
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={icon}
                             active={values?.lensMaterial}
                         />
-                        <Radio.Group
-                            onBlur={handleBlur}
-                            onChange={handleLensMererialChange}
-                            value={values?.lensMaterial}
-                            id="lensMaterial"
-                            name="lensMaterial"
-                            className={classes["radio-group"]}
-                        >
-                            {calculatorObj["lens_material"]?.map(
-                                (lensName, index) => {
-                                    return (
-                                        <CustomRadio
-                                            key={index}
-                                            label={getMaterialName(lensName)}
-                                            value={
-                                                lensName?.lens_material_title
-                                            }
-                                            headClass={classes["radio"]}
-                                            active={
-                                                values?.lensMaterial ===
-                                                lensName?.lens_material_title
-                                            }
-                                        />
-                                    );
-                                }
-                            )}
-                        </Radio.Group>
-                        <FormikError name={"lensMaterial"} />
-                        {error && (
-                            <div className={classes["error"]}>{error}</div>
-                        )}
-                        <div className={classes["tagline-box"]}>
-                            <span
-                                className={classes["tagline"]}
-                                onClick={handleOpenModal}
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
+                        <div className={classes["vision-container"]}>
+                            <CalculatorHeading
+                                title="Lens Material?"
+                                active={values?.lensMaterial}
+                            />
+                            <Radio.Group
+                                onBlur={handleBlur}
+                                onChange={handleLensMererialChange}
+                                value={values?.lensMaterial}
+                                id="lensMaterial"
+                                name="lensMaterial"
+                                className={classes["radio-group"]}
                             >
-                                Click here
-                            </span>
-                            <span>
-                                to input Rx to determine optimal lens material
-                                for your patient's glasses
-                            </span>
+                                {calculatorObj["lens_material"]?.map(
+                                    (lensName, index) => {
+                                        return (
+                                            <CustomRadio
+                                                key={index}
+                                                label={getMaterialName(
+                                                    lensName
+                                                )}
+                                                value={
+                                                    lensName?.lens_material_title
+                                                }
+                                                headClass={classes["radio"]}
+                                                active={
+                                                    values?.lensMaterial ===
+                                                    lensName?.lens_material_title
+                                                }
+                                            />
+                                        );
+                                    }
+                                )}
+                            </Radio.Group>
+                            <FormikError name={"lensMaterial"} />
+                            {error && (
+                                <div className={classes["error"]}>{error}</div>
+                            )}
+                            <div className={classes["tagline-box"]}>
+                                <span
+                                    className={classes["tagline"]}
+                                    onClick={handleOpenModal}
+                                >
+                                    Click here
+                                </span>
+                                <span>
+                                    to input Rx to determine optimal lens
+                                    material for your patient's glasses
+                                </span>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
             ) : null}
         </>
     );

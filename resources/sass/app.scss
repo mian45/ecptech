@@ -407,6 +407,9 @@ input[type="number"] {
 .ant-drawer-body {
     padding: 24px 5px !important;
 }
+#staffName {
+    width: 100%;
+}
 .card {
     background-color: var(--background-color);
     margin: 20px 10px;
@@ -436,31 +439,39 @@ input[type="number"] {
             padding: 10px 20px;
             background-color: var(--text-color);
         }
-    }}
+    }
+}
 .picker {
     @media (min-width: 320px) and (max-width: 480px) {
-      display: flex;
-      flex-direction: column;
+        display: flex;
+        flex-direction: column;
     }
-  }
-.rdrCalendarWrapper, .rdrDateRangeWrapper {
+}
+.rdrCalendarWrapper,
+.rdrDateRangeWrapper {
     @media (min-width: 320px) and (max-width: 480px) {
-    width: 100%;}
+        width: 100%;
+    }
 }
 
 .rdrMonth {
     @media (min-width: 320px) and (max-width: 480px) {
-    width: 100% !important;}
+        width: 100% !important;
+    }
 }
-.rdrStaticRange{
+.rdrStaticRange {
     @media (min-width: 320px) and (max-width: 480px) {
-    width: 100%;}
+        width: 100%;
+    }
 }
-.rdrDefinedRangesWrapper{
+.rdrDefinedRangesWrapper {
     width: unset !important;
 }
-.rdw-image-modal{
+.rdw-image-modal {
     @media only screen and (max-width: 900px) {
         left: -123px !important;
     }
+}
+.ant-select-auto-complete {
+    width: 100% !important;
 }
