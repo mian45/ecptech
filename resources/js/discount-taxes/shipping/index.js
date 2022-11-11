@@ -11,6 +11,7 @@ const ShippingSettings = ({ userId }) => {
     const [shippingAmount, setShippingAmount] = useState("");
     const [shipping, setShipping] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [editState,setEditState]=useState(false)
     const [showDeleteShipping,setShowDeleteShipping]=useState(false)
     const [deleteShippingId,setDeleteShippingId]=useState(0)
     let [shippingLoading,setShippingLoading]=useState(false)
@@ -27,6 +28,7 @@ const ShippingSettings = ({ userId }) => {
                 console.log("error while get shipping");
             }
         };
+        setEditState(false)
         getShipping();
     }, []);
 
@@ -67,6 +69,7 @@ const ShippingSettings = ({ userId }) => {
             );
             setShipping(res?.data?.data);
             setShippingName("");
+            setEditState(false)
             setShippingAmount("");
             setIsSubmitted(true);
         } catch (err) {
@@ -141,7 +144,7 @@ const ShippingSettings = ({ userId }) => {
                                     : ""
                             } `}
                         >
-                            Add
+                            {editState?"Update":"Add"}
                         </button>
                                                         </Col>
                                                     </Row>
@@ -165,41 +168,32 @@ const ShippingSettings = ({ userId }) => {
                         <tr className="discount-output_body">
                             <td>{shipping.name}</td>
                             <td>${shipping.value}</td>
-                            <td className="col-4 custom-tax-col-3">
-                                                          <Row justify="center" align="middle">
-                                                          <Col xs={24} md={10}>
-                                                           <img
-                                                                style={{
-                                                                    width: "18px",
-                                                                    height: "18px",
-                                                                    marginRight: "30px",
-                                                                    cursor: "pointer",
-                                                                }}
-                                                                src={edit}
-                                                                onClick={() => {
-                                                                    handleUpdateShipping(shipping);
-                                                                }}
-                                                            />
-                                                           
-                                                           </Col>
-                                                           <Col xs={24} md={10}>
-                                                           <img
-                                                                style={{
-                                                                    width: "16px",
-                                                                    height: "16px",
-                                                                    marginRight: "30px",
-                                                                    cursor: "pointer",
-                                                                }}
-                                                                src={cross}
-                                                                onClick={() => {
-                                                                    setShippingLoading(true)
-                                                                    handleDeleteShipping(shipping.id);
-                                                                }}
-                                                            />
-                                                           </Col>
-                                                          </Row>
-                                                            
-                                                        </td>
+                            <td className="shipping-custom-col-3">
+                                <img
+                                    style={{
+                                        width: "18px",
+                                        height: "18px",
+                                        marginRight: "30px",
+                                        cursor: "pointer",
+                                    }}
+                                    src={edit}
+                                    onClick={() => {
+                                        setEditState(true)
+                                        handleUpdateShipping(shipping);
+                                    }}
+                                />
+                                <img
+                                    style={{
+                                        width: "16px",
+                                        height: "16px",
+                                        cursor: "pointer",
+                                    }}
+                                    src={cross}
+                                    onClick={() => {
+                                        handleDeleteShipping(shipping.id);
+                                    }}
+                                />
+                            </td>
                         </tr>
                     )}
                 </table>

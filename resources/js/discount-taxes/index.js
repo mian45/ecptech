@@ -38,7 +38,7 @@ const DiscountTaxes = (props) => {
     const [deleteDiscountId,setDeleteDiscountId]=useState(0)
     let [discountLoading,setDiscountLoading]=useState(false)
     let [taxLoading,setTaxLoading]=useState(false)
-
+    const [taxStatus,setTaxStatus]=useState("inactive")
     const [editId, setEditId] = useState("");
 
     useEffect(() => {
@@ -104,6 +104,7 @@ const DiscountTaxes = (props) => {
         data.append("stateId", stateSetting);
         data.append("name", taxName);
         data.append("value", taxValue);
+        data.append('status',taxStatus)
 
         let config = {
             method: "post",
@@ -133,6 +134,7 @@ const DiscountTaxes = (props) => {
         data.append("stateId", stateSetting);
         data.append("name", taxName);
         data.append("value", taxValue);
+        data.append('status',taxStatus)
 
         let config = {
             method: "post",
@@ -413,11 +415,13 @@ const DiscountTaxes = (props) => {
         setTaxName(obj.name);
         setStateSetting(obj.state.id);
         setTaxValue(obj.value);
+        setTaxStatus(obj.status)
     };
     const onChangeDiscountActive = (e, disc, index) => {
         let data = new FormData();
         data.append("discount_id", disc.id);
         data.append("status", e ? "active" : "inactive");
+        data.append("userId", props.userID);
         let config = {
             method: "post",
             url: `${process.env.MIX_REACT_APP_URL}/api/discount-status`,
@@ -435,6 +439,27 @@ const DiscountTaxes = (props) => {
                 console.log(error);
             });
     };
+    const onChangeTaxActive=(e,obj,index)=>{
+        let data = new FormData();
+        data.append("TaxId", obj.id);
+        data.append("status", e ? "active" : "inactive");
+        data.append("userId", props.userID);
+        let config = {
+            method: "post",
+            url: `${process.env.MIX_REACT_APP_URL}/api/change-tax-status`,
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+            data: data,
+        };
+        axios(config)
+            .then(function (response) {
+                getTaxes();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
     return (
         <>
             {showDeleteTaxes?
@@ -533,7 +558,7 @@ const DiscountTaxes = (props) => {
                                                             } `}
                                                             type="submit"
                                                         >
-                                                            Add
+                                                            {discountId==null?"Add":"Update"}
                                                         </button>
                                                         </Col>
                                                     </Row>
@@ -692,7 +717,7 @@ const DiscountTaxes = (props) => {
                                                                             } `}
                                                                             type="submit"
                                                                         >
-                                                                            Add
+                                                                            {idState==null?"Add":"Update"}
                                                                         </button>
                                                         </Col>
                                                     </Row>                                                    </Col>
@@ -713,7 +738,7 @@ const DiscountTaxes = (props) => {
                                             </tr>
                                         )}
                                         {tax?.length > 0 &&
-                                            tax?.map((obj) => {
+                                            tax?.map((obj,index) => {
                                                 return (
                                                     <tr className="discount-output_body discount-row">
                                                         <td className="row-1">{obj.name}</td>
@@ -745,6 +770,8 @@ const DiscountTaxes = (props) => {
                                                             <Switch
                                                                 {...label}
                                                                 className="switch-margin"
+                                                                checked={obj?.status==='active'?true:false}
+                                                                onChange={(e)=>{onChangeTaxActive(e,obj,index)}}
                                                             />
                                                         </td>
                                                     </tr>
