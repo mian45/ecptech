@@ -674,7 +674,7 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
             (item) => item?.type === "Custom Progressives"
         );
     console.log("materials", materials);
-    if (materials?.length <= 0) {
+    if (!materials || materials?.length <= 0) {
         if (receipt?.values?.lensType?.type === "PAL") {
             if (isCustomProg?.status && progressiveCategory === "Custom") {
                 if (isCustomProg?.copayType === "$0 Copay") {
