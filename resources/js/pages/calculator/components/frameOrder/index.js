@@ -34,8 +34,11 @@ const FrameOrder = ({
     const frameDetails = () => {
         return (
             <>
-                <div className={classes["amount-container"]}>
-                    <div className={classes["amount-sub-container"]}>
+                <Row className={classes["amount-container"]}>
+                    <Col
+                        className={classes["amount-sub-container"]}
+                        style={{ marginRight: "50px" }}
+                    >
                         <div className={classes["sub-label"]}>
                             Retail fee of frame?
                         </div>
@@ -54,13 +57,12 @@ const FrameOrder = ({
                             />
                         </div>
                         <FormikError name={"frameRetailFee"} />
-                    </div>
+                    </Col>
                     {values?.visionPlan !== "Private Pay" && (
                         <>
                             {!isFrame && (
-                                <div
+                                <Col
                                     className={classes["amount-sub-container"]}
-                                    style={{ marginLeft: "50px" }}
                                 >
                                     <div className={classes["sub-label"]}>
                                         Frame Contribution?
@@ -82,11 +84,11 @@ const FrameOrder = ({
                                         />
                                     </div>
                                     <FormikError name={"frameContribution"} />
-                                </div>
+                                </Col>
                             )}{" "}
                         </>
                     )}
-                </div>
+                </Row>
                 <div className={classes["frame-sub-container"]}>
                     <CalculatorHeading title="Drill Mount?" />
                     <Radio.Group
