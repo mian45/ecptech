@@ -65,7 +65,7 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
             {lensMaterialVisibility ? (
                 <Row className={classes["container"]}>
                     {showModal && (
-                        <EyePrescriptionModal onClose={handleCloseModal} />
+                        <EyePrescriptionModal onClose={handleCloseModal} onOpen={showModal}/>
                     )}
                     <Col sx={0} sm={0} md={5}>
                         <QuestionIcon
