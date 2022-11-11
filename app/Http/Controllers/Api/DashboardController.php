@@ -7,6 +7,10 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use Validator;
 use Carbon\Carbon;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\DB;
+
+
 
 class DashboardController extends Controller
 {
@@ -19,7 +23,7 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         
@@ -28,9 +32,9 @@ class DashboardController extends Controller
 
         $client_id = auth()->user()->id;
 
-        $total_sales = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->sum('amount');
-        $amount_estimate = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->sum('amount');
-        $total_paid_orders = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->count();
+        $total_sales = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','paid')->sum('amount');
+        $amount_estimate = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->sum('amount');
+        $total_paid_orders = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','paid')->count();
 
         //Get Start and End Dates for Previous (Month, Week etc)
         $prev_range_dates = $this->getPreviousRanges($request->start_date,$request->end_date);
@@ -89,23 +93,25 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $request->start_date = Carbon::parse($request->start_date)->toDateString();
         $request->end_date = Carbon::parse($request->end_date)->toDateString();
+        
 
         $client_id = auth()->user()->id;
-        $total_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->count();
-        $total_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->count();
-        $total_unpaid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','unpaid')->count();
+        $total_invoices = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->count();
+        
+        $total_paid_invoices = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','paid')->count();
+        $total_unpaid_invoices = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','unpaid')->count();
         
         $capture_rate = ($total_invoices>0)? round(($total_paid_invoices/$total_invoices)*100):0;
         
        
 
-        $total_office_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->where('payment_mode','office')->count();
-        $total_online_paid_invoices = Invoice::where('user_id',$client_id)->where('created_at','>=',$request->start_date)->where('created_at','<=',$request->end_date)->where('status','paid')->where('payment_mode','online')->count();
+        $total_office_paid_invoices = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','paid')->where('payment_mode','office')->count();
+        $total_online_paid_invoices = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','paid')->where('payment_mode','online')->count();
 
         $data['invoice']['generated'] = $total_invoices;
         $data['invoice']['office_paid'] = $total_office_paid_invoices;
@@ -128,7 +134,7 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $request->start_date = Carbon::parse($request->start_date)->toDateString();
@@ -163,7 +169,7 @@ class DashboardController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $request->start_date = Carbon::parse($request->start_date)->toDateString();
