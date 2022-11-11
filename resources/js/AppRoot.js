@@ -9,6 +9,7 @@ const AppRoot = ({ isAuthenticated }) => {
     return (
 
             <Router>
+                {console.log(isAuthenticated)}
                 {isAuthenticated && <Header />}
                 {isAuthenticated && <SideBar />}
                 <Switch>

@@ -106,6 +106,7 @@ const updateStaffLogin = (state, payload) => {
 const Auth = (state = initialState, { type, payload = null }) => {
     switch (type) {
         case ActionTypes.AUTH_LOGIN: {
+            localStorage.setItem("access_token", payload.data.token);
             const clientObject = {
                 id: payload?.data?.client?.id || null,
                 name: payload?.data?.client?.name || null,

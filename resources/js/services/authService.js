@@ -12,12 +12,14 @@ export function login({ email, password, remember }) {
                     remember_me: remember,
                 })
                 .then((res) => {
-                    localStorage.setItem("access_token", res.data.data.token);
-                    localStorage.setItem("remember", remember);
-
+                    
+                    if(res?.data?.data?.error!=="Unauthorised"){
+                        console.log(res?.data?.data?.error!=="Unauthorised")
+                        localStorage.setItem("remember", remember);
                     dispatch(action.authLogin(res.data));
-
                     return resolve();
+                    }
+                    return reject(res?.data?.data?.error);
                 })
                 .catch((err) => {
                     const { status, errors } = err.response.data;

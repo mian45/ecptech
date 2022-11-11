@@ -59,6 +59,12 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
             setIsEdit(true);
         }
     };
+    const LoginValidation = Yup.object().shape({
+        email: Yup.string().email().required("Please enter a valid email address"),
+        password: Yup.string()
+            .min(6, "Password must have 6 characters")
+            .required("Please enter a valid password"),
+    });
     return (
         <div className={classes["container"]}>
             <div className={classes["title"]}>Staff Login</div>
@@ -103,7 +109,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         value={values.password}
                                         className={classes["input"]}
                                         name="password"
-                                        placeholder="Enter Password"
+                                        placeholder={staffUser?.id?"●●●●●●":"Enter Password"}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         disabled={!isEdit && staffUser?.id}
@@ -147,9 +153,4 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps)(StaffLogin);
 
-const LoginValidation = Yup.object().shape({
-    email: Yup.string().email().required("Please enter a valid email address"),
-    password: Yup.string()
-        .min(6, "Password must have 6 characters")
-        .required("Please enter a valid password"),
-});
+
