@@ -1,5 +1,5 @@
 import React from "react";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import QuestionIcon from "../questionIcon";
 import classes from "./styles.module.scss";
 import tickIcon from "../../../../../images/tick-green.svg";
@@ -86,36 +86,43 @@ const SelectVisionPlan = ({
 
     const visionPlan = () => {
         return (
-            <div className={classes["container"]}>
-                <QuestionIcon icon={visionIcon} active={values?.visionPlan} />
-                <div className={classes["vision-container"]}>
-                    <CalculatorHeading
-                        title="Select Vision Plan"
+            <Row className={classes["container"]}>
+                <Col sx={0} sm={0} md={5} lg={5}>
+                    <QuestionIcon
+                        icon={visionIcon}
                         active={values?.visionPlan}
                     />
-                    <Radio.Group
-                        onBlur={handleBlur}
-                        onChange={handlePlanChange}
-                        value={values?.visionPlan}
-                        className={classes["radio-group"]}
-                        id="visionPlan"
-                        name="visionPlan"
-                    >
-                        {plansList?.map((plan, index) => {
-                            return (
-                                <CustomRadio
-                                    headClass={classes["radio"]}
-                                    key={index}
-                                    label={plan}
-                                    value={plan}
-                                    active={values?.visionPlan === plan}
-                                />
-                            );
-                        })}
-                    </Radio.Group>
-                    <FormikError name={"visionPlan"} />
-                </div>
-            </div>
+                </Col>
+                <Col sx={24} sm={24} md={19} lg={19}>
+                    <div className={classes["vision-container"]}>
+                        <CalculatorHeading
+                            title="Select Vision Plan"
+                            active={values?.visionPlan}
+                        />
+                        <Radio.Group
+                            onBlur={handleBlur}
+                            onChange={handlePlanChange}
+                            value={values?.visionPlan}
+                            className={classes["radio-group"]}
+                            id="visionPlan"
+                            name="visionPlan"
+                        >
+                            {plansList?.map((plan, index) => {
+                                return (
+                                    <CustomRadio
+                                        headClass={classes["radio"]}
+                                        key={index}
+                                        label={plan}
+                                        value={plan}
+                                        active={values?.visionPlan === plan}
+                                    />
+                                );
+                            })}
+                        </Radio.Group>
+                        <FormikError name={"visionPlan"} />
+                    </div>
+                </Col>
+            </Row>
         );
     };
     const renderVisionPlan = () => {

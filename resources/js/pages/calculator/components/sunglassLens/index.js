@@ -1,5 +1,5 @@
 import React from "react";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
@@ -303,51 +303,59 @@ const SunglassLens = ({
     return (
         <>
             {sunglassLensVisibility ? (
-                <div className={classes["container"]}>
-                    <QuestionIcon icon={icon} active={handleActiveState()} />
-                    <div className={classes["vision-container"]}>
-                        <CalculatorHeading
-                            title="Sunglass Lens?"
+                <Row className={classes["container"]}>
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={icon}
                             active={handleActiveState()}
                         />
-                        <Radio.Group
-                            onBlur={handleBlur}
-                            onChange={handleIsSunglassesLensChange}
-                            value={values?.isSunglasses}
-                            id="isSunglasses"
-                            name="isSunglasses"
-                            className={classes["radio-group"]}
-                        >
-                            <CustomRadio
-                                label={"Yes"}
-                                value={"Yes"}
-                                active={values?.isSunglasses === "Yes"}
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
+                        <div className={classes["vision-container"]}>
+                            <CalculatorHeading
+                                title="Sunglass Lens?"
+                                active={handleActiveState()}
                             />
+                            <Radio.Group
+                                onBlur={handleBlur}
+                                onChange={handleIsSunglassesLensChange}
+                                value={values?.isSunglasses}
+                                id="isSunglasses"
+                                name="isSunglasses"
+                                className={classes["radio-group"]}
+                            >
+                                <CustomRadio
+                                    label={"Yes"}
+                                    value={"Yes"}
+                                    active={values?.isSunglasses === "Yes"}
+                                />
 
-                            <CustomRadio
-                                label={"No"}
-                                value={"No"}
-                                active={values?.isSunglasses === "No"}
-                            />
-                        </Radio.Group>
-                        <FormikError name={"isSunglasses"} />
-                        {values?.isSunglasses === "Yes" && (
-                            <>
-                                {renderSunGlassLens()}
-                                {values?.sunglassesType && (
-                                    <>
-                                        {values?.sunglassesType === "Tint" &&
-                                            renderTintLens()}
-                                        {renderMirrorCoating()}
-                                        {values?.isMirrorCoating === "Yes" && (
-                                            <>{renderMirrorType()}</>
-                                        )}
-                                    </>
-                                )}
-                            </>
-                        )}
-                    </div>
-                </div>
+                                <CustomRadio
+                                    label={"No"}
+                                    value={"No"}
+                                    active={values?.isSunglasses === "No"}
+                                />
+                            </Radio.Group>
+                            <FormikError name={"isSunglasses"} />
+                            {values?.isSunglasses === "Yes" && (
+                                <>
+                                    {renderSunGlassLens()}
+                                    {values?.sunglassesType && (
+                                        <>
+                                            {values?.sunglassesType ===
+                                                "Tint" && renderTintLens()}
+                                            {renderMirrorCoating()}
+                                            {values?.isMirrorCoating ===
+                                                "Yes" && (
+                                                <>{renderMirrorType()}</>
+                                            )}
+                                        </>
+                                    )}
+                                </>
+                            )}
+                        </div>
+                    </Col>
+                </Row>
             ) : null}
         </>
     );

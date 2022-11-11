@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import { Redirect, Route, useHistory } from "react-router-dom";
 import { LOGIN_ROUTE } from "../routeConstants";
-import { useIdleTimer } from 'react-idle-timer';
+import { useIdleTimer } from "react-idle-timer";
 import AuthService from "../../services";
 const PrivateRoute = ({ component, exact, path, isAuthenticated }) => {
   const dispatch = useDispatch();
@@ -15,8 +15,8 @@ const PrivateRoute = ({ component, exact, path, isAuthenticated }) => {
 
   const handleOnActive = () => setIsIdle(false);
   const handleOnIdle = () => {
-    dispatch(AuthService.logout())
-    setIsIdle(true)
+    dispatch(AuthService.logout());
+    setIsIdle(true);
   };
 
   const {
@@ -25,29 +25,22 @@ const PrivateRoute = ({ component, exact, path, isAuthenticated }) => {
     resume,
     getRemainingTime,
     getLastActiveTime,
-    getElapsedTime
+    getElapsedTime,
   } = useIdleTimer({
     timeout,
     onActive: handleOnActive,
-    onIdle: handleOnIdle
+    onIdle: handleOnIdle,
   });
 
   const handleReset = () => reset();
   const handlePause = () => pause();
   const handleResume = () => resume();
 
-  // useEffect(() => {
-  //   setRemaining(getRemainingTime());
-  //   setLastActive(getLastActiveTime());
-  //   setElapsed(getElapsedTime());
-
-  //   setInterval(() => {
-
-  //     setRemaining(getRemainingTime());
-  //     setLastActive(getLastActiveTime());
-  //     setElapsed(getElapsedTime());
-  //   }, 1000);
-  // }, []);
+  useEffect(() => {
+    setRemaining(getRemainingTime());
+    setLastActive(getLastActiveTime());
+    setElapsed(getElapsedTime());
+  }, []);
   return (
     <React.Fragment>
       {isAuthenticated ? (

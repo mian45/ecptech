@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
@@ -134,131 +134,145 @@ const VisionBenifits = ({
         <div className={classes["container"]}>
             {frameBenifitVisibility &&
                 values?.benifitType !== BenifitTypeEnums.both && (
-                    <div className={classes["frame-container"]}>
-                        <QuestionIcon
-                            icon={glassesIcon}
-                            active={values?.isFrameBenifit}
-                        />
-                        <div className={classes["question-container"]}>
-                            <CalculatorHeading
-                                title="Frame Benefit Available?"
+                    <Row className={classes["frame-container"]}>
+                        <Col sx={0} sm={0} md={5}>
+                            <QuestionIcon
+                                icon={glassesIcon}
                                 active={values?.isFrameBenifit}
                             />
-                            <Radio.Group
-                                onBlur={handleBlur}
-                                onChange={handleFrameBenifitAvailableChange}
-                                value={values?.isFrameBenifit}
-                                id="isFrameBenifit"
-                                name="isFrameBenifit"
-                                className={classes["radio-group"]}
-                            >
-                                <CustomRadio
-                                    label={FrameBenifitAvailableEnum.yes}
-                                    value={FrameBenifitAvailableEnum.yes}
-                                    active={
-                                        values?.isFrameBenifit ===
-                                        FrameBenifitAvailableEnum.yes
-                                    }
+                        </Col>
+                        <Col sx={24} sm={24} md={19}>
+                            <div className={classes["question-container"]}>
+                                <CalculatorHeading
+                                    title="Frame Benefit Available?"
+                                    active={values?.isFrameBenifit}
                                 />
+                                <Radio.Group
+                                    onBlur={handleBlur}
+                                    onChange={handleFrameBenifitAvailableChange}
+                                    value={values?.isFrameBenifit}
+                                    id="isFrameBenifit"
+                                    name="isFrameBenifit"
+                                    className={classes["radio-group"]}
+                                >
+                                    <CustomRadio
+                                        label={FrameBenifitAvailableEnum.yes}
+                                        value={FrameBenifitAvailableEnum.yes}
+                                        active={
+                                            values?.isFrameBenifit ===
+                                            FrameBenifitAvailableEnum.yes
+                                        }
+                                    />
 
-                                <CustomRadio
-                                    label={
-                                        FrameBenifitAvailableEnum.onlyThisTime
-                                    }
-                                    value={
-                                        FrameBenifitAvailableEnum.onlyThisTime
-                                    }
-                                    active={
-                                        values?.isFrameBenifit ===
-                                        FrameBenifitAvailableEnum.onlyThisTime
-                                    }
-                                />
-                            </Radio.Group>
-                            <FormikError name={"isFrameBenifit"} />
-                            <div className={classes["error"]}>
-                                {privatePayError}
+                                    <CustomRadio
+                                        label={
+                                            FrameBenifitAvailableEnum.onlyThisTime
+                                        }
+                                        value={
+                                            FrameBenifitAvailableEnum.onlyThisTime
+                                        }
+                                        active={
+                                            values?.isFrameBenifit ===
+                                            FrameBenifitAvailableEnum.onlyThisTime
+                                        }
+                                    />
+                                </Radio.Group>
+                                <FormikError name={"isFrameBenifit"} />
+                                <div className={classes["error"]}>
+                                    {privatePayError}
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 )}
             {lensBenifitVisibility &&
                 values?.benifitType !== BenifitTypeEnums.both && (
-                    <div className={classes["frame-container"]}>
-                        <QuestionIcon
-                            icon={lensIcon}
-                            active={values?.isLensBenifit}
-                        />
-                        <div className={classes["question-container"]}>
-                            <CalculatorHeading
-                                title="Lens Benefit Available?"
+                    <Row className={classes["frame-container"]}>
+                        <Col sx={0} sm={0} md={5}>
+                            <QuestionIcon
+                                icon={lensIcon}
                                 active={values?.isLensBenifit}
                             />
-                            <Radio.Group
-                                onBlur={handleBlur}
-                                onChange={handleLensBenifitsAvailableChange}
-                                value={values?.isLensBenifit}
-                                id="isLensBenifit"
-                                name="isLensBenifit"
-                                className={classes["radio-group"]}
-                            >
-                                <CustomRadio
-                                    label={LensBenifitAvailableEnum.yes}
-                                    value={LensBenifitAvailableEnum.yes}
-                                    active={
-                                        values?.isLensBenifit ===
-                                        LensBenifitAvailableEnum.yes
-                                    }
+                        </Col>
+                        <Col sx={24} sm={24} md={19}>
+                            <div className={classes["question-container"]}>
+                                <CalculatorHeading
+                                    title="Lens Benefit Available?"
+                                    active={values?.isLensBenifit}
                                 />
+                                <Radio.Group
+                                    onBlur={handleBlur}
+                                    onChange={handleLensBenifitsAvailableChange}
+                                    value={values?.isLensBenifit}
+                                    id="isLensBenifit"
+                                    name="isLensBenifit"
+                                    className={classes["radio-group"]}
+                                >
+                                    <CustomRadio
+                                        label={LensBenifitAvailableEnum.yes}
+                                        value={LensBenifitAvailableEnum.yes}
+                                        active={
+                                            values?.isLensBenifit ===
+                                            LensBenifitAvailableEnum.yes
+                                        }
+                                    />
 
-                                <CustomRadio
-                                    label={
-                                        LensBenifitAvailableEnum.onlyThisTime
-                                    }
-                                    value={
-                                        LensBenifitAvailableEnum.onlyThisTime
-                                    }
-                                    active={
-                                        values?.isLensBenifit ===
-                                        LensBenifitAvailableEnum.onlyThisTime
-                                    }
-                                />
-                            </Radio.Group>
-                            <FormikError name={"isLensBenifit"} />
-                            <div className={classes["error"]}>
-                                {privatePayError}
+                                    <CustomRadio
+                                        label={
+                                            LensBenifitAvailableEnum.onlyThisTime
+                                        }
+                                        value={
+                                            LensBenifitAvailableEnum.onlyThisTime
+                                        }
+                                        active={
+                                            values?.isLensBenifit ===
+                                            LensBenifitAvailableEnum.onlyThisTime
+                                        }
+                                    />
+                                </Radio.Group>
+                                <FormikError name={"isLensBenifit"} />
+                                <div className={classes["error"]}>
+                                    {privatePayError}
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                 )}
             {materialCopayVisibility && (
-                <div className={classes["frame-container"]}>
-                    <QuestionIcon
-                        icon={materialIcon}
-                        active={values?.materialCopay}
-                    />
-                    <div className={classes["question-container"]}>
-                        <CalculatorHeading
-                            title="Material Copay?"
+                <Row className={classes["frame-container"]}>
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={materialIcon}
                             active={values?.materialCopay}
                         />
-                        <div className={classes["input-container"]}>
-                            <div className={classes["input-label"]}>$</div>
-                            <input
-                                className={classes["input"]}
-                                type={"number"}
-                                onBlur={handleBlur}
-                                onChange={handleMaterialCopayChange}
-                                value={values?.materialCopay}
-                                id="materialCopay"
-                                name="materialCopay"
-                                step={0.01}
-                                min={0.0}
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
+                        <div className={classes["question-container"]}>
+                            <CalculatorHeading
+                                title="Material Copay?"
+                                active={values?.materialCopay}
                             />
+                            <div className={classes["input-container"]}>
+                                <div className={classes["input-label"]}>$</div>
+                                <input
+                                    className={classes["input"]}
+                                    type={"number"}
+                                    onBlur={handleBlur}
+                                    onChange={handleMaterialCopayChange}
+                                    value={values?.materialCopay}
+                                    id="materialCopay"
+                                    name="materialCopay"
+                                    step={0.01}
+                                    min={0.0}
+                                />
+                            </div>
+                            {err && (
+                                <div className={classes["error"]}>{err}</div>
+                            )}
+                            <FormikError name={"materialCopay"} />
                         </div>
-                        {err && <div className={classes["error"]}>{err}</div>}
-                        <FormikError name={"materialCopay"} />
-                    </div>
-                </div>
+                    </Col>
+                </Row>
             )}
         </div>
     );

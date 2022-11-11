@@ -7,9 +7,10 @@
 .vision-container {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 .discount-select {
-    width: 300px;
+    width: 60%;
     border-radius: 23px !important;
     border: 1px solid #dfdfdf !important;
     height: 45px !important;
@@ -61,4 +62,7 @@
     font-size: 14px;
     color: red;
     margin-top: 10px;
+}
+.vision-container-col {
+    width: 100%;
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
@@ -34,8 +34,11 @@ const FrameOrder = ({
     const frameDetails = () => {
         return (
             <>
-                <div className={classes["amount-container"]}>
-                    <div className={classes["amount-sub-container"]}>
+                <Row className={classes["amount-container"]}>
+                    <Col
+                        className={classes["amount-sub-container"]}
+                        style={{ marginRight: "50px" }}
+                    >
                         <div className={classes["sub-label"]}>
                             Retail fee of frame?
                         </div>
@@ -54,13 +57,12 @@ const FrameOrder = ({
                             />
                         </div>
                         <FormikError name={"frameRetailFee"} />
-                    </div>
+                    </Col>
                     {values?.visionPlan !== "Private Pay" && (
                         <>
                             {!isFrame && (
-                                <div
+                                <Col
                                     className={classes["amount-sub-container"]}
-                                    style={{ marginLeft: "50px" }}
                                 >
                                     <div className={classes["sub-label"]}>
                                         Frame Contribution?
@@ -82,11 +84,11 @@ const FrameOrder = ({
                                         />
                                     </div>
                                     <FormikError name={"frameContribution"} />
-                                </div>
+                                </Col>
                             )}{" "}
                         </>
                     )}
-                </div>
+                </Row>
                 <div className={classes["frame-sub-container"]}>
                     <CalculatorHeading title="Drill Mount?" />
                     <Radio.Group
@@ -172,48 +174,52 @@ const FrameOrder = ({
     return (
         <>
             {frameOrderVisibility ? (
-                <div className={classes["container"]}>
-                    <QuestionIcon
-                        icon={frameIcon}
-                        active={handleActiveIcons()}
-                    />
-                    <div className={classes["frame-container"]}>
-                        <CalculatorHeading
-                            title="Frame Order?"
+                <Row className={classes["container"]}>
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={frameIcon}
                             active={handleActiveIcons()}
                         />
-                        <Radio.Group
-                            onBlur={handleBlur}
-                            onChange={handleFrameOrderChange}
-                            value={values?.frameOrderType}
-                            id="frameOrderType"
-                            name="frameOrderType"
-                            className={classes["radio-group"]}
-                        >
-                            <CustomRadio
-                                label={FrameOrderTypeEnum.newFramePurchase}
-                                value={FrameOrderTypeEnum.newFramePurchase}
-                                active={
-                                    values?.frameOrderType ===
-                                    FrameOrderTypeEnum.newFramePurchase
-                                }
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
+                        <div className={classes["frame-container"]}>
+                            <CalculatorHeading
+                                title="Frame Order?"
+                                active={handleActiveIcons()}
                             />
+                            <Radio.Group
+                                onBlur={handleBlur}
+                                onChange={handleFrameOrderChange}
+                                value={values?.frameOrderType}
+                                id="frameOrderType"
+                                name="frameOrderType"
+                                className={classes["radio-group"]}
+                            >
+                                <CustomRadio
+                                    label={FrameOrderTypeEnum.newFramePurchase}
+                                    value={FrameOrderTypeEnum.newFramePurchase}
+                                    active={
+                                        values?.frameOrderType ===
+                                        FrameOrderTypeEnum.newFramePurchase
+                                    }
+                                />
 
-                            <CustomRadio
-                                label={FrameOrderTypeEnum.patientOwnFrame}
-                                value={FrameOrderTypeEnum.patientOwnFrame}
-                                active={
-                                    values?.frameOrderType ===
-                                    FrameOrderTypeEnum.patientOwnFrame
-                                }
-                            />
-                        </Radio.Group>
-                        <FormikError name={"frameOrderType"} />
-                        {values?.frameOrderType ===
-                            FrameOrderTypeEnum.newFramePurchase &&
-                            frameDetails()}
-                    </div>
-                </div>
+                                <CustomRadio
+                                    label={FrameOrderTypeEnum.patientOwnFrame}
+                                    value={FrameOrderTypeEnum.patientOwnFrame}
+                                    active={
+                                        values?.frameOrderType ===
+                                        FrameOrderTypeEnum.patientOwnFrame
+                                    }
+                                />
+                            </Radio.Group>
+                            <FormikError name={"frameOrderType"} />
+                            {values?.frameOrderType ===
+                                FrameOrderTypeEnum.newFramePurchase &&
+                                frameDetails()}
+                        </div>
+                    </Col>
+                </Row>
             ) : null}
         </>
     );

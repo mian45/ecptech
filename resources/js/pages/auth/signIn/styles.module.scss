@@ -6,10 +6,10 @@
     padding: 20px;
 }
 .login-section{
-    background-color: #F9F9FB;
+    background-color: var(--login-background-color);
 }
 .slider-section{
     height: 100vh;
     display: inherit;
-    background-color: #6FA5CB;
+    background-color: var(--slider-background-color);
 }

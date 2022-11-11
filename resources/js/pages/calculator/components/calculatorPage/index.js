@@ -32,6 +32,7 @@ import {
 } from "../../data/enums";
 import backArrow from "../../../../../images/black-arrow.svg";
 import CustomDiscount from "../customDiscount";
+import { Col } from "antd";
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -296,10 +297,10 @@ const CalculatorScreen = () => {
         );
     };
     return (
-        <div className={classes["container"]}>
+        <Col className={classes["container"]} sm={24} md={24} lg={18}>
             <Formik
                 initialValues={{ ...calculatorState }}
-                validationSchema={Yup.object().shape({ ...calValidations })}
+                validationSchema={Yup.object().shape({})}
                 onSubmit={handleClick}
                 enableReinitialize
             >
@@ -666,7 +667,7 @@ const CalculatorScreen = () => {
                     );
                 }}
             </Formik>
-        </div>
+        </Col>
     );
 };
 

@@ -7,7 +7,7 @@ import editIcon from "../../../../../../../images/edit.png";
 import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-
+import {Row,Col} from 'antd'
 const LensesType = ({ userId }) => {
     const [isBrands, setIsBrands] = useState(false);
     const [lensesList, setLensesList] = useState([]);
@@ -56,8 +56,8 @@ const LensesType = ({ userId }) => {
     };
     return (
         <>
-            <div className={classes["container"]}>
-                <div className={classes["left-container"]}>
+            <Row className={classes["container"]} >
+                <Col xs={24} md={9} className={classes["left-container"]} >
                     {isBrands ? (
                         <LensesTypeBrandsList
                             onBackClick={onGoBackClick}
@@ -72,24 +72,25 @@ const LensesType = ({ userId }) => {
                             lenses={lensesList}
                         />
                     )}
-                </div>
-                <div className={classes["right-container"]}>
+                </Col>
+                <Col xs={24} md={15} className={classes["right-container"]}>
                     <CollectionSection
                         selectedRow={selectedRow}
                         lenses={lensesList}
                         selectedLensType={selectedLensType}
                         setLensesList={setLensesList}
                     />
-                </div>
-            </div>
-            <div className={classes["save-button-wrapper"]}>
+                </Col>
+            </Row>
+            <Row  className={classes["save-button-wrapper"]}>
+                <Col xs={24}>
                 <button
                     className={classes["save-button"]}
                     onClick={submitLensesData}
                 >
                     Save
-                </button>
-            </div>
+                </button></Col>
+            </Row>
         </>
     );
 };
@@ -189,12 +190,15 @@ export const CollectionSlot = ({
     return (
         <>
             {isEdit ? (
-                <div
+                <Row
+                    justify="start"
+                    align="middle"
                     className={classes["collection-edit-container"]}
                     id={collection?.title}
                 >
-                    <div className={classes["collection-edit-header-slot"]}>
-                        <div
+                    <Col xs={24}>
+                       <Row justify="center">
+                       <Col xs={18}
                             className={`${classes["collection-left-container"]} ${classes["animated-title"]}`}
                         >
                             <CustomCheckbox
@@ -212,18 +216,21 @@ export const CollectionSlot = ({
                             <div className={classes["edit-content-title"]}>
                                 {collection?.title || ""}
                             </div>
-                        </div>
+                        </Col>
+                        <Col xs={6} className={classes['edit-container']}>
                         <img
                             src={tickIcon}
                             alt={"icon"}
                             className={classes["tick-icon"]}
                             onClick={() => setIsEdit(false)}
-                        />
-                    </div>
-                    <div className={classes["edit-slot-sub-wrapper"]}>
-                        <div className={classes["edit-slot-title"]}>
+                        /></Col>
+                       </Row>
+                    </Col>
+                    <Row className={classes["edit-slot-sub-wrapper"]}>
+                        <Col xs={24} className={classes["edit-slot-title"]}>
                             Display Name
-                        </div>
+                        </Col>
+                        <Col xs={24}>
                         <input
                             className={classes["edit-slot-input"]}
                             placeholder={"Enter Display Name"}
@@ -234,10 +241,12 @@ export const CollectionSlot = ({
                                     collection
                                 )
                             }
-                        />
-                        <div className={classes["edit-slot-title"]}>
+                        /></Col>
+                        
+                        <Col xs={24} className={classes["edit-slot-title"]}>
                             Retail Amount
-                        </div>
+                        </Col>
+                        <Col xs={24}>
                         <input
                             className={classes["edit-slot-input"]}
                             placeholder={"Enter Amount"}
@@ -254,21 +263,22 @@ export const CollectionSlot = ({
                                     );
                                 }
                             }}
-                        />
-                    </div>
-                </div>
+                        /></Col>
+                    </Row>
+                </Row>
             ) : (
-                <div
+                <Row
                     className={classes["collection-show-container"]}
                     id={collection?.title}
                 >
-                    <div className={classes["collection-left-container"]}>
-                        <div
+                    <Col  xs={18}className={classes["collection-left-container"]}>
+                        <Row
                             className={
                                 classes["collection-show-content-container"]
                             }
                         >
-                            <CustomCheckbox
+                           <Col xs={6}>
+                           <CustomCheckbox
                                 label={""}
                                 defaultChecked={
                                     collection?.status === "active"
@@ -280,11 +290,13 @@ export const CollectionSlot = ({
                                 }}
                                 containerClass={classes["checkbox"]}
                             />
-                            <div className={classes["collection-content"]}>
-                                <div className={classes["show-content-title"]}>
+                           </Col>
+                           <Col xs={18}>
+                           <Row className={classes["collection-content"]}>
+                                <Col xs={24} className={classes["show-content-title"]}>
                                     {collection?.title || ""}
-                                </div>
-                                <div
+                                </Col>
+                                <Col xs={24}
                                     className={classes["show-content-heading"]}
                                 >
                                     Display Name:{" "}
@@ -295,8 +307,8 @@ export const CollectionSlot = ({
                                     >
                                         {collection?.display_name || "---"}
                                     </span>
-                                </div>
-                                <div
+                                </Col>
+                                <Col xs={24}
                                     className={classes["show-content-heading"]}
                                 >
                                     Retail Amount:{" "}
@@ -307,17 +319,19 @@ export const CollectionSlot = ({
                                     >
                                         {collection?.custom_price || "---"}
                                     </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <img
+                                </Col>
+                            </Row>
+                           </Col>
+                        </Row>
+                    </Col>
+                   <Col xs={6} className={classes['edit-container']}>
+                   <img
                         src={editIcon}
                         alt={"icon"}
                         className={classes["edit-icon"]}
                         onClick={() => setIsEdit(true)}
-                    />
-                </div>
+                    /></Col>
+                </Row>
             )}
         </>
     );

@@ -3,7 +3,7 @@ import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
 import { connect } from "react-redux";
 import { defaultMaterials } from "./data";
-
+import {Row,Col} from "antd"
 const EyePrescription = ({ userId }) => {
     const [eyeDetails, setEyeDetails] = useState([]);
     const [sphError, setSphError] = useState([...defaultSphError]);
@@ -211,12 +211,14 @@ const EyePrescription = ({ userId }) => {
         }
     };
     return (
-        <div className={classes["container"]}>
-            <div className={classes["page-title"]}>
+        <Row className={classes["container"]} justify="start" align="middle">
+            <Col xs={24} className={classes["page-title"]}>
                 Eye Prescription Setting
-            </div>
-            <div className={classes["content-map-container"]}>
-                {eyeDetails?.map((item, index) => {
+            </Col>
+            <Col xs={24} className={classes["content-map-container"]}>
+               <Row justify="center" align="middle">
+              <Col xs={24} md={14}>
+              {eyeDetails?.map((item, index) => {
                     return (
                         <EyePrescriptionSlot
                             key={index}
@@ -227,17 +229,23 @@ const EyePrescription = ({ userId }) => {
                         />
                     );
                 })}
-                <div className={classes["button-wrapper"]}>
-                    <button
+              </Col>
+            <Col xs={24} md={14} className={classes["button-wrapper"]}>
+                    <Row justify="end" align="middle">
+                    <Col xs={10} md={7} className={classes['btn-grid']}>
+                        <button
                         className={classes["button"]}
                         onClick={handleSubmit}
                         disabled={disable}
                     >
                         Save
                     </button>
-                </div>
-            </div>
-        </div>
+                        </Col>
+                    </Row>
+                </Col>
+               </Row>
+            </Col>
+        </Row>
     );
 };
 
@@ -254,13 +262,14 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
         (item) => data?.name === item?.label
     )?.value;
     return (
-        <div className={classes["slot-container"]}>
-            <div className={classes["slot-header"]}>
+        <Row className={classes["slot-container"]}>
+            <Col xs={24}className={classes["slot-header"]}>
                 <div className={classes["header-title"]}>{`Show ${data?.name || ""
                     } If`}</div>
-            </div>
-            <div className={classes["slot-body"]}>
-                <div className={classes["slot-body-content"]}>
+            </Col>
+            <Col xs={24} className={classes["slot-body"]}>
+             <Row justify="space-between">
+             <Col xs={24} md={24} lg={12}className={classes["slot-body-content"]}>
                     <div className={classes["slot-body-label"]}>
                         Sphere (SPH)
                     </div>
@@ -302,8 +311,8 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
                     {sphErrValue && (
                         <div className={classes["error"]}>{sphErrValue}</div>
                     )}
-                </div>
-                <div className={classes["slot-body-content"]}>
+                </Col>
+                <Col xs={24} md={24} lg={12}className={classes["slot-body-content"]}>
                     <div className={classes["slot-body-label"]}>
                         Cylinder (CYL)
                     </div>
@@ -345,9 +354,10 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
                     {cylErrValue && (
                         <div className={classes["error"]}>{cylErrValue}</div>
                     )}
-                </div>
-            </div>
-        </div>
+                </Col>
+             </Row>
+            </Col>
+        </Row>
     );
 };
 
