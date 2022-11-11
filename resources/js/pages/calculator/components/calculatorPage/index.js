@@ -297,7 +297,7 @@ const CalculatorScreen = () => {
         <div className={classes["container"]}>
             <Formik
                 initialValues={{ ...calculatorState }}
-                validationSchema={Yup.object().shape({ ...calValidations })}
+                validationSchema={Yup.object().shape({})}
                 onSubmit={handleClick}
                 enableReinitialize
             >
