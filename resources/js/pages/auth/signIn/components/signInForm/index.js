@@ -83,16 +83,16 @@ const SignInForm = ({ userRole, dispatch }) => {
             }) => {
                 return (
                     <>
-
-                        <Col xs={22}>
-                            <div className={classes["login-title"]}>
-                                Log in
-                            </div>
-                            <div className={classes["login-subtitle"]}>
-                                Welcome to Urban Optics. Please put your
-                                login credentials below to start using the
-                                app.
-                            </div></Col>
+                        
+                       <Col xs={22}>
+                       <div className={classes["login-title"]}>
+                            Log in
+                        </div>
+                        <div className={classes["login-subtitle"]}>
+                            Welcome to Urban Optics. Please put your
+                            login credentials below to start using the
+                            app.
+                        </div></Col>
                         <Form
                             name="basic"
                             labelCol={{ span: 6, }}
@@ -101,7 +101,8 @@ const SignInForm = ({ userRole, dispatch }) => {
                             autoComplete="off"
                             className={classes['form-width']}
                         >
-
+                            <Row justify='center' align='middle'>
+                             <Col xs={22} sm={22} md={22} lg={22} xl={22}>
                             <Form.Item
                                 name="email"
                                 label="Email"
@@ -113,24 +114,25 @@ const SignInForm = ({ userRole, dispatch }) => {
                                     span: 20
                                 }}
                             >
-                                <Row>
-                                    <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-                                        <Input
-                                            size="large"
-                                            name='email'
-                                            className={classes["email-input"]}
-                                            value={values.email}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                        />
-                                    </Col>
-                                    <ErrorMessage
-                                        name={"email"}
-                                        component="div"
-                                        className={classes["error"]}
-                                    />
-                                </Row>
-                            </Form.Item>
+                             
+                             <Input
+                                    size="large"
+                                    name='email'
+                                    className={classes["email-input"]}
+                                    value={values.email}
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                />
+                            
+                                 <ErrorMessage
+                                     name={"email"}
+                                     component="div"
+                                     className={classes["error"]}
+                                   />
+                             
+                            </Form.Item> </Col></Row>
+                            <Row justify='center' align='middle'>
+                             <Col xs={22} sm={22} md={22} lg={22} xl={22}>
                             <Form.Item
                                 name="password"
                                 label='Password'
@@ -157,39 +159,43 @@ const SignInForm = ({ userRole, dispatch }) => {
                                     className={classes["error"]}
                                 />
                             </Form.Item>
-                            <div className={classes["forgot-password"]}>Forgot Password?</div>
+                            </Col></Row>
+                            <Row justify='center' align='middle'>
+                             <Col xs={22} sm={22} md={22} lg={22} xl={22}>
+                            <div className={classes["forgot-password"]}>Forgot Password?</div> 
                             <div className={classes["divider"]} />
-                            <Row>
-                                <Col xs={12}>
-                                    <Form.Item
-                                        name="remember"
-                                        valuePropName="checked"
-                                        wrapperCol={{
-                                            span: 16,
-                                        }}
-                                    >
-                                        <Checkbox checked={
+                            </Col></Row>
+                          <Row>
+                         <Col xs={12}>
+                         <Form.Item
+                                name="remember"
+                                valuePropName="checked"
+                                wrapperCol={{
+                                    span: 16,
+                                }}
+                            >
+                                <Checkbox checked={
                                             values?.remember || false
                                         }
-                                            id="remember"
-                                            name="remember"
-                                            onChange={(e) =>
-                                                setFieldValue("remember", e)}>
-                                            Remember me</Checkbox>
+                                        id="remember"
+                                        name="remember"
+                                        onChange={(e) =>
+                                            setFieldValue("remember", e)}>
+                                        Remember me</Checkbox>
+                               
+                            </Form.Item>
+                            </Col>
+                           <Col xs={12}>
+                          <Row justify={window.innerWidth<763?'center':"end"} align='middle'>
+                            <Col xs={12}>
+                            <Form.Item
 
-                                    </Form.Item>
-                                </Col>
-                                <Col xs={3}></Col>
-                                <Col xs={6}>
-                                    <Form.Item
-
-                                        wrapperCol={{
-                                            offset: 8,
-                                            span: 16,
-                                        }}
-                                    >
-                                        <Button type="primary" htmlType="submit" className={classes["submit-button"]}>
-                                            {
+wrapperCol={{
+    span: 16,
+}}
+>
+<Button type="primary" htmlType="submit" className={classes["submit-button"]}>
+{
                                                 buttonLoader === true ?
                                                     <span>
                                                         <p>Login</p>
@@ -198,10 +204,12 @@ const SignInForm = ({ userRole, dispatch }) => {
                                                     :
                                                     'Login'
                                             }
-                                        </Button>
-                                    </Form.Item></Col>
-                                <Col xs={3}></Col>
-                            </Row>
+</Button>
+</Form.Item>
+                            </Col>
+                          </Row>
+                          </Col>
+                          </Row>
                         </Form>
                     </>
                 );

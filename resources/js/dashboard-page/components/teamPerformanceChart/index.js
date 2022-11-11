@@ -101,6 +101,7 @@ const getChartOptions = (data) => {
             toolbar: {
                 show: false,
             },
+            offsetX: 6,
         },
         legend: {
             show: false,
@@ -123,6 +124,17 @@ const getChartOptions = (data) => {
 
         xaxis: {
             categories: data?.names || [],
+        },
+        yaxis: {
+            label: {
+                style: {
+                    color: ["#E8E8E8"],
+                },
+            },
+            labels: {
+                offsetX: -8,
+                offsetY: 1,
+            },
         },
         stroke: {
             show: true,

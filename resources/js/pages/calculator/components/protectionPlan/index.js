@@ -1,5 +1,5 @@
 import React from "react";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
@@ -122,182 +122,194 @@ const ProtectionPlan = ({
     return (
         <>
             {protectionPlanVisibility && (
-                <div className={classes["container"]}>
-                    <QuestionIcon
-                        icon={icon}
-                        iconClass={classes["icon-style"]}
-                        active={handleActiveFields()}
-                    />
-                    <div className={classes["vision-container"]}>
-                        <CalculatorHeading
-                            title="Protection Plan"
+                <Row className={classes["container"]}>
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={icon}
+                            iconClass={classes["icon-style"]}
                             active={handleActiveFields()}
-                        />
-                        <Radio.Group
-                            onBlur={handleBlur}
-                            onChange={handleProtectionPlanChange}
-                            value={values?.isProtectionPlan}
-                            id="isProtectionPlan"
-                            name="isProtectionPlan"
-                            className={classes["radio-group"]}
-                        >
-                            <CustomRadio
-                                label={"Yes"}
-                                value={"Yes"}
-                                active={values?.isProtectionPlan === "Yes"}
+                        />{" "}
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
+                        <div className={classes["vision-container"]}>
+                            <CalculatorHeading
+                                title="Protection Plan"
+                                active={handleActiveFields()}
                             />
+                            <Radio.Group
+                                onBlur={handleBlur}
+                                onChange={handleProtectionPlanChange}
+                                value={values?.isProtectionPlan}
+                                id="isProtectionPlan"
+                                name="isProtectionPlan"
+                                className={classes["radio-group"]}
+                            >
+                                <CustomRadio
+                                    label={"Yes"}
+                                    value={"Yes"}
+                                    active={values?.isProtectionPlan === "Yes"}
+                                />
 
-                            <CustomRadio
-                                label={"No"}
-                                value={"No"}
-                                active={values?.isProtectionPlan === "No"}
-                            />
-                        </Radio.Group>
-                        <FormikError name={"isProtectionPlan"} />
-                        {values?.isProtectionPlan === "Yes" && (
-                            <>
-                                <div className={classes["label"]}>
-                                    Please Select
-                                </div>
-                                <Radio.Group
-                                    onBlur={handleBlur}
-                                    onChange={handleProtectionPlanTypeChange}
-                                    value={values?.protectionPlanType}
-                                    id="protectionPlanType"
-                                    name="protectionPlanType"
-                                    className={classes["radio-group"]}
-                                >
-                                    {values?.benifitType !==
-                                        BenifitTypeEnums?.lens && (
-                                        <CustomRadio
-                                            label={
-                                                ProtectionPlanTypeEnum.lensesProtectionPlan
-                                            }
-                                            value={
-                                                ProtectionPlanTypeEnum.lensesProtectionPlan
-                                            }
-                                            active={
-                                                values?.protectionPlanType ===
-                                                ProtectionPlanTypeEnum.lensesProtectionPlan
-                                            }
-                                        />
-                                    )}
-
-                                    {values?.benifitType !==
-                                        BenifitTypeEnums?.frame && (
-                                        <CustomRadio
-                                            label={
-                                                ProtectionPlanTypeEnum.glassesProtectionPlan
-                                            }
-                                            value={
-                                                ProtectionPlanTypeEnum.glassesProtectionPlan
-                                            }
-                                            active={
-                                                values?.protectionPlanType ===
-                                                ProtectionPlanTypeEnum.glassesProtectionPlan
-                                            }
-                                        />
-                                    )}
-                                    {values?.benifitType !==
-                                        BenifitTypeEnums?.frame &&
-                                        values?.benifitType !==
+                                <CustomRadio
+                                    label={"No"}
+                                    value={"No"}
+                                    active={values?.isProtectionPlan === "No"}
+                                />
+                            </Radio.Group>
+                            <FormikError name={"isProtectionPlan"} />
+                            {values?.isProtectionPlan === "Yes" && (
+                                <>
+                                    <div className={classes["label"]}>
+                                        Please Select
+                                    </div>
+                                    <Radio.Group
+                                        onBlur={handleBlur}
+                                        onChange={
+                                            handleProtectionPlanTypeChange
+                                        }
+                                        value={values?.protectionPlanType}
+                                        id="protectionPlanType"
+                                        name="protectionPlanType"
+                                        className={classes["radio-group"]}
+                                    >
+                                        {values?.benifitType !==
                                             BenifitTypeEnums?.lens && (
                                             <CustomRadio
                                                 label={
-                                                    ProtectionPlanTypeEnum.both
+                                                    ProtectionPlanTypeEnum.lensesProtectionPlan
                                                 }
                                                 value={
-                                                    ProtectionPlanTypeEnum.both
+                                                    ProtectionPlanTypeEnum.lensesProtectionPlan
                                                 }
                                                 active={
                                                     values?.protectionPlanType ===
-                                                    ProtectionPlanTypeEnum.both
+                                                    ProtectionPlanTypeEnum.lensesProtectionPlan
                                                 }
                                             />
                                         )}
-                                </Radio.Group>
-                                <FormikError name={"protectionPlanType"} />
-                                {values?.protectionPlanType && (
-                                    <>
-                                        <div className={classes["label"]}>
-                                            Please Select
-                                        </div>
-                                        <Radio.Group
-                                            onBlur={handleBlur}
-                                            onChange={handleIsPaidClick}
-                                            value={values?.isProtectionPlanPaid}
-                                            id="isProtectionPlanPaid"
-                                            name="isProtectionPlanPaid"
-                                            className={classes["radio-group"]}
-                                        >
+
+                                        {values?.benifitType !==
+                                            BenifitTypeEnums?.frame && (
                                             <CustomRadio
-                                                label={"Paid"}
-                                                value={"Paid"}
+                                                label={
+                                                    ProtectionPlanTypeEnum.glassesProtectionPlan
+                                                }
+                                                value={
+                                                    ProtectionPlanTypeEnum.glassesProtectionPlan
+                                                }
                                                 active={
-                                                    values?.isProtectionPlanPaid ===
-                                                    "Paid"
+                                                    values?.protectionPlanType ===
+                                                    ProtectionPlanTypeEnum.glassesProtectionPlan
                                                 }
                                             />
-                                            <CustomRadio
-                                                label={"Unpaid"}
-                                                value={"Unpaid"}
-                                                active={
-                                                    values?.isProtectionPlanPaid ===
-                                                    "Unpaid"
-                                                }
-                                            />
-                                        </Radio.Group>
-                                        <FormikError
-                                            name={"isProtectionPlanPaid"}
-                                        />
-                                        {values?.isProtectionPlanPaid ===
-                                            "Paid" && (
-                                            <>
-                                                <div
-                                                    className={
-                                                        classes[
-                                                            "input-container"
-                                                        ]
+                                        )}
+                                        {values?.benifitType !==
+                                            BenifitTypeEnums?.frame &&
+                                            values?.benifitType !==
+                                                BenifitTypeEnums?.lens && (
+                                                <CustomRadio
+                                                    label={
+                                                        ProtectionPlanTypeEnum.both
                                                     }
-                                                >
+                                                    value={
+                                                        ProtectionPlanTypeEnum.both
+                                                    }
+                                                    active={
+                                                        values?.protectionPlanType ===
+                                                        ProtectionPlanTypeEnum.both
+                                                    }
+                                                />
+                                            )}
+                                    </Radio.Group>
+                                    <FormikError name={"protectionPlanType"} />
+                                    {values?.protectionPlanType && (
+                                        <>
+                                            <div className={classes["label"]}>
+                                                Please Select
+                                            </div>
+                                            <Radio.Group
+                                                onBlur={handleBlur}
+                                                onChange={handleIsPaidClick}
+                                                value={
+                                                    values?.isProtectionPlanPaid
+                                                }
+                                                id="isProtectionPlanPaid"
+                                                name="isProtectionPlanPaid"
+                                                className={
+                                                    classes["radio-group"]
+                                                }
+                                            >
+                                                <CustomRadio
+                                                    label={"Paid"}
+                                                    value={"Paid"}
+                                                    active={
+                                                        values?.isProtectionPlanPaid ===
+                                                        "Paid"
+                                                    }
+                                                />
+                                                <CustomRadio
+                                                    label={"Unpaid"}
+                                                    value={"Unpaid"}
+                                                    active={
+                                                        values?.isProtectionPlanPaid ===
+                                                        "Unpaid"
+                                                    }
+                                                />
+                                            </Radio.Group>
+                                            <FormikError
+                                                name={"isProtectionPlanPaid"}
+                                            />
+                                            {values?.isProtectionPlanPaid ===
+                                                "Paid" && (
+                                                <>
                                                     <div
                                                         className={
                                                             classes[
-                                                                "input-label"
+                                                                "input-container"
                                                             ]
                                                         }
                                                     >
-                                                        $
+                                                        <div
+                                                            className={
+                                                                classes[
+                                                                    "input-label"
+                                                                ]
+                                                            }
+                                                        >
+                                                            $
+                                                        </div>
+                                                        <input
+                                                            className={
+                                                                classes["input"]
+                                                            }
+                                                            type={"number"}
+                                                            onBlur={handleBlur}
+                                                            onChange={
+                                                                handleChange
+                                                            }
+                                                            value={
+                                                                values?.protectionPlanAmount
+                                                            }
+                                                            id="protectionPlanAmount"
+                                                            name="protectionPlanAmount"
+                                                            step={0.01}
+                                                            min={0.0}
+                                                        />
                                                     </div>
-                                                    <input
-                                                        className={
-                                                            classes["input"]
+                                                    <FormikError
+                                                        name={
+                                                            "protectionPlanAmount"
                                                         }
-                                                        type={"number"}
-                                                        onBlur={handleBlur}
-                                                        onChange={handleChange}
-                                                        value={
-                                                            values?.protectionPlanAmount
-                                                        }
-                                                        id="protectionPlanAmount"
-                                                        name="protectionPlanAmount"
-                                                        step={0.01}
-                                                        min={0.0}
                                                     />
-                                                </div>
-                                                <FormikError
-                                                    name={
-                                                        "protectionPlanAmount"
-                                                    }
-                                                />
-                                            </>
-                                        )}
-                                    </>
-                                )}
-                            </>
-                        )}
-                    </div>
-                </div>
+                                                </>
+                                            )}
+                                        </>
+                                    )}
+                                </>
+                            )}
+                        </div>
+                    </Col>
+                </Row>
             )}
         </>
     );

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services";
-
+import { Col, Row } from "antd";
 const defaultValues = {
     email: "",
     password: "",
@@ -59,6 +59,12 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
             setIsEdit(true);
         }
     };
+    const LoginValidation = Yup.object().shape({
+        email: Yup.string().email().required("Please enter a valid email address"),
+        password: Yup.string()
+            .min(6, "Password must have 6 characters")
+            .required("Please enter a valid password"),
+    });
     return (
         <div className={classes["container"]}>
             <div className={classes["title"]}>Staff Login</div>
@@ -71,8 +77,8 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                 {({ values, handleChange, handleSubmit, handleBlur }) => {
                     return (
                         <form onSubmit={handleSubmit} autoComplete="off">
-                            <div className={classes["sub-container"]}>
-                                <div className={classes["input-wrapper"]}>
+                            <Row className={classes["sub-container"]}justify="center" align="middle">
+                                <Col className={classes["input-wrapper"]} xs={24} md={12}>
                                     <div className={classes["subtitle"]}>
                                         Email Address
                                     </div>
@@ -92,8 +98,8 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         component="div"
                                         className={classes["error"]}
                                     />
-                                </div>
-                                <div className={classes["input-wrapper"]}>
+                                </Col>
+                                <Col className={classes["input-wrapper"]} xs={24} md={12}>
                                     <div className={classes["subtitle"]}>
                                         Password
                                     </div>
@@ -103,7 +109,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         value={values.password}
                                         className={classes["input"]}
                                         name="password"
-                                        placeholder="Enter Password"
+                                        placeholder={staffUser?.id?"●●●●●●":"Enter Password"}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         disabled={!isEdit && staffUser?.id}
@@ -113,9 +119,9 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         component="div"
                                         className={classes["error"]}
                                     />
-                                </div>
-                            </div>
-                            <div>
+                                </Col>
+                            </Row>
+                            <Row justify={window.innerWidth>763?"start":"center"} align="middle">
                                 <button
                                     type="submit"
                                     className={classes["button"]}
@@ -132,7 +138,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         {isEdit ? "Cancel" : "Edit"}
                                     </button>
                                 )}
-                            </div>
+                            </Row>
                         </form>
                     );
                 }}

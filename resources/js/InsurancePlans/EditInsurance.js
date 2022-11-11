@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Switch } from "antd";
+import { Switch, Col, Row  } from "antd";
+
 import classes from "./editInsurance.module.scss";
 import { useHistory, useParams } from "react-router";
 import Axios from "../Http";
@@ -126,76 +127,88 @@ function EditInsurance({ userId }) {
         loading == true ?
                     <CustomLoader buttonBool={false}/>
                 :
+        <Row justify="center" align="middle">
+        <Col xs={24}>
         <div className={classes["root-container"]}>
-                <div className={classes["container"]}>
-                    <div className={classes["page-title"]}>
-                        Edit {history?.location?.state}
-                    </div>
-                    <>
-                    <div
-                        className={classes["back-container"]}
-                        onClick={() => history.goBack()}
-                    >
-                        <img src={backArrow} className={classes["back-image"]} />
-                        <div className={classes["back-text"]}>Back</div>
-                    </div>
-                    <div className={classes["content-container"]}>
-                        <div className={classes["content-box"]}>
-                            <div className={classes["content-header"]}>
-                                <div className={classes["content-header-text"]}>
-                                    Select / De select questions
-                                </div>
-                                <div className={classes["content-header-text"]}>
-                                    Optional / Mandatory
-                                </div>
-                            </div>
-                            {selectedRow?.length > 0 &&
-                                selectedRow?.map((item) => {
-                                    return (
-                                        <div
-                                            className={classes["content-body-slot"]}
-                                            key={item?.id}
-                                        >
-                                            <CustomCheckbox
-                                                containerClass={
-                                                    classes["checkbox-container"]
-                                                }
-                                                labelClass={
-                                                    classes["checkbox-label"]
-                                                }
-                                                label={item?.title}
-                                                defaultChecked={
-                                                    item?.status || false
-                                                }
-                                                onValueChange={(value) =>
-                                                    handleCheck(item, value)
-                                                }
-                                            />
-
-                                            <Switch
-                                                disabled={
-                                                    item?.status == 0 ? true : false
-                                                }
-                                                defaultChecked={
-                                                    item?.optional == 0
-                                                        ? false
-                                                        : true
-                                                }
-                                                onChange={(e) =>
-                                                    handleSwitch(item, e)
-                                                }
-                                            />
-                                        </div>
-                                    );
-                                })}
+            <div className={classes["container"]}>
+                <Row>
+                    <Col xs={24}>
+                        <div className={classes["page-title"]}>
+                            Edit {history?.location?.state}
                         </div>
-                        <div className={classes["button-container"]}>
-                            <button
-                                onClick={handleSubmit}
-                                type="submit"
-                                className={classes["save-button"]}
-                            >
-                                {buttonLoader == false ?
+                    </Col>
+                </Row>
+
+                <Row>
+                    <Col xs={24}>
+                <div
+                    className={classes["back-container"]}
+                    onClick={() => history.goBack()}
+                >
+                    <img src={backArrow} className={classes["back-image"]} />
+                    <div className={classes["back-text"]}>Back</div>
+                </div>
+                </Col>
+                </Row>
+                <Row justify="center">
+                    <Col xs={24} md={14}>
+                        <div className={classes["content-container"]}>
+                            <div className={classes["content-box"]}>
+                                <div className={classes["content-header"]}>
+                                    <div className={classes["content-header-text"]}>
+                                        <p className={classes["header-text-left"]}>Select / De select questions</p>
+                                    </div>
+                                    <div className={classes["content-header-text"]}>
+                                        <p className={classes["header-text-right"]}>Optional / Mandatory</p>
+                                    </div>
+                                </div>
+                                {selectedRow?.length > 0 &&
+                                    selectedRow?.map((item) => {
+                                        return (
+                                            <div
+                                                className={classes["content-body-slot"]}
+                                                key={item?.id}
+                                            >
+                                                <CustomCheckbox
+                                                    containerClass={
+                                                        classes["checkbox-container"]
+                                                    }
+                                                    labelClass={
+                                                        classes["checkbox-label"]
+                                                    }
+                                                    label={item?.title}
+                                                    defaultChecked={
+                                                        item?.status || false
+                                                    }
+                                                    onValueChange={(value) =>
+                                                        handleCheck(item, value)
+                                                    }
+                                                />
+
+                                                <Switch
+                                                    disabled={
+                                                        item?.status == 0 ? true : false
+                                                    }
+                                                    defaultChecked={
+                                                        item?.optional == 0
+                                                            ? false
+                                                            : true
+                                                    }
+                                                    onChange={(e) =>
+                                                        handleSwitch(item, e)
+                                                    }
+                                                />
+                                            </div>
+                                        );
+                                    })}
+                            </div>
+                            <div className={classes["button-container"]}>
+                                <button
+                                    onClick={handleSubmit}
+                                    type="submit"
+                                    className={classes["save-button"]}
+                                >
+                                    {buttonLoader == false ?
                                 'Save'
                                  :
                                  <span>
@@ -203,12 +216,15 @@ function EditInsurance({ userId }) {
                                  <CustomLoader buttonBool={true}/>
                                  </span>
                                  }
-                            </button>
+                                </button>
+                            </div>
                         </div>
-                    </div>
-                    </>
-                </div>
+                </Col>
+                </Row>
+            </div>
         </div>
+        </Col>
+        </Row>
     );
 }
 const mapStateToProps = (state) => ({
