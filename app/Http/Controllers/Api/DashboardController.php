@@ -39,13 +39,15 @@ class DashboardController extends Controller
         //Get Start and End Dates for Previous (Month, Week etc)
         $prev_range_dates = $this->getPreviousRanges($request->start_date,$request->end_date);
                 
-        $total_prev_sales = Invoice::where('user_id',$client_id)->where('created_at','>=',$prev_range_dates['start_date'])->where('created_at','<=',$prev_range_dates['end_date'])->where('status','paid')->sum('amount');
+        
+
+        $total_prev_sales = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$prev_range_dates['start_date'], $prev_range_dates['end_date']])->where('status','paid')->sum('amount');
         $previous_sales_precent = $this->calculateDiffFromLastRange($total_sales,$total_prev_sales);
 
-        $amount_prev_estimate = Invoice::where('user_id',$client_id)->where('created_at','>=',$prev_range_dates['start_date'])->where('created_at','<=',$prev_range_dates['end_date'])->sum('amount');
+        $amount_prev_estimate = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$prev_range_dates['start_date'], $prev_range_dates['end_date']])->sum('amount');
         $previous_estimate_precent = $this->calculateDiffFromLastRange($amount_estimate,$amount_prev_estimate);
 
-        $total_prev_paid_orders = Invoice::where('user_id',$client_id)->where('created_at','>=',$prev_range_dates['start_date'])->where('created_at','<=',$prev_range_dates['end_date'])->where('status','paid')->count();
+        $total_prev_paid_orders = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$prev_range_dates['start_date'], $prev_range_dates['end_date']])->where('status','paid')->count();
         $previous_paid_orders_precent = $this->calculateDiffFromLastRange($total_paid_orders,$total_prev_paid_orders);
        
         $data['sales']['total_sale'] = "$".$total_sales;
