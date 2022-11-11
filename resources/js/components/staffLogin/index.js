@@ -63,7 +63,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
         email: Yup.string().email().required("Please enter a valid email address"),
         password: Yup.string()
             .min(6, "Password must have 6 characters")
-            .required(staffUser?.id?"The Password is not changed":"Please enter a valid password"),
+            .required("Please enter a valid password"),
     });
     return (
         <div className={classes["container"]}>
