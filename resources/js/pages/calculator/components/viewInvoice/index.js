@@ -25,9 +25,12 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { INVOICES_ROUTE } from "../../../../appRoutes/routeConstants";
 import UserInfo from "./components/userInfo";
-import OutPackPrices, { getPriceFromDB } from "./components/outPackPrices";
+import OutPackPrices from "./components/outPackPrices";
 import InPackPrices from "./components/inPackPrices";
 import { BenifitTypeEnums } from "../../data/initialValues";
+import DetailsList from "./components/detailsList/detailsList";
+import { getPriceFromDB } from "./helpers/getPriceFromDB";
+import { Col, Modal, Row } from "antd";
 
 const ViewInvoice = ({
     onClose,
@@ -116,26 +119,24 @@ const ViewInvoice = ({
     const calculateTotalDue = () => {
         let total = 0;
         total = total + totalWithoutTax();
-        console.log("total1", total);
-        total = total - getAppliedDiscounts(totalWithoutTax());
-        console.log("total2", total);
+
+        total = total - parseFloat(getAppliedDiscounts(totalWithoutTax()));
         //add tax
-        const tax = (total * (calculatorObj.tax || 0)) / 100;
+        const tax = (total * (calculatorObj?.tax || 0)) / 100;
         total = total + tax;
         return total || 0;
     };
 
     const getAppliedDiscounts = (price) => {
-        const discountToApply = parseFloat(
-            receipt?.values?.discount?.value || ""
-        );
+        const discountToApply =
+            parseFloat(receipt?.values?.discount?.value || "") || 0;
 
         if (discountToApply == 0) {
             return 0;
         } else {
-            return (price * discountToApply) / 100;
+            const result = (price * discountToApply) / 100;
+            return parseFloat(result);
         }
-
     };
 
     const totalWithoutTax = () => {
@@ -164,46 +165,68 @@ const ViewInvoice = ({
         return total;
     };
 
+    const oldPrices = () => {
+        return (
+            <>
+                <InPackPrices
+                    receipt={receipt}
+                    calculatorObj={calculatorObj}
+                    lensPrices={lensPrices}
+                />
+                <OutPackPrices
+                    withoutTaxPrice={totalWithoutTax()}
+                    totalPrice={calculateTotalDue()}
+                    receipt={receipt}
+                    calculatorObj={calculatorObj}
+                    lensPrices={lensPrices}
+                />
+            </>
+        );
+    };
+
     return (
-        <CustomModal onClose={onClose}>
-            <div
-                className={classes["container"]}
+        <Modal
+            onCancel={onClose}
+            title=""
+            open={true}
+            closable={true}
+            centered={true}
+            className={classes["container"]}
+            zIndex="99999"
+            bodyStyle={{
+                padding: 0,
+            }}
+            width={"80%"}
+            footer={null}
+        >
+            <Row
+                className={classes["sub-container"]}
                 onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                 }}
             >
-                <img
-                    src={closeIcon}
-                    alt={"close"}
-                    className={classes["close-icon"]}
-                    onClick={onClose}
-                />
-                <div className={classes["sub-container"]}>
+                <Col xs={24} sm={24} md={8} >
                     <UserInfo receipt={receipt} />
-                    <div className={classes["sub-right-container"]}>
-                        <InPackPrices
-                            receipt={receipt}
-                            calculatorObj={calculatorObj}
-                            lensPrices={lensPrices}
-                        />
-                        <OutPackPrices
-                            withoutTaxPrice={totalWithoutTax()}
-                            totalPrice={calculateTotalDue()}
-                            receipt={receipt}
-                            calculatorObj={calculatorObj}
-                            lensPrices={lensPrices}
-                        />
-                        <button
-                            className={classes["send-button"]}
-                            onClick={handleSendInvoiceClick}
-                        >
-                            {mode === "view" ? "Close" : "Send Invoice"}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </CustomModal>
+                </Col>
+                <Col xs={24} sm={24} md={16} className={classes["sub-right-container"]}>
+                    <DetailsList
+                        receipt={receipt}
+                        calculatorObj={calculatorObj}
+                        lensPrices={lensPrices}
+                        withoutTaxPrice={totalWithoutTax()}
+                        totalPrice={calculateTotalDue()}
+                    />
+
+                    <button
+                        className={classes["send-button"]}
+                        onClick={handleSendInvoiceClick}
+                    >
+                        {mode === "view" ? "Close" : "Send Invoice"}
+                    </button>
+                </Col>
+            </Row>
+        </Modal>
     );
 };
 
@@ -505,7 +528,7 @@ export const getPrivatePayAntireflective = (value, calculatorObj) => {
     );
     let total = 0;
     const selectedAntireflective = antiReflectiveAddons?.addons?.find(
-        (item) => item.title === value
+        (item) => item?.title === value
     )?.price;
     total = total + parseFloat(selectedAntireflective || 0) || 0;
 };
