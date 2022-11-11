@@ -709,7 +709,6 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
             }
         }
 
-    if (!materials || materials?.length <= 0) {
         return {
             lensPrice: lensPrice,
             materialPrice: materialPrice,
