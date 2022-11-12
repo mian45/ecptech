@@ -20,6 +20,9 @@ import iconRemainder from "../../images/remainder.svg";
 import bellIcon from "../../images/bell-icon.svg";
 import bellCloseIcon from "../../images/bell-close.svg";
 import emailButton from "../../images/email.svg";
+import Axios from "../Http";
+import CustomLoader from "../components/customLoader";
+
 import DeleteModal from "../components/deleteModal/index"
 import "./style.scss";
 import { Row,Col } from "antd";
@@ -37,7 +40,9 @@ const EmailSetting = (props) => {
     const [emailArray, setEmailArray] = useState([]);
     const [timeZones, setTimeZones] = useState([]);
     const [timeSelector,setTimeSelector]=useState("")
-    const [timeSelectorValue,setTimeSelectorValue]=useState("");
+    const [timeSelectorValue,setTimeSelectorValue]=useState("")
+    const [loading , setLoading] = useState(false)
+    const [buttonLoader , setButtonLoader] = useState(false)
     const [showDeleteReminder,setShowDeleteReminder]=useState(false)
     const [deleteReminderId,setDeleteReminderId]=useState(0)
     
@@ -83,6 +88,7 @@ const EmailSetting = (props) => {
         setEditorState(editorState);
     };
     const addReminder = () => {
+        setButtonLoader(true)
         var data = new FormData();
         if (reminderType === "orderComplete") {
             data.append("userId", props.userID);
@@ -132,13 +138,17 @@ const EmailSetting = (props) => {
         axios(config)
             .then(function (response) {
                 getReminder();
+                setButtonLoader(false)
             })
             .catch(function (error) {
+                setButtonLoader(true)
                 console.log(error);
+                setButtonLoader(false)
             });
     };
 
     const editReminder = (value) => {
+        setButtonLoader(true)
         var data = new FormData();
         if (reminderType === "orderComplete") {
             data.append("id", idState);
@@ -197,9 +207,12 @@ const EmailSetting = (props) => {
                 setIdState(null);
                 setTimeSelector("");
                 setTimeSelectorValue("")
+                setButtonLoader(false)
             })
             .catch(function (error) {
+                setButtonLoader(true)
                 console.log(error);
+                setButtonLoader(false)
             });
     };
 
@@ -226,6 +239,7 @@ const EmailSetting = (props) => {
     };
 
     const getReminder = () => {
+        setLoading(true)
         var data = new FormData();
 
         var config = {
@@ -241,9 +255,12 @@ const EmailSetting = (props) => {
             .then(function (response) {
                 let res = response.data.data;
                 setEmailArray(res);
+                setLoading(false)
             })
             .catch(function (error) {
+                setLoading(true)
                 console.log(error);
+                setLoading(false)
             });
     };
 
@@ -662,7 +679,13 @@ const EmailSetting = (props) => {
                                 marginBottom: "50px",
                             }}
                         >
-                            Save
+                            {buttonLoader == false ?
+                                        'Save' : 
+                                        <span>
+                                        <p>Save</p> 
+                                        <CustomLoader buttonBool={true}/>
+                                        </span>
+                                        }
                         </button>
                     </div>
                 </Row>
@@ -672,6 +695,8 @@ const EmailSetting = (props) => {
     }
    
     return (
+        loading == true ?
+        <CustomLoader buttonBool={false}/>  :
         <>
         {showDeleteReminder?
         <DeleteModal accept={()=>{

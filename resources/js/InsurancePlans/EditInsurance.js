@@ -7,7 +7,10 @@ import Axios from "../Http";
 import { connect } from "react-redux";
 import backArrow from "../../images/arrow-back.svg";
 import CustomCheckbox from "../components/customCheckbox";
+import CustomLoader from "../components/customLoader";
 function EditInsurance({ userId }) {
+    const [loading, setLoading] = useState(false)
+    const [buttonLoader , setButtonLoader] = useState(false)
     const [selectedRow, setSelectedRow] = React.useState([]);
     const [updateInsurancePlan, setUpdateInsurancePlan] = useState([]);
     const [visionID, setVisionId] = useState("");
@@ -16,16 +19,21 @@ function EditInsurance({ userId }) {
 
     //for editing
     React.useEffect(() => {
+        setLoading(true)
         setVisionId(params?.id);
 
         Axios.get(
             process.env.MIX_REACT_APP_URL +
-                `/api/get-client-plan-questions?visionPlanId=${params?.id}`
+            `/api/get-client-plan-questions?visionPlanId=${params?.id}`
         )
             .then((res) => {
                 setSelectedRow(res.data?.data);
+                setLoading(false)
             })
-            .catch((error) => console.log({ error }));
+            .catch((error) => {
+                console.log({ error })
+                setLoading(false)
+            });
     }, []);
 
     //for toggle switch
@@ -95,6 +103,7 @@ function EditInsurance({ userId }) {
     };
 
     const handleSubmit = async () => {
+        setButtonLoader(true)
         if (updateInsurancePlan.length == 0) {
             return;
         }
@@ -105,15 +114,19 @@ function EditInsurance({ userId }) {
         };
         await Axios.post(
             process.env.MIX_REACT_APP_URL +
-                `/api/update-user-plan-question-permission`,
+            `/api/update-user-plan-question-permission`,
             toggle
         ).then(() => {
             setUpdateInsurancePlan([]);
+            setButtonLoader(false)
         });
     };
 
     const label = { inputProps: { "aria-label": "Switch demo" } };
     return (
+        loading == true ?
+                    <CustomLoader buttonBool={false}/>
+                :
         <Row justify="center" align="middle">
         <Col xs={24}>
         <div className={classes["root-container"]}>
@@ -195,7 +208,14 @@ function EditInsurance({ userId }) {
                                     type="submit"
                                     className={classes["save-button"]}
                                 >
-                                    Save
+                                    {buttonLoader == false ?
+                                'Save'
+                                 :
+                                 <span>
+                                 <p>Save</p> 
+                                 <CustomLoader buttonBool={true}/>
+                                 </span>
+                                 }
                                 </button>
                             </div>
                         </div>

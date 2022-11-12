@@ -9,15 +9,19 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import Axios from "../Http";
 import { CREATE_INVOICE_ROUTE } from "../appRoutes/routeConstants";
+import CustomLoader from '../../js/components/customLoader/index'
 
 const Invoices = ({ userId, clientUserId, userRole }) => {
     const [isSearched, setIsSearched] = useState(false);
     const [tableData, setTableData] = useState([]);
+    const [loading, setLoading] = useState(false)
+    const [buttonLoader, setButtonLoader] = useState(false)
     const history = useHistory();
 
     useEffect(() => {
         if (!userId) return;
         const getAllInvoices = async () => {
+            setLoading(true)
             let clientId = userId;
             if (userRole === "staff") {
                 clientId = clientUserId;
@@ -29,6 +33,7 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 }
             );
             setTableData(res?.data?.data);
+            setLoading(false)
         };
         getAllInvoices();
     }, [userId]);
@@ -60,20 +65,25 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 invoiceObject
             );
             setTableData(res?.data?.data);
+            setButtonLoader(false)
         } catch (err) {
             setIsSearched(false);
             console.log("error while search", err);
+            setButtonLoader(false)
         }
     };
 
     return (
+                    loading == true ?
+                        <CustomLoader buttonBool={false}/>
+                     :
         <div className={classes["root-container"]}>
             <div className={classes["container"]}>
                 <div className={classes["title"]}>Invoices</div>
                 <Formik
-                    initialValues={InvoiceInitialValues}
-                    validationSchema={InvoiceValidation}
-                    onSubmit={handleClick}
+                initialValues={InvoiceInitialValues}
+                validationSchema={InvoiceValidation}
+                onSubmit={handleClick}
                 >
                     {(formProps) => {
                         return (
@@ -91,12 +101,17 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                     }}
                 </Formik>
                 <div className={classes["table-container"]}>
+                    {
+                        loading == true ? 
+                        <CustomLoader buttonBool={false}/> :
                     <InvoicesTable data={tableData} />
+                    }
                 </div>
-            </div>
-        </div>
-    );
-};
+                
+                </div>
+                </div>
+                );
+            };
 const mapStateToProps = (state) => ({
     userId: state.Auth?.user?.id,
     userRole: state.Auth.userRole?.name,

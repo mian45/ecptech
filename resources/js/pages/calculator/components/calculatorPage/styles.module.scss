@@ -21,12 +21,23 @@
     color: #ffffff;
     border: none;
     background-color: #6fa5cb;
-    width: 178px;
+    min-width: 178px;
     align-self: flex-end;
     margin-top: 22px;
     float: right;
     &:disabled {
         background-color: #cbcbcb;
+    }
+
+    span {
+        display: flex;
+        align-items: center;
+
+        p {
+            font-size: 14px;
+            margin: 0 !important;
+            margin-right: 5px !important;
+        }
     }
 }
 .private-pay-title {

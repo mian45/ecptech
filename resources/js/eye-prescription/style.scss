@@ -63,6 +63,18 @@
         &:hover {
             background-color: #518fbb;
         }
+
+
+    span {
+        display: flex;
+        align-items: center;
+
+        p {
+            font-size: 14px;
+            margin: 0 !important;
+            margin-right: 5px !important;
+        }
+    }
     }
 }
 

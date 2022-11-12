@@ -31,6 +31,7 @@ import {
     LensBenifitAvailableEnum,
 } from "../../data/enums";
 import backArrow from "../../../../../images/black-arrow.svg";
+import CustomLoader from "../../../../components/customLoader";
 import CustomDiscount from "../customDiscount";
 import { Col } from "antd";
 
@@ -45,6 +46,8 @@ const CalculatorScreen = () => {
         ...CalculatorInitialValues,
     });
     const [lensPrices, setLensPrices] = useState({});
+    const [loading, setLoading] = useState(false)
+    const [buttonLoader, setButtonLoader] = useState(false)
     const editInvoiceState = history?.location?.state?.invoice;
     let scrollRef = useRef();
 
@@ -87,6 +90,7 @@ const CalculatorScreen = () => {
         }
     }, [history?.location?.state]);
     const getCalculatorObject = async (values) => {
+        setLoading(true)
         try {
             const res = await Axios.get(
                 process.env.MIX_REACT_APP_URL + "/api/calculater-data"
@@ -110,8 +114,11 @@ const CalculatorScreen = () => {
                 currentPlan?.question_permissions
             );
             setCalValidations(validations);
+            setLoading(false)
         } catch (err) {
+            setLoading(true)
             console.log("error while fetching Data");
+            setLoading(false)
         }
     };
 
@@ -119,6 +126,7 @@ const CalculatorScreen = () => {
         setShowInvoice(false);
     };
     const getBaseValues = async (values) => {
+        setButtonLoader(true)
         try {
             const planId = calculatorObj?.questions?.find(
                 (item) => item.title === values?.visionPlan
@@ -155,8 +163,10 @@ const CalculatorScreen = () => {
                 payload
             );
             setLensPrices(res?.data?.data);
+            setButtonLoader(false)
         } catch (err) {
             console.log("error while get data");
+            setButtonLoader(false)
         }
     };
 
@@ -247,6 +257,8 @@ const CalculatorScreen = () => {
         calValidations,
     }) => {
         return (
+            loading == true ? 
+            <CustomLoader buttonBool={false}/> :
             <>
                 <LensType
                     formProps={formProps}
@@ -661,7 +673,15 @@ const CalculatorScreen = () => {
                                         LensBenifitAvailableEnum.onlyThisTime
                                 }
                             >
-                                Create Invoice
+                                {
+                                    buttonLoader == true ? 
+                                    <span>
+                                    <p>Create Invoice</p> 
+                                    <CustomLoader buttonBool={true}/>
+                                    </span>
+                                    : 
+                                    'Create Invoice'
+                                }
                             </button>
                         </form>
                     );

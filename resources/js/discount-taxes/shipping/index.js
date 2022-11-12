@@ -4,6 +4,8 @@ import Axios from "../../Http";
 import { connect } from "react-redux";
 import edit from "../../../images/edit.png";
 import cross from "../../../images/cross.png";
+import CustomLoader from "../../components/customLoader";
+
 import DeleteModal from "../../components/deleteModal/index"
 import {Row,Col} from "antd"
 const ShippingSettings = ({ userId }) => {
@@ -11,6 +13,8 @@ const ShippingSettings = ({ userId }) => {
     const [shippingAmount, setShippingAmount] = useState("");
     const [shipping, setShipping] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [shippingButtonLoader , setShippingButtonLoader] = useState(false)
+
     const [editState,setEditState]=useState(false)
     const [showDeleteShipping,setShowDeleteShipping]=useState(false)
     const [deleteShippingId,setDeleteShippingId]=useState(0)
@@ -55,6 +59,7 @@ const ShippingSettings = ({ userId }) => {
        setShowDeleteShipping(true)
     };
     const handleShippingSubmit = async (e) => {
+        setShippingButtonLoader(true)
         e?.preventDefault();
 
         try {
@@ -72,8 +77,10 @@ const ShippingSettings = ({ userId }) => {
             setEditState(false)
             setShippingAmount("");
             setIsSubmitted(true);
+            setShippingButtonLoader(false)
         } catch (err) {
             console.log("error while adding shipping");
+            setShippingButtonLoader(false)
         }
     };
 
@@ -144,7 +151,12 @@ const ShippingSettings = ({ userId }) => {
                                     : ""
                             } `}
                         >
-                            {editState?"Update":"Add"}
+                            {editState?"Update":shippingButtonLoader == true ? 
+                                  <span>
+                                  <p>Add</p> 
+                                  <CustomLoader buttonBool={true}/>
+                                  </span> :
+                                    'Add'}
                         </button>
                                                         </Col>
                                                     </Row>

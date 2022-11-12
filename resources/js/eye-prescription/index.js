@@ -2,12 +2,14 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Select } from "antd";
 const { Option } = Select;
+import CustomLoader from "../components/customLoader";
 import Axios from "../../js/Http";
 import "./style.scss";
 
 const EyePrescription = (props) => {
     const [saveState, setSaveState] = useState(false);
-
+    const [loading , setLoading] = useState(false)
+    const [buttonLoader , setButtonLoader] = useState(false)
     const [updateData, setUpdatedData] = useState([]);
     const [showData, setShowData] = useState([
         {
@@ -101,6 +103,7 @@ const EyePrescription = (props) => {
 
     const addEyePrescriptions = async () => {
         try {
+            setButtonLoader(true)
             setSaveState(true);
             var data = {
                 eye_prescriptions: updateData,
@@ -110,12 +113,14 @@ const EyePrescription = (props) => {
                 process.env.MIX_REACT_APP_URL + "/api/eye-prescriptions",
                 data
             );
+            setButtonLoader(false)
         } catch {
             console.log("not updated");
         }
     };
     const getEyePrescriptions = async () => {
         try {
+            setLoading(true)
             setSaveState(true);
             const res = await Axios.get(
                 process.env.MIX_REACT_APP_URL +
@@ -133,15 +138,21 @@ const EyePrescription = (props) => {
                 });
                 setShowData(newState);
             }
+            setLoading(false)
             setSaveState(false);
         } catch (err) {
+            setLoading(true)
             setSaveState(false);
+            setLoading(false)
         }
     };
     useEffect(() => {
         getEyePrescriptions();
     }, []);
     return (
+        loading == true ? 
+                <CustomLoader buttonBool={false}/>  
+                :
         <div className="eye-prescription">
             <p className="eye-prescription_heading">
             Glasses Prescription Settings
@@ -400,7 +411,12 @@ const EyePrescription = (props) => {
                             marginTop: "20px",
                         }}
                     >
-                        Save
+                        {buttonLoader == false ?
+                        'Save' :  
+                        <span>
+                        <p>Save</p> 
+                        <CustomLoader buttonBool={true}/>
+                        </span>}
                     </button>
                 </div>
             </div>

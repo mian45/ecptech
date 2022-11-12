@@ -5,12 +5,13 @@ import classes from "./styles.module.scss";
 import Axios from "../../../Http";
 import { connect } from "react-redux";
 
-const StaffListTable = ({ userId }) => {
+const StaffListTable = ({setLoading, userId }) => {
     const [staffList, setStaffList] = useState([]);
 
     useEffect(() => {
         if (!userId) return;
         const getStaffList = async () => {
+            setLoading(true)
             try {
                 const invoiceData = {
                     start_date: "2022-08-16",
@@ -21,8 +22,10 @@ const StaffListTable = ({ userId }) => {
                     invoiceData
                 );
                 setStaffList(res?.data?.data);
+                setLoading(false)
             } catch (err) {
                 console.log("Error while getting staff");
+                setLoading(false)
             }
         };
 

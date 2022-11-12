@@ -10,6 +10,7 @@ import axios from "axios";
 
 const { Option } = Select;
 import { Switch } from "antd";
+import CustomLoader from "../components/customLoader";
 import DeleteModal from "../components/deleteModal/index"
 const label = { inputProps: { "aria-label": "Switch demo" } };
 const DiscountTaxes = (props) => {
@@ -40,6 +41,10 @@ const DiscountTaxes = (props) => {
     let [taxLoading,setTaxLoading]=useState(false)
     const [taxStatus,setTaxStatus]=useState("inactive")
     const [editId, setEditId] = useState("");
+    const [loading , setLoading] = useState(false)
+    const [discountButtonLoader , setDiscountButtonLoader] = useState(false)
+    const [taxButtonLoader , setTaxButtonLoader] = useState(false)
+    
 
     useEffect(() => {
         getState();
@@ -49,6 +54,7 @@ const DiscountTaxes = (props) => {
     }, []);
 
     const addDiscount = () => {
+        setDiscountButtonLoader(true);
         let data = new FormData();
         data.append("userId", props.userID);
         data.append("name", discountName);
@@ -59,7 +65,7 @@ const DiscountTaxes = (props) => {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
-            data: data,
+            data: data
         };
 
         axios(config)
@@ -69,8 +75,10 @@ const DiscountTaxes = (props) => {
                 setDiscountTax("");
                 getDiscount();
                 setDiscountLoading(false)
+                setDiscountButtonLoader(false)
             })
             .catch(function (error) {
+                setDiscountButtonLoader(false)
                 console.log(error);
             });
     };
@@ -99,6 +107,7 @@ const DiscountTaxes = (props) => {
     };
 
     const addTax = () => {
+        setTaxButtonLoader(true)
         let data = new FormData();
         data.append("userId", props.userID);
         data.append("stateId", stateSetting);
@@ -122,13 +131,16 @@ const DiscountTaxes = (props) => {
                 setIdState(null);
                 getTaxes();
                 setTaxLoading(false)
+                setTaxButtonLoader(false)
             })
             .catch(function (error) {
                 console.log(error);
+                setTaxButtonLoader(false)
             });
     };
 
     const editTax = (values) => {
+        setTaxButtonLoaderButtonLoader(true)
         let data = new FormData();
         data.append("id", idState);
         data.append("stateId", stateSetting);
@@ -148,15 +160,16 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 getTaxes();
-
                 setTaxName("");
                 setStateSetting("");
                 setTaxValue("");
                 setIdState(null);
                 setTaxLoading(false)
+                setTaxButtonLoader(false)
             })
             .catch(function (error) {
                 console.log(error);
+                setTaxButtonLoader(false)
             });
     };
 
@@ -245,6 +258,7 @@ const DiscountTaxes = (props) => {
             });
     };
     const updateDiscount = () => {
+        setButtonLoader(true)
         var data = new FormData();
         data.append("id", discountId);
         data.append("name", discountName);
@@ -266,9 +280,11 @@ const DiscountTaxes = (props) => {
                 setDiscountId(null);
                 getDiscount();
                 setDiscountLoading(false)
+                setTaxButtonLoader(false)
             })
             .catch(function (error) {
                 console.log(error);
+                setButtonLoader(false)
             });
     };
     const handleSubmit = (e) => {
@@ -346,6 +362,7 @@ const DiscountTaxes = (props) => {
     };
 
     const getDiscount = () => {
+        setLoading(true)
         let data = new FormData();
 
         let config = {
@@ -360,13 +377,16 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 setDiscounts(response.data.data);
+                setLoading(false)
             })
             .catch(function (error) {
                 console.log(error);
+                setLoading(false)
             });
     };
 
     const getTaxes = () => {
+        setLoading(true)
         let data = new FormData();
 
         let config = {
@@ -382,13 +402,16 @@ const DiscountTaxes = (props) => {
             .then(function (response) {
                 let taxes = response.data.data;
                 setTaxes(taxes);
+                setLoading(false)
             })
             .catch(function (error) {
                 console.log(error);
+                setLoading(false)
             });
     };
 
     const getShipping = () => {
+        setLoading(true)
         let data = new FormData();
 
         let config = {
@@ -404,9 +427,11 @@ const DiscountTaxes = (props) => {
             .then(function (response) {
                 let shippingTax = response.data.data;
                 setShipping(shippingTax);
+                setLoading(false)
             })
             .catch(function (error) {
                 console.log(error);
+                setLoading(false)
             });
     };
 
@@ -461,7 +486,10 @@ const DiscountTaxes = (props) => {
             });
     }
     return (
-        <>
+            
+                loading == true ?
+                <CustomLoader buttonBool={false}  />:
+        <> 
             {showDeleteTaxes?
             <DeleteModal accept={()=>{
                 deleteTax(deleteTaxesId);
@@ -558,7 +586,14 @@ const DiscountTaxes = (props) => {
                                                             } `}
                                                             type="submit"
                                                         >
-                                                            {discountId==null?"Add":"Update"}
+                                                            {discountId==null?
+                                    discountButtonLoader == true ? 
+                                    <span>
+                                    <p>Add</p> 
+                                    <CustomLoader buttonBool={true}/>
+                                    </span> :
+                                    'Add'
+                                :"Update"}
                                                         </button>
                                                         </Col>
                                                     </Row>
@@ -717,7 +752,12 @@ const DiscountTaxes = (props) => {
                                                                             } `}
                                                                             type="submit"
                                                                         >
-                                                                            {idState==null?"Add":"Update"}
+                                                                            {idState==null? taxButtonLoader == true ? 
+                                    <span>
+                                    <p>Add</p> 
+                                    <CustomLoader buttonBool={true}/>
+                                    </span>  :
+                                    'Add':"Update"}
                                                                         </button>
                                                         </Col>
                                                     </Row>                                                    </Col>
