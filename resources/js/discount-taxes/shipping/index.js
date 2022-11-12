@@ -191,6 +191,7 @@ const ShippingSettings = ({ userId }) => {
                                     src={edit}
                                     onClick={() => {
                                         setEditState(true)
+                                        setShippingLoading(true)
                                         handleUpdateShipping(shipping);
                                     }}
                                 />
