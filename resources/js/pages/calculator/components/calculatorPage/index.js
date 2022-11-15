@@ -257,8 +257,6 @@ const CalculatorScreen = () => {
         calValidations,
     }) => {
         return (
-            loading == true ? 
-            <CustomLoader buttonBool={false}/> :
             <>
                 <LensType
                     formProps={formProps}
