@@ -229,7 +229,7 @@ p {
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-position: center;
-    top: 30% !important;
+    top: 40% !important;
     transform: rotate(180deg) !important;
 }
 .swiper-button-next::after {
@@ -240,8 +240,7 @@ p {
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-position: center;
-
-    top: 30% !important;
+    top: 40% !important;
 }
 .swiper-button-prev::after {
     display: none;
@@ -480,4 +479,10 @@ button.ant-modal-close:hover {
 }
 .ant-select-auto-complete {
     width: 100% !important;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
 }
