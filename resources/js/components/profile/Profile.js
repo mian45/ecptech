@@ -57,7 +57,8 @@ const ProfileInfoSection = ({ userId,user,getAuthentication }) => {
         themeType: 0,
     };
 
-    const handleSaveClick = async (values) => {
+    const handleSaveClick = async (values,actions) => {
+    
         try {
             const personalInfo = new FormData();
             personalInfo.append("logo", values.profileImage);
@@ -71,6 +72,7 @@ const ProfileInfoSection = ({ userId,user,getAuthentication }) => {
                 personalInfo
             ).then(()=>{
                 getAuthentication()
+                actions.setSubmitting(false)
             });
         } catch (err) {
             console.log("error while save changes", err);
@@ -86,7 +88,7 @@ const ProfileInfoSection = ({ userId,user,getAuthentication }) => {
             actions.setFieldError("themeColor", "Invalid color code");
             return;
         }
-        handleSaveClick(values);
+        handleSaveClick(values,actions);
     };
     return (
         <Formik
@@ -111,7 +113,9 @@ const ProfileInfoSection = ({ userId,user,getAuthentication }) => {
                     <form onSubmit={handleSubmit} autoComplete="off">
                         <PhotoUpload
                             values={values}
-                            handleChange={handleChange}
+                            handleChange={(e)=>{
+                            handleChange(e)
+                        }}
                             handleBlur={handleBlur}
                             setFieldValue={setFieldValue}
                             setFieldError={setFieldError}
