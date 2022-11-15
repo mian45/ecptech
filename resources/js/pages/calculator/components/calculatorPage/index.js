@@ -35,7 +35,7 @@ import CustomLoader from "../../../../components/customLoader";
 import CustomDiscount from "../customDiscount";
 import { Col } from "antd";
 
-const CalculatorScreen = () => {
+const CalculatorScreen = ({setLoading , loading}) => {
     const history = useHistory();
     const [showInvoice, setShowInvoice] = useState(false);
     const [calculatorObj, setCalculatorObj] = useState(null);
@@ -46,7 +46,6 @@ const CalculatorScreen = () => {
         ...CalculatorInitialValues,
     });
     const [lensPrices, setLensPrices] = useState({});
-    const [loading, setLoading] = useState(false)
     const [buttonLoader, setButtonLoader] = useState(false)
     const editInvoiceState = history?.location?.state?.invoice;
     let scrollRef = useRef();
@@ -118,7 +117,6 @@ const CalculatorScreen = () => {
         } catch (err) {
             setLoading(true)
             console.log("error while fetching Data");
-            setLoading(false)
         }
     };
 
