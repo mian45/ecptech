@@ -115,8 +115,8 @@ const CalculatorScreen = ({setLoading , loading}) => {
             setCalValidations(validations);
             setLoading(false)
         } catch (err) {
-            setLoading(true)
             console.log("error while fetching Data");
+            setLoading(true)
         }
     };
 
