@@ -5,17 +5,13 @@ import { Col, Row } from "antd";
 import CustomLoader from "../../components/customLoader";
 
 const Calculator = () => {
-    const [loading, setLoading] = useState(true)
     return (
         <Row className={classes["root-container"]}>
-            {
-                loading == true ?
-                <CustomLoader buttonBool={false}/> : 
             <Col className={classes["container"]} xs={24}>
                 <div className={classes["page-title"]}>Create Invoice</div>
-                <CalculatorScreen setLoading={setLoading} loading={loading} />
+                <CalculatorScreen/>
             </Col>
-            }
+            
         </Row>
     );
 };

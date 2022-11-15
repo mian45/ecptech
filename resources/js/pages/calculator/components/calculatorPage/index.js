@@ -35,13 +35,14 @@ import CustomLoader from "../../../../components/customLoader";
 import CustomDiscount from "../customDiscount";
 import { Col } from "antd";
 
-const CalculatorScreen = ({setLoading , loading}) => {
+const CalculatorScreen = () => {
     const history = useHistory();
     const [showInvoice, setShowInvoice] = useState(false);
     const [calculatorObj, setCalculatorObj] = useState(null);
     const [calValidations, setCalValidations] = useState(null);
     const [calValues, setCalValues] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
+    const [loading, setLoading] = useState(true)
     const [calculatorState, setCalculatorState] = useState({
         ...CalculatorInitialValues,
     });
@@ -89,8 +90,8 @@ const CalculatorScreen = ({setLoading , loading}) => {
         }
     }, [history?.location?.state]);
     const getCalculatorObject = async (values) => {
+        setLoading(true)
         try {
-            setLoading(true)
             const res = await Axios.get(
                 process.env.MIX_REACT_APP_URL + "/api/calculater-data"
             );
@@ -305,7 +306,7 @@ const CalculatorScreen = ({setLoading , loading}) => {
     };
     return (
         <Col className={classes["container"]} sm={24} md={24} lg={18}>
-            <Formik
+           {loading?<><CustomLoader buttonBool={false}/></>: <Formik
                 initialValues={{ ...calculatorState }}
                 validationSchema={Yup.object().shape({})}
                 onSubmit={handleClick}
@@ -681,7 +682,7 @@ const CalculatorScreen = ({setLoading , loading}) => {
                         </form>
                     );
                 }}
-            </Formik>
+            </Formik>}
         </Col>
     );
 };
