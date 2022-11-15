@@ -142,7 +142,7 @@ const ShippingSettings = ({ userId }) => {
                                                         <Col xs={24}>
                                                         <p class="input-title hidden-text">Value</p>
                                                         </Col>
-                                                        <Col xs={12} md={4}>   
+                                                        <Col xs={24} className="btn_section">   
                                                         <button
                             onClick={handleShippingSubmit}
                             className={`save-button ${

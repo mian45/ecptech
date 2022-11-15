@@ -64,7 +64,7 @@ const Header = ({}) => {
                 </Col>
                 <Col md={5} xs={12} className={classes['logout-box']}>
                 <h6 className={classes["logout"]} onClick={()=>{Logout()}}>Logout</h6>
-                 <Profile closeModal={closeModal} open={showProfile} />
+                 <Profile closeModal={closeModal} open={showProfile} getAuthentication={getAuthentication}/>
                 </Col>
                 </Row>
                 </Col>

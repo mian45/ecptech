@@ -131,7 +131,7 @@ const AddStaffMember = ({ userId,setLoading }) => {
     return (
         <div className={classes["container"]}>
             <div className={classes["label"]}>Add Staff Members</div>
-            <Row justify="center" align="middle">
+            <Row justify="space-between" align="middle">
                <Col xs={18}>
                <input
                     className={classes["input-field"]}
@@ -140,7 +140,7 @@ const AddStaffMember = ({ userId,setLoading }) => {
                     value={staffInput}
                 />
                 </Col>
-                <Col xs={6}>
+                <Col xs={5}>
                     <Row className={`${
                         classes["tick-wrapper"]
                     } ${getBackgroundButton()}`}
@@ -188,6 +188,7 @@ const StaffMemberSlot = ({ staff, handleEdit, handleDelete }) => {
                 await handleDelete(staff?.id)
                 setShowDelete(false)
             }}
+            open={showDelete}
             cancel={()=>{setShowDelete(false)}}/> :null}
              <Row className={classes["slot-container"]} justify={"center"} align={"middle"}>
             <Col xs={18}>

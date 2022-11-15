@@ -576,7 +576,7 @@ const DiscountTaxes = (props) => {
                                                         <Col xs={24}>
                                                         <p class="input-title hidden-text">Value</p>
                                                         </Col>
-                                                        <Col xs={12} md={4}>   
+                                                        <Col xs={24} className="btn_section">   
                                                         <button
                                                             onClick={handleSubmit}
                                                             className={`save-button ${
@@ -685,10 +685,10 @@ const DiscountTaxes = (props) => {
                                                 <Row justify="space-between">
                                                     <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
                                                         <Row justify="center" align="middle">
-                                                          <Col xs={24}>
+                                                          <Col xs={23}>
                                                           <p className="input-title">Tax Name</p>
                                                                        </Col>  
-                                                          <Col xs={24}>
+                                                          <Col xs={23}>
                                                           <input
                                                                             placeholder="Enter Tax Name"
                                                                             value={taxName}
@@ -700,10 +700,10 @@ const DiscountTaxes = (props) => {
                                                     </Col>    
                                                     <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
                                                         <Row justify="center" align="middle">
-                                                            <Col xs={24}>
+                                                            <Col xs={23}>
                                                             <p className="input-title">Tax Value (%)</p>
                                                                                                                                     </Col>
-                                                            <Col xs={24}>
+                                                            <Col xs={23}>
                                                             <input
                                                                             type={"number"}
                                                                             min={0}
@@ -738,7 +738,7 @@ const DiscountTaxes = (props) => {
                                                         <Col xs={24}>
                                                         <p class="input-title hidden-text">Value</p>
                                                         </Col>
-                                                        <Col xs={12} md={4}>   
+                                                        <Col xs={23} className="btn_section">   
                                                         <button
                                                                             onClick={(e) => {
                                                                                 idState !== null

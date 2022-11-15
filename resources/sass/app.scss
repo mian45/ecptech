@@ -231,6 +231,8 @@ p {
     background-position: center;
     top: 40% !important;
     transform: rotate(180deg) !important;
+    height: 21px !important;
+    width: 21px !important;
 }
 .swiper-button-next::after {
     display: none;
@@ -241,6 +243,8 @@ p {
     background-size: 100% auto;
     background-position: center;
     top: 40% !important;
+    height: 21px !important;
+    width: 21px !important;
 }
 .swiper-button-prev::after {
     display: none;

@@ -9,7 +9,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import {Row, Col, Drawer} from 'antd';
-const Profile = ({ userId, closeModal,user, userRole,open }) => {
+const Profile = ({ userId, closeModal,user, userRole,open,getAuthentication }) => {
     return (
         <Drawer
         title=""
@@ -26,7 +26,7 @@ const Profile = ({ userId, closeModal,user, userRole,open }) => {
                 }`}
                 onClick={(e) => e.stopPropagation()}
             >
-                <ProfileInfoSection userId={userId} user={user}/>
+                <ProfileInfoSection userId={userId} user={user} getAuthentication={()=>{getAuthentication()}}/>
                 {userRole !== "staff" && (
                     <ProfilePasswordValidations userId={userId} />
                 )}
@@ -49,7 +49,7 @@ const profileValidations = Yup.object().shape({
         .required("Name is Required"),
 });
 
-const ProfileInfoSection = ({ userId,user }) => {
+const ProfileInfoSection = ({ userId,user,getAuthentication }) => {
     const defaultProfileState = {
         businessName: user?.buisnessName?user?.buisnessName:'',
         profileImage: null,
@@ -69,7 +69,9 @@ const ProfileInfoSection = ({ userId,user }) => {
             await axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/edit-profile`,
                 personalInfo
-            );
+            ).then(()=>{
+                getAuthentication()
+            });
         } catch (err) {
             console.log("error while save changes", err);
         }
