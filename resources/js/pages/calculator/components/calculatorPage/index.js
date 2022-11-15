@@ -89,8 +89,8 @@ const CalculatorScreen = ({setLoading , loading}) => {
         }
     }, [history?.location?.state]);
     const getCalculatorObject = async (values) => {
-        setLoading(true)
         try {
+            setLoading(true)
             const res = await Axios.get(
                 process.env.MIX_REACT_APP_URL + "/api/calculater-data"
             );
@@ -116,7 +116,6 @@ const CalculatorScreen = ({setLoading , loading}) => {
             setLoading(false)
         } catch (err) {
             console.log("error while fetching Data");
-            setLoading(true)
         }
     };
 

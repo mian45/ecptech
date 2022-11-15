@@ -5,7 +5,7 @@ import { Col, Row } from "antd";
 import CustomLoader from "../../components/customLoader";
 
 const Calculator = () => {
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(true)
     return (
         <Row className={classes["root-container"]}>
             {
