@@ -6,10 +6,9 @@ import tickIcon from "../../../../images/tick.svg";
 import editIcon from "../../../../images/edit-icon.svg";
 import deleteIcon from "../../../../images/delete-icon.svg";
 import Axios from "../../../Http";
-
 import DeleteModal from "../../../components/deleteModal/index"
 import {Row,Col} from "antd"
-const AddStaffMember = ({ userId,setLoading }) => {
+const AddStaffMember = ({ userId }) => {
     const [staffList, setStaffList] = useState([]);
     const [staffInput, setStaffInput] = useState("");
     const [editId, setEditId] = useState(null);
@@ -18,7 +17,6 @@ const AddStaffMember = ({ userId,setLoading }) => {
     useEffect(() => {
         if (!userId) return;
         const getAllStaff = async () => {
-            setLoading(true)
             try {
                 const payload = { userId: userId };
                 const res = await Axios.post(
@@ -33,10 +31,8 @@ const AddStaffMember = ({ userId,setLoading }) => {
                         return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
                     })
                 );
-                setLoading(false)
             } catch (err) {
                 console.log("Error while fetch Staff", err);
-                setLoading(false)
             }
         };
         getAllStaff();
@@ -107,6 +103,7 @@ const AddStaffMember = ({ userId,setLoading }) => {
                 (staff) => staff.id !== id
             );
             setStaffList([...filteredStaff]);
+            setEditId(null)
         } catch (err) {
             console.log("Error while delete Staff", err);
         }
@@ -131,7 +128,7 @@ const AddStaffMember = ({ userId,setLoading }) => {
     return (
         <div className={classes["container"]}>
             <div className={classes["label"]}>Add Staff Members</div>
-            <Row justify="center" align="middle">
+            <Row justify="space-between" align="middle">
                <Col xs={18}>
                <input
                     className={classes["input-field"]}
@@ -140,7 +137,7 @@ const AddStaffMember = ({ userId,setLoading }) => {
                     value={staffInput}
                 />
                 </Col>
-                <Col xs={6}>
+                <Col xs={5}>
                     <Row className={`${
                         classes["tick-wrapper"]
                     } ${getBackgroundButton()}`}
@@ -188,6 +185,7 @@ const StaffMemberSlot = ({ staff, handleEdit, handleDelete }) => {
                 await handleDelete(staff?.id)
                 setShowDelete(false)
             }}
+            open={showDelete}
             cancel={()=>{setShowDelete(false)}}/> :null}
              <Row className={classes["slot-container"]} justify={"center"} align={"middle"}>
             <Col xs={18}>

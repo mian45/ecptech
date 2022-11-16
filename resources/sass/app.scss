@@ -229,8 +229,10 @@ p {
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-position: center;
-    top: 30% !important;
+    top: 40% !important;
     transform: rotate(180deg) !important;
+    height: 21px !important;
+    width: 21px !important;
 }
 .swiper-button-next::after {
     display: none;
@@ -240,8 +242,9 @@ p {
     background-repeat: no-repeat;
     background-size: 100% auto;
     background-position: center;
-
-    top: 30% !important;
+    top: 40% !important;
+    height: 21px !important;
+    width: 21px !important;
 }
 .swiper-button-prev::after {
     display: none;
@@ -448,25 +451,25 @@ button.ant-modal-close:hover {
     }
 }
 .picker {
-    @media (min-width: 320px) and (max-width: 480px) {
+    @media (min-width: 279px) and (max-width: 480px) {
         display: flex;
         flex-direction: column;
     }
 }
 .rdrCalendarWrapper,
 .rdrDateRangeWrapper {
-    @media (min-width: 320px) and (max-width: 480px) {
+    @media (min-width: 279px) and (max-width: 480px) {
         width: 100%;
     }
 }
 
 .rdrMonth {
-    @media (min-width: 320px) and (max-width: 480px) {
+    @media (min-width: 279px) and (max-width: 480px) {
         width: 100% !important;
     }
 }
 .rdrStaticRange {
-    @media (min-width: 320px) and (max-width: 480px) {
+    @media (min-width: 279px) and (max-width: 480px) {
         width: 100%;
     }
 }
@@ -484,4 +487,10 @@ button.ant-modal-close:hover {
 #react-select-5-input {
     border: none !important;
     outline: none !important;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
 }

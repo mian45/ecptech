@@ -63,7 +63,7 @@ const EmailSetting = (props) => {
     }, []);
     useEffect(() => {
         getReminder();
-    }, []);
+    }, [props.userID]);
     const getTimeZones = () => {
         var data = new FormData();
 
@@ -255,7 +255,9 @@ const EmailSetting = (props) => {
             .then(function (response) {
                 let res = response.data.data;
                 setEmailArray(res);
+               if(props.userID!==null && props.userID!== undefined){
                 setLoading(false)
+               }
             })
             .catch(function (error) {
                 setLoading(true)
@@ -698,6 +700,7 @@ const EmailSetting = (props) => {
         loading == true ?
         <CustomLoader buttonBool={false}/>  :
         <>
+        {console.log("the dev data is here",props.user)}
         {showDeleteReminder?
         <DeleteModal accept={()=>{
             deleteReminderbyPopup();
@@ -845,5 +848,6 @@ const EmailSetting = (props) => {
 const mapStateToProps = (state) => ({
     userID: state.Auth.user?.id,
     token: state.Auth.token,
+    user:state.Auth.user
 });
 export default connect(mapStateToProps)(EmailSetting);
