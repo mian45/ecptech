@@ -16,7 +16,7 @@ const TeamPerformanceChart = (setLoading,userId) => {
     useEffect(() => {
         if (!userId) return;
         const getStats = async () => {
-            setLoading(true)
+            // setLoading(true)
             try {
                 const payload = {
                     start_date: "2022-08-16",
@@ -27,10 +27,10 @@ const TeamPerformanceChart = (setLoading,userId) => {
                     payload
                 );
                 manageValues(res?.data?.data);
-                setLoading(false)
+                // setLoading(false)
             } catch (err) {
                 console.log("Error while getting performance stats", err);
-                setLoading(false)
+                // setLoading(false)
             }
         };
         getStats();

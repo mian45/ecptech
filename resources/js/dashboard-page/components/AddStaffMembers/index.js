@@ -9,7 +9,7 @@ import Axios from "../../../Http";
 
 import DeleteModal from "../../../components/deleteModal/index"
 import {Row,Col} from "antd"
-const AddStaffMember = ({ userId,setLoading }) => {
+const AddStaffMember = ({ userId }) => {
     const [staffList, setStaffList] = useState([]);
     const [staffInput, setStaffInput] = useState("");
     const [editId, setEditId] = useState(null);
@@ -18,7 +18,7 @@ const AddStaffMember = ({ userId,setLoading }) => {
     useEffect(() => {
         if (!userId) return;
         const getAllStaff = async () => {
-            setLoading(true)
+            // setLoading(true)
             try {
                 const payload = { userId: userId };
                 const res = await Axios.post(
@@ -33,10 +33,10 @@ const AddStaffMember = ({ userId,setLoading }) => {
                         return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
                     })
                 );
-                setLoading(false)
+                // setLoading(false)
             } catch (err) {
                 console.log("Error while fetch Staff", err);
-                setLoading(false)
+                // setLoading(false)
             }
         };
         getAllStaff();

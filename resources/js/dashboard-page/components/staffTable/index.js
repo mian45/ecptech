@@ -11,7 +11,7 @@ const StaffListTable = ({setLoading, userId }) => {
     useEffect(() => {
         if (!userId) return;
         const getStaffList = async () => {
-            setLoading(true)
+            // setLoading(true)
             try {
                 const invoiceData = {
                     start_date: "2022-08-16",
@@ -22,10 +22,10 @@ const StaffListTable = ({setLoading, userId }) => {
                     invoiceData
                 );
                 setStaffList(res?.data?.data);
-                setLoading(false)
+                // setLoading(false)
             } catch (err) {
                 console.log("Error while getting staff");
-                setLoading(false)
+                // setLoading(false)
             }
         };
 
