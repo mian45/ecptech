@@ -581,10 +581,9 @@ const CalculatorScreen = () => {
                                     />
                                 </div>
                             )}
-
                             {(formProps.values?.submitBenifitType === "" ||
-                                formProps.values?.submitBenifitType ===
-                                    BenifitTypeEnums.both) && (
+                                formProps.values?.visionPlan ===
+                                    "Private Pay") && (
                                 <div className={classes["sub-container"]}>
                                     {formProps.values?.submitBenifitType !==
                                         BenifitTypeEnums.frame &&
@@ -671,8 +670,8 @@ const CalculatorScreen = () => {
                                             ) : (
                                                 <>
                                                     {formProps?.values
-                                                        ?.benifitType !==
-                                                        BenifitTypeEnums.both && (
+                                                        ?.visionPlan !==
+                                                        "Private Pay" && (
                                                         <LoweredCopay
                                                             formProps={
                                                                 formProps

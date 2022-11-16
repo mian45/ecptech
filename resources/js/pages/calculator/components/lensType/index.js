@@ -200,7 +200,11 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                 collection?.category === "Custom"
             ) {
                 setError("");
-            } else if (values.isCopayStandardProgressives) {
+            } else if (
+                values.isCopayStandardProgressives ||
+                values.isCopayPremiumProgressives ||
+                values.isCopayCustomProgressives
+            ) {
                 setError("Are you sure? You don't want to avail discount");
             }
         }
