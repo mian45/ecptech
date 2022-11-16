@@ -172,12 +172,12 @@ const AddCardModal = ({ show, onClose }) => {
                         ) : (
                             ""
                         )}
-                        <Row className={classes["inline-input"]}>
-                            <Col className={classes["inline-left-input"]}>
+                        <Row gutter={[5,0]} className={classes["inline-input"]}>
+                            <Col xs={24} sm={12} lg={12} className={classes["inline-left-input"]}>
                                 <Col className={classes["input-label"]}>
                                     Card Expiry
                                 </Col>
-                                <Space direction="vertical">
+                                <Space className={classes["space-styling"]} direction="vertical">
                                     <DatePicker
                                         picker="month"
                                         className={classes["input"]}
@@ -209,7 +209,7 @@ const AddCardModal = ({ show, onClose }) => {
                                     ""
                                 )}
                             </Col>
-                            <Col className={classes["inline-right-input"]}>
+                            <Col xs={24} sm={12} lg={12} className={classes["inline-right-input"]}>
                                 <Col className={classes["input-label"]}>
                                     CVV
                                 </Col>
@@ -252,7 +252,7 @@ const AddCardModal = ({ show, onClose }) => {
                                 )}
                             </Col>
                         </Row>
-                        <Row className={classes["terms"]}>
+                        <div className={classes["terms"]}>
                             <Checkbox
                                 label={""}
                                 defaultChecked={checked || false}
@@ -262,11 +262,11 @@ const AddCardModal = ({ show, onClose }) => {
                                 containerClass={classes["payment-checkbox"]}
                             />
 
-                            <Col className={classes["term-line"]}>
+                            <div className={classes["term-line"]}>
                                 By adding card you are agreed with us to charge
                                 your card for subscription.
-                            </Col>
-                        </Row>
+                            </div>
+                        </div>
                         <button
                             className={classes["button"]}
                             onClick={(e) => {
