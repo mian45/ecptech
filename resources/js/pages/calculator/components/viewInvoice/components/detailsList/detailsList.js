@@ -96,27 +96,31 @@ const DetailsList = ({
         return total;
     };
 
+    const rendeFrameFee = () => {
+        const price =
+            GetFrameFee(
+                receipt?.values,
+                currentPlan === "Private Pay" ? true : false
+            ) || 0;
+        return (price || 0).toFixed(2);
+    };
+    const renderLensesCopay = () => {
+        const price =
+            calculateLensesCopaysFee(
+                receipt?.values,
+                calculatorObj,
+                lensPrices,
+                currentPlan === "Private Pay" ? true : false
+            ) || 0;
+        return (price || 0).toFixed(2);
+    };
+
     return (
         <Col className={classes["container"]}>
-            <InvoiceSlot
-                title={"Frame:"}
-                subTitle={`$${
-                    GetFrameFee(
-                        receipt?.values,
-                        currentPlan === "Private Pay" ? true : false
-                    ) || 0
-                }`}
-            />
+            <InvoiceSlot title={"Frame:"} subTitle={`$${rendeFrameFee()}`} />
             <InvoiceSlot
                 title={"Lenses/Copays:"}
-                subTitle={`$${
-                    calculateLensesCopaysFee(
-                        receipt?.values,
-                        calculatorObj,
-                        lensPrices,
-                        currentPlan === "Private Pay" ? true : false
-                    ) || 0
-                }`}
+                subTitle={`$${renderLensesCopay()}`}
             />
             {getSelectionDetails(receipt)?.map((item, index) => {
                 return (
@@ -128,12 +132,15 @@ const DetailsList = ({
             {receipt?.values?.shipping?.status === "Yes" && (
                 <InvoiceSlot
                     title={"Shipping:"}
-                    subTitle={`$${
+                    subTitle={`$${(
                         parseFloat(calculatorObj?.shipping || 0) || 0
-                    }`}
+                    ).toFixed(2)}`}
                 />
             )}
-            <InvoiceSlot title={"Tax:"} subTitle={`$${getTax() || 0}`} />
+            <InvoiceSlot
+                title={"Tax:"}
+                subTitle={`$${(getTax() || 0).toFixed(2)}`}
+            />
             <InvoiceSlot
                 title={"Discount:"}
                 subTitle={`$${(
@@ -149,7 +156,7 @@ const DetailsList = ({
             />
             <InvoiceBoldSlot
                 title={"Your glasses would have cost:"}
-                subTitle={`$${glassesCost()}`}
+                subTitle={`$${(glassesCost() || 0).toFixed(2)}`}
             />
             <InvoiceBoldSlot
                 title={"Your cost with insurance:"}

@@ -263,18 +263,19 @@ const GetSunGlassesPrice = (data) => {
     let total = 0;
     if (data?.sunGlassesLens?.status === "Yes") {
         if (data?.sunGlassesLens?.lensType === "Polarized") {
-            total = total + POLARIZED;
-            total = total + parseFloat(getMirrorCoating(data) || "");
+            total = POLARIZED;
+            total = total + parseFloat(getMirrorCoating(data) || 0);
         } else if (data?.sunGlassesLens?.lensType === "Tint") {
             if (data?.sunGlassesLens?.tintType === "Solid Tint") {
                 total = total + SOLID_TINT;
             } else {
                 total = total + GRADIENT_TINT;
             }
-            total = total + parseFloat(getMirrorCoating(data) || "");
+            total = total + parseFloat(getMirrorCoating(data) || 0);
         }
     }
-    return total;
+
+    return parseFloat(total);
 };
 const getMirrorCoating = (data) => {
     let total = 0;
