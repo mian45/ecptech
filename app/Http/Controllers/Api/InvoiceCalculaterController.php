@@ -50,9 +50,9 @@ class InvoiceCalculaterController extends Controller
             $data['discount'] = $discount;
         }
 
-        $tax = Tax::where('user_id',$userId)->orderBy('created_at', 'desc')->first();
+        $tax = Tax::where('user_id',$userId)->orderBy('created_at', 'desc')->get();
         if($tax){
-            $data['tax'] = $tax->value;
+            $data['tax'] = $tax;
         }
 
         $data['addons'] = AddonType::with(['addons' => function($q)use($userId){
@@ -157,7 +157,7 @@ class InvoiceCalculaterController extends Controller
                             }
 
                             if(!empty($data[5])){
-                                $lense = Lense::updateOrCreate(
+                                $lense = Lense::create(
                                     ['title'=> $data[5], 'collection_id'=>$collection->id, "lens_material_id"=>$material_id]
                                 );
                             }
@@ -167,9 +167,18 @@ class InvoiceCalculaterController extends Controller
                                 $code_id = null;
                                 if(!empty($data[7])){
 
-                                    if(!empty($data[1]) AND (strtolower($data[1]) == 'bifocal' OR strtolower($data[1]) == 'trifocal' )){
+                                    if(!empty($data[1])){
+                                        if(strtolower($data[1]) == 'bifocal' OR strtolower($data[1]) == 'trifocal' ){
+                                            $check_lensetype = "biofocal";
+                                        }else{
+                                            $check_lensetype = "other";
+                                        }
+                                    } 
+                                    
+                                    if($check_lensetype == 'biofocal'){
                                         $code = Code::where('name',$data[7])->where('vision_plan_id',$vision_plan->id)->where('lense_type','bifocal')->first();
-                                    }else{
+                                    }
+                                    else{
                                         $code = Code::where('name',$data[7])->where('vision_plan_id',$vision_plan->id)->whereNull('lense_type')->first();
                                     }
 
@@ -182,8 +191,7 @@ class InvoiceCalculaterController extends Controller
                                 if(!empty($data[8])){
                                     $type = strtolower($data[8]);
                                 }
-
-                                $characteristic = Characteristic::updateOrCreate(
+                                $characteristic = Characteristic::create(
                                     ['title'=> $data[6], 'lense_id'=>$lense->id, "code_id"=>$code_id, "type"=>$type]
                                 );
 
@@ -330,17 +338,18 @@ class InvoiceCalculaterController extends Controller
 
 
                                 $price_bifocal = str_replace('$','',$data[3]);
+                                $code_biofocal = str_replace(' ', '', $data[1]);
                                 if(is_numeric($price_bifocal)){
 
                                     $price_bifocal = (float)$price_bifocal;
                                     $code = Code::updateOrCreate(
-                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$code],
+                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$code_biofocal],
                                         ['price'=> $price_bifocal]
                                     );
 
                                 }else{
                                     $code = Code::updateOrCreate(
-                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$code],
+                                        ['vision_plan_id'=>$vision_plan->id,'lense_type'=>'bifocal','name'=>$code_biofocal],
                                         ['price_formula'=> $price_bifocal]
                                     );
                                 }
@@ -433,9 +442,13 @@ class InvoiceCalculaterController extends Controller
                     $q->select('brands.id','lens_type_id','title');
                     $q->where('bp.user_id',$userId);
                     $q->groupby('brands.id');
+                    
                     $q->with(['collections'=>function($q)use($userId){
-                        $q->join('collections_permissions as cp','cp.collection_title','=','collections.title');
-                        $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price','collections.category');
+                        $q->join('collections_permissions as cp', function ($join) {
+                            $join->on('cp.collection_title','=','collections.title');
+                        });
+                                                
+                        $q->select('collections.id','collections.category','collections.brand_id','title','cp.name as display_name','cp.price','cp.collection_id',DB::raw('(CASE WHEN cp.collection_id = 62 THEN "biofocal"  END) AS lense_type_title'));
                         $q->where('cp.user_id',$userId)->where('cp.status','active');
                        
                     }]);

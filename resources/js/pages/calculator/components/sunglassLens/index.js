@@ -22,6 +22,25 @@ const SunglassLens = ({
             (ques) => ques.question === "Sunglass Lens"
         )?.visibility;
 
+    const addons = calculatorObj?.addons?.find(
+        (item) => item.title === "SunGlasses"
+    )?.addons;
+    const isPolirizedActive = addons?.some(
+        (item) => item?.title === "Polarized"
+    );
+    const isSolidTintActive = addons?.some(
+        (item) => item.title === "Solid Tint"
+    );
+    const isGradientTintActive = addons?.some(
+        (item) => item.title === "Gradient Tint"
+    );
+    const isSkyTypeActive = addons?.some(
+        (item) => item.title === "Ski Type Mirror"
+    );
+    const isSolidTypeActive = addons?.some(
+        (item) => item.title === "Solid/Single Gradient"
+    );
+
     const handleIsSunglassesLensChange = (e) => {
         handleChange(e);
         if (
@@ -151,23 +170,27 @@ const SunglassLens = ({
                     className={classes["radio-group"]}
                     headClass={classes["margin"]}
                 >
-                    <CustomRadio
-                        label={
-                            getPolorized()?.display_name
-                                ? getPolorized()?.display_name
-                                : getPolorized()?.title
-                        }
-                        value={getPolorized()?.title}
-                        active={
-                            values?.sunglassesType === getPolorized()?.title
-                        }
-                    />
+                    {isPolirizedActive && (
+                        <CustomRadio
+                            label={
+                                getPolorized()?.display_name
+                                    ? getPolorized()?.display_name
+                                    : getPolorized()?.title
+                            }
+                            value={getPolorized()?.title}
+                            active={
+                                values?.sunglassesType === getPolorized()?.title
+                            }
+                        />
+                    )}
 
-                    <CustomRadio
-                        label={"Tint"}
-                        value={"Tint"}
-                        active={values?.sunglassesType === "Tint"}
-                    />
+                    {(isSolidTintActive || isGradientTintActive) && (
+                        <CustomRadio
+                            label={"Tint"}
+                            value={"Tint"}
+                            active={values?.sunglassesType === "Tint"}
+                        />
+                    )}
                 </Radio.Group>
                 <FormikError name={"sunglassesType"} />
             </>
@@ -186,37 +209,50 @@ const SunglassLens = ({
         };
         return (
             <>
-                <div className={classes["label"]}>Select Tint Lens</div>
-                <Radio.Group
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values?.tintType}
-                    id="tintType"
-                    name="tintType"
-                    className={classes["radio-group"]}
-                    headClass={classes["margin"]}
-                >
-                    <CustomRadio
-                        label={
-                            getSolid()?.display_name
-                                ? getSolid()?.display_name
-                                : getSolid()?.title
-                        }
-                        value={getSolid()?.title}
-                        active={values?.tintType === getSolid()?.title}
-                    />
+                {(isSolidTintActive || isGradientTintActive) && (
+                    <>
+                        <div className={classes["label"]}>Select Tint Lens</div>
+                        <Radio.Group
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values?.tintType}
+                            id="tintType"
+                            name="tintType"
+                            className={classes["radio-group"]}
+                            headClass={classes["margin"]}
+                        >
+                            {isSolidTintActive && (
+                                <CustomRadio
+                                    label={
+                                        getSolid()?.display_name
+                                            ? getSolid()?.display_name
+                                            : getSolid()?.title
+                                    }
+                                    value={getSolid()?.title}
+                                    active={
+                                        values?.tintType === getSolid()?.title
+                                    }
+                                />
+                            )}
 
-                    <CustomRadio
-                        label={
-                            getGradient()?.display_name
-                                ? getGradient()?.display_name
-                                : getGradient()?.title
-                        }
-                        value={getGradient()?.title}
-                        active={values?.tintType === getGradient()?.title}
-                    />
-                </Radio.Group>
-                <FormikError name={"tintType"} />
+                            {isGradientTintActive && (
+                                <CustomRadio
+                                    label={
+                                        getGradient()?.display_name
+                                            ? getGradient()?.display_name
+                                            : getGradient()?.title
+                                    }
+                                    value={getGradient()?.title}
+                                    active={
+                                        values?.tintType ===
+                                        getGradient()?.title
+                                    }
+                                />
+                            )}
+                        </Radio.Group>
+                        <FormikError name={"tintType"} />
+                    </>
+                )}
             </>
         );
     };
@@ -232,11 +268,13 @@ const SunglassLens = ({
                     name="isMirrorCoating"
                     className={classes["radio-group"]}
                 >
-                    <CustomRadio
-                        label={"Yes"}
-                        value={"Yes"}
-                        active={values?.isMirrorCoating === "Yes"}
-                    />
+                    {(isSkyTypeActive || isSolidTypeActive) && (
+                        <CustomRadio
+                            label={"Yes"}
+                            value={"Yes"}
+                            active={values?.isMirrorCoating === "Yes"}
+                        />
+                    )}
 
                     <CustomRadio
                         label={"No"}
@@ -261,42 +299,51 @@ const SunglassLens = ({
         };
         return (
             <>
-                <div className={classes["label"]}>Please Select</div>
-                <Radio.Group
-                    onBlur={handleBlur}
-                    onChange={handleChange}
-                    value={values?.mirrorCoatingType}
-                    id="mirrorCoatingType"
-                    name="mirrorCoatingType"
-                    className={classes["radio-group"]}
-                    headClass={classes["margin"]}
-                >
-                    <CustomRadio
-                        label={
-                            getSkyType()?.display_name
-                                ? getSkyType()?.display_name
-                                : getSkyType()?.title
-                        }
-                        value={getSkyType()?.title}
-                        active={
-                            values?.mirrorCoatingType === getSkyType()?.title
-                        }
-                    />
+                {(isSkyTypeActive || isSolidTypeActive) && (
+                    <>
+                        <div className={classes["label"]}>Please Select</div>
+                        <Radio.Group
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            value={values?.mirrorCoatingType}
+                            id="mirrorCoatingType"
+                            name="mirrorCoatingType"
+                            className={classes["radio-group"]}
+                            headClass={classes["margin"]}
+                        >
+                            {isSkyTypeActive && (
+                                <CustomRadio
+                                    label={
+                                        getSkyType()?.display_name
+                                            ? getSkyType()?.display_name
+                                            : getSkyType()?.title
+                                    }
+                                    value={getSkyType()?.title}
+                                    active={
+                                        values?.mirrorCoatingType ===
+                                        getSkyType()?.title
+                                    }
+                                />
+                            )}
 
-                    <CustomRadio
-                        label={
-                            getSolidSingle()?.display_name
-                                ? getSolidSingle()?.display_name
-                                : getSolidSingle()?.title
-                        }
-                        value={getSolidSingle()?.title}
-                        active={
-                            values?.mirrorCoatingType ===
-                            getSolidSingle()?.title
-                        }
-                    />
-                </Radio.Group>
-                <FormikError name={"mirrorCoatingType"} />
+                            {isSolidTypeActive && (
+                                <CustomRadio
+                                    label={
+                                        getSolidSingle()?.display_name
+                                            ? getSolidSingle()?.display_name
+                                            : getSolidSingle()?.title
+                                    }
+                                    value={getSolidSingle()?.title}
+                                    active={
+                                        values?.mirrorCoatingType ===
+                                        getSolidSingle()?.title
+                                    }
+                                />
+                            )}
+                        </Radio.Group>
+                        <FormikError name={"mirrorCoatingType"} />
+                    </>
+                )}
             </>
         );
     };

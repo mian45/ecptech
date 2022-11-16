@@ -31,6 +31,8 @@ import { BenifitTypeEnums } from "../../data/initialValues";
 import DetailsList from "./components/detailsList/detailsList";
 import { getPriceFromDB } from "./helpers/getPriceFromDB";
 import { Col, Modal, Row } from "antd";
+import { CalculateTotalPrice } from "./helpers/pricesHelper/calculateTotalPrice";
+import UseWindowSize from "../../../../hooks/windowResize";
 
 const ViewInvoice = ({
     onClose,
@@ -46,6 +48,7 @@ const ViewInvoice = ({
 }) => {
     const history = useHistory();
     const [receipt, setReceipt] = useState(null);
+    const { width } = UseWindowSize();
 
     useEffect(() => {
         setReceipt({
@@ -196,7 +199,7 @@ const ViewInvoice = ({
             bodyStyle={{
                 padding: 0,
             }}
-            width={"80%"}
+            width={width <= 600 ? "80%" : "60%"}
             footer={null}
         >
             <Row
@@ -206,10 +209,16 @@ const ViewInvoice = ({
                     e.stopPropagation();
                 }}
             >
-                <Col xs={24} sm={24} md={8} >
+                <Col xs={24} sm={24} md={8} lg={8}>
                     <UserInfo receipt={receipt} />
                 </Col>
-                <Col xs={24} sm={24} md={16} className={classes["sub-right-container"]}>
+                <Col
+                    xs={24}
+                    sm={24}
+                    md={16}
+                    lg={16}
+                    className={classes["sub-right-container"]}
+                >
                     <DetailsList
                         receipt={receipt}
                         calculatorObj={calculatorObj}
@@ -237,9 +246,9 @@ const mapStateToProps = (state) => ({
 });
 export default connect(mapStateToProps)(ViewInvoice);
 
-export const InvoiceSlot = ({ title, subTitle }) => {
+export const InvoiceSlot = ({ title, subTitle, className }) => {
     return (
-        <div className={classes["invoice-slot-container"]}>
+        <div className={`${classes["invoice-slot-container"]} ${className}`}>
             <div className={classes["invoice-slot-title"]}>{title}</div>
             <div className={classes["invoice-slot-title"]}>{subTitle}</div>
         </div>

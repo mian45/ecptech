@@ -4,7 +4,12 @@ import ButtonComponent from "../Button";
 import InputField from "../inputField";
 import classes from "./styles.module.scss";
 
-const InvoicesForm = ({ formProps, isSearched, handleSearch }) => {
+const InvoicesForm = ({
+    formProps,
+    isSearched,
+    handleSearch,
+    setIsSearched,
+}) => {
     const { values, handleChange, handleBlur, isSubmitting, isValid, dirty } =
         formProps;
     return (
@@ -17,7 +22,10 @@ const InvoicesForm = ({ formProps, isSearched, handleSearch }) => {
                     id="firstName"
                     name="firstName"
                     value={values.firstName}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        handleChange(e);
+                        setIsSearched(false);
+                    }}
                     onBlur={handleBlur}
                 />
 
@@ -28,7 +36,10 @@ const InvoicesForm = ({ formProps, isSearched, handleSearch }) => {
                     id="lastName"
                     name="lastName"
                     value={values.lastName}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        handleChange(e);
+                        setIsSearched(false);
+                    }}
                     onBlur={handleBlur}
                 />
             </div>
@@ -42,7 +53,10 @@ const InvoicesForm = ({ formProps, isSearched, handleSearch }) => {
                         id="dob"
                         name="dob"
                         value={values.dob}
-                        onChange={handleChange}
+                        onChange={(e) => {
+                            handleChange(e);
+                            setIsSearched(false);
+                        }}
                         onBlur={handleBlur}
                     />
                     <ErrorMessage
@@ -58,7 +72,10 @@ const InvoicesForm = ({ formProps, isSearched, handleSearch }) => {
                     id="email"
                     name="email"
                     value={values.email}
-                    onChange={handleChange}
+                    onChange={(e) => {
+                        handleChange(e);
+                        setIsSearched(false);
+                    }}
                     onBlur={handleBlur}
                 />
                 <InputField
@@ -71,6 +88,7 @@ const InvoicesForm = ({ formProps, isSearched, handleSearch }) => {
                     onChange={(e) => {
                         if (e.target.value.length <= 10) {
                             handleChange(e);
+                            setIsSearched(false);
                         }
                     }}
                     onBlur={handleBlur}
