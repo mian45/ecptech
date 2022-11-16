@@ -42,7 +42,6 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
             (item) =>
                 item?.lens_material_title === receipt?.values?.lensMaterial
         );
-    console.log("materials", materials);
 
     if (materials?.length <= 0) {
         if (receipt?.values?.lensType?.type === "PAL") {

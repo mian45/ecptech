@@ -9,7 +9,7 @@ import Axios from "../../../../Http";
 import InvoicePriceAlert from "../invoicePriceAlert";
 
 const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
-    const { values, handleChange, handleBlur } = formProps;
+    const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const [showInvoiceAlert, setShowInvoiceAlert] = useState(false);
 
     const lensTypeVisibility = calculatorObj?.questions
@@ -52,7 +52,9 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
     };
     const getBrandByLens = async (e) => {
         try {
-            handleChange(e);
+            await handleChange(e);
+            await setFieldValue("lensTypeValue", "");
+            setError("");
             return;
             const targetedLens = calculatorObj["lens_types"]?.find(
                 (val) => val?.title === e?.target?.value
@@ -83,10 +85,44 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
         let lenses = [];
         selectedLensType?.brands?.forEach((element) => {
             element?.collections?.forEach((lens) => {
-                if (lens?.display_name) {
-                    lenses.push(lens?.display_name);
+                if (selectedLensType?.title === "Bifocal") {
+                    if (lens?.title !== "Aspherical/Spherical") {
+                        if (lens?.display_name) {
+                            lenses.push(lens?.display_name);
+                        } else {
+                            lenses.push(lens?.title);
+                        }
+                    } else {
+                        if (lens?.lense_type_title === "biofocal") {
+                            if (lens?.display_name) {
+                                lenses.push(lens?.display_name);
+                            } else {
+                                lenses.push(lens?.title);
+                            }
+                        }
+                    }
+                } else if (selectedLensType?.title === "Trifocal") {
+                    if (lens?.title !== "Aspherical/Spherical") {
+                        if (lens?.display_name) {
+                            lenses.push(lens?.display_name);
+                        } else {
+                            lenses.push(lens?.title);
+                        }
+                    } else {
+                        if (lens?.lense_type_title === null) {
+                            if (lens?.display_name) {
+                                lenses.push(lens?.display_name);
+                            } else {
+                                lenses.push(lens?.title);
+                            }
+                        }
+                    }
                 } else {
-                    lenses.push(lens?.title);
+                    if (lens?.display_name) {
+                        lenses.push(lens?.display_name);
+                    } else {
+                        lenses.push(lens?.title);
+                    }
                 }
             });
         });
@@ -164,7 +200,11 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                 collection?.category === "Custom"
             ) {
                 setError("");
-            } else {
+            } else if (
+                values.isCopayStandardProgressives ||
+                values.isCopayPremiumProgressives ||
+                values.isCopayCustomProgressives
+            ) {
                 setError("Are you sure? You don't want to avail discount");
             }
         }

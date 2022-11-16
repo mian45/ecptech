@@ -75,7 +75,7 @@ const Addons = ({ userId }) => {
                         selectedRow={selectedRow}
                     />
                 </Col>
-                <Col xs={24} md={9} className={classes["right-container"]}>
+                <Col xs={24} md={15} className={classes["right-container"]}>
                     <CollectionSection
                         addons={addonsList}
                         selectedAddons={selectedAddons}

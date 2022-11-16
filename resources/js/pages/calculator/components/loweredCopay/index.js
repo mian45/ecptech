@@ -73,12 +73,7 @@ const LoweredCopay = ({
 
     const handleCopoayCheckChange = (value, key) => {
         setFieldValue(key, value);
-        if (
-            value === true &&
-            !data?.find(
-                (ques) => ques.question === "Any copay lowered than standard"
-            ).optional
-        ) {
+        if (value === true) {
             if (key === "isCopayPolycarbonate") {
                 const isCopayPolycarbonateAmount =
                     Yup.string().required("Option is required");
@@ -182,6 +177,7 @@ const LoweredCopay = ({
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.polycarbonate}
                         defaultChecked={values?.isCopayPolycarbonate || false}
+                        active={values?.isCopayPolycarbonate || false}
                         onValueChange={(value) => {
                             handleCopoayCheckChange(
                                 value,
@@ -194,6 +190,7 @@ const LoweredCopay = ({
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.photochromic}
                         defaultChecked={values?.isCopayPhotochromic || false}
+                        active={values?.isCopayPhotochromic || false}
                         onValueChange={(value) => {
                             handleCopoayCheckChange(
                                 value,
@@ -206,6 +203,7 @@ const LoweredCopay = ({
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.highIndex}
                         defaultChecked={values?.isCopayHighIndex || false}
+                        active={values?.isCopayHighIndex || false}
                         onValueChange={(value) => {
                             handleCopoayCheckChange(value, "isCopayHighIndex");
                         }}
@@ -215,6 +213,7 @@ const LoweredCopay = ({
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.antiReflective}
                         defaultChecked={values?.isCopayAntiReflective || false}
+                        active={values?.isCopayAntiReflective || false}
                         onValueChange={(value) => {
                             handleCopoayCheckChange(
                                 value,
@@ -229,6 +228,7 @@ const LoweredCopay = ({
                         defaultChecked={
                             values?.isCopayStandardProgressives || false
                         }
+                        active={values?.isCopayStandardProgressives || false}
                         onValueChange={(value) => {
                             handleCopoayCheckChange(
                                 value,
@@ -243,6 +243,7 @@ const LoweredCopay = ({
                         defaultChecked={
                             values?.isCopayPremiumProgressives || false
                         }
+                        active={values?.isCopayPremiumProgressives || false}
                         onValueChange={(value) => {
                             handleCopoayCheckChange(
                                 value,
@@ -257,6 +258,7 @@ const LoweredCopay = ({
                         defaultChecked={
                             values?.isCopayCustomProgressives || false
                         }
+                        active={values?.isCopayCustomProgressives || false}
                         onValueChange={(value) => {
                             handleCopoayCheckChange(
                                 value,
@@ -362,7 +364,7 @@ const LoweredCopay = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["vision-container"]}>
                             <CalculatorHeading
-                                title="Any copay dollar amount lowered than standard?"
+                                title="Any copay dollar amount less than standard?"
                                 active={values?.isloweredCopay}
                             />
                             <Radio.Group
@@ -421,12 +423,7 @@ const SpecialCopaySlot = ({
 
     const handleValueChange = (e) => {
         handleChange(e);
-        if (
-            e?.target?.value === LowerCopayAmountTypeEnum.amount &&
-            !data?.find(
-                (ques) => ques.question === "Any copay lowered than standard"
-            ).optional
-        ) {
+        if (e?.target?.value === LowerCopayAmountTypeEnum.amount) {
             const validationObject = {
                 [inputValue]: Yup.string().required("Amount is required"),
             };
@@ -445,7 +442,7 @@ const SpecialCopaySlot = ({
     return (
         <>
             <CalculatorHeading
-                title={`${LowerCopayTypeEnum[title]} Lowered Copay?`}
+                title={`${LowerCopayTypeEnum[title]} Lower Copay?`}
             />
             <Radio.Group
                 onBlur={handleBlur}
@@ -456,7 +453,7 @@ const SpecialCopaySlot = ({
                 className={classes["radio-group"]}
             >
                 <CustomRadio
-                    label={LowerCopayAmountTypeEnum.amount}
+                    label={"Lower copay dollar amount"}
                     value={LowerCopayAmountTypeEnum.amount}
                     active={
                         values[radioValue] === LowerCopayAmountTypeEnum.amount

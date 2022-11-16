@@ -249,7 +249,7 @@ export const mappedEditValues = (data) => {
         visionPlan: userState?.visionPlan || "",
         isFrameBenifit: userState?.isFrameBenifit || "",
         isLensBenifit: userState?.isLensBenifit || "",
-        materialCopay: userState?.materialCopay || "",
+        materialCopay: userState?.materialCopay || 0,
         frameOrderType: userState?.frameOrder?.type || "",
         frameRetailFee: userState?.frameOrder?.retailFee || "",
         frameContribution: userState?.frameOrder?.frameContribution || "",

@@ -24,9 +24,10 @@ const InvoicePriceAlert = ({ open, cancel, accept }) => {
             }}
             zIndex="99999"
             footer={null}
+            width={"600px"}
         >
             <Row justify="center">
-                <Col sm={5}>
+                <Col sm={24} style={{ textAlign: "center" }}>
                     <img
                         src={alertIcon}
                         alt={"icon"}
@@ -34,31 +35,14 @@ const InvoicePriceAlert = ({ open, cancel, accept }) => {
                     />
                 </Col>
                 <Col sm={24}>
-                    <p className={classes["confirmation-text"]}>
-                        Don't show this again?
-                    </p>
                     <p className={classes["confirmation-subtext"]}>
-                        Do you really want to don't show this again?
+                        Retail price must be entered, please go the lenses
+                        settings and add retail price.
                     </p>
                     <div
                         className={`${classes["btn-container"]} ${classes["margin-container"]}`}
                     >
-                        <div className={classes["btn-wrapper"]}>
-                            <div
-                                className={
-                                    classes["email-setting_button-section"]
-                                }
-                            >
-                                <button
-                                    className={`${classes["email-setting_button-section_save-button"]} ${classes["deactive"]}`}
-                                    onClick={() => {
-                                        cancel();
-                                    }}
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
+                        {" "}
                         <div className={classes["btn-wrapper"]}>
                             <div
                                 className={
@@ -75,7 +59,23 @@ const InvoicePriceAlert = ({ open, cancel, accept }) => {
                                         accept(dontShow);
                                     }}
                                 >
-                                    Save
+                                    OK
+                                </button>
+                            </div>
+                        </div>
+                        <div className={classes["btn-wrapper"]}>
+                            <div
+                                className={
+                                    classes["email-setting_button-section"]
+                                }
+                            >
+                                <button
+                                    className={`${classes["email-setting_button-section_save-button"]} ${classes["deactive"]}`}
+                                    onClick={() => {
+                                        cancel();
+                                    }}
+                                >
+                                    Cancel
                                 </button>
                             </div>
                         </div>
