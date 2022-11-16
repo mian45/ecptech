@@ -6,7 +6,6 @@ import tickIcon from "../../../../images/tick.svg";
 import editIcon from "../../../../images/edit-icon.svg";
 import deleteIcon from "../../../../images/delete-icon.svg";
 import Axios from "../../../Http";
-
 import DeleteModal from "../../../components/deleteModal/index"
 import {Row,Col} from "antd"
 const AddStaffMember = ({ userId }) => {
@@ -18,7 +17,6 @@ const AddStaffMember = ({ userId }) => {
     useEffect(() => {
         if (!userId) return;
         const getAllStaff = async () => {
-            // setLoading(true)
             try {
                 const payload = { userId: userId };
                 const res = await Axios.post(
@@ -33,10 +31,8 @@ const AddStaffMember = ({ userId }) => {
                         return nameA < nameB ? -1 : nameA > nameB ? 1 : 0;
                     })
                 );
-                // setLoading(false)
             } catch (err) {
                 console.log("Error while fetch Staff", err);
-                // setLoading(false)
             }
         };
         getAllStaff();
