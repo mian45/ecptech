@@ -42,11 +42,11 @@ const CalculatorScreen = () => {
     const [calValidations, setCalValidations] = useState(null);
     const [calValues, setCalValues] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
+    const [loading, setLoading] = useState(true)
     const [calculatorState, setCalculatorState] = useState({
         ...CalculatorInitialValues,
     });
     const [lensPrices, setLensPrices] = useState({});
-    const [loading, setLoading] = useState(false)
     const [buttonLoader, setButtonLoader] = useState(false)
     const editInvoiceState = history?.location?.state?.invoice;
     let scrollRef = useRef();
@@ -116,9 +116,7 @@ const CalculatorScreen = () => {
             setCalValidations(validations);
             setLoading(false)
         } catch (err) {
-            setLoading(true)
             console.log("error while fetching Data");
-            setLoading(false)
         }
     };
 
@@ -257,8 +255,6 @@ const CalculatorScreen = () => {
         calValidations,
     }) => {
         return (
-            loading == true ? 
-            <CustomLoader buttonBool={false}/> :
             <>
                 <LensType
                     formProps={formProps}
@@ -310,7 +306,7 @@ const CalculatorScreen = () => {
     };
     return (
         <Col className={classes["container"]} sm={24} md={24} lg={18}>
-            <Formik
+           {loading?<><CustomLoader buttonBool={false}/></>: <Formik
                 initialValues={{ ...calculatorState }}
                 validationSchema={Yup.object().shape({})}
                 onSubmit={handleClick}
@@ -686,7 +682,7 @@ const CalculatorScreen = () => {
                         </form>
                     );
                 }}
-            </Formik>
+            </Formik>}
         </Col>
     );
 };
