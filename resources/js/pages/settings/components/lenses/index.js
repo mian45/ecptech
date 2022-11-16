@@ -22,7 +22,7 @@ const LensesSettings = () => {
                 their labels.
             </div>
             <Row className={classes["lenses-content"]} justify="center" align="middle">
-                <Col xs={16} className={classes["buttons-controller"]}>
+                <Col xs={24} md={20}lg={16} className={classes["buttons-controller"]}>
                     <Row className={classes["buttons-container"]} justify="center" align="middle">
                         <Col
                             className={`${
@@ -50,7 +50,7 @@ const LensesSettings = () => {
                     </Row>
                     <div className={classes["buttons-divider"]} />
                 </Col>
-                <Col xs={18}>
+                <Col xs={24} md={22}lg={18}>
                 {activeTab === 1 && <LensesType />}
                 {activeTab === 2 && <MaterialSettings />}
                 {activeTab === 3 && <AddonSettings />}</Col>
