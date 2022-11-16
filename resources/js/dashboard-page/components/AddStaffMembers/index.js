@@ -107,6 +107,7 @@ const AddStaffMember = ({ userId,setLoading }) => {
                 (staff) => staff.id !== id
             );
             setStaffList([...filteredStaff]);
+            setEditId(null)
         } catch (err) {
             console.log("Error while delete Staff", err);
         }
