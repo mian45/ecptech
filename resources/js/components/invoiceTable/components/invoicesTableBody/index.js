@@ -79,11 +79,14 @@ const InvoiceTableActions = ({ data }) => {
     const getCalculatorObject = () => {
         const vpState = JSON.parse(data?.vp_state);
         return {
+            discount: vpState?.discount,
+            addons: vpState?.addons,
             lens_material: vpState?.lens_material,
             lens_types: vpState?.lens_types,
             questions: vpState?.questions,
             price_calculation_data: vpState?.price_calculation_data,
             shipping: vpState?.shipping,
+            tax: vpState?.tax,
         };
     };
     const getLensTypes = async () => {
@@ -102,14 +105,35 @@ const InvoiceTableActions = ({ data }) => {
         let collectionId = null;
         lensType?.brands?.forEach((item) => {
             item.collections?.forEach((val) => {
-                if (val?.display_name) {
-                    if (val.display_name == userState?.lensType?.brand) {
-                        collectionId = val?.id;
+                const setCollectionId = () => {
+                    if (val?.display_name) {
+                        if (val.display_name == userState?.lensType?.brand) {
+                            collectionId = val?.id;
+                        }
+                    } else {
+                        if (val.title == userState?.lensType?.brand) {
+                            collectionId = val?.id;
+                        }
+                    }
+                };
+                if (item?.title === "Bifocal") {
+                    if (val?.title !== "Aspherical/Spherical") {
+                        setCollectionId();
+                    } else {
+                        if (val?.lense_type_title === "biofocal") {
+                            setCollectionId();
+                        }
+                    }
+                } else if (item?.title === "Trifocal") {
+                    if (val?.title !== "Aspherical/Spherical") {
+                        setCollectionId();
+                    } else {
+                        if (val?.lense_type_title === null) {
+                            setCollectionId();
+                        }
                     }
                 } else {
-                    if (val.title == userState?.lensType?.brand) {
-                        collectionId = val?.id;
-                    }
+                    setCollectionId();
                 }
             });
         });

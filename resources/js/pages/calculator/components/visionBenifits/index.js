@@ -243,14 +243,14 @@ const VisionBenifits = ({
                     <Col sx={0} sm={0} md={5}>
                         <QuestionIcon
                             icon={materialIcon}
-                            active={values?.materialCopay}
+                            active={values?.materialCopay !== ""}
                         />
                     </Col>
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["question-container"]}>
                             <CalculatorHeading
                                 title="Material Copay?"
-                                active={values?.materialCopay}
+                                active={values?.materialCopay !== ""}
                             />
                             <div className={classes["input-container"]}>
                                 <div className={classes["input-label"]}>$</div>

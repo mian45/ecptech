@@ -9,6 +9,16 @@ import {
     InvoiceBoldSlot,
     InvoiceSlot,
 } from "../..";
+import {
+    calculateLensesCopaysFee,
+    GetFrameFee,
+    GetFrameRetailFee,
+} from "../../helpers/pricesHelper/calculateOtherPlansPrices";
+import {
+    CalculateTotalPrice,
+    CalculateWithTaxesTotalPrice,
+    GetAppliedDiscount,
+} from "../../helpers/pricesHelper/calculateTotalPrice";
 import classes from "./style.module.scss";
 
 const DetailsList = ({
@@ -56,15 +66,57 @@ const DetailsList = ({
 
         return (price || 0).toFixed(2);
     };
+
+    const currentPlan = receipt?.values?.visionPlan;
+
+    const getTax = () => {
+        let totalTax = 0;
+        calculatorObj?.tax?.forEach((element) => {
+            if (element?.status === "active") {
+                totalTax = totalTax + parseFloat(element?.value || 0);
+            }
+        });
+        const totalPrice = CalculateTotalPrice(
+            receipt?.values,
+            calculatorObj,
+            lensPrices
+        );
+        const taxValue = totalPrice * (totalTax || 0);
+        return taxValue / 100;
+    };
+    const glassesCost = () => {
+        let total = 0;
+        if (receipt?.values?.frameOrder?.type === "New Frame Purchase") {
+            total =
+                total + parseFloat(receipt?.values?.frameOrder?.retailFee || 0);
+        }
+        total =
+            total +
+            parseFloat(GetFrameRetailFee(calculatorObj, receipt?.values) || 0);
+        return total;
+    };
+
     return (
         <Col className={classes["container"]}>
             <InvoiceSlot
                 title={"Frame:"}
-                subTitle={`$${receipt?.values?.frameOrder?.retailFee || 0}`}
+                subTitle={`$${
+                    GetFrameFee(
+                        receipt?.values,
+                        currentPlan === "Private Pay" ? true : false
+                    ) || 0
+                }`}
             />
             <InvoiceSlot
                 title={"Lenses/Copays:"}
-                subTitle={`$${receipt?.values?.frameOrder?.retailFee || 0}`}
+                subTitle={`$${
+                    calculateLensesCopaysFee(
+                        receipt?.values,
+                        calculatorObj,
+                        lensPrices,
+                        currentPlan === "Private Pay" ? true : false
+                    ) || 0
+                }`}
             />
             {getSelectionDetails(receipt)?.map((item, index) => {
                 return (
@@ -73,16 +125,41 @@ const DetailsList = ({
                     </div>
                 );
             })}
+            {receipt?.values?.shipping?.status === "Yes" && (
+                <InvoiceSlot
+                    title={"Shipping:"}
+                    subTitle={`$${
+                        parseFloat(calculatorObj?.shipping || 0) || 0
+                    }`}
+                />
+            )}
+            <InvoiceSlot title={"Tax:"} subTitle={`$${getTax() || 0}`} />
+            <InvoiceSlot
+                title={"Discount:"}
+                subTitle={`$${(
+                    GetAppliedDiscount(
+                        CalculateTotalPrice(
+                            receipt?.values,
+                            calculatorObj,
+                            lensPrices
+                        ),
+                        receipt?.values
+                    ) || 0
+                )?.toFixed(2)}`}
+            />
             <InvoiceBoldSlot
                 title={"Your glasses would have cost:"}
-                subTitle={`$${
-                    parseFloat(receipt?.values?.frameOrder?.retailFee || 0) +
-                    parseFloat(getLensRetailFee() || 0)
-                }`}
+                subTitle={`$${glassesCost()}`}
             />
             <InvoiceBoldSlot
                 title={"Your cost with insurance:"}
-                subTitle={`$${(totalPrice || 0).toFixed(2)}`}
+                subTitle={`$${(
+                    CalculateWithTaxesTotalPrice(
+                        receipt?.values,
+                        calculatorObj,
+                        lensPrices
+                    ) || 0
+                ).toFixed(2)}`}
             />
         </Col>
     );

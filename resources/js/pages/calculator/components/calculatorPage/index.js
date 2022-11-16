@@ -35,19 +35,45 @@ import CustomLoader from "../../../../components/customLoader";
 import CustomDiscount from "../customDiscount";
 import { Col } from "antd";
 
+export const defaultState = {
+    "VSP Signature": {
+        ...CalculatorInitialValues,
+        visionPlan: "VSP Signature",
+    },
+    "VSP Choice": { ...CalculatorInitialValues, visionPlan: "VSP Choice" },
+    "VSP Advantage": {
+        ...CalculatorInitialValues,
+        visionPlan: "VSP Advantage",
+    },
+    "Private Pay": {
+        ...CalculatorInitialValues,
+        visionPlan: "Private Pay",
+        benifitType: "both",
+    },
+};
+export const defaultValidationsState = {
+    "VSP Signature": null,
+    "VSP Choice": null,
+    "VSP Advantage": null,
+    "Private Pay": null,
+};
+
 const CalculatorScreen = () => {
     const history = useHistory();
     const [showInvoice, setShowInvoice] = useState(false);
     const [calculatorObj, setCalculatorObj] = useState(null);
-    const [calValidations, setCalValidations] = useState(null);
+    const [calValidations, setCalValidations] = useState(
+        defaultValidationsState["VSP Signature"]
+    );
     const [calValues, setCalValues] = useState(null);
     const [userInfo, setUserInfo] = useState(null);
-    const [calculatorState, setCalculatorState] = useState({
-        ...CalculatorInitialValues,
-    });
+    const [calculatorState, setCalculatorState] = useState(
+        defaultState["VSP Signature"]
+    );
     const [lensPrices, setLensPrices] = useState({});
-    const [loading, setLoading] = useState(false)
-    const [buttonLoader, setButtonLoader] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [buttonLoader, setButtonLoader] = useState(false);
+    const [currentPlan, setCurrentPlan] = useState("VSP Signature");
     const editInvoiceState = history?.location?.state?.invoice;
     let scrollRef = useRef();
 
@@ -56,7 +82,6 @@ const CalculatorScreen = () => {
             const values = mappedEditValues(editInvoiceState);
             setCalculatorState({ ...values });
             const vpState = JSON.parse(editInvoiceState?.vp_state);
-
             const editUserInfo = {
                 dob: editInvoiceState?.customer?.dob,
                 email: editInvoiceState?.customer?.email,
@@ -66,6 +91,8 @@ const CalculatorScreen = () => {
             };
             setUserInfo({ ...editUserInfo });
             const editCalObject = {
+                discount: vpState?.discount,
+                addons: vpState?.addons,
                 lens_material: vpState?.lens_material,
                 lens_types: vpState?.lens_types,
                 questions: vpState?.questions,
@@ -90,14 +117,14 @@ const CalculatorScreen = () => {
         }
     }, [history?.location?.state]);
     const getCalculatorObject = async (values) => {
-        setLoading(true)
+        setLoading(true);
         try {
             const res = await Axios.get(
                 process.env.MIX_REACT_APP_URL + "/api/calculater-data"
             );
             const resData = res?.data?.data;
             const firstPlan = resData?.questions?.find(
-                (item) => item?.title === "VSP Signature"
+                (item) => item?.title === (currentPlan || "VSP Signature")
             );
             const colRes = await Axios.post(
                 process.env.MIX_REACT_APP_URL + "/api/get-collections",
@@ -106,19 +133,21 @@ const CalculatorScreen = () => {
             resData.lens_types = colRes?.data?.data?.collection;
             setCalculatorObj(resData);
             const questions = resData?.questions;
-            const currentPlan = questions?.find(
-                (plan) => plan?.title === values?.visionPlan
+            const selectedPlan = questions?.find(
+                (plan) => plan?.title === (currentPlan || "VSP Signature")
             );
 
             const validations = CreateCalculatorValidations(
-                currentPlan?.question_permissions
+                selectedPlan?.question_permissions
             );
+            defaultValidationsState[currentPlan || "VSP Signature"] =
+                validations;
             setCalValidations(validations);
-            setLoading(false)
+            setLoading(false);
         } catch (err) {
-            setLoading(true)
+            setLoading(true);
             console.log("error while fetching Data");
-            setLoading(false)
+            setLoading(false);
         }
     };
 
@@ -126,7 +155,7 @@ const CalculatorScreen = () => {
         setShowInvoice(false);
     };
     const getBaseValues = async (values) => {
-        setButtonLoader(true)
+        setButtonLoader(true);
         try {
             const planId = calculatorObj?.questions?.find(
                 (item) => item.title === values?.visionPlan
@@ -140,13 +169,69 @@ const CalculatorScreen = () => {
             let collectionId = null;
             lensType?.brands?.forEach((item) => {
                 item.collections?.forEach((val) => {
-                    if (val?.display_name) {
-                        if (val.display_name == values?.lensTypeValue) {
-                            collectionId = val?.id;
+                    if (item?.title === "Bifocal") {
+                        if (val?.title !== "Aspherical/Spherical") {
+                            if (val?.display_name) {
+                                if (val.display_name == values?.lensTypeValue) {
+                                    collectionId = val?.id;
+                                }
+                            } else {
+                                if (val.title == values?.lensTypeValue) {
+                                    collectionId = val?.id;
+                                }
+                            }
+                        } else {
+                            if (val?.lense_type_title === "biofocal") {
+                                if (val?.display_name) {
+                                    if (
+                                        val.display_name ==
+                                        values?.lensTypeValue
+                                    ) {
+                                        collectionId = val?.id;
+                                    }
+                                } else {
+                                    if (val.title == values?.lensTypeValue) {
+                                        collectionId = val?.id;
+                                    }
+                                }
+                            }
+                        }
+                    } else if (item?.title === "Trifocal") {
+                        if (val?.title !== "Aspherical/Spherical") {
+                            if (val?.display_name) {
+                                if (val.display_name == values?.lensTypeValue) {
+                                    collectionId = val?.id;
+                                }
+                            } else {
+                                if (val.title == values?.lensTypeValue) {
+                                    collectionId = val?.id;
+                                }
+                            }
+                        } else {
+                            if (val?.lense_type_title === null) {
+                                if (val?.display_name) {
+                                    if (
+                                        val.display_name ==
+                                        values?.lensTypeValue
+                                    ) {
+                                        collectionId = val?.id;
+                                    }
+                                } else {
+                                    if (val.title == values?.lensTypeValue) {
+                                        collectionId = val?.id;
+                                    }
+                                }
+                            }
                         }
                     } else {
-                        if (val.title == values?.lensTypeValue) {
-                            collectionId = val?.id;
+                        if (val?.display_name) {
+                            if (val.display_name == values?.lensTypeValue) {
+                                collectionId = val?.id;
+                            }
+                        } else {
+                            if (val.title == values?.lensTypeValue) {
+                                collectionId = val?.id;
+                            }
                         }
                     }
                 });
@@ -163,10 +248,10 @@ const CalculatorScreen = () => {
                 payload
             );
             setLensPrices(res?.data?.data);
-            setButtonLoader(false)
+            setButtonLoader(false);
         } catch (err) {
             console.log("error while get data");
-            setButtonLoader(false)
+            setButtonLoader(false);
         }
     };
 
@@ -220,13 +305,44 @@ const CalculatorScreen = () => {
             actions.setErrors({});
             actions.setTouched({}, false);
         } else if (values?.benifitType === BenifitTypeEnums?.both) {
+            await actions.setFieldValue("submitBenifitType", "both");
+            await actions.setFieldValue("benifitType", "");
             setShowInvoice(true);
-            const arrangedValues = GetMappedPayload(values);
+            const arrangedValues = GetMappedPayload({
+                ...values,
+                submitBenifitType: "both",
+            });
             setCalValues(arrangedValues);
-            actions.setFieldValue("submitBenifitType", BenifitTypeEnums.both);
-            actions.setFieldValue("benifitType", "");
         }
     };
+
+    const handleBackClick = (formProps) => {
+        const { setFieldValue, values } = formProps;
+        if (values?.submitBenifitType === BenifitTypeEnums.frame) {
+            const validations = { ...calValidations };
+            delete validations.frameOrderType;
+            setCalValidations({
+                ...validations,
+            });
+        }
+
+        if (values?.submitBenifitType === BenifitTypeEnums.lens) {
+            const validations = { ...calValidations };
+            delete validations.isloweredCopay;
+            delete validations.lensType;
+            delete validations.lensTypeValue;
+            delete validations.lensMaterial;
+            delete validations.isPhotochromics;
+            delete validations.isSunglasses;
+            delete validations.isAntireflective;
+            setCalValidations({
+                ...validations,
+            });
+        }
+        setFieldValue("benifitType", values?.submitBenifitType);
+        setFieldValue("submitBenifitType", "");
+    };
+
     const RenderFrameOrder = ({
         formProps,
         calculatorObj,
@@ -256,9 +372,9 @@ const CalculatorScreen = () => {
         setCalValidations,
         calValidations,
     }) => {
-        return (
-            loading == true ? 
-            <CustomLoader buttonBool={false}/> :
+        return loading == true ? (
+            <CustomLoader buttonBool={false} />
+        ) : (
             <>
                 <LensType
                     formProps={formProps}
@@ -312,7 +428,7 @@ const CalculatorScreen = () => {
         <Col className={classes["container"]} sm={24} md={24} lg={18}>
             <Formik
                 initialValues={{ ...calculatorState }}
-                validationSchema={Yup.object().shape({})}
+                validationSchema={Yup.object().shape({ ...calValidations })}
                 onSubmit={handleClick}
                 enableReinitialize
             >
@@ -355,17 +471,9 @@ const CalculatorScreen = () => {
                                                 className={
                                                     classes["back-container"]
                                                 }
-                                                onClick={() => {
-                                                    formProps?.setFieldValue(
-                                                        "benifitType",
-                                                        formProps?.values
-                                                            ?.submitBenifitType
-                                                    );
-                                                    formProps?.setFieldValue(
-                                                        "submitBenifitType",
-                                                        ""
-                                                    );
-                                                }}
+                                                onClick={() =>
+                                                    handleBackClick(formProps)
+                                                }
                                             >
                                                 <img
                                                     src={backArrow}
@@ -424,17 +532,9 @@ const CalculatorScreen = () => {
                                                 className={
                                                     classes["back-container"]
                                                 }
-                                                onClick={() => {
-                                                    formProps?.setFieldValue(
-                                                        "benifitType",
-                                                        formProps?.values
-                                                            ?.submitBenifitType
-                                                    );
-                                                    formProps?.setFieldValue(
-                                                        "submitBenifitType",
-                                                        ""
-                                                    );
-                                                }}
+                                                onClick={() =>
+                                                    handleBackClick(formProps)
+                                                }
                                             >
                                                 <img
                                                     src={backArrow}
@@ -511,6 +611,10 @@ const CalculatorScreen = () => {
                                                             formProps?.values
                                                                 ?.visionPlan
                                                     )?.question_permissions
+                                                }
+                                                setCurrentPlan={setCurrentPlan}
+                                                setCalculatorState={
+                                                    setCalculatorState
                                                 }
                                             />
                                             <VisionBenifits
@@ -656,6 +760,9 @@ const CalculatorScreen = () => {
                                                     setCalValidations
                                                 }
                                                 calValidations={calValidations}
+                                                calculatorState={
+                                                    calculatorState
+                                                }
                                             />
                                         </>
                                     ) : (
@@ -673,15 +780,14 @@ const CalculatorScreen = () => {
                                         LensBenifitAvailableEnum.onlyThisTime
                                 }
                             >
-                                {
-                                    buttonLoader == true ? 
+                                {buttonLoader == true ? (
                                     <span>
-                                    <p>Create Invoice</p> 
-                                    <CustomLoader buttonBool={true}/>
+                                        <p>Create Invoice</p>
+                                        <CustomLoader buttonBool={true} />
                                     </span>
-                                    : 
-                                    'Create Invoice'
-                                }
+                                ) : (
+                                    "Create Invoice"
+                                )}
                             </button>
                         </form>
                     );

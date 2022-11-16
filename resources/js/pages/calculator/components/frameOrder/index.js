@@ -153,7 +153,7 @@ const FrameOrder = ({
                 ),
                 drillMount: Yup.string().required("Drill mount is required"),
             };
-            if (isFrame) {
+            if (isFrame || values.visionPlan === "Private Pay") {
                 delete validationObject.frameContribution;
             }
             setCalValidations({

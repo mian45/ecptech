@@ -9,6 +9,8 @@ import { ErrorMessage } from "formik";
 import { BenifitTypeEnums } from "../../data/initialValues";
 import * as Yup from "yup";
 import Axios from "../../../../Http";
+import { defaultState, defaultValidationsState } from "../calculatorPage";
+import { CreateCalculatorValidations } from "../../data/validationHelper";
 
 const SelectVisionPlan = ({
     formProps,
@@ -16,7 +18,8 @@ const SelectVisionPlan = ({
     setCalValidations,
     calValidations,
     data,
-    setCalculatorObj,
+    setCalculatorObj, setCurrentPlan,
+    setCalculatorState,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const plansList = calculatorObj?.questions?.map((plan) => plan?.title);
@@ -38,50 +41,29 @@ const SelectVisionPlan = ({
     };
 
     const handlePlanChange = async (event) => {
+
         await handlePlanClick(event);
+
+        defaultState[values.visionPlan] = values;
+        defaultValidationsState[values.visionPlan] = { ...calValidations };
+
+        const selectedPlan = calculatorObj?.questions?.find(
+            (plan) => plan?.title === (event?.target?.value)
+        );
+
+        const validations = CreateCalculatorValidations(
+            selectedPlan?.question_permissions
+        );
         if (event?.target?.value === "Private Pay") {
-            const validations = { ...calValidations };
             delete validations?.isloweredCopay;
             delete validations?.isLensBenifit;
             delete validations?.isFrameBenifit;
-            setCalValidations({ ...validations });
-            setFieldValue("benifitType", BenifitTypeEnums.both);
-        } else {
-            setFieldValue("benifitType", "");
-            const validationObject = {};
-            if (
-                data?.find(
-                    (ques) =>
-                        ques.question === "Any copay lowered than standard"
-                )?.optional === "true"
-            ) {
-                validationObject.isloweredCopay =
-                    Yup.string().required("Option is required");
-            }
-            if (
-                data?.find(
-                    (ques) => ques.question === "Frame Benefit Available"
-                )?.optional === "true"
-            ) {
-                validationObject.isFrameBenifit = Yup.string().required(
-                    "Frame benefit is required"
-                );
-            }
-            if (
-                data?.find(
-                    (ques) => ques.question === "Lens Benefit Available"
-                ) === "true"
-            ) {
-                validationObject.isLensBenifit = Yup.string().required(
-                    "Lens benefit is required"
-                );
-            }
-            setCalValidations({
-                ...calValidations,
-                ...validationObject,
-            });
         }
-        handleChange(event);
+        defaultValidationsState[event?.target?.value] = { ...validations }
+        setCalValidations({ ...validations }
+        );
+        setCurrentPlan(event?.target?.value);
+        setCalculatorState(defaultState[event?.target?.value]);
     };
 
     const visionPlan = () => {

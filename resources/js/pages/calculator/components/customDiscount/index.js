@@ -12,29 +12,36 @@ const CustomDiscount = ({
     calculatorObj,
     setCalValidations,
     calValidations,
+    calculatorState,
 }) => {
     const history = useHistory();
     const [discount, setDiscount] = useState("");
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const editInvoiceState = history?.location?.state?.invoice;
 
+    const getActiveDiscounts = () => {
+        return (
+            calculatorObj?.discount?.filter(
+                (item) => item?.status === "active"
+            ) || []
+        );
+    };
+    const isSelected = getActiveDiscounts()?.filter(
+        (item) => item.name === values?.discountType
+    );
     useEffect(() => {
         if (editInvoiceState?.id) {
-            const isSelected = getActiveDiscounts()?.filter(
-                (item) => item.name === values?.discountType
-            );
-
-            if (values?.discountType === "") {
+            if (values?.discountType === "" && discount === "") {
                 setDiscount("");
             } else if (isSelected?.length === 0) {
                 setDiscount("other");
             } else {
-                setDiscount(values?.discountType);
+                setDiscount(isSelected[0]?.id);
             }
         }
-    }, [history?.location?.state, values?.discountType]);
+    }, [history?.location?.state, isSelected, calculatorObj]);
 
-    const handleValueChange = (e) => {
+    const handleValueChange = async (e) => {
         const removeValidations = () => {
             const validations = { ...calValidations };
             delete validations.discountValue;
@@ -45,12 +52,12 @@ const CustomDiscount = ({
         };
 
         if (e === "") {
-            setFieldValue("discountType", "");
-            setFieldValue("discountValue", "");
+            await setFieldValue("discountType", "");
+            await setFieldValue("discountValue", "");
             removeValidations();
         } else if (e === "other") {
-            setFieldValue("discountType", "");
-            setFieldValue("discountValue", "");
+            await setFieldValue("discountType", "");
+            await setFieldValue("discountValue", "");
             const discountValue = Yup.string().required("Discount is required");
             const discountType = Yup.string().required(
                 "Discount name is required"
@@ -65,17 +72,11 @@ const CustomDiscount = ({
             const currentDiscount = calculatorObj?.discount?.find(
                 (item) => item?.id == e
             );
-            setFieldValue("discountType", currentDiscount?.name);
-            setFieldValue("discountValue", currentDiscount?.value);
+            await setFieldValue("discountType", currentDiscount?.name);
+            await setFieldValue("discountValue", currentDiscount?.value);
         }
     };
-    const getActiveDiscounts = () => {
-        return (
-            calculatorObj?.discount?.filter(
-                (item) => item?.status === "active"
-            ) || []
-        );
-    };
+
     const handleDiscountValueChange = (e) => {
         if (parseInt(e.target.value) > 100 || parseInt(e.target.value) < 0)
             return;
