@@ -4,7 +4,7 @@ import classes from "./styles.module.scss";
 import Axios from "../../../Http";
 import { connect } from "react-redux";
 
-const TeamPerformanceChart = (setLoading,userId) => {
+const TeamPerformanceChart = (userId) => {
     const [points, setPoints] = useState({
         current: [],
         prev: [],
@@ -16,7 +16,6 @@ const TeamPerformanceChart = (setLoading,userId) => {
     useEffect(() => {
         if (!userId) return;
         const getStats = async () => {
-            setLoading(true)
             try {
                 const payload = {
                     start_date: "2022-08-16",
@@ -27,10 +26,8 @@ const TeamPerformanceChart = (setLoading,userId) => {
                     payload
                 );
                 manageValues(res?.data?.data);
-                setLoading(false)
             } catch (err) {
                 console.log("Error while getting performance stats", err);
-                setLoading(false)
             }
         };
         getStats();
