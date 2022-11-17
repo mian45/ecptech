@@ -5,6 +5,11 @@
     flex-direction: column;
     padding: 20px;
 }
+.page-logo{
+    position: absolute;
+    top:27px;
+    left: 70px;
+}
 .login-section{
     background-color: var(--login-background-color);
 }

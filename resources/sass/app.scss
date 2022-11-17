@@ -254,6 +254,12 @@ p {
     opacity: 0.3;
     background: #ffffff !important;
 }
+.swiper-pagination{
+    bottom: 100px !important;
+    @media (min-width: 279px) and (max-width: 1000px) {
+        bottom: 50px !important;
+    }
+}
 .swiper-pagination-bullet .swiper-pagination-bullet-active {
     background-color: #ffffff !important;
     background: #ffffff !important;
