@@ -3,7 +3,7 @@ import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
 import { connect } from "react-redux";
 import { defaultMaterials } from "./data";
-import {Row,Col} from "antd"
+import { Row, Col } from "antd"
 const EyePrescription = ({ userId }) => {
     const [eyeDetails, setEyeDetails] = useState([]);
     const [sphError, setSphError] = useState([...defaultSphError]);
@@ -213,37 +213,37 @@ const EyePrescription = ({ userId }) => {
     return (
         <Row className={classes["container"]} justify="start" align="middle">
             <Col xs={24} className={classes["page-title"]}>
-                Eye Prescription Setting
+                Glasses Prescription Setting
             </Col>
             <Col xs={24} className={classes["content-map-container"]}>
-               <Row justify="center" align="middle">
-              <Col xs={24} md={14}>
-              {eyeDetails?.map((item, index) => {
-                    return (
-                        <EyePrescriptionSlot
-                            key={index}
-                            data={item}
-                            onChange={handleInputChange}
-                            sphError={sphError}
-                            cylError={cylError}
-                        />
-                    );
-                })}
-              </Col>
-            <Col xs={24} md={14} className={classes["button-wrapper"]}>
-                    <Row justify="end" align="middle">
-                    <Col xs={10} md={7} className={classes['btn-grid']}>
-                        <button
-                        className={classes["button"]}
-                        onClick={handleSubmit}
-                        disabled={disable}
-                    >
-                        Save
-                    </button>
-                        </Col>
-                    </Row>
-                </Col>
-               </Row>
+                <Row justify="center" align="middle">
+                    <Col xs={24} md={14}>
+                        {eyeDetails?.map((item, index) => {
+                            return (
+                                <EyePrescriptionSlot
+                                    key={index}
+                                    data={item}
+                                    onChange={handleInputChange}
+                                    sphError={sphError}
+                                    cylError={cylError}
+                                />
+                            );
+                        })}
+                    </Col>
+                    <Col xs={24} md={14} className={classes["button-wrapper"]}>
+                        <Row justify="end" align="middle">
+                            <Col xs={10} md={7} className={classes['btn-grid']}>
+                                <button
+                                    className={classes["button"]}
+                                    onClick={handleSubmit}
+                                    disabled={disable}
+                                >
+                                    Save
+                                </button>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
             </Col>
         </Row>
     );
@@ -263,99 +263,99 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
     )?.value;
     return (
         <Row className={classes["slot-container"]}>
-            <Col xs={24}className={classes["slot-header"]}>
+            <Col xs={24} className={classes["slot-header"]}>
                 <div className={classes["header-title"]}>{`Show ${data?.name || ""
                     } If`}</div>
             </Col>
             <Col xs={24} className={classes["slot-body"]}>
-             <Row justify="space-between">
-             <Col xs={24} md={24} lg={12}className={classes["slot-body-content"]}>
-                    <div className={classes["slot-body-label"]}>
-                        Sphere (SPH)
-                    </div>
-                    <div className={classes["slot-body-input-section"]}>
-                        <input
-                            type={"number"}
-                            placeholder={"From"}
-                            className={classes["input"]}
-                            step={0.01}
-                            min={-20}
-                            max={20}
-                            value={data["sphere_from"] || ""}
-                            onChange={(e) =>
-                                onChange(
-                                    e.target?.value,
-                                    data?.name,
-                                    "sphere_from"
-                                )
-                            }
-                        />
-                        <div className={classes["to-label"]}>to</div>
-                        <input
-                            placeholder={"Select"}
-                            className={classes["input"]}
-                            type={"number"}
-                            step={0.01}
-                            min={-20}
-                            max={20}
-                            value={data["sphere_to"] || ""}
-                            onChange={(e) =>
-                                onChange(
-                                    e.target?.value,
-                                    data?.name,
-                                    "sphere_to"
-                                )
-                            }
-                        />
-                    </div>
-                    {sphErrValue && (
-                        <div className={classes["error"]}>{sphErrValue}</div>
-                    )}
-                </Col>
-                <Col xs={24} md={24} lg={12}className={classes["slot-body-content"]}>
-                    <div className={classes["slot-body-label"]}>
-                        Cylinder (CYL)
-                    </div>
-                    <div className={classes["slot-body-input-section"]}>
-                        <input
-                            placeholder={"From"}
-                            className={classes["input"]}
-                            type={"number"}
-                            step={0.01}
-                            min={-10}
-                            max={10}
-                            value={data["cylinder_from"] || ""}
-                            onChange={(e) =>
-                                onChange(
-                                    e.target?.value,
-                                    data?.name,
-                                    "cylinder_from"
-                                )
-                            }
-                        />
-                        <div className={classes["to-label"]}>to</div>
-                        <input
-                            placeholder={"Select"}
-                            className={classes["input"]}
-                            type={"number"}
-                            step={0.01}
-                            min={-10}
-                            max={10}
-                            value={data["cylinder_to"] || ""}
-                            onChange={(e) =>
-                                onChange(
-                                    e.target?.value,
-                                    data?.name,
-                                    "cylinder_to"
-                                )
-                            }
-                        />
-                    </div>
-                    {cylErrValue && (
-                        <div className={classes["error"]}>{cylErrValue}</div>
-                    )}
-                </Col>
-             </Row>
+                <Row justify="space-between">
+                    <Col xs={24} md={24} lg={12} className={classes["slot-body-content"]}>
+                        <div className={classes["slot-body-label"]}>
+                            Sphere (SPH)
+                        </div>
+                        <div className={classes["slot-body-input-section"]}>
+                            <input
+                                type={"number"}
+                                placeholder={"From"}
+                                className={classes["input"]}
+                                step={0.01}
+                                min={-20}
+                                max={20}
+                                value={data["sphere_from"] || ""}
+                                onChange={(e) =>
+                                    onChange(
+                                        e.target?.value,
+                                        data?.name,
+                                        "sphere_from"
+                                    )
+                                }
+                            />
+                            <div className={classes["to-label"]}>to</div>
+                            <input
+                                placeholder={"Select"}
+                                className={classes["input"]}
+                                type={"number"}
+                                step={0.01}
+                                min={-20}
+                                max={20}
+                                value={data["sphere_to"] || ""}
+                                onChange={(e) =>
+                                    onChange(
+                                        e.target?.value,
+                                        data?.name,
+                                        "sphere_to"
+                                    )
+                                }
+                            />
+                        </div>
+                        {sphErrValue && (
+                            <div className={classes["error"]}>{sphErrValue}</div>
+                        )}
+                    </Col>
+                    <Col xs={24} md={24} lg={12} className={classes["slot-body-content"]}>
+                        <div className={classes["slot-body-label"]}>
+                            Cylinder (CYL)
+                        </div>
+                        <div className={classes["slot-body-input-section"]}>
+                            <input
+                                placeholder={"From"}
+                                className={classes["input"]}
+                                type={"number"}
+                                step={0.01}
+                                min={-10}
+                                max={10}
+                                value={data["cylinder_from"] || ""}
+                                onChange={(e) =>
+                                    onChange(
+                                        e.target?.value,
+                                        data?.name,
+                                        "cylinder_from"
+                                    )
+                                }
+                            />
+                            <div className={classes["to-label"]}>to</div>
+                            <input
+                                placeholder={"Select"}
+                                className={classes["input"]}
+                                type={"number"}
+                                step={0.01}
+                                min={-10}
+                                max={10}
+                                value={data["cylinder_to"] || ""}
+                                onChange={(e) =>
+                                    onChange(
+                                        e.target?.value,
+                                        data?.name,
+                                        "cylinder_to"
+                                    )
+                                }
+                            />
+                        </div>
+                        {cylErrValue && (
+                            <div className={classes["error"]}>{cylErrValue}</div>
+                        )}
+                    </Col>
+                </Row>
             </Col>
         </Row>
     );
