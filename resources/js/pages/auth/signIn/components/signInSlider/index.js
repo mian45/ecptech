@@ -14,7 +14,7 @@ import SwiperCore, {
     Keyboard,
     Autoplay,
 } from "swiper";
-import { Col,Row } from "antd";
+import { Col, Row } from "antd";
 
 const SignInSlider = () => {
     SwiperCore.use([Autoplay]);
@@ -34,24 +34,38 @@ const SignInSlider = () => {
                 return (
                     <SwiperSlide key={index}>
                         <Col>
-                        <Row className={`${classes["card-container"]}`} justify="center"align="middle">
-                            <Col xs={18}>
-                            <img
-                                src={item?.icon}
-                                alt={"icon"}
-                                className={classes["card-image"]}
-                            /></Col>
-                        </Row>
-                        <Row xs={18} justify="center" align="middle" className={classes["title"]}>
-                            <Col xs={24}> 
-                                {item?.title}
-                           </Col>
-                            <Col xs={24} className={classes["subtitle"]}>
-                                {item?.subtitle}
-                            </Col>
-                        </Row>
+                            <Row
+                                className={`${classes["card-container"]}`}
+                                justify="center"
+                                align="middle"
+                            >
+                                <Col xs={18}>
+                                    <img
+                                        src={item?.icon}
+                                        alt={"icon"}
+                                        className={classes["card-image"]}
+                                    />
+                                </Col>
+                            </Row>
+                            <Row
+                                justify="center"
+                                align="middle"
+                                className={classes["title"]}
+                            >
+                                <Col xs={18} md={16} lg={14}>
+                                    {item?.title}
+                                </Col>
+                                <Col
+                                    xs={18}
+                                    md={24}
+                                    lg={20}
+                                    xl={14}
+                                    className={classes["subtitle"]}
+                                >
+                                    {item?.subtitle}
+                                </Col>
+                            </Row>
                         </Col>
-                        
                     </SwiperSlide>
                 );
             })}

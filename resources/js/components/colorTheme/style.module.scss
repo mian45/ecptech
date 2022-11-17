@@ -38,10 +38,13 @@
 .toggle-wrapper {
     padding-left: 0px;
 }
+.color-picker-wrapper{
+    margin-right: 10px;
+}
 .color-picker {
     width: 48px;
     height: 45px;
-    border: none;
+    border: none !important;
     background: none;
     border-radius: 50%;
     cursor: pointer;

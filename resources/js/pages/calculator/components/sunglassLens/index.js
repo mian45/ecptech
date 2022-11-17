@@ -391,7 +391,9 @@ const SunglassLens = ({
                                         <>
                                             {values?.sunglassesType ===
                                                 "Tint" && renderTintLens()}
-                                            {renderMirrorCoating()}
+                                            <span style={{ marginTop: "20px" }}>
+                                                {renderMirrorCoating()}
+                                            </span>
                                             {values?.isMirrorCoating ===
                                                 "Yes" && (
                                                 <>{renderMirrorType()}</>
