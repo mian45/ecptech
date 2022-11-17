@@ -283,8 +283,8 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                         </form>
                     );
                 }}
-            </Formik>
-        </div>
+            </Formik >
+        </div >
     );
 };
 const mapStateToProps = (state) => ({
