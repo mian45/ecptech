@@ -110,6 +110,7 @@ const CalculatorScreen = () => {
                 const validations = CreateCalculatorValidations(questionsData);
                 setCalValidations(validations);
             }
+            setLoading(false);
         } else {
             const userDetails = history.location?.state?.user;
             setUserInfo(userDetails || {});
