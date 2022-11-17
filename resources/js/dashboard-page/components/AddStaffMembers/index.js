@@ -6,7 +6,8 @@ import tickIcon from "../../../../images/tick.svg";
 import editIcon from "../../../../images/edit-icon.svg";
 import deleteIcon from "../../../../images/delete-icon.svg";
 import Axios from "../../../Http";
-
+import DeleteModal from "../../../components/deleteModal/index"
+import {Row,Col} from "antd"
 const AddStaffMember = ({ userId }) => {
     const [staffList, setStaffList] = useState([]);
     const [staffInput, setStaffInput] = useState("");
@@ -102,6 +103,7 @@ const AddStaffMember = ({ userId }) => {
                 (staff) => staff.id !== id
             );
             setStaffList([...filteredStaff]);
+            setEditId(null)
         } catch (err) {
             console.log("Error while delete Staff", err);
         }
@@ -126,28 +128,32 @@ const AddStaffMember = ({ userId }) => {
     return (
         <div className={classes["container"]}>
             <div className={classes["label"]}>Add Staff Members</div>
-            <div className={classes["input-wrapper"]}>
-                <input
+            <Row justify="space-between" align="middle">
+               <Col xs={18}>
+               <input
                     className={classes["input-field"]}
                     placeholder={"Enter staff member name"}
                     onChange={handleStaffChange}
                     value={staffInput}
                 />
-                <div
-                    className={`${
+                </Col>
+                <Col xs={5}>
+                    <Row className={`${
                         classes["tick-wrapper"]
                     } ${getBackgroundButton()}`}
                     onClick={handleSubmit}
                     onMouseEnter={() => setIsHover(true)}
-                    onMouseLeave={() => setIsHover(false)}
-                >
-                    <img
+                    onMouseLeave={() => setIsHover(false)} justify="center" align="middle">
+                         <img
                         src={tickIcon}
                         alt="tick"
                         className={classes["tick-icon"]}
                     />
-                </div>
-            </div>
+                    </Row>
+                   
+                </Col>
+               
+            </Row>
             <div className={classes["staff-map"]}>
                 {[...staffList]?.map((staff, index) => {
                     return (
@@ -171,30 +177,49 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(AddStaffMember);
 
 const StaffMemberSlot = ({ staff, handleEdit, handleDelete }) => {
+    const [showDelete,setShowDelete]=useState(false);
     return (
-        <div className={classes["slot-container"]}>
-            <div className={classes["slot-info"]}>
-                <img
+        <>
+         {showDelete?
+            <DeleteModal accept={async ()=>{
+                await handleDelete(staff?.id)
+                setShowDelete(false)
+            }}
+            open={showDelete}
+            cancel={()=>{setShowDelete(false)}}/> :null}
+             <Row className={classes["slot-container"]} justify={"center"} align={"middle"}>
+            <Col xs={18}>
+                <Row justify="center" align="middle">
+                <Col xs={6}><img
                     src={userIcon}
                     alt={"user-icon"}
                     className={classes["user-icon"]}
-                />
-                <div className={classes["staff-name"]}>{staff?.name || ""}</div>
-            </div>
-            <div className={classes["slot-actions"]}>
-                <img
+                /></Col>
+                <Col xs={18}><div className={classes["staff-name"]}>{staff?.name || ""}</div>
+                </Col>
+                </Row>
+            </Col>
+            <Col xs={6}>
+               <Row justify="space-between" align="middle">
+               <Col xs={6}>
+               <img
                     src={editIcon}
                     alt={"edit-icon"}
                     className={classes["edit-icon"]}
                     onClick={() => handleEdit(staff)}
                 />
-                <img
+               </Col>
+               <Col xs={6}><img
                     src={deleteIcon}
                     alt={"delete-icon"}
                     className={classes["delete-icon"]}
-                    onClick={() => handleDelete(staff?.id)}
-                />
-            </div>
-        </div>
+                    onClick={() => {setShowDelete(true)}}
+                /></Col>
+                
+               </Row>
+            </Col>
+        </Row>
+            </>
+       
     );
 };

@@ -3,7 +3,7 @@ import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import CustomCheckbox from "../../../../components/customCheckbox";
 import visionIcon from "../../../../../images/calculator/vision.svg";
 import { LowerCopayAmountTypeEnum, LowerCopayTypeEnum } from "../../data/enums";
@@ -73,12 +73,7 @@ const LoweredCopay = ({
 
     const handleCopoayCheckChange = (value, key) => {
         setFieldValue(key, value);
-        if (
-            value === true &&
-            !data?.find(
-                (ques) => ques.question === "Any copay lowered than standard"
-            ).optional
-        ) {
+        if (value === true) {
             if (key === "isCopayPolycarbonate") {
                 const isCopayPolycarbonateAmount =
                     Yup.string().required("Option is required");
@@ -114,6 +109,20 @@ const LoweredCopay = ({
                     ...calValidations,
                     isCopaypremiumProgressiveAmount,
                 });
+            } else if (key === "isCopayStandardProgressives") {
+                const isCopayStandardProgressiveAmount =
+                    Yup.string().required("Option is required");
+                setCalValidations({
+                    ...calValidations,
+                    isCopayStandardProgressiveAmount,
+                });
+            } else if (key === "isCopayCustomProgressives") {
+                const isCopayCustomProgressiveAmount =
+                    Yup.string().required("Option is required");
+                setCalValidations({
+                    ...calValidations,
+                    isCopayCustomProgressiveAmount,
+                });
             }
         } else if (value === false) {
             if (key === "isCopayPolycarbonate") {
@@ -146,6 +155,18 @@ const LoweredCopay = ({
                 setCalValidations({
                     ...validations,
                 });
+            } else if (key === "isCopayStandardProgressives") {
+                const validations = { ...calValidations };
+                delete validations.isCopayStandardProgressiveAmount;
+                setCalValidations({
+                    ...validations,
+                });
+            } else if (key === "isCopayCustomProgressives") {
+                const validations = { ...calValidations };
+                delete validations.isCopayCustomProgressiveAmount;
+                setCalValidations({
+                    ...validations,
+                });
             }
         }
     };
@@ -156,6 +177,7 @@ const LoweredCopay = ({
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.polycarbonate}
                         defaultChecked={values?.isCopayPolycarbonate || false}
+                        active={values?.isCopayPolycarbonate || false}
                         onValueChange={(value) => {
                             handleCopoayCheckChange(
                                 value,
@@ -168,6 +190,7 @@ const LoweredCopay = ({
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.photochromic}
                         defaultChecked={values?.isCopayPhotochromic || false}
+                        active={values?.isCopayPhotochromic || false}
                         onValueChange={(value) => {
                             handleCopoayCheckChange(
                                 value,
@@ -180,6 +203,7 @@ const LoweredCopay = ({
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.highIndex}
                         defaultChecked={values?.isCopayHighIndex || false}
+                        active={values?.isCopayHighIndex || false}
                         onValueChange={(value) => {
                             handleCopoayCheckChange(value, "isCopayHighIndex");
                         }}
@@ -189,6 +213,7 @@ const LoweredCopay = ({
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.antiReflective}
                         defaultChecked={values?.isCopayAntiReflective || false}
+                        active={values?.isCopayAntiReflective || false}
                         onValueChange={(value) => {
                             handleCopoayCheckChange(
                                 value,
@@ -199,10 +224,26 @@ const LoweredCopay = ({
                         name="isCopayAntiReflective"
                     />
                     <CustomCheckbox
+                        label={LowerCopayTypeEnum.standardProgressives}
+                        defaultChecked={
+                            values?.isCopayStandardProgressives || false
+                        }
+                        active={values?.isCopayStandardProgressives || false}
+                        onValueChange={(value) => {
+                            handleCopoayCheckChange(
+                                value,
+                                "isCopayStandardProgressives"
+                            );
+                        }}
+                        id="isCopayStandardProgressives"
+                        name="isCopayStandardProgressives"
+                    />
+                    <CustomCheckbox
                         label={LowerCopayTypeEnum.premiumProgressives}
                         defaultChecked={
                             values?.isCopayPremiumProgressives || false
                         }
+                        active={values?.isCopayPremiumProgressives || false}
                         onValueChange={(value) => {
                             handleCopoayCheckChange(
                                 value,
@@ -211,6 +252,21 @@ const LoweredCopay = ({
                         }}
                         id="isCopayPremiumProgressives"
                         name="isCopayPremiumProgressives"
+                    />
+                    <CustomCheckbox
+                        label={LowerCopayTypeEnum.customProgressives}
+                        defaultChecked={
+                            values?.isCopayCustomProgressives || false
+                        }
+                        active={values?.isCopayCustomProgressives || false}
+                        onValueChange={(value) => {
+                            handleCopoayCheckChange(
+                                value,
+                                "isCopayCustomProgressives"
+                            );
+                        }}
+                        id="isCopayCustomProgressives"
+                        name="isCopayCustomProgressives"
                     />
                 </div>
                 <FormikError name={"isCopayPolycarbonate"} />
@@ -258,6 +314,17 @@ const LoweredCopay = ({
                         data={data}
                     />
                 )}
+                {values?.isCopayStandardProgressives && (
+                    <SpecialCopaySlot
+                        title={"standardProgressives"}
+                        formProps={formProps}
+                        radioValue={"isCopayStandardProgressiveAmount"}
+                        inputValue={"copayStandardProgressiveAmount"}
+                        setCalValidations={setCalValidations}
+                        calValidations={calValidations}
+                        data={data}
+                    />
+                )}
                 {values?.isCopayPremiumProgressives && (
                     <SpecialCopaySlot
                         title={"premiumProgressives"}
@@ -269,45 +336,62 @@ const LoweredCopay = ({
                         data={data}
                     />
                 )}
+                {values?.isCopayCustomProgressives && (
+                    <SpecialCopaySlot
+                        title={"customProgressives"}
+                        formProps={formProps}
+                        radioValue={"isCopayCustomProgressiveAmount"}
+                        inputValue={"copayCustomProgressiveAmount"}
+                        setCalValidations={setCalValidations}
+                        calValidations={calValidations}
+                        data={data}
+                    />
+                )}
             </>
         );
     };
     return (
         <>
             {copayDollarAmountVisibility ? (
-                <div className={classes["container"]}>
-                    <QuestionIcon
-                        icon={visionIcon}
-                        active={values?.isloweredCopay}
-                    />
-                    <div className={classes["vision-container"]}>
-                        <CalculatorHeading
-                            title="Any copay dollar amount lowered than standard?"
+                <Row className={classes["container"]}>
+                    {" "}
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={visionIcon}
                             active={values?.isloweredCopay}
                         />
-                        <Radio.Group
-                            onBlur={handleBlur}
-                            onChange={handleLoweredCopayClick}
-                            value={values?.isloweredCopay}
-                            id="isloweredCopay"
-                            name="isloweredCopay"
-                            className={classes["radio-group"]}
-                        >
-                            <CustomRadio
-                                label={"Yes"}
-                                value={"Yes"}
-                                active={values?.isloweredCopay === "Yes"}
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
+                        <div className={classes["vision-container"]}>
+                            <CalculatorHeading
+                                title="Any copay dollar amount less than standard?"
+                                active={values?.isloweredCopay}
                             />
-                            <CustomRadio
-                                label={"No"}
-                                value={"No"}
-                                active={values?.isloweredCopay === "No"}
-                            />
-                        </Radio.Group>
-                        <FormikError name={"isloweredCopay"} />
-                        {values?.isloweredCopay === "Yes" && copayProperties()}
-                    </div>
-                </div>
+                            <Radio.Group
+                                onBlur={handleBlur}
+                                onChange={handleLoweredCopayClick}
+                                value={values?.isloweredCopay}
+                                id="isloweredCopay"
+                                name="isloweredCopay"
+                                className={classes["radio-group"]}
+                            >
+                                <CustomRadio
+                                    label={"Yes"}
+                                    value={"Yes"}
+                                    active={values?.isloweredCopay === "Yes"}
+                                />
+                                <CustomRadio
+                                    label={"No"}
+                                    value={"No"}
+                                    active={values?.isloweredCopay === "No"}
+                                />
+                            </Radio.Group>
+                            <FormikError name={"isloweredCopay"} />
+                            {values?.isloweredCopay === "Yes" &&
+                                copayProperties()}
+                        </div>
+                    </Col>
+                </Row>
             ) : null}
         </>
     );
@@ -339,12 +423,7 @@ const SpecialCopaySlot = ({
 
     const handleValueChange = (e) => {
         handleChange(e);
-        if (
-            e?.target?.value === LowerCopayAmountTypeEnum.amount &&
-            !data?.find(
-                (ques) => ques.question === "Any copay lowered than standard"
-            ).optional
-        ) {
+        if (e?.target?.value === LowerCopayAmountTypeEnum.amount) {
             const validationObject = {
                 [inputValue]: Yup.string().required("Amount is required"),
             };
@@ -363,7 +442,7 @@ const SpecialCopaySlot = ({
     return (
         <>
             <CalculatorHeading
-                title={`${LowerCopayTypeEnum[title]} Lowered Copay?`}
+                title={`${LowerCopayTypeEnum[title]} Lower Copay?`}
             />
             <Radio.Group
                 onBlur={handleBlur}
@@ -374,7 +453,7 @@ const SpecialCopaySlot = ({
                 className={classes["radio-group"]}
             >
                 <CustomRadio
-                    label={LowerCopayAmountTypeEnum.amount}
+                    label={"Lower copay dollar amount"}
                     value={LowerCopayAmountTypeEnum.amount}
                     active={
                         values[radioValue] === LowerCopayAmountTypeEnum.amount
@@ -415,6 +494,10 @@ const SpecialCopaySlot = ({
 
 const getPrice = (value) => {
     switch (value) {
+        case "copayStandardProgressiveAmount":
+            return PREMIUM_PROGRESSIVE;
+        case "copayCustomProgressiveAmount":
+            return PREMIUM_PROGRESSIVE;
         case "copaypremiumProgressiveAmount":
             return PREMIUM_PROGRESSIVE;
         case "copayAntiReflectiveAmount":

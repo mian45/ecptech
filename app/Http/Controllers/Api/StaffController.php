@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Staff;
 use Illuminate\Http\Request;
 use Validator;
+use Illuminate\Validation\ValidationException;
+
 
 class StaffController extends Controller
 {
@@ -17,7 +19,7 @@ class StaffController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
       $staff = Staff::select('id','name')->where('user_id',$request->userId)->get();
         return $this->sendResponse($staff, 'Staff list get successfully');
@@ -34,7 +36,7 @@ class StaffController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $user_id = $request->userId;
         $name = $request->name;
@@ -68,7 +70,7 @@ class StaffController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $id = $request->id;
         $user_id = $request->userId;
@@ -106,7 +108,7 @@ class StaffController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $staff =  Staff::find($request->id);

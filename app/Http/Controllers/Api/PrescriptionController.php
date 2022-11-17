@@ -7,6 +7,7 @@ use App\Models\Prescription;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Illuminate\Validation\ValidationException;
 
 class PrescriptionController extends Controller
 {
@@ -16,7 +17,7 @@ class PrescriptionController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $user_id = $request->user_id;
@@ -69,7 +70,7 @@ class PrescriptionController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
         $right_eye_material = Prescription::where('sphere_from', '<=', $request->right_eye_sphere)
         ->where('sphere_to', '>=', $request->right_eye_sphere)
@@ -105,7 +106,7 @@ class PrescriptionController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('Validation Error.', $validator->errors());
+            throw (new ValidationException($validator));
         }
 
         $user_id = $request->user_id;

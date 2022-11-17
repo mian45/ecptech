@@ -4,18 +4,26 @@ import Axios from "../../Http";
 import { connect } from "react-redux";
 import edit from "../../../images/edit.png";
 import cross from "../../../images/cross.png";
+import CustomLoader from "../../components/customLoader";
 
+import DeleteModal from "../../components/deleteModal/index"
+import {Row,Col} from "antd"
 const ShippingSettings = ({ userId }) => {
     const [shippingName, setShippingName] = useState("");
     const [shippingAmount, setShippingAmount] = useState("");
     const [shipping, setShipping] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
+    const [shippingButtonLoader , setShippingButtonLoader] = useState(false)
 
+    const [editState,setEditState]=useState(false)
+    const [showDeleteShipping,setShowDeleteShipping]=useState(false)
+    const [deleteShippingId,setDeleteShippingId]=useState(0)
+    let [shippingLoading,setShippingLoading]=useState(false)
     useEffect(() => {
         const getShipping = async () => {
             try {
                 const res = await Axios.get(
-                    process.env.MIX_REACT_APP_URL + "/api/getShipping",
+                    process.env.MIX_REACT_APP_URL + "/api/get-shipping",
                     { params: { userId: userId } }
                 );
                 const shippingData = res?.data?.data;
@@ -24,27 +32,34 @@ const ShippingSettings = ({ userId }) => {
                 console.log("error while get shipping");
             }
         };
+        setEditState(false)
         getShipping();
     }, []);
 
-    const handlUpdateShipping = async (data) => {
+    const handleUpdateShipping = async (data) => {
         setShippingName(data?.name);
         setShippingAmount(data?.value);
         setIsSubmitted(false);
     };
-    const handleDeleteShipping = async (id) => {
+    const deleteShipping=async(id)=>{
         try {
             await Axios.post(
-                process.env.MIX_REACT_APP_URL + "/api/deleteShipping",
+                process.env.MIX_REACT_APP_URL + "/api/delete-shipping",
                 { id: id }
             );
             setShipping({});
             setIsSubmitted(false);
+            setShowDeleteShipping(false)
         } catch (err) {
             console.log("error while delete shipping");
         }
+    }
+    const handleDeleteShipping = async (id) => {
+       setDeleteShippingId(id);
+       setShowDeleteShipping(true)
     };
     const handleShippingSubmit = async (e) => {
+        setShippingButtonLoader(true)
         e?.preventDefault();
 
         try {
@@ -54,49 +69,81 @@ const ShippingSettings = ({ userId }) => {
                 value: shippingAmount,
             };
             const res = await Axios.post(
-                process.env.MIX_REACT_APP_URL + "/api/addShipping",
+                process.env.MIX_REACT_APP_URL + "/api/add-shipping",
                 payload
             );
             setShipping(res?.data?.data);
             setShippingName("");
+            setEditState(false)
             setShippingAmount("");
             setIsSubmitted(true);
+            setShippingButtonLoader(false)
         } catch (err) {
             console.log("error while adding shipping");
+            setShippingButtonLoader(false)
         }
     };
 
     return (
-        <div className="discount-container_first discount-tax-con">
-            <p className="heading">Shipping</p>
-            <div>
-                <form className="discount-container_first-form">
-                    <div className="discount-container_first-form_section">
-                        <p className="input-title">Enter Label</p>
-                        <input
+        <>
+        {showDeleteShipping?
+            <DeleteModal accept={()=>{
+                deleteShipping(deleteShippingId);
+
+            }}
+            cancel={()=>{setShowDeleteShipping(false)}}
+            open={showDeleteShipping}
+
+            /> :null}
+            <Row justify="center" align="middle" >
+            <Col xs={24} md={24} lg={16}className="discount-container_first discount-tax-con">
+                                <Row justify="center" align="middle">
+                                    <Col xs={24} md={24}>
+                                        <p className="heading">Shipping</p>
+                                    </Col>
+                                    <Col xs={24}>
+                                        <form>
+                                            <Row justify="space-between">
+                                                <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
+                                                       <Row justify="center" align="middle">
+                                                       <Col xs={24}><p className="input-title">Enter Label</p></Col>
+                                                       <Col xs={24}><input
                             placeholder="Enter Text"
                             value={shippingName}
                             onChange={(e) => {
                                 setShippingName(e.target.value);
                             }}
-                            disabled={isSubmitted}
-                        />
-                    </div>
-                    <div className="discount-container_first-form_section">
-                        <p className="input-title">Add Shipping Amount</p>
-                        <input
-                            placeholder="Enter Amount"
-                            type={"number"}
-                            min={0}
-                            value={shippingAmount}
-                            onChange={(e) => {
-                                setShippingAmount(e.target.value);
-                            }}
-                            disabled={isSubmitted}
-                        />
-                    </div>
-                    <div>
-                        <button
+                            disabled={isSubmitted||shippingLoading}
+                        /></Col>
+                        
+                                                       </Row>
+                                                </Col>
+                                                <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
+                                                        <Row>
+                                                            <Col xs={24}>
+                                                            <p className="input-title">Add Shipping Amount</p>
+                                                            </Col>
+                                                            <Col xs={24}>
+                                                            <input
+                                                                placeholder="Enter Amount"
+                                                                type={"number"}
+                                                                min={0}
+                                                                value={shippingAmount}
+                                                                onChange={(e) => {
+                                                                    setShippingAmount(e.target.value);
+                                                                }}
+                                                                disabled={isSubmitted}
+                                                            />
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                <Col xs={24} lg={4} style={{justifyContent:"center"}}>
+                                                    <Row justify="center" align="middle">
+                                                        <Col xs={24}>
+                                                        <p class="input-title hidden-text">Value</p>
+                                                        </Col>
+                                                        <Col xs={24} className="btn_section">   
+                                                        <button
                             onClick={handleShippingSubmit}
                             className={`save-button ${
                                 !shippingName || !shippingAmount
@@ -104,13 +151,24 @@ const ShippingSettings = ({ userId }) => {
                                     : ""
                             } `}
                         >
-                            Add
+                            {editState?"Update":shippingButtonLoader == true ? 
+                                  <span>
+                                  <p>Add</p> 
+                                  <CustomLoader buttonBool={true}/>
+                                  </span> :
+                                    'Add'}
                         </button>
-                    </div>
-                </form>
-            </div>
-            <div className="discount-output">
-                <table>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                            </Row>
+                                        </form>
+                                    </Col>
+                                    <Col xs={24}>
+                                        <Row>                       
+                                            <Col xs={24} className="discount-output">
+                                                <Row justify="center" align="middle">
+                                                <table>
                     {Object.keys(shipping).length > 0 && (
                         <tr className="discount-output_head">
                             <th>Shipping Label</th>
@@ -122,7 +180,7 @@ const ShippingSettings = ({ userId }) => {
                         <tr className="discount-output_body">
                             <td>{shipping.name}</td>
                             <td>${shipping.value}</td>
-                            <td>
+                            <td className="shipping-custom-col-3">
                                 <img
                                     style={{
                                         width: "18px",
@@ -132,7 +190,9 @@ const ShippingSettings = ({ userId }) => {
                                     }}
                                     src={edit}
                                     onClick={() => {
-                                        handlUpdateShipping(shipping);
+                                        setEditState(true)
+                                        setShippingLoading(true)
+                                        handleUpdateShipping(shipping);
                                     }}
                                 />
                                 <img
@@ -150,8 +210,17 @@ const ShippingSettings = ({ userId }) => {
                         </tr>
                     )}
                 </table>
-            </div>
-        </div>
+                                                </Row>
+                                            </Col>
+                                        </Row>     
+                                    </Col>
+                                </Row>
+                            </Col>
+        
+          
+        </Row>
+        </>
+
     );
 };
 const mapStateToProps = (state) => ({

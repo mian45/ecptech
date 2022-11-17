@@ -11,13 +11,11 @@
         background-color: white;
         margin-bottom: 20px;
         padding-inline: 27px 40px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         box-shadow: 2px 1px 5px 4px #ccc3;
         border-radius: 7px;
-        height: 75px;
-        width: 60%;
+        min-height: 75px;
+        padding-bottom: 20px;
+        padding-top: 20px;
 
         &-section {
             display: flex;
@@ -33,8 +31,6 @@
             }
 
             &-subsection {
-                display: flex;
-
                 &-heading {
                     font-size: 16px;
                     margin-right: 17px;
@@ -60,6 +56,18 @@
             &:hover {
                 background-color: #518fbb;
             }
+
+
+    span {
+        display: flex;
+        align-items: center;
+
+        p {
+            font-size: 14px;
+            margin: 0 !important;
+            margin-right: 5px !important;
+        }
+    }
         }
     }
 }
@@ -67,19 +75,20 @@
     padding-left: 18px !important;
     margin-left: 0px !important;
 }
+.reminder-select-date-container{
+    display: flex;
+    flex: 1;
+}
 .delete-icon {
     width: 16px;
-    height: 16px;
     cursor: pointer;
 }
 .edit-icon {
     width: 18px;
-    margin-right: 35.4px;
     cursor: pointer;
 }
 .bell-icon {
     height: 18px;
-    margin-right: 35.6px;
     cursor: pointer;
 }
 .email-remainder {
@@ -88,7 +97,7 @@
     &_heading {
         font-weight: bold;
         font-size: 1.5em;
-        margin-bottom: 2.375em !important;
+        margin-bottom: 1.375em !important;
     }
 
     &_arrow-section {
@@ -109,7 +118,6 @@
 
     &_input-sections {
         &_input-section {
-            display: flex;
             align-items: center;
             margin-bottom: 1.25em;
             outline: none !important;
@@ -123,7 +131,13 @@
             }
 
             .ant-select {
-                width: 23.68em !important;
+                max-width: 23.68em !important;
+                height: 2.8125em !important;
+                padding: 0;
+                color: black;
+            }
+            .ant-select-short {
+                width: 11.68em !important;
                 height: 2.8125em !important;
                 padding: 0;
                 color: black;
@@ -148,7 +162,7 @@
 
             .ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
                 .ant-select-selector {
-                border-color: unset !important;
+                border-color: #dfdfdf !important;
                 box-shadow: none !important;
             }
 
@@ -167,9 +181,26 @@
                 border-radius: 1.43em;
                 padding-inline-start: 1.375em;
                 padding-block: 0.8125em;
-                width: 23.68em;
+                width: 100%;
                 height: 2.8125em;
+                max-width: 23.68em;
 
+                &:focus-visible {
+                    border: 1px solid #dfdfdf;
+                    outline: none;
+                }
+            }
+            &_input-short {
+                outline: none !important;
+                background-color: white;
+                border: 1px solid #dfdfdf;
+                border-radius: 1.43em;
+                padding-inline-start: 1.375em;
+                padding-block: 0.8125em;
+                max-width: 11.68em;
+                height: 2.8125em;
+                margin-right: 2px;
+                width: 100%;
                 &:focus-visible {
                     border: 1px solid #dfdfdf;
                     outline: none;
@@ -224,7 +255,15 @@
 }
 
 .rdw-editor-wrapper {
-    width: 450px;
+    max-width: 100%;
+    @media only screen and (max-width: 1024px) and (min-width:763px){
+        max-width: 475px;
+    }
+    
+    @media only screen and  (min-width:1440px){
+        max-width: 541px;
+    }
+    
 }
 
 .public-DraftEditor-content[contenteditable="true"] {
@@ -250,7 +289,9 @@
     min-width: 100px !important;
     border: none;
     margin-left: 0 !important;
-
+    @media only screen and (max-width: 763px){
+        min-width: 40px !important;
+    }
     &:hover {
         background-color: #f9f9fb;
         min-width: 100px !important;
@@ -307,23 +348,17 @@ p {
     align-items: center;
     flex-direction: column;
 }
-.reminders-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-}
+
 .save-button-wrpper {
     width: 60%;
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
 }
 .reminders-container-schedule {
     width: 450px;
     display: flex;
-    justify-content: flex-start;
-    align-items: flex-start;
+    justify-content: flex-end;
+    align-items: flex-end;
     flex-direction: column;
 }
 .picker-padding {
@@ -343,4 +378,16 @@ p {
 .email-reminder-tag {
     text-transform: capitalize;
     margin-right: 17px !important;
+}
+.select-width{
+    width:100%
+}
+.align-items{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.back{
+    cursor:pointer;
+    margin-bottom: 1.375em
 }

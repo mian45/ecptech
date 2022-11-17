@@ -1,17 +1,18 @@
 import React from "react";
 import CardPayment from "./cardPayment";
 import classes from "./styles.module.scss";
+import { Col, Row } from 'antd';
 
 const Payments = () => {
     return (
-        <div className={classes["root-container"]}>
-            <div className={classes["container"]}>
-                <div className={classes["left-container"]}>
+        <Row className={classes["root-container"]}>
+            <Col className={classes["container"]}>
+                <Col xs={24} className={classes["left-container"]}>
                     <CardPayment />
-                </div>
-                <div className={classes["right-container"]}></div>
-            </div>
-        </div>
+                </Col>
+                <Col className={classes["right-container"]}></Col>
+            </Col>
+        </Row>
     );
 };
 

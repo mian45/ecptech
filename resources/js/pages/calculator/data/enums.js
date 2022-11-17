@@ -11,7 +11,9 @@ export const LowerCopayTypeEnum = Object.freeze({
     photochromic: "Photochromic",
     highIndex: "High Index",
     antiReflective: "Anti-Reflective Properties",
+    standardProgressives: "Standard Progressives",
     premiumProgressives: "Premium Progressives",
+    customProgressives: "Custom Progressives",
 });
 export const LowerCopayAmountTypeEnum = Object.freeze({
     amount: "Lowered copay dollar amount",

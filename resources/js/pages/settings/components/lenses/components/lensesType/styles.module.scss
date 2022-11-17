@@ -1,12 +1,12 @@
 .container {
-    width: 810px;
+    width: 100%;
     border-radius: 10px;
     border: 1px solid #e8e8e8;
     box-shadow: 0px 0px 6px #00000008;
     display: flex;
 }
 .left-container {
-    width: 341px;
+    width: 100vw;
     background-color: #f9f9fb;
     border: 1px solid #e8e8e8;
 
@@ -14,7 +14,7 @@
     border-bottom-left-radius: 10px;
 }
 .right-container {
-    width: 469px;
+    width: 100vw;
     background-color: #ffffff;
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
@@ -115,10 +115,7 @@
     align-items: flex-start;
 }
 .collection-left-container {
-    width: calc(100% - 25px);
-    display: flex;
     justify-content: flex-start;
-    align-items: flex-start;
 }
 .animated-title {
     position: relative;
@@ -139,6 +136,13 @@
     height: 18px;
     object-fit: contain;
     cursor: pointer;
+}
+.edit-container{
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .collection-show-content-container {
     display: flex;
@@ -178,11 +182,7 @@
 }
 .collection-edit-container {
     padding: 36px 46px;
-    display: flex;
-    flex-direction: column;
     width: 100%;
-    align-items: flex-start;
-    justify-content: flex-start;
     border: 1px solid #e8e8e8;
     background-color: #f9f9fb;
     box-shadow: 0px 0px 6px #00000008;
@@ -229,7 +229,7 @@
 }
 .save-button-wrapper {
     margin-top: 40px;
-    width: 810px;
+    width: 100%;
     text-align: right;
 }
 .save-button {
@@ -254,4 +254,27 @@
     flex-direction: column;
     width: 100%;
     padding-left: 50px;
+}
+@media only screen and (max-width: 763px){
+    .collection-edit-container {
+        padding: 36px 16px;
+       
+    }
+    .collection-show-container {
+        padding-left: 16px;
+        padding-right: 16px;
+        
+    }
+    .collection-label {
+        font-size: 16px;
+        font-weight: bold;
+        font-family: Montserrat;
+        color: #6fa5cb;
+        margin-bottom: 20px;
+        margin-left: 0px;
+        text-align: center;
+    }
+    .edit-slot-sub-wrapper{
+        padding-left:14px
+    }
 }

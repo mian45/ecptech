@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Popover } from "antd";
 import classes from "./styles.module.scss";
 import moreIcon from "../../../../../images/more-icon.svg";
@@ -6,6 +6,7 @@ import { useHistory } from "react-router";
 import { CREATE_INVOICE_ROUTE } from "../../../../appRoutes/routeConstants";
 import ViewInvoice from "../../../../pages/calculator/components/viewInvoice";
 import dayjs from "dayjs";
+import Axios from "../../../../Http.js";
 
 const InvoicesTableBodySlot = ({ data }) => {
     const date = data?.created_at || new Date();
@@ -16,7 +17,9 @@ const InvoicesTableBodySlot = ({ data }) => {
     return (
         <tr className={classes["container"]}>
             <td className={classes["first-column"]}>{data?.name}</td>
-            <td className={classes["first-column"]}>{`${data?.customer?.fname} ${data?.customer?.lname}`}</td>
+            <td
+                className={classes["first-column"]}
+            >{`${data?.customer?.fname} ${data?.customer?.lname}`}</td>
             <td className={classes["first-column"]}>{data?.customer?.email}</td>
             <td className={classes["first-column"]}>{createdDate}</td>
             <td className={classes["first-column"]}>${data?.amount}</td>
@@ -44,6 +47,12 @@ const InvoiceTableActions = ({ data }) => {
     const history = useHistory();
     const [openPopup, showPopup] = useState(false);
     const [showInvoice, setShowInvoice] = useState(false);
+    const [lensPrices, setLensPrices] = useState({});
+
+    useEffect(() => {
+        getLensTypes();
+    }, []);
+
     const handleOpen = (value) => {
         showPopup(value);
     };
@@ -70,13 +79,77 @@ const InvoiceTableActions = ({ data }) => {
     const getCalculatorObject = () => {
         const vpState = JSON.parse(data?.vp_state);
         return {
+            discount: vpState?.discount,
+            addons: vpState?.addons,
             lens_material: vpState?.lens_material,
             lens_types: vpState?.lens_types,
             questions: vpState?.questions,
             price_calculation_data: vpState?.price_calculation_data,
             shipping: vpState?.shipping,
+            tax: vpState?.tax,
         };
     };
+    const getLensTypes = async () => {
+        const vpState = JSON.parse(data?.vp_state);
+        const userState = JSON.parse(data?.user_state);
+
+        const planId = vpState?.questions?.find(
+            (item) => item?.title === userState?.visionPlan
+        )?.id;
+        const lensType = vpState?.lens_types?.find(
+            (item) => item?.title === userState?.lensType?.type
+        );
+        const materialId = vpState?.lens_material?.find((item) => {
+            return item.lens_material_title === userState?.lensMaterial;
+        })?.id;
+        let collectionId = null;
+        lensType?.brands?.forEach((item) => {
+            item.collections?.forEach((val) => {
+                const setCollectionId = () => {
+                    if (val?.display_name) {
+                        if (val.display_name == userState?.lensType?.brand) {
+                            collectionId = val?.id;
+                        }
+                    } else {
+                        if (val.title == userState?.lensType?.brand) {
+                            collectionId = val?.id;
+                        }
+                    }
+                };
+                if (item?.title === "Bifocal") {
+                    if (val?.title !== "Aspherical/Spherical") {
+                        setCollectionId();
+                    } else {
+                        if (val?.lense_type_title === "biofocal") {
+                            setCollectionId();
+                        }
+                    }
+                } else if (item?.title === "Trifocal") {
+                    if (val?.title !== "Aspherical/Spherical") {
+                        setCollectionId();
+                    } else {
+                        if (val?.lense_type_title === null) {
+                            setCollectionId();
+                        }
+                    }
+                } else {
+                    setCollectionId();
+                }
+            });
+        });
+        const payload = {
+            collection_id: collectionId,
+            lense_material_id: materialId,
+            lense_type_id: lensType?.id,
+            vision_plan_id: planId,
+        };
+        const res = await Axios.post(
+            `${process.env.MIX_REACT_APP_URL}/api/get-lenses-price`,
+            payload
+        );
+        setLensPrices(res?.data?.data);
+    };
+
     const getUserState = () => {
         const userData = JSON.parse(data?.user_state);
         return userData;
@@ -113,6 +186,7 @@ const InvoiceTableActions = ({ data }) => {
                     userInfo={getUserInfo()}
                     calculatorObj={getCalculatorObject()}
                     mode={"view"}
+                    lensPrices={lensPrices}
                 />
             )}
             <Popover

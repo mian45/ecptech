@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
@@ -132,13 +132,15 @@ const VisionBenifits = ({
 
     return (
         <div className={classes["container"]}>
-            {frameBenifitVisibility &&
-                values?.benifitType !== BenifitTypeEnums.both && (
-                    <div className={classes["frame-container"]}>
+            {frameBenifitVisibility && values?.visionPlan !== "Private Pay" && (
+                <Row className={classes["frame-container"]}>
+                    <Col sx={0} sm={0} md={5}>
                         <QuestionIcon
                             icon={glassesIcon}
                             active={values?.isFrameBenifit}
                         />
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
                         <div className={classes["question-container"]}>
                             <CalculatorHeading
                                 title="Frame Benefit Available?"
@@ -179,15 +181,18 @@ const VisionBenifits = ({
                                 {privatePayError}
                             </div>
                         </div>
-                    </div>
-                )}
-            {lensBenifitVisibility &&
-                values?.benifitType !== BenifitTypeEnums.both && (
-                    <div className={classes["frame-container"]}>
+                    </Col>
+                </Row>
+            )}
+            {lensBenifitVisibility && values?.visionPlan !== "Private Pay" && (
+                <Row className={classes["frame-container"]}>
+                    <Col sx={0} sm={0} md={5}>
                         <QuestionIcon
                             icon={lensIcon}
                             active={values?.isLensBenifit}
                         />
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
                         <div className={classes["question-container"]}>
                             <CalculatorHeading
                                 title="Lens Benefit Available?"
@@ -228,37 +233,44 @@ const VisionBenifits = ({
                                 {privatePayError}
                             </div>
                         </div>
-                    </div>
-                )}
+                    </Col>
+                </Row>
+            )}
             {materialCopayVisibility && (
-                <div className={classes["frame-container"]}>
-                    <QuestionIcon
-                        icon={materialIcon}
-                        active={values?.materialCopay}
-                    />
-                    <div className={classes["question-container"]}>
-                        <CalculatorHeading
-                            title="Material Copay?"
-                            active={values?.materialCopay}
+                <Row className={classes["frame-container"]}>
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={materialIcon}
+                            active={values?.materialCopay !== ""}
                         />
-                        <div className={classes["input-container"]}>
-                            <div className={classes["input-label"]}>$</div>
-                            <input
-                                className={classes["input"]}
-                                type={"number"}
-                                onBlur={handleBlur}
-                                onChange={handleMaterialCopayChange}
-                                value={values?.materialCopay}
-                                id="materialCopay"
-                                name="materialCopay"
-                                step={0.01}
-                                min={0.0}
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
+                        <div className={classes["question-container"]}>
+                            <CalculatorHeading
+                                title="Material Copay?"
+                                active={values?.materialCopay !== ""}
                             />
+                            <div className={classes["input-container"]}>
+                                <div className={classes["input-label"]}>$</div>
+                                <input
+                                    className={classes["input"]}
+                                    type={"number"}
+                                    onBlur={handleBlur}
+                                    onChange={handleMaterialCopayChange}
+                                    value={values?.materialCopay}
+                                    id="materialCopay"
+                                    name="materialCopay"
+                                    step={0.01}
+                                    min={0.0}
+                                />
+                            </div>
+                            {err && (
+                                <div className={classes["error"]}>{err}</div>
+                            )}
+                            <FormikError name={"materialCopay"} />
                         </div>
-                        {err && <div className={classes["error"]}>{err}</div>}
-                        <FormikError name={"materialCopay"} />
-                    </div>
-                </div>
+                    </Col>
+                </Row>
             )}
         </div>
     );

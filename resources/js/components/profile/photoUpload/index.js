@@ -1,27 +1,35 @@
 import { ErrorMessage } from "formik";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomInput from "../../customInput";
 import classes from "./styles.module.scss";
-
+import AddImage from "../../../assets/add-icon.svg"
+import { connect} from "react-redux"
 const PhotoUpload = ({
     values,
     handleChange,
     handleBlur,
     setFieldValue,
     setFieldError,
+    user
 }) => {
-    const [selectedImage, setSelectedImage] = useState("");
-
+    const [selectedImage, setSelectedImage] = useState(null);
+useEffect(()=>{
+    setSelectedImage(user.logo)
+    values.profileImage=user.logo
+},[user])
     const uploadMediaFile = async (event) => {
         try {
+            handleChange(event)
             setFieldError("profileImage", "");
             if (event.target.files && event.target.files.length > 0) {
                 const file = event.target.files[0];
                 const size = GetFileSize(file);
-                if (size <= 10) {
+                console.log("the data is before here",file,size)
+                if (file.size<= 2097152) {
+                    console.log("the data is here",URL.createObjectURL(file))
                     setFieldValue("profileImage", file);
                     setSelectedImage(
-                        URL.createObjectURL(event?.target?.files[0])
+                        URL.createObjectURL(file)
                     );
                 } else {
                     setFieldError("profileImage", "Error! Try again");
@@ -42,16 +50,16 @@ const PhotoUpload = ({
                     htmlFor="profileImage"
                     className={classes[selectedImage ? "icon" : "photo-upload"]}
                 >
-                    {selectedImage ? (
+                    {selectedImage!==null && selectedImage!==undefined ? (
                         <img
                             alt="not found"
                             className={classes["photo-upload"]}
                             src={selectedImage}
                         ></img>
                     ) : (
-                        <>
-                            <div>Upload Logo</div>
-                            <div>200 x 40</div>
+                        <>  
+                            <img src={AddImage}/>
+                            <div className={classes['add-image-text']}>Upload Logo</div>
                         </>
                     )}
                     <input
@@ -89,8 +97,10 @@ const PhotoUpload = ({
         </div>
     );
 };
-
-export default PhotoUpload;
+const mapStateToProps = (state) => ({
+    user: state.Auth.user,
+});
+export default connect(mapStateToProps)(PhotoUpload);
 
 const GetFileSize = (file) => {
     if (file) {

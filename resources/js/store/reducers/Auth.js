@@ -30,6 +30,7 @@ const initialState = {
     clientUser: defaultClientUser,
     userRole: defaultUserRole,
     activeSettingsIndex: 1,
+    sidebar:false
 };
 
 const activeState = (state, payload) => {
@@ -106,6 +107,7 @@ const updateStaffLogin = (state, payload) => {
 const Auth = (state = initialState, { type, payload = null }) => {
     switch (type) {
         case ActionTypes.AUTH_LOGIN: {
+            localStorage.setItem("access_token", payload.data.token);
             const clientObject = {
                 id: payload?.data?.client?.id || null,
                 name: payload?.data?.client?.name || null,
@@ -114,6 +116,9 @@ const Auth = (state = initialState, { type, payload = null }) => {
                 id: payload?.data?.id,
                 name: payload?.data?.name,
                 email: payload?.data?.email,
+                logo:payload?.data?.logo,
+                buisnessName:payload?.data.business_name,
+                themeColor:payload?.data?.theme_color
             };
             const roleObject = {
                 id: payload?.data.role.id,
@@ -154,6 +159,12 @@ const Auth = (state = initialState, { type, payload = null }) => {
             return staffLogin(state, payload);
         case ActionTypes.UPDATE_STAFF_LOGIN:
             return updateStaffLogin(state, payload);
+        case ActionTypes.SHOW_SIDEBAR:{
+            const stateObj = {
+                ...state,
+                sidebar:!state.sidebar
+            };
+            return stateObj}
         default:
             return state;
     }

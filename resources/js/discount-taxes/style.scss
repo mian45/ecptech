@@ -14,7 +14,7 @@
 
             &_section {
                 input {
-                    min-width: 284px;
+                    min-width: 95%;
                     padding-block: 13px;
                     padding-inline-start: 22px;
                     border: 1px solid #dfdfdf;
@@ -113,6 +113,7 @@
 }
 
 .save-button {
+    width: unset;
     padding: 13px 32px;
     background-color: #4f8db8;
     border: none;
@@ -126,12 +127,28 @@
         background-color: #cbcbcb;
         pointer-events: none;
     }
-}
 
+
+    span {
+        display: flex;
+        align-items: center;
+
+        p {
+            font-size: 14px;
+            margin: 0 !important;
+            margin-right: 5px !important;
+        }
+    }
+}
+@media only screen and (min-width: 992px) {
+    .save-button{
+        width:100%
+    }
+    
+}
 .discount-output {
-    width: 710px;
     margin-top: 29px;
-    margin-bottom: 111px;
+    margin-bottom: 50px;
     border-radius: 10px 10px 0 0;
 
     &_head {
@@ -152,9 +169,12 @@
     display: flex;
     flex-direction: column-reverse;
 }
-
-.second-section {
+.btn_section{
+    justify-content: center;
+    align-items: center;
     display: flex;
+}
+.second-section {
     align-items: flex-end;
     justify-content: space-between;
     margin-bottom: 20px;
@@ -171,7 +191,7 @@
     color: #2a2a2a !important;
     margin-top: 36px !important;
     margin-bottom: 36px !important;
-    width: 710px;
+    width: 100%;
 }
 
 .main {
@@ -179,12 +199,9 @@
     font-weight: bold;
 }
 
-.sections {
-    width: 710px;
-}
 
 table {
-    width: 710px;
+    width: 100%;
     background-color: white;
     border-radius: 10px 10px 0 0;
 }
@@ -245,14 +262,11 @@ input[type="number"] {
     background-color: #f9f9fb;
 }
 .discount-col-3 {
-    padding-right: 0px !important;
-    text-align: center !important;
-    border-bottom-right-radius: 10px !important;
+    text-align: right !important;
 }
 
 .discount-tax-con {
     width: 100%;
-    display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
@@ -283,4 +297,16 @@ input[type="number"] {
 }
 .discount-container-page-title {
     margin-top: 30px !important;
+}
+.shipping-custom-col-3 {
+    text-align: right;
+    padding-right: 32px;
+}
+.custom-tax-col-3 {
+    text-align: right;
+    padding-right: 32px;
+}
+
+.hidden-text{
+    visibility: hidden;
 }

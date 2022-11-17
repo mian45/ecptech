@@ -25,9 +25,14 @@ import { connect } from "react-redux";
 import { useHistory } from "react-router";
 import { INVOICES_ROUTE } from "../../../../appRoutes/routeConstants";
 import UserInfo from "./components/userInfo";
-import OutPackPrices, { getPriceFromDB } from "./components/outPackPrices";
+import OutPackPrices from "./components/outPackPrices";
 import InPackPrices from "./components/inPackPrices";
 import { BenifitTypeEnums } from "../../data/initialValues";
+import DetailsList from "./components/detailsList/detailsList";
+import { getPriceFromDB } from "./helpers/getPriceFromDB";
+import { Col, Modal, Row } from "antd";
+import { CalculateTotalPrice } from "./helpers/pricesHelper/calculateTotalPrice";
+import UseWindowSize from "../../../../hooks/windowResize";
 
 const ViewInvoice = ({
     onClose,
@@ -43,6 +48,7 @@ const ViewInvoice = ({
 }) => {
     const history = useHistory();
     const [receipt, setReceipt] = useState(null);
+    const { width } = UseWindowSize();
 
     useEffect(() => {
         setReceipt({
@@ -116,23 +122,24 @@ const ViewInvoice = ({
     const calculateTotalDue = () => {
         let total = 0;
         total = total + totalWithoutTax();
-        total = total + getAppliedDiscounts(totalWithoutTax());
+
+        total = total - parseFloat(getAppliedDiscounts(totalWithoutTax()));
         //add tax
-        const tax = (total * (calculatorObj.tax || 0)) / 100;
+        const tax = (total * (calculatorObj?.tax || 0)) / 100;
         total = total + tax;
         return total || 0;
     };
 
     const getAppliedDiscounts = (price) => {
-        let total = 0;
+        const discountToApply =
+            parseFloat(receipt?.values?.discount?.value || "") || 0;
 
-        calculatorObj?.discount?.forEach((element) => {
-            if (element?.status === "active") {
-                total = total + parseFloat(element?.value || 0);
-            }
-        });
-        const priceWithDiscount = (price * total) / 100;
-        return priceWithDiscount;
+        if (discountToApply == 0) {
+            return 0;
+        } else {
+            const result = (price * discountToApply) / 100;
+            return parseFloat(result);
+        }
     };
 
     const totalWithoutTax = () => {
@@ -161,46 +168,74 @@ const ViewInvoice = ({
         return total;
     };
 
+    const oldPrices = () => {
+        return (
+            <>
+                <InPackPrices
+                    receipt={receipt}
+                    calculatorObj={calculatorObj}
+                    lensPrices={lensPrices}
+                />
+                <OutPackPrices
+                    withoutTaxPrice={totalWithoutTax()}
+                    totalPrice={calculateTotalDue()}
+                    receipt={receipt}
+                    calculatorObj={calculatorObj}
+                    lensPrices={lensPrices}
+                />
+            </>
+        );
+    };
+
     return (
-        <CustomModal onClose={onClose}>
-            <div
-                className={classes["container"]}
+        <Modal
+            onCancel={onClose}
+            title=""
+            open={true}
+            closable={true}
+            centered={true}
+            className={classes["container"]}
+            zIndex="99999"
+            bodyStyle={{
+                padding: 0,
+            }}
+            width={width <= 600 ? "80%" : "60%"}
+            footer={null}
+        >
+            <Row
+                className={classes["sub-container"]}
                 onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
                 }}
             >
-                <img
-                    src={closeIcon}
-                    alt={"close"}
-                    className={classes["close-icon"]}
-                    onClick={onClose}
-                />
-                <div className={classes["sub-container"]}>
+                <Col xs={24} sm={24} md={8} lg={8}>
                     <UserInfo receipt={receipt} />
-                    <div className={classes["sub-right-container"]}>
-                        <InPackPrices
-                            receipt={receipt}
-                            calculatorObj={calculatorObj}
-                            lensPrices={lensPrices}
-                        />
-                        <OutPackPrices
-                            withoutTaxPrice={totalWithoutTax()}
-                            totalPrice={calculateTotalDue()}
-                            receipt={receipt}
-                            calculatorObj={calculatorObj}
-                            lensPrices={lensPrices}
-                        />
-                        <button
-                            className={classes["send-button"]}
-                            onClick={handleSendInvoiceClick}
-                        >
-                            {mode === "view" ? "Close" : "Send Invoice"}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </CustomModal>
+                </Col>
+                <Col
+                    xs={24}
+                    sm={24}
+                    md={16}
+                    lg={16}
+                    className={classes["sub-right-container"]}
+                >
+                    <DetailsList
+                        receipt={receipt}
+                        calculatorObj={calculatorObj}
+                        lensPrices={lensPrices}
+                        withoutTaxPrice={totalWithoutTax()}
+                        totalPrice={calculateTotalDue()}
+                    />
+
+                    <button
+                        className={classes["send-button"]}
+                        onClick={handleSendInvoiceClick}
+                    >
+                        {mode === "view" ? "Close" : "Send Invoice"}
+                    </button>
+                </Col>
+            </Row>
+        </Modal>
     );
 };
 
@@ -211,9 +246,9 @@ const mapStateToProps = (state) => ({
 });
 export default connect(mapStateToProps)(ViewInvoice);
 
-export const InvoiceSlot = ({ title, subTitle }) => {
+export const InvoiceSlot = ({ title, subTitle, className }) => {
     return (
-        <div className={classes["invoice-slot-container"]}>
+        <div className={`${classes["invoice-slot-container"]} ${className}`}>
             <div className={classes["invoice-slot-title"]}>{title}</div>
             <div className={classes["invoice-slot-title"]}>{subTitle}</div>
         </div>
@@ -229,7 +264,14 @@ export const InvoiceBoldSlot = ({ title, subTitle }) => {
     );
 };
 
-export const getPriceByPhotochromicMaterial = (value) => {
+export const getPriceByPhotochromicMaterial = (plan, value) => {
+    if (plan === "VSP Signature" || plan === "VSP Advantage") {
+        return getSignaturePhotochromic(value);
+    } else if (plan === "VSP Choice") {
+        return 75;
+    }
+};
+const getSignaturePhotochromic = (value) => {
     switch (value) {
         case "Transition Signature":
             return TRANSITION_SIGNATURE;
@@ -247,14 +289,73 @@ export const getPriceByPhotochromicMaterial = (value) => {
             return TRANSITION_VANTAGE;
     }
 };
-const getPriceByAntireflective = (value) => {
+export const getPriceByAntireflective = (plan, value) => {
+    if (plan === "VSP Signature") {
+        return getSignatureAntireflective(value);
+    } else if (plan === "VSP Choice" || plan === "VSP Advantage") {
+        return getChoiceAntireflective(value);
+    }
+};
+
+const getChoiceAntireflective = (value) => {
     switch (value) {
-        case "Shamir Glacier Plus UV":
-            return SHAMIR_GLACIER_PLUS_UV;
-        case "TechShield Plus UVR":
-            return TECHSHIELD_PLUS_UVR;
-        case "Crizal Sunshield (Backside AR Only)":
-            return CRIZAL_SUNSHIELD;
+        case "Glacier Plus":
+        case "Crizal Sapphire 360 UV":
+        case "Crizal Avance UV":
+        case "Crizal Rock":
+        case "Crizal Sunshield":
+        case "DuraVision BlueProtect UV":
+        case "DuraVision Platinum UV":
+        case "DuraVision Sun UV":
+        case "Kodak Clean&CleAR":
+        case "Kodak Clean&CleAR UV":
+        case "Kodak Clean&CleAR with Silk":
+        case "Kodak Clean&CleAR UV with Silk":
+        case "Kodak Total Blue":
+        case "Maui Jim AR":
+            return 85;
+        case "Crizal Alize UV":
+        case "DuraVision Silver UV":
+        case "HiVision with ViewProtect":
+        case "Kodak CleAR":
+            return 69;
+        case "Crizal Prevencia":
+        case "DuraVision Chrome":
+        case "Crizal Easy UV":
+            return 58;
+        case "Crizal UV Kids":
+            return 41;
+    }
+};
+
+const getSignatureAntireflective = (value) => {
+    switch (value) {
+        case "Glacier Plus":
+        case "Crizal Sapphire 360 UV":
+        case "Crizal Avance UV":
+        case "Crizal Rock":
+        case "Crizal Sunshield":
+        case "DuraVision BlueProtect UV":
+        case "DuraVision Platinum UV":
+        case "DuraVision Sun UV":
+        case "Kodak Clean&CleAR":
+        case "Kodak Clean&CleAR UV":
+        case "Kodak Clean&CleAR with Silk":
+        case "Kodak Clean&CleAR UV with Silk":
+        case "Kodak Total Blue":
+        case "Maui Jim AR":
+            return 75;
+        case "Crizal Alize UV":
+        case "DuraVision Silver UV":
+        case "HiVision with ViewProtect":
+        case "Kodak CleAR":
+            return 61;
+        case "Crizal Prevencia":
+        case "DuraVision Chrome":
+        case "Crizal Easy UV":
+            return 51;
+        case "Crizal UV Kids":
+            return 37;
     }
 };
 
@@ -344,7 +445,10 @@ const getLensPrice = (receipt, calculatorObj, lensPrices) => {
 
 const GetLensFee = (receipt, calculatorObj, lensPrices) => {
     let total = 0;
-    if (receipt?.values?.submitBenifitType === BenifitTypeEnums.lens) {
+    if (
+        receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
+        receipt?.values?.visionPlan === "Private Pay"
+    ) {
         total = total + getPrivatePayGlasses(receipt, calculatorObj);
         if (receipt?.values?.photochromics?.status === "Yes") {
             const priceValue = getPrivatePayPhotochromic(
@@ -390,6 +494,7 @@ const GetLensFee = (receipt, calculatorObj, lensPrices) => {
                 }
             } else {
                 const price = getPriceByAntireflective(
+                    receipt?.values?.visionPlan,
                     receipt?.values?.antiReflectiveProperties?.type
                 );
                 total = total + (price || 0);
@@ -414,6 +519,7 @@ const GetLensFee = (receipt, calculatorObj, lensPrices) => {
                 }
             } else {
                 const price = getPriceByPhotochromicMaterial(
+                    receipt?.values?.visionPlan,
                     receipt?.values?.photochromics?.type
                 );
                 total = total + (price || 0);
@@ -426,25 +532,24 @@ const GetLensFee = (receipt, calculatorObj, lensPrices) => {
     return total;
 };
 export const getPrivatePayAntireflective = (value, calculatorObj) => {
-    const antiReflectiveAddons = calculatorObj?.addons.find(
+    const antiReflectiveAddons = calculatorObj?.addons?.find(
         (item) => item?.title === "Anti Reflective"
     );
     let total = 0;
     const selectedAntireflective = antiReflectiveAddons?.addons?.find(
-        (item) => item.title === value
+        (item) => item?.title === value
     )?.price;
     total = total + parseFloat(selectedAntireflective || 0) || 0;
 };
 
 export const getPrivatePayPhotochromic = (value, calculatorObj) => {
-    const photochromicAddons = calculatorObj?.addons.find(
+    const photochromicAddons = calculatorObj?.addons?.find(
         (item) => item?.title === "Photochromoics"
     );
-    let total = 0;
     const selectedPhotochromic = photochromicAddons?.addons?.find(
         (item) => item.title === value
     )?.price;
-    total = total + parseFloat(selectedPhotochromic || 0) || 0;
+    return parseFloat(selectedPhotochromic || 0) || 0;
 };
 
 export const getPrivatePayGlasses = (receipt, calculatorObj) => {
@@ -591,7 +696,10 @@ const getGlassesPrice = (receipt) => {
 };
 const GetFrameFee = (receipt) => {
     let total = 0;
-    if (receipt?.values?.submitBenifitType === BenifitTypeEnums.frame) {
+    if (
+        receipt?.values?.submitBenifitType === BenifitTypeEnums.frame ||
+        receipt?.values?.visionPlan === "Private Pay"
+    ) {
         total = total + receipt?.values?.frameOrder?.retailFee;
         if (
             receipt?.values?.frameOrder?.type === "New Frame Purchase" &&

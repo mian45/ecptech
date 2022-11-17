@@ -10,6 +10,7 @@ import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import classes from "./styles.module.scss";
 import DashboardPage from "../../dashboard-page";
+import { Col } from "antd";
 
 const Dashboard = () => {
     const DateRangePicker = daterange.DateRangePicker;
@@ -81,6 +82,79 @@ const Dashboard = () => {
             endDate: dayjs(endDate).format("YYYY-MM-DD"),
         });
     }, [date, startDate, endDate]);
+    const staticRanges=[
+        ...daterange.defaultStaticRanges,
+        {
+            label: "This Quarter",
+            range: () => ({
+                startDate: new Date(
+                    dayjs().startOf("quarter").$d
+                ),
+                endDate: new Date(
+                    dayjs().endOf("quarter").$d
+                ),
+            }),
+            isSelected() {
+                return false;
+            },
+        },
+        {
+            label: "Last Quarter",
+            range: () => ({
+                startDate: new Date(
+                    new Date().getFullYear(),
+                    Math.floor(
+                        new Date().getMonth() / 3
+                    ) *
+                        3 -
+                        3,
+                    1
+                ),
+                endDate: new Date(
+                    new Date(
+                        new Date().getFullYear(),
+                        Math.floor(
+                            new Date().getMonth() / 3
+                        ) *
+                            3 -
+                            3,
+                        1
+                    ).getFullYear(),
+                    new Date(
+                        new Date().getFullYear(),
+                        Math.floor(
+                            new Date().getMonth() / 3
+                        ) *
+                            3 -
+                            3,
+                        1
+                    ).getMonth() + 3,
+                    0
+                ),
+            }),
+            isSelected() {
+                return false;
+            },
+        },
+        {
+            label: "Last Year",
+            range: () => ({
+                startDate: new Date(
+                    `${
+                        new Date().getFullYear() - 1
+                    }-01-01`
+                ),
+                endDate: new Date(
+                    `${
+                        new Date().getFullYear() - 1
+                    }-12-31`
+                ),
+            }),
+            isSelected() {
+                return false;
+            },
+        },
+    ]
     return (
         <div className={classes["main-container"]}>
             <div className={classes["date-container"]}>
@@ -105,8 +179,11 @@ const Dashboard = () => {
                    <div className={classes["backdrop"]} onClick={()=>{
                     setShowDatePicker(false)
                    }}>
+                   
                      <div className={classes["picker-container"]}>
-                        <DateRangePicker
+                         <Col xs={24}>
+                    <DateRangePicker
+                    className="picker"
                             onChange={(item) => {
                                 setDate([item.selection]);
                                 setShowDatePicker(false);
@@ -117,82 +194,14 @@ const Dashboard = () => {
                             moveRangeOnFirstSelection={false}
                             months={2}
                             ranges={date}
-                            direction="horizontal"
-                            staticRanges={[
-                                ...daterange.defaultStaticRanges,
-                                {
-                                    label: "This Quarter",
-                                    range: () => ({
-                                        startDate: new Date(
-                                            dayjs().startOf("quarter").$d
-                                        ),
-                                        endDate: new Date(
-                                            dayjs().endOf("quarter").$d
-                                        ),
-                                    }),
-                                    isSelected() {
-                                        return false;
-                                    },
-                                },
-                                {
-                                    label: "Last Quarter",
-                                    range: () => ({
-                                        startDate: new Date(
-                                            new Date().getFullYear(),
-                                            Math.floor(
-                                                new Date().getMonth() / 3
-                                            ) *
-                                                3 -
-                                                3,
-                                            1
-                                        ),
-                                        endDate: new Date(
-                                            new Date(
-                                                new Date().getFullYear(),
-                                                Math.floor(
-                                                    new Date().getMonth() / 3
-                                                ) *
-                                                    3 -
-                                                    3,
-                                                1
-                                            ).getFullYear(),
-                                            new Date(
-                                                new Date().getFullYear(),
-                                                Math.floor(
-                                                    new Date().getMonth() / 3
-                                                ) *
-                                                    3 -
-                                                    3,
-                                                1
-                                            ).getMonth() + 3,
-                                            0
-                                        ),
-                                    }),
-                                    isSelected() {
-                                        return false;
-                                    },
-                                },
-                                {
-                                    label: "Last Year",
-                                    range: () => ({
-                                        startDate: new Date(
-                                            `${
-                                                new Date().getFullYear() - 1
-                                            }-01-01`
-                                        ),
-                                        endDate: new Date(
-                                            `${
-                                                new Date().getFullYear() - 1
-                                            }-12-31`
-                                        ),
-                                    }),
-                                    isSelected() {
-                                        return false;
-                                    },
-                                },
-                            ]}
+                            direction={window.innerWidth<=1024?"vertical":"horizontal"}
+                            staticRanges={staticRanges}
                             inputRanges={[]}
+                        
+                            
                         />
+                    
+                    </Col>
                     </div>
                     </div>
                 ) : null}

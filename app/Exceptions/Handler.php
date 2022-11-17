@@ -4,6 +4,15 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Illuminate\Http\Exception\HttpResponseException;
+
+
+
 
 class Handler extends ExceptionHandler
 {
@@ -43,8 +52,46 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (MethodNotAllowedHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                    'statusCode' => RESPONSE::HTTP_UNAUTHORIZED
+                ], RESPONSE::HTTP_UNAUTHORIZED);
+            }
         });
+
+        $this->renderable(function (NotFoundHttpException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                    'statusCode' => RESPONSE::HTTP_NOT_FOUND
+                ], RESPONSE::HTTP_NOT_FOUND);
+            }
+        });
+
+        $this->renderable(function (ValidationException $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => "Validation Errors",
+                    'statusCode' => RESPONSE::HTTP_UNPROCESSABLE_ENTITY,
+                    'data' => $e->errors(),
+                ], RESPONSE::HTTP_UNPROCESSABLE_ENTITY);
+            }
+        });
+
+
+        $this->renderable(function (\Exception  $e, $request) {
+            if ($request->is('api/*')) {
+                return response()->json([
+                    'message' => $e->getMessage(),
+                    'statusCode' => RESPONSE::HTTP_INTERNAL_SERVER_ERROR
+                ], RESPONSE::HTTP_INTERNAL_SERVER_ERROR);
+                
+            }
+        });
+
+
+
     }
 }

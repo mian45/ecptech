@@ -3,7 +3,7 @@ import AddonSettings from "./components/addons";
 import LensesType from "./components/lensesType";
 import MaterialSettings from "./components/material";
 import classes from "./styles.module.scss";
-
+import {Row,Col} from "antd"
 const LensesSettings = () => {
     const [activeTab, setActiveTab] = useState(1);
 
@@ -21,36 +21,40 @@ const LensesSettings = () => {
                 To show lenses option in calculator, select options and change
                 their labels.
             </div>
-            <div className={classes["lenses-content"]}>
-                <div className={classes["buttons-controller"]}>
-                    <div className={classes["buttons-container"]}>
-                        <div
+            <Row className={classes["lenses-content"]} justify="center" align="middle">
+                <Col xs={24} md={20}lg={16} className={classes["buttons-controller"]}>
+                    <Row className={classes["buttons-container"]} justify="center" align="middle">
+                        <Col
                             className={`${
                                 classes["first-buttons"]
                             } ${getActiveClass(1)}`}
                             onClick={() => setActiveTab(1)}
+                            xs={6}
                         >
                             Lens Type
-                        </div>
-                        <div
+                        </Col>
+                        <Col
                             className={getActiveClass(2)}
                             onClick={() => setActiveTab(2)}
+                            xs={6}
                         >
                             Lens Material
-                        </div>
-                        <div
+                        </Col>
+                        <Col
                             className={getActiveClass(3)}
                             onClick={() => setActiveTab(3)}
+                            xs={6}
                         >
                             Add On
-                        </div>
-                    </div>
+                        </Col>
+                    </Row>
                     <div className={classes["buttons-divider"]} />
-                </div>
+                </Col>
+                <Col xs={24} md={22}lg={18}>
                 {activeTab === 1 && <LensesType />}
                 {activeTab === 2 && <MaterialSettings />}
-                {activeTab === 3 && <AddonSettings />}
-            </div>
+                {activeTab === 3 && <AddonSettings />}</Col>
+            </Row>
         </div>
     );
 };

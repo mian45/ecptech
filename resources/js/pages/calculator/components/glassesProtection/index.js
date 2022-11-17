@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Radio } from "antd";
+import { Col, Radio, Row } from "antd";
 import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
@@ -20,54 +20,65 @@ const GlassesProtection = ({ formProps, calculatorObj }) => {
     return (
         <>
             {shippingVisibility && (
-                <div className={classes["container"]}>
-                    <QuestionIcon
-                        icon={icon}
-                        iconClass={classes["icon-style"]}
-                        active={values?.shipping}
-                    />
-                    <div className={classes["vision-container"]}>
-                        <CalculatorHeading
-                            title="Add Shipping"
+                <Row className={classes["container"]}>
+                    {" "}
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={icon}
+                            iconClass={classes["icon-style"]}
                             active={values?.shipping}
-                        />
-                        <Radio.Group
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values?.shipping}
-                            id="shipping"
-                            name="shipping"
-                            className={classes["radio-group"]}
-                        >
-                            <CustomRadio
-                                label={"Yes"}
-                                value={"Yes"}
-                                active={values?.shipping === "Yes"}
+                        />{" "}
+                    </Col>
+                    <Col sx={24} sm={24} md={19}>
+                        <div className={classes["vision-container"]}>
+                            <CalculatorHeading
+                                title="Add Shipping"
+                                active={values?.shipping}
                             />
+                            <Radio.Group
+                                onBlur={handleBlur}
+                                onChange={handleChange}
+                                value={values?.shipping}
+                                id="shipping"
+                                name="shipping"
+                                className={classes["radio-group"]}
+                            >
+                                <CustomRadio
+                                    label={"Yes"}
+                                    value={"Yes"}
+                                    active={values?.shipping === "Yes"}
+                                />
 
-                            <CustomRadio
-                                label={"No"}
-                                value={"No"}
-                                active={values?.shipping === "No"}
-                            />
-                        </Radio.Group>
-                        <FormikError name={"shipping"} />
-                        {values?.shipping === "Yes" && (
-                            <>
-                                <div className={classes["label"]}>Amount</div>
+                                <CustomRadio
+                                    label={"No"}
+                                    value={"No"}
+                                    active={values?.shipping === "No"}
+                                />
+                            </Radio.Group>
+                            <FormikError name={"shipping"} />
+                            {values?.shipping === "Yes" && (
+                                <>
+                                    <div className={classes["label"]}>
+                                        Amount
+                                    </div>
 
-                                <div className={classes["input-container"]}>
-                                    <div className={classes["input-label"]}>
-                                        $
+                                    <div className={classes["input-container"]}>
+                                        <div className={classes["input-label"]}>
+                                            $
+                                        </div>
+                                        <div
+                                            className={
+                                                classes["input-shipping"]
+                                            }
+                                        >
+                                            {calculatorObj?.shipping}
+                                        </div>
                                     </div>
-                                    <div className={classes["input-shipping"]}>
-                                        {calculatorObj?.shipping}
-                                    </div>
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </div>
+                                </>
+                            )}
+                        </div>
+                    </Col>
+                </Row>
             )}
         </>
     );

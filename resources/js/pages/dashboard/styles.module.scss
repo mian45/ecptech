@@ -1,5 +1,4 @@
 .main-container {
-    width: calc(100% - 100px);
     margin-left: 100px;
     margin-top: 100px;
     background-color: #f9f9fb;
@@ -37,19 +36,25 @@
 }
 .picker-container {
     box-shadow: 0px 11px 20px #00000029;
-    width: 882px;
     margin-bottom: 20px;
     position: absolute;
     background-color: #ffffff;
     z-index: 2;
     top: 36px;
     left: 152px;
+    @media (min-width: 320px) and (max-width: 480px) {
+        left: -14px;
+    }
+    @media (min-width: 280px) and (max-width: 290px) {
+     left: -40px;;
+    }
+
 }
 .date-selector {
     background-color: #fff;
     min-width: 107px;
     width: auto;
-    height: 27px;
+    min-height: 27px;
     cursor: pointer;
     display: flex;
     flex-direction: row;
@@ -58,6 +63,21 @@
     padding-left: 10px;
     padding-right: 10px;
 }
+@media only screen and (max-width: 290px) {
+    .date-selector{
+        background-color: #fff;
+        min-width: unset;
+        width: auto;
+        min-height: 27px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        border: 1px solid #e8e8e8;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+}
 .date-label {
     font-size: 12px;
     margin-right: 10px;
@@ -65,4 +85,9 @@
     color: #2a2a2a;
     display: grid;
     align-items: center;
+}
+@media only screen and (max-width: 763px){
+    .main-container {
+        margin-left: 0px;
+    }
 }

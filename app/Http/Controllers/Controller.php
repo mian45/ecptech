@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Symfony\Component\HttpFoundation\Response;
 
 class Controller extends BaseController
 {
@@ -36,10 +37,10 @@ class Controller extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function sendError($error, $errorMessages = [], $code = 200)
+    public function sendError($error, $errorMessages = [], $code = RESPONSE::HTTP_NOT_FOUND)
     { 
         $response = [
-            'statusCode' => 200,
+            'statusCode' => $code,
             'message' => $error,
         ];
 

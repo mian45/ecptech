@@ -4,7 +4,7 @@ export const CalculatorInitialValues = {
     invoiceName: "",
     staffName: "",
     staffId: "",
-    visionPlan: "VSP Signature",
+    visionPlan: "",
     isFrameBenifit: "",
     isLensBenifit: "",
     materialCopay: "",
@@ -18,6 +18,8 @@ export const CalculatorInitialValues = {
     isCopayHighIndex: null,
     isCopayAntiReflective: null,
     isCopayPremiumProgressives: null,
+    isCopayStandardProgressives: null,
+    isCopayCustomProgressives: null,
     isCopayPolycarbonateAmount: "",
     copayPolycarbonateAmount: "",
     isCopayPhotochromicAmount: "",
@@ -28,6 +30,10 @@ export const CalculatorInitialValues = {
     copayAntiReflectiveAmount: "",
     isCopaypremiumProgressiveAmount: "",
     copaypremiumProgressiveAmount: "",
+    isCopayStandardProgressiveAmount: "",
+    copayStandardProgressiveAmount: "",
+    isCopayCustomProgressiveAmount: "",
+    copayCustomProgressiveAmount: "",
     lensType: "",
     lensTypeValue: "",
     lensMaterial: "",
@@ -46,6 +52,8 @@ export const CalculatorInitialValues = {
     protectionPlanAmount: "",
     shipping: "",
     shippingAmount: "0",
+    discountType: "",
+    discountValue: "",
 };
 
 export const BenifitTypeEnums = Object.freeze({

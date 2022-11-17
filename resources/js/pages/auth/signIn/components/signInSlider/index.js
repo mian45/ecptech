@@ -14,45 +14,48 @@ import SwiperCore, {
     Keyboard,
     Autoplay,
 } from "swiper";
+import { Col,Row } from "antd";
 
 const SignInSlider = () => {
     SwiperCore.use([Autoplay]);
     return (
-        <div className={classes["container"]}>
-            <Swiper
-                cssMode={true}
-                navigation={true}
-                pagination={true}
-                mousewheel={true}
-                keyboard={true}
-                modules={[Navigation, Pagination, Mousewheel, Keyboard]}
-                className="mySwiper"
-                loop
-                autoplay={true}
-            >
-                {SLIDER_DATA.map((item, index) => {
-                    return (
-                        <SwiperSlide key={index}>
-                            <div className={`${classes["card-container"]}`}>
-                                <img
-                                    src={item?.icon}
-                                    alt={"icon"}
-                                    className={classes["card-image"]}
-                                />
-                            </div>
-                            <div className={classes["text-box"]}>
-                                <div className={classes["title"]}>
-                                    {item?.title}
-                                </div>
-                                <div className={classes["subtitle"]}>
-                                    {item?.subtitle}
-                                </div>
-                            </div>
-                        </SwiperSlide>
-                    );
-                })}
-            </Swiper>
-        </div>
+        <Swiper
+            cssMode={true}
+            navigation={true}
+            pagination={true}
+            mousewheel={true}
+            keyboard={true}
+            modules={[Navigation, Pagination, Mousewheel, Keyboard]}
+            className="mySwiper"
+            loop
+            autoplay={true}
+        >
+            {SLIDER_DATA.map((item, index) => {
+                return (
+                    <SwiperSlide key={index}>
+                        <Col>
+                        <Row className={`${classes["card-container"]}`} justify="center"align="middle">
+                            <Col xs={18}>
+                            <img
+                                src={item?.icon}
+                                alt={"icon"}
+                                className={classes["card-image"]}
+                            /></Col>
+                        </Row>
+                        <Row xs={18} justify="center" align="middle" className={classes["title"]}>
+                            <Col xs={24}> 
+                                {item?.title}
+                           </Col>
+                            <Col xs={24} className={classes["subtitle"]}>
+                                {item?.subtitle}
+                            </Col>
+                        </Row>
+                        </Col>
+                        
+                    </SwiperSlide>
+                );
+            })}
+        </Swiper>
     );
 };
 export default SignInSlider;

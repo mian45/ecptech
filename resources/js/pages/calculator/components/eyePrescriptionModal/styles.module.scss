@@ -34,6 +34,7 @@
     font-weight: bold;
     margin-top: 10px;
     margin-bottom: 30px;
+    text-align: center;
 }
 .close-icon {
     width: 16px;
@@ -85,12 +86,14 @@
 .info-section {
     display: flex;
     flex-direction: column;
+    margin-right:1em;
 }
 .select-label {
     font-size: 16px;
     font-family: Montserrat;
     color: #2a2a2a;
     margin-bottom: 10px;
+    margin-top:15px;
 }
 .submit-button {
     font-size: 16px;
@@ -107,8 +110,8 @@
     & :disabled {
         background-color: #cbcbcb !important;
     }
+    max-width:100%;
 }
-
 .answer-container {
     display: flex;
     align-items: center;
@@ -157,4 +160,24 @@
     background-position-x: 94%;
     background-position-y: 50%;
     background-size: 20px;
+}
+.input {
+    width: 351px !important;
+    border: 1px solid #dfdfdf;
+    border-radius: 23px;
+    font-size: 16px;
+    font-family: Montserrat;
+    padding: 0px 10px 0px 20px;
+    color: #2a2a2a;
+    outline: none;
+    height: 45px;
+    &::placeholder {
+        color: #c4c4c4;
+        font-size: 16px;
+        font-family: Montserrat;
+    }
+    &:focus {
+        box-shadow: none !important;
+    }
+    max-width:100%;
 }
