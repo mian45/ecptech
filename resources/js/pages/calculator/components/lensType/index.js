@@ -85,45 +85,13 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
         let lenses = [];
         selectedLensType?.brands?.forEach((element) => {
             element?.collections?.forEach((lens) => {
-                if (selectedLensType?.title === "Bifocal") {
-                    if (lens?.title !== "Aspherical/Spherical") {
-                        if (lens?.display_name) {
-                            lenses.push(lens?.display_name);
-                        } else {
-                            lenses.push(lens?.title);
-                        }
-                    } else {
-                        if (lens?.lense_type_title === "biofocal") {
-                            if (lens?.display_name) {
-                                lenses.push(lens?.display_name);
-                            } else {
-                                lenses.push(lens?.title);
-                            }
-                        }
-                    }
-                } else if (selectedLensType?.title === "Trifocal") {
-                    if (lens?.title !== "Aspherical/Spherical") {
-                        if (lens?.display_name) {
-                            lenses.push(lens?.display_name);
-                        } else {
-                            lenses.push(lens?.title);
-                        }
-                    } else {
-                        if (lens?.lense_type_title === null) {
-                            if (lens?.display_name) {
-                                lenses.push(lens?.display_name);
-                            } else {
-                                lenses.push(lens?.title);
-                            }
-                        }
-                    }
+                
+                if (lens?.display_name) {
+                    lenses.push(lens?.display_name);
                 } else {
-                    if (lens?.display_name) {
-                        lenses.push(lens?.display_name);
-                    } else {
-                        lenses.push(lens?.title);
-                    }
+                    lenses.push(lens?.title);
                 }
+                
             });
         });
         return lenses;

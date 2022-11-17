@@ -168,61 +168,7 @@ const CalculatorScreen = () => {
             let collectionId = null;
             lensType?.brands?.forEach((item) => {
                 item.collections?.forEach((val) => {
-                    if (item?.title === "Bifocal") {
-                        if (val?.title !== "Aspherical/Spherical") {
-                            if (val?.display_name) {
-                                if (val.display_name == values?.lensTypeValue) {
-                                    collectionId = val?.id;
-                                }
-                            } else {
-                                if (val.title == values?.lensTypeValue) {
-                                    collectionId = val?.id;
-                                }
-                            }
-                        } else {
-                            if (val?.lense_type_title === "biofocal") {
-                                if (val?.display_name) {
-                                    if (
-                                        val.display_name ==
-                                        values?.lensTypeValue
-                                    ) {
-                                        collectionId = val?.id;
-                                    }
-                                } else {
-                                    if (val.title == values?.lensTypeValue) {
-                                        collectionId = val?.id;
-                                    }
-                                }
-                            }
-                        }
-                    } else if (item?.title === "Trifocal") {
-                        if (val?.title !== "Aspherical/Spherical") {
-                            if (val?.display_name) {
-                                if (val.display_name == values?.lensTypeValue) {
-                                    collectionId = val?.id;
-                                }
-                            } else {
-                                if (val.title == values?.lensTypeValue) {
-                                    collectionId = val?.id;
-                                }
-                            }
-                        } else {
-                            if (val?.lense_type_title === null) {
-                                if (val?.display_name) {
-                                    if (
-                                        val.display_name ==
-                                        values?.lensTypeValue
-                                    ) {
-                                        collectionId = val?.id;
-                                    }
-                                } else {
-                                    if (val.title == values?.lensTypeValue) {
-                                        collectionId = val?.id;
-                                    }
-                                }
-                            }
-                        }
-                    } else {
+                    
                         if (val?.display_name) {
                             if (val.display_name == values?.lensTypeValue) {
                                 collectionId = val?.id;
@@ -231,7 +177,6 @@ const CalculatorScreen = () => {
                             if (val.title == values?.lensTypeValue) {
                                 collectionId = val?.id;
                             }
-                        }
                     }
                 });
             });
