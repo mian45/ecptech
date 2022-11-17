@@ -9,7 +9,6 @@ import { ErrorMessage } from "formik";
 import { BenifitTypeEnums } from "../../data/initialValues";
 import * as Yup from "yup";
 import Axios from "../../../../Http";
-import { defaultState, defaultValidationsState } from "../calculatorPage";
 import { CreateCalculatorValidations } from "../../data/validationHelper";
 
 const SelectVisionPlan = ({
@@ -18,8 +17,12 @@ const SelectVisionPlan = ({
     setCalValidations,
     calValidations,
     data,
-    setCalculatorObj, setCurrentPlan,
+    setCalculatorObj,
     setCalculatorState,
+    setValidationsList,
+    validationsList,
+    setDefaultValues,
+    defaultValues,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const plansList = calculatorObj?.questions?.map((plan) => plan?.title);
@@ -39,31 +42,19 @@ const SelectVisionPlan = ({
             console.log("error while get collections....");
         }
     };
-
     const handlePlanChange = async (event) => {
-
         await handlePlanClick(event);
 
-        defaultState[values.visionPlan] = values;
-        defaultValidationsState[values.visionPlan] = { ...calValidations };
-
-        const selectedPlan = calculatorObj?.questions?.find(
-            (plan) => plan?.title === (event?.target?.value)
-        );
-
-        const validations = CreateCalculatorValidations(
-            selectedPlan?.question_permissions
-        );
-        if (event?.target?.value === "Private Pay") {
-            delete validations?.isloweredCopay;
-            delete validations?.isLensBenifit;
-            delete validations?.isFrameBenifit;
-        }
-        defaultValidationsState[event?.target?.value] = { ...validations }
-        setCalValidations({ ...validations }
-        );
-        setCurrentPlan(event?.target?.value);
-        setCalculatorState(defaultState[event?.target?.value]);
+        await setValidationsList({
+            ...validationsList,
+            [values.visionPlan]: { ...calValidations },
+        });
+        await setDefaultValues({
+            ...defaultValues,
+            [values.visionPlan]: { ...values },
+        });
+        await setCalculatorState(defaultValues[event?.target?.value]);
+        await setCalValidations({ ...validationsList[event?.target?.value] });
     };
 
     const visionPlan = () => {
