@@ -235,11 +235,11 @@ p {
     width: 21px !important;
     @media only screen and (max-width: 1000px) {
         top: 40% !important;
-        left: 2% !important;
+        right: 2% !important;
     }
     @media only screen and (min-width: 1000px) {
         top: 45% !important;
-        right:6% !important
+        right:6% !important 
     
     }
 }
@@ -274,7 +274,7 @@ p {
 }
 .swiper-pagination{
     bottom: 100px !important;
-    @media (min-width: 279px) and (max-width: 1000px) {
+    @media (min-width: 279px) and (max-width: 1400px) {
         bottom: 50px !important;
     }
 }
