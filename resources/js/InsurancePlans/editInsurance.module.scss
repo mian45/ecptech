@@ -42,7 +42,6 @@
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
     flex-direction: column;
 }
 .content-box {
@@ -91,10 +90,10 @@
     font-size: 16px;
     font-family: Montserrat;
     margin-bottom: 100px;
-    &:hover {
+    & :hover {
         background-color: #518fbb !important;
     }
-    &:disabled {
+    & :disabled {
         background-color: #90b0c6;
     }
 
@@ -123,6 +122,10 @@
 @media only screen and (max-width: 763px){
     .root-container {
         margin-left: 0px;
+    }
+
+    .content-container {
+        align-items: center
     }
 }
 

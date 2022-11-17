@@ -103,10 +103,10 @@ function EditInsurance({ userId }) {
     };
 
     const handleSubmit = async () => {
-        setButtonLoader(true)
         if (updateInsurancePlan.length == 0) {
             return;
         }
+        setButtonLoader(true)
         const toggle = {
             user_id: userId,
             vision_plan_id: visionID,
@@ -204,6 +204,7 @@ function EditInsurance({ userId }) {
                                         </div>
                                         <div className={classes["button-container"]}>
                                             <button
+                                                disabled={updateInsurancePlan.length === 0}
                                                 onClick={handleSubmit}
                                                 type="submit"
                                                 className={classes["save-button"]}

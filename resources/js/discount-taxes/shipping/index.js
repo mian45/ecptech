@@ -60,6 +60,9 @@ const ShippingSettings = ({ userId }) => {
     const handleDeleteShipping = async (id) => {
         setDeleteShippingId(id);
         setShowDeleteShipping(true)
+        setShippingName('')
+        setShippingAmount('')
+        setIsSubmitted(true);
     };
     const handleShippingSubmit = async (e) => {
         setShippingButtonLoader(true)
@@ -116,7 +119,7 @@ const ShippingSettings = ({ userId }) => {
                                                 onChange={(e) => {
                                                     setShippingName(e.target.value);
                                                 }}
-                                                disabled={isSubmitted || shippingLoading}
+                                                disabled={isSubmitted}
                                             /></Col>
 
                                         </Row>
@@ -149,8 +152,8 @@ const ShippingSettings = ({ userId }) => {
                                                 <button
                                                     onClick={handleShippingSubmit}
                                                     className={`save-button ${!shippingName || !shippingAmount
-                                                            ? "disable"
-                                                            : ""
+                                                        ? "disable"
+                                                        : ""
                                                         } `}
                                                 >
                                                     {editState ? "Update" : shippingButtonLoader == true ?

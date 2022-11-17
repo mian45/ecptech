@@ -77,7 +77,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                 {({ values, handleChange, handleSubmit, handleBlur }) => {
                     return (
                         <form onSubmit={handleSubmit} autoComplete="off">
-                            <Row className={classes["sub-container"]}justify="center" align="middle">
+                            <Row className={classes["sub-container"]} justify="center" align="middle">
                                 <Col className={classes["input-wrapper"]} xs={24} md={12}>
                                     <div className={classes["subtitle"]}>
                                         Email Address
@@ -109,7 +109,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         value={values.password}
                                         className={classes["input"]}
                                         name="password"
-                                        placeholder={staffUser?.id?"●●●●●●":"Enter Password"}
+                                        placeholder={staffUser?.id ? "●●●●●●" : "Enter Password"}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         disabled={!isEdit && staffUser?.id}
@@ -121,7 +121,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                     />
                                 </Col>
                             </Row>
-                            <Row justify={window.innerWidth>763?"start":"center"} align="middle">
+                            <Row justify={window.innerWidth > 763 ? "start" : "center"} align="middle">
                                 <button
                                     type="submit"
                                     className={classes["button"]}
@@ -164,51 +164,51 @@ const LoginValidation = Yup.object().shape({
             const numberOfMustBeValidConditions = 1;
             const conditions = [hasUpperCase];
             conditions.forEach((condition) =>
-              condition ? validConditions++ : null
+                condition ? validConditions++ : null
             );
             if (validConditions >= numberOfMustBeValidConditions) {
-              return true;
+                return true;
             }
             return false;
-          })
+        })
         .test("isValidPass", "must have LowerCase Letter", (value, context) => {
             const hasLowerCase = /[a-z]/.test(value);
             let validConditions = 0;
             const numberOfMustBeValidConditions = 1;
             const conditions = [hasLowerCase];
             conditions.forEach((condition) =>
-              condition ? validConditions++ : null
+                condition ? validConditions++ : null
             );
             if (validConditions >= numberOfMustBeValidConditions) {
-              return true;
+                return true;
             }
             return false;
-          })
+        })
         .test("isValidPass", "must have Numbers", (value, context) => {
             const hasNumber = /[0-9]/.test(value);
-           
+
             let validConditions = 0;
             const numberOfMustBeValidConditions = 1;
             const conditions = [hasNumber];
             conditions.forEach((condition) =>
-              condition ? validConditions++ : null
+                condition ? validConditions++ : null
             );
             if (validConditions >= numberOfMustBeValidConditions) {
-              return true;
+                return true;
             }
             return false;
-          })
+        })
         .test("isValidPass", "must have Symbole", (value, context) => {
             const hasSymbole = /[!@#%&]/.test(value);
             let validConditions = 0;
             const numberOfMustBeValidConditions = 1;
             const conditions = [hasSymbole];
             conditions.forEach((condition) =>
-              condition ? validConditions++ : null
+                condition ? validConditions++ : null
             );
             if (validConditions >= numberOfMustBeValidConditions) {
-              return true;
+                return true;
             }
             return false;
-          })
+        })
 });

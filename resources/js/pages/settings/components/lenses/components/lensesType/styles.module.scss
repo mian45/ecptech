@@ -118,6 +118,8 @@
     justify-content: flex-start;
 }
 .animated-title {
+    display: flex;
+    align-items: flex-start;
     position: relative;
     animation: myfirst 0.7s;
     animation-direction: alternate;

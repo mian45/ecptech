@@ -326,6 +326,7 @@ const DiscountTaxes = (props) => {
         setDeleteTaxesId(id)
         setShowDeleteTaxes(true);
 
+
     };
     const handleShippingSubmit = (e) => {
         e.preventDefault();
@@ -577,7 +578,7 @@ const DiscountTaxes = (props) => {
                                                                 <Col xs={24} className="btn_section">
                                                                     <button
                                                                         onClick={handleSubmit}
-                                                                        className={`save-button ${!discountName || !discountTax || discountLoading
+                                                                        className={`save-button ${!discountName || !discountTax || discountButtonLoader
                                                                             ? "disable"
                                                                             : ""
                                                                             } `}
@@ -748,7 +749,7 @@ const DiscountTaxes = (props) => {
                                                                             ? handlUpdateTax(e)
                                                                             : handleTaxSubmit(e);
                                                                     }}
-                                                                    className={`save-button ${!taxName || !stateSetting || !taxValue || taxLoading
+                                                                    className={`save-button ${!taxName || !taxValue || taxButtonLoader
                                                                         ? "disable"
                                                                         : ""
                                                                         } `}
