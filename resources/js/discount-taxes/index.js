@@ -161,7 +161,6 @@ const DiscountTaxes = (props) => {
             .then(function (response) {
                 getTaxes();
                 setTaxName("");
-                setStateSetting("");
                 setTaxValue("");
                 setIdState(null);
                 setTaxButtonLoader(false)
