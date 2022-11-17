@@ -18,7 +18,7 @@ const ColorTheme = ({ values, setFieldValue, handleChange }) => {
             <div className={classes.title}>Color Scheme</div>
             <label className={classes.subtitle}>Choose theme color</label>
             <div className={classes["color-wrapper"]}>
-                <div>
+                <div className={classes["color-picker-wrapper"]}>
                     <input
                         className={classes["color-picker"]}
                         type={"color"}

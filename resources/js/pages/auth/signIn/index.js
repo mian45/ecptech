@@ -35,8 +35,15 @@ const SignIn = ({ isAuthenticated, userRole }) => {
     }, [darkTheme]);
     return (
         <>
-            {" "}
-            <img src={logo} alt="logo" className={classes["page-logo"]} />
+            <Row className={classes["container-logo"]}>
+                <Col xs={24}>
+                    <img
+                        src={logo}
+                        alt="logo"
+                        className={classes["page-logo"]}
+                    />
+                </Col>
+            </Row>
             <Row justify="center" align="middle">
                 <Col
                     span={12}

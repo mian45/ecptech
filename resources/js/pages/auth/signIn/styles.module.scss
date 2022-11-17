@@ -5,10 +5,10 @@
     flex-direction: column;
     padding: 20px;
 }
-.page-logo{
+.container-logo{
     position: absolute;
+    padding: 20px;
     top:27px;
-    left: 70px;
 }
 .login-section{
     background-color: var(--login-background-color);
@@ -18,3 +18,8 @@
     display: inherit;
     background-color: var(--slider-background-color);
 }
+@media only screen and (max-width:425px) {
+    .slider-section{
+    display: none;}
+}
+
