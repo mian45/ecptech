@@ -26,6 +26,10 @@
     font-size: 14px;
     font-family: Montserrat;
     cursor: pointer !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .active-state {
