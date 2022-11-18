@@ -90,6 +90,7 @@ const InvoiceTableActions = ({ data }) => {
         };
     };
     const getLensTypes = async () => {
+        if (!data?.vp_state) return;
         const vpState = JSON.parse(data?.vp_state);
         const userState = JSON.parse(data?.user_state);
 
