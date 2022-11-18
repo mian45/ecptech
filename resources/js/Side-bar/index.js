@@ -14,8 +14,8 @@ import invoicesIcon from "../../images/invoices.svg";
 import paymentIcon from "../../images/payments.svg";
 import settingsIcon from "../../images/settings.svg";
 import AuthService from "../services";
-import { Row,Col, Drawer } from "antd";
-const SideBar = ({ userRole, isActiveState, dispatch,sidebar }) => {
+import { Row, Col, Drawer } from "antd";
+const SideBar = ({ userRole, isActiveState, dispatch, sidebar }) => {
     const [state, setState] = useState(isActiveState);
     const [currentRoute, setCurrentRoute] = useState("");
     const history = useHistory();
@@ -91,124 +91,183 @@ const SideBar = ({ userRole, isActiveState, dispatch,sidebar }) => {
         }
         return true;
     };
-    const onClose=()=>{
-        dispatch(AuthService.showSideBar(sidebar))
-    }
+    const onClose = () => {
+        dispatch(AuthService.showSideBar(sidebar));
+    };
     return (
         <Row className={classes["side-box"]}>
             <Col>
-           {window.innerWidth>763?<>
-            {userRole === "staff" ? (
-                <div
-                    className={classes["item-container"]}
-                    onClick={() => {
-                        history.push(INVOICES_ROUTE);
-                    }}
-                >
-                    <img src={invoicesIcon} className={classes["icon"]} />
-                    <label className={classes["sidebar-label"]}>Invoices</label>
+                {window.innerWidth > 763 ? (
+                    <>
+                        {userRole === "staff" ? (
+                            <div
+                                className={classes["item-container"]}
+                                onClick={() => {
+                                    history.push(INVOICES_ROUTE);
+                                }}
+                                onContextMenu={(e) => {
+                                    e.preventDefault();
+                                    return false;
+                                }}
+                            >
+                                <img
+                                    src={invoicesIcon}
+                                    className={classes["icon"]}
+                                />
+                                <label className={classes["sidebar-label"]}>
+                                    Invoices
+                                </label>
 
-                    <span className={classes["active-state"]}></span>
-                </div>
-            ) : (
-                <>
-                    {SIDE_BAR_DATA.map((item, index) => {
-                        return (
-                            <Fragment key={index}>
-                                {checkStaffRoute(item?.index) ? (
-                                    <div
-                                        className={classes["item-container"]}
-                                        onClick={() => {
-                                            handleSideBar(item?.index);
-                                        }}
-                                        key={index}
-                                    >
-                                        <img
-                                            src={item.icon}
-                                            className={classes["icon"]}
-                                        />
-                                        <label
-                                            className={classes["sidebar-label"]}
-                                        >
-                                            {item.name}
-                                        </label>
-                                        {state === item?.index && (
-                                            <span
-                                                className={
-                                                    classes["active-state"]
-                                                }
-                                            ></span>
-                                        )}
-                                    </div>
-                                ) : (
-                                    <></>
-                                )}
-                            </Fragment>
-                        );
-                    })}
-                </>
-            )}</>:sidebar?<>
-            <Drawer
-        title="Basic Drawer"
-        placement={"left"}
-        closable={false}
-        onClose={onClose}
-        open={sidebar}
-        key={"left"}
-        bodyStyle={{backgroundColor:"#6fa5cb"}}
-        width={140}
-      >
-        {userRole === "staff" ? (
-                <div
-                    className={classes["item-container"]}
-                    onClick={() => {
-                        history.push(INVOICES_ROUTE);
-                    }}
-                >
-                    <img src={invoicesIcon} className={classes["icon"]} />
-                    <label className={classes["sidebar-label"]}>Invoices</label>
+                                <span
+                                    className={classes["active-state"]}
+                                ></span>
+                            </div>
+                        ) : (
+                            <>
+                                {SIDE_BAR_DATA.map((item, index) => {
+                                    return (
+                                        <Fragment key={index}>
+                                            {checkStaffRoute(item?.index) ? (
+                                                <div
+                                                    className={
+                                                        classes[
+                                                            "item-container"
+                                                        ]
+                                                    }
+                                                    onClick={() => {
+                                                        handleSideBar(
+                                                            item?.index
+                                                        );
+                                                    }}
+                                                    key={index}
+                                                    onContextMenu={(e) => {
+                                                        e.preventDefault();
+                                                        return false;
+                                                    }}
+                                                >
+                                                    <img
+                                                        src={item.icon}
+                                                        className={
+                                                            classes["icon"]
+                                                        }
+                                                    />
+                                                    <label
+                                                        className={
+                                                            classes[
+                                                                "sidebar-label"
+                                                            ]
+                                                        }
+                                                    >
+                                                        {item.name}
+                                                    </label>
+                                                    {state === item?.index && (
+                                                        <span
+                                                            className={
+                                                                classes[
+                                                                    "active-state"
+                                                                ]
+                                                            }
+                                                        ></span>
+                                                    )}
+                                                </div>
+                                            ) : (
+                                                <></>
+                                            )}
+                                        </Fragment>
+                                    );
+                                })}
+                            </>
+                        )}
+                    </>
+                ) : sidebar ? (
+                    <>
+                        <Drawer
+                            title="Basic Drawer"
+                            placement={"left"}
+                            closable={false}
+                            onClose={onClose}
+                            open={sidebar}
+                            key={"left"}
+                            bodyStyle={{ backgroundColor: "#6fa5cb" }}
+                            width={140}
+                        >
+                            {userRole === "staff" ? (
+                                <div
+                                    className={classes["item-container"]}
+                                    onClick={() => {
+                                        history.push(INVOICES_ROUTE);
+                                    }}
+                                >
+                                    <img
+                                        src={invoicesIcon}
+                                        className={classes["icon"]}
+                                    />
+                                    <label className={classes["sidebar-label"]}>
+                                        Invoices
+                                    </label>
 
-                    <span className={classes["active-state"]}></span>
-                </div>
-            ) : (
-                <>
-                    {SIDE_BAR_DATA.map((item, index) => {
-                        return (
-                            <Fragment key={index}>
-                                {checkStaffRoute(item?.index) ? (
-                                    <div
-                                        className={classes["item-container"]}
-                                        onClick={() => {
-                                            handleSideBar(item?.index);
-                                        }}
-                                        key={index}
-                                    >
-                                        <img
-                                            src={item.icon}
-                                            className={classes["icon"]}
-                                        />
-                                        <label
-                                            className={classes["sidebar-label"]}
-                                        >
-                                            {item.name}
-                                        </label>
-                                        {state === item?.index && (
-                                            <span
-                                                className={
-                                                    classes["active-state"]
-                                                }
-                                            ></span>
-                                        )}
-                                    </div>
-                                ) : (
-                                    <></>
-                                )}
-                            </Fragment>
-                        );
-                    })}
-                </>
-            )}
-      </Drawer></>:null}
+                                    <span
+                                        className={classes["active-state"]}
+                                    ></span>
+                                </div>
+                            ) : (
+                                <>
+                                    {SIDE_BAR_DATA.map((item, index) => {
+                                        return (
+                                            <Fragment key={index}>
+                                                {checkStaffRoute(
+                                                    item?.index
+                                                ) ? (
+                                                    <div
+                                                        className={
+                                                            classes[
+                                                                "item-container"
+                                                            ]
+                                                        }
+                                                        onClick={() => {
+                                                            handleSideBar(
+                                                                item?.index
+                                                            );
+                                                        }}
+                                                        key={index}
+                                                    >
+                                                        <img
+                                                            src={item.icon}
+                                                            className={
+                                                                classes["icon"]
+                                                            }
+                                                        />
+                                                        <label
+                                                            className={
+                                                                classes[
+                                                                    "sidebar-label"
+                                                                ]
+                                                            }
+                                                        >
+                                                            {item.name}
+                                                        </label>
+                                                        {state ===
+                                                            item?.index && (
+                                                            <span
+                                                                className={
+                                                                    classes[
+                                                                        "active-state"
+                                                                    ]
+                                                                }
+                                                            ></span>
+                                                        )}
+                                                    </div>
+                                                ) : (
+                                                    <></>
+                                                )}
+                                            </Fragment>
+                                        );
+                                    })}
+                                </>
+                            )}
+                        </Drawer>
+                    </>
+                ) : null}
             </Col>
         </Row>
     );
@@ -218,7 +277,7 @@ const mapStateToProps = (state) => ({
     isActiveState: state.Auth.isActiveState,
     userRole: state.Auth.userRole?.name,
     userId: state.Auth?.user?.id,
-    sidebar:state.Auth.sidebar
+    sidebar: state.Auth.sidebar,
 });
 
 export default connect(mapStateToProps)(SideBar);
