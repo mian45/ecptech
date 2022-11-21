@@ -6,6 +6,7 @@ import eyeLens from "../../../../../images/eye-lens.svg";
 import { connect } from "react-redux";
 import Axios from "../../../../Http";
 import { Col, Modal, Row } from "antd";
+import UseWindowSize from "../../../../hooks/windowResize";
 
 const defaultEyeValues = {
     rightEyeSPH: "",
@@ -36,6 +37,7 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen 
     const [suggestedMaterial, setSuggestedMaterial] =
         useState(defaultSuggession);
     const [values, setValues] = useState({ sphare: {}, cylinder: {} });
+    const { width } = UseWindowSize();
     useEffect(() => {
         var quarterHours = ["00", "75", "50", "25"];
         var sphere = [];
@@ -255,22 +257,22 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen 
         <Modal
             title=""
             open={onOpen}
-            onCancel={onClose}            
+            onCancel={onClose}
             forceRender={false}
             wrapClassName="prescriptionModal"
             bodyStyle={{
                 height: "auto !important",
             }}
             style={{
-                "top":"0", 
-                "padding-bottom":0, 
-                "padding-right":"1.5%", 
-                "padding-left":"1.5%", 
-                "margin-top":"5%", 
-                "margin-bottom":"5%",
-                "max-width":"100%"
+                "top": "0",
+                "padding-bottom": 0,
+                "padding-right": "1.5%",
+                "padding-left": "1.5%",
+                "margin-top": "5%",
+                "margin-bottom": "5%",
+                "maxWidth": "100%"
             }}
-            width={800}
+            width={width <= 600 ? "96%" : 860}
             zIndex="99999"
             footer={null}
         >
@@ -280,82 +282,82 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen 
                         EYE PRESCRIPTION CALCULATOR
                     </div>
                 </Col>
-            </Row> 
+            </Row>
             <Row>
                 <Col sm={24}>
-                <LensSlot label={"Right Eye"} className={classes["margin"]}>
-                    <div className={classes["select-section"]}>
-                        <Row>
-                            <Col sm={12}>
-                                <div
-                                    className={classes["info-section"]}
-                                   
-                                >
-                                    <div className={classes["select-label"]}>
-                                        Sphere (SPH)
+                    <LensSlot label={"Right Eye"} className={classes["margin"]}>
+                        <div className={classes["select-section"]}>
+                            <Row>
+                                <Col sm={12}>
+                                    <div
+                                        className={classes["info-section"]}
+
+                                    >
+                                        <div className={classes["select-label"]}>
+                                            Sphere (SPH)
+                                        </div>
+                                        <input
+                                            placeholder="Select Spherical"
+                                            className={classes["input"]}
+                                            value={eyeValues?.rightEyeSPH}
+                                            onChange={(value) =>
+                                                handleValueChange(
+                                                    value.target?.value,
+                                                    "rightEyeSPH"
+                                                )
+                                            }
+                                            type={"number"}
+                                            step={0.01}
+                                            min={-20}
+                                            max={20}
+                                        />
+
+
                                     </div>
-                                    <input
-                                        placeholder="Select Spherical"
-                                        className={classes["input"]}
-                                        value={eyeValues?.rightEyeSPH}
-                                        onChange={(value) =>
-                                            handleValueChange(
-                                                value.target?.value,
-                                                "rightEyeSPH"
-                                            )
-                                        }
-                                        type={"number"}
-                                        step={0.01}
-                                        min={-20}
-                                        max={20}
-                                    />
+                                </Col>
+                                <Col sm={12}>
+                                    <div className={classes["info-section"]}>
+                                        <div className={classes["select-label"]}>
+                                            Cylinder (CYL)
+                                        </div>
+                                        <input
+                                            placeholder="Select Cylinder"
+                                            className={classes["input"]}
+                                            value={eyeValues?.rightEyeCYL}
+                                            onChange={(value) =>
+                                                handleValueChange(
+                                                    value.target?.value,
+                                                    "rightEyeCYL"
+                                                )
+                                            }
+                                            type={"number"}
+                                            step={0.01}
+                                            min={-10}
+                                            max={10}
+                                        />
 
-
-                                </div>
-                            </Col>
-                            <Col sm={12}>
-                                <div className={classes["info-section"]}>
-                                    <div className={classes["select-label"]}>
-                                        Cylinder (CYL)
                                     </div>
-                                    <input
-                                        placeholder="Select Cylinder"
-                                        className={classes["input"]}
-                                        value={eyeValues?.rightEyeCYL}
-                                        onChange={(value) =>
-                                            handleValueChange(
-                                                value.target?.value,
-                                                "rightEyeCYL"
-                                            )
-                                        }
-                                        type={"number"}
-                                        step={0.01}
-                                        min={-10}
-                                        max={10}
-                                    />
-
-                                </div>
-                            </Col>
-                        </Row>
-                    </div>
-                </LensSlot>
+                                </Col>
+                            </Row>
+                        </div>
+                    </LensSlot>
 
 
-                
+
 
 
                 </Col>
-            </Row>  
+            </Row>
 
             <Row>
-            <Col sm={24}>
+                <Col sm={24}>
                     <LensSlot label={"Left Eye"} className={classes["margin"]}>
                         <div className={classes["select-section"]}>
                             <Row>
                                 <Col sm={12}>
                                     <div
                                         className={classes["info-section"]}
-                                        
+
                                     >
                                         <div className={classes["select-label"]}>
                                             Sphere (SPH)
@@ -405,28 +407,28 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen 
                         </div>
                     </LensSlot>
                 </Col>
-            </Row> 
+            </Row>
             <Row  >
-                <Col sm={24} style={{"text-align": 'center', "margin-left":"auto", "margin-right":"auto"}}>
-                <button
-                    className={classes["submit-button"]}
-                    disabled={handleDisable()}
-                    onClick={handleSubmit}
-                    style={{
-                        backgroundColor: handleDisable()
-                            ? "#cbcbcb"
-                            : "#90B0C6",
-                    }}
-                >
-                    Submit
-                </button>
-                {prescriptionResult()}
+                <Col sm={24} style={{ "text-align": 'center', "margin-left": "auto", "margin-right": "auto" }}>
+                    <button
+                        className={classes["submit-button"]}
+                        disabled={handleDisable()}
+                        onClick={handleSubmit}
+                        style={{
+                            backgroundColor: handleDisable()
+                                ? "#cbcbcb"
+                                : "#90B0C6",
+                        }}
+                    >
+                        Submit
+                    </button>
+                    {prescriptionResult()}
                 </Col>
             </Row>
 
         </Modal>
 
-        
+
     );
 };
 
