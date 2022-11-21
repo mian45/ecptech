@@ -11,7 +11,7 @@ import StaffListTable from "./components/staffTable";
 import TeamPerformanceChart from "./components/teamPerformanceChart";
 import ProfitStatsChart from "./components/profitStatsChart";
 import AddStaffMembers from "./components/AddStaffMembers";
-import {Row,Col} from "antd"
+import { Row, Col } from "antd";
 const Dashboard = ({ userRole, apiDates, userId }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
     const [summaryStats, setSummaryStats] = useState([]);
@@ -62,16 +62,20 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
     return (
         <Row className={classes["container"]} span={24} justify="space-between">
             <Col xs={24} lg={17} className={classes["left-stats"]}>
-                <Row className={classes["cards-mapper"]} justify="space-between" align="middle">
+                <Row
+                    className={classes["cards-mapper"]}
+                    justify="space-between"
+                    align="middle"
+                >
                     {PROFIT_CARDS_DATA.map((card, index) => {
                         return (
-                           <Col xs={24} md={8}>
-                            <ProfitCard
-                                key={index}
-                                cartData={card}
-                                stats={summaryStats[index]}
-                            />
-                           </Col>
+                            <Col xs={24} md={8} lg={7}>
+                                <ProfitCard
+                                    key={index}
+                                    cartData={card}
+                                    stats={summaryStats[index]}
+                                />
+                            </Col>
                         );
                     })}
                 </Row>
@@ -80,7 +84,7 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
                 <StaffListTable />
                 {userRole !== "staff" && <StaffLogin />}
             </Col>
-            <Col xs={24} lg={6}className={classes["left-stats"]}>
+            <Col xs={24} lg={6} className={classes["left-stats"]}>
                 <ProfitStatsChart dates={apiDates} />
                 <HotSellingProducts />
                 <TeamPerformanceChart />

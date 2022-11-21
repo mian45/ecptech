@@ -688,10 +688,10 @@ const DiscountTaxes = (props) => {
                                                 <Row justify="space-between">
                                                     <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
                                                         <Row justify="center" align="middle">
-                                                            <Col xs={23}>
+                                                            <Col xs={24}>
                                                                 <p className="input-title">Tax Name</p>
                                                             </Col>
-                                                            <Col xs={23}>
+                                                            <Col xs={24}>
                                                                 <input
                                                                     placeholder="Enter Tax Name"
                                                                     value={taxName}
