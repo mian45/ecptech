@@ -2,7 +2,7 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
-import { Button, Checkbox, Form, Input , DatePicker, Space, Row, Col } from "antd";
+import { Button, Checkbox, Form, Input, DatePicker, Space, Row, Col } from "antd";
 import CustomCheckbox from "../../../../components/customCheckbox";
 const AddCardModal = ({ show, onClose }) => {
     const [cardNumber, setCardNumber] = useState("");
@@ -104,32 +104,32 @@ const AddCardModal = ({ show, onClose }) => {
                             By adding new card, your old card will be removed.
                         </Row>
                         <Row>
-                        <Col className={classes["input-label"]}>
-                            Card Number
-                        </Col>
-                        <Col xs={24}>
-                        <Input
-                            placeholder="Enter Card Number"
-                            className={classes["input"]}
-                            type="text"
-                            value={cardNumber}
-                            onChange={(e) => {
-                                if (e.target.value.length < 20) {
-                                    setCardNumber(
-                                        e.target.value
-                                            .replace(/[^\dA-Z]/g, "")
-                                            .replace(/(.{4})/g, "$1 ")
-                                            .trim()
-                                    );
-                                }
-                            }}
-                            onBlur={(e) => {
-                                stripeCardNumberValidation(
-                                    e.target.value.replace(" ", "")
-                                );
-                            }}
-                        />
-                        </Col>
+                            <Col className={classes["input-label"]}>
+                                Card Number
+                            </Col>
+                            <Col xs={24}>
+                                <Input
+                                    placeholder="Enter Card Number"
+                                    className={classes["input"]}
+                                    type="text"
+                                    value={cardNumber}
+                                    onChange={(e) => {
+                                        if (e.target.value.length < 20) {
+                                            setCardNumber(
+                                                e.target.value
+                                                    .replace(/[^\dA-Z]/g, "")
+                                                    .replace(/(.{4})/g, "$1 ")
+                                                    .trim()
+                                            );
+                                        }
+                                    }}
+                                    onBlur={(e) => {
+                                        stripeCardNumberValidation(
+                                            e.target.value.replace(" ", "")
+                                        );
+                                    }}
+                                />
+                            </Col>
                         </Row>
                         {validNumber ? (
                             <label className={classes["validation-error"]}>
@@ -139,32 +139,32 @@ const AddCardModal = ({ show, onClose }) => {
                             ""
                         )}
                         <Row>
-                        <Col className={classes["input-label"]}>
-                            Card Holder Name
-                        </Col>
-                        <Col xs={24}>
-                        <Input
-                            value={name}
-                            placeholder="Enter Card Holder Name"
-                            className={classes["input"]}
-                            onChange={(e) => {
-                                var letters = /^[A-Za-z ]+$/;
-                                if (e.target.value.match(letters)) {
-                                    setName(e.target.value);
-                                } else if (e.target.value == "") {
-                                    setName("");
-                                }
-                            }}
-                            onBlur={(e) => {
-                                if (name == "") {
-                                    setNameValidation(true);
-                                } else {
-                                    setNameValidation(false);
-                                }
-                            }}
-                            />
-                        </Col>
-                            </Row>
+                            <Col className={classes["input-label"]}>
+                                Card Holder Name
+                            </Col>
+                            <Col xs={24}>
+                                <Input
+                                    value={name}
+                                    placeholder="Enter Card Holder Name"
+                                    className={classes["input"]}
+                                    onChange={(e) => {
+                                        var letters = /^[A-Za-z ]+$/;
+                                        if (e.target.value.match(letters)) {
+                                            setName(e.target.value);
+                                        } else if (e.target.value == "") {
+                                            setName("");
+                                        }
+                                    }}
+                                    onBlur={(e) => {
+                                        if (name == "") {
+                                            setNameValidation(true);
+                                        } else {
+                                            setNameValidation(false);
+                                        }
+                                    }}
+                                />
+                            </Col>
+                        </Row>
                         {nameValidation ? (
                             <label className={classes["validation-error"]}>
                                 Name is required
@@ -172,8 +172,8 @@ const AddCardModal = ({ show, onClose }) => {
                         ) : (
                             ""
                         )}
-                        <Row gutter={[5,0]} className={classes["inline-input"]}>
-                            <Col xs={24} sm={12} lg={12} className={classes["inline-left-input"]}>
+                        <Row className={classes["inline-input"]}>
+                            <Col xs={24} sm={12} md={11} lg={11} className={classes["inline-left-input"]}>
                                 <Col className={classes["input-label"]}>
                                     Card Expiry
                                 </Col>
@@ -209,37 +209,37 @@ const AddCardModal = ({ show, onClose }) => {
                                     ""
                                 )}
                             </Col>
-                            <Col xs={24} sm={12} lg={12} className={classes["inline-right-input"]}>
+                            <Col xs={24} sm={12} md={11} lg={11} className={classes["inline-right-input"]}>
                                 <Col className={classes["input-label"]}>
                                     CVV
                                 </Col>
                                 <Form.Item>
-                                <Input
-                                    placeholder="CVV No."
-                                    type={"text"}
-                                    className={classes["input"]}
-                                    value={cvc}
-                                    onChange={(e) => {
-                                        if (e.target.value.length <= 4) {
-                                            const regix = new RegExp(
-                                                "^[0-9]*$"
-                                            );
+                                    <Input
+                                        placeholder="CVV No."
+                                        type={"text"}
+                                        className={classes["input"]}
+                                        value={cvc}
+                                        onChange={(e) => {
+                                            if (e.target.value.length <= 4) {
+                                                const regix = new RegExp(
+                                                    "^[0-9]*$"
+                                                );
 
-                                            if (regix.test(e.target.value)) {
-                                                setCvc(e.target.value);
+                                                if (regix.test(e.target.value)) {
+                                                    setCvc(e.target.value);
+                                                }
+                                            } else if (e.target.value == "") {
+                                                setCvc("");
                                             }
-                                        } else if (e.target.value == "") {
-                                            setCvc("");
-                                        }
-                                    }}
-                                    onBlur={(e) => {
-                                        if (cvc.length < 3) {
-                                            setValidCvc(true);
-                                        } else {
-                                            setValidCvc(false);
-                                        }
-                                    }}
-                                />
+                                        }}
+                                        onBlur={(e) => {
+                                            if (cvc.length < 3) {
+                                                setValidCvc(true);
+                                            } else {
+                                                setValidCvc(false);
+                                            }
+                                        }}
+                                    />
                                 </Form.Item>
                                 {validCvc ? (
                                     <label
@@ -253,7 +253,7 @@ const AddCardModal = ({ show, onClose }) => {
                             </Col>
                         </Row>
                         <div className={classes["terms"]}>
-                            <Checkbox
+                            <CustomCheckbox
                                 label={""}
                                 defaultChecked={checked || false}
                                 onValueChange={(value) => {
