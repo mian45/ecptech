@@ -23,9 +23,9 @@ import emailButton from "../../images/email.svg";
 import Axios from "../Http";
 import CustomLoader from "../components/customLoader";
 
-import DeleteModal from "../components/deleteModal/index"
+import DeleteModal from "../components/deleteModal/index";
 import "./style.scss";
-import { Row,Col } from "antd";
+import { Row, Col } from "antd";
 const EmailSetting = (props) => {
     const [emailSettingProps, setEmailSettingProps] = useState(false);
     const [idState, setIdState] = useState("");
@@ -39,13 +39,13 @@ const EmailSetting = (props) => {
     const [timeZone, setTimeZone] = useState("");
     const [emailArray, setEmailArray] = useState([]);
     const [timeZones, setTimeZones] = useState([]);
-    const [timeSelector,setTimeSelector]=useState("")
-    const [timeSelectorValue,setTimeSelectorValue]=useState("")
-    const [loading , setLoading] = useState(false)
-    const [buttonLoader , setButtonLoader] = useState(false)
-    const [showDeleteReminder,setShowDeleteReminder]=useState(false)
-    const [deleteReminderId,setDeleteReminderId]=useState(0)
-    
+    const [timeSelector, setTimeSelector] = useState("");
+    const [timeSelectorValue, setTimeSelectorValue] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [buttonLoader, setButtonLoader] = useState(false);
+    const [showDeleteReminder, setShowDeleteReminder] = useState(false);
+    const [deleteReminderId, setDeleteReminderId] = useState(0);
+
     const blockStyleFn = (block) => {
         let alignment = "left";
         block.findStyleRanges((e) => {
@@ -88,7 +88,7 @@ const EmailSetting = (props) => {
         setEditorState(editorState);
     };
     const addReminder = () => {
-        setButtonLoader(true)
+        setButtonLoader(true);
         var data = new FormData();
         if (reminderType === "orderComplete") {
             data.append("userId", props.userID);
@@ -99,7 +99,7 @@ const EmailSetting = (props) => {
                 "body",
                 draftToMarkdown(convertToRaw(editorState.getCurrentContent()))
             );
-        } else if (reminderType ==='reminder' ){
+        } else if (reminderType === "reminder") {
             data.append("userId", props.userID);
             data.append("type", reminderType);
             data.append("invoiceType", sentTo);
@@ -112,8 +112,7 @@ const EmailSetting = (props) => {
             data.append("afterSendType", timeSelector);
             data.append("sendTime", times);
             data.append("TimeZone", timeZone);
-        }
-        else {
+        } else {
             data.append("userId", props.userID);
             data.append("type", reminderType);
             data.append("invoiceType", sentTo);
@@ -138,17 +137,17 @@ const EmailSetting = (props) => {
         axios(config)
             .then(function (response) {
                 getReminder();
-                setButtonLoader(false)
+                setButtonLoader(false);
             })
             .catch(function (error) {
-                setButtonLoader(true)
+                setButtonLoader(true);
                 console.log(error);
-                setButtonLoader(false)
+                setButtonLoader(false);
             });
     };
 
     const editReminder = (value) => {
-        setButtonLoader(true)
+        setButtonLoader(true);
         var data = new FormData();
         if (reminderType === "orderComplete") {
             data.append("id", idState);
@@ -159,8 +158,7 @@ const EmailSetting = (props) => {
                 "body",
                 draftToMarkdown(convertToRaw(editorState.getCurrentContent()))
             );
-        }
-        else if(reminderType ==='reminder'){
+        } else if (reminderType === "reminder") {
             data.append("id", idState);
             data.append("type", reminderType);
             data.append("invoiceType", sentTo);
@@ -173,7 +171,7 @@ const EmailSetting = (props) => {
             data.append("afterSendType", timeSelector);
             data.append("sendTime", times);
             data.append("TimeZone", timeZone);
-        }else{
+        } else {
             data.append("id", idState);
             data.append("type", reminderType);
             data.append("invoiceType", sentTo);
@@ -206,13 +204,13 @@ const EmailSetting = (props) => {
                 setTimeZone("");
                 setIdState(null);
                 setTimeSelector("");
-                setTimeSelectorValue("")
-                setButtonLoader(false)
+                setTimeSelectorValue("");
+                setButtonLoader(false);
             })
             .catch(function (error) {
-                setButtonLoader(true)
+                setButtonLoader(true);
                 console.log(error);
-                setButtonLoader(false)
+                setButtonLoader(false);
             });
     };
 
@@ -231,7 +229,7 @@ const EmailSetting = (props) => {
 
         axios(config)
             .then(function (response) {
-                setShowDeleteReminder(false)
+                setShowDeleteReminder(false);
             })
             .catch(function (error) {
                 console.log(error);
@@ -239,7 +237,7 @@ const EmailSetting = (props) => {
     };
 
     const getReminder = () => {
-        setLoading(true)
+        setLoading(true);
         var data = new FormData();
 
         var config = {
@@ -255,14 +253,14 @@ const EmailSetting = (props) => {
             .then(function (response) {
                 let res = response.data.data;
                 setEmailArray(res);
-               if(props.userID!==null && props.userID!== undefined){
-                setLoading(false)
-               }
+                if (props.userID !== null && props.userID !== undefined) {
+                    setLoading(false);
+                }
             })
             .catch(function (error) {
-                setLoading(true)
+                setLoading(true);
                 console.log(error);
-                setLoading(false)
+                setLoading(false);
             });
     };
 
@@ -297,18 +295,17 @@ const EmailSetting = (props) => {
     };
 
     const handleDelete = (id) => {
-        setShowDeleteReminder(true)
-        setDeleteReminderId(id)
-        
+        setShowDeleteReminder(true);
+        setDeleteReminderId(id);
     };
-    const deleteReminderbyPopup=()=>{
+    const deleteReminderbyPopup = () => {
         deleteReminder(deleteReminderId);
         setEmailArray(
             [...emailArray].filter((emailObj) => {
                 return emailObj.id !== deleteReminderId;
             })
         );
-    }
+    };
     var quarterHours = ["00", "15", "30", "45"];
     var time = [];
     for (var i = 0; i < 24; i++) {
@@ -357,7 +354,7 @@ const EmailSetting = (props) => {
         setTimeZone("");
         setIdState(null);
         setTimeSelector("");
-        setTimeSelectorValue("")
+        setTimeSelectorValue("");
         setEmailSettingProps(false);
     };
 
@@ -384,470 +381,601 @@ const EmailSetting = (props) => {
             console.log("error");
         }
     };
-    const EmailForm=()=>{
-        return  <form>
-        <Row className="email-remainder">
-            <Col xs={24}>
-            <Row >
-            <Col xs={24} md={24}className="email-remainder_heading">Add New</Col>
-            <Col xs={24} md={24}
-                    onClick={handleClick}className="back"
-                >
-                    <Row>
-                    <img src={"/arrow-back.svg"} alt="arrow" />
-                    <p className="email-remainder_arrow-section_back">
-                        Back
-                    </p>
-                    </Row>
-                </Col>
-            </Row>
-                <Row justify="center" className="email-remainder_input-sections">
-                    <Col className="email-remainder_input-sections_input-section" xs={24}>
-                        <Row justify="center" align="middle">
-                            <Col xs={24} md={4}><p>Email Type</p></Col>
-                            <Col xs={24} md={12}>
-                           <Row justify="center" align="middle">
-                           <Col xs={24}>
-                           <Select
-                            className="no-outline select-width"
-                            defaultValue="Select"
-                            onChange={handleRemainderClick}
-                            value={reminderType || "Select"}
+    const EmailForm = () => {
+        return (
+            <form>
+                <Row className="email-remainder">
+                    <Col xs={24}>
+                        <Row>
+                            <Col
+                                xs={24}
+                                md={24}
+                                className="email-remainder_heading"
+                            >
+                                Add New
+                            </Col>
+                            <Col
+                                xs={24}
+                                md={24}
+                                onClick={handleClick}
+                                className="back"
+                            >
+                                <Row>
+                                    <img src={"/arrow-back.svg"} alt="arrow" />
+                                    <p className="email-remainder_arrow-section_back">
+                                        Back
+                                    </p>
+                                </Row>
+                            </Col>
+                        </Row>
+                        <Row
+                            justify="center"
+                            className="email-remainder_input-sections"
                         >
-                            <Option
-                                className="ant-select-item-option-content"
-                                value={"reminder"}
+                            <Col
+                                className="email-remainder_input-sections_input-section"
+                                xs={24}
                             >
-                                Reminder
-                            </Option>
-                            <Option
-                                className="ant-select-item-option-content"
-                                value={"orderComplete"}
-                            >
-                               Order Paid
-                            </Option>
-                            <Option
-                                className="ant-select-item-option-content"
-                                value={"custom"}
-                            >
-                                Custom
-                            </Option>
-                        </Select></Col>
-                           </Row>
-                           </Col>
-                        </Row>
-                        
-                    </Col>
-                    {reminderType != "orderComplete" ? (
-                        <Col xs={24} className="email-remainder_input-sections_input-section">
-                            <Row justify="center" align="middle"> 
-                            <Col xs={24} md={4}> <p>Send to</p></Col>
-                            <Col xs={24} md={12}>
-                            <Row justify="center" align="middle">
-                            <Col xs={24}>
-                            <Select
-                                className="no-outline select-width"
-                                defaultValue="Select"
-                                onChange={handleSentToClick}
-                                value={sentTo || "Select"}
-                            >
-                                <Option
-                                    className="ant-select-item-option-content"
-                                    value={"paid"}
-                                >
-                                    Paid
-                                </Option>
-                                <Option
-                                    className="ant-select-item-option-content"
-                                    value={"unpaid"}
-                                >
-                                    Unpaid
-                                </Option>
-                                <Option
-                                    className="ant-select-item-option-content"
-                                    value={"all"}
-                                >
-                                    All
-                                </Option>
-                            </Select>
-                            </Col>
-                            </Row>
-                            </Col>
-                            </Row>
-                        </Col>
-                    ) : null}
-    
-                    <Col xs={24} className="email-remainder_input-sections_input-section">
-                    <Row justify="center" align="middle">
-                    <Col xs={24} md={4}><p>Subject</p></Col>
-                    <Col xs={24} md={12}>
-                    <Row justify="center" align="middle">
-                    <Col xs={24}>
-                        <input
-                            className="email-remainder_input-sections_input-section_input input-pad-val no-outline email-input-border"
-                            value={subject}
-                            onChange={(e) => {
-                                setSubject(e.target.value);
-                            }}
-                            type={"text"}
-                            required
-                        />
-                         </Col>
-                         </Row>
-                        </Col>
-                        </Row>
-
-                    </Col>
-                    <Col xs={24}>
-                        <Row justify="center" align="middle">
-                       <Col xs={24} md={16} lg={16} xl={16}>
-                       <Editor
-                            toolbar={{
-                                options: [
-                                    "fontSize",
-                                    "inline",
-                                    "textAlign",
-                                    "colorPicker",
-                                    "image",
-                                ],
-                                inline: {
-                                    inDropdown: false,
-                                    options: ["bold", "italic"],
-                                },
-                                textAlign: { inDropdown: true },
-                                colorPicker: { icon: fontColor },
-                            }}
-                            editorState={editorState}
-                            wrapperClassName="demo-wrapper"
-                            editorClassName="demo-editor"
-                            onEditorStateChange={
-                                onEditorStateChange
-                            }
-                        />
-                       </Col>
-                        </Row>
-                    </Col>
-                    {reminderType != "orderComplete" && (
-                        <>
-                            <Col xs={24}>
                                 <Row justify="center" align="middle">
-                                    <Col xs={24} md={4}><p className="email-remainder_schedule">
-                                    Schedule
-                                </p></Col>
-                                    <Col xs={24} md={12}></Col>
-                                </Row>
-                            </Col>
-                            <Col xs={24} className="email-remainder_input-sections_input-section">
-                            <Row justify="center" align="middle">
                                     <Col xs={24} md={4}>
-                                    <p>Send Date</p>
-                                    </Col>
-                                    <Col xs={24} md={12} >
-
-                                    {reminderType == "custom" ? (
-                                    <input
-                                        className="email-remainder_input-sections_input-section_input picker-padding no-outline"
-                                        style={{
-                                            paddingRight: "10px",
-                                        }}
-                                        value={dates}
-                                        onChange={(e) => {
-                                            setDates(
-                                                e.target.value
-                                            );
-                                        }}
-                                        type={"date"}
-                                        required
-                                    />
-                                ) : (
-                                    <Row className="reminder-select-date-container" justify="center" align="middle">
-                                       <Col xs={12} md={14} > 
-                                       <input
-                                    className="email-remainder_input-sections_input-section_input-short input-pad-val no-outline email-input-border"
-                                    value={timeSelectorValue}
-                                    onChange={(e) => {
-                                        setTimeSelectorValue(e.target.value);
-                                    }}
-                                    type='number'
-                                    required
-                                /></Col>
-                                <Col xs={12} md={10} className="align-items"> <Select
-                                className="no-outline ant-select-short select-width"
-                                defaultValue="Select"
-                                onChange={handleDateClick}
-                                value={timeSelector || "Select"}
-                            >
-                                <Option
-                                    className="ant-select-item-option-content "
-                                    value={"day"}
-                                >
-                                    Day
-                                </Option>
-                                <Option
-                                    className="ant-select-item-option-content"
-                                    value={'hour'}
-                                >
-                                    Hour
-                                </Option>
-                                <Option
-                                    className="ant-select-item-option-content"
-                                    value={'month'}
-                                >
-                                   Month
-                                </Option>
-                                <Option
-                                    className="ant-select-item-option-content"
-                                    value={'year'}
-                                >
-                                   Year
-                                </Option>
-                             
-                            </Select></Col>
-                               </Row>
-                                    
-                                )}
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col xs={24} className="email-remainder_input-sections_input-section">
-                            <Row justify="center" align="middle">
-                                    <Col xs={24} md={4}>
-                                    <p>Send Time</p>
+                                        <p>Email Type</p>
                                     </Col>
                                     <Col xs={24} md={12}>
-                                    <Select
-                                    className="no-outline select-width"
-                                    defaultValue="Select"
-                                    onChange={handleTimeClick}
-                                    value={times || "Select"}
-                                >
-                                    {time &&
-                                        time?.map((e, key) => {
-                                            return (
-                                                <Option
-                                                    className="ant-select-item-option-content"
-                                                    value={e}
-                                                >
-                                                    {e}
-                                                </Option>
-                                            );
-                                        })}
-                                </Select>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col xs={24} className="email-remainder_input-sections_input-section">
-                                
-                            <Row justify="center" align="middle">
-                                    <Col xs={24} md={4}>
-                                    <p>Time Zone</p>
-                                    </Col>
-                                    <Col xs={24} md={12}>
-                                    <Select
-                                    defaultValue="Select"
-                                    className='select-width'
-                                    onChange={handleTimeZoneClick}
-                                    value={timeZone || "Select"}
-                                >
-                                    {timeZones.map(
-                                        (zone, index) => {
-                                            return (
-                                                <Option
-                                                    className="ant-select-item-option-content"
-                                                    value={zone.id}
-                                                >
-                                                    {zone.name}
-                                                </Option>
-                                            );
-                                        }
-                                    )}
-                                </Select>
-                                    </Col>
-                                </Row>
-    
-                               
-                            </Col>
-                        </>
-                    )}
-                    <div className="reminders-container-schedule">
-                        <button
-                            onClick={(e) => {
-                                idState
-                                    ? handleEdit(e)
-                                    : handleSubmit(e);
-                            }}
-                            className="email-remainder_save-button"
-                            style={{
-                                marginBottom: "50px",
-                            }}
-                        >
-                            {buttonLoader == false ?
-                                        'Save' : 
-                                        <span>
-                                        <p>Save</p> 
-                                        <CustomLoader buttonBool={true}/>
-                                        </span>
-                                        }
-                        </button>
-                    </div>
-                </Row>
-            </Col>
-        </Row>
-    </form>
-    }
-   
-    return (
-        loading == true ?
-        <CustomLoader buttonBool={false}/>  :
-        <>
-        {console.log("the dev data is here",props.user)}
-        {showDeleteReminder?
-        <DeleteModal accept={()=>{
-            deleteReminderbyPopup();
-
-        }}
-        cancel={()=>{setShowDeleteReminder(false)}}
-        open={showDeleteReminder}
-        /> :null}
-            {!emailSettingProps && (
-                <Row className="email-setting" justify="center">
-                   <Col xs={24}>
-                   <p className="email-setting_heading email-settings-title">
-                        Email Settings
-                    </p>
-                    <Row justify="center">
-                        <Col xs={24} md={18}>
-                        {emailArray &&
-                            emailArray.map((obj, i) => {
-                                return (
-                                    <Row className="email-setting-content" justify="space-between" align="middle">
-                                        <Col xs={24} md={20}>
-                                            <Row justify="center" align="middle">
-                                            <Col xs={6} md={4} lg={3} className="email-setting-content-section-image" >
-                                                <img
-                                                    src={
-                                                        obj.type == "reminder"
-                                                            ? iconRemainder
-                                                            : emailButton
+                                        <Row justify="center" align="middle">
+                                            <Col xs={24}>
+                                                <Select
+                                                    className="no-outline select-width"
+                                                    defaultValue="Select"
+                                                    onChange={
+                                                        handleRemainderClick
                                                     }
-                                                />
+                                                    value={
+                                                        reminderType || "Select"
+                                                    }
+                                                >
+                                                    <Option
+                                                        className="ant-select-item-option-content"
+                                                        value={"reminder"}
+                                                    >
+                                                        Reminder
+                                                    </Option>
+                                                    <Option
+                                                        className="ant-select-item-option-content"
+                                                        value={"orderComplete"}
+                                                    >
+                                                        Order Paid
+                                                    </Option>
+                                                    <Option
+                                                        className="ant-select-item-option-content"
+                                                        value={"custom"}
+                                                    >
+                                                        Custom
+                                                    </Option>
+                                                </Select>
                                             </Col>
-                                            <Col xs={18} md={20}>
-                                                    <p className="email-setting-content-section-heading">
-                                                        {obj.subject}
-                                                    </p>
-                                                <Row className="email-setting-content-section-subsection" align="middle">
-                                                    <Col xs={24} md={8} lg={6}>
-                                                    <p
-                                                        className="email-setting-content-section-subsection-heading email-reminder-tag"
-                                                        style={
-                                                            obj.type ==
-                                                            "reminder"
-                                                                ? {
-                                                                      color: "#61C77B",
-                                                                  }
-                                                                : {
-                                                                      color: "#6FA5CB",
-                                                                  }
+                                        </Row>
+                                    </Col>
+                                </Row>
+                            </Col>
+                            {reminderType != "orderComplete" ? (
+                                <Col
+                                    xs={24}
+                                    className="email-remainder_input-sections_input-section"
+                                >
+                                    <Row justify="center" align="middle">
+                                        <Col xs={24} md={4}>
+                                            {" "}
+                                            <p>Send to</p>
+                                        </Col>
+                                        <Col xs={24} md={12}>
+                                            <Row
+                                                justify="center"
+                                                align="middle"
+                                            >
+                                                <Col xs={24}>
+                                                    <Select
+                                                        className="no-outline select-width"
+                                                        defaultValue="Select"
+                                                        onChange={
+                                                            handleSentToClick
+                                                        }
+                                                        value={
+                                                            sentTo || "Select"
                                                         }
                                                     >
-                                                        {obj.type == "reminder"
-                                                            ? obj.type
-                                                            : "Order Success"}
-                                                    </p>
-                                                    </Col>
-                                                    <Col xs={24} md={16}>
-
-                                                    <p
-                                                        className="email-setting-content-section-subsection-subheading"
-                                                        style={{
-                                                            color: "#CBCBCB",
-                                                        }}
-                                                    >
-                                                        {obj.type == "reminder"
-                                                            ? `${obj.send_after_day} days after invoice`
-                                                            : "Payment Completed"}
-                                                    </p>
-                                                    </Col>
-                                                </Row>
-                                            </Col>
-                                            </Row>
-                                        </Col>
-                                        <Col xs={24} md={3}>
-                                            <Row justify="space-between" align="middle">
-                                            <Col md={6}>
-                                            <img
-                                                className="edit-icon"
-                                                src={edit}
-                                                onClick={() => {
-                                                    updateHandler(obj);
-                                                }}
-                                            />
-                                            </Col>
-                                            <Col md={6}>
-                                            {obj?.is_active === 1 ? (
-                                                <img
-                                                    className="bell-icon"
-                                                    src={bellIcon}
-                                                    onClick={() => {
-                                                        activeInActiveReminder(
-                                                            obj
-                                                        );
-                                                    }}
-                                                />
-                                            ) : (
-                                                <img
-                                                    className="bell-icon"
-                                                    src={bellCloseIcon}
-                                                    onClick={() => {
-                                                        activeInActiveReminder(
-                                                            obj
-                                                        );
-                                                    }}
-                                                />
-                                            )}
-                                            </Col>
-                                            <Col md={6}>
-                                            <img
-                                                className="delete-icon"
-                                                src={cross}
-                                                onClick={() => {
-                                                    handleDelete(obj.id);
-                                                }}
-                                            />
-                                            </Col>
+                                                        <Option
+                                                            className="ant-select-item-option-content"
+                                                            value={"paid"}
+                                                        >
+                                                            Paid
+                                                        </Option>
+                                                        <Option
+                                                            className="ant-select-item-option-content"
+                                                            value={"unpaid"}
+                                                        >
+                                                            Unpaid
+                                                        </Option>
+                                                        <Option
+                                                            className="ant-select-item-option-content"
+                                                            value={"all"}
+                                                        >
+                                                            All
+                                                        </Option>
+                                                    </Select>
+                                                </Col>
                                             </Row>
                                         </Col>
                                     </Row>
-                                );
-                            })}
-                         
-                            <Row className="email-setting_button-section button-margin" justify="end">
-                                <button
-                                    onClick={() => {
-                                        setEmailSettingProps(true);
-                                    }}
-                                    className="email-setting_button-section_save-button"
-                                    style={{ float: "left" }}
-                                >
-                                    Add New
-                                </button>
-                            </Row>
+                                </Col>
+                            ) : null}
+
+                            <Col
+                                xs={24}
+                                className="email-remainder_input-sections_input-section"
+                            >
+                                <Row justify="center" align="middle">
+                                    <Col xs={24} md={4}>
+                                        <p>Subject</p>
+                                    </Col>
+                                    <Col xs={24} md={12}>
+                                        <Row justify="center" align="middle">
+                                            <Col xs={24}>
+                                                <input
+                                                    className="email-remainder_input-sections_input-section_input input-pad-val no-outline email-input-border"
+                                                    value={subject}
+                                                    onChange={(e) => {
+                                                        setSubject(
+                                                            e.target.value
+                                                        );
+                                                    }}
+                                                    type={"text"}
+                                                    required
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </Row>
                             </Col>
-                        
-                    </Row>
-                   </Col>
+                            <Col xs={24}>
+                                <Row justify="center" align="middle">
+                                    <Col xs={24} md={16} lg={16} xl={16}>
+                                        <Editor
+                                            toolbar={{
+                                                options: [
+                                                    "fontSize",
+                                                    "inline",
+                                                    "textAlign",
+                                                    "colorPicker",
+                                                    "image",
+                                                ],
+                                                inline: {
+                                                    inDropdown: false,
+                                                    options: ["bold", "italic"],
+                                                },
+                                                textAlign: { inDropdown: true },
+                                                colorPicker: {
+                                                    icon: fontColor,
+                                                },
+                                            }}
+                                            editorState={editorState}
+                                            wrapperClassName="demo-wrapper"
+                                            editorClassName="demo-editor"
+                                            onEditorStateChange={
+                                                onEditorStateChange
+                                            }
+                                        />
+                                    </Col>
+                                </Row>
+                            </Col>
+                            {reminderType != "orderComplete" && (
+                                <>
+                                    <Col xs={24}>
+                                        <Row justify="center" align="middle">
+                                            <Col xs={24} md={4}>
+                                                <p className="email-remainder_schedule">
+                                                    Schedule
+                                                </p>
+                                            </Col>
+                                            <Col xs={24} md={12}></Col>
+                                        </Row>
+                                    </Col>
+                                    <Col
+                                        xs={24}
+                                        className="email-remainder_input-sections_input-section"
+                                    >
+                                        <Row justify="center" align="middle">
+                                            <Col xs={24} md={4}>
+                                                <p>Send Date</p>
+                                            </Col>
+                                            <Col xs={24} md={12}>
+                                                {reminderType == "custom" ? (
+                                                    <input
+                                                        className="email-remainder_input-sections_input-section_input picker-padding no-outline"
+                                                        style={{
+                                                            paddingRight:
+                                                                "10px",
+                                                        }}
+                                                        value={dates}
+                                                        onChange={(e) => {
+                                                            setDates(
+                                                                e.target.value
+                                                            );
+                                                        }}
+                                                        type={"date"}
+                                                        required
+                                                    />
+                                                ) : (
+                                                    <Row
+                                                        className="reminder-select-date-container"
+                                                        justify="center"
+                                                        align="middle"
+                                                    >
+                                                        <Col
+                                                            xs={12}
+                                                            md={14}
+                                                            lg={6}
+                                                        >
+                                                            <input
+                                                                className="email-remainder_input-sections_input-section_input-short input-pad-val no-outline email-input-border"
+                                                                value={
+                                                                    timeSelectorValue
+                                                                }
+                                                                onChange={(
+                                                                    e
+                                                                ) => {
+                                                                    setTimeSelectorValue(
+                                                                        e.target
+                                                                            .value
+                                                                    );
+                                                                }}
+                                                                type="number"
+                                                                required
+                                                            />
+                                                        </Col>
+                                                        <Col
+                                                            xs={12}
+                                                            md={10}
+                                                            lg={7}
+                                                            className="align-items"
+                                                        >
+                                                            {" "}
+                                                            <Select
+                                                                className="no-outline ant-select-short select-width"
+                                                                defaultValue="Select"
+                                                                onChange={
+                                                                    handleDateClick
+                                                                }
+                                                                value={
+                                                                    timeSelector ||
+                                                                    "Select"
+                                                                }
+                                                            >
+                                                                <Option
+                                                                    className="ant-select-item-option-content "
+                                                                    value={
+                                                                        "day"
+                                                                    }
+                                                                >
+                                                                    Day
+                                                                </Option>
+                                                                <Option
+                                                                    className="ant-select-item-option-content"
+                                                                    value={
+                                                                        "hour"
+                                                                    }
+                                                                >
+                                                                    Hour
+                                                                </Option>
+                                                                <Option
+                                                                    className="ant-select-item-option-content"
+                                                                    value={
+                                                                        "month"
+                                                                    }
+                                                                >
+                                                                    Month
+                                                                </Option>
+                                                                <Option
+                                                                    className="ant-select-item-option-content"
+                                                                    value={
+                                                                        "year"
+                                                                    }
+                                                                >
+                                                                    Year
+                                                                </Option>
+                                                            </Select>
+                                                        </Col>
+                                                    </Row>
+                                                )}
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                    <Col
+                                        xs={24}
+                                        className="email-remainder_input-sections_input-section"
+                                    >
+                                        <Row justify="center" align="middle">
+                                            <Col xs={24} md={4}>
+                                                <p>Send Time</p>
+                                            </Col>
+                                            <Col xs={24} md={12}>
+                                                <Select
+                                                    className="no-outline select-width"
+                                                    defaultValue="Select"
+                                                    onChange={handleTimeClick}
+                                                    value={times || "Select"}
+                                                >
+                                                    {time &&
+                                                        time?.map((e, key) => {
+                                                            return (
+                                                                <Option
+                                                                    className="ant-select-item-option-content"
+                                                                    value={e}
+                                                                >
+                                                                    {e}
+                                                                </Option>
+                                                            );
+                                                        })}
+                                                </Select>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                    <Col
+                                        xs={24}
+                                        className="email-remainder_input-sections_input-section"
+                                    >
+                                        <Row justify="center" align="middle">
+                                            <Col xs={24} md={4}>
+                                                <p>Time Zone</p>
+                                            </Col>
+                                            <Col xs={24} md={12}>
+                                                <Select
+                                                    defaultValue="Select"
+                                                    className="select-width"
+                                                    onChange={
+                                                        handleTimeZoneClick
+                                                    }
+                                                    value={timeZone || "Select"}
+                                                >
+                                                    {timeZones.map(
+                                                        (zone, index) => {
+                                                            return (
+                                                                <Option
+                                                                    className="ant-select-item-option-content"
+                                                                    value={
+                                                                        zone.id
+                                                                    }
+                                                                >
+                                                                    {zone.name}
+                                                                </Option>
+                                                            );
+                                                        }
+                                                    )}
+                                                </Select>
+                                            </Col>
+                                        </Row>
+                                    </Col>
+                                </>
+                            )}
+                            <div className="reminders-container-schedule">
+                                <button
+                                    onClick={(e) => {
+                                        idState
+                                            ? handleEdit(e)
+                                            : handleSubmit(e);
+                                    }}
+                                    className="email-remainder_save-button"
+                                    style={{
+                                        marginBottom: "50px",
+                                    }}
+                                >
+                                    {buttonLoader == false ? (
+                                        "Save"
+                                    ) : (
+                                        <span>
+                                            <p>Save</p>
+                                            <CustomLoader buttonBool={true} />
+                                        </span>
+                                    )}
+                                </button>
+                            </div>
+                        </Row>
+                    </Col>
+                </Row>
+            </form>
+        );
+    };
+
+    return loading == true ? (
+        <CustomLoader buttonBool={false} />
+    ) : (
+        <>
+            {console.log("the dev data is here", props.user)}
+            {showDeleteReminder ? (
+                <DeleteModal
+                    accept={() => {
+                        deleteReminderbyPopup();
+                    }}
+                    cancel={() => {
+                        setShowDeleteReminder(false);
+                    }}
+                    open={showDeleteReminder}
+                />
+            ) : null}
+            {!emailSettingProps && (
+                <Row className="email-setting" justify="center">
+                    <Col xs={24}>
+                        <p className="email-setting_heading email-settings-title">
+                            Email Settings
+                        </p>
+                        <Row justify="center">
+                            <Col xs={24} md={18}>
+                                {emailArray &&
+                                    emailArray.map((obj, i) => {
+                                        return (
+                                            <Row
+                                                className="email-setting-content"
+                                                justify="space-between"
+                                                align="middle"
+                                            >
+                                                <Col xs={24} md={20}>
+                                                    <Row
+                                                        justify="center"
+                                                        align="middle"
+                                                    >
+                                                        <Col
+                                                            xs={6}
+                                                            md={4}
+                                                            lg={3}
+                                                            className="email-setting-content-section-image"
+                                                        >
+                                                            <img
+                                                                src={
+                                                                    obj.type ==
+                                                                    "reminder"
+                                                                        ? iconRemainder
+                                                                        : emailButton
+                                                                }
+                                                            />
+                                                        </Col>
+                                                        <Col xs={18} md={20}>
+                                                            <p className="email-setting-content-section-heading">
+                                                                {obj.subject}
+                                                            </p>
+                                                            <Row
+                                                                className="email-setting-content-section-subsection"
+                                                                align="middle"
+                                                            >
+                                                                <Col
+                                                                    xs={24}
+                                                                    md={8}
+                                                                    lg={6}
+                                                                >
+                                                                    <p
+                                                                        className="email-setting-content-section-subsection-heading email-reminder-tag"
+                                                                        style={
+                                                                            obj.type ==
+                                                                            "reminder"
+                                                                                ? {
+                                                                                      color: "#61C77B",
+                                                                                  }
+                                                                                : {
+                                                                                      color: "#6FA5CB",
+                                                                                  }
+                                                                        }
+                                                                    >
+                                                                        {obj.type ==
+                                                                        "reminder"
+                                                                            ? obj.type
+                                                                            : "Order Success"}
+                                                                    </p>
+                                                                </Col>
+                                                                <Col
+                                                                    xs={24}
+                                                                    md={16}
+                                                                >
+                                                                    <p
+                                                                        className="email-setting-content-section-subsection-subheading"
+                                                                        style={{
+                                                                            color: "#CBCBCB",
+                                                                        }}
+                                                                    >
+                                                                        {obj.type ==
+                                                                        "reminder"
+                                                                            ? `${obj.send_after_day} days after invoice`
+                                                                            : "Payment Completed"}
+                                                                    </p>
+                                                                </Col>
+                                                            </Row>
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                                <Col xs={24} md={3}>
+                                                    <Row
+                                                        justify="space-between"
+                                                        align="middle"
+                                                    >
+                                                        <Col md={6}>
+                                                            <img
+                                                                className="edit-icon"
+                                                                src={edit}
+                                                                onClick={() => {
+                                                                    updateHandler(
+                                                                        obj
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </Col>
+                                                        <Col md={6}>
+                                                            {obj?.is_active ===
+                                                            1 ? (
+                                                                <img
+                                                                    className="bell-icon"
+                                                                    src={
+                                                                        bellIcon
+                                                                    }
+                                                                    onClick={() => {
+                                                                        activeInActiveReminder(
+                                                                            obj
+                                                                        );
+                                                                    }}
+                                                                />
+                                                            ) : (
+                                                                <img
+                                                                    className="bell-icon"
+                                                                    src={
+                                                                        bellCloseIcon
+                                                                    }
+                                                                    onClick={() => {
+                                                                        activeInActiveReminder(
+                                                                            obj
+                                                                        );
+                                                                    }}
+                                                                />
+                                                            )}
+                                                        </Col>
+                                                        <Col md={6}>
+                                                            <img
+                                                                className="delete-icon"
+                                                                src={cross}
+                                                                onClick={() => {
+                                                                    handleDelete(
+                                                                        obj.id
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                            </Row>
+                                        );
+                                    })}
+
+                                <Row
+                                    className="email-setting_button-section button-margin"
+                                    justify="end"
+                                >
+                                    <button
+                                        onClick={() => {
+                                            setEmailSettingProps(true);
+                                        }}
+                                        className="email-setting_button-section_save-button"
+                                        style={{ float: "left" }}
+                                    >
+                                        Add New
+                                    </button>
+                                </Row>
+                            </Col>
+                        </Row>
+                    </Col>
                 </Row>
             )}
-            {emailSettingProps && (
-               <EmailForm/>
-            )}
+            {emailSettingProps && <EmailForm />}
         </>
     );
 };
 const mapStateToProps = (state) => ({
     userID: state.Auth.user?.id,
     token: state.Auth.token,
-    user:state.Auth.user
+    user: state.Auth.user,
 });
 export default connect(mapStateToProps)(EmailSetting);
