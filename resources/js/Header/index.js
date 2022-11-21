@@ -59,14 +59,14 @@ const Header = ({}) => {
             <Col xs={11} sm={9} md={12}>
                 <Row justify={window.innerWidth < 763 ? "center" : "end"}>
                     <Col
-                        xs={22}
-                        md={7}
+                        xs={20}
+                        md={10}
                         lg={6}
                         xl={6}
                         className={classes["logout-wapper"]}
                     >
                         <Row>
-                            <Col md={9} xs={10} className={classes["logo-box"]}>
+                            <Col md={9} xs={10}>
                                 <img
                                     src={
                                         showProfile == true
