@@ -72,8 +72,11 @@ export default connect(mapStateToProps)(TeamPerformanceChart);
 
 const StatusSlot = ({ title, isGray }) => {
     return (
-        // status-container-margin
-        <div className={`${classes["status-container"]} ${isGray?classes["status-container-margin"]:""}`}>
+        <div
+            className={`${classes["status-container"]} ${
+                isGray ? classes["status-container-margin"] : ""
+            }`}
+        >
             <div className={isGray ? classes["icon-grey"] : classes["icon"]} />
             <div className={isGray ? classes["title-grey"] : classes["title"]}>
                 {title}
