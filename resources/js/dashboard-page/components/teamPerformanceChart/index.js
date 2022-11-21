@@ -72,7 +72,11 @@ export default connect(mapStateToProps)(TeamPerformanceChart);
 
 const StatusSlot = ({ title, isGray }) => {
     return (
-        <div className={classes["status-container"]}>
+        <div
+            className={`${classes["status-container"]} ${
+                isGray ? classes["status-container-margin"] : ""
+            }`}
+        >
             <div className={isGray ? classes["icon-grey"] : classes["icon"]} />
             <div className={isGray ? classes["title-grey"] : classes["title"]}>
                 {title}
@@ -81,46 +85,34 @@ const StatusSlot = ({ title, isGray }) => {
     );
 };
 
-const getChartOptions = (data) => {
+const getChartOptions = () => {
     return {
-        series: [
-            {
-                name: "Current",
-                data: data?.current || [],
-            },
-            {
-                name: "Previous",
-                data: data?.prev || [],
-            },
-        ],
         chart: {
-            type: "bar",
+            offsetX: 6,
+            type: "area",
             toolbar: {
                 show: false,
             },
-            offsetX: 6,
         },
         legend: {
             show: false,
         },
         tooltip: {
-            enable: false,
-        },
-        plotOptions: {
-            bar: {
-                horizontal: false,
-                columnWidth: "35px",
-                endingShape: "rounded",
-                borderRadius: 5,
-            },
+            enabled: false,
         },
         dataLabels: {
             enabled: false,
         },
-        colors: ["#6FA5CB", "#CBCBCB"],
-
         xaxis: {
-            categories: data?.names || [],
+            axisBorder: {
+                show: false,
+            },
+            axisTicks: {
+                show: false,
+            },
+            labels: {
+                show: false,
+            },
         },
         yaxis: {
             label: {
@@ -132,11 +124,6 @@ const getChartOptions = (data) => {
                 offsetX: -8,
                 offsetY: 1,
             },
-        },
-        stroke: {
-            show: true,
-            width: 2,
-            colors: ["transparent"],
         },
         states: {
             hover: {
@@ -175,5 +162,10 @@ const getChartOptions = (data) => {
                 left: 0,
             },
         },
+        series: [
+            {
+                data: ["11px", "32px", "45px"],
+            },
+        ],
     };
 };

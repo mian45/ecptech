@@ -86,14 +86,14 @@
 .info-section {
     display: flex;
     flex-direction: column;
-    margin-right:1em;
+    margin-right: 1em;
 }
 .select-label {
     font-size: 16px;
     font-family: Montserrat;
     color: #2a2a2a;
     margin-bottom: 10px;
-    margin-top:15px;
+    margin-top: 15px;
 }
 .submit-button {
     font-size: 16px;
@@ -105,12 +105,12 @@
     background-color: #90b0c6;
     width: 355px;
     &:hover {
-        background-color: #518fbb;
+        background-color: #518fbb !important;
     }
-    & :disabled {
+    &:disabled {
         background-color: #cbcbcb !important;
     }
-    max-width:100%;
+    max-width: 100%;
 }
 .answer-container {
     display: flex;
@@ -171,13 +171,15 @@
     color: #2a2a2a;
     outline: none;
     height: 45px;
+    font-weight: bold;
     &::placeholder {
         color: #c4c4c4;
         font-size: 16px;
         font-family: Montserrat;
+        font-weight: 400;
     }
     &:focus {
         box-shadow: none !important;
     }
-    max-width:100%;
+    max-width: 100%;
 }
