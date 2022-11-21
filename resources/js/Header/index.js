@@ -6,6 +6,7 @@ import { remember as rememberme } from "../services/authService";
 import { useDispatch } from "react-redux";
 import logo from "../../images/logo.png";
 import profileIcon from "../../images/profile.svg";
+import profileIconActive from "../../images/profile-active.svg";
 import notificationIcon from "../../images/notification.svg";
 import AuthService from "../services";
 import { connect } from "react-redux";
@@ -67,7 +68,11 @@ const Header = ({}) => {
                         <Row>
                             <Col md={9} xs={10} className={classes["logo-box"]}>
                                 <img
-                                    src={profileIcon}
+                                    src={
+                                        showProfile == true
+                                            ? profileIconActive
+                                            : profileIcon
+                                    }
                                     alt="Profile"
                                     className={classes["profile-icon"]}
                                     onClick={(e) => {
