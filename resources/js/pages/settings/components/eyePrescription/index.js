@@ -121,7 +121,11 @@ const EyePrescription = ({ userId }) => {
             handleCYLError(name);
             return;
         }
-
+        const eyePrescription = [...eyeDetails];
+        const selectedMaterial = [...eyePrescription].find(
+            (material) => material?.name === name
+        );
+        selectedMaterial[key] = "";
         const isError = eyeDetails?.some((item) => {
             if (
                 parseFloat(item?.cylinder_from) <= parsedValue &&
@@ -168,6 +172,11 @@ const EyePrescription = ({ userId }) => {
             handleSPHError(name);
             return;
         }
+        const eyePrescription = [...eyeDetails];
+        const selectedMaterial = [...eyePrescription].find(
+            (material) => material?.name === name
+        );
+        selectedMaterial[key] = "";
         const isError = [...eyeDetails]?.some((item) => {
             if (
                 parseFloat(item?.sphere_from) <= parsedValue &&
