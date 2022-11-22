@@ -169,25 +169,7 @@ const EyePrescription = ({ userId }) => {
             return;
         }
         const isError = [...eyeDetails]?.some((item) => {
-            if (Boolean(item?.sphere_from) &&
-                Boolean(item?.sphere_to) &&
-                item?.name === name
-
-            ) {
-                if (parseFloat(item?.sphere_from) <= parsedValue &&
-                    parseFloat(item?.sphere_to) >= parsedValue) {
-                    return false
-                } else {
-                    if (key === "sphere_to") {
-                        return false;
-                    } else {
-
-                        return true;
-                    }
-                }
-
-            }
-            else if (
+            if (
                 parseFloat(item?.sphere_from) <= parsedValue &&
                 parseFloat(item?.sphere_to) >= parsedValue
             ) {
