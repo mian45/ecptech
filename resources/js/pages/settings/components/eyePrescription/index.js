@@ -80,14 +80,14 @@ const EyePrescription = ({ userId }) => {
     };
     const handleInputValues = (value, name, key) => {
         if (key === "cylinder_from" || key === "cylinder_to") {
-            const regix = new RegExp("[+-]?([0-9]*[.])?[0-9]+");
+            const regix = new RegExp("^[-+]?[0-9]*[/.]?([0-9]*)?$");
             if (regix.test(value) || value === "") {
                 handleCyl(value, name, key, +value);
             } else {
                 return;
             }
         } else {
-            const regix = new RegExp("[+-]?([0-9]*[.])?[0-9]+");
+            const regix = new RegExp("^[-+]?[0-9]*[/.]?([0-9]*)?$");
             if (regix.test(value) || value === "") {
                 handleSph(value, name, key, +value);
             } else {
@@ -168,7 +168,7 @@ const EyePrescription = ({ userId }) => {
             handleSPHError(name);
             return;
         }
-        const isError = eyeDetails?.some((item) => {
+        const isError = [...eyeDetails]?.some((item) => {
             if (
                 parseFloat(item?.sphere_from) <= parsedValue &&
                 parseFloat(item?.sphere_to) >= parsedValue
@@ -223,6 +223,28 @@ const EyePrescription = ({ userId }) => {
             console.log("error while save data");
         }
     };
+
+    const isIncompleteRange = () => {
+        let isDisabled = false;
+        for (let i = 0; i < eyeDetails?.length - 1; i++) {
+            if ((Boolean(eyeDetails[i]?.sphere_from) && Boolean(eyeDetails[i]?.sphere_to)) ||
+                (eyeDetails[i]?.sphere_from === "" && eyeDetails[i]?.sphere_to === "")) {
+                isDisabled = false;
+            } else {
+                isDisabled = true;
+                break;
+            }
+            if ((Boolean(eyeDetails[i]?.cylinder_from) && Boolean(eyeDetails[i]?.cylinder_to)) ||
+                (eyeDetails[i]?.cylinder_from === "" && eyeDetails[i]?.cylinder_to === "")) {
+                isDisabled = false;
+            } else {
+                isDisabled = true;
+                break;
+            }
+        }
+
+        return isDisabled
+    }
     return (
         loading == true ?
             <CustomLoader buttonBool={false} />
@@ -252,7 +274,7 @@ const EyePrescription = ({ userId }) => {
                                     <button
                                         className={classes["button"]}
                                         onClick={handleSubmit}
-                                        disabled={disable}
+                                        disabled={disable || isIncompleteRange()}
                                     >
                                         {buttonLoader == false ?
                                             'Save' :
@@ -297,12 +319,9 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
                         </div>
                         <div className={classes["slot-body-input-section"]}>
                             <input
-                                type={"number"}
+                                type={"text"}
                                 placeholder={"From"}
                                 className={classes["input"]}
-                                step={0.01}
-                                min={-20}
-                                max={20}
                                 value={data["sphere_from"] || ""}
                                 onChange={(e) =>
                                     onChange(
@@ -316,10 +335,7 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
                             <input
                                 placeholder={"Select"}
                                 className={classes["input"]}
-                                type={"number"}
-                                step={0.01}
-                                min={-20}
-                                max={20}
+                                type={"text"}
                                 value={data["sphere_to"] || ""}
                                 onChange={(e) =>
                                     onChange(
@@ -342,10 +358,7 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
                             <input
                                 placeholder={"From"}
                                 className={classes["input"]}
-                                type={"number"}
-                                step={0.01}
-                                min={-10}
-                                max={10}
+                                type={"text"}
                                 value={data["cylinder_from"] || ""}
                                 onChange={(e) =>
                                     onChange(
@@ -359,10 +372,7 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
                             <input
                                 placeholder={"Select"}
                                 className={classes["input"]}
-                                type={"number"}
-                                step={0.01}
-                                min={-10}
-                                max={10}
+                                type={"text"}
                                 value={data["cylinder_to"] || ""}
                                 onChange={(e) =>
                                     onChange(
