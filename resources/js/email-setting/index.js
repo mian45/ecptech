@@ -607,16 +607,12 @@ const EmailSetting = (props) => {
                                                 ) : (
                                                     <Row
                                                         className="reminder-select-date-container"
-                                                        justify="center"
                                                         align="middle"
                                                     >
-                                                        <Col
-                                                            xs={12}
-                                                            md={14}
-                                                            lg={6}
-                                                        >
+                                                        {" "}
+                                                        <div className="align-items margin-div">
                                                             <input
-                                                                className="email-remainder_input-sections_input-section_input-short input-pad-val no-outline email-input-border"
+                                                                className="email-remainder_input-sections_input-section_input-short input-pad-val no-outline email-input-border margin-div"
                                                                 value={
                                                                     timeSelectorValue
                                                                 }
@@ -631,16 +627,11 @@ const EmailSetting = (props) => {
                                                                 type="number"
                                                                 required
                                                             />
-                                                        </Col>
-                                                        <Col
-                                                            xs={12}
-                                                            md={10}
-                                                            lg={7}
-                                                            className="align-items"
-                                                        >
+                                                        </div>
+                                                        <div className="align-items margin-div">
                                                             {" "}
                                                             <Select
-                                                                className="no-outline ant-select-short select-width"
+                                                                className="no-outline ant-select-short select-width margin-div "
                                                                 defaultValue="Select"
                                                                 onChange={
                                                                     handleDateClick
@@ -683,7 +674,7 @@ const EmailSetting = (props) => {
                                                                     Year
                                                                 </Option>
                                                             </Select>
-                                                        </Col>
+                                                        </div>
                                                     </Row>
                                                 )}
                                             </Col>
