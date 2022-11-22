@@ -271,13 +271,13 @@ export const CollectionSlot = ({
                     className={classes["collection-show-container"]}
                     id={collection?.title}
                 >
-                    <Col xs={18} className={classes["collection-left-container"]}>
+                    <Col xs={18} >
                         <Row
                             className={
                                 classes["collection-show-content-container"]
                             }
                         >
-                            <Col xs={6}>
+                            <Col xs={3}>
                                 <CustomCheckbox
                                     label={""}
                                     defaultChecked={
