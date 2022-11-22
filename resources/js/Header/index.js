@@ -14,7 +14,7 @@ import "antd/dist/antd.css";
 import { MenuOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd";
 import Http from "../Http";
-const Header = ({}) => {
+const Header = ({ }) => {
     const dispatch = useDispatch();
     const [showProfile, setShowProfile] = useState(false);
     const [user, setUser] = useState({});
@@ -81,8 +81,8 @@ const Header = ({}) => {
                                 />
                             </Col>
                             <Col
-                                md={12}
-                                xs={12}
+                                md={13}
+                                xs={13}
                                 className={classes["logout-box"]}
                             >
                                 <h6

@@ -29,7 +29,6 @@
     padding-left: 41px;
 }
 .lenses-list-container {
-    
     width: 100%;
     padding-bottom: 39px;
 }
@@ -111,6 +110,7 @@
     display: flex;
 }
 .collection-left-container {
+    display: flex;
     justify-content: flex-start;
 }
 .animated-title {
@@ -133,13 +133,13 @@
     object-fit: contain;
     cursor: pointer;
 }
-.row-box{
+.row-box {
     width: 100%;
 }
-.edit-container{
+.edit-container {
     text-align: center;
 }
-.edit-tick{
+.edit-tick {
     text-align: center;
     justify-content: center;
     display: flex;
@@ -147,7 +147,7 @@
     align-items: center;
 }
 .collection-show-content-container {
-    display: flex;
+    display: flex !important;
     justify-content: flex-start;
     align-items: flex-start;
 }
@@ -253,18 +253,16 @@
 .edit-slot-sub-wrapper {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 89%;
     padding-left: 50px;
 }
-@media only screen and (max-width: 763px){
+@media only screen and (max-width: 763px) {
     .collection-edit-container {
         padding: 36px 16px;
-       
     }
     .collection-show-container {
         padding-left: 16px;
         padding-right: 16px;
-        
     }
     .collection-label {
         font-size: 16px;
@@ -275,7 +273,7 @@
         margin-left: 0px;
         text-align: center;
     }
-    .edit-slot-sub-wrapper{
-        padding-left:14px
+    .edit-slot-sub-wrapper {
+        padding-left: 14px;
     }
 }

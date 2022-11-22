@@ -139,7 +139,7 @@
     object-fit: contain;
     cursor: pointer;
 }
-.edit-container{
+.edit-container {
     text-align: center;
     justify-content: center;
     display: flex;
@@ -254,18 +254,16 @@
 .edit-slot-sub-wrapper {
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 89%;
     padding-left: 50px;
 }
-@media only screen and (max-width: 763px){
+@media only screen and (max-width: 763px) {
     .collection-edit-container {
         padding: 36px 16px;
-       
     }
     .collection-show-container {
         padding-left: 16px;
         padding-right: 16px;
-        
     }
     .collection-label {
         font-size: 16px;
@@ -276,7 +274,7 @@
         margin-left: 0px;
         text-align: center;
     }
-    .edit-slot-sub-wrapper{
-        padding-left:14px
+    .edit-slot-sub-wrapper {
+        padding-left: 14px;
     }
 }
