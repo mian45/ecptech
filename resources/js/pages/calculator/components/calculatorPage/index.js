@@ -34,6 +34,7 @@ import backArrow from "../../../../../images/black-arrow.svg";
 import CustomLoader from "../../../../components/customLoader";
 import CustomDiscount from "../customDiscount";
 import { Col } from "antd";
+import { ScrollToFieldError } from "./helpers/scrollToFieldError";
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -323,7 +324,7 @@ const CalculatorScreen = () => {
             const permissions = calculatorObj?.questions?.find(
                 (item) => item.title === values?.visionPlan
             )?.question_permissions;
-            const validationObject = GetValidations(permissions, false);
+            const validationObject = GetValidations(permissions, false, values);
             setCalValidations({
                 ...calValidations,
                 ...validationObject,
@@ -362,7 +363,9 @@ const CalculatorScreen = () => {
             const validations = { ...calValidations };
             delete validations.isloweredCopay;
             delete validations.lensType;
-            delete validations.lensTypeValue;
+            if (values.lensType) {
+                delete validations.lensTypeValue;
+            }
             delete validations.lensMaterial;
             delete validations.isPhotochromics;
             delete validations.isSunglasses;
@@ -410,6 +413,8 @@ const CalculatorScreen = () => {
                     formProps={formProps}
                     calculatorObj={calculatorObj && calculatorObj}
                     setCalculatorObj={setCalculatorObj}
+                    setCalValidations={setCalValidations}
+                    calValidations={calValidations}
                 />
                 <LensMeterials
                     formProps={formProps}
@@ -481,6 +486,9 @@ const CalculatorScreen = () => {
                                         onSubmit={formProps.handleSubmit}
                                         autoComplete="off"
                                     >
+                                        <ScrollToFieldError
+                                            formProps={formProps}
+                                        />
                                         {showInvoice && (
                                             <ViewInvoice
                                                 onClose={HideInvoice}

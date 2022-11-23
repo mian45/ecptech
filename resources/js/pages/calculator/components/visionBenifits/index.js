@@ -103,7 +103,9 @@ const VisionBenifits = ({
             const validations = { ...calValidations };
             delete validations.isloweredCopay;
             delete validations.lensType;
-            delete validations.lensTypeValue;
+            if (values.lensType) {
+                delete validations.lensTypeValue;
+            }
             delete validations.lensMaterial;
             delete validations.isPhotochromics;
             delete validations.isSunglasses;
@@ -121,7 +123,7 @@ const VisionBenifits = ({
                 setFieldValue("benifitType", "");
             }
             setPrivatePayError("");
-            const validationObject = GetValidations(data, false);
+            const validationObject = GetValidations(data, false, values);
             setCalValidations({
                 ...calValidations,
                 ...validationObject,
@@ -275,7 +277,7 @@ const VisionBenifits = ({
 
 export default VisionBenifits;
 
-export const GetValidations = (data, isLoweredCopay) => {
+export const GetValidations = (data, isLoweredCopay, values) => {
     const validationObject = {};
     if (
         data?.find(
@@ -293,11 +295,9 @@ export const GetValidations = (data, isLoweredCopay) => {
             "Lens type is required"
         );
     }
-    if (
-        data?.find((ques) => ques.question === "Lens Type")?.optional === "true"
-    ) {
+    if (values?.lensType) {
         validationObject.lensTypeValue =
-            Yup.string().required("Option is required");
+            Yup.string().required("Brand is required");
     }
     if (
         data?.find((ques) => ques.question === "Lens Material")?.optional ===
