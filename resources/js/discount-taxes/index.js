@@ -11,7 +11,7 @@ import axios from "axios";
 const { Option } = Select;
 import { Switch } from "antd";
 import CustomLoader from "../components/customLoader";
-import DeleteModal from "../components/deleteModal/index"
+import DeleteModal from "../components/deleteModal/index";
 const label = { inputProps: { "aria-label": "Switch demo" } };
 const DiscountTaxes = (props) => {
     const [discountName, setDiscountName] = useState("");
@@ -33,25 +33,24 @@ const DiscountTaxes = (props) => {
     const [shippingArray, setShippingArray] = useState([]);
     let [shipping, setShipping] = useState();
 
-    const [showDeleteTaxes, setShowDeleteTaxes] = useState(false)
-    const [deleteTaxesId, setDeleteTaxesId] = useState(0)
-    const [showDeleteDiscount, setShowDeleteDiscount] = useState(false)
-    const [deleteDiscountId, setDeleteDiscountId] = useState(0)
-    let [discountLoading, setDiscountLoading] = useState(false)
-    let [taxLoading, setTaxLoading] = useState(false)
-    const [taxStatus, setTaxStatus] = useState("inactive")
+    const [showDeleteTaxes, setShowDeleteTaxes] = useState(false);
+    const [deleteTaxesId, setDeleteTaxesId] = useState(0);
+    const [showDeleteDiscount, setShowDeleteDiscount] = useState(false);
+    const [deleteDiscountId, setDeleteDiscountId] = useState(0);
+    let [discountLoading, setDiscountLoading] = useState(false);
+    let [taxLoading, setTaxLoading] = useState(false);
+    const [taxStatus, setTaxStatus] = useState("inactive");
     const [editId, setEditId] = useState("");
-    const [loading, setLoading] = useState(false)
-    const [discountButtonLoader, setDiscountButtonLoader] = useState(false)
-    const [taxButtonLoader, setTaxButtonLoader] = useState(false)
-
+    const [loading, setLoading] = useState(false);
+    const [discountButtonLoader, setDiscountButtonLoader] = useState(false);
+    const [taxButtonLoader, setTaxButtonLoader] = useState(false);
 
     useEffect(() => {
         getState();
         getDiscount();
         getTaxes();
         getShipping();
-    }, []);
+    }, [props.userID]);
 
     const addDiscount = () => {
         setDiscountButtonLoader(true);
@@ -65,7 +64,7 @@ const DiscountTaxes = (props) => {
             headers: {
                 Authorization: `Bearer ${token}`,
             },
-            data: data
+            data: data,
         };
 
         axios(config)
@@ -74,11 +73,11 @@ const DiscountTaxes = (props) => {
                 setDiscountName("");
                 setDiscountTax("");
                 getDiscount();
-                setDiscountLoading(false)
-                setDiscountButtonLoader(false)
+                setDiscountLoading(false);
+                setDiscountButtonLoader(false);
             })
             .catch(function (error) {
-                setDiscountButtonLoader(false)
+                setDiscountButtonLoader(false);
                 console.log(error);
             });
     };
@@ -99,7 +98,7 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 getDiscount();
-                setShowDeleteDiscount(false)
+                setShowDeleteDiscount(false);
             })
             .catch(function (error) {
                 console.log(error);
@@ -107,13 +106,13 @@ const DiscountTaxes = (props) => {
     };
 
     const addTax = () => {
-        setTaxButtonLoader(true)
+        setTaxButtonLoader(true);
         let data = new FormData();
         data.append("userId", props.userID);
         data.append("stateId", stateSetting);
         data.append("name", taxName);
         data.append("value", taxValue);
-        data.append('status', taxStatus)
+        data.append("status", taxStatus);
 
         let config = {
             method: "post",
@@ -130,23 +129,23 @@ const DiscountTaxes = (props) => {
                 setTaxValue("");
                 setIdState(null);
                 getTaxes();
-                setTaxLoading(false)
-                setTaxButtonLoader(false)
+                setTaxLoading(false);
+                setTaxButtonLoader(false);
             })
             .catch(function (error) {
                 console.log(error);
-                setTaxButtonLoader(false)
+                setTaxButtonLoader(false);
             });
     };
 
     const editTax = (values) => {
-        setTaxButtonLoader(true)
+        setTaxButtonLoader(true);
         let data = new FormData();
         data.append("id", idState);
         data.append("stateId", stateSetting);
         data.append("name", taxName);
         data.append("value", taxValue);
-        data.append('status', taxStatus)
+        data.append("status", taxStatus);
 
         let config = {
             method: "post",
@@ -163,11 +162,11 @@ const DiscountTaxes = (props) => {
                 setTaxName("");
                 setTaxValue("");
                 setIdState(null);
-                setTaxButtonLoader(false)
+                setTaxButtonLoader(false);
             })
             .catch(function (error) {
                 console.log(error);
-                setTaxButtonLoader(false)
+                setTaxButtonLoader(false);
             });
     };
 
@@ -186,7 +185,7 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                setShowDeleteTaxes(false)
+                setShowDeleteTaxes(false);
             })
             .catch(function (error) {
                 console.log(error);
@@ -209,7 +208,7 @@ const DiscountTaxes = (props) => {
         };
 
         axios(config)
-            .then(function (response) { })
+            .then(function (response) {})
             .catch(function (error) {
                 console.log(error);
             });
@@ -229,7 +228,7 @@ const DiscountTaxes = (props) => {
         };
 
         axios(config)
-            .then(function (response) { })
+            .then(function (response) {})
             .catch(function (error) {
                 console.log(error);
             });
@@ -249,14 +248,14 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 setTaxState(response.data.data);
-                setStateSetting(response.data.data[0].id)
+                setStateSetting(response.data.data[0].id);
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
     const updateDiscount = () => {
-        setDiscountButtonLoader(true)
+        setDiscountButtonLoader(true);
         var data = new FormData();
         data.append("id", discountId);
         data.append("name", discountName);
@@ -277,15 +276,15 @@ const DiscountTaxes = (props) => {
                 setDiscountTax("");
                 setDiscountId(null);
                 getDiscount();
-                setDiscountButtonLoader(false)
+                setDiscountButtonLoader(false);
             })
             .catch(function (error) {
                 console.log(error);
-                setDiscountButtonLoader(false)
+                setDiscountButtonLoader(false);
             });
     };
     const handleSubmit = (e) => {
-        setDiscountLoading(true)
+        setDiscountLoading(true);
         e.preventDefault();
         if (discountId !== null) {
             updateDiscount();
@@ -301,13 +300,13 @@ const DiscountTaxes = (props) => {
     };
 
     const handleDelete = (id) => {
-        setDeleteDiscountId(id)
-        setShowDeleteDiscount(true)
+        setDeleteDiscountId(id);
+        setShowDeleteDiscount(true);
     };
 
     const handleTaxSubmit = (e) => {
         e.preventDefault();
-        setTaxLoading(true)
+        setTaxLoading(true);
         addTax();
         setTaxes([
             ...tax,
@@ -317,15 +316,13 @@ const DiscountTaxes = (props) => {
 
     const handlUpdateTax = (e) => {
         e.preventDefault();
-        setTaxLoading(true)
+        setTaxLoading(true);
         editTax();
     };
 
     const handleDeleteTax = (id) => {
-        setDeleteTaxesId(id)
+        setDeleteTaxesId(id);
         setShowDeleteTaxes(true);
-
-
     };
     const handleShippingSubmit = (e) => {
         e.preventDefault();
@@ -360,7 +357,7 @@ const DiscountTaxes = (props) => {
     };
 
     const getDiscount = () => {
-        setLoading(true)
+        setLoading(true);
         let data = new FormData();
 
         let config = {
@@ -375,16 +372,16 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 setDiscounts(response.data.data);
-                setLoading(false)
+                setLoading(false);
             })
             .catch(function (error) {
                 console.log(error);
-                setLoading(false)
+                setLoading(false);
             });
     };
 
     const getTaxes = () => {
-        setLoading(true)
+        setLoading(true);
         let data = new FormData();
 
         let config = {
@@ -400,16 +397,16 @@ const DiscountTaxes = (props) => {
             .then(function (response) {
                 let taxes = response.data.data;
                 setTaxes(taxes);
-                setLoading(false)
+                setLoading(false);
             })
             .catch(function (error) {
                 console.log(error);
-                setLoading(false)
+                setLoading(false);
             });
     };
 
     const getShipping = () => {
-        setLoading(true)
+        setLoading(true);
         let data = new FormData();
 
         let config = {
@@ -425,11 +422,11 @@ const DiscountTaxes = (props) => {
             .then(function (response) {
                 let shippingTax = response.data.data;
                 setShipping(shippingTax);
-                setLoading(false)
+                setLoading(false);
             })
             .catch(function (error) {
                 console.log(error);
-                setLoading(false)
+                setLoading(false);
             });
     };
 
@@ -438,7 +435,7 @@ const DiscountTaxes = (props) => {
         setTaxName(obj.name);
         setStateSetting(obj.state.id);
         setTaxValue(obj.value);
-        setTaxStatus(obj.status)
+        setTaxStatus(obj.status);
     };
     const onChangeDiscountActive = (e, disc, index) => {
         let data = new FormData();
@@ -482,14 +479,14 @@ const DiscountTaxes = (props) => {
             .catch(function (error) {
                 console.log(error);
             });
-    }
-    return (
-
-        loading == true ?
-            <CustomLoader buttonBool={false} /> :
-            <>
-                {showDeleteTaxes ?
-                    <DeleteModal accept={() => {
+    };
+    return loading == true ? (
+        <CustomLoader buttonBool={false} />
+    ) : (
+        <>
+            {showDeleteTaxes ? (
+                <DeleteModal
+                    accept={() => {
                         deleteTax(deleteTaxesId);
                         setTaxes(
                             [...tax].filter((taxObj) => {
@@ -497,142 +494,290 @@ const DiscountTaxes = (props) => {
                             })
                         );
                     }}
-                        open={showDeleteTaxes}
-                        cancel={() => { setShowDeleteTaxes(false) }} /> : null}
-                {showDeleteDiscount ?
-                    <DeleteModal accept={() => {
+                    open={showDeleteTaxes}
+                    cancel={() => {
+                        setShowDeleteTaxes(false);
+                    }}
+                />
+            ) : null}
+            {showDeleteDiscount ? (
+                <DeleteModal
+                    accept={() => {
                         deleteDiscount(deleteDiscountId);
                     }}
-                        cancel={() => { setShowDeleteDiscount(false) }}
-                        open={showDeleteDiscount}
-                    /> : null}
+                    cancel={() => {
+                        setShowDeleteDiscount(false);
+                    }}
+                    open={showDeleteDiscount}
+                />
+            ) : null}
 
-                <Row justify="center">
-                    <Col xs={24}>
-                        <Row justify="center" align="middle" className="discount-container discount-tax">
-                            <Col xs={24}>
-                                <p className="main discount-container-page-title">{`Discounts & Taxes`}</p>
-                            </Col>
-                            <Col xs={24}>
-                                <Row justify="center" align="middle">
-                                    <Col xs={24} md={24} lg={16} className="discount-container_first discount-tax-con">
-                                        <Row justify="center" align="middle">
-                                            <Col xs={24} md={24}>
-                                                <p className="heading">Discounts</p>
-                                            </Col>
-                                            <Col xs={24}>
-                                                <form>
-                                                    <Row justify="space-between">
-                                                        <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
-                                                            <Row justify="center" align="middle">
-                                                                <Col xs={24}><p className="input-title">Discount Name</p></Col>
-                                                                <Col xs={24}><input
+            <Row justify="center">
+                <Col xs={24}>
+                    <Row
+                        justify="center"
+                        align="middle"
+                        className="discount-container discount-tax"
+                    >
+                        <Col xs={24}>
+                            <p className="main discount-container-page-title">{`Discounts & Taxes`}</p>
+                        </Col>
+                        <Col xs={24}>
+                            <Row justify="center" align="middle">
+                                <Col
+                                    xs={24}
+                                    md={24}
+                                    lg={16}
+                                    className="discount-container_first discount-tax-con"
+                                >
+                                    <Row justify="center" align="middle">
+                                        <Col xs={24} md={24}>
+                                            <p className="heading">Discounts</p>
+                                        </Col>
+                                        <Col xs={24}>
+                                            <form>
+                                                <Row justify="space-between">
+                                                    <Col
+                                                        xs={24}
+                                                        md={12}
+                                                        lg={10}
+                                                        className="discount-container_first-form_section"
+                                                    >
+                                                        <Row
+                                                            justify="center"
+                                                            align="middle"
+                                                        >
+                                                            <Col xs={24}>
+                                                                <p className="input-title">
+                                                                    Discount
+                                                                    Name
+                                                                </p>
+                                                            </Col>
+                                                            <Col xs={24}>
+                                                                <input
                                                                     placeholder="Discount Name"
-                                                                    value={discountName}
-                                                                    onChange={(e) => {
-                                                                        setDiscountName(e.target.value);
+                                                                    value={
+                                                                        discountName
+                                                                    }
+                                                                    onChange={(
+                                                                        e
+                                                                    ) => {
+                                                                        setDiscountName(
+                                                                            e
+                                                                                .target
+                                                                                .value
+                                                                        );
                                                                     }}
-                                                                /></Col>
-                                                            </Row>
-                                                        </Col>
-                                                        <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
-                                                            <Row>
-                                                                <Col xs={24}>
-                                                                    <p className="input-title">
-                                                                        Discount Value (%)
-                                                                    </p>
-                                                                </Col>
-                                                                <Col xs={24}>
-                                                                    <input
-                                                                        type={"text"}
-                                                                        placeholder="Discount Value"
-                                                                        value={`${discountTax}`}
-                                                                        onChange={(e) => {
-                                                                            const regix = new RegExp(
+                                                                />
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col
+                                                        xs={24}
+                                                        md={12}
+                                                        lg={10}
+                                                        className="discount-container_first-form_section"
+                                                    >
+                                                        <Row>
+                                                            <Col xs={24}>
+                                                                <p className="input-title">
+                                                                    Discount
+                                                                    Value (%)
+                                                                </p>
+                                                            </Col>
+                                                            <Col xs={24}>
+                                                                <input
+                                                                    type={
+                                                                        "text"
+                                                                    }
+                                                                    placeholder="Discount Value"
+                                                                    value={`${discountTax}`}
+                                                                    onChange={(
+                                                                        e
+                                                                    ) => {
+                                                                        const regix =
+                                                                            new RegExp(
                                                                                 "^[0-9]*[/.]?([0-9]*)?$"
                                                                             );
 
-                                                                            if (regix.test(e.target.value)) {
-                                                                                if (
-                                                                                    e.target.value <= 100 &&
-                                                                                    e.target.value >= 0
-                                                                                ) {
-                                                                                    setDiscountTax(e.target.value);
-                                                                                } else if (!e.target.value) {
-                                                                                    setDiscountTax("");
-                                                                                }
-                                                                            } else if (!e.target.value) {
-                                                                                setDiscountTax("");
+                                                                        if (
+                                                                            regix.test(
+                                                                                e
+                                                                                    .target
+                                                                                    .value
+                                                                            )
+                                                                        ) {
+                                                                            if (
+                                                                                e
+                                                                                    .target
+                                                                                    .value <=
+                                                                                    100 &&
+                                                                                e
+                                                                                    .target
+                                                                                    .value >=
+                                                                                    0
+                                                                            ) {
+                                                                                setDiscountTax(
+                                                                                    e
+                                                                                        .target
+                                                                                        .value
+                                                                                );
+                                                                            } else if (
+                                                                                !e
+                                                                                    .target
+                                                                                    .value
+                                                                            ) {
+                                                                                setDiscountTax(
+                                                                                    ""
+                                                                                );
                                                                             }
-                                                                        }}
-                                                                    />
-                                                                </Col>
-                                                            </Row>
-                                                        </Col>
-                                                        <Col xs={24} lg={4} style={{ justifyContent: "center" }}>
-                                                            <Row justify="center" align="middle">
-                                                                <Col xs={24}>
-                                                                    <p class="input-title hidden-text">Value</p>
-                                                                </Col>
-                                                                <Col xs={24} className="btn_section">
-                                                                    <button
-                                                                        onClick={handleSubmit}
-                                                                        className={`save-button ${!discountName || !discountTax || discountButtonLoader
+                                                                        } else if (
+                                                                            !e
+                                                                                .target
+                                                                                .value
+                                                                        ) {
+                                                                            setDiscountTax(
+                                                                                ""
+                                                                            );
+                                                                        }
+                                                                    }}
+                                                                />
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                    <Col
+                                                        xs={24}
+                                                        lg={4}
+                                                        style={{
+                                                            justifyContent:
+                                                                "center",
+                                                        }}
+                                                    >
+                                                        <Row
+                                                            justify="center"
+                                                            align="middle"
+                                                        >
+                                                            <Col xs={24}>
+                                                                <p class="input-title hidden-text">
+                                                                    Value
+                                                                </p>
+                                                            </Col>
+                                                            <Col
+                                                                xs={24}
+                                                                className="btn_section"
+                                                            >
+                                                                <button
+                                                                    onClick={
+                                                                        handleSubmit
+                                                                    }
+                                                                    className={`save-button ${
+                                                                        !discountName ||
+                                                                        !discountTax ||
+                                                                        discountButtonLoader
                                                                             ? "disable"
                                                                             : ""
-                                                                            } `}
-                                                                        type="submit"
-                                                                    >
-                                                                        {discountId == null ?
-                                                                            discountButtonLoader == true ?
-                                                                                <span>
-                                                                                    <p>Add</p>
-                                                                                    <CustomLoader buttonBool={true} />
-                                                                                </span> :
-                                                                                'Add'
-                                                                            :
-                                                                            discountButtonLoader == true ?
-                                                                                <span>
-                                                                                    <p>Update</p>
-                                                                                    <CustomLoader buttonBool={true} />
-                                                                                </span> :
-                                                                                "Update"}
-                                                                    </button>
-                                                                </Col>
-                                                            </Row>
-                                                        </Col>
-                                                    </Row>
-                                                </form>
-                                            </Col>
-                                            <Col xs={24}>
-                                                <Row>
-                                                    <Col xs={24} className="discount-output">
-                                                        <Row justify="center" align="middle">
-                                                            <table className="table-color">
-                                                                {discounts && (
-                                                                    <tr className="discount-output_head">
-                                                                        <th>Discount Name</th>
-                                                                        <th>Discount Value</th>
-                                                                        <th></th>
-                                                                    </tr>
-                                                                )}
-                                                                {discounts.length > 0 &&
-                                                                    discounts.map((dis, index) => {
+                                                                    } `}
+                                                                    type="submit"
+                                                                >
+                                                                    {discountId ==
+                                                                    null ? (
+                                                                        discountButtonLoader ==
+                                                                        true ? (
+                                                                            <span>
+                                                                                <p>
+                                                                                    Add
+                                                                                </p>
+                                                                                <CustomLoader
+                                                                                    buttonBool={
+                                                                                        true
+                                                                                    }
+                                                                                />
+                                                                            </span>
+                                                                        ) : (
+                                                                            "Add"
+                                                                        )
+                                                                    ) : discountButtonLoader ==
+                                                                      true ? (
+                                                                        <span>
+                                                                            <p>
+                                                                                Update
+                                                                            </p>
+                                                                            <CustomLoader
+                                                                                buttonBool={
+                                                                                    true
+                                                                                }
+                                                                            />
+                                                                        </span>
+                                                                    ) : (
+                                                                        "Update"
+                                                                    )}
+                                                                </button>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                </Row>
+                                            </form>
+                                        </Col>
+                                        <Col xs={24}>
+                                            <Row>
+                                                <Col
+                                                    xs={24}
+                                                    className="discount-output"
+                                                >
+                                                    <Row
+                                                        justify="center"
+                                                        align="middle"
+                                                    >
+                                                        <table className="table-color">
+                                                            {discounts && (
+                                                                <tr className="discount-output_head">
+                                                                    <th>
+                                                                        Discount
+                                                                        Name
+                                                                    </th>
+                                                                    <th>
+                                                                        Discount
+                                                                        Value
+                                                                    </th>
+                                                                    <th></th>
+                                                                </tr>
+                                                            )}
+                                                            {discounts.length >
+                                                                0 &&
+                                                                discounts.map(
+                                                                    (
+                                                                        dis,
+                                                                        index
+                                                                    ) => {
                                                                         return (
                                                                             <tr className="discount-output_body discount-row">
-                                                                                <td className="row-1">{dis.name}</td>
-                                                                                <td>{dis.value} %</td>
+                                                                                <td className="row-1">
+                                                                                    {
+                                                                                        dis.name
+                                                                                    }
+                                                                                </td>
+                                                                                <td>
+                                                                                    {
+                                                                                        dis.value
+                                                                                    }{" "}
+                                                                                    %
+                                                                                </td>
                                                                                 <td className="discount-col-3">
                                                                                     <img
                                                                                         style={{
                                                                                             width: "18px",
                                                                                             height: "18px",
-                                                                                            marginRight: "30px",
+                                                                                            marginRight:
+                                                                                                "30px",
                                                                                             cursor: "pointer",
                                                                                         }}
-                                                                                        src={edit}
+                                                                                        src={
+                                                                                            edit
+                                                                                        }
                                                                                         onClick={() => {
-                                                                                            handlUpdate(dis);
+                                                                                            handlUpdate(
+                                                                                                dis
+                                                                                            );
                                                                                         }}
                                                                                     />
                                                                                     <img
@@ -641,20 +786,27 @@ const DiscountTaxes = (props) => {
                                                                                             height: "16px",
                                                                                             cursor: "pointer",
                                                                                         }}
-                                                                                        src={cross}
+                                                                                        src={
+                                                                                            cross
+                                                                                        }
                                                                                         onClick={() => {
-                                                                                            handleDelete(dis.id);
+                                                                                            handleDelete(
+                                                                                                dis.id
+                                                                                            );
                                                                                         }}
                                                                                     />
                                                                                     <Switch
                                                                                         {...label}
                                                                                         className="switch-margin"
                                                                                         checked={
-                                                                                            dis?.status == "active"
+                                                                                            dis?.status ==
+                                                                                            "active"
                                                                                                 ? true
                                                                                                 : false
                                                                                         }
-                                                                                        onChange={(e) => {
+                                                                                        onChange={(
+                                                                                            e
+                                                                                        ) => {
                                                                                             onChangeDiscountActive(
                                                                                                 e,
                                                                                                 dis,
@@ -665,141 +817,275 @@ const DiscountTaxes = (props) => {
                                                                                 </td>
                                                                             </tr>
                                                                         );
-                                                                    })}
-                                                            </table>
-                                                        </Row>
-                                                    </Col>
-                                                </Row>
-                                            </Col>
-                                        </Row>
-                                    </Col>
-                                </Row>
-                            </Col>
-                            <Col sm={24}>
-                                <Row justify="center" align="middle">
-                                    <Col xs={24} md={24} lg={16} className="discount-container_first discount-tax-con">
-                                        <Col xs={24} md={24}>
-                                            <p className="heading">Taxes</p>
+                                                                    }
+                                                                )}
+                                                        </table>
+                                                    </Row>
+                                                </Col>
+                                            </Row>
                                         </Col>
-                                        <Col xs={24}>
-                                            <form
-                                                onSubmit={handleTaxSubmit}
-                                            >
-                                                <Row justify="space-between">
-                                                    <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
-                                                        <Row justify="center" align="middle">
-                                                            <Col xs={24}>
-                                                                <p className="input-title">Tax Name</p>
-                                                            </Col>
-                                                            <Col xs={24}>
-                                                                <input
-                                                                    placeholder="Enter Tax Name"
-                                                                    value={taxName}
-                                                                    onChange={(e) => {
-                                                                        setTaxName(e.target.value);
-                                                                    }}
-                                                                /></Col>
-                                                        </Row>
-                                                    </Col>
-                                                    <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
-                                                        <Row justify="center" align="middle">
-                                                            <Col xs={23}>
-                                                                <p className="input-title">Tax Value (%)</p>
-                                                            </Col>
-                                                            <Col xs={23}>
-                                                                <input
-                                                                    type={"number"}
-                                                                    min={0}
-                                                                    placeholder="Add %"
-                                                                    value={taxValue}
-
-                                                                    onChange={(e) => {
-                                                                        const regix = new RegExp(
+                                    </Row>
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col sm={24}>
+                            <Row justify="center" align="middle">
+                                <Col
+                                    xs={24}
+                                    md={24}
+                                    lg={16}
+                                    className="discount-container_first discount-tax-con"
+                                >
+                                    <Col xs={24} md={24}>
+                                        <p className="heading">Taxes</p>
+                                    </Col>
+                                    <Col xs={24}>
+                                        <form onSubmit={handleTaxSubmit}>
+                                            <Row justify="space-between">
+                                                <Col
+                                                    xs={24}
+                                                    md={12}
+                                                    lg={10}
+                                                    className="discount-container_first-form_section"
+                                                >
+                                                    <Row
+                                                        justify="center"
+                                                        align="middle"
+                                                    >
+                                                        <Col xs={24}>
+                                                            <p className="input-title">
+                                                                Tax Name
+                                                            </p>
+                                                        </Col>
+                                                        <Col xs={24}>
+                                                            <input
+                                                                placeholder="Enter Tax Name"
+                                                                value={taxName}
+                                                                onChange={(
+                                                                    e
+                                                                ) => {
+                                                                    setTaxName(
+                                                                        e.target
+                                                                            .value
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                                <Col
+                                                    xs={24}
+                                                    md={12}
+                                                    lg={10}
+                                                    className="discount-container_first-form_section"
+                                                >
+                                                    <Row
+                                                        justify="center"
+                                                        align="middle"
+                                                    >
+                                                        <Col xs={23}>
+                                                            <p className="input-title">
+                                                                Tax Value (%)
+                                                            </p>
+                                                        </Col>
+                                                        <Col xs={23}>
+                                                            <input
+                                                                type={"number"}
+                                                                min={0}
+                                                                placeholder="Add %"
+                                                                value={taxValue}
+                                                                onChange={(
+                                                                    e
+                                                                ) => {
+                                                                    const regix =
+                                                                        new RegExp(
                                                                             "^[0-9]*[/.]?([0-9]*)?$"
                                                                         );
 
-                                                                        if (regix.test(e.target.value)) {
-                                                                            if (
-                                                                                e.target.value <= 100 &&
-                                                                                e.target.value >= 0
-                                                                            ) {
-                                                                                setTaxValue(e.target.value);
-                                                                            } else if (!e.target.value) {
-                                                                                setTaxValue("");
-                                                                            }
-                                                                        } else if (!e.target.value) {
-                                                                            setTaxValue("");
+                                                                    if (
+                                                                        regix.test(
+                                                                            e
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    ) {
+                                                                        if (
+                                                                            e
+                                                                                .target
+                                                                                .value <=
+                                                                                100 &&
+                                                                            e
+                                                                                .target
+                                                                                .value >=
+                                                                                0
+                                                                        ) {
+                                                                            setTaxValue(
+                                                                                e
+                                                                                    .target
+                                                                                    .value
+                                                                            );
+                                                                        } else if (
+                                                                            !e
+                                                                                .target
+                                                                                .value
+                                                                        ) {
+                                                                            setTaxValue(
+                                                                                ""
+                                                                            );
                                                                         }
-                                                                    }}
-                                                                />
-
-                                                            </Col>
-                                                        </Row>
-                                                    </Col>
-                                                    <Col xs={24} lg={4} style={{ justifyContent: "center" }}>
-                                                        <Row justify="center" align="middle">
-                                                            <Col xs={24}>
-                                                                <p class="input-title hidden-text">Value</p>
-                                                            </Col>
-                                                            <Col xs={23} className="btn_section">
-                                                                <button
-                                                                    onClick={(e) => {
-                                                                        idState !== null
-                                                                            ? handlUpdateTax(e)
-                                                                            : handleTaxSubmit(e);
-                                                                    }}
-                                                                    className={`save-button ${!taxName || !taxValue || taxButtonLoader
+                                                                    } else if (
+                                                                        !e
+                                                                            .target
+                                                                            .value
+                                                                    ) {
+                                                                        setTaxValue(
+                                                                            ""
+                                                                        );
+                                                                    }
+                                                                }}
+                                                            />
+                                                        </Col>
+                                                    </Row>
+                                                </Col>
+                                                <Col
+                                                    xs={24}
+                                                    lg={4}
+                                                    style={{
+                                                        justifyContent:
+                                                            "center",
+                                                    }}
+                                                >
+                                                    <Row
+                                                        justify="center"
+                                                        align="middle"
+                                                    >
+                                                        <Col xs={24}>
+                                                            <p class="input-title hidden-text">
+                                                                Value
+                                                            </p>
+                                                        </Col>
+                                                        <Col
+                                                            xs={23}
+                                                            className="btn_section"
+                                                        >
+                                                            <button
+                                                                onClick={(
+                                                                    e
+                                                                ) => {
+                                                                    idState !==
+                                                                    null
+                                                                        ? handlUpdateTax(
+                                                                              e
+                                                                          )
+                                                                        : handleTaxSubmit(
+                                                                              e
+                                                                          );
+                                                                }}
+                                                                className={`save-button ${
+                                                                    !taxName ||
+                                                                    !taxValue ||
+                                                                    taxButtonLoader
                                                                         ? "disable"
                                                                         : ""
-                                                                        } `}
-                                                                    type="submit"
-                                                                >
-                                                                    {idState == null ? taxButtonLoader == true ?
+                                                                } `}
+                                                                type="submit"
+                                                            >
+                                                                {idState ==
+                                                                null ? (
+                                                                    taxButtonLoader ==
+                                                                    true ? (
                                                                         <span>
-                                                                            <p>Add</p>
-                                                                            <CustomLoader buttonBool={true} />
-                                                                        </span> :
-                                                                        'Add' : taxButtonLoader == true ?
-                                                                        <span>
-                                                                            <p>Update</p>
-                                                                            <CustomLoader buttonBool={true} />
-                                                                        </span> : "Update"}
-                                                                </button>
-                                                            </Col>
-                                                        </Row>                                                    </Col>
-                                                </Row>
-
-                                            </form>
-                                        </Col>
-                                        <Col xs={24} className="discount-output">
-                                            <Row>
-                                                <Col xs={24} className="discount-output">
-                                                    <Row justify="center" align="middle">
-                                                        <table className="table-color">
-                                                            {tax?.length > 0 && (
-                                                                <tr className="discount-output_head">
-                                                                    <th>Tax Name</th>
-                                                                    <th>Tax Value</th>
-                                                                    <th></th>
-                                                                </tr>
-                                                            )}
-                                                            {tax?.length > 0 &&
-                                                                tax?.map((obj, index) => {
+                                                                            <p>
+                                                                                Add
+                                                                            </p>
+                                                                            <CustomLoader
+                                                                                buttonBool={
+                                                                                    true
+                                                                                }
+                                                                            />
+                                                                        </span>
+                                                                    ) : (
+                                                                        "Add"
+                                                                    )
+                                                                ) : taxButtonLoader ==
+                                                                  true ? (
+                                                                    <span>
+                                                                        <p>
+                                                                            Update
+                                                                        </p>
+                                                                        <CustomLoader
+                                                                            buttonBool={
+                                                                                true
+                                                                            }
+                                                                        />
+                                                                    </span>
+                                                                ) : (
+                                                                    "Update"
+                                                                )}
+                                                            </button>
+                                                        </Col>
+                                                    </Row>{" "}
+                                                </Col>
+                                            </Row>
+                                        </form>
+                                    </Col>
+                                    <Col xs={24} className="discount-output">
+                                        <Row>
+                                            <Col
+                                                xs={24}
+                                                className="discount-output"
+                                            >
+                                                <Row
+                                                    justify="center"
+                                                    align="middle"
+                                                >
+                                                    <table className="table-color">
+                                                        {tax?.length > 0 && (
+                                                            <tr className="discount-output_head">
+                                                                <th>
+                                                                    Tax Name
+                                                                </th>
+                                                                <th>
+                                                                    Tax Value
+                                                                </th>
+                                                                <th></th>
+                                                            </tr>
+                                                        )}
+                                                        {tax?.length > 0 &&
+                                                            tax?.map(
+                                                                (
+                                                                    obj,
+                                                                    index
+                                                                ) => {
                                                                     return (
                                                                         <tr className="discount-output_body discount-row">
-                                                                            <td className="row-1">{obj.name}</td>
-                                                                            <td>{obj.value}%</td>
+                                                                            <td className="row-1">
+                                                                                {
+                                                                                    obj.name
+                                                                                }
+                                                                            </td>
+                                                                            <td>
+                                                                                {
+                                                                                    obj.value
+                                                                                }
+                                                                                %
+                                                                            </td>
                                                                             <td className="col-4 custom-tax-col-3">
                                                                                 <img
                                                                                     style={{
                                                                                         width: "18px",
                                                                                         height: "18px",
-                                                                                        marginRight: "30px",
+                                                                                        marginRight:
+                                                                                            "30px",
                                                                                         cursor: "pointer",
                                                                                     }}
-                                                                                    src={edit}
+                                                                                    src={
+                                                                                        edit
+                                                                                    }
                                                                                     onClick={() => {
-                                                                                        updateHandler(obj);
+                                                                                        updateHandler(
+                                                                                            obj
+                                                                                        );
                                                                                     }}
                                                                                 />
                                                                                 <img
@@ -808,41 +1094,54 @@ const DiscountTaxes = (props) => {
                                                                                         height: "16px",
                                                                                         cursor: "pointer",
                                                                                     }}
-                                                                                    src={cross}
+                                                                                    src={
+                                                                                        cross
+                                                                                    }
                                                                                     onClick={() => {
-                                                                                        handleDeleteTax(obj.id);
+                                                                                        handleDeleteTax(
+                                                                                            obj.id
+                                                                                        );
                                                                                     }}
                                                                                 />
                                                                                 <Switch
                                                                                     {...label}
                                                                                     className="switch-margin"
-                                                                                    checked={obj?.status === 'active' ? true : false}
-                                                                                    onChange={(e) => { onChangeTaxActive(e, obj, index) }}
+                                                                                    checked={
+                                                                                        obj?.status ===
+                                                                                        "active"
+                                                                                            ? true
+                                                                                            : false
+                                                                                    }
+                                                                                    onChange={(
+                                                                                        e
+                                                                                    ) => {
+                                                                                        onChangeTaxActive(
+                                                                                            e,
+                                                                                            obj,
+                                                                                            index
+                                                                                        );
+                                                                                    }}
                                                                                 />
                                                                             </td>
                                                                         </tr>
                                                                     );
-                                                                })}
-                                                        </table>
-
-                                                    </Row>
-
-                                                </Col>
-                                            </Row>
-                                        </Col>
+                                                                }
+                                                            )}
+                                                    </table>
+                                                </Row>
+                                            </Col>
+                                        </Row>
                                     </Col>
-                                </Row>
-                            </Col>
-                            <Col xs={24}>
-                                <ShippingSettings />
-                            </Col>
-
-                        </Row>
-                    </Col>
-                </Row>
-
-            </>
-
+                                </Col>
+                            </Row>
+                        </Col>
+                        <Col xs={24}>
+                            <ShippingSettings />
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
+        </>
     );
 };
 
