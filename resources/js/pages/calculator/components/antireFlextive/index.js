@@ -103,11 +103,15 @@ const AntireFlextive = ({
                                     active={values?.isAntireflective === "Yes"}
                                 />
 
-                                <CustomRadio
-                                    label={"No"}
-                                    value={"No"}
-                                    active={values?.isAntireflective === "No"}
-                                />
+                                {values?.lensType !== "NVF" && (
+                                    <CustomRadio
+                                        label={"No"}
+                                        value={"No"}
+                                        active={
+                                            values?.isAntireflective === "No"
+                                        }
+                                    />
+                                )}
                             </Radio.Group>
                             <FormikError name={"isAntireflective"} />
                             {error && (
