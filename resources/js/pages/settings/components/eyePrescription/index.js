@@ -3,7 +3,7 @@ import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
 import { connect } from "react-redux";
 import { defaultMaterials } from "./data";
-import { Row, Col } from "antd"
+import { Row, Col } from "antd";
 import CustomLoader from "../../../../components/customLoader";
 const EyePrescription = ({ userId }) => {
     const [eyeDetails, setEyeDetails] = useState([]);
@@ -33,25 +33,26 @@ const EyePrescription = ({ userId }) => {
                         params: { user_id: userId },
                     }
                 );
-                const material = defaultMaterials?.map(item => {
-                    const singleMaterial = res?.data?.data?.find(val => val?.name === item?.name)
+                const material = defaultMaterials?.map((item) => {
+                    const singleMaterial = res?.data?.data?.find(
+                        (val) => val?.name === item?.name
+                    );
                     return {
                         ...item,
                         sphere_from: singleMaterial?.sphere_from || "",
                         sphere_to: singleMaterial?.sphere_to || "",
                         cylinder_from: singleMaterial?.cylinder_from || "",
                         cylinder_to: singleMaterial?.cylinder_to || "",
-                    }
-                })
+                    };
+                });
                 setEyeDetails(material);
                 setLoading(false);
-
             } catch (err) {
                 console.log("Error while getting glasses details");
             }
         };
         getEyePrescriptionDetails();
-    }, []);
+    }, [userId]);
 
     const handleInputChange = (value, name, key) => {
         if (
@@ -159,10 +160,7 @@ const EyePrescription = ({ userId }) => {
                 selectedError.value = "";
                 setCylError([...error]);
                 setEyeValue(value, name, key);
-            } else if (
-                (key === "cylinder_from") ||
-                (key === "cylinder_to")
-            ) {
+            } else if (key === "cylinder_from" || key === "cylinder_to") {
                 setEyeValue(value, name, key);
             }
         }
@@ -210,7 +208,7 @@ const EyePrescription = ({ userId }) => {
                 selectedError.value = "";
                 setSphError([...error]);
                 setEyeValue(value, name, key);
-            } else if ((key === "sphere_from") || (key === "sphere_to")) {
+            } else if (key === "sphere_from" || key === "sphere_to") {
                 setEyeValue(value, name, key);
             }
         }
@@ -218,7 +216,7 @@ const EyePrescription = ({ userId }) => {
 
     const handleSubmit = async () => {
         try {
-            setButtonLoader(true)
+            setButtonLoader(true);
             const payload = {
                 eye_prescriptions: eyeDetails,
                 user_id: userId,
@@ -227,7 +225,7 @@ const EyePrescription = ({ userId }) => {
                 `${process.env.MIX_REACT_APP_URL}/api/eye-prescriptions`,
                 payload
             );
-            setButtonLoader(false)
+            setButtonLoader(false);
         } catch (err) {
             console.log("error while save data");
         }
@@ -236,15 +234,23 @@ const EyePrescription = ({ userId }) => {
     const isIncompleteRange = () => {
         let isDisabled = false;
         for (let i = 0; i < eyeDetails?.length - 1; i++) {
-            if ((Boolean(eyeDetails[i]?.sphere_from) && Boolean(eyeDetails[i]?.sphere_to)) ||
-                (eyeDetails[i]?.sphere_from === "" && eyeDetails[i]?.sphere_to === "")) {
+            if (
+                (Boolean(eyeDetails[i]?.sphere_from) &&
+                    Boolean(eyeDetails[i]?.sphere_to)) ||
+                (eyeDetails[i]?.sphere_from === "" &&
+                    eyeDetails[i]?.sphere_to === "")
+            ) {
                 isDisabled = false;
             } else {
                 isDisabled = true;
                 break;
             }
-            if ((Boolean(eyeDetails[i]?.cylinder_from) && Boolean(eyeDetails[i]?.cylinder_to)) ||
-                (eyeDetails[i]?.cylinder_from === "" && eyeDetails[i]?.cylinder_to === "")) {
+            if (
+                (Boolean(eyeDetails[i]?.cylinder_from) &&
+                    Boolean(eyeDetails[i]?.cylinder_to)) ||
+                (eyeDetails[i]?.cylinder_from === "" &&
+                    eyeDetails[i]?.cylinder_to === "")
+            ) {
                 isDisabled = false;
             } else {
                 isDisabled = true;
@@ -252,53 +258,53 @@ const EyePrescription = ({ userId }) => {
             }
         }
 
-        return isDisabled
-    }
-    return (
-        loading == true ?
-            <CustomLoader buttonBool={false} />
-            :
-            <Row className={classes["container"]} justify="start" align="middle">
-                <Col xs={24} className={classes["page-title"]}>
-                    Glasses Prescription Setting
-                </Col>
-                <Col xs={24} className={classes["content-map-container"]}>
-                    <Row justify="center" align="middle">
-                        <Col xs={24} md={14}>
-                            {eyeDetails?.map((item, index) => {
-                                return (
-                                    <EyePrescriptionSlot
-                                        key={index}
-                                        data={item}
-                                        onChange={handleInputChange}
-                                        sphError={sphError}
-                                        cylError={cylError}
-                                    />
-                                );
-                            })}
-                        </Col>
-                        <Col xs={24} md={14} className={classes["button-wrapper"]}>
-                            <Row justify="end" align="middle">
-                                <Col xs={10} md={7} className={classes['btn-grid']}>
-                                    <button
-                                        className={classes["button"]}
-                                        onClick={handleSubmit}
-                                        disabled={disable || isIncompleteRange()}
-                                    >
-                                        {buttonLoader == false ?
-                                            'Save' :
-                                            <span>
-                                                <p>Save</p>
-                                                <CustomLoader buttonBool={true} />
-                                            </span>
-                                        }
-                                    </button>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
+        return isDisabled;
+    };
+    return loading == true ? (
+        <CustomLoader buttonBool={false} />
+    ) : (
+        <Row className={classes["container"]} justify="start" align="middle">
+            <Col xs={24} className={classes["page-title"]}>
+                Glasses Prescription Setting
+            </Col>
+            <Col xs={24} className={classes["content-map-container"]}>
+                <Row justify="center" align="middle">
+                    <Col xs={24} md={14}>
+                        {eyeDetails?.map((item, index) => {
+                            return (
+                                <EyePrescriptionSlot
+                                    key={index}
+                                    data={item}
+                                    onChange={handleInputChange}
+                                    sphError={sphError}
+                                    cylError={cylError}
+                                />
+                            );
+                        })}
+                    </Col>
+                    <Col xs={24} md={14} className={classes["button-wrapper"]}>
+                        <Row justify="end" align="middle">
+                            <Col xs={10} md={7} className={classes["btn-grid"]}>
+                                <button
+                                    className={classes["button"]}
+                                    onClick={handleSubmit}
+                                    disabled={disable || isIncompleteRange()}
+                                >
+                                    {buttonLoader == false ? (
+                                        "Save"
+                                    ) : (
+                                        <span>
+                                            <p>Save</p>
+                                            <CustomLoader buttonBool={true} />
+                                        </span>
+                                    )}
+                                </button>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
     );
 };
 
@@ -317,12 +323,18 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
     return (
         <Row className={classes["slot-container"]}>
             <Col xs={24} className={classes["slot-header"]}>
-                <div className={classes["header-title"]}>{`Show ${data?.name || ""
-                    } If`}</div>
+                <div className={classes["header-title"]}>{`Show ${
+                    data?.name || ""
+                } If`}</div>
             </Col>
             <Col xs={24} className={classes["slot-body"]}>
                 <Row justify="space-between">
-                    <Col xs={24} md={24} lg={12} className={classes["slot-body-content"]}>
+                    <Col
+                        xs={24}
+                        md={24}
+                        lg={12}
+                        className={classes["slot-body-content"]}
+                    >
                         <div className={classes["slot-body-label"]}>
                             Sphere (SPH)
                         </div>
@@ -356,10 +368,17 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
                             />
                         </div>
                         {sphErrValue && (
-                            <div className={classes["error"]}>{sphErrValue}</div>
+                            <div className={classes["error"]}>
+                                {sphErrValue}
+                            </div>
                         )}
                     </Col>
-                    <Col xs={24} md={24} lg={12} className={classes["slot-body-content"]}>
+                    <Col
+                        xs={24}
+                        md={24}
+                        lg={12}
+                        className={classes["slot-body-content"]}
+                    >
                         <div className={classes["slot-body-label"]}>
                             Cylinder (CYL)
                         </div>
@@ -393,7 +412,9 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
                             />
                         </div>
                         {cylErrValue && (
-                            <div className={classes["error"]}>{cylErrValue}</div>
+                            <div className={classes["error"]}>
+                                {cylErrValue}
+                            </div>
                         )}
                     </Col>
                 </Row>
@@ -431,8 +452,7 @@ const getArrangedMaterials = (data) => {
     let materialsList = [];
     materialArrangement?.forEach((material) => {
         const targetedMaterial = data?.find((item) => item?.name === material);
-        if (targetedMaterial)
-            materialsList.push(targetedMaterial);
+        if (targetedMaterial) materialsList.push(targetedMaterial);
     });
     return materialsList;
 };
