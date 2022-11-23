@@ -34,6 +34,7 @@ import backArrow from "../../../../../images/black-arrow.svg";
 import CustomLoader from "../../../../components/customLoader";
 import CustomDiscount from "../customDiscount";
 import { Col } from "antd";
+import { ScrollToFieldError } from "./helpers/scrollToFieldError";
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -410,6 +411,8 @@ const CalculatorScreen = () => {
                     formProps={formProps}
                     calculatorObj={calculatorObj && calculatorObj}
                     setCalculatorObj={setCalculatorObj}
+                    setCalValidations={setCalValidations}
+                    calValidations={calValidations}
                 />
                 <LensMeterials
                     formProps={formProps}
@@ -481,6 +484,9 @@ const CalculatorScreen = () => {
                                         onSubmit={formProps.handleSubmit}
                                         autoComplete="off"
                                     >
+                                        <ScrollToFieldError
+                                            formProps={formProps}
+                                        />
                                         {showInvoice && (
                                             <ViewInvoice
                                                 onClose={HideInvoice}

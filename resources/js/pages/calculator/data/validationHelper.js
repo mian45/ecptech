@@ -63,12 +63,6 @@ export const CreateCalculatorValidations = (data) => {
         );
     }
     if (
-        data?.find((ques) => ques.question == "Lens Type")?.optional === "true"
-    ) {
-        validationObject.lensTypeValue =
-            Yup.string().required("Option is required");
-    }
-    if (
         data?.find((ques) => ques.question == "Lens Material")?.optional ===
         "true"
     ) {
