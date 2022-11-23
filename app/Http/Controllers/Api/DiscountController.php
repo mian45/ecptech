@@ -36,14 +36,17 @@ class DiscountController extends Controller
         $validator = Validator::make($request->all(), [
             'userId' => 'required',
             'name' => 'required',
-            'value' => 'required',
-            'type' => "required|in:percentage,amount",
+            'value' => 'required|numeric|min:0',
+            'type' => 'required|in:percentage,amount',
         ]);
 
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
 
+        if($request->type == 'percentage' && $request->value > 100){
+            return $this->sendError('% should be not more than 100',[],422);
+        }
         $user_id = $request->userId;
         $name = $request->name;
         $value = $request->value;
@@ -73,14 +76,16 @@ class DiscountController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'name' => 'required',
-            'value' => 'required',
+            'value' => 'required|numeric|min:0',
             'type' => "required|in:percentage,amount",
         ]);
 
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
-
+        if($request->type == 'percentage' && $request->value > 100){
+            return $this->sendError('% should be not more than 100',[],422);
+        }
         $id = $request->id;
         $name = $request->name;
         $value = $request->value;
