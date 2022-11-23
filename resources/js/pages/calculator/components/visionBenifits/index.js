@@ -120,7 +120,7 @@ const VisionBenifits = ({
                 setFieldValue("benifitType", "");
             }
             setPrivatePayError("");
-            const validationObject = GetValidations(data, false);
+            const validationObject = GetValidations(data, false, values);
             setCalValidations({
                 ...calValidations,
                 ...validationObject,
@@ -277,7 +277,7 @@ const VisionBenifits = ({
 
 export default VisionBenifits;
 
-export const GetValidations = (data, isLoweredCopay) => {
+export const GetValidations = (data, isLoweredCopay, values) => {
     const validationObject = {};
     if (
         data?.find(
@@ -294,6 +294,10 @@ export const GetValidations = (data, isLoweredCopay) => {
         validationObject.lensType = Yup.string().required(
             "Lens type is required"
         );
+    }
+    if (values?.lensType) {
+        validationObject.lensTypeValue =
+            Yup.string().required("Brand is required");
     }
     if (
         data?.find((ques) => ques.question === "Lens Material")?.optional ===

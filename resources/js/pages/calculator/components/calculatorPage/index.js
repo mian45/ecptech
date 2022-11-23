@@ -324,7 +324,7 @@ const CalculatorScreen = () => {
             const permissions = calculatorObj?.questions?.find(
                 (item) => item.title === values?.visionPlan
             )?.question_permissions;
-            const validationObject = GetValidations(permissions, false);
+            const validationObject = GetValidations(permissions, false, values);
             setCalValidations({
                 ...calValidations,
                 ...validationObject,
@@ -363,7 +363,9 @@ const CalculatorScreen = () => {
             const validations = { ...calValidations };
             delete validations.isloweredCopay;
             delete validations.lensType;
-            delete validations.lensTypeValue;
+            if (values.lensType) {
+                delete validations.lensTypeValue;
+            }
             delete validations.lensMaterial;
             delete validations.isPhotochromics;
             delete validations.isSunglasses;
