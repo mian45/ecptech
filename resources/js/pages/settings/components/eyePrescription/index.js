@@ -4,11 +4,14 @@ import Axios from "../../../../Http";
 import { connect } from "react-redux";
 import { defaultMaterials } from "./data";
 import { Row, Col } from "antd"
+import CustomLoader from "../../../../components/customLoader";
 const EyePrescription = ({ userId }) => {
     const [eyeDetails, setEyeDetails] = useState([]);
     const [sphError, setSphError] = useState([...defaultSphError]);
     const [cylError, setCylError] = useState([...defaultCylError]);
     const [disable, setDisable] = useState(false);
+    const [buttonLoader, setButtonLoader] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const errorsList = [...sphError, ...cylError];
@@ -23,6 +26,7 @@ const EyePrescription = ({ userId }) => {
     useEffect(() => {
         const getEyePrescriptionDetails = async () => {
             try {
+                setLoading(true);
                 const res = await Axios.get(
                     `${process.env.MIX_REACT_APP_URL}/api/prescriptions`,
                     {
@@ -40,10 +44,10 @@ const EyePrescription = ({ userId }) => {
                     }
                 })
                 setEyeDetails(material);
-
+                setLoading(false);
 
             } catch (err) {
-                console.log("Error while getting lens Details");
+                console.log("Error while getting glasses details");
             }
         };
         getEyePrescriptionDetails();
@@ -76,14 +80,14 @@ const EyePrescription = ({ userId }) => {
     };
     const handleInputValues = (value, name, key) => {
         if (key === "cylinder_from" || key === "cylinder_to") {
-            const regix = new RegExp("[+-]?([0-9]*[.])?[0-9]+");
+            const regix = new RegExp("^[-+]?[0-9]*[/.]?([0-9]*)?$");
             if (regix.test(value) || value === "") {
                 handleCyl(value, name, key, +value);
             } else {
                 return;
             }
         } else {
-            const regix = new RegExp("[+-]?([0-9]*[.])?[0-9]+");
+            const regix = new RegExp("^[-+]?[0-9]*[/.]?([0-9]*)?$");
             if (regix.test(value) || value === "") {
                 handleSph(value, name, key, +value);
             } else {
@@ -117,11 +121,15 @@ const EyePrescription = ({ userId }) => {
             handleCYLError(name);
             return;
         }
-
+        const eyePrescription = [...eyeDetails];
+        const selectedMaterial = [...eyePrescription].find(
+            (material) => material?.name === name
+        );
+        selectedMaterial[key] = "";
         const isError = eyeDetails?.some((item) => {
             if (
-                item?.cylinder_from <= parsedValue &&
-                item?.cylinder_to >= parsedValue
+                parseFloat(item?.cylinder_from) <= parsedValue &&
+                parseFloat(item?.cylinder_to) >= parsedValue
             ) {
                 return true;
             }
@@ -151,6 +159,11 @@ const EyePrescription = ({ userId }) => {
                 selectedError.value = "";
                 setCylError([...error]);
                 setEyeValue(value, name, key);
+            } else if (
+                (key === "cylinder_from") ||
+                (key === "cylinder_to")
+            ) {
+                setEyeValue(value, name, key);
             }
         }
     };
@@ -159,10 +172,15 @@ const EyePrescription = ({ userId }) => {
             handleSPHError(name);
             return;
         }
-        const isError = eyeDetails?.some((item) => {
+        const eyePrescription = [...eyeDetails];
+        const selectedMaterial = [...eyePrescription].find(
+            (material) => material?.name === name
+        );
+        selectedMaterial[key] = "";
+        const isError = [...eyeDetails]?.some((item) => {
             if (
-                item?.sphere_from <= parsedValue &&
-                item?.sphere_to >= parsedValue
+                parseFloat(item?.sphere_from) <= parsedValue &&
+                parseFloat(item?.sphere_to) >= parsedValue
             ) {
                 return true;
             }
@@ -192,12 +210,15 @@ const EyePrescription = ({ userId }) => {
                 selectedError.value = "";
                 setSphError([...error]);
                 setEyeValue(value, name, key);
+            } else if ((key === "sphere_from") || (key === "sphere_to")) {
+                setEyeValue(value, name, key);
             }
         }
     };
 
     const handleSubmit = async () => {
         try {
+            setButtonLoader(true)
             const payload = {
                 eye_prescriptions: eyeDetails,
                 user_id: userId,
@@ -206,46 +227,78 @@ const EyePrescription = ({ userId }) => {
                 `${process.env.MIX_REACT_APP_URL}/api/eye-prescriptions`,
                 payload
             );
+            setButtonLoader(false)
         } catch (err) {
             console.log("error while save data");
         }
     };
+
+    const isIncompleteRange = () => {
+        let isDisabled = false;
+        for (let i = 0; i < eyeDetails?.length - 1; i++) {
+            if ((Boolean(eyeDetails[i]?.sphere_from) && Boolean(eyeDetails[i]?.sphere_to)) ||
+                (eyeDetails[i]?.sphere_from === "" && eyeDetails[i]?.sphere_to === "")) {
+                isDisabled = false;
+            } else {
+                isDisabled = true;
+                break;
+            }
+            if ((Boolean(eyeDetails[i]?.cylinder_from) && Boolean(eyeDetails[i]?.cylinder_to)) ||
+                (eyeDetails[i]?.cylinder_from === "" && eyeDetails[i]?.cylinder_to === "")) {
+                isDisabled = false;
+            } else {
+                isDisabled = true;
+                break;
+            }
+        }
+
+        return isDisabled
+    }
     return (
-        <Row className={classes["container"]} justify="start" align="middle">
-            <Col xs={24} className={classes["page-title"]}>
-                Glasses Prescription Setting
-            </Col>
-            <Col xs={24} className={classes["content-map-container"]}>
-                <Row justify="center" align="middle">
-                    <Col xs={24} md={14}>
-                        {eyeDetails?.map((item, index) => {
-                            return (
-                                <EyePrescriptionSlot
-                                    key={index}
-                                    data={item}
-                                    onChange={handleInputChange}
-                                    sphError={sphError}
-                                    cylError={cylError}
-                                />
-                            );
-                        })}
-                    </Col>
-                    <Col xs={24} md={14} className={classes["button-wrapper"]}>
-                        <Row justify="end" align="middle">
-                            <Col xs={10} md={7} className={classes['btn-grid']}>
-                                <button
-                                    className={classes["button"]}
-                                    onClick={handleSubmit}
-                                    disabled={disable}
-                                >
-                                    Save
-                                </button>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-            </Col>
-        </Row>
+        loading == true ?
+            <CustomLoader buttonBool={false} />
+            :
+            <Row className={classes["container"]} justify="start" align="middle">
+                <Col xs={24} className={classes["page-title"]}>
+                    Glasses Prescription Setting
+                </Col>
+                <Col xs={24} className={classes["content-map-container"]}>
+                    <Row justify="center" align="middle">
+                        <Col xs={24} md={14}>
+                            {eyeDetails?.map((item, index) => {
+                                return (
+                                    <EyePrescriptionSlot
+                                        key={index}
+                                        data={item}
+                                        onChange={handleInputChange}
+                                        sphError={sphError}
+                                        cylError={cylError}
+                                    />
+                                );
+                            })}
+                        </Col>
+                        <Col xs={24} md={14} className={classes["button-wrapper"]}>
+                            <Row justify="end" align="middle">
+                                <Col xs={10} md={7} className={classes['btn-grid']}>
+                                    <button
+                                        className={classes["button"]}
+                                        onClick={handleSubmit}
+                                        disabled={disable || isIncompleteRange()}
+                                    >
+                                        {buttonLoader == false ?
+                                            'Save' :
+                                            <span>
+                                                <p>Save</p>
+                                                <CustomLoader buttonBool={true} />
+                                            </span>
+                                        }
+                                    </button>
+                                </Col>
+                            </Row>
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
     );
 };
 
@@ -275,12 +328,9 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
                         </div>
                         <div className={classes["slot-body-input-section"]}>
                             <input
-                                type={"number"}
+                                type={"text"}
                                 placeholder={"From"}
                                 className={classes["input"]}
-                                step={0.01}
-                                min={-20}
-                                max={20}
                                 value={data["sphere_from"] || ""}
                                 onChange={(e) =>
                                     onChange(
@@ -294,10 +344,7 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
                             <input
                                 placeholder={"Select"}
                                 className={classes["input"]}
-                                type={"number"}
-                                step={0.01}
-                                min={-20}
-                                max={20}
+                                type={"text"}
                                 value={data["sphere_to"] || ""}
                                 onChange={(e) =>
                                     onChange(
@@ -320,10 +367,7 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
                             <input
                                 placeholder={"From"}
                                 className={classes["input"]}
-                                type={"number"}
-                                step={0.01}
-                                min={-10}
-                                max={10}
+                                type={"text"}
                                 value={data["cylinder_from"] || ""}
                                 onChange={(e) =>
                                     onChange(
@@ -337,10 +381,7 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
                             <input
                                 placeholder={"Select"}
                                 className={classes["input"]}
-                                type={"number"}
-                                step={0.01}
-                                min={-10}
-                                max={10}
+                                type={"text"}
                                 value={data["cylinder_to"] || ""}
                                 onChange={(e) =>
                                     onChange(
