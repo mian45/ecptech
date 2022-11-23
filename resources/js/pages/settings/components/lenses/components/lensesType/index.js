@@ -191,16 +191,14 @@ export const CollectionSlot = ({
         <>
             {isEdit ? (
                 <Row
-                    justify="start"
-                    align="middle"
+                    justify="space-between"
+                    align={"top"}
                     className={classes["collection-edit-container"]}
                     id={collection?.title}
                 >
-                    <Col xs={24}>
-                        <Row justify="center">
-                            <Col xs={18}
-                                className={`${classes["collection-left-container"]} ${classes["animated-title"]}`}
-                            >
+                    <Col xs={18}>
+                        <Row>
+                            <Col xs={3}>
                                 <CustomCheckbox
                                     label={""}
                                     defaultChecked={
@@ -213,58 +211,61 @@ export const CollectionSlot = ({
                                     }}
                                     containerClass={classes["checkbox"]}
                                 />
-                                <div className={classes["edit-content-title"]}>
-                                    {collection?.title || ""}
-                                </div>
                             </Col>
-                            <Col xs={6} className={classes['edit-container']}>
-                                <img
-                                    src={tickIcon}
-                                    alt={"icon"}
-                                    className={classes["tick-icon"]}
-                                    onClick={() => setIsEdit(false)}
-                                /></Col>
+                            <Col xs={18}>
+                                <Row className={classes["collection-content"]}>
+                                    <Col xs={24} className={classes["edit-content-title"]}>
+                                        {collection?.title || ""}
+                                    </Col>
+                                    <Col xs={24} className={classes["edit-slot-title"]}>
+                                        Display Name
+                                    </Col>
+                                    <Col xs={24}>
+                                        <input
+                                            className={classes["edit-slot-input"]}
+                                            placeholder={"Enter Display Name"}
+                                            value={collection?.display_name || ""}
+                                            onChange={(e) =>
+                                                handleDisplayNameChange(
+                                                    e?.target?.value,
+                                                    collection
+                                                )
+                                            }
+                                        /></Col>
+                                    <Col xs={24} className={classes["edit-slot-title"]}>
+                                        Retail Amount
+                                    </Col>
+                                    <Col xs={24}>
+                                        <input
+                                            className={classes["edit-slot-input"]}
+                                            placeholder={"Enter Amount"}
+                                            value={collection?.custom_price || ""}
+                                            onChange={(e) => {
+                                                const re = /^\d+(\d{3})*(\.\d{0,2})?$/;
+                                                if (
+                                                    e.target.value === "" ||
+                                                    re.test(e.target.value)
+                                                ) {
+                                                    handleAmountNameChange(
+                                                        e?.target?.value,
+                                                        collection
+                                                    );
+                                                }
+                                            }}
+                                        /></Col>
+                                </Row></Col>
+
+
+
                         </Row>
                     </Col>
-                    <Row className={classes["edit-slot-sub-wrapper"]}>
-                        <Col xs={24} className={classes["edit-slot-title"]}>
-                            Display Name
-                        </Col>
-                        <Col xs={24}>
-                            <input
-                                className={classes["edit-slot-input"]}
-                                placeholder={"Enter Display Name"}
-                                value={collection?.display_name || ""}
-                                onChange={(e) =>
-                                    handleDisplayNameChange(
-                                        e?.target?.value,
-                                        collection
-                                    )
-                                }
-                            /></Col>
-
-                        <Col xs={24} className={classes["edit-slot-title"]}>
-                            Retail Amount
-                        </Col>
-                        <Col xs={24}>
-                            <input
-                                className={classes["edit-slot-input"]}
-                                placeholder={"Enter Amount"}
-                                value={collection?.custom_price || ""}
-                                onChange={(e) => {
-                                    const re = /^\d+(\d{3})*(\.\d{0,2})?$/;
-                                    if (
-                                        e.target.value === "" ||
-                                        re.test(e.target.value)
-                                    ) {
-                                        handleAmountNameChange(
-                                            e?.target?.value,
-                                            collection
-                                        );
-                                    }
-                                }}
-                            /></Col>
-                    </Row>
+                    <Col xs={6} className={classes['edit-container']}>
+                        <img
+                            src={tickIcon}
+                            alt={"icon"}
+                            className={classes["tick-icon"]}
+                            onClick={() => setIsEdit(false)}
+                        /></Col>
                 </Row>
             ) : (
                 <Row
