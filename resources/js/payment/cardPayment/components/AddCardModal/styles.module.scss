@@ -47,7 +47,7 @@
 .input {
     border: 1px solid #dfdfdf;
     border-radius: 23px;
-    font-size: 16px;
+    font-size: 14px;
     padding: 10px 20px;
     color: #747474;
     width: 100%;
@@ -56,6 +56,10 @@
     &::placeholder {
         color: #c4c4c4;
     }
+}
+
+.row-width {
+    width: 100%;
 }
 .inline-input {
     display: flex;
@@ -112,7 +116,12 @@
     background: #fff;
     opacity: 0;
 }
-
+.col-width {
+    width: 100%;
+}
+.form-margin {
+    margin-bottom: 0px !important;
+}
 @media only screen and (max-width: 768px) {
     .space-styling {
         display: block !important;

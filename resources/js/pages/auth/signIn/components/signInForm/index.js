@@ -12,6 +12,7 @@ import {
 } from "../../../../../appRoutes/routeConstants";
 import Icon from "@ant-design/icons";
 import CustomLoader from "../../../../../components/customLoader";
+import CustomCheckbox from "../../../../../components/customCheckbox";
 
 const EyeSVG = () => (
     <svg
@@ -339,7 +340,27 @@ const SignInForm = ({ userRole, dispatch }) => {
                                         >
                                             <Row justify="space-between">
                                                 <Col xs={12}>
-                                                    <Checkbox
+                                                    <CustomCheckbox
+                                                        label="Remember me"
+                                                        id="remember"
+                                                        name="remember"
+                                                        defaultChecked={
+                                                            values?.remember ||
+                                                            false
+                                                        }
+                                                        active={
+                                                            values?.remember ||
+                                                            false
+                                                        }
+                                                        c
+                                                        onValueChange={(e) =>
+                                                            setFieldValue(
+                                                                "remember",
+                                                                e
+                                                            )
+                                                        }
+                                                    />
+                                                    {/* <Checkbox
                                                         checked={
                                                             values?.remember ||
                                                             false
@@ -354,7 +375,7 @@ const SignInForm = ({ userRole, dispatch }) => {
                                                         }
                                                     >
                                                         Remember me
-                                                    </Checkbox>
+                                                    </Checkbox> */}
                                                 </Col>
                                                 <Col
                                                     xs={12}

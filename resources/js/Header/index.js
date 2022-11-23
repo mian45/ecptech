@@ -6,6 +6,7 @@ import { remember as rememberme } from "../services/authService";
 import { useDispatch } from "react-redux";
 import logo from "../../images/logo.png";
 import profileIcon from "../../images/profile.svg";
+import profileIconActive from "../../images/profile-active.svg";
 import notificationIcon from "../../images/notification.svg";
 import AuthService from "../services";
 import { connect } from "react-redux";
@@ -13,7 +14,7 @@ import "antd/dist/antd.css";
 import { MenuOutlined } from "@ant-design/icons";
 import { Col, Row } from "antd";
 import Http from "../Http";
-const Header = ({}) => {
+const Header = ({ }) => {
     const dispatch = useDispatch();
     const [showProfile, setShowProfile] = useState(false);
     const [user, setUser] = useState({});
@@ -67,7 +68,11 @@ const Header = ({}) => {
                         <Row>
                             <Col md={9} xs={10}>
                                 <img
-                                    src={profileIcon}
+                                    src={
+                                        showProfile == true
+                                            ? profileIconActive
+                                            : profileIcon
+                                    }
                                     alt="Profile"
                                     className={classes["profile-icon"]}
                                     onClick={(e) => {
@@ -76,8 +81,8 @@ const Header = ({}) => {
                                 />
                             </Col>
                             <Col
-                                md={12}
-                                xs={12}
+                                md={13}
+                                xs={13}
                                 className={classes["logout-box"]}
                             >
                                 <h6
