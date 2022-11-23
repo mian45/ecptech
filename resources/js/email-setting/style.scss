@@ -141,6 +141,9 @@
                 height: 2.8125em !important;
                 padding: 0;
                 color: black;
+                @media only screen and (max-width: 768px) {
+                    width: 100% !important;
+                }
             }
 
             .ant-select-selection-item {
@@ -253,15 +256,27 @@
     background-color: #e8e8e8;
     color: #2a2a2a;
 }
-
+.margin-div{
+    
+    margin-bottom: 10px;
+    
+    @media only screen and (max-width: 768px) {
+        width: 100% !important;
+        max-width: none !important;
+    }
+}
 .rdw-editor-wrapper {
     max-width: 100%;
     @media only screen and (max-width: 1024px) and (min-width:763px){
         max-width: 475px;
     }
     
-    @media only screen and  (min-width:1440px){
-        max-width: 541px;
+    @media only screen and  (min-width:1440px) and (max-width:1919px){
+        max-width:  541px;
+       
+    }
+    @media  only screen and  (min-width:1920px) {
+        max-width: 621px;
     }
     
 }
