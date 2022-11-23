@@ -36,7 +36,7 @@ class DiscountController extends Controller
         $validator = Validator::make($request->all(), [
             'userId' => 'required',
             'name' => 'required',
-            'value' => 'required|numeric|min:0',
+            'value' => 'required|integer|gt:0',
             'type' => 'required|in:percentage,amount',
         ]);
 
@@ -54,7 +54,7 @@ class DiscountController extends Controller
         $discount = new Discount;
         $discount->user_id = $user_id;
         $discount->name = $name;
-        $discount->value = $value;
+        $discount->value = (int) $value;
         $discount->type = $type;
         $discount->status = 'active';
         $discount->save();
@@ -76,7 +76,7 @@ class DiscountController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'name' => 'required',
-            'value' => 'required|numeric|min:0',
+            'value' => 'required|integer|gt:0',
             'type' => "required|in:percentage,amount",
         ]);
 
@@ -93,7 +93,7 @@ class DiscountController extends Controller
         $discount = Discount::where('id',$id)->first();
         if($discount){
         $discount->name = $name;
-        $discount->value = $value;
+        $discount->value = (int) $value;
         $discount->type = $type;
         $discount->save();
         $success['id'] = $discount->id;
