@@ -103,6 +103,9 @@ const VisionBenifits = ({
             const validations = { ...calValidations };
             delete validations.isloweredCopay;
             delete validations.lensType;
+            if (values.lensType) {
+                delete validations.lensTypeValue;
+            }
             delete validations.lensMaterial;
             delete validations.isPhotochromics;
             delete validations.isSunglasses;
