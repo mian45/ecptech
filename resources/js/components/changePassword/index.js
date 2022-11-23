@@ -3,7 +3,7 @@ import { ErrorMessage } from "formik";
 import CustomInput from "../customInput";
 import classes from "./styles.module.scss";
 
-const ChangePassword = ({ handleChange, handleBlur, values }) => {
+const ChangePassword = ({ handleChange, values }) => {
     return (
         <div className={classes.container}>
             <div className={classes.title}>Change Password</div>
@@ -13,7 +13,6 @@ const ChangePassword = ({ handleChange, handleBlur, values }) => {
                 placeholder={"Old Password"}
                 value={values.oldPassword}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 id="oldPassword"
                 name="oldPassword"
             />
@@ -28,7 +27,6 @@ const ChangePassword = ({ handleChange, handleBlur, values }) => {
                 placeholder={"New Password"}
                 value={values.newPassword}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 id="newPassword"
                 name="newPassword"
             />
@@ -43,7 +41,6 @@ const ChangePassword = ({ handleChange, handleBlur, values }) => {
                 placeholder={"Confirm New Password"}
                 value={values.confirmPassword}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 id="confirmPassword"
                 name="confirmPassword"
             />
