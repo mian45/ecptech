@@ -36,7 +36,8 @@ class DiscountController extends Controller
         $validator = Validator::make($request->all(), [
             'userId' => 'required',
             'name' => 'required',
-            'value' => 'required'
+            'value' => 'required',
+            'type' => "required|in:percentage,amount",
         ]);
 
         if ($validator->fails()) {
@@ -46,11 +47,12 @@ class DiscountController extends Controller
         $user_id = $request->userId;
         $name = $request->name;
         $value = $request->value;
-
+        $type = $request->type;
         $discount = new Discount;
         $discount->user_id = $user_id;
         $discount->name = $name;
         $discount->value = $value;
+        $discount->type = $type;
         $discount->status = 'active';
         $discount->save();
 
@@ -60,6 +62,8 @@ class DiscountController extends Controller
             $success['name'] = $discount->name;
             $success['value'] = $discount->value;
             $success['status'] = $discount->status;
+            $success['type'] = $discount->type;
+            $success['created_at'] = $discount->created_at;
             return $this->sendResponse($success, 'Discount add successfully');
         }
         return $this->sendError('Something went wrong!');
@@ -70,6 +74,7 @@ class DiscountController extends Controller
             'id' => 'required',
             'name' => 'required',
             'value' => 'required',
+            'type' => "required|in:percentage,amount",
         ]);
 
         if ($validator->fails()) {
@@ -79,16 +84,20 @@ class DiscountController extends Controller
         $id = $request->id;
         $name = $request->name;
         $value = $request->value;
+        $type = $request->type;
         $discount = Discount::where('id',$id)->first();
         if($discount){
         $discount->name = $name;
         $discount->value = $value;
+        $discount->type = $type;
         $discount->save();
         $success['id'] = $discount->id;
         $success['user_id'] = $discount->user_id;
         $success['name'] = $discount->name;
         $success['value'] = $discount->value;
         $success['status'] = $discount->status;
+        $success['type'] = $discount->type;
+        $success['created_at'] = $discount->created_at;
         return $this->sendResponse($success, 'Discount Edit successfully');
 
         }
@@ -110,7 +119,6 @@ class DiscountController extends Controller
         if($discount){
             $discount->delete();
             $success['id'] = $discount->id;
-
             return $this->sendResponse($success, 'Discount delete successfully');
         }
 
@@ -139,6 +147,8 @@ class DiscountController extends Controller
             $success['name'] = $discount->name;
             $success['value'] = $discount->value;
             $success['status'] = $discount->status;
+            $success['type'] = $discount->type;
+            $success['created_at'] = $discount->created_at;
             return $this->sendResponse($success, 'Discount Status Changed Successfully');
         }
         return $this->sendError('Discount not found',[],402);
