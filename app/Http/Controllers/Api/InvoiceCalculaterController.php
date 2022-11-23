@@ -446,8 +446,19 @@ class InvoiceCalculaterController extends Controller
                         $q->join('collections_permissions as cp', function ($join) {
                             $join->on('cp.collection_id','=','collections.id');
                         });
-                                                
+                        
                         $q->select('collections.id','collections.category','collections.brand_id','title','cp.name as display_name','cp.price','cp.collection_id');
+
+                        $q->with(['lenses'=>function($q)use($userId){
+                            $q->join('lens_materials as lm', function ($join) {
+                                $join->on('lm.id','=','lenses.lens_material_id');
+                            });
+
+                            $q->select('lm.id','collection_id','lens_material_title'); 
+                            $q->groupby('lm.id','collection_id');
+                            
+                        }]);
+                        
                         $q->where('cp.user_id',$userId)->where('cp.status','active');
                        
                     }]);
