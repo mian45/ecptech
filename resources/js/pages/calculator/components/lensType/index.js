@@ -7,8 +7,15 @@ import CustomRadio from "../../../../components/customRadio";
 import lensIcon from "../../../../../images/calculator/lens.svg";
 import Axios from "../../../../Http";
 import InvoicePriceAlert from "../invoicePriceAlert";
+import * as Yup from "yup";
 
-const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
+const LensType = ({
+    formProps,
+    calculatorObj,
+    setCalculatorObj,
+    setCalValidations,
+    calValidations,
+}) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const [showInvoiceAlert, setShowInvoiceAlert] = useState(false);
 
@@ -52,6 +59,11 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
     };
     const getBrandByLens = async (e) => {
         try {
+            const lensTypeValue = Yup.string().required("Brand is required");
+            setCalValidations({
+                ...calValidations,
+                lensTypeValue,
+            });
             await handleChange(e);
             await setFieldValue("lensTypeValue", "");
             setError("");
@@ -263,7 +275,6 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                                 />
 
                                 <Radio.Group
-                                    onBlur={handleBlur}
                                     onChange={getBrandByLens}
                                     value={values?.lensType}
                                     id="lensType"
@@ -292,7 +303,6 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                                             Please Choose
                                         </div>
                                         <Radio.Group
-                                            onBlur={handleBlur}
                                             onChange={handleBrandSelection}
                                             value={values?.lensTypeValue}
                                             id="lensTypeValue"
