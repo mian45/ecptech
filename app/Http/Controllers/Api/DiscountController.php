@@ -23,7 +23,7 @@ class DiscountController extends Controller
         }
 
         $user_id = $request->userId;
-        $discount = Discount::select('id','user_id','name','value','status')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
+        $discount = Discount::select('id','user_id','name','value','status','type','created_at')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
 
         if($discount){
             return $this->sendResponse($discount, 'Discount get successfully');
