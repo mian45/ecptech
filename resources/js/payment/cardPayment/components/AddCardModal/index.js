@@ -103,7 +103,7 @@ const AddCardModal = ({ show, onClose }) => {
                         <Row className={classes["sub-label"]}>
                             By adding new card, your old card will be removed.
                         </Row>
-                        <Row>
+                        <Row className={classes["col-width"]}>
                             <Col className={classes["input-label"]}>
                                 Card Number
                             </Col>
@@ -138,7 +138,7 @@ const AddCardModal = ({ show, onClose }) => {
                         ) : (
                             ""
                         )}
-                        <Row>
+                        <Row className={classes["col-width"]}>
                             <Col className={classes["input-label"]}>
                                 Card Holder Name
                             </Col>
@@ -213,7 +213,7 @@ const AddCardModal = ({ show, onClose }) => {
                                 <Col className={classes["input-label"]}>
                                     CVV
                                 </Col>
-                                <Form.Item>
+                                <Form.Item className={classes["form-margin"]}>
                                     <Input
                                         placeholder="CVV No."
                                         type={"text"}

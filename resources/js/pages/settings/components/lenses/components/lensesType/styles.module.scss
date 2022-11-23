@@ -115,6 +115,7 @@
     align-items: flex-start;
 }
 .collection-left-container {
+    display: flex;
     justify-content: flex-start;
 }
 .animated-title {
@@ -139,7 +140,7 @@
     object-fit: contain;
     cursor: pointer;
 }
-.edit-container{
+.edit-container {
     text-align: center;
     justify-content: center;
     display: flex;
@@ -174,6 +175,7 @@
     color: #2a2a2a;
     user-select: none;
     user-select: none;
+    margin-left: 5px;
 }
 .show-content-value {
     font-size: 16px;
@@ -193,7 +195,9 @@
     display: flex;
     width: 100%;
     align-items: center;
-    justify-content: flex-start;
+}
+.row-box {
+    width: 100%;
 }
 .tick-icon {
     width: 17px;
@@ -252,20 +256,16 @@
     }
 }
 .edit-slot-sub-wrapper {
-    display: flex;
-    flex-direction: column;
     width: 100%;
-    padding-left: 50px;
+    margin-left: 5px;
 }
-@media only screen and (max-width: 763px){
+@media only screen and (max-width: 763px) {
     .collection-edit-container {
         padding: 36px 16px;
-       
     }
     .collection-show-container {
         padding-left: 16px;
         padding-right: 16px;
-        
     }
     .collection-label {
         font-size: 16px;
@@ -276,7 +276,7 @@
         margin-left: 0px;
         text-align: center;
     }
-    .edit-slot-sub-wrapper{
-        padding-left:14px
+    .edit-slot-sub-wrapper {
+        padding-left: 14px;
     }
 }

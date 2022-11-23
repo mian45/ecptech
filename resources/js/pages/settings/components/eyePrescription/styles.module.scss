@@ -11,7 +11,6 @@
     width: 100%;
 }
 .content-map-container {
-   
     width: 100%;
 }
 .slot-container {
@@ -44,6 +43,12 @@
     & :disabled {
         background-color: #90b0c6;
     }
+    span {
+        display: flex;
+    }
+    p {
+        margin-right: 5px !important;
+    }
 }
 .slot-header {
     width: 100%;
@@ -65,7 +70,7 @@
     padding: 23px 22px;
     width: 100%;
 }
-.btn-grid{
+.btn-grid {
     justify-content: center;
     display: contents;
 }

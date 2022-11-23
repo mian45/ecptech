@@ -9,13 +9,14 @@
     z-index: 99999;
 }
 
-.logout{
+.logout {
     cursor: pointer;
-    color: #6FA5CB;
+    color: #6fa5cb;
     font-size: 18px;
     font-weight: 500;
     font-family: Montserrat;
     margin-bottom: 0px !important;
+    padding-left: 10px;
 }
 .logo-icon {
     width: 200px;
@@ -35,8 +36,8 @@
     cursor: pointer;
 }
 
-.logout-wapper{
-    border: 1px solid #E8E8E8;
+.logout-wapper {
+    border: 1px solid #e8e8e8;
     border-radius: 31px;
 }
 .profile-icon {
@@ -46,7 +47,7 @@
     cursor: pointer;
     margin-right: 4px;
 }
-.logout-box{
+.logout-box {
     display: flex;
     align-items: center;
 }

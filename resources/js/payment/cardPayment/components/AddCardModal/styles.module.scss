@@ -116,7 +116,12 @@
     background: #fff;
     opacity: 0;
 }
-
+.col-width {
+    width: 100%;
+}
+.form-margin {
+    margin-bottom: 0px !important;
+}
 @media only screen and (max-width: 768px) {
     .space-styling {
         display: block !important;
