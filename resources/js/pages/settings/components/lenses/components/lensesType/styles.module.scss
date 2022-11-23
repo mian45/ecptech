@@ -175,6 +175,7 @@
     color: #2a2a2a;
     user-select: none;
     user-select: none;
+    margin-left: 5px;
 }
 .show-content-value {
     font-size: 16px;
@@ -194,7 +195,9 @@
     display: flex;
     width: 100%;
     align-items: center;
-    justify-content: flex-start;
+}
+.row-box {
+    width: 100%;
 }
 .tick-icon {
     width: 17px;
@@ -253,10 +256,8 @@
     }
 }
 .edit-slot-sub-wrapper {
-    display: flex;
-    flex-direction: column;
-    width: 89%;
-    padding-left: 50px;
+    width: 100%;
+    margin-left: 5px;
 }
 @media only screen and (max-width: 763px) {
     .collection-edit-container {

@@ -191,15 +191,14 @@ export const CollectionSlot = ({
         <>
             {isEdit ? (
                 <Row
-                    justify="start"
-                    align="middle"
+                    justify="space-between"
+                    align="top"
                     className={classes["collection-edit-container"]}
                     id={collection?.title}
                 >
-                    <Col xs={24}>
-                        <Row justify="center">
-                            <Col xs={18}
-                                className={`${classes["collection-left-container"]} ${classes["animated-title"]}`}
+                    <Col xs={24} className={classes["collection-edit-header-slot"]}>
+                        <Row className={classes['row-box']}>
+                            <Col xs={2}
                             >
                                 <CustomCheckbox
                                     label={""}
@@ -212,12 +211,12 @@ export const CollectionSlot = ({
                                         handleCheckbox(value, collection);
                                     }}
                                     containerClass={classes["checkbox"]}
-                                />
-                                <div className={classes["edit-content-title"]}>
-                                    {collection?.title || ""}
-                                </div>
+                                /></Col>
+                            <Col xs={17} className={classes["edit-content-title"]}>
+                                {collection?.title || ""}
                             </Col>
-                            <Col xs={6} className={classes['edit-container']}>
+
+                            <Col xs={3} className={classes['edit-container']}>
                                 <img
                                     src={tickIcon}
                                     alt={"icon"}
@@ -227,10 +226,11 @@ export const CollectionSlot = ({
                         </Row>
                     </Col>
                     <Row className={classes["edit-slot-sub-wrapper"]}>
-                        <Col xs={24} className={classes["edit-slot-title"]}>
-                            Display Name
-                        </Col>
-                        <Col xs={24}>
+                        <Col xs={2}></Col>
+                        <Col xs={19}>
+                            <div className={classes["edit-slot-title"]}>
+                                Display Name
+                            </div>
                             <input
                                 className={classes["edit-slot-input"]}
                                 placeholder={"Enter Display Name"}
@@ -241,12 +241,11 @@ export const CollectionSlot = ({
                                         collection
                                     )
                                 }
-                            /></Col>
+                            />
 
-                        <Col xs={24} className={classes["edit-slot-title"]}>
-                            Retail Amount
-                        </Col>
-                        <Col xs={24}>
+                            <div className={classes["edit-slot-title"]}>
+                                Retail Amount
+                            </div>
                             <input
                                 className={classes["edit-slot-input"]}
                                 placeholder={"Enter Amount"}
@@ -263,7 +262,8 @@ export const CollectionSlot = ({
                                         );
                                     }
                                 }}
-                            /></Col>
+                            />
+                        </Col>
                     </Row>
                 </Row>
             ) : (
