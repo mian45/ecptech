@@ -130,7 +130,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
             }),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref("password"), null], "Passwords don't match")
-            .required("Confirm Password is required"),
+            .required("Please enter a valid password"),
     });
     return (
         <div className={classes["container"]}>

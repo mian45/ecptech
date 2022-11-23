@@ -263,7 +263,6 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                                 />
 
                                 <Radio.Group
-                                    onBlur={handleBlur}
                                     onChange={getBrandByLens}
                                     value={values?.lensType}
                                     id="lensType"
@@ -292,7 +291,6 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                                             Please Choose
                                         </div>
                                         <Radio.Group
-                                            onBlur={handleBlur}
                                             onChange={handleBrandSelection}
                                             value={values?.lensTypeValue}
                                             id="lensTypeValue"
