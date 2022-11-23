@@ -16,7 +16,8 @@ const LensType = ({
     setCalValidations,
     calValidations,
 }) => {
-    const { values, handleChange, handleBlur, setFieldValue } = formProps;
+    const { values, handleChange, handleBlur, setFieldValue, setFieldError } =
+        formProps;
     const [showInvoiceAlert, setShowInvoiceAlert] = useState(false);
 
     const lensTypeVisibility = calculatorObj?.questions
@@ -67,27 +68,49 @@ const LensType = ({
             await handleChange(e);
             await setFieldValue("lensTypeValue", "");
             setError("");
-            return;
-            const targetedLens = calculatorObj["lens_types"]?.find(
-                (val) => val?.title === e?.target?.value
-            );
-            if (targetedLens?.brands && targetedLens?.brands.length > 0) {
-                return;
-            } else {
-                const lensId = targetedLens?.id;
-                const res = await Axios.post(
-                    `${process.env.MIX_REACT_APP_URL}/api/get-brands`,
-                    { lense_type_id: lensId }
-                );
-                const calculatorValues = { ...calculatorObj };
-                const selectedLens = calculatorValues["lens_types"]?.find(
-                    (item) => item.id === lensId
-                );
-                selectedLens.brands = res?.data?.data?.brands;
-                setCalculatorObj(calculatorValues);
-            }
+            handleNVFType(e);
         } catch (err) {
             console.log("error while getting brands");
+        }
+    };
+    const handleNVFType = async (e) => {
+        if (e?.target?.value === "NVF") {
+            let validationObject = {};
+            validationObject.isAntireflective = Yup.string().required(
+                "Antireflective is required"
+            );
+            validationObject.antireflectiveType = Yup.string().required(
+                "Antireflective type is required"
+            );
+            validationObject.lensTypeValue =
+                Yup.string().required("Brand is required");
+            if (
+                !values?.isAntireflective ||
+                values?.isAntireflective === "No"
+            ) {
+                delete validationObject.antireflectiveType;
+            }
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
+        } else {
+            const antireflectiveVisibility =
+                calculatorObj?.questions
+                    ?.find((item) => item?.title === values?.visionPlan)
+                    ?.question_permissions?.find(
+                        (ques) => ques.question === "Antireflective Properties"
+                    )?.optional === "true";
+            if (!antireflectiveVisibility) {
+                await setFieldError("isAntireflective", "");
+                await setFieldError("antireflectiveType", "");
+                const validations = { ...calValidations };
+                delete validations.isAntireflective;
+                delete validations.antireflectiveType;
+                setCalValidations({
+                    ...validations,
+                });
+            }
         }
     };
     const getLensSubValues = () => {

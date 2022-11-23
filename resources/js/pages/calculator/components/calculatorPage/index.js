@@ -370,6 +370,7 @@ const CalculatorScreen = () => {
             delete validations.isPhotochromics;
             delete validations.isSunglasses;
             delete validations.isAntireflective;
+            delete validations.antireflectiveType;
             setCalValidations({
                 ...validations,
             });
