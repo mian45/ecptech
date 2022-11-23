@@ -87,7 +87,6 @@ const AntireFlextive = ({
                                 active={handleActiveFields()}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleAntireflectiveChange}
                                 value={values?.isAntireflective}
                                 id="isAntireflective"
@@ -116,7 +115,6 @@ const AntireFlextive = ({
                                         Select Properties
                                     </div>
                                     <Radio.Group
-                                        onBlur={handleBlur}
                                         onChange={handleChange}
                                         value={values?.antireflectiveType}
                                         id="antireflectiveType"

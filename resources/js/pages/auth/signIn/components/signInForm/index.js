@@ -222,7 +222,6 @@ const SignInForm = ({ userRole, dispatch }) => {
             {({
                 values,
                 handleChange,
-                handleBlur,
                 handleSubmit,
                 setFieldValue,
                 isSubmitting,
@@ -268,7 +267,6 @@ const SignInForm = ({ userRole, dispatch }) => {
                                                 }
                                                 value={values.email}
                                                 onChange={handleChange}
-                                                onBlur={handleBlur}
                                             />
 
                                             <ErrorMessage
@@ -298,7 +296,6 @@ const SignInForm = ({ userRole, dispatch }) => {
                                                 name="password"
                                                 value={values.password}
                                                 onChange={handleChange}
-                                                onBlur={handleBlur}
                                                 className={
                                                     classes[
                                                         "password-container"

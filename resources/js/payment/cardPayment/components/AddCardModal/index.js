@@ -123,11 +123,6 @@ const AddCardModal = ({ show, onClose }) => {
                                             );
                                         }
                                     }}
-                                    onBlur={(e) => {
-                                        stripeCardNumberValidation(
-                                            e.target.value.replace(" ", "")
-                                        );
-                                    }}
                                 />
                             </Col>
                         </Row>
@@ -155,13 +150,6 @@ const AddCardModal = ({ show, onClose }) => {
                                             setName("");
                                         }
                                     }}
-                                    onBlur={(e) => {
-                                        if (name == "") {
-                                            setNameValidation(true);
-                                        } else {
-                                            setNameValidation(false);
-                                        }
-                                    }}
                                 />
                             </Col>
                         </Row>
@@ -187,13 +175,6 @@ const AddCardModal = ({ show, onClose }) => {
                                         }}
                                         onChange={(e, dateString) => {
                                             setDate(dateString);
-                                        }}
-                                        onBlur={(e) => {
-                                            if (date == "") {
-                                                setDateValidation(true);
-                                            } else {
-                                                setDateValidation(false);
-                                            }
                                         }}
                                     />
                                 </Space>
@@ -230,13 +211,6 @@ const AddCardModal = ({ show, onClose }) => {
                                                 }
                                             } else if (e.target.value == "") {
                                                 setCvc("");
-                                            }
-                                        }}
-                                        onBlur={(e) => {
-                                            if (cvc.length < 3) {
-                                                setValidCvc(true);
-                                            } else {
-                                                setValidCvc(false);
                                             }
                                         }}
                                     />
