@@ -123,13 +123,11 @@ const LensType = ({
         let lenses = [];
         selectedLensType?.brands?.forEach((element) => {
             element?.collections?.forEach((lens) => {
-                
                 if (lens?.display_name) {
                     lenses.push(lens?.display_name);
                 } else {
                     lenses.push(lens?.title);
                 }
-                
             });
         });
         return lenses;
@@ -169,7 +167,44 @@ const LensType = ({
         }
     };
 
+    const resetMaterial = (e) => {
+        if (values?.lensType) {
+            const lensType = calculatorObj?.lens_types?.find(
+                (item) => item?.title === values?.lensType
+            );
+
+            let activeMaterials = [];
+            lensType?.brands?.forEach((item) => {
+                item?.collections?.forEach((val) => {
+                    if (val?.display_name) {
+                        if (val?.display_name == e?.target?.value) {
+                            activeMaterials = val?.lenses;
+                        }
+                    } else {
+                        if (val?.title == e?.target?.value) {
+                            activeMaterials = val?.lenses;
+                        }
+                    }
+                });
+            });
+
+            if (values?.lensMaterial) {
+                let isMaterialFound = true;
+
+                isMaterialFound = activeMaterials?.some(
+                    (item) =>
+                        item?.lens_material_title?.toLowerCase() ===
+                        values?.lensMaterial?.toLowerCase()
+                );
+                if (activeMaterials?.length > 0 && !isMaterialFound) {
+                    setFieldValue("lensMaterial", "");
+                }
+            }
+        }
+    };
+
     const handleBrandSelection = (e) => {
+        resetMaterial(e);
         handleChange(e);
         showAlert(e);
         if (values?.lensType === "PAL") {
