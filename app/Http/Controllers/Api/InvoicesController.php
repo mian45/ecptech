@@ -26,7 +26,7 @@ class InvoicesController extends Controller
         }
         $user_id = $request->userId;
         $invoices = Invoices::with('customer')->where('user_id',$user_id)->whereNot('status', 'discard')->latest()->take(10)->get();
-        return $this->sendResponse($invoices, 'Invoices List');
+        return $this->sendResponse($invoices, 'Invoices list get successfully');
     }
     
     public function saveInvoice(Request $request){
@@ -74,7 +74,7 @@ class InvoicesController extends Controller
       $invoice->save();
 
       if($invoice){
-        return $this->sendResponse($invoice, 'Invoice Created Successfully');
+        return $this->sendResponse($invoice, 'Invoice created successfully');
       }
 
       return $this->sendError('Something went wrong!');
@@ -124,7 +124,7 @@ class InvoicesController extends Controller
         $invoice = [];
        }
        
-       return $this->sendResponse($invoice, 'Invoice Data Get Successfully.');
+       return $this->sendResponse($invoice, 'Invoice data get successfully');
     }
 
     public function saveEditInvoice(Request $request){
@@ -148,13 +148,13 @@ class InvoicesController extends Controller
       if($invoice){
 
           if($invoice->status == 'discard'){
-            return $this->sendError('Cannot Update Discarded Invoice.');
+            return $this->sendError('Cannot update discarded invoice');
           }
        $a2 = json_encode($request->userState);
        $a1 = $invoice->user_state;
      
       if($a1 == $a2 && $invoice->name == $request->invoiceName){
-            return $this->sendResponse($invoice, 'No Update In Invoice');
+            return $this->sendResponse($invoice, 'No update in invoice');
       }else{
 
             $invoice->status = 'discard';
@@ -173,7 +173,7 @@ class InvoicesController extends Controller
             $newInvoice->save();
       
             if($newInvoice){
-              return $this->sendResponse($newInvoice, 'New Invoice Created Successfully.');
+              return $this->sendResponse($newInvoice, 'New invoice created successfully');
             }
 
         }
@@ -220,7 +220,7 @@ class InvoicesController extends Controller
                 ->where('email',$where_clouse['email']);
         })->where('user_id',$request->userId)->whereNot('status', 'discard')->get();
       }
-        return $this->sendResponse($invoices, 'Invoices List Get Successfully.');
+        return $this->sendResponse($invoices, 'Invoices list get successfully');
     }
 
 }

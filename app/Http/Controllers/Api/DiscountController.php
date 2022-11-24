@@ -103,7 +103,7 @@ class DiscountController extends Controller
         $success['status'] = $discount->status;
         $success['type'] = $discount->type;
         $success['created_at'] = $discount->created_at;
-        return $this->sendResponse($success, 'Discount Updated successfully');
+        return $this->sendResponse($success, 'Discount updated successfully');
 
         }
         return $this->sendError('Discount not found');
@@ -154,7 +154,7 @@ class DiscountController extends Controller
             $success['status'] = $discount->status;
             $success['type'] = $discount->type;
             $success['created_at'] = $discount->created_at;
-            return $this->sendResponse($success, 'Discount Status Changed Successfully');
+            return $this->sendResponse($success, 'Discount status changed successfully');
         }
         return $this->sendError('Discount not found',[],402);
     }

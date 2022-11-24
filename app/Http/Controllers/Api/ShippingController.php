@@ -31,7 +31,7 @@ class ShippingController extends Controller
             $success['name'] = $shipping->name;
             $success['value'] = $shipping->value;
 
-            return $this->sendResponse($success, 'Shipping Get Successfully.');
+            return $this->sendResponse($success, 'Shipping get successfully');
         }
 
         return $this->sendError('Shipping not found');
@@ -64,7 +64,7 @@ class ShippingController extends Controller
             $success['value'] = $shipping->value;
 
 
-            return $this->sendResponse($success, 'Shipping Added Successfully.');
+            return $this->sendResponse($success, 'Shipping added successfully');
         }
 
 
@@ -88,7 +88,7 @@ class ShippingController extends Controller
             $shipping->delete();
             $success['id'] = $shipping->id;
 
-            return $this->sendResponse($success, 'Shipping Deleted Successfully.');
+            return $this->sendResponse($success, 'Shipping deleted successfully');
         }
 
         return $this->sendError('Shipping not found');

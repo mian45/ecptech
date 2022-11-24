@@ -48,7 +48,7 @@ class VisionPlanController extends Controller
             ['status' => $status]
         );
         if($permission){
-            return $this->sendResponse($permission, 'Successfully updated User Permission.');
+            return $this->sendResponse($permission, 'Successfully updated user permission');
         }
         return $this->sendError('Something went wrong!');
     }
@@ -72,7 +72,7 @@ class VisionPlanController extends Controller
         ->select('questions.id','questions.vision_plan_id','questions.title',DB::raw('IFNULL(setting.status,0) as status'),DB::raw('IFNULL(setting.optional,0) as optional'))
         ->get(); 
 
-        return $this->sendResponse($questions, 'Questions List Get Successfully.');
+        return $this->sendResponse($questions, 'Questions list get successfully');
     }
 
     public function updatePlanQuestionPermission(Request $request){
@@ -101,7 +101,7 @@ class VisionPlanController extends Controller
             $i++;
         }
         
-        return $this->sendResponse($permission, 'Successfully Updated User Permission.');
+        return $this->sendResponse($permission, 'Successfully updated user permission.');
         
     }
 }

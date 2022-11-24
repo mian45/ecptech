@@ -22,7 +22,7 @@ class PrescriptionController extends Controller
 
         $user_id = $request->user_id;
         $eye_prescription = Prescription::where('user_id',$user_id)->get();
-        return $this->sendResponse($eye_prescription, 'Eye Prescription Data Get Successfully.');
+        return $this->sendResponse($eye_prescription, 'Eye prescription data get successfully');
     }
     public function eyePrescriptions(Request $request){
         $prescriptions = $request->eye_prescriptions;
@@ -54,7 +54,7 @@ class PrescriptionController extends Controller
                 
             }
             $eye_prescription = Prescription::where('user_id',$user_id)->get();
-            return $this->sendResponse($eye_prescription, 'Eye Prescription Updated successfully');
+            return $this->sendResponse($eye_prescription, 'Eye prescription updated successfully');
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }               
@@ -97,7 +97,7 @@ class PrescriptionController extends Controller
                     ]
                 ]
             ];
-        return $this->sendResponse($success, 'Eye Prescription Calculater');   
+        return $this->sendResponse($success, 'Eye erescription calculater');   
     }
 
     public function getEyePrescriptions(Request $request){
@@ -127,6 +127,6 @@ class PrescriptionController extends Controller
             'left_eye_sph'   => $sphere_to,
             'left_eye_cyl'   => $cylinder_to
         ];
-        return $this->sendResponse($eye_prescription, 'Eye Prescription Data Get Successfully.');   
+        return $this->sendResponse($eye_prescription, 'Eye prescription data get successfully');   
     }
 }
