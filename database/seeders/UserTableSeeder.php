@@ -45,9 +45,5 @@ class UserTableSeeder extends Seeder
             )
         ));
 
-        $users = User::all();
-        foreach($users as $user){
-            event(new \App\Events\AddUserCollectionPermission($user));
-        }
     }
 }

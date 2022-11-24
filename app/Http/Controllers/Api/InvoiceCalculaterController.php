@@ -209,6 +209,11 @@ class InvoiceCalculaterController extends Controller
                         $row++;
                     }
                     fclose($handle);
+
+                    event(new \App\Events\AddUserCollectionPermission(auth()->user));
+                    event(new \App\Events\AddUserAddonPermission(auth()->user));
+                    event(new \App\Events\AddUserLenseMaterialPermission(auth()->user));
+                     
                     DB::commit();
 
                     return $this->sendResponse([], 'CSV data uploaded');

@@ -74,6 +74,13 @@ class User extends Authenticatable
     {
         static::created(function ($user) {
             event(new \App\Events\AddUserCollectionPermission($user));
+            event(new \App\Events\AddUserAddonPermission($user));
+            event(new \App\Events\AddUserLenseMaterialPermission($user));
         });
     }
 }
+
+//Empty brand,collection and lense material permissions
+//Testing first with New user
+
+//Myself test permission for uploading file also after emptying them

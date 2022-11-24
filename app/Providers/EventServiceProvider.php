@@ -13,6 +13,9 @@ use App\Models\BrandPermission;
 use App\Models\CollectionPermission;
 use App\Models\Brand;
 use App\Models\Collection;
+use App\Models\LensMaterial;
+use App\Models\AddOn;
+use App\Models\AddonType;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -111,6 +114,62 @@ class EventServiceProvider extends ServiceProvider
                 }
             }
       });
+
+        \Event::listen('App\Events\AddUserLenseMaterialPermission', function($event) {
+            $user = $event->user;
+            $lense_materials = LensMaterial::all();
+            foreach($lense_materials as $lm){
+
+                $setting = UserLenseMaterialSetting::updateOrCreate(
+                    ['user_id' => $user->id, 'lens_material_id' => $lm->id],
+                    ['status' => 'active']
+                );
+                
+            } 
+        });
+
+        \Event::listen('App\Events\AddUserAddonPermission', function($event) {
+
+            $user = $event->user;
+            $addon_types = AddonType::all();
+            foreach($addon_types as $addon_type){
+                
+                $addons = AddOn::where('addon_type_id',$addon_type->id)->get();
+            
+                foreach($addons as $addon){
+
+                    if(
+                        (
+                            strpos($addon_type->title, 'Photochrom') !== false AND 
+                            (
+                                strpos($addon->title, 'Signature') !== false 
+                                OR strpos($addon->title, 'XTRActive') !== false
+                            )                          
+                        )
+                        OR
+                        (
+                            strpos($addon_type->title, 'Anti Reflective') !== false AND 
+                            (
+                                strpos($addon->title, 'Glacier') !== false 
+                                OR strpos($addon->title, 'Sunshield') !== false
+                            )                          
+                        )
+                        OR
+                        (
+                            strpos($addon_type->title, 'Sunglasses') !== false                 
+                        )
+
+                    ){
+    
+                        $setting = UserAddOnSetting::updateOrCreate(
+                            ['user_id' => $user->id, 'addon_id' => $addon->id],
+                            ['status' => 'active']
+                        );
+                    }
+                }
+
+            }
+        });
     }
 
     /**
