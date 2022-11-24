@@ -145,6 +145,6 @@ class ProfitComparisonController extends Controller
             'end_date' => $end,
             'range' => $sum
         ]; 
-        return $this->sendResponse($data, 'Profit Comparison');
+        return $this->sendResponse($data, 'Profit Comparison Data Get Successfully.');
     }
 }

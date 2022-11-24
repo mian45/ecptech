@@ -62,7 +62,7 @@ class ReminderController extends Controller
 
         $reminder->save();
         $success['id'] = $reminder->id;
-        return $this->sendResponse($success, 'Reminder add successfully');
+        return $this->sendResponse($success, 'Reminder added successfully.');
 
     }
 
@@ -96,7 +96,7 @@ class ReminderController extends Controller
 
             $reminder->save();
             $success['id'] = $reminder->id;
-            return $this->sendResponse($success, 'Reminder edit successfully');
+            return $this->sendResponse($success, 'Reminder Updated Successfully.');
         }
 
         return $this->sendError('Reminder not found');
@@ -121,7 +121,7 @@ class ReminderController extends Controller
             $reminder->save();
             $success['id'] = $reminder->id;
             $success['is_active'] = $reminder->is_active;
-            return $this->sendResponse($success, 'Reminder update successfully');
+            return $this->sendResponse($success, 'Reminder Update Successfully');
         }
 
         return $this->sendError('Reminder not found');
@@ -144,7 +144,7 @@ class ReminderController extends Controller
             $reminder->delete();
             $success['id'] = $reminder->id;
 
-            return $this->sendResponse($success, 'Reminder delete successfully');
+            return $this->sendResponse($success, 'Reminder Deleted Successfully');
         }
 
         return $this->sendError('Reminder not found');
@@ -154,6 +154,6 @@ class ReminderController extends Controller
        
     $timezone  = Timezone::select('id','name')->get();
 
-    return $this->sendResponse($timezone, 'Time zone get successfully');
+    return $this->sendResponse($timezone, 'Time Zone Get Successfully.');
     }
 }

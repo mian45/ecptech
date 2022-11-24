@@ -74,7 +74,7 @@ class InvoicesController extends Controller
       $invoice->save();
 
       if($invoice){
-        return $this->sendResponse($invoice, 'Invoice Successfully Save.');
+        return $this->sendResponse($invoice, 'Invoice Created Successfully');
       }
 
       return $this->sendError('Something went wrong!');
@@ -124,7 +124,7 @@ class InvoicesController extends Controller
         $invoice = [];
        }
        
-       return $this->sendResponse($invoice, 'Invoice data');
+       return $this->sendResponse($invoice, 'Invoice Data Get Successfully.');
     }
 
     public function saveEditInvoice(Request $request){
@@ -148,13 +148,13 @@ class InvoicesController extends Controller
       if($invoice){
 
           if($invoice->status == 'discard'){
-            return $this->sendError('cannot edit discard invoice');
+            return $this->sendError('cannot update discard invoice');
           }
        $a2 = json_encode($request->userState);
        $a1 = $invoice->user_state;
      
       if($a1 == $a2 && $invoice->name == $request->invoiceName){
-            return $this->sendResponse($invoice, 'No change in invoice');
+            return $this->sendResponse($invoice, 'No update in invoice');
       }else{
 
             $invoice->status = 'discard';
@@ -220,7 +220,7 @@ class InvoicesController extends Controller
                 ->where('email',$where_clouse['email']);
         })->where('user_id',$request->userId)->whereNot('status', 'discard')->get();
       }
-        return $this->sendResponse($invoices, 'Invoices List');
+        return $this->sendResponse($invoices, 'Invoices List Get Successfully');
     }
 
 }

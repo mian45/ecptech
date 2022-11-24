@@ -50,7 +50,7 @@ class SettingController extends Controller
         }])->selectRaw("MIN(id) AS id,title")->groupby('title')->get();
  
 
-       return $this->sendResponse($data, 'Lense data');
+       return $this->sendResponse($data, 'Lense Data Get Successfully.');
     }
     
     public function updateLenseSettings(Request $request){
@@ -135,7 +135,7 @@ class SettingController extends Controller
             
         }
 
-        return $this->sendResponse($permission, 'Lense setting updated successfully');
+        return $this->sendResponse($permission, 'Lense Setting Updated Successfully.');
         
     }
     public function getLenseMaterial(Request $request){
@@ -147,7 +147,7 @@ class SettingController extends Controller
                             ->orderBy('lens_materials.id')
                             ->get();
 
-        return $this->sendResponse($lense_materials, 'Lense Materials');
+        return $this->sendResponse($lense_materials, 'Lense Materials Get Successfully.');
 
     }
 
@@ -178,7 +178,7 @@ class SettingController extends Controller
             
         }   
       
-        return $this->sendResponse($permission, 'Lense material Updated');
+        return $this->sendResponse($permission, 'Lense Material Updated Successfully.');
 
     }
     
@@ -214,7 +214,7 @@ class SettingController extends Controller
                 );
         
            
-                return $this->sendResponse($collectionPermission, 'Name and price updated successfully');
+                return $this->sendResponse($collectionPermission, 'Name And Price Updated Successfully.');
     }
         
     public function getAddons(Request $request){
@@ -257,7 +257,7 @@ class SettingController extends Controller
             $i++;
         }
 
-        return $this->sendResponse($permission, 'AddOn status Updated');
+        return $this->sendResponse($permission, 'Addon Status Updated Successfully.');
 
     }
 

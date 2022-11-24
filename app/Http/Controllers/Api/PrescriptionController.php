@@ -22,7 +22,7 @@ class PrescriptionController extends Controller
 
         $user_id = $request->user_id;
         $eye_prescription = Prescription::where('user_id',$user_id)->get();
-        return $this->sendResponse($eye_prescription, 'Eye Prescription data');
+        return $this->sendResponse($eye_prescription, 'Eye Prescription Data Get Successfully.');
     }
     public function eyePrescriptions(Request $request){
         $prescriptions = $request->eye_prescriptions;
@@ -127,6 +127,6 @@ class PrescriptionController extends Controller
             'left_eye_sph'   => $sphere_to,
             'left_eye_cyl'   => $cylinder_to
         ];
-        return $this->sendResponse($eye_prescription, 'Eye Prescription data');   
+        return $this->sendResponse($eye_prescription, 'Eye Prescription Data Get Successfully.');   
     }
 }

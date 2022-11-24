@@ -104,7 +104,7 @@ class UserController extends Controller
         $client_card->save();
 
         if($client_card){
-            return $this->sendResponse([], 'Card Added Succesfully');
+            return $this->sendResponse([], 'Card Added Successfully.');
         }
 
         return $this->sendError('Something went wrong!');
@@ -116,7 +116,7 @@ class UserController extends Controller
         $client_card = Client::select('id','card_name','card_no','card_expiry')->where('user_id',auth()->user()->id)->first();
         
         if($client_card){
-            return $this->sendResponse($client_card, 'Card get successfully');
+            return $this->sendResponse($client_card, 'Card Get Successfully.');
         }
 
         return $this->sendError('Discount not found');

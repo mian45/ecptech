@@ -86,7 +86,7 @@ class InvoiceCalculaterController extends Controller
                                             ->where('setting.status','active')
                                             ->get();
 
-        return $this->sendResponse($data, 'Calculater Data');
+        return $this->sendResponse($data, 'Calculater Data Get Successfully.');
     }
 
     public function storeCSVData(Request $request){
@@ -211,7 +211,7 @@ class InvoiceCalculaterController extends Controller
                     fclose($handle);
                     DB::commit();
 
-                    return $this->sendResponse([], 'CSV data uploaded');
+                    return $this->sendResponse([], 'CSV data uploaded Successfully.');
                 }catch(\Exception $e){
                     DB::rollback();
                     return $this->sendError($e->getMessage());
@@ -276,7 +276,7 @@ class InvoiceCalculaterController extends Controller
                     fclose($handle);
                     DB::commit();
 
-                    return $this->sendResponse([], 'Addon CSV data uploaded');
+                    return $this->sendResponse([], 'Addon CSV data uploaded Successfully.');
                 }catch(\Exception $e){
                     DB::rollback();
                     return $this->sendError($e->getMessage());
@@ -361,7 +361,7 @@ class InvoiceCalculaterController extends Controller
                     }
                     fclose($handle);
                     DB::commit();
-                    return $this->sendResponse([], 'Code CSV data uploaded');
+                    return $this->sendResponse([], 'Code CSV data uploaded Successfully.');
                 }catch(\Exception $e){
                     DB::rollback();
                     return $this->sendError($e->getMessage());
@@ -415,7 +415,7 @@ class InvoiceCalculaterController extends Controller
                     }])->select('id','title')->get();
 
 
-        return $this->sendResponse($data, 'Calculater Data');
+        return $this->sendResponse($data, 'Calculater Data Get Successfully.');
 
     }
 
@@ -464,6 +464,6 @@ class InvoiceCalculaterController extends Controller
                     }]);
                }])->select('id','title','vision_plan_id')->where('vision_plan_id',request()->vision_plan_id)->get();
         
-        return $this->sendResponse($data, 'Collections');
+        return $this->sendResponse($data, 'Collections Get Successfully.');
     }
 }

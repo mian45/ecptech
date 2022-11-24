@@ -22,7 +22,7 @@ class StaffController extends Controller
             throw (new ValidationException($validator));
         }
       $staff = Staff::select('id','name')->where('user_id',$request->userId)->get();
-        return $this->sendResponse($staff, 'Staff list get successfully');
+        return $this->sendResponse($staff, 'Staff list Get Successfully');
 
     }
 
@@ -46,7 +46,7 @@ class StaffController extends Controller
         ])->exists();
         
         if ($staffExist) {
-            return response()->json(['message'=>"Staff name already exists"], 422);
+            return response()->json(['message'=>"Staff Name Already Exists"], 422);
         }
 
         $staff = new Staff;
@@ -56,7 +56,7 @@ class StaffController extends Controller
 
         $success['id'] =  $staff->id;
         $success['name'] =  $staff->name;
-        return $this->sendResponse($success, 'Staff add successfully');
+        return $this->sendResponse($success, 'Staff Added Successfully.');
 
     }
 
@@ -83,7 +83,7 @@ class StaffController extends Controller
         ])->exists();
 
         if ($staffExist) {
-            return response()->json(['message'=>"Staff name already exists"], 422);
+            return response()->json(['message'=>"Staff Name Already Exists"], 422);
         }
 
         $staff = Staff::find($id);
@@ -93,7 +93,7 @@ class StaffController extends Controller
             $success['id'] =  $staff->id;
             $success['name'] =  $staff->name;
 
-            return $this->sendResponse($success, 'Staff update successfully.');
+            return $this->sendResponse($success, 'Staff Updated Successfully.');
         }
 
         return $this->sendError('Staff not found');
@@ -116,7 +116,7 @@ class StaffController extends Controller
             $staff->delete();
             $success['id'] = $staff->id;
 
-            return $this->sendResponse($success, 'Staff delete successfully');
+            return $this->sendResponse($success, 'Staff Deleted Successfully');
         }
 
         return $this->sendError('Staff not found');

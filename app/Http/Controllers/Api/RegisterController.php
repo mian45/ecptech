@@ -387,6 +387,6 @@ class RegisterController extends Controller
         
         
         
-                return $this->sendResponse($success, 'User Details');
+                return $this->sendResponse($success, 'User Get Details Successfully.');
             }
 }

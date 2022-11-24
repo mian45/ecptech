@@ -58,7 +58,7 @@ class DashboardController extends Controller
         $data['orders']['total_paid_orders'] = $total_paid_orders;
         $data['orders']['last_range_diff'] = $previous_paid_orders_precent."%";
 
-        return $this->sendResponse($data, 'Data Recived');
+        return $this->sendResponse($data, 'Data Received Successfully.');
 
     }
 
@@ -122,7 +122,7 @@ class DashboardController extends Controller
         $data['invoice']['capture_rate'] = $capture_rate;
         $data['invoice']['unpaid'] = $total_unpaid_invoices;
 
-        return $this->sendResponse($data, 'Invoice Data');
+        return $this->sendResponse($data, 'Invoice Data Get Successfully');
 
        
     }
