@@ -59,7 +59,7 @@ class TaxController extends Controller
             $success['name'] = $tax->name;
             $success['value'] = $tax->value;
             $success['status'] = $tax->status;
-            return $this->sendResponse($success, 'Tax added successfully.');
+            return $this->sendResponse($success, 'Tax added successfully');
         }
         return $this->sendError('Something went wrong!');
 
@@ -154,7 +154,7 @@ class TaxController extends Controller
             $tax->delete();
             $success['id'] = $tax->id;
 
-            return $this->sendResponse($success, 'Tax deleted successfully.');
+            return $this->sendResponse($success, 'Tax deleted successfully');
         }
 
         return $this->sendError('Tax not found');

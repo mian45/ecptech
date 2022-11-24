@@ -122,7 +122,7 @@ class DashboardController extends Controller
         $data['invoice']['capture_rate'] = $capture_rate;
         $data['invoice']['unpaid'] = $total_unpaid_invoices;
 
-        return $this->sendResponse($data, 'Invoice data get successfully.');
+        return $this->sendResponse($data, 'Invoice data get successfully');
 
        
     }

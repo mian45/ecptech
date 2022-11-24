@@ -97,7 +97,7 @@ class PrescriptionController extends Controller
                     ]
                 ]
             ];
-        return $this->sendResponse($success, 'Eye erescription calculater');   
+        return $this->sendResponse($success, 'Eye prescription calculater');   
     }
 
     public function getEyePrescriptions(Request $request){

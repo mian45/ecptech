@@ -415,7 +415,7 @@ class InvoiceCalculaterController extends Controller
                     }])->select('id','title')->get();
 
 
-        return $this->sendResponse($data, 'Calculater data get successfully.');
+        return $this->sendResponse($data, 'Calculater data get successfully');
 
     }
 

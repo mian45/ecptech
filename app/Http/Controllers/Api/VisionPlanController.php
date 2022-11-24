@@ -101,7 +101,7 @@ class VisionPlanController extends Controller
             $i++;
         }
         
-        return $this->sendResponse($permission, 'Successfully updated user permission.');
+        return $this->sendResponse($permission, 'Successfully updated user permission');
         
     }
 }
