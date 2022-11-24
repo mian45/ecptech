@@ -80,7 +80,4 @@ class User extends Authenticatable
     }
 }
 
-//Empty brand,collection and lense material permissions
-//Testing first with New user
 
-//Myself test permission for uploading file also after emptying them
