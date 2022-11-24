@@ -130,7 +130,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
             }),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref("password"), null], "Passwords don't match")
-            .required("Confirm Password is required"),
+            .required("Please enter a valid password"),
     });
     return (
         <div className={classes["container"]}>
@@ -141,7 +141,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                 onSubmit={handleClick}
                 enableReinitialize={true}
             >
-                {({ values, handleChange, handleSubmit, handleBlur }) => {
+                {({ values, handleChange, handleSubmit }) => {
                     return (
                         <form onSubmit={handleSubmit} autoComplete="off">
                             <Row
@@ -165,7 +165,6 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         className={classes["input"]}
                                         placeholder="Enter email"
                                         onChange={handleChange}
-                                        onBlur={handleBlur}
                                         disabled={!isEdit && staffUser?.id}
                                     />
                                 </Col>
@@ -189,7 +188,6 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                                 : "Enter Password"
                                         }
                                         onChange={handleChange}
-                                        onBlur={handleBlur}
                                         disabled={!isEdit && staffUser?.id}
                                     />
                                 </Col>
@@ -239,7 +237,6 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         name="confirmPassword"
                                         placeholder="Confirm Password"
                                         onChange={handleChange}
-                                        onBlur={handleBlur}
                                         disabled={!isEdit && staffUser?.id}
                                     />
                                 </Col>
