@@ -84,6 +84,9 @@ const LensType = ({
             );
             validationObject.lensTypeValue =
                 Yup.string().required("Brand is required");
+            if (values?.isAntireflective === "No") {
+                await setFieldValue("isAntireflective", "");
+            }
             if (
                 !values?.isAntireflective ||
                 values?.isAntireflective === "No"
