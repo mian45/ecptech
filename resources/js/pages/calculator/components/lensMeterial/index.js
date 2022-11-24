@@ -80,7 +80,6 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
                                 active={values?.lensMaterial}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleLensMererialChange}
                                 value={values?.lensMaterial}
                                 id="lensMaterial"
