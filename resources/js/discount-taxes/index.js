@@ -94,6 +94,7 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 getDiscount();
+                setDiscountId(null);
                 setShowDeleteDiscount(false);
             })
             .catch(function (error) {
@@ -181,6 +182,7 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                setIdState(null);
                 setShowDeleteTaxes(false);
             })
             .catch(function (error) {
