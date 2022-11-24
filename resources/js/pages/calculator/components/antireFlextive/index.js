@@ -45,12 +45,15 @@ const AntireFlextive = ({
     const handleAntireflectiveChange = (e) => {
         handleChange(e);
         if (
-            e?.target?.value === "Yes" &&
-            !data?.find((ques) => ques.question === "Antireflective Properties")
-                .optional
+            (e?.target?.value === "Yes" &&
+                !data?.find(
+                    (ques) => ques.question === "Antireflective Properties"
+                ).optional) ||
+            (e?.target?.value === "Yes" && values?.lensType === "NVF")
         ) {
-            const antireflectiveType =
-                Yup.string().required("Option is required");
+            const antireflectiveType = Yup.string().required(
+                "Antireflective type is required"
+            );
             setCalValidations({
                 ...calValidations,
                 antireflectiveType,
@@ -71,7 +74,7 @@ const AntireFlextive = ({
 
     return (
         <>
-            {antireflectiveVisibility && (
+            {(antireflectiveVisibility || values?.lensType === "NVF") && (
                 <Row className={classes["container"]}>
                     {" "}
                     <Col sx={0} sm={0} md={5}>
@@ -99,11 +102,15 @@ const AntireFlextive = ({
                                     active={values?.isAntireflective === "Yes"}
                                 />
 
-                                <CustomRadio
-                                    label={"No"}
-                                    value={"No"}
-                                    active={values?.isAntireflective === "No"}
-                                />
+                                {values?.lensType !== "NVF" && (
+                                    <CustomRadio
+                                        label={"No"}
+                                        value={"No"}
+                                        active={
+                                            values?.isAntireflective === "No"
+                                        }
+                                    />
+                                )}
                             </Radio.Group>
                             <FormikError name={"isAntireflective"} />
                             {error && (
