@@ -14,23 +14,18 @@ import CustomLoader from "../components/customLoader";
 import DeleteModal from "../components/deleteModal/index";
 const label = { inputProps: { "aria-label": "Switch demo" } };
 const DiscountTaxes = (props) => {
+    const token = localStorage.getItem("access_token");
     const [discountName, setDiscountName] = useState("");
     const [discountTax, setDiscountTax] = useState("");
     const [discountId, setDiscountId] = useState(null);
-    const [discountArray, setDiscountArray] = useState([]);
     let [discounts, setDiscounts] = useState([]);
-    const token = localStorage.getItem("access_token");
-
+    const [discountType, setDiscountType] = useState("percentage");
     const [taxName, setTaxName] = useState("Sales Tax");
     const [stateSetting, setStateSetting] = useState("");
     const [taxValue, setTaxValue] = useState("");
     let [tax, setTaxes] = useState([]);
     const [taxState, setTaxState] = useState([]);
     const [idState, setIdState] = useState(null);
-
-    const [shippingName, setShippingName] = useState("");
-    const [shippingState, setShippingState] = useState("");
-    const [shippingArray, setShippingArray] = useState([]);
     let [shipping, setShipping] = useState();
 
     const [showDeleteTaxes, setShowDeleteTaxes] = useState(false);
@@ -58,6 +53,7 @@ const DiscountTaxes = (props) => {
         data.append("userId", props.userID);
         data.append("name", discountName);
         data.append("value", new Number(discountTax));
+        data.append("type", discountType);
         let config = {
             method: "post",
             url: `${process.env.MIX_REACT_APP_URL}/api/add-discount`,
@@ -98,6 +94,7 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 getDiscount();
+                setDiscountId(null);
                 setShowDeleteDiscount(false);
             })
             .catch(function (error) {
@@ -185,55 +182,13 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                setIdState(null);
                 setShowDeleteTaxes(false);
             })
             .catch(function (error) {
                 console.log(error);
             });
     };
-
-    const addShipping = () => {
-        let data = new FormData();
-        data.append("userId", props.userID);
-        data.append("name", shipping.name);
-        data.append("value", shipping.value);
-
-        let config = {
-            method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/add-shipping`,
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            data: data,
-        };
-
-        axios(config)
-            .then(function (response) {})
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
-
-    const deleteShipping = (id) => {
-        let data = new FormData();
-        data.append("id", id);
-
-        let config = {
-            method: "post",
-            url: `${process.env.MIX_REACT_APP_URL}/api/delete-shipping`,
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            data: data,
-        };
-
-        axios(config)
-            .then(function (response) {})
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
-
     const getState = () => {
         let data = new FormData();
         let config = {
@@ -260,6 +215,7 @@ const DiscountTaxes = (props) => {
         data.append("id", discountId);
         data.append("name", discountName);
         data.append("value", new Number(discountTax));
+        data.append("type", discountType);
         var config = {
             method: "post",
             url: `${process.env.MIX_REACT_APP_URL}/api/edit-discount`,
@@ -297,6 +253,7 @@ const DiscountTaxes = (props) => {
         setDiscountName(value.name);
         setDiscountTax(value.value);
         setDiscountId(value.id);
+        setDiscountType(value.type);
     };
 
     const handleDelete = (id) => {
@@ -324,38 +281,6 @@ const DiscountTaxes = (props) => {
         setDeleteTaxesId(id);
         setShowDeleteTaxes(true);
     };
-    const handleShippingSubmit = (e) => {
-        e.preventDefault();
-        if (editId) {
-            shipping.name = shippingName;
-            shipping.value = shippingState;
-            setShipping(shipping);
-            setEditId("");
-            setShippingName("");
-            setShippingState("");
-            addShipping();
-        } else {
-            setShipping({ name: shippingName, value: shippingState });
-            addShipping();
-        }
-    };
-
-    const handlUpdateShipping = (value) => {
-        setShippingName(value.name);
-        setShippingState(value.value);
-        setEditId(value.id);
-        addShipping();
-    };
-
-    const handleDeleteShipping = (id) => {
-        // deleteShipping(id);
-        setShippingArray(
-            [...shippingArray].filter((discountobj) => {
-                return discountobj.id !== id;
-            })
-        );
-    };
-
     const getDiscount = () => {
         setLoading(true);
         let data = new FormData();
@@ -480,6 +405,45 @@ const DiscountTaxes = (props) => {
                 console.log(error);
             });
     };
+    const handleChangetype = (value) => {
+        setDiscountType(value);
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(discountTax)) {
+            if (discountTax > 100) {
+                setDiscountTax(100);
+            } else if (
+                discountTax > 100 &&
+                discountTax >= 0 &&
+                discountType === "percentage"
+            ) {
+                setDiscountTax(discountTax);
+            } else if (discountType === "amount" && discountTax) {
+                setDiscountTax(discountTax);
+            } else if (!discountTax) {
+                setDiscountTax("");
+            }
+        } else if (!e.target.value) {
+            setDiscountTax("");
+        }
+    };
+    const onChangeDiscountValue = (e) => {
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value)) {
+            if (
+                e.target.value <= 100 &&
+                e.target.value >= 0 &&
+                discountType === "percentage"
+            ) {
+                setDiscountTax(e.target.value);
+            } else if (discountType === "amount" && e.target.value) {
+                setDiscountTax(e.target.value);
+            } else if (!e.target.value) {
+                setDiscountTax("");
+            }
+        } else if (!e.target.value) {
+            setDiscountTax("");
+        }
+    };
     return loading == true ? (
         <CustomLoader buttonBool={false} />
     ) : (
@@ -582,66 +546,62 @@ const DiscountTaxes = (props) => {
                                                             <Col xs={24}>
                                                                 <p className="input-title">
                                                                     Discount
-                                                                    Value (%)
                                                                 </p>
                                                             </Col>
                                                             <Col xs={24}>
-                                                                <input
-                                                                    type={
-                                                                        "text"
-                                                                    }
-                                                                    placeholder="Discount Value"
-                                                                    value={`${discountTax}`}
-                                                                    onChange={(
-                                                                        e
-                                                                    ) => {
-                                                                        const regix =
-                                                                            new RegExp(
-                                                                                "^[0-9]*[/.]?([0-9]*)?$"
-                                                                            );
-
-                                                                        if (
-                                                                            regix.test(
-                                                                                e
-                                                                                    .target
-                                                                                    .value
-                                                                            )
-                                                                        ) {
-                                                                            if (
-                                                                                e
-                                                                                    .target
-                                                                                    .value <=
-                                                                                    100 &&
-                                                                                e
-                                                                                    .target
-                                                                                    .value >=
-                                                                                    0
-                                                                            ) {
-                                                                                setDiscountTax(
-                                                                                    e
-                                                                                        .target
-                                                                                        .value
-                                                                                );
-                                                                            } else if (
-                                                                                !e
-                                                                                    .target
-                                                                                    .value
-                                                                            ) {
-                                                                                setDiscountTax(
-                                                                                    ""
-                                                                                );
+                                                                <Row justify="start">
+                                                                    <Col
+                                                                        xs={14}
+                                                                        md={14}
+                                                                    >
+                                                                        {" "}
+                                                                        <input
+                                                                            type={
+                                                                                "text"
                                                                             }
-                                                                        } else if (
-                                                                            !e
-                                                                                .target
-                                                                                .value
-                                                                        ) {
-                                                                            setDiscountTax(
-                                                                                ""
-                                                                            );
-                                                                        }
-                                                                    }}
-                                                                />
+                                                                            className="input-discount"
+                                                                            placeholder="Discount Value"
+                                                                            value={`${discountTax}`}
+                                                                            onChange={
+                                                                                onChangeDiscountValue
+                                                                            }
+                                                                        />
+                                                                    </Col>
+                                                                    <Col
+                                                                        xs={9}
+                                                                        md={6}
+                                                                    >
+                                                                        {" "}
+                                                                        <Select
+                                                                            className="select-width"
+                                                                            defaultValue="Select"
+                                                                            onChange={
+                                                                                handleChangetype
+                                                                            }
+                                                                            value={
+                                                                                discountType ||
+                                                                                "Select"
+                                                                            }
+                                                                        >
+                                                                            <Option
+                                                                                className="ant-select-item-option-content"
+                                                                                value={
+                                                                                    "percentage"
+                                                                                }
+                                                                            >
+                                                                                %
+                                                                            </Option>
+                                                                            <Option
+                                                                                className="ant-select-item-option-content"
+                                                                                value={
+                                                                                    "amount"
+                                                                                }
+                                                                            >
+                                                                                $
+                                                                            </Option>
+                                                                        </Select>
+                                                                    </Col>
+                                                                </Row>
                                                             </Col>
                                                         </Row>
                                                     </Col>
@@ -760,7 +720,10 @@ const DiscountTaxes = (props) => {
                                                                                     {
                                                                                         dis.value
                                                                                     }{" "}
-                                                                                    %
+                                                                                    {dis.type ==
+                                                                                    "percentage"
+                                                                                        ? "%"
+                                                                                        : "$"}
                                                                                 </td>
                                                                                 <td className="discount-col-3">
                                                                                     <img
@@ -1068,6 +1031,7 @@ const DiscountTaxes = (props) => {
                                                                                 {
                                                                                     obj.value
                                                                                 }
+
                                                                                 %
                                                                             </td>
                                                                             <td className="col-4 custom-tax-col-3">
