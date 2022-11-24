@@ -117,25 +117,9 @@ const InvoiceTableActions = ({ data }) => {
                         }
                     }
                 };
-                if (item?.title === "Bifocal") {
-                    if (val?.title !== "Aspherical/Spherical") {
-                        setCollectionId();
-                    } else {
-                        if (val?.lense_type_title === "biofocal") {
-                            setCollectionId();
-                        }
-                    }
-                } else if (item?.title === "Trifocal") {
-                    if (val?.title !== "Aspherical/Spherical") {
-                        setCollectionId();
-                    } else {
-                        if (val?.lense_type_title === null) {
-                            setCollectionId();
-                        }
-                    }
-                } else {
-                    setCollectionId();
-                }
+                
+                setCollectionId();
+                
             });
         });
         const payload = {

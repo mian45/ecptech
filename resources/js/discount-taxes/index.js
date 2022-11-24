@@ -45,7 +45,7 @@ const DiscountTaxes = (props) => {
         getDiscount();
         getTaxes();
         getShipping();
-    }, []);
+    }, [props.userID]);
 
     const addDiscount = () => {
         setDiscountButtonLoader(true);
@@ -699,7 +699,6 @@ const DiscountTaxes = (props) => {
                                                                         Discount
                                                                         Value
                                                                     </th>
-
                                                                     <th></th>
                                                                 </tr>
                                                             )}

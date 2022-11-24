@@ -7,7 +7,7 @@ import editIcon from "../../../../../../../images/edit.png";
 import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-import { Row, Col } from "antd"
+import { Row, Col } from "antd";
 const Addons = ({ userId }) => {
     const [addonsList, setAddonsList] = useState([]);
     const [changedAddOnList, setChangedAddOnList] = useState([]);
@@ -44,7 +44,7 @@ const Addons = ({ userId }) => {
             }
         };
         getLenses();
-    }, []);
+    }, [userId]);
 
     const submitLensesData = async () => {
         try {
@@ -90,7 +90,8 @@ const Addons = ({ userId }) => {
                         onClick={submitLensesData}
                     >
                         Save
-                    </button></Col>
+                    </button>
+                </Col>
             </Row>
         </>
     );
@@ -220,10 +221,12 @@ export const CollectionSlot = ({
                     className={classes["collection-edit-container"]}
                     id={collection?.title}
                 >
-                    <Col xs={24} className={classes["collection-edit-header-slot"]}>
-                        <Row className={classes['row-box']}>
+                    <Col
+                        xs={24}
+                        className={classes["collection-edit-header-slot"]}
+                    >
+                        <Row className={classes["row-box"]}>
                             <Col xs={2}>
-
                                 <CustomCheckbox
                                     label={""}
                                     defaultChecked={
@@ -235,12 +238,16 @@ export const CollectionSlot = ({
                                         handleCheckbox(value, collection);
                                     }}
                                     containerClass={classes["checkbox"]}
-                                /> </Col>
-                            <Col xs={17} className={classes["edit-content-title"]}>
+                                />{" "}
+                            </Col>
+                            <Col
+                                xs={17}
+                                className={classes["edit-content-title"]}
+                            >
                                 {collection?.title || ""}
                             </Col>
 
-                            <Col xs={3} className={classes['edit-tick']}>
+                            <Col xs={3} className={classes["edit-tick"]}>
                                 <img
                                     src={tickIcon}
                                     alt={"icon"}
@@ -249,7 +256,6 @@ export const CollectionSlot = ({
                                 />
                             </Col>
                         </Row>
-
                     </Col>{" "}
                     <Row className={classes["edit-slot-sub-wrapper"]}>
                         <Col xs={2}></Col>
@@ -287,7 +293,8 @@ export const CollectionSlot = ({
                                         );
                                     }
                                 }}
-                            /></Col>
+                            />
+                        </Col>
                     </Row>
                 </Row>
             ) : (
@@ -295,9 +302,8 @@ export const CollectionSlot = ({
                     className={classes["collection-show-container"]}
                     id={collection?.title}
                     justify="space-between"
-
                 >
-                    <Col xs={18} >
+                    <Col xs={18}>
                         <Row
                             className={
                                 classes["collection-show-content-container"]
@@ -319,11 +325,19 @@ export const CollectionSlot = ({
                             </Col>
                             <Col xs={18}>
                                 <Row className={classes["collection-content"]}>
-                                    <Col xs={24} className={classes["show-content-title"]}>
+                                    <Col
+                                        xs={24}
+                                        className={
+                                            classes["show-content-title"]
+                                        }
+                                    >
                                         {collection?.title || ""}
                                     </Col>
-                                    <Col xs={24}
-                                        className={classes["show-content-heading"]}
+                                    <Col
+                                        xs={24}
+                                        className={
+                                            classes["show-content-heading"]
+                                        }
                                     >
                                         Display Name:{" "}
                                         <span
@@ -334,8 +348,11 @@ export const CollectionSlot = ({
                                             {collection?.display_name || "---"}
                                         </span>
                                     </Col>
-                                    <Col xs={24}
-                                        className={classes["show-content-heading"]}
+                                    <Col
+                                        xs={24}
+                                        className={
+                                            classes["show-content-heading"]
+                                        }
                                     >
                                         Retail Amount:{" "}
                                         <span
@@ -350,7 +367,7 @@ export const CollectionSlot = ({
                             </Col>
                         </Row>
                     </Col>
-                    <Col xs={6} className={classes['edit-container']}>
+                    <Col xs={6} className={classes["edit-container"]}>
                         <img
                             src={editIcon}
                             alt={"icon"}
@@ -386,8 +403,9 @@ const LensLabelSlot = ({ title, onClick, active }) => {
     const [isHover, setIsHover] = useState(false);
     return (
         <div
-            className={`${classes["lenses-label-slot-container"]} ${(active || isHover) && classes["slot-color"]
-                }`}
+            className={`${classes["lenses-label-slot-container"]} ${
+                (active || isHover) && classes["slot-color"]
+            }`}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
             onClick={onClick}
