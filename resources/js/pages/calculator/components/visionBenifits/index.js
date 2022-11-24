@@ -149,7 +149,6 @@ const VisionBenifits = ({
                                 active={values?.isFrameBenifit}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleFrameBenifitAvailableChange}
                                 value={values?.isFrameBenifit}
                                 id="isFrameBenifit"
@@ -201,7 +200,6 @@ const VisionBenifits = ({
                                 active={values?.isLensBenifit}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleLensBenifitsAvailableChange}
                                 value={values?.isLensBenifit}
                                 id="isLensBenifit"
@@ -257,7 +255,6 @@ const VisionBenifits = ({
                                 <input
                                     className={classes["input"]}
                                     type={"number"}
-                                    onBlur={handleBlur}
                                     onChange={handleMaterialCopayChange}
                                     value={values?.materialCopay}
                                     id="materialCopay"

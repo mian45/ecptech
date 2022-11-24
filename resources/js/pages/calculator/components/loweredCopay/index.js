@@ -368,7 +368,6 @@ const LoweredCopay = ({
                                 active={values?.isloweredCopay}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleLoweredCopayClick}
                                 value={values?.isloweredCopay}
                                 id="isloweredCopay"
@@ -445,7 +444,6 @@ const SpecialCopaySlot = ({
                 title={`${LowerCopayTypeEnum[title]} Lower Copay?`}
             />
             <Radio.Group
-                onBlur={handleBlur}
                 onChange={handleValueChange}
                 value={values[radioValue]}
                 id={radioValue}
@@ -475,7 +473,6 @@ const SpecialCopaySlot = ({
                         <input
                             className={classes["slot-input"]}
                             type={"number"}
-                            onBlur={handleBlur}
                             onChange={handleInputChange}
                             value={values[inputValue]}
                             id={inputValue}

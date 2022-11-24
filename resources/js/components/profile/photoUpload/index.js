@@ -7,7 +7,6 @@ import { connect} from "react-redux"
 const PhotoUpload = ({
     values,
     handleChange,
-    handleBlur,
     setFieldValue,
     setFieldError,
     user
@@ -70,7 +69,6 @@ useEffect(()=>{
                         onChange={uploadMediaFile}
                         multiple={false}
                         name={"profileImage"}
-                        onBlur={handleBlur}
                     />
                 </label>
             </div>
@@ -85,7 +83,6 @@ useEffect(()=>{
                 placeholder={"Enter business name"}
                 value={values?.businessName}
                 onChange={handleChange}
-                onBlur={handleBlur}
                 id="businessName"
                 name="businessName"
             />
