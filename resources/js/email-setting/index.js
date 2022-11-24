@@ -25,8 +25,9 @@ import CustomLoader from "../components/customLoader";
 
 import DeleteModal from "../components/deleteModal/index";
 import "./style.scss";
-import { Row, Col } from "antd";
+import { Row, Col, message } from "antd";
 const EmailSetting = (props) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [emailSettingProps, setEmailSettingProps] = useState(false);
     const [idState, setIdState] = useState("");
     const token = localStorage.getItem("access_token");
@@ -137,12 +138,28 @@ const EmailSetting = (props) => {
         axios(config)
             .then(function (response) {
                 getReminder();
+                messageApi.open({
+                    type: 'success',
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
                 setButtonLoader(false);
             })
             .catch(function (error) {
                 setButtonLoader(true);
                 console.log(error);
                 setButtonLoader(false);
+                messageApi.open({
+                    type: 'error',
+                    content: error,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
     };
 
@@ -194,6 +211,14 @@ const EmailSetting = (props) => {
         };
         axios(config)
             .then(function (response) {
+                messageApi.open({
+                    type: 'success',
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
                 getReminder();
                 setReminderType("");
                 setSentTo("");
@@ -211,6 +236,14 @@ const EmailSetting = (props) => {
                 setButtonLoader(true);
                 console.log(error);
                 setButtonLoader(false);
+                messageApi.open({
+                    type: 'success',
+                    content: error,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
     };
 
@@ -229,10 +262,26 @@ const EmailSetting = (props) => {
 
         axios(config)
             .then(function (response) {
+                messageApi.open({
+                    type: 'success',
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
                 setShowDeleteReminder(false);
             })
             .catch(function (error) {
                 console.log(error);
+                messageApi.open({
+                    type: 'success',
+                    content: error,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
     };
 
@@ -776,193 +825,193 @@ const EmailSetting = (props) => {
         );
     };
 
-    return loading == true ? (
-        <CustomLoader buttonBool={false} />
-    ) : (
-        <>
-            {console.log("the dev data is here", props.user)}
-            {showDeleteReminder ? (
-                <DeleteModal
-                    accept={() => {
-                        deleteReminderbyPopup();
-                    }}
-                    cancel={() => {
-                        setShowDeleteReminder(false);
-                    }}
-                    open={showDeleteReminder}
-                />
-            ) : null}
-            {!emailSettingProps && (
-                <Row className="email-setting" justify="center">
-                    <Col xs={24}>
-                        <p className="email-setting_heading email-settings-title">
-                            Email Settings
-                        </p>
-                        <Row justify="center">
-                            <Col xs={24} md={18}>
-                                {emailArray &&
-                                    emailArray.map((obj, i) => {
-                                        return (
-                                            <Row
-                                                className="email-setting-content"
-                                                justify="space-between"
-                                                align="middle"
-                                            >
-                                                <Col xs={24} md={20}>
-                                                    <Row
-                                                        justify="center"
-                                                        align="middle"
+    return <>
+        {loading ? <CustomLoader buttonBool={false} /> : null}
+        <div>{contextHolder}</div>
+        {console.log("the dev data is here", props.user)}
+        {showDeleteReminder ? (
+            <DeleteModal
+                accept={() => {
+                    deleteReminderbyPopup();
+                }}
+                cancel={() => {
+                    setShowDeleteReminder(false);
+                }}
+                open={showDeleteReminder}
+            />
+        ) : null}
+        {!emailSettingProps && (
+            <Row className="email-setting" justify="center">
+
+                <Col xs={24}>
+                    <p className="email-setting_heading email-settings-title">
+                        Email Settings
+                    </p>
+                    <Row justify="center">
+                        <Col xs={24} md={18}>
+                            {emailArray &&
+                                emailArray.map((obj, i) => {
+                                    return (
+                                        <Row
+                                            className="email-setting-content"
+                                            justify="space-between"
+                                            align="middle"
+                                        >
+                                            <Col xs={24} md={20}>
+                                                <Row
+                                                    justify="center"
+                                                    align="middle"
+                                                >
+                                                    <Col
+                                                        xs={6}
+                                                        md={4}
+                                                        lg={3}
+                                                        className="email-setting-content-section-image"
                                                     >
-                                                        <Col
-                                                            xs={6}
-                                                            md={4}
-                                                            lg={3}
-                                                            className="email-setting-content-section-image"
-                                                        >
-                                                            <img
-                                                                src={
-                                                                    obj.type ==
+                                                        <img
+                                                            src={
+                                                                obj.type ==
                                                                     "reminder"
-                                                                        ? iconRemainder
-                                                                        : emailButton
-                                                                }
-                                                            />
-                                                        </Col>
-                                                        <Col xs={18} md={20}>
-                                                            <p className="email-setting-content-section-heading">
-                                                                {obj.subject}
-                                                            </p>
-                                                            <Row
-                                                                className="email-setting-content-section-subsection"
-                                                                align="middle"
+                                                                    ? iconRemainder
+                                                                    : emailButton
+                                                            }
+                                                        />
+                                                    </Col>
+                                                    <Col xs={18} md={20}>
+                                                        <p className="email-setting-content-section-heading">
+                                                            {obj.subject}
+                                                        </p>
+                                                        <Row
+                                                            className="email-setting-content-section-subsection"
+                                                            align="middle"
+                                                        >
+                                                            <Col
+                                                                xs={24}
+                                                                md={8}
+                                                                lg={6}
                                                             >
-                                                                <Col
-                                                                    xs={24}
-                                                                    md={8}
-                                                                    lg={6}
-                                                                >
-                                                                    <p
-                                                                        className="email-setting-content-section-subsection-heading email-reminder-tag"
-                                                                        style={
-                                                                            obj.type ==
+                                                                <p
+                                                                    className="email-setting-content-section-subsection-heading email-reminder-tag"
+                                                                    style={
+                                                                        obj.type ==
                                                                             "reminder"
-                                                                                ? {
-                                                                                      color: "#61C77B",
-                                                                                  }
-                                                                                : {
-                                                                                      color: "#6FA5CB",
-                                                                                  }
-                                                                        }
-                                                                    >
-                                                                        {obj.type ==
-                                                                        "reminder"
-                                                                            ? obj.type
-                                                                            : "Order Success"}
-                                                                    </p>
-                                                                </Col>
-                                                                <Col
-                                                                    xs={24}
-                                                                    md={16}
+                                                                            ? {
+                                                                                color: "#61C77B",
+                                                                            }
+                                                                            : {
+                                                                                color: "#6FA5CB",
+                                                                            }
+                                                                    }
                                                                 >
-                                                                    <p
-                                                                        className="email-setting-content-section-subsection-subheading"
-                                                                        style={{
-                                                                            color: "#CBCBCB",
-                                                                        }}
-                                                                    >
-                                                                        {obj.type ==
+                                                                    {obj.type ==
                                                                         "reminder"
-                                                                            ? `${obj.send_after_day} days after invoice`
-                                                                            : "Payment Completed"}
-                                                                    </p>
-                                                                </Col>
-                                                            </Row>
-                                                        </Col>
-                                                    </Row>
-                                                </Col>
-                                                <Col xs={24} md={3}>
-                                                    <Row
-                                                        justify="space-between"
-                                                        align="middle"
-                                                    >
-                                                        <Col md={6}>
+                                                                        ? obj.type
+                                                                        : "Order Success"}
+                                                                </p>
+                                                            </Col>
+                                                            <Col
+                                                                xs={24}
+                                                                md={16}
+                                                            >
+                                                                <p
+                                                                    className="email-setting-content-section-subsection-subheading"
+                                                                    style={{
+                                                                        color: "#CBCBCB",
+                                                                    }}
+                                                                >
+                                                                    {obj.type ==
+                                                                        "reminder"
+                                                                        ? `${obj.send_after_day} days after invoice`
+                                                                        : "Payment Completed"}
+                                                                </p>
+                                                            </Col>
+                                                        </Row>
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                            <Col xs={24} md={3}>
+                                                <Row
+                                                    justify="space-between"
+                                                    align="middle"
+                                                >
+                                                    <Col md={6}>
+                                                        <img
+                                                            className="edit-icon"
+                                                            src={edit}
+                                                            onClick={() => {
+                                                                updateHandler(
+                                                                    obj
+                                                                );
+                                                            }}
+                                                        />
+                                                    </Col>
+                                                    <Col md={6}>
+                                                        {obj?.is_active ===
+                                                            1 ? (
                                                             <img
-                                                                className="edit-icon"
-                                                                src={edit}
+                                                                className="bell-icon"
+                                                                src={
+                                                                    bellIcon
+                                                                }
                                                                 onClick={() => {
-                                                                    updateHandler(
+                                                                    activeInActiveReminder(
                                                                         obj
                                                                     );
                                                                 }}
                                                             />
-                                                        </Col>
-                                                        <Col md={6}>
-                                                            {obj?.is_active ===
-                                                            1 ? (
-                                                                <img
-                                                                    className="bell-icon"
-                                                                    src={
-                                                                        bellIcon
-                                                                    }
-                                                                    onClick={() => {
-                                                                        activeInActiveReminder(
-                                                                            obj
-                                                                        );
-                                                                    }}
-                                                                />
-                                                            ) : (
-                                                                <img
-                                                                    className="bell-icon"
-                                                                    src={
-                                                                        bellCloseIcon
-                                                                    }
-                                                                    onClick={() => {
-                                                                        activeInActiveReminder(
-                                                                            obj
-                                                                        );
-                                                                    }}
-                                                                />
-                                                            )}
-                                                        </Col>
-                                                        <Col md={6}>
+                                                        ) : (
                                                             <img
-                                                                className="delete-icon"
-                                                                src={cross}
+                                                                className="bell-icon"
+                                                                src={
+                                                                    bellCloseIcon
+                                                                }
                                                                 onClick={() => {
-                                                                    handleDelete(
-                                                                        obj.id
+                                                                    activeInActiveReminder(
+                                                                        obj
                                                                     );
                                                                 }}
                                                             />
-                                                        </Col>
-                                                    </Row>
-                                                </Col>
-                                            </Row>
-                                        );
-                                    })}
+                                                        )}
+                                                    </Col>
+                                                    <Col md={6}>
+                                                        <img
+                                                            className="delete-icon"
+                                                            src={cross}
+                                                            onClick={() => {
+                                                                handleDelete(
+                                                                    obj.id
+                                                                );
+                                                            }}
+                                                        />
+                                                    </Col>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                    );
+                                })}
 
-                                <Row
-                                    className="email-setting_button-section button-margin"
-                                    justify="end"
+                            <Row
+                                className="email-setting_button-section button-margin"
+                                justify="end"
+                            >
+                                <button
+                                    onClick={() => {
+                                        setEmailSettingProps(true);
+                                    }}
+                                    className="email-setting_button-section_save-button"
+                                    style={{ float: "left" }}
                                 >
-                                    <button
-                                        onClick={() => {
-                                            setEmailSettingProps(true);
-                                        }}
-                                        className="email-setting_button-section_save-button"
-                                        style={{ float: "left" }}
-                                    >
-                                        Add New
-                                    </button>
-                                </Row>
-                            </Col>
-                        </Row>
-                    </Col>
-                </Row>
-            )}
-            {emailSettingProps && <EmailForm />}
-        </>
-    );
+                                    Add New
+                                </button>
+                            </Row>
+                        </Col>
+                    </Row>
+                </Col>
+            </Row>
+        )}
+        {emailSettingProps && <EmailForm />}
+    </>
+
 };
 const mapStateToProps = (state) => ({
     userID: state.Auth.user?.id,

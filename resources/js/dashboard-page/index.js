@@ -11,8 +11,9 @@ import StaffListTable from "./components/staffTable";
 import TeamPerformanceChart from "./components/teamPerformanceChart";
 import ProfitStatsChart from "./components/profitStatsChart";
 import AddStaffMembers from "./components/AddStaffMembers";
-import { Row, Col } from "antd";
+import { Row, Col, message } from "antd";
 const Dashboard = ({ userRole, apiDates, userId }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [invoiceStats, setInvoiceStats] = useState([]);
     const [summaryStats, setSummaryStats] = useState([]);
     useEffect(() => {
@@ -32,6 +33,15 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
                 setInvoiceStats(mappedStats);
             } catch (err) {
                 setInvoiceStats(DEFAULT_INVOICES_DATA);
+                messageApi.open({
+                    type: 'error',
+                    content: err,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+
+                });
             }
         };
 
@@ -49,11 +59,21 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
                 const res = await Axios.post(
                     process.env.MIX_REACT_APP_URL + "/api/invoice-summmary",
                     invoiceData
+
                 );
                 const mappedSummary = mapSummaryStats(res?.data?.data);
                 setSummaryStats(mappedSummary);
             } catch (err) {
                 console.log("Error while getting stats");
+                messageApi.open({
+                    type: 'success',
+                    content: err,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+
+                });
             }
         };
 
@@ -61,6 +81,7 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
     }, [apiDates, userId]);
     return (
         <Row className={classes["container"]} span={24} justify="space-between">
+            <div>{contextHolder}</div>
             <Col xs={24} lg={17} className={classes["left-stats"]}>
                 <Row
                     className={classes["cards-mapper"]}

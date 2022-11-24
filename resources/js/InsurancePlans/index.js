@@ -6,10 +6,11 @@ import { useHistory } from "react-router";
 import axios from "axios";
 import { connect } from "react-redux";
 import CustomLoader from "../components/customLoader";
-import { Select, Col, Row } from "antd";
+import { Select, Col, Row, message } from "antd";
 
 const InsurancePlans = ({ userId }) => {
-    const [loading , setLoading] = useState(false)
+    const [messageApi, contextHolder] = message.useMessage();
+    const [loading, setLoading] = useState(false)
     const [getData, setGetData] = React.useState([]);
     const [isChecked, setIsChecked] = React.useState(false);
 
@@ -26,9 +27,17 @@ const InsurancePlans = ({ userId }) => {
                 setGetData(res.data?.data);
                 setLoading(false)
             })
-            .catch((error) => { 
-            console.log({ error });
-            setLoading(true);
+            .catch((error) => {
+                console.log({ error });
+                setLoading(true);
+                messageApi.open({
+                    type: 'error',
+                    content: error,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
     }, []);
 
@@ -42,81 +51,90 @@ const InsurancePlans = ({ userId }) => {
         };
         const response = await axios.post(
             process.env.MIX_REACT_APP_URL +
-                "/api/update-user-vision-plan-permission",
+            "/api/update-user-vision-plan-permission",
             toggleState
         );
+        messageApi.open({
+            type: 'success',
+            content: response.data.message,
+            duration: 5,
+            style: {
+                marginTop: '13.5vh',
+            },
+        });
     };
 
     return (
-        loading == true ? <CustomLoader buttonBool={false}/> :
-    <Row justify="center" align="middle">
-        <Col xs={24}>
-            <div>
-                
-                <Row justify="start">
-                    <Col xs={24}>
-                        <p className="other-setting_heading">Insurance Plans</p>
-                    </Col>
-                </Row>
-                <Row justify="center">
-                    <Col xs={24} md={14}>
+        loading == true ? <CustomLoader buttonBool={false} /> :
+            <Row justify="center" align="middle">
+                <div>{contextHolder}</div>
+                <Col xs={24}>
+                    <div>
 
-                {/* component to be used in map */}
-                {getData?.length > 0 &&
-                    getData?.map((item) => {
-                        return (
-                            
-                            <div className="other-setting_section">
-                                <div className="other-setting_section-first">
-                                    <div
-                                        className="other-setting_section-first_switches-switch"
-                                        key={item?.id}
-                                    >
-                                        <p className="insurance-plan-setting-title">
-                                            {item?.title}
-                                        </p>
-                                        <div>
-                                            <Row>
-                                            <Col xs={12}>
-                                            
-                                            <img
-                                                className="insurance-plan-setting-edit-icon"
-                                                src={editIcon}
-                                                onClick={() => {
-                                                    history.push({
-                                                        pathname: `/edit-insurance/${item?.id}`,
-                                                        state: item?.title,
-                                                    });
-                                                }}
-                                            />
-                                            </Col>
-                                            <Col xs={12}>
-                                            <Switch
-                                                {...label}
-                                                defaultChecked={
-                                                    item?.status === 0
-                                                        ? false
-                                                        : true || isChecked
-                                                }
-                                                onChange={(toggleSwitch) =>
-                                                    handleSwitch(item, toggleSwitch)
-                                                }
-                                            />
-                                            </Col>
-                                            </Row>
+                        <Row justify="start">
+                            <Col xs={24}>
+                                <p className="other-setting_heading">Insurance Plans</p>
+                            </Col>
+                        </Row>
+                        <Row justify="center">
+                            <Col xs={24} md={14}>
 
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                        );
-                    })}
-                    </Col>
-                </Row>
-            </div>
-        </Col>
-    </Row>
+                                {/* component to be used in map */}
+                                {getData?.length > 0 &&
+                                    getData?.map((item) => {
+                                        return (
+
+                                            <div className="other-setting_section">
+                                                <div className="other-setting_section-first">
+                                                    <div
+                                                        className="other-setting_section-first_switches-switch"
+                                                        key={item?.id}
+                                                    >
+                                                        <p className="insurance-plan-setting-title">
+                                                            {item?.title}
+                                                        </p>
+                                                        <div>
+                                                            <Row>
+                                                                <Col xs={12}>
+
+                                                                    <img
+                                                                        className="insurance-plan-setting-edit-icon"
+                                                                        src={editIcon}
+                                                                        onClick={() => {
+                                                                            history.push({
+                                                                                pathname: `/edit-insurance/${item?.id}`,
+                                                                                state: item?.title,
+                                                                            });
+                                                                        }}
+                                                                    />
+                                                                </Col>
+                                                                <Col xs={12}>
+                                                                    <Switch
+                                                                        {...label}
+                                                                        defaultChecked={
+                                                                            item?.status === 0
+                                                                                ? false
+                                                                                : true || isChecked
+                                                                        }
+                                                                        onChange={(toggleSwitch) =>
+                                                                            handleSwitch(item, toggleSwitch)
+                                                                        }
+                                                                    />
+                                                                </Col>
+                                                            </Row>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        );
+                                    })}
+                            </Col>
+                        </Row>
+                    </div>
+                </Col>
+            </Row>
     );
 };
 const mapStateToProps = (state) => ({

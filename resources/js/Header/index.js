@@ -12,9 +12,10 @@ import AuthService from "../services";
 import { connect } from "react-redux";
 import "antd/dist/antd.css";
 import { MenuOutlined } from "@ant-design/icons";
-import { Col, Row } from "antd";
+import { Col, Row, message } from "antd";
 import Http from "../Http";
 const Header = ({ }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const dispatch = useDispatch();
     const [showProfile, setShowProfile] = useState(false);
     const [user, setUser] = useState({});
@@ -28,6 +29,14 @@ const Header = ({ }) => {
             .then((response) => {
                 let res = response;
                 res.data.data = { ...res.data.data, token: token };
+                messageApi.open({
+                    type: 'success',
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
                 setUser(res.data.data);
                 rememberme(dispatch);
                 return;
@@ -44,6 +53,7 @@ const Header = ({ }) => {
     };
     return (
         <Row align="middle" className={classes["header-box"]}>
+            <div>{contextHolder}</div>
             {window.innerWidth < 763 ? (
                 <Col xs={2} sm={3}>
                     <MenuOutlined onClick={showSideBar} />

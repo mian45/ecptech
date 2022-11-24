@@ -2,9 +2,10 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
-import { Button, Checkbox, Form, Input, DatePicker, Space, Row, Col } from "antd";
+import { Button, Checkbox, Form, Input, DatePicker, Space, Row, Col, message } from "antd";
 import CustomCheckbox from "../../../../components/customCheckbox";
 const AddCardModal = ({ show, onClose }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [cardNumber, setCardNumber] = useState("");
     const [validNumber, setValidNumber] = useState(false);
     const [name, setName] = useState("");
@@ -84,15 +85,32 @@ const AddCardModal = ({ show, onClose }) => {
                 `${process.env.MIX_REACT_APP_URL}/api/add-card`,
                 data
             );
+            messageApi.open({
+                type: 'success',
+                content: res.data.message,
+                duration: 5,
+                style: {
+                    marginTop: '13.5vh',
+                },
+            });
             onClose();
         } catch (err) {
             console.log("Error while delete Staff", err);
+            messageApi.open({
+                type: 'error',
+                content: res.data.message,
+                duration: 5,
+                style: {
+                    marginTop: '13.5vh',
+                },
+            });
         }
     };
     return (
         <>
             {show ? (
                 <Form className={classes["backdrop"]} onClick={onClose}>
+                    <div>{contextHolder}</div>
                     <Row
                         className={classes["container"]}
                         onClick={(e) => e.stopPropagation()}

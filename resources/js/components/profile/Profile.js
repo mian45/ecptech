@@ -8,36 +8,35 @@ import CustomButton from "../customButton";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import {Row, Col, Drawer} from 'antd';
-const Profile = ({ userId, closeModal,user, userRole,open,getAuthentication }) => {
+import { Row, Col, Drawer, message } from 'antd';
+const Profile = ({ userId, closeModal, user, userRole, open, getAuthentication }) => {
     return (
         <Drawer
-        title=""
-        placement={"right"}
-        closable={false}
-        open={open}
-        key={"right"}
-        onClose={closeModal}
-        bodyStyle={{padding:"24px 0px"}}
-      > 
+            title=""
+            placement={"right"}
+            closable={false}
+            open={open}
+            key={"right"}
+            onClose={closeModal}
+            bodyStyle={{ padding: "24px 0px" }}
+        >
             <Col
-                className={`${classes["profile"]} ${
-                    userRole === "staff" && classes["staff"]
-                }`}
+                className={`${classes["profile"]} ${userRole === "staff" && classes["staff"]
+                    }`}
                 onClick={(e) => e.stopPropagation()}
             >
-                <ProfileInfoSection userId={userId} user={user} getAuthentication={()=>{getAuthentication()}}/>
+                <ProfileInfoSection userId={userId} user={user} getAuthentication={() => { getAuthentication() }} />
                 {userRole !== "staff" && (
                     <ProfilePasswordValidations userId={userId} />
                 )}
             </Col>
-            </Drawer>
+        </Drawer>
     );
 };
 
 const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
-    user:state.Auth.user,
+    user: state.Auth.user,
     userRole: state.Auth.userRole?.name,
 });
 export default connect(mapStateToProps)(Profile);
@@ -49,16 +48,17 @@ const profileValidations = Yup.object().shape({
         .required("Name is Required"),
 });
 
-const ProfileInfoSection = ({ userId,user,getAuthentication }) => {
+const ProfileInfoSection = ({ userId, user, getAuthentication }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const defaultProfileState = {
-        businessName: user?.buisnessName?user?.buisnessName:'',
+        businessName: user?.buisnessName ? user?.buisnessName : '',
         profileImage: null,
-        themeColor: user?.themeColor?user?.themeColor:"#6FA5CB",
+        themeColor: user?.themeColor ? user?.themeColor : "#6FA5CB",
         themeType: 0,
     };
 
-    const handleSaveClick = async (values,actions) => {
-    
+    const handleSaveClick = async (values, actions) => {
+
         try {
             const personalInfo = new FormData();
             personalInfo.append("logo", values.profileImage);
@@ -70,12 +70,28 @@ const ProfileInfoSection = ({ userId,user,getAuthentication }) => {
             await axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/edit-profile`,
                 personalInfo
-            ).then(()=>{
+            ).then(() => {
                 getAuthentication()
                 actions.setSubmitting(false)
+                messageApi.open({
+                    type: 'success',
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
         } catch (err) {
             console.log("error while save changes", err);
+            messageApi.open({
+                type: 'error',
+                content: err,
+                duration: 5,
+                style: {
+                    marginTop: '13.5vh',
+                },
+            });
         }
     };
 
@@ -88,7 +104,7 @@ const ProfileInfoSection = ({ userId,user,getAuthentication }) => {
             actions.setFieldError("themeColor", "Invalid color code");
             return;
         }
-        handleSaveClick(values,actions);
+        handleSaveClick(values, actions);
     };
     return (
         <Formik
@@ -111,11 +127,12 @@ const ProfileInfoSection = ({ userId,user,getAuthentication }) => {
             }) => {
                 return (
                     <form onSubmit={handleSubmit} autoComplete="off">
+                        <div>{contextHolder}</div>
                         <PhotoUpload
                             values={values}
-                            handleChange={(e)=>{
-                            handleChange(e)
-                        }}
+                            handleChange={(e) => {
+                                handleChange(e)
+                            }}
                             handleBlur={handleBlur}
                             setFieldValue={setFieldValue}
                             setFieldError={setFieldError}

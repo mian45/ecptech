@@ -3,9 +3,10 @@ import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
 import { connect } from "react-redux";
 import { defaultMaterials } from "./data";
-import { Row, Col } from "antd"
+import { Row, Col, message } from "antd"
 import CustomLoader from "../../../../components/customLoader";
 const EyePrescription = ({ userId }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [eyeDetails, setEyeDetails] = useState([]);
     const [sphError, setSphError] = useState([...defaultSphError]);
     const [cylError, setCylError] = useState([...defaultCylError]);
@@ -45,9 +46,16 @@ const EyePrescription = ({ userId }) => {
                 })
                 setEyeDetails(material);
                 setLoading(false);
-
             } catch (err) {
                 console.log("Error while getting glasses details");
+                messageApi.open({
+                    type: 'error',
+                    content: res.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             }
         };
         getEyePrescriptionDetails();
@@ -223,13 +231,29 @@ const EyePrescription = ({ userId }) => {
                 eye_prescriptions: eyeDetails,
                 user_id: userId,
             };
-            await Axios.post(
+            const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/eye-prescriptions`,
                 payload
             );
             setButtonLoader(false)
+            messageApi.open({
+                type: 'success',
+                content: res.data.message,
+                duration: 5,
+                style: {
+                    marginTop: '13.5vh',
+                },
+            });
         } catch (err) {
             console.log("error while save data");
+            messageApi.open({
+                type: 'serror',
+                content: res.data.message,
+                duration: 5,
+                style: {
+                    marginTop: '13.5vh',
+                },
+            });
         }
     };
 
@@ -259,6 +283,7 @@ const EyePrescription = ({ userId }) => {
             <CustomLoader buttonBool={false} />
             :
             <Row className={classes["container"]} justify="start" align="middle">
+                <div>{contextHolder}</div>
                 <Col xs={24} className={classes["page-title"]}>
                     Glasses Prescription Setting
                 </Col>

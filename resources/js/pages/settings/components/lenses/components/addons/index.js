@@ -7,9 +7,10 @@ import editIcon from "../../../../../../../images/edit.png";
 import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-import { Row, Col } from "antd"
+import { Row, Col, message } from "antd"
 const Addons = ({ userId }) => {
     const [addonsList, setAddonsList] = useState([]);
+    const [messageApi, contextHolder] = message.useMessage();
     const [changedAddOnList, setChangedAddOnList] = useState([]);
     const [selectedAddons, setSelectedAddons] = useState("");
     const [selectedRow, setSelectedRow] = useState("");
@@ -41,6 +42,14 @@ const Addons = ({ userId }) => {
                 });
             } catch (err) {
                 console.log("error while get lenses");
+                messageApi.open({
+                    type: 'error',
+                    content: "error while get lenses",
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             }
         };
         getLenses();
@@ -51,12 +60,28 @@ const Addons = ({ userId }) => {
             const payload = {
                 data: addonsList,
             };
-            await Axios.post(
+            const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/add-addon-setting`,
                 payload
             );
+            messageApi.open({
+                type: 'success',
+                content: res.data.message,
+                duration: 5,
+                style: {
+                    marginTop: '13.5vh',
+                },
+            });
         } catch (err) {
             console.log("error while update lenses");
+            messageApi.open({
+                type: 'error',
+                content: "error while update lenses",
+                duration: 5,
+                style: {
+                    marginTop: '13.5vh',
+                },
+            });
         }
     };
 
@@ -68,6 +93,7 @@ const Addons = ({ userId }) => {
     return (
         <>
             <Row className={classes["container"]}>
+                <div>{contextHolder}</div>
                 <Col xs={24} md={9} className={classes["left-container"]}>
                     <LensesTypeList
                         onClick={onLensTypeClick}

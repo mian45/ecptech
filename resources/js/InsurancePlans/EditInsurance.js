@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Switch, Col, Row } from "antd";
+import { Switch, Col, Row, message } from "antd";
 
 import classes from "./editInsurance.module.scss";
 import { useHistory, useParams } from "react-router";
@@ -9,6 +9,7 @@ import backArrow from "../../images/arrow-back.svg";
 import CustomCheckbox from "../components/customCheckbox";
 import CustomLoader from "../components/customLoader";
 function EditInsurance({ userId }) {
+    const [messageApi, contextHolder] = message.useMessage();
     const [loading, setLoading] = useState(false)
     const [buttonLoader, setButtonLoader] = useState(false)
     const [selectedRow, setSelectedRow] = React.useState([]);
@@ -33,6 +34,14 @@ function EditInsurance({ userId }) {
             .catch((error) => {
                 console.log({ error })
                 setLoading(false)
+                messageApi.open({
+                    type: 'error',
+                    content: error,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
     }, []);
 
@@ -112,11 +121,20 @@ function EditInsurance({ userId }) {
             vision_plan_id: visionID,
             data: updateInsurancePlan,
         };
-        await Axios.post(
+        const res = await Axios.post(
             process.env.MIX_REACT_APP_URL +
             `/api/update-user-plan-question-permission`,
             toggle
-        ).then(() => {
+        ).then((response) => {
+            console.log(response, 'res-----');
+            messageApi.open({
+                type: 'success',
+                content: response.data.message,
+                duration: 5,
+                style: {
+                    marginTop: '13.5vh',
+                },
+            });
             setUpdateInsurancePlan([]);
             setButtonLoader(false)
         });
@@ -128,6 +146,7 @@ function EditInsurance({ userId }) {
             <CustomLoader buttonBool={false} />
             :
             <Row className={classes["root-container"]} justify="center" align="middle">
+                <div>{contextHolder}</div>
                 <Col xs={24}>
                     <div>
                         <div className={classes["container"]}>

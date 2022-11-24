@@ -9,11 +9,12 @@ import { Select, Col, Row } from "antd";
 import axios from "axios";
 
 const { Option } = Select;
-import { Switch } from "antd";
+import { Switch, message } from "antd";
 import CustomLoader from "../components/customLoader";
 import DeleteModal from "../components/deleteModal/index"
 const label = { inputProps: { "aria-label": "Switch demo" } };
 const DiscountTaxes = (props) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [discountName, setDiscountName] = useState("");
     const [discountTax, setDiscountTax] = useState("");
     const [discountId, setDiscountId] = useState(null);
@@ -70,6 +71,14 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                messageApi.open({
+                    type: 'success',
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
                 setDiscountId(null);
                 setDiscountName("");
                 setDiscountTax("");
@@ -80,6 +89,14 @@ const DiscountTaxes = (props) => {
             .catch(function (error) {
                 setDiscountButtonLoader(false)
                 console.log(error);
+                messageApi.open({
+                    type: 'error',
+                    content: error,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
     };
 
@@ -98,11 +115,27 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                messageApi.open({
+                    type: 'success',
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
                 getDiscount();
                 setShowDeleteDiscount(false)
             })
             .catch(function (error) {
                 console.log(error);
+                messageApi.open({
+                    type: 'error',
+                    content: error,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
     };
 
@@ -126,6 +159,14 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                messageApi.open({
+                    type: 'success',
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
                 setTaxName("");
                 setTaxValue("");
                 setIdState(null);
@@ -136,6 +177,14 @@ const DiscountTaxes = (props) => {
             .catch(function (error) {
                 console.log(error);
                 setTaxButtonLoader(false)
+                messageApi.open({
+                    type: 'error',
+                    content: error,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
     };
 
@@ -159,6 +208,14 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                messageApi.open({
+                    type: 'success',
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
                 getTaxes();
                 setTaxName("");
                 setTaxValue("");
@@ -168,6 +225,14 @@ const DiscountTaxes = (props) => {
             .catch(function (error) {
                 console.log(error);
                 setTaxButtonLoader(false)
+                messageApi.open({
+                    type: 'error',
+                    content: error,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
     };
 
@@ -186,10 +251,26 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                messageApi.open({
+                    type: 'success',
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
                 setShowDeleteTaxes(false)
             })
             .catch(function (error) {
                 console.log(error);
+                messageApi.open({
+                    type: 'error',
+                    content: error,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
     };
 
@@ -272,6 +353,14 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                messageApi.open({
+                    type: 'success',
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
                 setEditId(null);
                 setDiscountName("");
                 setDiscountTax("");
@@ -280,6 +369,14 @@ const DiscountTaxes = (props) => {
                 setDiscountButtonLoader(false)
             })
             .catch(function (error) {
+                messageApi.open({
+                    type: 'success',
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
                 console.log(error);
                 setDiscountButtonLoader(false)
             });
@@ -380,6 +477,14 @@ const DiscountTaxes = (props) => {
             .catch(function (error) {
                 console.log(error);
                 setLoading(false)
+                messageApi.open({
+                    type: 'error',
+                    content: error,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
     };
 
@@ -405,6 +510,14 @@ const DiscountTaxes = (props) => {
             .catch(function (error) {
                 console.log(error);
                 setLoading(false)
+                messageApi.open({
+                    type: 'error',
+                    content: error,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             });
     };
 
@@ -508,6 +621,7 @@ const DiscountTaxes = (props) => {
                     /> : null}
 
                 <Row justify="center">
+                    <div>{contextHolder}</div>
                     <Col xs={24}>
                         <Row justify="center" align="middle" className="discount-container discount-tax">
                             <Col xs={24}>

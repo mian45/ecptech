@@ -7,8 +7,9 @@ import cross from "../../../images/cross.png";
 import CustomLoader from "../../components/customLoader";
 
 import DeleteModal from "../../components/deleteModal/index"
-import { Row, Col } from "antd"
+import { Row, Col, message } from "antd"
 const ShippingSettings = ({ userId }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [shippingName, setShippingName] = useState("");
     const [shippingAmount, setShippingAmount] = useState("");
     const [shipping, setShipping] = useState({});
@@ -33,6 +34,14 @@ const ShippingSettings = ({ userId }) => {
             } catch (err) {
                 console.log("error while get shipping");
                 setShippingLoading(false)
+                messageApi.open({
+                    type: 'error',
+                    content: err,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             }
         };
         setEditState(false)
@@ -46,15 +55,31 @@ const ShippingSettings = ({ userId }) => {
     };
     const deleteShipping = async (id) => {
         try {
-            await Axios.post(
+            const res = await Axios.post(
                 process.env.MIX_REACT_APP_URL + "/api/delete-shipping",
                 { id: id }
             );
             setShipping({});
             setIsSubmitted(false);
             setShowDeleteShipping(false)
+            messageApi.open({
+                type: 'success',
+                content: res.data.message,
+                duration: 5,
+                style: {
+                    marginTop: '13.5vh',
+                },
+            });
         } catch (err) {
             console.log("error while delete shipping");
+            messageApi.open({
+                type: 'error',
+                content: err,
+                duration: 5,
+                style: {
+                    marginTop: '13.5vh',
+                },
+            });
         }
     }
     const handleDeleteShipping = async (id) => {
@@ -84,9 +109,25 @@ const ShippingSettings = ({ userId }) => {
             setShippingAmount("");
             setIsSubmitted(true);
             setShippingButtonLoader(false)
+            messageApi.open({
+                type: 'success',
+                content: res.data.message,
+                duration: 5,
+                style: {
+                    marginTop: '13.5vh',
+                },
+            });
         } catch (err) {
             console.log("error while adding shipping");
             setShippingButtonLoader(false)
+            messageApi.open({
+                type: 'success',
+                content: err,
+                duration: 5,
+                style: {
+                    marginTop: '13.5vh',
+                },
+            });
         }
     };
 
@@ -105,6 +146,7 @@ const ShippingSettings = ({ userId }) => {
                 <Col xs={24} md={24} lg={16} className="discount-container_first discount-tax-con">
                     <Row justify="center" align="middle">
                         <Col xs={24} md={24}>
+                            <div>{contextHolder}</div>
                             <p className="heading">Shipping</p>
                         </Col>
                         <Col xs={24}>

@@ -4,9 +4,11 @@ import StaffTableHeader from "../staffTableHeader";
 import classes from "./styles.module.scss";
 import Axios from "../../../Http";
 import { connect } from "react-redux";
+import { message } from 'antd'
 
 const StaffListTable = ({ userId }) => {
     const [staffList, setStaffList] = useState([]);
+    const [messageApi, contextHolder] = message.useMessage();
 
     useEffect(() => {
         if (!userId) return;
@@ -23,6 +25,14 @@ const StaffListTable = ({ userId }) => {
                 setStaffList(res?.data?.data);
             } catch (err) {
                 console.log("Error while getting staff");
+                messageApi.open({
+                    type: 'error',
+                    content: err,
+                    duration: 5,
+                    style: {
+                        marginTop: '13.5vh',
+                    },
+                });
             }
         };
 
@@ -31,6 +41,7 @@ const StaffListTable = ({ userId }) => {
 
     return (
         <div className={classes["container"]}>
+            <div>{contextHolder}</div>
             <table className={classes["table"]}>
                 <thead className={classes["table-header"]}>
                     <StaffTableHeader />

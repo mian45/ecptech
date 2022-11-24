@@ -12,12 +12,12 @@ export function login({ email, password, remember }) {
                     remember_me: remember,
                 })
                 .then((res) => {
-                    
-                    if(res?.data?.data?.error!=="Unauthorised"){
-                        console.log(res?.data?.data?.error!=="Unauthorised")
+
+                    if (res?.data?.data?.error !== "Unauthorised") {
+                        console.log(res?.data?.data?.error !== "Unauthorised")
                         localStorage.setItem("remember", remember);
-                    dispatch(action.authLogin(res.data));
-                    return resolve();
+                        dispatch(action.authLogin(res.data));
+                        return resolve();
                     }
                     return reject(res?.data?.data?.error);
                 })
@@ -140,7 +140,7 @@ export function staffLogin(credentials) {
         });
 }
 
-export function updateStaffLogin(credentials) {
+export function updateStaffLogin(credentials, messageApi) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
             Http.post(
@@ -149,6 +149,14 @@ export function updateStaffLogin(credentials) {
             )
                 .then((res) => {
                     dispatch(action.updateStaffLogin(res.data));
+                    messageApi.open({
+                        type: 'success',
+                        content: res.data.message,
+                        duration: 5,
+                        style: {
+                            marginTop: '13.5vh',
+                        },
+                    });
                     return resolve();
                 })
                 .catch((err) => {
@@ -157,16 +165,24 @@ export function updateStaffLogin(credentials) {
                         status,
                         errors,
                     };
+                    messageApi.open({
+                        type: 'error',
+                        content: err.response.message,
+                        duration: 5,
+                        style: {
+                            marginTop: '13.5vh',
+                        },
+                    });
                     return reject(data);
                 });
         });
 }
 export function logout(userId) {
-    return (dispatch) =>{
+    return (dispatch) => {
         new Promise((resolve, reject) => {
             Http.post(`${process.env.MIX_REACT_APP_URL}/api/logout`, {
-                userId:userId
-                })
+                userId: userId
+            })
                 .then((res) => {
                     dispatch(action.authLogout());
                     return resolve();
@@ -180,16 +196,16 @@ export function logout(userId) {
                     return reject(data);
                 });
         });
-        
-        
-        }
+
+
+    }
 }
-export function showSideBar(){
+export function showSideBar() {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-           
-                    dispatch(action.showSideBar());
-                    return resolve();
-               
+
+            dispatch(action.showSideBar());
+            return resolve();
+
         });
 }
