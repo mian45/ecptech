@@ -295,9 +295,9 @@ export const GetValidations = (data, isLoweredCopay, values) => {
             "Lens type is required"
         );
     }
-    if (values?.lensType) {
-        validationObject.lensTypeValue =
-            Yup.string().required("Brand is required");
+    validationObject.lensTypeValue = Yup.string().required("Brand is required");
+    if (!values?.lensType) {
+        delete validationObject.lensTypeValue;
     }
     if (
         data?.find((ques) => ques.question === "Lens Material")?.optional ===
@@ -330,6 +330,12 @@ export const GetValidations = (data, isLoweredCopay, values) => {
         validationObject.isAntireflective = Yup.string().required(
             "Antireflective is required"
         );
+    }
+    validationObject.antireflectiveType = Yup.string().required(
+        "Antireflective type is required"
+    );
+    if (!values?.isAntireflective || values?.isAntireflective === "No") {
+        delete validationObject.antireflectiveType;
     }
     return validationObject;
 };
