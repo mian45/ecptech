@@ -137,7 +137,6 @@ const ProtectionPlan = ({
                                 active={handleActiveFields()}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleProtectionPlanChange}
                                 value={values?.isProtectionPlan}
                                 id="isProtectionPlan"
@@ -163,7 +162,6 @@ const ProtectionPlan = ({
                                         Please Select
                                     </div>
                                     <Radio.Group
-                                        onBlur={handleBlur}
                                         onChange={
                                             handleProtectionPlanTypeChange
                                         }
@@ -228,7 +226,6 @@ const ProtectionPlan = ({
                                                 Please Select
                                             </div>
                                             <Radio.Group
-                                                onBlur={handleBlur}
                                                 onChange={handleIsPaidClick}
                                                 value={
                                                     values?.isProtectionPlanPaid
@@ -283,7 +280,6 @@ const ProtectionPlan = ({
                                                                 classes["input"]
                                                             }
                                                             type={"number"}
-                                                            onBlur={handleBlur}
                                                             onChange={
                                                                 handleChange
                                                             }

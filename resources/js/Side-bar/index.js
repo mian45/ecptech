@@ -8,6 +8,10 @@ import {
     INVOICES_ROUTE,
     PAYMENT_ROUTE,
     SETTINGS_ROUTE,
+    SETTINGS_ROUTE_LENS,
+    SETTINGS_ROUTE_DISCOUNT,
+    SETTINGS_ROUTE_INSURANCE,
+    SETTINGS_ROUTE_GLASSES,
 } from "../appRoutes/routeConstants";
 import homeIcon from "../../images/home.svg";
 import invoicesIcon from "../../images/invoices.svg";
@@ -42,6 +46,22 @@ const SideBar = ({ userRole, isActiveState, dispatch, sidebar }) => {
                 return;
             }
             case SETTINGS_ROUTE: {
+                setState(4);
+                return;
+            }
+            case SETTINGS_ROUTE_LENS: {
+                setState(4);
+                return;
+            }
+            case SETTINGS_ROUTE_DISCOUNT: {
+                setState(4);
+                return;
+            }
+            case SETTINGS_ROUTE_INSURANCE: {
+                setState(4);
+                return;
+            }
+            case SETTINGS_ROUTE_GLASSES: {
                 setState(4);
                 return;
             }

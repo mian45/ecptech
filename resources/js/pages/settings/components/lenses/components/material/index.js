@@ -3,7 +3,7 @@ import { CollectionSlot } from "../lensesType";
 import classes from "./styles.module.scss";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-import {Row,Col} from "antd"
+import { Row, Col } from "antd";
 const MaterialSettings = ({ userId }) => {
     let [materials, setMaterials] = useState([]);
     useEffect(() => {
@@ -15,22 +15,21 @@ const MaterialSettings = ({ userId }) => {
                         params: { userId: userId },
                     }
                 );
-              
+
                 setMaterials(res.data.data || []);
             } catch (err) {
                 console.log("error while get lenses", err);
             }
         };
         getMaterialSettings();
-    }, []);
+    }, [userId]);
 
-    
-    const handleCheckbox = (value,collection) => {
-        const newData= materials.map((item,index)=>{
-            if(item.id===collection.id){
-                return {...item,status:value?"active":"inactive"}
-            }else{
-                return item
+    const handleCheckbox = (value, collection) => {
+        const newData = materials.map((item, index) => {
+            if (item.id === collection.id) {
+                return { ...item, status: value ? "active" : "inactive" };
+            } else {
+                return item;
             }
         });
         setMaterials(newData);
@@ -70,40 +69,47 @@ const MaterialSettings = ({ userId }) => {
     };
     return (
         <>
-            <Row className={classes["container"]} justify="center" align="middle">
+            <Row
+                className={classes["container"]}
+                justify="center"
+                align="middle"
+            >
                 <Col xs={24} className={classes["sub-container"]}>
-                   <Row justify="center" align="middle">
-                   <Col xs={24} className={classes["material-label"]}>
-                        Lens Material
-                    </Col>
-                    {materials?.map((item, index) => {
-                        return (
-                            <CollectionSlot
-                                key={index}
-                                handleCheckbox={handleCheckbox}
-                                handleDisplayNameChange={
-                                    handleDisplayNameChange
-                                }
-                                handleAmountNameChange={handleAmountNameChange}
-                                collection={{
-                                    ...item,
-                                    custom_price: item?.price,
-                                    title: item?.lens_material_title,
-                                }}
-                            />
-                        );
-                    })}
-                   </Row>
+                    <Row justify="center" align="middle">
+                        <Col xs={24} className={classes["material-label"]}>
+                            Lens Material
+                        </Col>
+                        {materials?.map((item, index) => {
+                            return (
+                                <CollectionSlot
+                                    key={index}
+                                    handleCheckbox={handleCheckbox}
+                                    handleDisplayNameChange={
+                                        handleDisplayNameChange
+                                    }
+                                    handleAmountNameChange={
+                                        handleAmountNameChange
+                                    }
+                                    collection={{
+                                        ...item,
+                                        custom_price: item?.price,
+                                        title: item?.lens_material_title,
+                                    }}
+                                />
+                            );
+                        })}
+                    </Row>
                 </Col>
             </Row>
             <Row className={classes["save-button-wrapper"]}>
                 <Col xs={24}>
-                <button
-                    className={classes["save-button"]}
-                    onClick={submitMaterialSettings}
-                >
-                    Save
-                </button></Col>
+                    <button
+                        className={classes["save-button"]}
+                        onClick={submitMaterialSettings}
+                    >
+                        Save
+                    </button>
+                </Col>
             </Row>
         </>
     );

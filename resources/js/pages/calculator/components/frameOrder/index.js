@@ -16,7 +16,7 @@ const FrameOrder = ({
     data,
     isFrame,
 }) => {
-    const { values, handleChange, handleBlur } = formProps;
+    const { values, handleChange } = formProps;
     const frameOrderVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -47,7 +47,6 @@ const FrameOrder = ({
                             <input
                                 className={classes["input"]}
                                 type={"number"}
-                                onBlur={handleBlur}
                                 onChange={handleChange}
                                 value={values?.frameRetailFee}
                                 id="frameRetailFee"
@@ -74,7 +73,6 @@ const FrameOrder = ({
                                         <input
                                             className={classes["input"]}
                                             type={"text"}
-                                            onBlur={handleBlur}
                                             onChange={handleInputChange}
                                             value={values?.frameContribution}
                                             id="frameContribution"
@@ -92,7 +90,6 @@ const FrameOrder = ({
                 <div className={classes["frame-sub-container"]}>
                     <CalculatorHeading title="Drill Mount?" />
                     <Radio.Group
-                        onBlur={handleBlur}
                         onChange={handleChange}
                         value={values?.drillMount}
                         id="drillMount"
@@ -188,7 +185,6 @@ const FrameOrder = ({
                                 active={handleActiveIcons()}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleFrameOrderChange}
                                 value={values?.frameOrderType}
                                 id="frameOrderType"
