@@ -108,6 +108,15 @@ export const CreateCalculatorValidations = (data) => {
             "Add Shipping is required"
         );
     }
+    const discount = data?.find((ques) => ques.question == "Discount");
+    if (discount?.optional === "true") {
+        validationObject.discountType = Yup.string().required(
+            "Discount is required"
+        );
+        validationObject.discountValue = Yup.string().required(
+            "Discount Value is required"
+        );
+    }
     return validationObject;
 };
 

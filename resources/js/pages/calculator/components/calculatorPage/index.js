@@ -202,15 +202,14 @@ const CalculatorScreen = () => {
             let collectionId = null;
             lensType?.brands?.forEach((item) => {
                 item.collections?.forEach((val) => {
-                    
-                        if (val?.display_name) {
-                            if (val.display_name == values?.lensTypeValue) {
-                                collectionId = val?.id;
-                            }
-                        } else {
-                            if (val.title == values?.lensTypeValue) {
-                                collectionId = val?.id;
-                            }
+                    if (val?.display_name) {
+                        if (val.display_name == values?.lensTypeValue) {
+                            collectionId = val?.id;
+                        }
+                    } else {
+                        if (val.title == values?.lensTypeValue) {
+                            collectionId = val?.id;
+                        }
                     }
                 });
             });

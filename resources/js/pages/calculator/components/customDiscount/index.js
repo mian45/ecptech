@@ -19,6 +19,32 @@ const CustomDiscount = ({
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const editInvoiceState = history?.location?.state?.invoice;
 
+    const discountVisibility = calculatorObj?.questions
+        ?.find((item) => item?.title === values?.visionPlan)
+        ?.question_permissions?.find(
+            (ques) => ques?.question === "Discount"
+        )?.visibility;
+    useEffect(() => {
+        if (discount === "") {
+            const validations = { ...calValidations };
+            delete validations.discountValue;
+            delete validations.discountType;
+            setCalValidations({
+                ...validations,
+            });
+        } else {
+            const discountValue = Yup.string().required("Discount is required");
+            const discountType = Yup.string().required(
+                "Discount name is required"
+            );
+            setCalValidations({
+                ...calValidations,
+                discountValue,
+                discountType,
+            });
+        }
+    }, [discount]);
+
     const getActiveDiscounts = () => {
         return (
             calculatorObj?.discount?.filter(
@@ -58,17 +84,7 @@ const CustomDiscount = ({
         } else if (e === "other") {
             await setFieldValue("discountType", "");
             await setFieldValue("discountValue", "");
-            const discountValue = Yup.string().required("Discount is required");
-            const discountType = Yup.string().required(
-                "Discount name is required"
-            );
-            setCalValidations({
-                ...calValidations,
-                discountValue,
-                discountType,
-            });
         } else {
-            removeValidations();
             const currentDiscount = calculatorObj?.discount?.find(
                 (item) => item?.id == e
             );
@@ -88,86 +104,110 @@ const CustomDiscount = ({
         }
     };
     return (
-        <Row className={classes["container"]}>
-            {" "}
-            <Col sx={0} sm={0} md={5}>
-                <QuestionIcon
-                    icon={icon}
-                    active={values?.discountType && values?.discountValue}
-                />{" "}
-            </Col>
-            <Col
-                sx={24}
-                sm={24}
-                md={19}
-                className={classes["vision-container-col"]}
-            >
-                <div className={classes["vision-container"]}>
-                    <CalculatorHeading
-                        title="Discount"
-                        active={values?.discountType && values?.discountValue}
-                    />
-                    <select
-                        placeholder="Select Discount"
-                        value={discount || ""}
-                        onChange={(value) => {
-                            setDiscount(value.target.value);
-                            handleValueChange(value.target.value);
-                        }}
-                        id="discountTypeDropdown"
-                        name="discountTypeDropdown"
-                        className={classes["discount-select"]}
+        <>
+            {discountVisibility ? (
+                <Row className={classes["container"]}>
+                    {" "}
+                    <Col sx={0} sm={0} md={5}>
+                        <QuestionIcon
+                            icon={icon}
+                            active={
+                                values?.discountType && values?.discountValue
+                            }
+                        />{" "}
+                    </Col>
+                    <Col
+                        sx={24}
+                        sm={24}
+                        md={19}
+                        className={classes["vision-container-col"]}
                     >
-                        <option value={""}>None</option>
-                        {getActiveDiscounts()?.map((item, index) => {
-                            return (
-                                <option key={index} value={item?.id}>
-                                    {item?.name || ""}
-                                </option>
-                            );
-                        })}
-                        <option value={"other"}>Other</option>
-                    </select>
-                    {discount === "other" && (
-                        <div className={classes["discount-input-container"]}>
-                            <div className={classes["discount-input-row"]}>
-                                <div className={classes["input-label"]}>
-                                    Discount Name
-                                </div>
-                                <input
-                                    className={classes["input"]}
-                                    type={"text"}
-                                    onChange={handleChange}
-                                    value={values?.discountType}
-                                    id="discountType"
-                                    name="discountType"
-                                />
-
-                                <FormikError name={"discountType"} />
-                            </div>
-                            <div className={classes["discount-input-row"]}>
-                                <div className={classes["input-label"]}>
-                                    Discount Percentage
-                                </div>
-                                <input
-                                    className={classes["input"]}
-                                    type={"text"}
-                                    onChange={handleDiscountValueChange}
-                                    value={values?.discountValue}
-                                    id="discountValue"
-                                    name="discountValue"
-                                    step={0.01}
-                                    min={0.0}
-                                    max={100.0}
-                                />
-
+                        <div className={classes["vision-container"]}>
+                            <CalculatorHeading
+                                title="Discount"
+                                active={
+                                    values?.discountType &&
+                                    values?.discountValue
+                                }
+                            />
+                            <select
+                                placeholder="Select Discount"
+                                value={discount || ""}
+                                onChange={(value) => {
+                                    setDiscount(value.target.value);
+                                    handleValueChange(value.target.value);
+                                }}
+                                id="discountTypeDropdown"
+                                name="discountTypeDropdown"
+                                className={classes["discount-select"]}
+                            >
+                                <option value={""}>None</option>
+                                {getActiveDiscounts()?.map((item, index) => {
+                                    return (
+                                        <option key={index} value={item?.id}>
+                                            {item?.name || ""}
+                                        </option>
+                                    );
+                                })}
+                                <option value={"other"}>Other</option>
+                            </select>
+                            {discount !== "other" && (
                                 <FormikError name={"discountValue"} />
-                            </div>
+                            )}
+                            {discount === "other" && (
+                                <div
+                                    className={
+                                        classes["discount-input-container"]
+                                    }
+                                >
+                                    <div
+                                        className={
+                                            classes["discount-input-row"]
+                                        }
+                                    >
+                                        <div className={classes["input-label"]}>
+                                            Discount Name
+                                        </div>
+                                        <input
+                                            className={classes["input"]}
+                                            type={"text"}
+                                            onChange={handleChange}
+                                            value={values?.discountType}
+                                            id="discountType"
+                                            name="discountType"
+                                        />
+
+                                        <FormikError name={"discountType"} />
+                                    </div>
+                                    <div
+                                        className={
+                                            classes["discount-input-row"]
+                                        }
+                                    >
+                                        <div className={classes["input-label"]}>
+                                            Discount Percentage
+                                        </div>
+                                        <input
+                                            className={classes["input"]}
+                                            type={"text"}
+                                            onChange={handleDiscountValueChange}
+                                            value={values?.discountValue}
+                                            id="discountValue"
+                                            name="discountValue"
+                                            step={0.01}
+                                            min={0.0}
+                                            max={100.0}
+                                        />
+
+                                        <FormikError name={"discountValue"} />
+                                    </div>
+                                </div>
+                            )}
                         </div>
-                    )}
-                </div>
-            </Col>
-        </Row>
+                    </Col>
+                </Row>
+            ) : null}
+        </>
     );
 };
 export default CustomDiscount;
