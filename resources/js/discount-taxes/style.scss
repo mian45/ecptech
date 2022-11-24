@@ -329,8 +329,9 @@ input[type="number"] {
 }
 
 .ant-select-selection-item {
-    padding-left: 8px !important;
+    padding-left: 0px !important;
     line-height: 37px !important;
+    text-align: center;
 }
 
 .ant-select-single .ant-select-selector {

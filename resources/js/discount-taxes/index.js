@@ -549,8 +549,8 @@ const DiscountTaxes = (props) => {
                                                             <Col xs={24}>
                                                                 <Row justify="start">
                                                                     <Col
-                                                                        xs={24}
-                                                                        md={11}
+                                                                        xs={14}
+                                                                        md={14}
                                                                     >
                                                                         {" "}
                                                                         <input
@@ -566,8 +566,8 @@ const DiscountTaxes = (props) => {
                                                                         />
                                                                     </Col>
                                                                     <Col
-                                                                        xs={24}
-                                                                        md={9}
+                                                                        xs={9}
+                                                                        md={6}
                                                                     >
                                                                         {" "}
                                                                         <Select
@@ -587,7 +587,7 @@ const DiscountTaxes = (props) => {
                                                                                     "percentage"
                                                                                 }
                                                                             >
-                                                                                Percentage
+                                                                                %
                                                                             </Option>
                                                                             <Option
                                                                                 className="ant-select-item-option-content"
@@ -595,7 +595,7 @@ const DiscountTaxes = (props) => {
                                                                                     "amount"
                                                                                 }
                                                                             >
-                                                                                Amount
+                                                                                $
                                                                             </Option>
                                                                         </Select>
                                                                     </Col>
@@ -697,10 +697,7 @@ const DiscountTaxes = (props) => {
                                                                         Discount
                                                                         Value
                                                                     </th>
-                                                                    <th>
-                                                                        Discount
-                                                                        Type
-                                                                    </th>
+
                                                                     <th></th>
                                                                 </tr>
                                                             )}
@@ -722,11 +719,10 @@ const DiscountTaxes = (props) => {
                                                                                     {
                                                                                         dis.value
                                                                                     }{" "}
-                                                                                </td>
-                                                                                <td>
-                                                                                    {
-                                                                                        dis.type
-                                                                                    }
+                                                                                    {dis.type ==
+                                                                                    "percentage"
+                                                                                        ? "%"
+                                                                                        : "$"}
                                                                                 </td>
                                                                                 <td className="discount-col-3">
                                                                                     <img
