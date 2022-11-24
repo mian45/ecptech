@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Event;
 
 use App\Models\LenseType;
 use App\Models\UserLenseMaterialSetting;
+use App\Models\UserAddOnSetting;
 use App\Models\BrandPermission;
 use App\Models\CollectionPermission;
 use App\Models\Brand;
@@ -156,7 +157,7 @@ class EventServiceProvider extends ServiceProvider
                         )
                         OR
                         (
-                            strpos($addon_type->title, 'Sunglasses') !== false                 
+                            strpos($addon_type->title, 'SunGlasses') !== false                 
                         )
 
                     ){
