@@ -414,10 +414,10 @@ const DiscountTaxes = (props) => {
             } else if (
                 discountTax > 100 &&
                 discountTax >= 0 &&
-                discountType == "percentage"
+                discountType === "percentage"
             ) {
                 setDiscountTax(discountTax);
-            } else if (discountType == "amount" && discountTax) {
+            } else if (discountType === "amount" && discountTax) {
                 setDiscountTax(discountTax);
             } else if (!discountTax) {
                 setDiscountTax("");
@@ -432,10 +432,10 @@ const DiscountTaxes = (props) => {
             if (
                 e.target.value <= 100 &&
                 e.target.value >= 0 &&
-                discountType == "percentage"
+                discountType === "percentage"
             ) {
                 setDiscountTax(e.target.value);
-            } else if (discountType == "amount" && e.target.value) {
+            } else if (discountType === "amount" && e.target.value) {
                 setDiscountTax(e.target.value);
             } else if (!e.target.value) {
                 setDiscountTax("");
