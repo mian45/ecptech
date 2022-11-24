@@ -54,16 +54,16 @@ class RegisterController extends Controller
 
         $roleData = Role::find($roleId);
         if (empty($roleData)) {
-            return $this->sendError('Givin role cannot exists');
+            return $this->sendError('Givin Role Cannot Exists.');
         }
         $role = $roleData->name;
         if ($role == 'staff' && $request->clientId == '') {
-            return $this->sendError('clientId required.');
+            return $this->sendError('ClientId Required.');
         }
 
         $emailExist = User::where('email', $email)->first();
         if ($emailExist) {
-            return $this->sendError('The email address is already associated with another user.');
+            return $this->sendError('The Email Address Is Already Associated With Another User.');
         }
 
         $userData['name'] = $name;
@@ -81,7 +81,7 @@ class RegisterController extends Controller
         $success['name'] =  $user->name;
         $success['email'] =  $user->email;
         $success['token'] =  $user->createToken('ECP')->accessToken;
-        return $this->sendResponse($success, 'User register successfully.');
+        return $this->sendResponse($success, 'User Register Successfully.');
     }
 
     public function login(Request $request)
@@ -156,7 +156,7 @@ class RegisterController extends Controller
 
 
             $success['token'] =  $user->createToken('ECP')->accessToken;
-            return $this->sendResponse($success, 'User login successfully.');
+            return $this->sendResponse($success, 'User logged Successfully.');
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
         }
@@ -176,7 +176,7 @@ class RegisterController extends Controller
         $user = Auth::user()->token();
         $user->revoke();
         $success['user_id'] = $user->user_id;
-        return $this->sendResponse($success, 'logout successfully.');
+        return $this->sendResponse($success, 'User Logout Successfully.');
     }
     public function forgotPassword(Request $request)
     {
@@ -193,9 +193,9 @@ class RegisterController extends Controller
             $user->verification_code = $verification_code;
             $user->save();
             $success['email'] = $user->email;
-            return $this->sendResponse($success, 'six digit code sent to givin email');
+            return $this->sendResponse($success, 'Six Digit Code Sent To Givin Email.');
         } else {
-            return $this->sendError('givin email cannot found in system.', ['error' => 'givin email cannot found in system']);
+            return $this->sendError('Givin Email Cannot Found In System.', ['error' => 'Givin Email Cannot Found In System.']);
         }
     }
 
@@ -230,7 +230,7 @@ class RegisterController extends Controller
             ['id', '!=' ,$id]
         ])->first();
         if ($emailExist) {
-            return $this->sendError('The email address is already associated with another user.');
+            return $this->sendError('The Email Address Is Already Associated With Another User.');
         }
 
 
@@ -244,10 +244,10 @@ class RegisterController extends Controller
             $success['name'] =  $user->name;
             $success['email'] =  $user->email;
             $success['token'] =  $user->createToken('ECP')->accessToken;
-            return $this->sendResponse($success, 'Staff login update successfully.');
+            return $this->sendResponse($success, 'Staff Login Updated Successfully.');
         }
 
-        return $this->sendError('Staff login user not found', []);
+        return $this->sendError('Staff Login User Not Found.', []);
 
     }
 
@@ -268,9 +268,9 @@ class RegisterController extends Controller
             $user->password =  bcrypt($password);
             $user->save();
             $success['email'] = $user->email;
-            return $this->sendResponse($success, 'new password sent to email');
+            return $this->sendResponse($success, 'New Password Sent To Email.');
         } else {
-            return $this->sendError('verification code cannot match.', ['error' => 'verification code cannot cannot match']);
+            return $this->sendError('Verification Code Cannot Match.', ['error' => 'Verification Code Cannot Match.']);
         }
     }
 
@@ -280,7 +280,7 @@ class RegisterController extends Controller
         $roles = Role::get();
         
         if($roles){
-            return $this->sendResponse($roles, 'Role get successfully.');
+            return $this->sendResponse($roles, 'Role Get Successfully.');
         }
         return $this->sendError('Roles not found.');
     }
@@ -316,7 +316,7 @@ class RegisterController extends Controller
             if($result){
                 return response()->json([                
                     "success" => true,
-                    "message" => "password save successfully.",                                  
+                    "message" => "Password Updated Successfully.",                                  
                 ]);   
             } else {
                 return $this->sendError('Something Went Wrong.');

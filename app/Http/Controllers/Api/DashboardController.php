@@ -122,7 +122,7 @@ class DashboardController extends Controller
         $data['invoice']['capture_rate'] = $capture_rate;
         $data['invoice']['unpaid'] = $total_unpaid_invoices;
 
-        return $this->sendResponse($data, 'Invoice Data Get Successfully');
+        return $this->sendResponse($data, 'Invoice Data Get Successfully.');
 
        
     }
@@ -157,7 +157,7 @@ class DashboardController extends Controller
                             ->groupBy('invoices.staff_id')
                             ->get();
 
-        return $this->sendResponse($team_progress, 'Team Progress');
+        return $this->sendResponse($team_progress, 'Team Progress Get Successfully.');
   
     }
 
@@ -206,7 +206,7 @@ class DashboardController extends Controller
                         ->groupBy('invoices.staff_id')
                         ->get();
 
-        return $this->sendResponse($team_progress, 'Team Performance');
+        return $this->sendResponse($team_progress, 'Team Performance Get Successfully.');
 
     }
 

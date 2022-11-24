@@ -62,7 +62,7 @@ class ReminderController extends Controller
 
         $reminder->save();
         $success['id'] = $reminder->id;
-        return $this->sendResponse($success, 'Reminder added successfully.');
+        return $this->sendResponse($success, 'Reminder Added Successfully.');
 
     }
 
@@ -121,7 +121,7 @@ class ReminderController extends Controller
             $reminder->save();
             $success['id'] = $reminder->id;
             $success['is_active'] = $reminder->is_active;
-            return $this->sendResponse($success, 'Reminder Update Successfully');
+            return $this->sendResponse($success, 'Reminder Updated Successfully.');
         }
 
         return $this->sendError('Reminder not found');

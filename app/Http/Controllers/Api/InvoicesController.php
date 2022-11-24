@@ -148,13 +148,13 @@ class InvoicesController extends Controller
       if($invoice){
 
           if($invoice->status == 'discard'){
-            return $this->sendError('cannot update discard invoice');
+            return $this->sendError('Cannot Update Discarded Invoice.');
           }
        $a2 = json_encode($request->userState);
        $a1 = $invoice->user_state;
      
       if($a1 == $a2 && $invoice->name == $request->invoiceName){
-            return $this->sendResponse($invoice, 'No update in invoice');
+            return $this->sendResponse($invoice, 'No Update In Invoice');
       }else{
 
             $invoice->status = 'discard';
@@ -173,7 +173,7 @@ class InvoicesController extends Controller
             $newInvoice->save();
       
             if($newInvoice){
-              return $this->sendResponse($newInvoice, 'New invoice created successfully');
+              return $this->sendResponse($newInvoice, 'New Invoice Created Successfully.');
             }
 
         }
@@ -220,7 +220,7 @@ class InvoicesController extends Controller
                 ->where('email',$where_clouse['email']);
         })->where('user_id',$request->userId)->whereNot('status', 'discard')->get();
       }
-        return $this->sendResponse($invoices, 'Invoices List Get Successfully');
+        return $this->sendResponse($invoices, 'Invoices List Get Successfully.');
     }
 
 }
