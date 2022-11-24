@@ -44,5 +44,10 @@ class UserTableSeeder extends Seeder
                 'updated_at' => date("Y-m-d H:i:s")
             )
         ));
+
+        $users = User::all();
+        foreach($users as $user){
+            event(new \App\Events\AddUserCollectionPermission($user));
+        }
     }
 }
