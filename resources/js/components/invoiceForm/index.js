@@ -10,7 +10,7 @@ const InvoicesForm = ({
     handleSearch,
     setIsSearched,
 }) => {
-    const { values, handleChange, handleBlur, isSubmitting, isValid, dirty } =
+    const { values, handleChange, isSubmitting, isValid, dirty } =
         formProps;
     return (
         <div className={classes["container"]}>
@@ -26,7 +26,6 @@ const InvoicesForm = ({
                         handleChange(e);
                         setIsSearched(false);
                     }}
-                    onBlur={handleBlur}
                 />
 
                 <InputField
@@ -40,7 +39,6 @@ const InvoicesForm = ({
                         handleChange(e);
                         setIsSearched(false);
                     }}
-                    onBlur={handleBlur}
                 />
             </div>
             <div className={classes["form-slot"]}>
@@ -57,7 +55,6 @@ const InvoicesForm = ({
                             handleChange(e);
                             setIsSearched(false);
                         }}
-                        onBlur={handleBlur}
                     />
                     <ErrorMessage
                         name={"dob"}
@@ -76,7 +73,6 @@ const InvoicesForm = ({
                         handleChange(e);
                         setIsSearched(false);
                     }}
-                    onBlur={handleBlur}
                 />
                 <InputField
                     className={classes["input"]}
@@ -91,7 +87,6 @@ const InvoicesForm = ({
                             setIsSearched(false);
                         }
                     }}
-                    onBlur={handleBlur}
                     type={"number"}
                 />
             </div>

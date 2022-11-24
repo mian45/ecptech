@@ -86,7 +86,6 @@ const Photochromics = ({
                                 active={handleActiveState()}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handlePhotochromicsChange}
                                 value={values?.isPhotochromics}
                                 id="isPhotochromics"
@@ -114,7 +113,6 @@ const Photochromics = ({
                                         Select Photochromics
                                     </div>
                                     <Radio.Group
-                                        onBlur={handleBlur}
                                         onChange={handleChange}
                                         value={values?.photochromicsType}
                                         id="photochromicsType"

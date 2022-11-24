@@ -137,7 +137,6 @@ const CustomDiscount = ({
                                 <input
                                     className={classes["input"]}
                                     type={"text"}
-                                    onBlur={handleBlur}
                                     onChange={handleChange}
                                     value={values?.discountType}
                                     id="discountType"
@@ -153,7 +152,6 @@ const CustomDiscount = ({
                                 <input
                                     className={classes["input"]}
                                     type={"text"}
-                                    onBlur={handleBlur}
                                     onChange={handleDiscountValueChange}
                                     value={values?.discountValue}
                                     id="discountValue"

@@ -36,7 +36,6 @@ const GlassesProtection = ({ formProps, calculatorObj }) => {
                                 active={values?.shipping}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleChange}
                                 value={values?.shipping}
                                 id="shipping"

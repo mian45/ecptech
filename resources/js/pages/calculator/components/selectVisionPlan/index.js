@@ -73,7 +73,6 @@ const SelectVisionPlan = ({
                             active={values?.visionPlan}
                         />
                         <Radio.Group
-                            onBlur={handleBlur}
                             onChange={handlePlanChange}
                             value={values?.visionPlan}
                             className={classes["radio-group"]}
