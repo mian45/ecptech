@@ -17,6 +17,36 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
             (ques) => ques.question === "Lens Material"
         )?.visibility;
 
+    const getActiveMaterials = (material) => {
+        const lensType = calculatorObj?.lens_types?.find(
+            (item) => item?.title === values?.lensType
+        );
+
+        let activeMaterials = [];
+        lensType?.brands?.forEach((item) => {
+            item?.collections?.forEach((val) => {
+                if (val?.display_name) {
+                    if (val?.display_name == values?.lensTypeValue) {
+                        activeMaterials = val?.lenses;
+                    }
+                } else {
+                    if (val?.title == values?.lensTypeValue) {
+                        activeMaterials = val?.lenses;
+                    }
+                }
+            });
+        });
+
+        let isMaterialFound = true;
+
+        isMaterialFound = activeMaterials?.some(
+            (item) =>
+                item?.lens_material_title?.toLowerCase() ===
+                material?.toLowerCase()
+        );
+        return activeMaterials?.length > 0 ? !isMaterialFound : false;
+    };
+
     const handleLensMererialChange = (e) => {
         let currentValue = "";
         if (isLenseTitle(e.target.value)) {
@@ -65,7 +95,10 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
             {lensMaterialVisibility ? (
                 <Row className={classes["container"]}>
                     {showModal && (
-                        <EyePrescriptionModal onClose={handleCloseModal} onOpen={showModal}/>
+                        <EyePrescriptionModal
+                            onClose={handleCloseModal}
+                            onOpen={showModal}
+                        />
                     )}
                     <Col sx={0} sm={0} md={5}>
                         <QuestionIcon
@@ -102,6 +135,9 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
                                                     values?.lensMaterial ===
                                                     lensName?.lens_material_title
                                                 }
+                                                disabled={getActiveMaterials(
+                                                    lensName?.lens_material_title
+                                                )}
                                             />
                                         );
                                     }
