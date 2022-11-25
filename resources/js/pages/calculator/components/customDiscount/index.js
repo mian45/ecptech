@@ -53,13 +53,16 @@ const CustomDiscount = ({
         );
     };
     const isSelected = getActiveDiscounts()?.filter(
-        (item) => item.name === values?.discountType
+        (item) => item?.id === values?.discountId
     );
     useEffect(() => {
         if (editInvoiceState?.id) {
             if (values?.discountType === "" && discount === "") {
                 setDiscount("");
-            } else if (isSelected?.length === 0) {
+            } else if (
+                isSelected?.length === 0 &&
+                values?.discountId === "other"
+            ) {
                 setDiscount("other");
             } else {
                 setDiscount(isSelected[0]?.id);
@@ -80,27 +83,42 @@ const CustomDiscount = ({
         if (e === "") {
             await setFieldValue("discountType", "");
             await setFieldValue("discountValue", "");
+            await setFieldValue("discountAmountType", "percentage");
+            await setFieldValue("discountId", "");
             removeValidations();
         } else if (e === "other") {
             await setFieldValue("discountType", "");
             await setFieldValue("discountValue", "");
+            await setFieldValue("discountAmountType", "percentage");
+            await setFieldValue("discountId", "other");
         } else {
             const currentDiscount = calculatorObj?.discount?.find(
                 (item) => item?.id == e
             );
             await setFieldValue("discountType", currentDiscount?.name);
             await setFieldValue("discountValue", currentDiscount?.value);
+            await setFieldValue("discountAmountType", currentDiscount?.type);
+            await setFieldValue("discountId", currentDiscount?.id);
         }
     };
 
     const handleDiscountValueChange = (e) => {
-        if (parseInt(e.target.value) > 100 || parseInt(e.target.value) < 0)
-            return;
-        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
-        if (regix.test(e.target.value)) {
-            handleChange(e);
-        } else if (e.target.value == "") {
-            handleChange(e);
+        if (values?.discountAmountType === "percentage") {
+            if (parseInt(e.target.value) > 100 || parseInt(e.target.value) < 0)
+                return;
+            const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+            if (regix.test(e.target.value)) {
+                handleChange(e);
+            } else if (e.target.value == "") {
+                handleChange(e);
+            }
+        } else {
+            const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+            if (regix.test(e.target.value)) {
+                handleChange(e);
+            } else if (e.target.value == "") {
+                handleChange(e);
+            }
         }
     };
     return (
@@ -187,17 +205,44 @@ const CustomDiscount = ({
                                         <div className={classes["input-label"]}>
                                             Discount Percentage
                                         </div>
-                                        <input
-                                            className={classes["input"]}
-                                            type={"text"}
-                                            onChange={handleDiscountValueChange}
-                                            value={values?.discountValue}
-                                            id="discountValue"
-                                            name="discountValue"
-                                            step={0.01}
-                                            min={0.0}
-                                            max={100.0}
-                                        />
+                                        <div
+                                            className={
+                                                classes[
+                                                    "discount-amount-container"
+                                                ]
+                                            }
+                                        >
+                                            <input
+                                                className={`${classes["input"]} ${classes["margin-discount"]}`}
+                                                type={"text"}
+                                                onChange={
+                                                    handleDiscountValueChange
+                                                }
+                                                value={values?.discountValue}
+                                                id="discountValue"
+                                                name="discountValue"
+                                                step={0.01}
+                                                min={0.0}
+                                                max={100.0}
+                                            />
+                                            <select
+                                                value={
+                                                    values?.discountAmountType ||
+                                                    ""
+                                                }
+                                                onChange={handleChange}
+                                                id="discountAmountType"
+                                                name="discountAmountType"
+                                                className={`${classes["discount-select"]} ${classes["center-select"]}`}
+                                            >
+                                                <option value={"percentage"}>
+                                                    %
+                                                </option>
+                                                <option value={"amount"}>
+                                                    $
+                                                </option>
+                                            </select>
+                                        </div>
 
                                         <FormikError name={"discountValue"} />
                                     </div>

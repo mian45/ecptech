@@ -216,6 +216,8 @@ export const GetMappedPayload = (data) => {
         discount: {
             type: data?.discountType,
             value: data?.discountValue,
+            amountType: data?.discountAmountType,
+            discountId: data?.discountId,
         },
     };
 };
@@ -299,5 +301,7 @@ export const mappedEditValues = (data) => {
         shippingAmount: userState?.shipping?.price || "",
         discountType: userState?.discount?.type || "",
         discountValue: userState?.discount?.value || "",
+        discountAmountType: userState?.discount?.amountType || "percentage",
+        discountId: userState?.discount?.discountId || "",
     };
 };
