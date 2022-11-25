@@ -25,7 +25,7 @@ const Photochromics = ({
     const getPhotochromicList = () => {
         return (
             calculatorObj?.addons?.find(
-                (item) => item?.title === "Photochromoics"
+                (item) => item?.title === "Photochromic"
             )?.addons || []
         );
     };
@@ -62,7 +62,9 @@ const Photochromics = ({
             });
         }
         if (values.isCopayPhotochromic && e.target.value === "No") {
-            setError("Are you sure? You don't want to avail discount");
+            setError(
+                "Are you sure, you don't want to use the available discount?"
+            );
         } else {
             setError("");
         }
