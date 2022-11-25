@@ -735,7 +735,7 @@ export const GetPrivatePayMaterialPrice = (calculatorObj, data) => {
 
 export const GetPrivatePhotochromicPrice = (value, calculatorObj, data) => {
     const photochromicAddons = calculatorObj?.addons?.find(
-        (item) => item?.title === "Photochromoics"
+        (item) => item?.title === "Photochromic"
     );
     if (data?.photochromics?.status === "Yes") {
         const selectedPhotochromic = photochromicAddons?.addons?.find(
@@ -793,7 +793,7 @@ const GetPrivateMirrorCoating = (glassesAddons, data) => {
             total = parseFloat(skiTypePrice || 0) || 0;
         } else {
             const solidGradientPrice = glassesAddons?.addons?.find(
-                (item) => item.title === "Solid/Single Gradient"
+                (item) => item.title === "Solid/Single Gradient Mirror"
             )?.price;
             total = parseFloat(solidGradientPrice || 0) || 0;
         }

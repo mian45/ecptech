@@ -203,7 +203,7 @@ const CustomDiscount = ({
                                         }
                                     >
                                         <div className={classes["input-label"]}>
-                                            Discount Percentage
+                                            Discount
                                         </div>
                                         <div
                                             className={

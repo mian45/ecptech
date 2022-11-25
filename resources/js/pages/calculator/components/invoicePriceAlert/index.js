@@ -36,8 +36,8 @@ const InvoicePriceAlert = ({ open, cancel, accept }) => {
                 </Col>
                 <Col sm={24}>
                     <p className={classes["confirmation-subtext"]}>
-                        Retail price must be entered, please go the lenses
-                        settings and add retail price.
+                        Retail price must be entered, please go to the lenses
+                        settings and add Retail Price.
                     </p>
                     <div
                         className={`${classes["btn-container"]} ${classes["margin-container"]}`}

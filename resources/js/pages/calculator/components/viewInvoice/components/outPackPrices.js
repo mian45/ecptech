@@ -51,14 +51,14 @@ const OutPackPrices = ({
             }
         } else if (
             receipt?.values?.sunGlassesLens?.coatingType ===
-            "Solid/Single Gradient"
+            "Solid/Single Gradient Mirror"
         ) {
             if (
                 receipt?.values?.submitBenifitType === BenifitTypeEnums.lens ||
                 receipt?.values?.visionPlan === "Private Pay"
             ) {
                 const solidGradientPrice = glassesAddons?.addons?.find(
-                    (item) => item?.title === "Solid/Single Gradient"
+                    (item) => item?.title === "Solid/Single Gradient Mirror"
                 )?.price;
                 return parseFloat(solidGradientPrice || 0) || 0;
             } else {
@@ -837,9 +837,9 @@ export const getPriceFromDBOld = (receipt, calculatorObj, lensPrices) => {
                     if (
                         (materials[0]?.characteristics?.price || "")?.trim() ===
                             "NULL" ||
-                        !(materials[0]?.characteristics?.price || "")?.trim()
-                        (baseCharecterstics[0]?.price || "")?.trim() ===
-                            "NULL" ||
+                        !(materials[0]?.characteristics?.price || "")
+                            ?.trim()(baseCharecterstics[0]?.price || "")
+                            ?.trim() === "NULL" ||
                         !(baseCharecterstics[0]?.price || "")?.trim()
                     ) {
                         lensPrice = 0;
