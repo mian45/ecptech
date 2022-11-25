@@ -49,7 +49,8 @@ export const CalculateOtherPlansPrices = (
             parseFloat(
                 GetPrivatePhotochromicPrice(
                     data?.photochromics?.type,
-                    calculatorObj
+                    calculatorObj,
+                    data
                 )
             );
         // add sun glasses price
@@ -61,7 +62,8 @@ export const CalculateOtherPlansPrices = (
             parseFloat(
                 GetPrivateAntireflectivePrice(
                     calculatorObj,
-                    data?.antiReflectiveProperties?.type
+                    data?.antiReflectiveProperties?.type,
+                    data
                 )
             );
     }
@@ -136,7 +138,7 @@ const GetPhotochromicPrice = (data) => {
     return total;
 };
 
-const getPriceByPhotochromicMaterial = (plan, value) => {
+export const getPriceByPhotochromicMaterial = (plan, value) => {
     if (plan === "VSP Signature" || plan === "VSP Advantage") {
         return getSignaturePhotochromic(value);
     } else if (plan === "VSP Choice") {
@@ -191,7 +193,7 @@ const GetAntireflectivePrice = (data) => {
     return total;
 };
 
-const getPriceByAntireflective = (plan, value) => {
+export const getPriceByAntireflective = (plan, value) => {
     if (plan === "VSP Signature") {
         return getSignatureAntireflective(value);
     } else if (plan === "VSP Choice" || plan === "VSP Advantage") {
@@ -621,7 +623,7 @@ const GetLensFee = (data, calculatorObj, lensPrices) => {
     }
 };
 
-const getPriceFromDB = (data, calculatorObj, lensPrices) => {
+export const getPriceFromDB = (data, calculatorObj, lensPrices) => {
     if (data.visionPlan === "VSP Advantage") {
         return getAdvantagePricesFromDB(data, calculatorObj, lensPrices);
     } else {
@@ -682,7 +684,7 @@ const getPriceFromDB = (data, calculatorObj, lensPrices) => {
         }
     }
 };
-const GetPrivateLensFee = (calculatorObj, data) => {
+export const GetPrivateLensFee = (calculatorObj, data) => {
     let price = 0;
     if (calculatorObj?.lens_types) {
         const currentPlan = calculatorObj?.lens_types?.find(
@@ -713,7 +715,7 @@ const GetPrivateLensFee = (calculatorObj, data) => {
     return parseFloat(price || 0);
 };
 
-const GetPrivatePayMaterialPrice = (calculatorObj, data) => {
+export const GetPrivatePayMaterialPrice = (calculatorObj, data) => {
     let price = 0;
     const material = calculatorObj?.lens_material?.find(
         (material) => material?.lens_material_title === data?.lensMaterial
@@ -727,14 +729,17 @@ const GetPrivatePayMaterialPrice = (calculatorObj, data) => {
     return parseFloat(price || 0);
 };
 
-const GetPrivatePhotochromicPrice = (value, calculatorObj) => {
+export const GetPrivatePhotochromicPrice = (value, calculatorObj, data) => {
     const photochromicAddons = calculatorObj?.addons?.find(
         (item) => item?.title === "Photochromoics"
     );
-    const selectedPhotochromic = photochromicAddons?.addons?.find(
-        (item) => item.title === value
-    )?.price;
-    return parseFloat(selectedPhotochromic || 0) || 0;
+    if (data?.photochromics?.status === "Yes") {
+        const selectedPhotochromic = photochromicAddons?.addons?.find(
+            (item) => item.title === value
+        )?.price;
+        return parseFloat(selectedPhotochromic || 0) || 0;
+    }
+    return 0;
 };
 const GetPrivateSunGlassesPrice = (calculatorObj, data) => {
     const glassesAddons = calculatorObj?.addons?.find(
@@ -792,15 +797,17 @@ const GetPrivateMirrorCoating = (glassesAddons, data) => {
     return total;
 };
 
-const GetPrivateAntireflectivePrice = (calculatorObj, value) => {
+export const GetPrivateAntireflectivePrice = (calculatorObj, value, data) => {
     const antiReflectiveAddons = calculatorObj?.addons?.find(
         (item) => item?.title === "Anti Reflective"
     );
     let total = 0;
-    const selectedAntireflective =
-        antiReflectiveAddons?.addons?.find((item) => item?.title === value)
-            ?.price || 0;
-    total = total + parseFloat(selectedAntireflective || 0) || 0;
+    if (data?.antiReflectiveProperties?.status === "Yes") {
+        const selectedAntireflective =
+            antiReflectiveAddons?.addons?.find((item) => item?.title === value)
+                ?.price || 0;
+        total = total + parseFloat(selectedAntireflective || 0) || 0;
+    }
     return total;
 };
 const getAdvantagePricesFromDB = (data, calculatorObj, lensPrices) => {
@@ -1029,10 +1036,22 @@ export const GetFrameRetailFee = (calculatorObj, data) => {
     total = total + GetPrivateLensFee(calculatorObj, data);
     total = total + GetPrivatePayMaterialPrice(calculatorObj, data);
     if (data?.photochromics?.status === "Yes") {
-        total = total + GetPrivatePhotochromicPrice(data, calculatorObj);
+        total =
+            total +
+            GetPrivatePhotochromicPrice(
+                data?.photochromics?.type,
+                calculatorObj,
+                data
+            );
     }
     if (data?.antiReflectiveProperties?.status === "Yes") {
-        total = total + GetPrivateAntireflectivePrice(calculatorObj, data);
+        total =
+            total +
+            GetPrivateAntireflectivePrice(
+                calculatorObj,
+                data?.antiReflectiveProperties?.type,
+                data
+            );
     }
     total = total + GetPrivateSunGlassesPrice(calculatorObj, data);
     return total;
@@ -1069,7 +1088,8 @@ export const calculateLensesCopaysFee = (
             parseFloat(
                 GetPrivatePhotochromicPrice(
                     data?.photochromics?.type,
-                    calculatorObj
+                    calculatorObj,
+                    data
                 )
             );
         // add sun glasses price
@@ -1081,7 +1101,8 @@ export const calculateLensesCopaysFee = (
             parseFloat(
                 GetPrivateAntireflectivePrice(
                     calculatorObj,
-                    data?.antiReflectiveProperties?.type
+                    data?.antiReflectiveProperties?.type,
+                    data
                 )
             );
     }

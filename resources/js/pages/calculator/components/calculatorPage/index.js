@@ -754,38 +754,6 @@ const CalculatorScreen = () => {
                                                             <></>
                                                         ) : (
                                                             <>
-                                                                {formProps
-                                                                    ?.values
-                                                                    ?.visionPlan !==
-                                                                    "Private Pay" && (
-                                                                    <LoweredCopay
-                                                                        formProps={
-                                                                            formProps
-                                                                        }
-                                                                        calculatorObj={
-                                                                            calculatorObj &&
-                                                                            calculatorObj
-                                                                        }
-                                                                        setCalValidations={
-                                                                            setCalValidations
-                                                                        }
-                                                                        calValidations={
-                                                                            calValidations
-                                                                        }
-                                                                        data={
-                                                                            calculatorObj?.questions?.find(
-                                                                                (
-                                                                                    item
-                                                                                ) =>
-                                                                                    item.title ===
-                                                                                    formProps
-                                                                                        ?.values
-                                                                                        ?.visionPlan
-                                                                            )
-                                                                                ?.question_permissions
-                                                                        }
-                                                                    />
-                                                                )}
                                                                 <RenderLensFields
                                                                     formProps={
                                                                         formProps
@@ -813,6 +781,49 @@ const CalculatorScreen = () => {
                                                                             ?.question_permissions
                                                                     }
                                                                 />
+                                                            </>
+                                                        )}
+                                                        {formProps?.values
+                                                            ?.isLensBenifit ===
+                                                        LensBenifitAvailableEnum.onlyThisTime ? (
+                                                            <></>
+                                                        ) : (
+                                                            <>
+                                                                {formProps
+                                                                    ?.values
+                                                                    ?.visionPlan !==
+                                                                    "Private Pay" && (
+                                                                    <LoweredCopay
+                                                                        lensPrices={
+                                                                            lensPrices
+                                                                        }
+                                                                        formProps={
+                                                                            formProps
+                                                                        }
+                                                                        calculatorObj={
+                                                                            calculatorObj &&
+                                                                            calculatorObj
+                                                                        }
+                                                                        setCalValidations={
+                                                                            setCalValidations
+                                                                        }
+                                                                        calValidations={
+                                                                            calValidations
+                                                                        }
+                                                                        data={
+                                                                            calculatorObj?.questions?.find(
+                                                                                (
+                                                                                    item
+                                                                                ) =>
+                                                                                    item.title ===
+                                                                                    formProps
+                                                                                        ?.values
+                                                                                        ?.visionPlan
+                                                                            )
+                                                                                ?.question_permissions
+                                                                        }
+                                                                    />
+                                                                )}
                                                             </>
                                                         )}
                                                         <ProtectionPlan
