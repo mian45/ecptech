@@ -36,7 +36,7 @@ const ShippingSettings = ({ userId }) => {
                 setShippingLoading(false)
                 messageApi.open({
                     type: 'error',
-                    content: err,
+                    content: "error while get shipping",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',

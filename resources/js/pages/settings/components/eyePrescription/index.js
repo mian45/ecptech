@@ -50,7 +50,7 @@ const EyePrescription = ({ userId }) => {
                 console.log("Error while getting glasses details");
                 messageApi.open({
                     type: 'error',
-                    content: res.data.message,
+                    content: "Api Failed",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',

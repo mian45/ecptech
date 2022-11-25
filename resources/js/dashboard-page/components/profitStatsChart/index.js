@@ -47,7 +47,7 @@ const ProfitStatsChart = ({ userId, dates }) => {
             console.log("Error while getting profit stats", err);
             messageApi.open({
                 type: 'error',
-                content: err,
+                content: "Error while getting profit stats",
                 duration: 5,
                 style: {
                     marginTop: '13.5vh',

@@ -479,7 +479,7 @@ const DiscountTaxes = (props) => {
                 setLoading(false)
                 messageApi.open({
                     type: 'error',
-                    content: error,
+                    content: "Discount get unsuccessfully",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',
@@ -512,7 +512,7 @@ const DiscountTaxes = (props) => {
                 setLoading(false)
                 messageApi.open({
                     type: 'error',
-                    content: error,
+                    content: "Tax get unsuccessfully",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',

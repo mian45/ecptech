@@ -36,7 +36,7 @@ function EditInsurance({ userId }) {
                 setLoading(false)
                 messageApi.open({
                     type: 'error',
-                    content: error,
+                    content: "Get client plan questions unsuccessfully",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',

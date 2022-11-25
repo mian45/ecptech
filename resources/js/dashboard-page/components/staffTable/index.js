@@ -27,7 +27,7 @@ const StaffListTable = ({ userId }) => {
                 console.log("Error while getting staff");
                 messageApi.open({
                     type: 'error',
-                    content: err,
+                    content: "Error while getting staff",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',

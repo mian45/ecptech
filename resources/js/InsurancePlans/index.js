@@ -32,7 +32,7 @@ const InsurancePlans = ({ userId }) => {
                 setLoading(true);
                 messageApi.open({
                     type: 'error',
-                    content: error,
+                    content: "Get Client Vision Plan Unsuccessfully",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',

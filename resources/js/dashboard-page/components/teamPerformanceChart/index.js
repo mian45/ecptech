@@ -32,7 +32,7 @@ const TeamPerformanceChart = (userId) => {
                 console.log("Error while getting performance stats", err);
                 messageApi.open({
                     type: 'error',
-                    content: err,
+                    content: "Error while getting performance stats",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',

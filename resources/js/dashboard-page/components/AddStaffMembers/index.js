@@ -36,7 +36,7 @@ const AddStaffMember = ({ userId }) => {
                 console.log("Error while fetch Staff", err);
                 messageApi.open({
                     type: 'error',
-                    content: err,
+                    content: "Error while fetch Staff",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',

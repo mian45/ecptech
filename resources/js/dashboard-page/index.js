@@ -34,7 +34,7 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
             } catch (err) {
                 setInvoiceStats(DEFAULT_INVOICES_DATA);
                 messageApi.open({
-                    type: 'error',
+                    type: 'Api Failed',
                     content: err,
                     duration: 5,
                     style: {
@@ -67,7 +67,7 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
                 console.log("Error while getting stats");
                 messageApi.open({
                     type: 'success',
-                    content: err,
+                    content: "Error while getting stats",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',
