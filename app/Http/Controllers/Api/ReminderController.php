@@ -28,7 +28,7 @@ class ReminderController extends Controller
             return $this->sendResponse($reminders, 'Reminders list get successfully');
         }
 
-        return $this->sendResponse([], 'Remindera list not found');
+        return $this->sendResponse([], 'Reminders list not found');
     }
     public function addReminder(Request $request)
     {
@@ -62,7 +62,7 @@ class ReminderController extends Controller
 
         $reminder->save();
         $success['id'] = $reminder->id;
-        return $this->sendResponse($success, 'Reminder add successfully');
+        return $this->sendResponse($success, 'Reminder added successfully');
 
     }
 
@@ -96,7 +96,7 @@ class ReminderController extends Controller
 
             $reminder->save();
             $success['id'] = $reminder->id;
-            return $this->sendResponse($success, 'Reminder edit successfully');
+            return $this->sendResponse($success, 'Reminder updated successfully');
         }
 
         return $this->sendError('Reminder not found');
@@ -121,7 +121,7 @@ class ReminderController extends Controller
             $reminder->save();
             $success['id'] = $reminder->id;
             $success['is_active'] = $reminder->is_active;
-            return $this->sendResponse($success, 'Reminder update successfully');
+            return $this->sendResponse($success, 'Reminder updated successfully');
         }
 
         return $this->sendError('Reminder not found');
@@ -144,7 +144,7 @@ class ReminderController extends Controller
             $reminder->delete();
             $success['id'] = $reminder->id;
 
-            return $this->sendResponse($success, 'Reminder delete successfully');
+            return $this->sendResponse($success, 'Reminder deleted successfully');
         }
 
         return $this->sendError('Reminder not found');
