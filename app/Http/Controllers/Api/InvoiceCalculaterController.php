@@ -210,9 +210,10 @@ class InvoiceCalculaterController extends Controller
                     }
                     fclose($handle);
 
-                    event(new \App\Events\AddUserCollectionPermission(auth()->user()));
-                    event(new \App\Events\AddUserAddonPermission(auth()->user()));
-                    event(new \App\Events\AddUserLenseMaterialPermission(auth()->user()));
+                    $user = auth()->user();
+                    event(new \App\Events\AddUserCollectionPermission($user));
+                    event(new \App\Events\AddUserAddonPermission($user));
+                    event(new \App\Events\AddUserLenseMaterialPermission($user));
                      
                     DB::commit();
 

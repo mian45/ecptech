@@ -49,17 +49,14 @@ class EventServiceProvider extends ServiceProvider
                 $brands = Brand::where('lens_type_id',$lense->id)->get();
                 foreach($brands as $b){
                     if($b->title == 'Shamir' OR (($lense->title == 'Bifocal' OR $lense->title == 'Trifocal') AND  $b->title == '-')){
-
                         $brandPermission = BrandPermission::updateOrCreate(
                             ['user_id' => $user->id, 'lense_type_id' => $lense->id,'brand_id'=>$b->id],
                             ['status' => 'active']
                         );
 
                         $collections = Collection::where('brand_id',$b->id)->get();
-                                    
+                    
                         foreach($collections as $c){
-                                
-                            
                             if(
                                 (
                                     $lense->title =='Single Vision' AND 
@@ -103,7 +100,6 @@ class EventServiceProvider extends ServiceProvider
                                 )
                             ) 
                             {
-                                
                                 $collectionPermission = CollectionPermission::updateOrCreate(
                                     ['user_id' => $user->id, 'brand_id' => $b->id, 'collection_id' => $c->id],
                                     ['status' => 'active'],
@@ -120,7 +116,6 @@ class EventServiceProvider extends ServiceProvider
             $user = $event->user;
             $lense_materials = LensMaterial::all();
             foreach($lense_materials as $lm){
-
                 $setting = UserLenseMaterialSetting::updateOrCreate(
                     ['user_id' => $user->id, 'lens_material_id' => $lm->id],
                     ['status' => 'active']
@@ -138,7 +133,6 @@ class EventServiceProvider extends ServiceProvider
                 $addons = AddOn::where('addon_type_id',$addon_type->id)->get();
             
                 foreach($addons as $addon){
-
                     if(
                         (
                             strpos($addon_type->title, 'Photochrom') !== false
