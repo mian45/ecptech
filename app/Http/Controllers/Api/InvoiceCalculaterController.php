@@ -45,7 +45,7 @@ class InvoiceCalculaterController extends Controller
             $data['shipping'] = $shipping->value;
         }
 
-        $discount = Discount::select('id','user_id','name','value','status')->where('user_id',$userId)->orderBy('created_at', 'desc')->get();
+        $discount = Discount::select('id','user_id','name','value','status','type')->where('user_id',$userId)->orderBy('created_at', 'desc')->get();
         if($discount){
             $data['discount'] = $discount;
         }
