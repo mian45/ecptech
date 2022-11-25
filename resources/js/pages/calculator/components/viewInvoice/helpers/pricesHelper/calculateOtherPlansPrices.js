@@ -128,9 +128,11 @@ const GetPhotochromicPrice = (data) => {
                 total = total + 0;
             }
         } else {
-            const price = getPriceByPhotochromicMaterial(
-                data?.visionPlan,
-                data?.photochromics?.type
+            const price = parseFloat(
+                getPriceByPhotochromicMaterial(
+                    data?.visionPlan,
+                    data?.photochromics?.type
+                ) || 0
             );
             total = total + (price || 0);
         }
@@ -183,9 +185,11 @@ const GetAntireflectivePrice = (data) => {
                     (parseFloat(isAntireflectiveActive?.price || "") || 0);
             }
         } else {
-            const price = getPriceByAntireflective(
-                data?.visionPlan,
-                data?.antiReflectiveProperties?.type
+            const price = parseFloat(
+                getPriceByAntireflective(
+                    data?.visionPlan,
+                    data?.antiReflectiveProperties?.type
+                ) || 0
             );
             total = total + (price || 0);
         }

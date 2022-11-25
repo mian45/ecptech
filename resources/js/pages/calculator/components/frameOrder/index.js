@@ -46,13 +46,11 @@ const FrameOrder = ({
                             <div className={classes["input-label"]}>$</div>
                             <input
                                 className={classes["input"]}
-                                type={"number"}
-                                onChange={handleChange}
+                                type={"text"}
+                                onChange={handleInputChange}
                                 value={values?.frameRetailFee}
                                 id="frameRetailFee"
                                 name="frameRetailFee"
-                                step={0.01}
-                                min={0.0}
                             />
                         </div>
                         <FormikError name={"frameRetailFee"} />
@@ -77,8 +75,6 @@ const FrameOrder = ({
                                             value={values?.frameContribution}
                                             id="frameContribution"
                                             name="frameContribution"
-                                            step={0.01}
-                                            min={0.0}
                                         />
                                     </div>
                                     <FormikError name={"frameContribution"} />

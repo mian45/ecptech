@@ -483,15 +483,24 @@ const SpecialCopaySlot = ({
     const { values, handleChange, handleBlur } = formProps;
 
     const handleInputChange = (e) => {
-        handleChange(e);
-        const price = getPrice(inputValue, calculatorObj, lensPrices, values);
-        if (e.target.value > price) {
-            setAmountError({
-                ...amountError,
-                [inputValue]: "Entered amount is greater than actual amount.",
-            });
-        } else {
-            setAmountError({ ...amountError, [inputValue]: "" });
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value) || e.target.value === "") {
+            handleChange(e);
+            const price = getPrice(
+                inputValue,
+                calculatorObj,
+                lensPrices,
+                values
+            );
+            if (e.target.value > price) {
+                setAmountError({
+                    ...amountError,
+                    [inputValue]:
+                        "Entered amount is greater than actual amount.",
+                });
+            } else {
+                setAmountError({ ...amountError, [inputValue]: "" });
+            }
         }
     };
 
@@ -547,13 +556,11 @@ const SpecialCopaySlot = ({
                         <div className={classes["slot-input-label"]}>$</div>
                         <input
                             className={classes["slot-input"]}
-                            type={"number"}
+                            type={"text"}
                             onChange={handleInputChange}
                             value={values[inputValue]}
                             id={inputValue}
                             name={inputValue}
-                            step={0.01}
-                            min={0.0}
                         />
                     </div>
                     <FormikError name={inputValue} />
