@@ -141,11 +141,8 @@ class EventServiceProvider extends ServiceProvider
 
                     if(
                         (
-                            strpos($addon_type->title, 'Photochrom') !== false AND 
-                            (
-                                strpos($addon->title, 'Signature') !== false 
-                                OR strpos($addon->title, 'XTRActive') !== false
-                            )                          
+                            strpos($addon_type->title, 'Photochrom') !== false
+                                                    
                         )
                         OR
                         (
