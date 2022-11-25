@@ -12,12 +12,18 @@ export function login({ email, password, remember }) {
                     remember_me: remember,
                 })
                 .then((res) => {
-                    
-                    if(res?.data?.data?.error!=="Unauthorised"){
-                        console.log(res?.data?.data?.error!=="Unauthorised")
+                    if (res?.data?.data?.error !== "Unauthorised") {
+                        console.log(res?.data?.data?.error !== "Unauthorised");
                         localStorage.setItem("remember", remember);
-                    dispatch(action.authLogin(res.data));
-                    return resolve();
+                        const temp = JSON.parse(localStorage.getItem("temp"));
+                        if (temp === true) {
+                            dispatch(action.authLogin(res.data));
+                            localStorage.setItem("temp", false);
+                        } else {
+                            dispatch(action.authLogin(res.data));
+                            localStorage.setItem("temp", false);
+                        }
+                        return resolve();
                     }
                     return reject(res?.data?.data?.error);
                 })
@@ -162,11 +168,11 @@ export function updateStaffLogin(credentials) {
         });
 }
 export function logout(userId) {
-    return (dispatch) =>{
+    return (dispatch) => {
         new Promise((resolve, reject) => {
             Http.post(`${process.env.MIX_REACT_APP_URL}/api/logout`, {
-                userId:userId
-                })
+                userId: userId,
+            })
                 .then((res) => {
                     dispatch(action.authLogout());
                     return resolve();
@@ -180,16 +186,33 @@ export function logout(userId) {
                     return reject(data);
                 });
         });
-        
-        
-        }
+    };
 }
-export function showSideBar(){
+export function showSideBar() {
     return (dispatch) =>
         new Promise((resolve, reject) => {
-           
-                    dispatch(action.showSideBar());
-                    return resolve();
-               
+            dispatch(action.showSideBar());
+            return resolve();
         });
+}
+export function templogout(userId) {
+    return () => {
+        new Promise((resolve, reject) => {
+            Http.post(`${process.env.MIX_REACT_APP_URL}/api/logout`, {
+                userId: userId,
+            })
+                .then((res) => {
+                    localStorage.setItem("temp", true);
+                    return resolve();
+                })
+                .catch((err) => {
+                    const { status, errors } = err.response.data;
+                    const data = {
+                        status,
+                        errors,
+                    };
+                    return reject(data);
+                });
+        });
+    };
 }
