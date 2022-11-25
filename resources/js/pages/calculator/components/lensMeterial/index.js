@@ -7,7 +7,7 @@ import CustomRadio from "../../../../components/customRadio";
 import icon from "../../../../../images/calculator/lens-material.svg";
 import EyePrescriptionModal from "../eyePrescriptionModal";
 
-const LensMeterials = ({ formProps, calculatorObj }) => {
+const LensMeterials = ({ formProps, calculatorObj, getBaseValues }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState("");
@@ -47,7 +47,13 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
         return activeMaterials?.length > 0 ? !isMaterialFound : false;
     };
 
-    const handleLensMererialChange = (e) => {
+    const handleLensMererialChange = async (e) => {
+        if (values?.lensTypeValue && e?.target?.value) {
+            await getBaseValues(
+                { ...values, lensMaterial: e?.target?.value },
+                calculatorObj
+            );
+        }
         let currentValue = "";
         if (isLenseTitle(e.target.value)) {
             currentValue = e.target.value;

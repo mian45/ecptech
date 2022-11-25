@@ -115,6 +115,7 @@ const CalculatorScreen = () => {
                 setValidationsList(allValidations);
                 setCalValidations(allValidations[initialPlan]);
             }
+            getBaseValues(mappedEditValues(editInvoiceState), editCalObject);
             setLoading(false);
         } else {
             const userDetails = history.location?.state?.user;
@@ -187,7 +188,7 @@ const CalculatorScreen = () => {
     const HideInvoice = () => {
         setShowInvoice(false);
     };
-    const getBaseValues = async (values) => {
+    const getBaseValues = async (values, calculatorObj) => {
         setButtonLoader(true);
         try {
             const planId = calculatorObj?.questions?.find(
@@ -233,7 +234,6 @@ const CalculatorScreen = () => {
     };
 
     const handleClick = async (values, actions) => {
-        await getBaseValues(values);
         if (values?.benifitType === "") {
             setShowInvoice(true);
             const arrangedValues = GetMappedPayload(values);
@@ -360,10 +360,12 @@ const CalculatorScreen = () => {
                     setCalculatorObj={setCalculatorObj}
                     setCalValidations={setCalValidations}
                     calValidations={calValidations}
+                    getBaseValues={getBaseValues}
                 />
                 <LensMeterials
                     formProps={formProps}
                     calculatorObj={calculatorObj && calculatorObj}
+                    getBaseValues={getBaseValues}
                 />
                 <Photochromics
                     formProps={formProps}

@@ -15,6 +15,7 @@ const LensType = ({
     setCalculatorObj,
     setCalValidations,
     calValidations,
+    getBaseValues,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue, setFieldError } =
         formProps;
@@ -167,7 +168,7 @@ const LensType = ({
         }
     };
 
-    const resetMaterial = (e) => {
+    const resetMaterial = async (e) => {
         if (values?.lensType) {
             const lensType = calculatorObj?.lens_types?.find(
                 (item) => item?.title === values?.lensType
@@ -198,12 +199,22 @@ const LensType = ({
                 );
                 if (activeMaterials?.length > 0 && !isMaterialFound) {
                     setFieldValue("lensMaterial", "");
+                } else {
+                    if (values?.lensMaterial && e?.target?.value) {
+                        await getBaseValues(
+                            {
+                                ...values,
+                                lensTypeValue: e?.target?.value,
+                            },
+                            calculatorObj
+                        );
+                    }
                 }
             }
         }
     };
 
-    const handleBrandSelection = (e) => {
+    const handleBrandSelection = async (e) => {
         resetMaterial(e);
         handleChange(e);
         showAlert(e);
