@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace App\Providers;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -10,9 +10,10 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AddUserLenseMaterialPermission
+class UserAddonPermission
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
+
     public $user;
 
     /**
@@ -22,7 +23,7 @@ class AddUserLenseMaterialPermission
      */
     public function __construct($user)
     {
-        $this->user = $user;
+        $this->user =$user;
     }
 
     /**

@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
             VisionPlanPermissionTableSeeder::class,
             QuestionsTableSeeder::class,
             QuestionPermissionsTableSeeder::class,
+            LenseMaterialsTableSeeder::class
           
         ]);
     }
