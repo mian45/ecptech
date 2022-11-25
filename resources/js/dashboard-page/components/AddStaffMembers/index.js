@@ -181,7 +181,7 @@ const AddStaffMember = ({ userId }) => {
         }
     };
 
-    const handleStaffChange = (DeleteModale) => {
+    const handleStaffChange = (e) => {
         setStaffInput(e.target.value);
     };
     const handleEditClick = (data) => {
