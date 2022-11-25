@@ -214,6 +214,8 @@ class InvoiceCalculaterController extends Controller
                     event(new \App\Providers\UserCollectionPermission($user));
                     event(new \App\Providers\UserAddonPermission($user));
                     event(new \App\Providers\UserLenseMaterialPermission($user));
+                    event(new \App\Providers\UserVisionPlanPermissionPermission($user));
+                    
                      
                     DB::commit();
 
