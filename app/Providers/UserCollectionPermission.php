@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Events;
+namespace App\Providers;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -10,7 +10,7 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AddUserCollectionPermission
+class UserCollectionPermission
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -23,7 +23,7 @@ class AddUserCollectionPermission
      */
     public function __construct($user)
     {
-        $this->user = $user;
+        $this->user =$user;
     }
 
     /**
