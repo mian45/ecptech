@@ -41,6 +41,12 @@ class LenseMaterialsTableSeeder extends Seeder
             ),
             array(
 
+                'lens_material_title' => "Hi index 1.60",
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ),
+            array(
+
                 'lens_material_title' => "Hi Index 1.67",
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
@@ -48,12 +54,6 @@ class LenseMaterialsTableSeeder extends Seeder
             array(
 
                 'lens_material_title' => "Hi index 1.70 and above",
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ),
-            array(
-
-                'lens_material_title' => "Hi index 1.60",
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ) 
