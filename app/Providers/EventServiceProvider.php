@@ -30,6 +30,11 @@ class EventServiceProvider extends ServiceProvider
         UserLenseMaterialPermission::class => [
             AddUserLenseMaterialPermission::class
         ],
+
+        UserVisionPlanPermissionPermission::class => [
+            AddUserVisionPlanPermission::class
+        ]
+        
     ];
 
     /**
