@@ -56,7 +56,7 @@ class StaffController extends Controller
 
         $success['id'] =  $staff->id;
         $success['name'] =  $staff->name;
-        return $this->sendResponse($success, 'Staff add successfully');
+        return $this->sendResponse($success, 'Staff added successfully');
 
     }
 
@@ -93,7 +93,7 @@ class StaffController extends Controller
             $success['id'] =  $staff->id;
             $success['name'] =  $staff->name;
 
-            return $this->sendResponse($success, 'Staff update successfully.');
+            return $this->sendResponse($success, 'Staff updated successfully');
         }
 
         return $this->sendError('Staff not found');
@@ -116,7 +116,7 @@ class StaffController extends Controller
             $staff->delete();
             $success['id'] = $staff->id;
 
-            return $this->sendResponse($success, 'Staff delete successfully');
+            return $this->sendResponse($success, 'Staff deleted successfully');
         }
 
         return $this->sendError('Staff not found');
