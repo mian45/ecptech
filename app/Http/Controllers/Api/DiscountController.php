@@ -23,7 +23,7 @@ class DiscountController extends Controller
         }
 
         $user_id = $request->userId;
-        $discount = Discount::select('id','user_id','name','value','status')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
+        $discount = Discount::select('id','user_id','name','value','status','type','created_at')->where('user_id',$user_id)->orderBy('created_at', 'desc')->get();
 
         if($discount){
             return $this->sendResponse($discount, 'Discount get successfully');
@@ -36,21 +36,26 @@ class DiscountController extends Controller
         $validator = Validator::make($request->all(), [
             'userId' => 'required',
             'name' => 'required',
-            'value' => 'required'
+            'value' => 'required|integer|gt:0',
+            'type' => 'required|in:percentage,amount',
         ]);
 
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
 
+        if($request->type == 'percentage' && $request->value > 100){
+            return $this->sendError('% should be not more than 100',[],422);
+        }
         $user_id = $request->userId;
         $name = $request->name;
         $value = $request->value;
-
+        $type = $request->type;
         $discount = new Discount;
         $discount->user_id = $user_id;
         $discount->name = $name;
-        $discount->value = $value;
+        $discount->value = (int) $value;
+        $discount->type = $type;
         $discount->status = 'active';
         $discount->save();
 
@@ -60,7 +65,9 @@ class DiscountController extends Controller
             $success['name'] = $discount->name;
             $success['value'] = $discount->value;
             $success['status'] = $discount->status;
-            return $this->sendResponse($success, 'Discount add successfully');
+            $success['type'] = $discount->type;
+            $success['created_at'] = $discount->created_at;
+            return $this->sendResponse($success, 'Discount added successfully');
         }
         return $this->sendError('Something went wrong!');
     }
@@ -69,27 +76,34 @@ class DiscountController extends Controller
         $validator = Validator::make($request->all(), [
             'id' => 'required',
             'name' => 'required',
-            'value' => 'required',
+            'value' => 'required|integer|gt:0',
+            'type' => "required|in:percentage,amount",
         ]);
 
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
-
+        if($request->type == 'percentage' && $request->value > 100){
+            return $this->sendError('% should be not more than 100',[],422);
+        }
         $id = $request->id;
         $name = $request->name;
         $value = $request->value;
+        $type = $request->type;
         $discount = Discount::where('id',$id)->first();
         if($discount){
         $discount->name = $name;
-        $discount->value = $value;
+        $discount->value = (int) $value;
+        $discount->type = $type;
         $discount->save();
         $success['id'] = $discount->id;
         $success['user_id'] = $discount->user_id;
         $success['name'] = $discount->name;
         $success['value'] = $discount->value;
         $success['status'] = $discount->status;
-        return $this->sendResponse($success, 'Discount Edit successfully');
+        $success['type'] = $discount->type;
+        $success['created_at'] = $discount->created_at;
+        return $this->sendResponse($success, 'Discount updated successfully');
 
         }
         return $this->sendError('Discount not found');
@@ -110,8 +124,7 @@ class DiscountController extends Controller
         if($discount){
             $discount->delete();
             $success['id'] = $discount->id;
-
-            return $this->sendResponse($success, 'Discount delete successfully');
+            return $this->sendResponse($success, 'Discount deleted successfully');
         }
 
         return $this->sendError('Discount not found');
@@ -139,7 +152,9 @@ class DiscountController extends Controller
             $success['name'] = $discount->name;
             $success['value'] = $discount->value;
             $success['status'] = $discount->status;
-            return $this->sendResponse($success, 'Discount Status Changed Successfully');
+            $success['type'] = $discount->type;
+            $success['created_at'] = $discount->created_at;
+            return $this->sendResponse($success, 'Discount status changed successfully');
         }
         return $this->sendError('Discount not found',[],402);
     }

@@ -149,7 +149,6 @@ const VisionBenifits = ({
                                 active={values?.isFrameBenifit}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleFrameBenifitAvailableChange}
                                 value={values?.isFrameBenifit}
                                 id="isFrameBenifit"
@@ -201,7 +200,6 @@ const VisionBenifits = ({
                                 active={values?.isLensBenifit}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleLensBenifitsAvailableChange}
                                 value={values?.isLensBenifit}
                                 id="isLensBenifit"
@@ -257,7 +255,6 @@ const VisionBenifits = ({
                                 <input
                                     className={classes["input"]}
                                     type={"number"}
-                                    onBlur={handleBlur}
                                     onChange={handleMaterialCopayChange}
                                     value={values?.materialCopay}
                                     id="materialCopay"
@@ -298,9 +295,9 @@ export const GetValidations = (data, isLoweredCopay, values) => {
             "Lens type is required"
         );
     }
-    if (values?.lensType) {
-        validationObject.lensTypeValue =
-            Yup.string().required("Brand is required");
+    validationObject.lensTypeValue = Yup.string().required("Brand is required");
+    if (!values?.lensType) {
+        delete validationObject.lensTypeValue;
     }
     if (
         data?.find((ques) => ques.question === "Lens Material")?.optional ===
@@ -333,6 +330,12 @@ export const GetValidations = (data, isLoweredCopay, values) => {
         validationObject.isAntireflective = Yup.string().required(
             "Antireflective is required"
         );
+    }
+    validationObject.antireflectiveType = Yup.string().required(
+        "Antireflective type is required"
+    );
+    if (!values?.isAntireflective || values?.isAntireflective === "No") {
+        delete validationObject.antireflectiveType;
     }
     return validationObject;
 };

@@ -14,15 +14,15 @@ const ShippingSettings = ({ userId }) => {
     const [shippingAmount, setShippingAmount] = useState("");
     const [shipping, setShipping] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [shippingButtonLoader, setShippingButtonLoader] = useState(false)
+    const [shippingButtonLoader, setShippingButtonLoader] = useState(false);
 
-    const [editState, setEditState] = useState(false)
-    const [showDeleteShipping, setShowDeleteShipping] = useState(false)
-    const [deleteShippingId, setDeleteShippingId] = useState(0)
-    let [shippingLoading, setShippingLoading] = useState(false)
+    const [editState, setEditState] = useState(false);
+    const [showDeleteShipping, setShowDeleteShipping] = useState(false);
+    const [deleteShippingId, setDeleteShippingId] = useState(0);
+    let [shippingLoading, setShippingLoading] = useState(false);
     useEffect(() => {
         const getShipping = async () => {
-            setShippingLoading(true)
+            setShippingLoading(true);
             try {
                 const res = await Axios.get(
                     process.env.MIX_REACT_APP_URL + "/api/get-shipping",
@@ -30,23 +30,33 @@ const ShippingSettings = ({ userId }) => {
                 );
                 const shippingData = res?.data?.data;
                 setShipping({ ...shippingData });
-                setShippingLoading(false)
+                setShippingLoading(false);
             } catch (err) {
-                console.log("error while get shipping");
+                if (err.response.data.statusCode === 404) {
+                    messageApi.open({
+                        type: 'success',
+                        content: "No shipping found",
+                        duration: 5,
+                        style: {
+                            marginTop: '13.5vh',
+                        },
+                    });
+                } else {
+                    messageApi.open({
+                        type: 'error',
+                        content: "error while get shipping",
+                        duration: 5,
+                        style: {
+                            marginTop: '13.5vh',
+                        },
+                    });
+                }
                 setShippingLoading(false)
-                messageApi.open({
-                    type: 'error',
-                    content: "error while get shipping",
-                    duration: 5,
-                    style: {
-                        marginTop: '13.5vh',
-                    },
-                });
             }
         };
-        setEditState(false)
+        setEditState(false);
         getShipping();
-    }, []);
+    }, [userId]);
 
     const handleUpdateShipping = async (data) => {
         setShippingName(data?.name);
@@ -81,16 +91,16 @@ const ShippingSettings = ({ userId }) => {
                 },
             });
         }
-    }
+    };
     const handleDeleteShipping = async (id) => {
         setDeleteShippingId(id);
-        setShowDeleteShipping(true)
-        setShippingName('')
-        setShippingAmount('')
+        setShowDeleteShipping(true);
+        setShippingName("");
+        setShippingAmount("");
         setIsSubmitted(true);
     };
     const handleShippingSubmit = async (e) => {
-        setShippingButtonLoader(true)
+        setShippingButtonLoader(true);
         e?.preventDefault();
 
         try {
@@ -105,7 +115,7 @@ const ShippingSettings = ({ userId }) => {
             );
             setShipping(res?.data?.data);
             setShippingName("");
-            setEditState(false)
+            setEditState(false);
             setShippingAmount("");
             setIsSubmitted(true);
             setShippingButtonLoader(false)
@@ -133,17 +143,24 @@ const ShippingSettings = ({ userId }) => {
 
     return (
         <>
-            {showDeleteShipping ?
-                <DeleteModal accept={() => {
-                    deleteShipping(deleteShippingId);
-
-                }}
-                    cancel={() => { setShowDeleteShipping(false) }}
+            {showDeleteShipping ? (
+                <DeleteModal
+                    accept={() => {
+                        deleteShipping(deleteShippingId);
+                    }}
+                    cancel={() => {
+                        setShowDeleteShipping(false);
+                    }}
                     open={showDeleteShipping}
-
-                /> : null}
-            <Row justify="center" align="middle" >
-                <Col xs={24} md={24} lg={16} className="discount-container_first discount-tax-con">
+                />
+            ) : null}
+            <Row justify="center" align="middle">
+                <Col
+                    xs={24}
+                    md={24}
+                    lg={16}
+                    className="discount-container_first discount-tax-con"
+                >
                     <Row justify="center" align="middle">
                         <Col xs={24} md={24}>
                             <div>{contextHolder}</div>
@@ -152,24 +169,43 @@ const ShippingSettings = ({ userId }) => {
                         <Col xs={24}>
                             <form>
                                 <Row justify="space-between">
-                                    <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
+                                    <Col
+                                        xs={24}
+                                        md={12}
+                                        lg={10}
+                                        className="discount-container_first-form_section"
+                                    >
                                         <Row justify="center" align="middle">
-                                            <Col xs={24}><p className="input-title">Enter Label</p></Col>
-                                            <Col xs={24}><input
-                                                placeholder="Enter Text"
-                                                value={shippingName}
-                                                onChange={(e) => {
-                                                    setShippingName(e.target.value);
-                                                }}
-                                                disabled={isSubmitted}
-                                            /></Col>
-
+                                            <Col xs={24}>
+                                                <p className="input-title">
+                                                    Enter Label
+                                                </p>
+                                            </Col>
+                                            <Col xs={24}>
+                                                <input
+                                                    placeholder="Enter Text"
+                                                    value={shippingName}
+                                                    onChange={(e) => {
+                                                        setShippingName(
+                                                            e.target.value
+                                                        );
+                                                    }}
+                                                    disabled={isSubmitted}
+                                                />
+                                            </Col>
                                         </Row>
                                     </Col>
-                                    <Col xs={24} md={12} lg={10} className="discount-container_first-form_section">
+                                    <Col
+                                        xs={24}
+                                        md={12}
+                                        lg={10}
+                                        className="discount-container_first-form_section"
+                                    >
                                         <Row>
                                             <Col xs={24}>
-                                                <p className="input-title">Add Shipping Amount</p>
+                                                <p className="input-title">
+                                                    Add Shipping Amount
+                                                </p>
                                             </Col>
                                             <Col xs={24}>
                                                 <input
@@ -178,32 +214,56 @@ const ShippingSettings = ({ userId }) => {
                                                     min={0}
                                                     value={shippingAmount}
                                                     onChange={(e) => {
-                                                        setShippingAmount(e.target.value);
+                                                        setShippingAmount(
+                                                            e.target.value
+                                                        );
                                                     }}
                                                     disabled={isSubmitted}
                                                 />
                                             </Col>
                                         </Row>
                                     </Col>
-                                    <Col xs={24} lg={4} style={{ justifyContent: "center" }}>
+                                    <Col
+                                        xs={24}
+                                        lg={4}
+                                        style={{ justifyContent: "center" }}
+                                    >
                                         <Row justify="center" align="middle">
                                             <Col xs={24}>
-                                                <p class="input-title hidden-text">Value</p>
+                                                <p class="input-title hidden-text">
+                                                    Value
+                                                </p>
                                             </Col>
-                                            <Col xs={24} className="btn_section">
+                                            <Col
+                                                xs={24}
+                                                className="btn_section"
+                                            >
                                                 <button
-                                                    onClick={handleShippingSubmit}
-                                                    className={`save-button ${!shippingName || !shippingAmount
-                                                        ? "disable"
-                                                        : ""
-                                                        } `}
+                                                    onClick={
+                                                        handleShippingSubmit
+                                                    }
+                                                    className={`save-button ${
+                                                        !shippingName ||
+                                                        !shippingAmount
+                                                            ? "disable"
+                                                            : ""
+                                                    } `}
                                                 >
-                                                    {editState ? "Update" : shippingButtonLoader == true ?
+                                                    {editState ? (
+                                                        "Update"
+                                                    ) : shippingButtonLoader ==
+                                                      true ? (
                                                         <span>
                                                             <p>Add</p>
-                                                            <CustomLoader buttonBool={true} />
-                                                        </span> :
-                                                        'Add'}
+                                                            <CustomLoader
+                                                                buttonBool={
+                                                                    true
+                                                                }
+                                                            />
+                                                        </span>
+                                                    ) : (
+                                                        "Add"
+                                                    )}
                                                 </button>
                                             </Col>
                                         </Row>
@@ -216,14 +276,16 @@ const ShippingSettings = ({ userId }) => {
                                 <Col xs={24} className="discount-output">
                                     <Row justify="center" align="middle">
                                         <table>
-                                            {Object.keys(shipping).length > 0 && (
+                                            {Object.keys(shipping).length >
+                                                0 && (
                                                 <tr className="discount-output_head">
                                                     <th>Shipping Label</th>
                                                     <th>Amount</th>
                                                     <th></th>
                                                 </tr>
                                             )}
-                                            {Object.keys(shipping).length > 0 && (
+                                            {Object.keys(shipping).length >
+                                                0 && (
                                                 <tr className="discount-output_body">
                                                     <td>{shipping.name}</td>
                                                     <td>${shipping.value}</td>
@@ -232,14 +294,21 @@ const ShippingSettings = ({ userId }) => {
                                                             style={{
                                                                 width: "18px",
                                                                 height: "18px",
-                                                                marginRight: "30px",
+                                                                marginRight:
+                                                                    "30px",
                                                                 cursor: "pointer",
                                                             }}
                                                             src={edit}
                                                             onClick={() => {
-                                                                setEditState(true)
-                                                                setShippingLoading(true)
-                                                                handleUpdateShipping(shipping);
+                                                                setEditState(
+                                                                    true
+                                                                );
+                                                                setShippingLoading(
+                                                                    true
+                                                                );
+                                                                handleUpdateShipping(
+                                                                    shipping
+                                                                );
                                                             }}
                                                         />
                                                         <img
@@ -250,7 +319,9 @@ const ShippingSettings = ({ userId }) => {
                                                             }}
                                                             src={cross}
                                                             onClick={() => {
-                                                                handleDeleteShipping(shipping.id);
+                                                                handleDeleteShipping(
+                                                                    shipping.id
+                                                                );
                                                             }}
                                                         />
                                                     </td>
@@ -263,11 +334,8 @@ const ShippingSettings = ({ userId }) => {
                         </Col>
                     </Row>
                 </Col>
-
-
             </Row>
         </>
-
     );
 };
 const mapStateToProps = (state) => ({

@@ -35,6 +35,6 @@ class ProductController extends Controller
         ->get()->each(function ($row, $index) {
             $row->no = $index + 1;
         });
-        return $this->sendResponse($hot_selling_products, 'Hot Selling Products.');
+        return $this->sendResponse($hot_selling_products, 'Hot selling products get successfully');
     }
 }

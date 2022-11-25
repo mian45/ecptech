@@ -31,7 +31,7 @@ const MaterialSettings = ({ userId }) => {
             }
         };
         getMaterialSettings();
-    }, []);
+    }, [userId]);
 
 
     const handleCheckbox = (value, collection) => {

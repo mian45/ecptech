@@ -58,7 +58,7 @@ class DashboardController extends Controller
         $data['orders']['total_paid_orders'] = $total_paid_orders;
         $data['orders']['last_range_diff'] = $previous_paid_orders_precent."%";
 
-        return $this->sendResponse($data, 'Data Recived');
+        return $this->sendResponse($data, 'Data received successfully');
 
     }
 
@@ -122,7 +122,7 @@ class DashboardController extends Controller
         $data['invoice']['capture_rate'] = $capture_rate;
         $data['invoice']['unpaid'] = $total_unpaid_invoices;
 
-        return $this->sendResponse($data, 'Invoice Data');
+        return $this->sendResponse($data, 'Invoice data get successfully');
 
        
     }
@@ -157,7 +157,7 @@ class DashboardController extends Controller
                             ->groupBy('invoices.staff_id')
                             ->get();
 
-        return $this->sendResponse($team_progress, 'Team Progress');
+        return $this->sendResponse($team_progress, 'Team progress get successfully');
   
     }
 
@@ -206,7 +206,7 @@ class DashboardController extends Controller
                         ->groupBy('invoices.staff_id')
                         ->get();
 
-        return $this->sendResponse($team_progress, 'Team Performance');
+        return $this->sendResponse($team_progress, 'Team performance get successfully');
 
     }
 

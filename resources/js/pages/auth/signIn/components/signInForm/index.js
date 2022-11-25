@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Form, Input, Row } from "antd";
+import { Button, Checkbox, Col, Form, Input, Row , message } from "antd";
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import classes from "./styles.module.scss";
@@ -195,12 +195,13 @@ const EyeIcon = (props) => <Icon component={EyeSVG} {...props} />;
 const EyeCloseIcon = (props) => <Icon component={EyeCloseSVG} {...props} />;
 
 const SignInForm = ({ userRole, dispatch }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [buttonLoader, setButtonLoader] = useState(false);
     const history = useHistory();
     const handleClick = async (values) => {
         setButtonLoader(true);
         try {
-            await dispatch(AuthService.login(values));
+            await dispatch(AuthService.login(values ,messageApi));
             if (userRole === "staff") {
                 history.push(INVOICES_ROUTE);
                 return;
@@ -214,6 +215,8 @@ const SignInForm = ({ userRole, dispatch }) => {
         }
     };
     return (
+        <>
+        <div>{contextHolder}</div>
         <Formik
             initialValues={LoginInitialValues}
             validationSchema={LoginValidation}
@@ -222,7 +225,6 @@ const SignInForm = ({ userRole, dispatch }) => {
             {({
                 values,
                 handleChange,
-                handleBlur,
                 handleSubmit,
                 setFieldValue,
                 isSubmitting,
@@ -268,7 +270,6 @@ const SignInForm = ({ userRole, dispatch }) => {
                                                 }
                                                 value={values.email}
                                                 onChange={handleChange}
-                                                onBlur={handleBlur}
                                             />
 
                                             <ErrorMessage
@@ -298,7 +299,6 @@ const SignInForm = ({ userRole, dispatch }) => {
                                                 name="password"
                                                 value={values.password}
                                                 onChange={handleChange}
-                                                onBlur={handleBlur}
                                                 className={
                                                     classes[
                                                         "password-container"
@@ -418,6 +418,7 @@ const SignInForm = ({ userRole, dispatch }) => {
                 );
             }}
         </Formik>
+        </>
     );
 };
 

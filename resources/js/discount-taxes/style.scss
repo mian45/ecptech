@@ -29,6 +29,7 @@
                         outline: 0;
                     }
                 }
+                
             }
         }
     }
@@ -52,7 +53,7 @@
                         color: rgba($color: #cbcbcb, $alpha: 1);
                     }
                 }
-
+               
                 p {
                     margin-bottom: 13px !important;
                 }
@@ -63,9 +64,18 @@
 .switch-margin{
     margin-left: 20px;
 }
+.input-discount{
+    min-width: 0px !important;
+    width: 100%;
+    margin-right: 10px;
+    @media only screen and (max-width: 425px) {
+        margin-bottom: 10px;
+        margin-right: 0px;
+    }
+
+}
 .discount-tax {
     .ant-select {
-        min-width: 284px !important;
         height: 45px;
         border: 1px solid #dfdfdf;
         border-radius: 23px;
@@ -105,12 +115,7 @@
     box-shadow: none !important;
 }
 
-.ant-select-arrow {
-    border-left: 8px solid transparent;
-    border-right: 8px solid transparent;
-    border-top: 8px solid #d8d8d8;
-    font-size: 0 !important;
-}
+
 
 .save-button {
     width: unset;
@@ -287,13 +292,7 @@ input[type="number"] {
             outline: 0;
         }
     }
-    .ant-select-arrow {
-        border-left: 8px solid transparent;
-        border-right: 8px solid transparent;
-        border-top: 8px solid #d8d8d8;
-        font-size: 0 !important;
-        margin-top: -2px !important;
-    }
+  
 }
 .discount-container-page-title {
     margin-top: 30px !important;
@@ -309,4 +308,55 @@ input[type="number"] {
 
 .hidden-text{
     visibility: hidden;
+}
+.ant-select {
+    max-width: 23.68em !important;
+    padding: 0;
+    color: black;
+    margin-left: 10px !important;
+    @media only screen and (max-width: 425px) {
+        margin-left: 0px !important;
+    }
+}
+.ant-select-short {
+    width: 11.68em !important;
+    height: 45px !important;
+    padding: 0;
+    color: black;
+    @media only screen and (max-width: 768px) {
+        width: 100% !important;
+    }
+}
+
+.ant-select-selection-item {
+    padding-left: 0px !important;
+    line-height: 37px !important;
+    text-align: center;
+}
+
+.ant-select-single .ant-select-selector {
+    align-items: center;
+}
+
+.ant-select-arrow {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 8px solid #d8d8d8;
+    font-size: 0 !important;
+    margin-top: -3px;
+}
+
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+    .ant-select-selector {
+    border-color: #dfdfdf !important;
+    box-shadow: none !important;
+}
+
+.ant-select-selector {
+    height: 45px !important;
+    position: absolute !important;
+    top: 0;
+    left: 0;
+    border-radius: 23px !important;
+    
 }

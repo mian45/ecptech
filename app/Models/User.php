@@ -8,6 +8,15 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
+use App\Models\LenseType;
+use App\Models\UserLenseMaterialSetting;
+use App\Models\BrandPermission;
+use App\Models\CollectionPermission;
+use App\Models\Brand;
+use App\Models\Collection;
+
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable, SoftDeletes;
@@ -60,4 +69,15 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function booted()
+    {
+        static::created(function ($user) {
+            event(new \App\Providers\UserCollectionPermission($user));
+            event(new \App\Providers\UserAddonPermission($user));
+            event(new \App\Providers\UserLenseMaterialPermission($user));
+        });
+    }
 }
+
+

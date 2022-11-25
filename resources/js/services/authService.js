@@ -2,7 +2,7 @@ import Http from "../Http";
 import * as action from "../store/actions";
 import axios from "axios";
 
-export function login({ email, password, remember }) {
+export function login({ email, password, remember },messageApi ) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
             axios
@@ -12,16 +12,33 @@ export function login({ email, password, remember }) {
                     remember_me: remember,
                 })
                 .then((res) => {
-
-                    if (res?.data?.data?.error !== "Unauthorised") {
-                        console.log(res?.data?.data?.error !== "Unauthorised")
-                        localStorage.setItem("remember", remember);
-                        dispatch(action.authLogin(res.data));
-                        return resolve();
-                    }
-                    return reject(res?.data?.data?.error);
+                    messageApi.open({
+                        type: 'success',
+                        content: res.data.message,
+                        duration: 5,
+                        style: {
+                            marginTop: '13.5vh',
+                        },
+                    });
+                    setTimeout(() => {
+                        if (res?.data?.data?.error !== "Unauthorised") {
+                            console.log(res?.data?.data?.error !== "Unauthorised")
+                            localStorage.setItem("remember", remember);
+                            dispatch(action.authLogin(res.data));
+                            return resolve();
+                        }
+                        return reject(res?.data?.data?.error);
+                    },1000)
                 })
                 .catch((err) => {
+                    messageApi.open({
+                        type: 'error',
+                        content: "Invalid email and password",
+                        duration: 5,
+                        style: {
+                            marginTop: '0vh',
+                        },
+                    });
                     const { status, errors } = err.response.data;
                     const data = {
                         status,

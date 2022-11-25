@@ -29,8 +29,8 @@ const initialState = {
     staffUser: defaultStaffUser,
     clientUser: defaultClientUser,
     userRole: defaultUserRole,
-    activeSettingsIndex: 1,
-    sidebar:false
+    activeSettingsIndex: "1",
+    sidebar: false,
 };
 
 const activeState = (state, payload) => {
@@ -116,9 +116,9 @@ const Auth = (state = initialState, { type, payload = null }) => {
                 id: payload?.data?.id,
                 name: payload?.data?.name,
                 email: payload?.data?.email,
-                logo:payload?.data?.logo,
-                buisnessName:payload?.data.business_name,
-                themeColor:payload?.data?.theme_color
+                logo: payload?.data?.logo,
+                buisnessName: payload?.data.business_name,
+                themeColor: payload?.data?.theme_color,
             };
             const roleObject = {
                 id: payload?.data.role.id,
@@ -159,12 +159,13 @@ const Auth = (state = initialState, { type, payload = null }) => {
             return staffLogin(state, payload);
         case ActionTypes.UPDATE_STAFF_LOGIN:
             return updateStaffLogin(state, payload);
-        case ActionTypes.SHOW_SIDEBAR:{
+        case ActionTypes.SHOW_SIDEBAR: {
             const stateObj = {
                 ...state,
-                sidebar:!state.sidebar
+                sidebar: !state.sidebar,
             };
-            return stateObj}
+            return stateObj;
+        }
         default:
             return state;
     }

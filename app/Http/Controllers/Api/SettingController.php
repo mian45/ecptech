@@ -15,6 +15,8 @@ use App\Models\UserAddOnSetting;
 use Validator;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use App\Models\Brand;
+use App\Models\Collection;
 
 
 class SettingController extends Controller
@@ -48,7 +50,7 @@ class SettingController extends Controller
         }])->selectRaw("MIN(id) AS id,title")->groupby('title')->get();
  
 
-       return $this->sendResponse($data, 'Lense data');
+       return $this->sendResponse($data, 'Lense data get successfully');
     }
     
     public function updateLenseSettings(Request $request){
@@ -71,27 +73,60 @@ class SettingController extends Controller
             
             $lense_type_id = $lense_type['id'];
             $lense_type_title = $lense_type['title'];
+
+            $lense_types = LenseType::where('title',$lense_type_title)->get();
+
             foreach($lense_type['brands'] as $brand){
                 $brand_id = $brand['id'];
                 $brand_title = $brand['title'];
-                $brandPermission = BrandPermission::updateOrCreate(
-                    ['user_id' => $user_id, 'lense_type_id' => $lense_type_id,'brand_id'=>$brand_id],
-                    ['status' => $brand['status'],'lense_type_title' => $lense_type_title,'brand_title'=>$brand_title]
-                );
 
-                foreach($brand['collections'] as $collection){
-
+                foreach($lense_types as $lense){
+                    $brands = Brand::where('lens_type_id',$lense->id)->get();
                     
-                    $collection_id = $collection['id'];
-                    $collection_title = $collection['title'];
-                    $name = $collection['display_name'];
-                    $price = $collection['custom_price'];
-                    $status = $collection['status'];
-                    $collectionPermission = CollectionPermission::updateOrCreate(
-                        ['user_id' => $user_id, 'brand_id' => $brand_id, 'collection_id' => $collection_id],
-                        ['price' => $price,'name' => $name,'status' => $status, 'brand_title' => $brand_title, 'collection_title' => $collection_title],
-                    );
+                    foreach($brands as $b){
+                        
+
+                        if($b->title == $brand_title){
+                            
+
+                            $brandPermission = BrandPermission::updateOrCreate(
+                                ['user_id' => $user_id, 'lense_type_id' => $lense->id,'brand_id'=>$b->id],
+                                ['status' => $brand['status'],'lense_type_title' => $lense_type_title,'brand_title'=>$brand_title]
+                            );
+
+                            foreach($brand['collections'] as $collection){
+                    
+                                $collection_id = $collection['id'];
+                                $collection_title = $collection['title'];
+                                $name = $collection['display_name'];
+                                $price = $collection['custom_price'];
+                                $status = $collection['status'];
+
+                                $collections = Collection::where('brand_id',$b->id)->get();
+                                
+                                foreach($collections as $c){
+                                        
+                                    
+                                    if($c->title ==  $collection_title){
+                                       
+                                        $collectionPermission = CollectionPermission::updateOrCreate(
+                                            ['user_id' => $user_id, 'brand_id' => $b->id, 'collection_id' => $c->id],
+                                            ['price' => $price,'name' => $name,'status' => $status, 'brand_title' => $brand_title, 'collection_title' => $collection_title],
+                                        );
+                                    }
+                                }
+
+                                
+                            }
+
+
+
+                        }
+
+                    }
                 }
+
+                
             }
 
             $permission[$i] = $lense_type;
@@ -112,7 +147,7 @@ class SettingController extends Controller
                             ->orderBy('lens_materials.id')
                             ->get();
 
-        return $this->sendResponse($lense_materials, 'Lense Materials');
+        return $this->sendResponse($lense_materials, 'Lense materials get successfully');
 
     }
 
@@ -143,7 +178,7 @@ class SettingController extends Controller
             
         }   
       
-        return $this->sendResponse($permission, 'Lense material Updated');
+        return $this->sendResponse($permission, 'Lense material updated successfully');
 
     }
     
@@ -222,7 +257,7 @@ class SettingController extends Controller
             $i++;
         }
 
-        return $this->sendResponse($permission, 'AddOn status Updated');
+        return $this->sendResponse($permission, 'Addon status updated successfully');
 
     }
 
