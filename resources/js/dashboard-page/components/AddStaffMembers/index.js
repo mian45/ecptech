@@ -6,8 +6,8 @@ import tickIcon from "../../../../images/tick.svg";
 import editIcon from "../../../../images/edit-icon.svg";
 import deleteIcon from "../../../../images/delete-icon.svg";
 import Axios from "../../../Http";
-import DeleteModal from "../../../components/deleteModal/index"
-import { Row, Col, message } from "antd"
+import DeleteModal from "../../../components/deleteModal/index";
+import { Row, Col, message } from "antd";
 const AddStaffMember = ({ userId }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [staffList, setStaffList] = useState([]);
@@ -35,13 +35,12 @@ const AddStaffMember = ({ userId }) => {
             } catch (err) {
                 console.log("Error while fetch Staff", err);
                 messageApi.open({
-                    type: 'error',
+                    type: "error",
                     content: "Error while fetch Staff",
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
-
                 });
             }
         };
@@ -68,33 +67,22 @@ const AddStaffMember = ({ userId }) => {
             setStaffInput("");
             setEditId(null);
             messageApi.open({
-                type: 'success',
+                type: "success",
                 content: res.data.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
-
-            });
-            messageApi.open({
-                type: 'success',
-                content: res.data.message,
-                duration: 5,
-                style: {
-                    marginTop: '13.5vh',
-                },
-
             });
         } catch (err) {
             console.log("Error while edit Staff", err);
             messageApi.open({
-                type: 'error',
+                type: "error",
                 content: err,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
-
             });
         }
     };
@@ -116,24 +104,22 @@ const AddStaffMember = ({ userId }) => {
             );
             setStaffInput("");
             messageApi.open({
-                type: 'success',
+                type: "success",
                 content: res.data.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
-
             });
         } catch (err) {
             console.log("Error while create Staff", err);
             messageApi.open({
-                type: 'error',
+                type: "error",
                 content: err,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
-
             });
         }
     };
@@ -158,25 +144,23 @@ const AddStaffMember = ({ userId }) => {
             );
             setStaffList([...filteredStaff]);
             messageApi.open({
-                type: 'success',
+                type: "success",
                 content: res.data.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
-
             });
-            setEditId(null)
+            setEditId(null);
         } catch (err) {
             console.log("Error while delete Staff", err);
             messageApi.open({
-                type: 'error',
+                type: "error",
                 content: err,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
-
             });
         }
     };
@@ -211,20 +195,23 @@ const AddStaffMember = ({ userId }) => {
                     />
                 </Col>
                 <Col xs={5}>
-                    <Row className={`${classes["tick-wrapper"]
+                    <Row
+                        className={`${
+                            classes["tick-wrapper"]
                         } ${getBackgroundButton()}`}
                         onClick={handleSubmit}
                         onMouseEnter={() => setIsHover(true)}
-                        onMouseLeave={() => setIsHover(false)} justify="center" align="middle">
+                        onMouseLeave={() => setIsHover(false)}
+                        justify="center"
+                        align="middle"
+                    >
                         <img
                             src={tickIcon}
                             alt="tick"
                             className={classes["tick-icon"]}
                         />
                     </Row>
-
                 </Col>
-
             </Row>
             <div className={classes["staff-map"]}>
                 {[...staffList]?.map((staff, index) => {
@@ -252,22 +239,36 @@ const StaffMemberSlot = ({ staff, handleEdit, handleDelete }) => {
     const [showDelete, setShowDelete] = useState(false);
     return (
         <>
-            {showDelete ?
-                <DeleteModal accept={async () => {
-                    setShowDelete(false)
-                    await handleDelete(staff?.id)
-                }}
+            {showDelete ? (
+                <DeleteModal
+                    accept={async () => {
+                        setShowDelete(false);
+                        await handleDelete(staff?.id);
+                    }}
                     open={showDelete}
-                    cancel={() => { setShowDelete(false) }} /> : null}
-            <Row className={classes["slot-container"]} justify={"center"} align={"middle"}>
+                    cancel={() => {
+                        setShowDelete(false);
+                    }}
+                />
+            ) : null}
+            <Row
+                className={classes["slot-container"]}
+                justify={"center"}
+                align={"middle"}
+            >
                 <Col xs={18}>
                     <Row justify="center" align="middle">
-                        <Col xs={6}><img
-                            src={userIcon}
-                            alt={"user-icon"}
-                            className={classes["user-icon"]}
-                        /></Col>
-                        <Col xs={18}><div className={classes["staff-name"]}>{staff?.name || ""}</div>
+                        <Col xs={6}>
+                            <img
+                                src={userIcon}
+                                alt={"user-icon"}
+                                className={classes["user-icon"]}
+                            />
+                        </Col>
+                        <Col xs={18}>
+                            <div className={classes["staff-name"]}>
+                                {staff?.name || ""}
+                            </div>
                         </Col>
                     </Row>
                 </Col>
@@ -281,17 +282,19 @@ const StaffMemberSlot = ({ staff, handleEdit, handleDelete }) => {
                                 onClick={() => handleEdit(staff)}
                             />
                         </Col>
-                        <Col xs={6}><img
-                            src={deleteIcon}
-                            alt={"delete-icon"}
-                            className={classes["delete-icon"]}
-                            onClick={() => { setShowDelete(true) }}
-                        /></Col>
-
+                        <Col xs={6}>
+                            <img
+                                src={deleteIcon}
+                                alt={"delete-icon"}
+                                className={classes["delete-icon"]}
+                                onClick={() => {
+                                    setShowDelete(true);
+                                }}
+                            />
+                        </Col>
                     </Row>
                 </Col>
             </Row>
         </>
-
     );
 };
