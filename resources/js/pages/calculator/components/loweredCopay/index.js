@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
@@ -38,16 +38,18 @@ const LoweredCopay = ({
         handleChange(e);
         if (
             e?.target?.value === "Yes" &&
-            !data?.find(
-                (ques) => ques.question === "Any copay lowered than standard"
-            ).optional
+            data?.find(
+                (ques) => ques.question == "Any copay lowered than standard"
+            )?.optional === "true"
         ) {
             if (
                 !values?.isCopayPolycarbonate ||
                 !values?.isCopayPhotochromic ||
                 !values?.isCopayHighIndex ||
                 !values?.isCopayAntiReflective ||
-                !values?.isCopayPremiumProgressives
+                !values?.isCopayPremiumProgressives ||
+                !values?.isCopayStandardProgressives ||
+                !values?.isCopayCustomProgressives
             ) {
                 const isCopayPolycarbonate = Yup.mixed().required(
                     "Minimum 1 sub option is required"
@@ -76,9 +78,10 @@ const LoweredCopay = ({
         }
     };
 
-    const handleCopoayCheckChange = (value, key) => {
-        setFieldValue(key, value);
+    const handleCopoayCheckChange = async (value, key) => {
+        await setFieldValue(key, value);
         if (value === true) {
+            delete calValidations.isCopayPolycarbonate;
             if (key === "isCopayPolycarbonate") {
                 const isCopayPolycarbonateAmount =
                     Yup.string().required("Option is required");
@@ -175,6 +178,66 @@ const LoweredCopay = ({
             }
         }
     };
+    useEffect(() => {
+        const resetCopay = async () => {
+            const validations = { ...calValidations };
+            if (values?.lensMaterial !== "Polycarbonate") {
+                delete validations.isCopayPolycarbonateAmount;
+                delete validations.copayPolycarbonateAmount;
+                await setFieldValue("isCopayPolycarbonate", null);
+                await setFieldValue("isCopayPolycarbonateAmount", "");
+                await setFieldValue("copayPolycarbonateAmount", "");
+            }
+            if (
+                !values?.isPhotochromics ||
+                values?.isPhotochromics === "No" ||
+                !values?.photochromicsType
+            ) {
+                delete validations.isCopayPhotochromicAmount;
+                delete validations.copayPhotochromicAmount;
+                await setFieldValue("isCopayPhotochromic", null);
+                await setFieldValue("isCopayPhotochromicAmount", "");
+                await setFieldValue("copayPhotochromicAmount", "");
+            }
+            if (
+                !(
+                    values?.lensMaterial?.includes("Hi index") ||
+                    values?.lensMaterial?.includes("Hi Index")
+                )
+            ) {
+                delete validations.isCopayHighIndexAmount;
+                delete validations.copayHighIndexAmount;
+                await setFieldValue("isCopayHighIndex", null);
+                await setFieldValue("isCopayHighIndexAmount", "");
+                await setFieldValue("copayHighIndexAmount", "");
+            }
+            if (values?.lensType !== "PAL" && values?.lensTypeValue) {
+                delete validations.isCopaypremiumProgressiveAmount;
+                delete validations.copaypremiumProgressiveAmount;
+                await setFieldValue("isCopayPremiumProgressives", null);
+                await setFieldValue("isCopaypremiumProgressiveAmount", "");
+                await setFieldValue("copaypremiumProgressiveAmount", "");
+            }
+            if (values?.lensType !== "PAL" && values?.lensTypeValue) {
+                delete validations.isCopayStandardProgressiveAmount;
+                delete validations.copayStandardProgressiveAmount;
+                await setFieldValue("isCopayStandardProgressives", null);
+                await setFieldValue("isCopayStandardProgressiveAmount", "");
+                await setFieldValue("copayStandardProgressiveAmount", "");
+            }
+            if (values?.lensType !== "PAL" && values?.lensTypeValue) {
+                delete validations.isCopayCustomProgressiveAmount;
+                delete validations.copayCustomProgressiveAmount;
+                await setFieldValue("isCopayCustomProgressives", null);
+                await setFieldValue("isCopayCustomProgressiveAmount", "");
+                await setFieldValue("copayCustomProgressiveAmount", "");
+            }
+            setCalValidations({
+                ...validations,
+            });
+        };
+        resetCopay();
+    }, [values]);
     const copayProperties = () => {
         return (
             <>
