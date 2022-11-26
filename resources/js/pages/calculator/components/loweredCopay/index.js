@@ -211,6 +211,17 @@ const LoweredCopay = ({
                 await setFieldValue("isCopayHighIndexAmount", "");
                 await setFieldValue("copayHighIndexAmount", "");
             }
+            if (
+                !values?.isAntireflective ||
+                values?.isAntireflective === "No" ||
+                !values?.antireflectiveType
+            ) {
+                delete validations.isCopayAntiReflectiveAmount;
+                delete validations.copayAntiReflectiveAmount;
+                await setFieldValue("isCopayAntiReflective", null);
+                await setFieldValue("isCopayAntiReflectiveAmount", "");
+                await setFieldValue("copayAntiReflectiveAmount", "");
+            }
             if (values?.lensType !== "PAL" && values?.lensTypeValue) {
                 delete validations.isCopaypremiumProgressiveAmount;
                 delete validations.copaypremiumProgressiveAmount;
