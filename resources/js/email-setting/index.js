@@ -154,7 +154,7 @@ const EmailSetting = (props) => {
                 setButtonLoader(false);
                 messageApi.open({
                     type: 'error',
-                    content: error,
+                    content: "Error occurs",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',
@@ -237,8 +237,8 @@ const EmailSetting = (props) => {
                 console.log(error);
                 setButtonLoader(false);
                 messageApi.open({
-                    type: 'success',
-                    content: error,
+                    type: 'error',
+                    content: "Error occurs",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',
@@ -275,8 +275,8 @@ const EmailSetting = (props) => {
             .catch(function (error) {
                 console.log(error);
                 messageApi.open({
-                    type: 'success',
-                    content: error,
+                    type: 'error',
+                    content: "Error occurs",
                     duration: 5,
                     style: {
                         marginTop: '13.5vh',
