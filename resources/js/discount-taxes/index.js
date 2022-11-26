@@ -66,18 +66,18 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                getDiscount();
                 messageApi.open({
-                    type: 'success',
+                    type: "success",
                     content: response.data.message,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
                 setDiscountId(null);
                 setDiscountName("");
                 setDiscountTax("");
-                getDiscount();
                 setDiscountLoading(false);
                 setDiscountButtonLoader(false);
             })
@@ -85,11 +85,11 @@ const DiscountTaxes = (props) => {
                 setDiscountButtonLoader(false);
                 console.log(error);
                 messageApi.open({
-                    type: 'error',
+                    type: "error",
                     content: error,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
             });
@@ -111,11 +111,11 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 messageApi.open({
-                    type: 'success',
+                    type: "success",
                     content: response.data.message,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
                 getDiscount();
@@ -125,11 +125,11 @@ const DiscountTaxes = (props) => {
             .catch(function (error) {
                 console.log(error);
                 messageApi.open({
-                    type: 'error',
+                    type: "error",
                     content: error,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
             });
@@ -156,11 +156,11 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 messageApi.open({
-                    type: 'success',
+                    type: "success",
                     content: response.data.message,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
                 setTaxName("");
@@ -172,13 +172,13 @@ const DiscountTaxes = (props) => {
             })
             .catch(function (error) {
                 console.log(error);
-                setTaxButtonLoader(false)
+                setTaxButtonLoader(false);
                 messageApi.open({
-                    type: 'error',
+                    type: "error",
                     content: error,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
             });
@@ -205,11 +205,11 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 messageApi.open({
-                    type: 'success',
+                    type: "success",
                     content: response.data.message,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
                 getTaxes();
@@ -220,13 +220,13 @@ const DiscountTaxes = (props) => {
             })
             .catch(function (error) {
                 console.log(error);
-                setTaxButtonLoader(false)
+                setTaxButtonLoader(false);
                 messageApi.open({
-                    type: 'error',
+                    type: "error",
                     content: error,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
             });
@@ -248,23 +248,23 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 messageApi.open({
-                    type: 'success',
+                    type: "success",
                     content: response.data.message,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
-                setShowDeleteTaxes(false)
+                setShowDeleteTaxes(false);
             })
             .catch(function (error) {
                 console.log(error);
                 messageApi.open({
-                    type: 'error',
+                    type: "error",
                     content: error,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
             });
@@ -308,11 +308,11 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 messageApi.open({
-                    type: 'success',
+                    type: "success",
                     content: response.data.message,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
                 setEditId(null);
@@ -324,11 +324,11 @@ const DiscountTaxes = (props) => {
             })
             .catch(function (error) {
                 messageApi.open({
-                    type: 'success',
-                    content: response.data.message,
+                    type: "success",
+                    content: "error.data.message",
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
                 console.log(error);
@@ -397,13 +397,13 @@ const DiscountTaxes = (props) => {
             })
             .catch(function (error) {
                 console.log(error);
-                setLoading(false)
+                setLoading(false);
                 messageApi.open({
-                    type: 'error',
+                    type: "error",
                     content: "Discount get unsuccessfully",
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
             });
@@ -430,13 +430,13 @@ const DiscountTaxes = (props) => {
             })
             .catch(function (error) {
                 console.log(error);
-                setLoading(false)
+                setLoading(false);
                 messageApi.open({
-                    type: 'error',
+                    type: "error",
                     content: "Tax get unsuccessfully",
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
             });
@@ -556,10 +556,10 @@ const DiscountTaxes = (props) => {
             setDiscountTax("");
         }
     };
-    return loading == true ? (
-        <CustomLoader buttonBool={false} />
-    ) : (
+    return (
         <>
+            {contextHolder}
+            {loading ? <CustomLoader buttonBool={false} /> : null}
             {showDeleteTaxes ? (
                 <DeleteModal
                     accept={() => {
