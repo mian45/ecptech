@@ -47,7 +47,11 @@ export const GetAppliedDiscount = (price, data) => {
     if (discountToApply == 0) {
         return 0;
     } else {
-        const result = (price * discountToApply) / 100;
-        return parseFloat(result);
+        if (data?.discount?.amountType === "percentage") {
+            const result = (price * discountToApply) / 100;
+            return parseFloat(result);
+        } else {
+            return discountToApply;
+        }
     }
 };

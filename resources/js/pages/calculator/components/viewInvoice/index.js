@@ -544,7 +544,7 @@ export const getPrivatePayAntireflective = (value, calculatorObj) => {
 
 export const getPrivatePayPhotochromic = (value, calculatorObj) => {
     const photochromicAddons = calculatorObj?.addons?.find(
-        (item) => item?.title === "Photochromoics"
+        (item) => item?.title === "Photochromic"
     );
     const selectedPhotochromic = photochromicAddons?.addons?.find(
         (item) => item.title === value
@@ -575,7 +575,7 @@ export const getPrivatePayGlasses = (receipt, calculatorObj) => {
                     total = total + parseFloat(skiTypePrice || 0) || 0;
                 } else {
                     const solidGradientPrice = glassesAddons?.addons?.find(
-                        (item) => item.title === "Solid/Single Gradient"
+                        (item) => item.title === "Solid/Single Gradient Mirror"
                     )?.price;
                     total = total + parseFloat(solidGradientPrice || 0) || 0;
                 }
@@ -603,7 +603,7 @@ export const getPrivatePayGlasses = (receipt, calculatorObj) => {
                     total = total + parseFloat(skiTypePrice || 0) || 0;
                 } else {
                     const solidGradientPrice = glassesAddons?.addons?.find(
-                        (item) => item.title === "Solid/Single Gradient"
+                        (item) => item.title === "Solid/Single Gradient Mirror"
                     )?.price;
                     total = total + parseFloat(solidGradientPrice || 0) || 0;
                 }

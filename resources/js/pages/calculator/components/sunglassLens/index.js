@@ -29,16 +29,16 @@ const SunglassLens = ({
         (item) => item?.title === "Polarized"
     );
     const isSolidTintActive = addons?.some(
-        (item) => item.title === "Solid Tint"
+        (item) => item?.title === "Solid Tint"
     );
     const isGradientTintActive = addons?.some(
-        (item) => item.title === "Gradient Tint"
+        (item) => item?.title === "Gradient Tint"
     );
     const isSkyTypeActive = addons?.some(
-        (item) => item.title === "Ski Type Mirror"
+        (item) => item?.title === "Ski Type Mirror"
     );
     const isSolidTypeActive = addons?.some(
-        (item) => item.title === "Solid/Single Gradient"
+        (item) => item?.title === "Solid/Single Gradient Mirror"
     );
 
     const handleIsSunglassesLensChange = (e) => {
@@ -292,7 +292,9 @@ const SunglassLens = ({
         const getSolidSingle = () => {
             return calculatorObj?.addons
                 ?.find((item) => item?.title === "SunGlasses")
-                ?.addons?.find((val) => val?.title === "Solid/Single Gradient");
+                ?.addons?.find(
+                    (val) => val?.title === "Solid/Single Gradient Mirror"
+                );
         };
         return (
             <>

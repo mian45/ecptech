@@ -175,7 +175,8 @@ function EditInsurance({ userId }) {
                                         <div className={classes["content-box"]}>
                                             <div className={classes["content-header"]}>
                                                 <div className={classes["content-header-text"]}>
-                                                    <p className={classes["header-text-left"]}>Select / De select questions</p>
+                                                    <p className={classes["header-text-left"]}>Please mark the questions
+                                                        for invoice creation</p>
                                                 </div>
                                                 <div className={classes["content-header-text"]}>
                                                     <p className={classes["header-text-right"]}>Optional / Mandatory</p>

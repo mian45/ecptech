@@ -29,7 +29,6 @@
                         outline: 0;
                     }
                 }
-                
             }
         }
     }
@@ -53,7 +52,7 @@
                         color: rgba($color: #cbcbcb, $alpha: 1);
                     }
                 }
-               
+
                 p {
                     margin-bottom: 13px !important;
                 }
@@ -61,10 +60,10 @@
         }
     }
 }
-.switch-margin{
+.switch-margin {
     margin-left: 20px;
 }
-.input-discount{
+.input-discount {
     min-width: 0px !important;
     width: 100%;
     margin-right: 10px;
@@ -72,7 +71,6 @@
         margin-bottom: 10px;
         margin-right: 0px;
     }
-
 }
 .discount-tax {
     .ant-select {
@@ -115,8 +113,6 @@
     box-shadow: none !important;
 }
 
-
-
 .save-button {
     width: unset;
     padding: 13px 32px;
@@ -133,7 +129,6 @@
         pointer-events: none;
     }
 
-
     span {
         display: flex;
         align-items: center;
@@ -146,10 +141,9 @@
     }
 }
 @media only screen and (min-width: 992px) {
-    .save-button{
-        width:100%
+    .save-button {
+        width: 100%;
     }
-    
 }
 .discount-output {
     margin-top: 29px;
@@ -174,7 +168,7 @@
     display: flex;
     flex-direction: column-reverse;
 }
-.btn_section{
+.btn_section {
     justify-content: center;
     align-items: center;
     display: flex;
@@ -203,7 +197,6 @@
     font-size: 24px;
     font-weight: bold;
 }
-
 
 table {
     width: 100%;
@@ -292,7 +285,6 @@ input[type="number"] {
             outline: 0;
         }
     }
-  
 }
 .discount-container-page-title {
     margin-top: 30px !important;
@@ -306,14 +298,13 @@ input[type="number"] {
     padding-right: 32px;
 }
 
-.hidden-text{
+.hidden-text {
     visibility: hidden;
 }
 .ant-select {
     max-width: 23.68em !important;
     padding: 0;
     color: black;
-    margin-left: 10px !important;
     @media only screen and (max-width: 425px) {
         margin-left: 0px !important;
     }
@@ -358,5 +349,4 @@ input[type="number"] {
     top: 0;
     left: 0;
     border-radius: 23px !important;
-    
 }

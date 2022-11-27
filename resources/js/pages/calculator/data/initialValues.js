@@ -54,6 +54,8 @@ export const CalculatorInitialValues = {
     shippingAmount: "0",
     discountType: "",
     discountValue: "",
+    discountAmountType: "percentage",
+    discountId: "",
 };
 
 export const BenifitTypeEnums = Object.freeze({

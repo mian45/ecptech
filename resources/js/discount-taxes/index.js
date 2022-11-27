@@ -680,6 +680,9 @@ const DiscountTaxes = (props) => {
                                                                         />
                                                                     </Col>
                                                                     <Col
+                                                                        xs={1}
+                                                                    ></Col>
+                                                                    <Col
                                                                         xs={9}
                                                                         md={6}
                                                                     >
