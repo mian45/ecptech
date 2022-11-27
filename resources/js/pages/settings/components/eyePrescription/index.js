@@ -3,7 +3,7 @@ import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
 import { connect } from "react-redux";
 import { defaultMaterials } from "./data";
-import { Row, Col, message } from "antd"
+import { Row, Col, message } from "antd";
 import CustomLoader from "../../../../components/customLoader";
 const EyePrescription = ({ userId }) => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -51,11 +51,11 @@ const EyePrescription = ({ userId }) => {
             } catch (err) {
                 console.log("Error while getting glasses details");
                 messageApi.open({
-                    type: 'error',
-                    content: "Api Failed",
+                    type: "error",
+                    content: err.message,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
             }
@@ -234,23 +234,23 @@ const EyePrescription = ({ userId }) => {
                 `${process.env.MIX_REACT_APP_URL}/api/eye-prescriptions`,
                 payload
             );
-            setButtonLoader(false)
+            setButtonLoader(false);
             messageApi.open({
-                type: 'success',
+                type: "success",
                 content: res.data.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
         } catch (err) {
             console.log("error while save data");
             messageApi.open({
-                type: 'serror',
-                content: res.data.message,
+                type: "error",
+                content: err.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
         }
@@ -283,54 +283,54 @@ const EyePrescription = ({ userId }) => {
             }
         }
 
-        return isDisabled
-    }
-    return (
-        loading == true ?
-            <CustomLoader buttonBool={false} />
-            :
-            <Row className={classes["container"]} justify="start" align="middle">
-                <div>{contextHolder}</div>
-                <Col xs={24} className={classes["page-title"]}>
-                    Glasses Prescription Setting
-                </Col>
-                <Col xs={24} className={classes["content-map-container"]}>
-                    <Row justify="center" align="middle">
-                        <Col xs={24} md={14}>
-                            {eyeDetails?.map((item, index) => {
-                                return (
-                                    <EyePrescriptionSlot
-                                        key={index}
-                                        data={item}
-                                        onChange={handleInputChange}
-                                        sphError={sphError}
-                                        cylError={cylError}
-                                    />
-                                );
-                            })}
-                        </Col>
-                        <Col xs={24} md={14} className={classes["button-wrapper"]}>
-                            <Row justify="end" align="middle">
-                                <Col xs={10} md={7} className={classes['btn-grid']}>
-                                    <button
-                                        className={classes["button"]}
-                                        onClick={handleSubmit}
-                                        disabled={disable || isIncompleteRange()}
-                                    >
-                                        {buttonLoader == false ?
-                                            'Save' :
-                                            <span>
-                                                <p>Save</p>
-                                                <CustomLoader buttonBool={true} />
-                                            </span>
-                                        }
-                                    </button>
-                                </Col>
-                            </Row>
-                        </Col>
-                    </Row>
-                </Col>
-            </Row>
+        return isDisabled;
+    };
+    return loading == true ? (
+        <CustomLoader buttonBool={false} />
+    ) : (
+        <Row className={classes["container"]} justify="start" align="middle">
+            <div>{contextHolder}</div>
+            <Col xs={24} className={classes["page-title"]}>
+                Glasses Prescription Setting
+            </Col>
+            <Col xs={24} className={classes["content-map-container"]}>
+                <Row justify="center" align="middle">
+                    <Col xs={24} md={14}>
+                        {eyeDetails?.map((item, index) => {
+                            return (
+                                <EyePrescriptionSlot
+                                    key={index}
+                                    data={item}
+                                    onChange={handleInputChange}
+                                    sphError={sphError}
+                                    cylError={cylError}
+                                />
+                            );
+                        })}
+                    </Col>
+                    <Col xs={24} md={14} className={classes["button-wrapper"]}>
+                        <Row justify="end" align="middle">
+                            <Col xs={10} md={7} className={classes["btn-grid"]}>
+                                <button
+                                    className={classes["button"]}
+                                    onClick={handleSubmit}
+                                    disabled={disable || isIncompleteRange()}
+                                >
+                                    {buttonLoader == false ? (
+                                        "Save"
+                                    ) : (
+                                        <span>
+                                            <p>Save</p>
+                                            <CustomLoader buttonBool={true} />
+                                        </span>
+                                    )}
+                                </button>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
     );
 };
 

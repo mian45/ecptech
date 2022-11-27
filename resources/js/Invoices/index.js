@@ -10,7 +10,7 @@ import { useHistory } from "react-router";
 import Axios from "../Http";
 import { CREATE_INVOICE_ROUTE } from "../appRoutes/routeConstants";
 import CustomLoader from "../../js/components/customLoader/index";
-import { message } from "antd"
+import { message } from "antd";
 
 const Invoices = ({ userId, clientUserId, userRole }) => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -68,11 +68,11 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
             );
             setTableData(res?.data?.data);
             messageApi.open({
-                type: 'success',
+                type: "success",
                 content: res.data.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
             setButtonLoader(false);
@@ -80,11 +80,11 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
             setIsSearched(false);
             console.log("error while search", err);
             messageApi.open({
-                type: 'error',
-                content: res.data.message,
+                type: "error",
+                content: err.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
             setButtonLoader(false);

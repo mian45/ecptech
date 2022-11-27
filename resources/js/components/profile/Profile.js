@@ -8,8 +8,15 @@ import CustomButton from "../customButton";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { Row, Col, Drawer, message } from 'antd';
-const Profile = ({ userId, closeModal, user, userRole, open, getAuthentication }) => {
+import { Row, Col, Drawer, message } from "antd";
+const Profile = ({
+    userId,
+    closeModal,
+    user,
+    userRole,
+    open,
+    getAuthentication,
+}) => {
     return (
         <Drawer
             title=""
@@ -21,11 +28,18 @@ const Profile = ({ userId, closeModal, user, userRole, open, getAuthentication }
             bodyStyle={{ padding: "24px 0px" }}
         >
             <Col
-                className={`${classes["profile"]} ${userRole === "staff" && classes["staff"]
-                    }`}
+                className={`${classes["profile"]} ${
+                    userRole === "staff" && classes["staff"]
+                }`}
                 onClick={(e) => e.stopPropagation()}
             >
-                <ProfileInfoSection userId={userId} user={user} getAuthentication={() => { getAuthentication() }} />
+                <ProfileInfoSection
+                    userId={userId}
+                    user={user}
+                    getAuthentication={() => {
+                        getAuthentication();
+                    }}
+                />
                 {userRole !== "staff" && (
                     <ProfilePasswordValidations userId={userId} />
                 )}
@@ -51,14 +65,13 @@ const profileValidations = Yup.object().shape({
 const ProfileInfoSection = ({ userId, user, getAuthentication }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const defaultProfileState = {
-        businessName: user?.buisnessName ? user?.buisnessName : '',
+        businessName: user?.buisnessName ? user?.buisnessName : "",
         profileImage: null,
         themeColor: user?.themeColor ? user?.themeColor : "#6FA5CB",
         themeType: 0,
     };
 
     const handleSaveClick = async (values, actions) => {
-
         try {
             const personalInfo = new FormData();
             personalInfo.append("logo", values.profileImage);
@@ -67,29 +80,31 @@ const ProfileInfoSection = ({ userId, user, getAuthentication }) => {
             personalInfo.append("theme_mode", values.themeType);
             personalInfo.append("userId", userId);
 
-            await axios.post(
-                `${process.env.MIX_REACT_APP_URL}/api/edit-profile`,
-                personalInfo
-            ).then(() => {
-                getAuthentication()
-                actions.setSubmitting(false)
-                messageApi.open({
-                    type: 'success',
-                    content: response.data.message,
-                    duration: 5,
-                    style: {
-                        marginTop: '13.5vh',
-                    },
+            await axios
+                .post(
+                    `${process.env.MIX_REACT_APP_URL}/api/edit-profile`,
+                    personalInfo
+                )
+                .then(() => {
+                    getAuthentication();
+                    actions.setSubmitting(false);
+                    messageApi.open({
+                        type: "success",
+                        content: response.data.message,
+                        duration: 5,
+                        style: {
+                            marginTop: "13.5vh",
+                        },
+                    });
                 });
-            });
         } catch (err) {
             console.log("error while save changes", err);
             messageApi.open({
-                type: 'error',
-                content: err,
+                type: "error",
+                content: err.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
         }
@@ -131,7 +146,7 @@ const ProfileInfoSection = ({ userId, user, getAuthentication }) => {
                         <PhotoUpload
                             values={values}
                             handleChange={(e) => {
-                                handleChange(e)
+                                handleChange(e);
                             }}
                             handleBlur={handleBlur}
                             setFieldValue={setFieldValue}
@@ -195,6 +210,14 @@ const ProfilePasswordValidations = ({ userId }) => {
                 passwordObject
             );
         } catch (err) {
+            messageApi.open({
+                type: "error",
+                content: err.message,
+                duration: 5,
+                style: {
+                    marginTop: "13.5vh",
+                },
+            });
             console.log("error while save password", err);
         }
     };

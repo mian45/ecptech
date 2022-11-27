@@ -4,7 +4,7 @@ import StaffTableHeader from "../staffTableHeader";
 import classes from "./styles.module.scss";
 import Axios from "../../../Http";
 import { connect } from "react-redux";
-import { message } from 'antd'
+import { message } from "antd";
 
 const StaffListTable = ({ userId }) => {
     const [staffList, setStaffList] = useState([]);
@@ -26,11 +26,11 @@ const StaffListTable = ({ userId }) => {
             } catch (err) {
                 console.log("Error while getting staff");
                 messageApi.open({
-                    type: 'error',
-                    content: "Error while getting staff",
+                    type: "error",
+                    content: err.message,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
             }

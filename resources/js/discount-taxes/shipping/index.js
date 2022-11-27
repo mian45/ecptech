@@ -6,8 +6,8 @@ import edit from "../../../images/edit.png";
 import cross from "../../../images/cross.png";
 import CustomLoader from "../../components/customLoader";
 
-import DeleteModal from "../../components/deleteModal/index"
-import { Row, Col, message } from "antd"
+import DeleteModal from "../../components/deleteModal/index";
+import { Row, Col, message } from "antd";
 const ShippingSettings = ({ userId }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [shippingName, setShippingName] = useState("");
@@ -34,24 +34,24 @@ const ShippingSettings = ({ userId }) => {
             } catch (err) {
                 if (err.response.data.statusCode === 404) {
                     messageApi.open({
-                        type: 'success',
-                        content: "No shipping found",
+                        type: "success",
+                        content: err.message,
                         duration: 5,
                         style: {
-                            marginTop: '13.5vh',
+                            marginTop: "13.5vh",
                         },
                     });
                 } else {
                     messageApi.open({
-                        type: 'error',
-                        content: "error while get shipping",
+                        type: "error",
+                        content: err.message,
                         duration: 5,
                         style: {
-                            marginTop: '13.5vh',
+                            marginTop: "13.5vh",
                         },
                     });
                 }
-                setShippingLoading(false)
+                setShippingLoading(false);
             }
         };
         setEditState(false);
@@ -71,23 +71,23 @@ const ShippingSettings = ({ userId }) => {
             );
             setShipping({});
             setIsSubmitted(false);
-            setShowDeleteShipping(false)
+            setShowDeleteShipping(false);
             messageApi.open({
-                type: 'success',
+                type: "success",
                 content: res.data.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
         } catch (err) {
             console.log("error while delete shipping");
             messageApi.open({
-                type: 'error',
-                content: err,
+                type: "error",
+                content: err.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
         }
@@ -118,24 +118,24 @@ const ShippingSettings = ({ userId }) => {
             setEditState(false);
             setShippingAmount("");
             setIsSubmitted(true);
-            setShippingButtonLoader(false)
+            setShippingButtonLoader(false);
             messageApi.open({
-                type: 'success',
+                type: "success",
                 content: res.data.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
         } catch (err) {
             console.log("error while adding shipping");
-            setShippingButtonLoader(false)
+            setShippingButtonLoader(false);
             messageApi.open({
-                type: 'success',
-                content: err,
+                type: "error",
+                content: err.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
         }

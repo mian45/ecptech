@@ -3,7 +3,7 @@ import Chart from "react-apexcharts";
 import classes from "./styles.module.scss";
 import Axios from "../../../Http";
 import { connect } from "react-redux";
-import { message } from 'antd'
+import { message } from "antd";
 
 const TeamPerformanceChart = (userId) => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -31,11 +31,11 @@ const TeamPerformanceChart = (userId) => {
             } catch (err) {
                 console.log("Error while getting performance stats", err);
                 messageApi.open({
-                    type: 'error',
-                    content: "Error while getting performance stats",
+                    type: "error",
+                    content: err.message,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
             }
@@ -84,8 +84,9 @@ export default connect(mapStateToProps)(TeamPerformanceChart);
 const StatusSlot = ({ title, isGray }) => {
     return (
         <div
-            className={`${classes["status-container"]} ${isGray ? classes["status-container-margin"] : ""
-                }`}
+            className={`${classes["status-container"]} ${
+                isGray ? classes["status-container-margin"] : ""
+            }`}
         >
             <div className={isGray ? classes["icon-grey"] : classes["icon"]} />
             <div className={isGray ? classes["title-grey"] : classes["title"]}>

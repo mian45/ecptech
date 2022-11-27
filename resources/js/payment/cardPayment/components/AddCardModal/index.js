@@ -2,7 +2,17 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
-import { Button, Checkbox, Form, Input, DatePicker, Space, Row, Col, message } from "antd";
+import {
+    Button,
+    Checkbox,
+    Form,
+    Input,
+    DatePicker,
+    Space,
+    Row,
+    Col,
+    message,
+} from "antd";
 import CustomCheckbox from "../../../../components/customCheckbox";
 const AddCardModal = ({ show, onClose }) => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -86,22 +96,22 @@ const AddCardModal = ({ show, onClose }) => {
                 data
             );
             messageApi.open({
-                type: 'success',
+                type: "success",
                 content: res.data.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
             onClose();
         } catch (err) {
             console.log("Error while delete Staff", err);
             messageApi.open({
-                type: 'error',
-                content: res.data.message,
+                type: "error",
+                content: err.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
         }
@@ -179,11 +189,20 @@ const AddCardModal = ({ show, onClose }) => {
                             ""
                         )}
                         <Row className={classes["inline-input"]}>
-                            <Col xs={24} sm={12} md={11} lg={11} className={classes["inline-left-input"]}>
+                            <Col
+                                xs={24}
+                                sm={12}
+                                md={11}
+                                lg={11}
+                                className={classes["inline-left-input"]}
+                            >
                                 <Col className={classes["input-label"]}>
                                     Card Expiry
                                 </Col>
-                                <Space className={classes["space-styling"]} direction="vertical">
+                                <Space
+                                    className={classes["space-styling"]}
+                                    direction="vertical"
+                                >
                                     <DatePicker
                                         picker="month"
                                         className={classes["input"]}
@@ -208,7 +227,13 @@ const AddCardModal = ({ show, onClose }) => {
                                     ""
                                 )}
                             </Col>
-                            <Col xs={24} sm={12} md={11} lg={11} className={classes["inline-right-input"]}>
+                            <Col
+                                xs={24}
+                                sm={12}
+                                md={11}
+                                lg={11}
+                                className={classes["inline-right-input"]}
+                            >
                                 <Col className={classes["input-label"]}>
                                     CVV
                                 </Col>
@@ -224,7 +249,9 @@ const AddCardModal = ({ show, onClose }) => {
                                                     "^[0-9]*$"
                                                 );
 
-                                                if (regix.test(e.target.value)) {
+                                                if (
+                                                    regix.test(e.target.value)
+                                                ) {
                                                     setCvc(e.target.value);
                                                 }
                                             } else if (e.target.value == "") {

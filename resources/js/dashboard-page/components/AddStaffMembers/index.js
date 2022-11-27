@@ -36,7 +36,7 @@ const AddStaffMember = ({ userId }) => {
                 console.log("Error while fetch Staff", err);
                 messageApi.open({
                     type: "error",
-                    content: "Error while fetch Staff",
+                    content: err.message,
                     duration: 5,
                     style: {
                         marginTop: "13.5vh",
@@ -78,7 +78,7 @@ const AddStaffMember = ({ userId }) => {
             console.log("Error while edit Staff", err);
             messageApi.open({
                 type: "error",
-                content: err,
+                content: err.message,
                 duration: 5,
                 style: {
                     marginTop: "13.5vh",
@@ -115,7 +115,7 @@ const AddStaffMember = ({ userId }) => {
             console.log("Error while create Staff", err);
             messageApi.open({
                 type: "error",
-                content: err,
+                content: err.message,
                 duration: 5,
                 style: {
                     marginTop: "13.5vh",
@@ -156,7 +156,7 @@ const AddStaffMember = ({ userId }) => {
             console.log("Error while delete Staff", err);
             messageApi.open({
                 type: "error",
-                content: err,
+                content: err.message,
                 duration: 5,
                 style: {
                     marginTop: "13.5vh",

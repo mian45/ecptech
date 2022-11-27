@@ -3,7 +3,7 @@ import { CollectionSlot } from "../lensesType";
 import classes from "./styles.module.scss";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-import { Row, Col, message } from "antd"
+import { Row, Col, message } from "antd";
 const MaterialSettings = ({ userId }) => {
     const [lensesMaterialApi, lensesMaterialHolder] = message.useMessage();
     let [materials, setMaterials] = useState([]);
@@ -21,11 +21,11 @@ const MaterialSettings = ({ userId }) => {
             } catch (err) {
                 console.log("error while get lenses", err);
                 lensesMaterialApi.open({
-                    type: 'error',
-                    content: "error while get lenses",
+                    type: "error",
+                    content: err.message,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
             }
@@ -33,13 +33,12 @@ const MaterialSettings = ({ userId }) => {
         getMaterialSettings();
     }, [userId]);
 
-
     const handleCheckbox = (value, collection) => {
         const newData = materials.map((item, index) => {
             if (item.id === collection.id) {
-                return { ...item, status: value ? "active" : "inactive" }
+                return { ...item, status: value ? "active" : "inactive" };
             } else {
-                return item
+                return item;
             }
         });
         setMaterials(newData);
@@ -74,28 +73,32 @@ const MaterialSettings = ({ userId }) => {
                 payload
             );
             lensesMaterialApi.open({
-                type: 'success',
+                type: "success",
                 content: res.data.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
         } catch (err) {
             console.log("error while update lenses");
             lensesMaterialHolder.open({
-                type: 'error while update lenses',
+                type: err.message,
                 content: err,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
         }
     };
     return (
         <>
-            <Row className={classes["container"]} justify="center" align="middle">
+            <Row
+                className={classes["container"]}
+                justify="center"
+                align="middle"
+            >
                 <div>{lensesMaterialHolder}</div>
                 <Col xs={24} className={classes["sub-container"]}>
                     <Row justify="center" align="middle">
@@ -110,7 +113,9 @@ const MaterialSettings = ({ userId }) => {
                                     handleDisplayNameChange={
                                         handleDisplayNameChange
                                     }
-                                    handleAmountNameChange={handleAmountNameChange}
+                                    handleAmountNameChange={
+                                        handleAmountNameChange
+                                    }
                                     collection={{
                                         ...item,
                                         custom_price: item?.price,
@@ -129,7 +134,8 @@ const MaterialSettings = ({ userId }) => {
                         onClick={submitMaterialSettings}
                     >
                         Save
-                    </button></Col>
+                    </button>
+                </Col>
             </Row>
         </>
     );

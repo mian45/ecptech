@@ -34,13 +34,12 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
             } catch (err) {
                 setInvoiceStats(DEFAULT_INVOICES_DATA);
                 messageApi.open({
-                    type: 'Api Failed',
+                    type: err.message,
                     content: err,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
-
                 });
             }
         };
@@ -59,20 +58,18 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
                 const res = await Axios.post(
                     process.env.MIX_REACT_APP_URL + "/api/invoice-summmary",
                     invoiceData
-
                 );
                 const mappedSummary = mapSummaryStats(res?.data?.data);
                 setSummaryStats(mappedSummary);
             } catch (err) {
                 console.log("Error while getting stats");
                 messageApi.open({
-                    type: 'success',
-                    content: "Error while getting stats",
+                    type: "success",
+                    content: err.message,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
-
                 });
             }
         };

@@ -4,7 +4,7 @@ import classes from "./styles.module.scss";
 import Axios from "../../../Http";
 import { connect } from "react-redux";
 import dayjs from "dayjs";
-import { message } from "antd"
+import { message } from "antd";
 
 const ProfitStatsChart = ({ userId, dates }) => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -46,13 +46,12 @@ const ProfitStatsChart = ({ userId, dates }) => {
         } catch (err) {
             console.log("Error while getting profit stats", err);
             messageApi.open({
-                type: 'error',
-                content: "Error while getting profit stats",
+                type: "error",
+                content: err.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
-
             });
         }
     };

@@ -86,7 +86,7 @@ const DiscountTaxes = (props) => {
                 console.log(error);
                 messageApi.open({
                     type: "error",
-                    content: error,
+                    content: error.message,
                     duration: 5,
                     style: {
                         marginTop: "13.5vh",
@@ -126,7 +126,7 @@ const DiscountTaxes = (props) => {
                 console.log(error);
                 messageApi.open({
                     type: "error",
-                    content: error,
+                    content: error.message,
                     duration: 5,
                     style: {
                         marginTop: "13.5vh",
@@ -175,7 +175,7 @@ const DiscountTaxes = (props) => {
                 setTaxButtonLoader(false);
                 messageApi.open({
                     type: "error",
-                    content: error,
+                    content: error.message,
                     duration: 5,
                     style: {
                         marginTop: "13.5vh",
@@ -223,7 +223,7 @@ const DiscountTaxes = (props) => {
                 setTaxButtonLoader(false);
                 messageApi.open({
                     type: "error",
-                    content: error,
+                    content: error.message,
                     duration: 5,
                     style: {
                         marginTop: "13.5vh",
@@ -261,7 +261,7 @@ const DiscountTaxes = (props) => {
                 console.log(error);
                 messageApi.open({
                     type: "error",
-                    content: error,
+                    content: error.message,
                     duration: 5,
                     style: {
                         marginTop: "13.5vh",
@@ -286,6 +286,14 @@ const DiscountTaxes = (props) => {
                 setStateSetting(response.data.data[0].id);
             })
             .catch(function (error) {
+                messageApi.open({
+                    type: "error",
+                    content: error.message,
+                    duration: 5,
+                    style: {
+                        marginTop: "13.5vh",
+                    },
+                });
                 console.log(error);
             });
     };
@@ -324,8 +332,8 @@ const DiscountTaxes = (props) => {
             })
             .catch(function (error) {
                 messageApi.open({
-                    type: "success",
-                    content: "error.data.message",
+                    type: "error",
+                    content: error.message,
                     duration: 5,
                     style: {
                         marginTop: "13.5vh",
@@ -400,7 +408,7 @@ const DiscountTaxes = (props) => {
                 setLoading(false);
                 messageApi.open({
                     type: "error",
-                    content: "Discount get unsuccessfully",
+                    content: error.message,
                     duration: 5,
                     style: {
                         marginTop: "13.5vh",
@@ -433,7 +441,7 @@ const DiscountTaxes = (props) => {
                 setLoading(false);
                 messageApi.open({
                     type: "error",
-                    content: "Tax get unsuccessfully",
+                    content: error.message,
                     duration: 5,
                     style: {
                         marginTop: "13.5vh",
@@ -490,9 +498,25 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                messageApi.open({
+                    type: "success",
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: "13.5vh",
+                    },
+                });
                 getDiscount();
             })
             .catch(function (error) {
+                messageApi.open({
+                    type: "error",
+                    content: error.message,
+                    duration: 5,
+                    style: {
+                        marginTop: "13.5vh",
+                    },
+                });
                 console.log(error);
             });
     };
@@ -512,8 +536,24 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 getTaxes();
+                messageApi.open({
+                    type: "success",
+                    content: response.data.message,
+                    duration: 5,
+                    style: {
+                        marginTop: "13.5vh",
+                    },
+                });
             })
             .catch(function (error) {
+                messageApi.open({
+                    type: "error",
+                    content: error.message,
+                    duration: 5,
+                    style: {
+                        marginTop: "13.5vh",
+                    },
+                });
                 console.log(error);
             });
     };

@@ -7,10 +7,11 @@ import editIcon from "../../../../../../../images/edit.png";
 import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-import { Row, Col, message } from 'antd'
+import { Row, Col, message } from "antd";
 const LensesType = ({ userId }) => {
     const [messageApi, contextHolder] = message.useMessage();
-    const [lensesMaterialAddApi, lensesMaterialAddHolder] = message.useMessage();
+    const [lensesMaterialAddApi, lensesMaterialAddHolder] =
+        message.useMessage();
     const [isBrands, setIsBrands] = useState(false);
     const [lensesList, setLensesList] = useState([]);
     const [selectedLensType, setSelectedLensType] = useState("");
@@ -29,11 +30,11 @@ const LensesType = ({ userId }) => {
             } catch (err) {
                 console.log("error while get lenses");
                 messageApi.open({
-                    type: 'error',
-                    content: "error while get lenses",
+                    type: "error",
+                    content: err.message,
                     duration: 5,
                     style: {
-                        marginTop: '13.5vh',
+                        marginTop: "13.5vh",
                     },
                 });
             }
@@ -52,21 +53,21 @@ const LensesType = ({ userId }) => {
                 payload
             );
             messageApi.open({
-                type: 'success',
+                type: "success",
                 content: res.data.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
         } catch (err) {
             console.log("error while update lenses");
             messageApi.open({
-                type: 'error',
-                content: "error while update lenses",
+                type: "error",
+                content: err.message,
                 duration: 5,
                 style: {
-                    marginTop: '13.5vh',
+                    marginTop: "13.5vh",
                 },
             });
         }
@@ -82,9 +83,9 @@ const LensesType = ({ userId }) => {
     };
     return (
         <>
-            <Row className={classes["container"]} >
+            <Row className={classes["container"]}>
                 <div>{contextHolder}</div>
-                <Col xs={24} md={9} className={classes["left-container"]} >
+                <Col xs={24} md={9} className={classes["left-container"]}>
                     {isBrands ? (
                         <LensesTypeBrandsList
                             onBackClick={onGoBackClick}
