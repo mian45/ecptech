@@ -7,8 +7,7 @@ import AuthService from "../../services";
 const PrivateRoute = ({ component, exact, path, isAuthenticated, user }) => {
     const dispatch = useDispatch();
     const history = useHistory();
-    // const timeout = 1800000000;
-    const timeout = 10000;
+    const timeout = 1800000000;
     const [remaining, setRemaining] = useState(timeout);
     const [elapsed, setElapsed] = useState(0);
     const [lastActive, setLastActive] = useState(+new Date());
