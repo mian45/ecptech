@@ -2,7 +2,7 @@ import Http from "../Http";
 import * as action from "../store/actions";
 import axios from "axios";
 
-export function login({ email, password, remember }) {
+export function login({ email, password, remember }, messageApi) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
             axios
@@ -12,16 +12,37 @@ export function login({ email, password, remember }) {
                     remember_me: remember,
                 })
                 .then((res) => {
-                    if (res?.data?.data?.error !== "Unauthorised") {
-                        console.log(res?.data?.data?.error !== "Unauthorised");
-                        localStorage.setItem("remember", remember);
-                        dispatch(action.authLogin(res.data));
-                        localStorage.setItem("temp", false);
-                        return resolve();
-                    }
-                    return reject(res?.data?.data?.error);
+                    messageApi.open({
+                        type: "success",
+                        content: res.data.message,
+                        duration: 5,
+                        style: {
+                            marginTop: "0vh",
+                        },
+                        className: 'custom-postion',
+                    });
+                    setTimeout(() => {
+
+                        if (res?.data?.data?.error !== "Unauthorised") {
+                            console.log(res?.data?.data?.error !== "Unauthorised");
+                            localStorage.setItem("remember", remember);
+                            dispatch(action.authLogin(res.data));
+                            localStorage.setItem("temp", false);
+                            return resolve();
+                        }
+                        return reject(res?.data?.data?.error);
+                    }, 1000);
                 })
                 .catch((err) => {
+                    messageApi.open({
+                        type: "error",
+                        content: err.response.data.message,
+                        duration: 5,
+                        style: {
+                            marginTop: "0vh",
+                        },
+                        className: 'custom-postion-error',
+                    });
                     const { status, errors } = err.response.data;
                     const data = {
                         status,
@@ -140,7 +161,7 @@ export function staffLogin(credentials) {
         });
 }
 
-export function updateStaffLogin(credentials) {
+export function updateStaffLogin(credentials, messageApi) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
             Http.post(
@@ -149,6 +170,12 @@ export function updateStaffLogin(credentials) {
             )
                 .then((res) => {
                     dispatch(action.updateStaffLogin(res.data));
+                    messageApi.open({
+                        type: "success",
+                        content: res.data.message,
+                        duration: 5,
+                        className: 'custom-postion',
+                    });
                     return resolve();
                 })
                 .catch((err) => {
@@ -157,6 +184,12 @@ export function updateStaffLogin(credentials) {
                         status,
                         errors,
                     };
+                    messageApi.open({
+                        type: "error",
+                        content: err.response.data.message,
+                        duration: 50,
+                        className: 'custom-postion-error',
+                    });
                     return reject(data);
                 });
         });

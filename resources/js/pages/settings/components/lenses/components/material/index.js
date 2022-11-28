@@ -3,8 +3,9 @@ import { CollectionSlot } from "../lensesType";
 import classes from "./styles.module.scss";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-import { Row, Col } from "antd";
+import { Row, Col, message } from "antd";
 const MaterialSettings = ({ userId }) => {
+    const [lensesMaterialApi, lensesMaterialHolder] = message.useMessage();
     let [materials, setMaterials] = useState([]);
     useEffect(() => {
         const getMaterialSettings = async () => {
@@ -19,6 +20,12 @@ const MaterialSettings = ({ userId }) => {
                 setMaterials(res.data.data || []);
             } catch (err) {
                 console.log("error while get lenses", err);
+                lensesMaterialApi.open({
+                    type: "error",
+                    content: err.response.data.message,
+                    duration: 5,
+                    className: 'custom-postion-error',
+                });
             }
         };
         getMaterialSettings();
@@ -59,12 +66,24 @@ const MaterialSettings = ({ userId }) => {
             const payload = {
                 data: [...materials],
             };
-            await Axios.post(
+            const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/add-lense-material-setting`,
                 payload
             );
+            lensesMaterialApi.open({
+                type: "success",
+                content: res.data.message,
+                duration: 5,
+                className: 'custom-postion',
+            });
         } catch (err) {
             console.log("error while update lenses");
+            lensesMaterialHolder.open({
+                type: err.message,
+                content: err,
+                duration: 5,
+                className: 'custom-postion-error',
+            });
         }
     };
     return (
@@ -74,6 +93,7 @@ const MaterialSettings = ({ userId }) => {
                 justify="center"
                 align="middle"
             >
+                <div>{lensesMaterialHolder}</div>
                 <Col xs={24} className={classes["sub-container"]}>
                     <Row justify="center" align="middle">
                         <Col xs={24} className={classes["material-label"]}>

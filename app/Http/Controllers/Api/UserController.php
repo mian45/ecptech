@@ -119,6 +119,6 @@ class UserController extends Controller
             return $this->sendResponse($client_card, 'Card get successfully');
         }
 
-        return $this->sendError('Discount not found');
+        return $this->sendError('Card not found');
     }
 }

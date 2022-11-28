@@ -3,8 +3,10 @@ import Chart from "react-apexcharts";
 import classes from "./styles.module.scss";
 import Axios from "../../../Http";
 import { connect } from "react-redux";
+import { message } from "antd";
 
 const TeamPerformanceChart = (userId) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [points, setPoints] = useState({
         current: [],
         prev: [],
@@ -28,6 +30,12 @@ const TeamPerformanceChart = (userId) => {
                 manageValues(res?.data?.data);
             } catch (err) {
                 console.log("Error while getting performance stats", err);
+                messageApi.open({
+                    type: "error",
+                    content: err.response.data.message,
+                    duration: 5,
+                    className: 'custom-postion-error',
+                });
             }
         };
         getStats();
@@ -49,6 +57,7 @@ const TeamPerformanceChart = (userId) => {
     };
     return (
         <div className={`${classes["container"]} performance-chart`}>
+            <div>{contextHolder}</div>
             <div className={classes["label"]}>Team Performance</div>
             <Chart
                 options={options}
@@ -73,9 +82,8 @@ export default connect(mapStateToProps)(TeamPerformanceChart);
 const StatusSlot = ({ title, isGray }) => {
     return (
         <div
-            className={`${classes["status-container"]} ${
-                isGray ? classes["status-container-margin"] : ""
-            }`}
+            className={`${classes["status-container"]} ${isGray ? classes["status-container-margin"] : ""
+                }`}
         >
             <div className={isGray ? classes["icon-grey"] : classes["icon"]} />
             <div className={isGray ? classes["title-grey"] : classes["title"]}>

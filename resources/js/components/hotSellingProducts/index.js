@@ -22,6 +22,12 @@ const HotSellingProducts = ({ userId }) => {
                 productsList.sort((a, b) => a.no - b.no);
                 setProducts(productsList);
             } catch (err) {
+                messageApi.open({
+                    type: "error",
+                    content: err.response.data.message,
+                    duration: 5,
+                    className: 'custom-postion-error',
+                });
                 console.log("Error while fetch products", err);
             }
         };
