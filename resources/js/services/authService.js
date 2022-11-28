@@ -15,14 +15,8 @@ export function login({ email, password, remember }) {
                     if (res?.data?.data?.error !== "Unauthorised") {
                         console.log(res?.data?.data?.error !== "Unauthorised");
                         localStorage.setItem("remember", remember);
-                        const temp = JSON.parse(localStorage.getItem("temp"));
-                        if (temp === true) {
-                            dispatch(action.authLogin(res.data));
-                            localStorage.setItem("temp", false);
-                        } else {
-                            dispatch(action.authLogin(res.data));
-                            localStorage.setItem("temp", false);
-                        }
+                        dispatch(action.authLogin(res.data));
+                        localStorage.setItem("temp", false);
                         return resolve();
                     }
                     return reject(res?.data?.data?.error);

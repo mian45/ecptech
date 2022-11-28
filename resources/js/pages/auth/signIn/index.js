@@ -12,13 +12,11 @@ const SignIn = ({ isAuthenticated, userRole, tempSet, templogout }) => {
     const history = useHistory();
     const [darkTheme, setDarkTheme] = useState(false);
     useEffect(() => {
-        if (templogout !== "true") {
-            if (isAuthenticated) {
-                if (userRole === "staff") {
-                    history.push(INVOICES_ROUTE);
-                } else {
-                    history.push(HOME_ROUTE);
-                }
+        if (isAuthenticated && templogout !== "true") {
+            if (userRole === "staff") {
+                history.push(INVOICES_ROUTE);
+            } else {
+                history.push(HOME_ROUTE);
             }
         }
     }, []);
