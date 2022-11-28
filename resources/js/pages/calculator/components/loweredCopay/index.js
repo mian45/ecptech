@@ -51,17 +51,17 @@ const LoweredCopay = ({
                 !values?.isCopayStandardProgressives ||
                 !values?.isCopayCustomProgressives
             ) {
-                const isCopayPolycarbonate = Yup.mixed().required(
+                const isCopayChecked = Yup.mixed().required(
                     "Minimum 1 sub option is required"
                 );
                 setCalValidations({
                     ...calValidations,
-                    isCopayPolycarbonate,
+                    isCopayChecked,
                 });
             }
         } else if (e?.target?.value === "No") {
             const validations = { ...calValidations };
-            delete validations.isCopayPolycarbonate;
+            delete validations.isCopayChecked;
             delete validations.isCopaypremiumProgressiveAmount;
             delete validations.isCopayAntiReflectiveAmount;
             delete validations.isCopayHighIndexAmount;
@@ -81,7 +81,7 @@ const LoweredCopay = ({
     const handleCopoayCheckChange = async (value, key) => {
         await setFieldValue(key, value);
         if (value === true) {
-            delete calValidations.isCopayPolycarbonate;
+            await setFieldValue("isCopayChecked", true);
             if (key === "isCopayPolycarbonate") {
                 const isCopayPolycarbonateAmount =
                     Yup.string().required("Option is required");
@@ -133,6 +133,7 @@ const LoweredCopay = ({
                 });
             }
         } else if (value === false) {
+            setFieldValue("isCopayChecked", "");
             if (key === "isCopayPolycarbonate") {
                 const validations = { ...calValidations };
                 delete validations.isCopayPolycarbonateAmount;
@@ -384,7 +385,7 @@ const LoweredCopay = ({
                         }
                     />
                 </div>
-                <FormikError name={"isCopayPolycarbonate"} />
+                <FormikError name={"isCopayChecked"} />
                 {values?.isCopayPolycarbonate && (
                     <SpecialCopaySlot
                         title={"polycarbonate"}
