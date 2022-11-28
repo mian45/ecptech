@@ -17,20 +17,22 @@ const CardPayment = () => {
     };
     const [cardData, setCardData] = useState({});
     useEffect(() => {
-        getPaymentMethod();
-    }, [showAddCard]);
-    const getPaymentMethod = async () => {
+        getPaymentMethod(false);
+    }, []);
+    const getPaymentMethod = async (isShow) => {
         try {
             const res = await Axios.get(
                 `${process.env.MIX_REACT_APP_URL}/api/get-card`
             );
             setCardData(res.data.data);
-            messageApi.open({
-                type: "success",
-                content: res.data.message,
-                duration: 5,
-                className: 'custom-postion',
-            });
+            if (isShow) {
+                messageApi.open({
+                    type: "success",
+                    content: res.data.message,
+                    duration: 5,
+                    className: 'custom-postion',
+                });
+            }
         } catch (err) {
             messageApi.open({
                 type: "error",
@@ -44,7 +46,7 @@ const CardPayment = () => {
         <Row className={classes["container"]}>
             <div>{contextHolder}</div>
             {showAddCard && (
-                <AddCardModal show={showAddCard} onClose={handleCloseModal} />
+                <AddCardModal show={showAddCard} onClose={handleCloseModal} getPaymentMethod={getPaymentMethod} />
             )}
             <Col offset={0} className={classes["label"]}>
                 Payment Details

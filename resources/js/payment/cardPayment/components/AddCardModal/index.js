@@ -14,7 +14,7 @@ import {
     message,
 } from "antd";
 import CustomCheckbox from "../../../../components/customCheckbox";
-const AddCardModal = ({ show, onClose }) => {
+const AddCardModal = ({ show, onClose, getPaymentMethod }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [cardNumber, setCardNumber] = useState("");
     const [validNumber, setValidNumber] = useState(false);
@@ -101,6 +101,7 @@ const AddCardModal = ({ show, onClose }) => {
                 duration: 5,
                 className: 'custom-postion',
             });
+            getPaymentMethod(true);
             onClose();
         } catch (err) {
             console.log("Error while delete Staff", err);
