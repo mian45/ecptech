@@ -180,11 +180,10 @@ const LoweredCopay = ({
         }
     };
     useEffect(() => {
-        const resetCopay = async () => {
-            const validations = { ...calValidations };
+        const resetCopay = async (prev) => {
             if (values?.lensMaterial !== "Polycarbonate") {
-                delete validations.isCopayPolycarbonateAmount;
-                delete validations.copayPolycarbonateAmount;
+                delete prev.isCopayPolycarbonateAmount;
+                delete prev.copayPolycarbonateAmount;
                 await setFieldValue("isCopayPolycarbonate", null);
                 await setFieldValue("isCopayPolycarbonateAmount", "");
                 await setFieldValue("copayPolycarbonateAmount", "");
@@ -194,8 +193,8 @@ const LoweredCopay = ({
                 values?.isPhotochromics === "No" ||
                 !values?.photochromicsType
             ) {
-                delete validations.isCopayPhotochromicAmount;
-                delete validations.copayPhotochromicAmount;
+                delete prev.isCopayPhotochromicAmount;
+                delete prev.copayPhotochromicAmount;
                 await setFieldValue("isCopayPhotochromic", null);
                 await setFieldValue("isCopayPhotochromicAmount", "");
                 await setFieldValue("copayPhotochromicAmount", "");
@@ -206,8 +205,8 @@ const LoweredCopay = ({
                     values?.lensMaterial?.includes("Hi Index")
                 )
             ) {
-                delete validations.isCopayHighIndexAmount;
-                delete validations.copayHighIndexAmount;
+                delete prev.isCopayHighIndexAmount;
+                delete prev.copayHighIndexAmount;
                 await setFieldValue("isCopayHighIndex", null);
                 await setFieldValue("isCopayHighIndexAmount", "");
                 await setFieldValue("copayHighIndexAmount", "");
@@ -217,38 +216,38 @@ const LoweredCopay = ({
                 values?.isAntireflective === "No" ||
                 !values?.antireflectiveType
             ) {
-                delete validations.isCopayAntiReflectiveAmount;
-                delete validations.copayAntiReflectiveAmount;
+                delete prev.isCopayAntiReflectiveAmount;
+                delete prev.copayAntiReflectiveAmount;
                 await setFieldValue("isCopayAntiReflective", null);
                 await setFieldValue("isCopayAntiReflectiveAmount", "");
                 await setFieldValue("copayAntiReflectiveAmount", "");
             }
             if (values?.lensType !== "PAL" && values?.lensTypeValue) {
-                delete validations.isCopaypremiumProgressiveAmount;
-                delete validations.copaypremiumProgressiveAmount;
+                delete prev.isCopaypremiumProgressiveAmount;
+                delete prev.copaypremiumProgressiveAmount;
                 await setFieldValue("isCopayPremiumProgressives", null);
                 await setFieldValue("isCopaypremiumProgressiveAmount", "");
                 await setFieldValue("copaypremiumProgressiveAmount", "");
             }
             if (values?.lensType !== "PAL" && values?.lensTypeValue) {
-                delete validations.isCopayStandardProgressiveAmount;
-                delete validations.copayStandardProgressiveAmount;
+                delete prev.isCopayStandardProgressiveAmount;
+                delete prev.copayStandardProgressiveAmount;
                 await setFieldValue("isCopayStandardProgressives", null);
                 await setFieldValue("isCopayStandardProgressiveAmount", "");
                 await setFieldValue("copayStandardProgressiveAmount", "");
             }
             if (values?.lensType !== "PAL" && values?.lensTypeValue) {
-                delete validations.isCopayCustomProgressiveAmount;
-                delete validations.copayCustomProgressiveAmount;
+                delete prev.isCopayCustomProgressiveAmount;
+                delete prev.copayCustomProgressiveAmount;
                 await setFieldValue("isCopayCustomProgressives", null);
                 await setFieldValue("isCopayCustomProgressiveAmount", "");
                 await setFieldValue("copayCustomProgressiveAmount", "");
             }
-            setCalValidations({
-                ...validations,
-            });
         };
-        resetCopay();
+        setCalValidations((prev) => {
+            resetCopay(prev);
+            return { ...prev };
+        });
     }, [values]);
     const copayProperties = () => {
         return (
