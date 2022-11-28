@@ -34,17 +34,17 @@ const ShippingSettings = ({ userId }) => {
             } catch (err) {
                 if (err.response.data.statusCode === 404) {
                     messageApi.open({
-                        type: "success",
+                        type: "error",
                         content: err.message,
                         duration: 5,
-                        className: 'custom-postion',
+                        className: 'custom-postion-error',
                     });
                 } else {
                     messageApi.open({
                         type: "error",
                         content: err.message,
                         duration: 5,
-                        className: 'custom-postion',
+                        className: 'custom-postion-error',
                     });
                 }
                 setShippingLoading(false);
@@ -80,7 +80,7 @@ const ShippingSettings = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: 'custom-postion-error',
             });
         }
     };
@@ -124,7 +124,7 @@ const ShippingSettings = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: 'custom-postion-error',
             });
         }
     };
@@ -230,17 +230,16 @@ const ShippingSettings = ({ userId }) => {
                                                     onClick={
                                                         handleShippingSubmit
                                                     }
-                                                    className={`save-button ${
-                                                        !shippingName ||
+                                                    className={`save-button ${!shippingName ||
                                                         !shippingAmount
-                                                            ? "disable"
-                                                            : ""
-                                                    } `}
+                                                        ? "disable"
+                                                        : ""
+                                                        } `}
                                                 >
                                                     {editState ? (
                                                         "Update"
                                                     ) : shippingButtonLoader ==
-                                                      true ? (
+                                                        true ? (
                                                         <span>
                                                             <p>Add</p>
                                                             <CustomLoader
@@ -266,55 +265,55 @@ const ShippingSettings = ({ userId }) => {
                                         <table>
                                             {Object.keys(shipping).length >
                                                 0 && (
-                                                <tr className="discount-output_head">
-                                                    <th>Shipping Label</th>
-                                                    <th>Amount</th>
-                                                    <th></th>
-                                                </tr>
-                                            )}
+                                                    <tr className="discount-output_head">
+                                                        <th>Shipping Label</th>
+                                                        <th>Amount</th>
+                                                        <th></th>
+                                                    </tr>
+                                                )}
                                             {Object.keys(shipping).length >
                                                 0 && (
-                                                <tr className="discount-output_body">
-                                                    <td>{shipping.name}</td>
-                                                    <td>${shipping.value}</td>
-                                                    <td className="shipping-custom-col-3">
-                                                        <img
-                                                            style={{
-                                                                width: "18px",
-                                                                height: "18px",
-                                                                marginRight:
-                                                                    "30px",
-                                                                cursor: "pointer",
-                                                            }}
-                                                            src={edit}
-                                                            onClick={() => {
-                                                                setEditState(
-                                                                    true
-                                                                );
-                                                                setShippingLoading(
-                                                                    true
-                                                                );
-                                                                handleUpdateShipping(
-                                                                    shipping
-                                                                );
-                                                            }}
-                                                        />
-                                                        <img
-                                                            style={{
-                                                                width: "16px",
-                                                                height: "16px",
-                                                                cursor: "pointer",
-                                                            }}
-                                                            src={cross}
-                                                            onClick={() => {
-                                                                handleDeleteShipping(
-                                                                    shipping.id
-                                                                );
-                                                            }}
-                                                        />
-                                                    </td>
-                                                </tr>
-                                            )}
+                                                    <tr className="discount-output_body">
+                                                        <td>{shipping.name}</td>
+                                                        <td>${shipping.value}</td>
+                                                        <td className="shipping-custom-col-3">
+                                                            <img
+                                                                style={{
+                                                                    width: "18px",
+                                                                    height: "18px",
+                                                                    marginRight:
+                                                                        "30px",
+                                                                    cursor: "pointer",
+                                                                }}
+                                                                src={edit}
+                                                                onClick={() => {
+                                                                    setEditState(
+                                                                        true
+                                                                    );
+                                                                    setShippingLoading(
+                                                                        true
+                                                                    );
+                                                                    handleUpdateShipping(
+                                                                        shipping
+                                                                    );
+                                                                }}
+                                                            />
+                                                            <img
+                                                                style={{
+                                                                    width: "16px",
+                                                                    height: "16px",
+                                                                    cursor: "pointer",
+                                                                }}
+                                                                src={cross}
+                                                                onClick={() => {
+                                                                    handleDeleteShipping(
+                                                                        shipping.id
+                                                                    );
+                                                                }}
+                                                            />
+                                                        </td>
+                                                    </tr>
+                                                )}
                                         </table>
                                     </Row>
                                 </Col>

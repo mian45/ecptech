@@ -86,7 +86,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     };
@@ -122,7 +122,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     };
@@ -167,7 +167,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     };
@@ -211,7 +211,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     };
@@ -245,7 +245,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     };
@@ -270,7 +270,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
                 console.log(error);
             });
@@ -311,7 +311,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
                 console.log(error);
                 setDiscountButtonLoader(false);
@@ -384,7 +384,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     };
@@ -415,7 +415,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     };
@@ -481,7 +481,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
                 console.log(error);
             });
@@ -514,7 +514,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
                 console.log(error);
             });
@@ -747,19 +747,18 @@ const DiscountTaxes = (props) => {
                                                                     onClick={
                                                                         handleSubmit
                                                                     }
-                                                                    className={`save-button ${
-                                                                        !discountName ||
+                                                                    className={`save-button ${!discountName ||
                                                                         !discountTax ||
                                                                         discountButtonLoader
-                                                                            ? "disable"
-                                                                            : ""
-                                                                    } `}
+                                                                        ? "disable"
+                                                                        : ""
+                                                                        } `}
                                                                     type="submit"
                                                                 >
                                                                     {discountId ==
-                                                                    null ? (
+                                                                        null ? (
                                                                         discountButtonLoader ==
-                                                                        true ? (
+                                                                            true ? (
                                                                             <span>
                                                                                 <p>
                                                                                     Add
@@ -774,7 +773,7 @@ const DiscountTaxes = (props) => {
                                                                             "Add"
                                                                         )
                                                                     ) : discountButtonLoader ==
-                                                                      true ? (
+                                                                        true ? (
                                                                         <span>
                                                                             <p>
                                                                                 Update
@@ -838,7 +837,7 @@ const DiscountTaxes = (props) => {
                                                                                         dis.value
                                                                                     }{" "}
                                                                                     {dis.type ==
-                                                                                    "percentage"
+                                                                                        "percentage"
                                                                                         ? "%"
                                                                                         : "$"}
                                                                                 </td>
@@ -880,7 +879,7 @@ const DiscountTaxes = (props) => {
                                                                                         className="switch-margin"
                                                                                         checked={
                                                                                             dis?.status ==
-                                                                                            "active"
+                                                                                                "active"
                                                                                                 ? true
                                                                                                 : false
                                                                                         }
@@ -993,11 +992,11 @@ const DiscountTaxes = (props) => {
                                                                             e
                                                                                 .target
                                                                                 .value <=
-                                                                                100 &&
+                                                                            100 &&
                                                                             e
                                                                                 .target
                                                                                 .value >=
-                                                                                0
+                                                                            0
                                                                         ) {
                                                                             setTaxValue(
                                                                                 e
@@ -1053,27 +1052,26 @@ const DiscountTaxes = (props) => {
                                                                     e
                                                                 ) => {
                                                                     idState !==
-                                                                    null
+                                                                        null
                                                                         ? handlUpdateTax(
-                                                                              e
-                                                                          )
+                                                                            e
+                                                                        )
                                                                         : handleTaxSubmit(
-                                                                              e
-                                                                          );
+                                                                            e
+                                                                        );
                                                                 }}
-                                                                className={`save-button ${
-                                                                    !taxName ||
+                                                                className={`save-button ${!taxName ||
                                                                     !taxValue ||
                                                                     taxButtonLoader
-                                                                        ? "disable"
-                                                                        : ""
-                                                                } `}
+                                                                    ? "disable"
+                                                                    : ""
+                                                                    } `}
                                                                 type="submit"
                                                             >
                                                                 {idState ==
-                                                                null ? (
+                                                                    null ? (
                                                                     taxButtonLoader ==
-                                                                    true ? (
+                                                                        true ? (
                                                                         <span>
                                                                             <p>
                                                                                 Add
@@ -1088,7 +1086,7 @@ const DiscountTaxes = (props) => {
                                                                         "Add"
                                                                     )
                                                                 ) : taxButtonLoader ==
-                                                                  true ? (
+                                                                    true ? (
                                                                     <span>
                                                                         <p>
                                                                             Update
@@ -1189,7 +1187,7 @@ const DiscountTaxes = (props) => {
                                                                                     className="switch-margin"
                                                                                     checked={
                                                                                         obj?.status ===
-                                                                                        "active"
+                                                                                            "active"
                                                                                             ? true
                                                                                             : false
                                                                                     }

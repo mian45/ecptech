@@ -154,7 +154,7 @@ const EmailSetting = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     };
@@ -234,7 +234,7 @@ const EmailSetting = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     };
@@ -268,7 +268,7 @@ const EmailSetting = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     };
@@ -299,7 +299,7 @@ const EmailSetting = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
                 setLoading(true);
                 console.log(error);
@@ -431,7 +431,7 @@ const EmailSetting = (props) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: 'custom-postion-error',
             });
             console.log("error");
         }
@@ -877,7 +877,7 @@ const EmailSetting = (props) => {
                                                             <img
                                                                 src={
                                                                     obj.type ==
-                                                                    "reminder"
+                                                                        "reminder"
                                                                         ? iconRemainder
                                                                         : emailButton
                                                                 }
@@ -900,17 +900,17 @@ const EmailSetting = (props) => {
                                                                         className="email-setting-content-section-subsection-heading email-reminder-tag"
                                                                         style={
                                                                             obj.type ==
-                                                                            "reminder"
+                                                                                "reminder"
                                                                                 ? {
-                                                                                      color: "#61C77B",
-                                                                                  }
+                                                                                    color: "#61C77B",
+                                                                                }
                                                                                 : {
-                                                                                      color: "#6FA5CB",
-                                                                                  }
+                                                                                    color: "#6FA5CB",
+                                                                                }
                                                                         }
                                                                     >
                                                                         {obj.type ==
-                                                                        "reminder"
+                                                                            "reminder"
                                                                             ? obj.type
                                                                             : "Order Success"}
                                                                     </p>
@@ -926,7 +926,7 @@ const EmailSetting = (props) => {
                                                                         }}
                                                                     >
                                                                         {obj.type ==
-                                                                        "reminder"
+                                                                            "reminder"
                                                                             ? `${obj.send_after_day} days after invoice`
                                                                             : "Payment Completed"}
                                                                     </p>
@@ -953,7 +953,7 @@ const EmailSetting = (props) => {
                                                         </Col>
                                                         <Col md={6}>
                                                             {obj?.is_active ===
-                                                            1 ? (
+                                                                1 ? (
                                                                 <img
                                                                     className="bell-icon"
                                                                     src={

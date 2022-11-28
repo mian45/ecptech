@@ -38,7 +38,7 @@ const AddStaffMember = ({ userId }) => {
                     type: "error",
                     content: err.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             }
         };
@@ -76,7 +76,7 @@ const AddStaffMember = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: 'custom-postion-error',
             });
         }
     };
@@ -109,7 +109,7 @@ const AddStaffMember = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: 'custom-postion-error',
             });
         }
     };
@@ -146,7 +146,7 @@ const AddStaffMember = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: 'custom-postion-error',
             });
         }
     };
@@ -182,9 +182,8 @@ const AddStaffMember = ({ userId }) => {
                 </Col>
                 <Col xs={5}>
                     <Row
-                        className={`${
-                            classes["tick-wrapper"]
-                        } ${getBackgroundButton()}`}
+                        className={`${classes["tick-wrapper"]
+                            } ${getBackgroundButton()}`}
                         onClick={handleSubmit}
                         onMouseEnter={() => setIsHover(true)}
                         onMouseLeave={() => setIsHover(false)}

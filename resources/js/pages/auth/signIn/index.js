@@ -8,11 +8,11 @@ import classes from "./styles.module.scss";
 import logo from "../../../../images/logo.png";
 import { Col, Row } from "antd";
 
-const SignIn = ({ isAuthenticated, userRole }) => {
+const SignIn = ({ isAuthenticated, userRole, tempSet, templogout }) => {
     const history = useHistory();
     const [darkTheme, setDarkTheme] = useState(false);
     useEffect(() => {
-        if (isAuthenticated) {
+        if (isAuthenticated && templogout !== "true") {
             if (userRole === "staff") {
                 history.push(INVOICES_ROUTE);
             } else {
@@ -55,7 +55,12 @@ const SignIn = ({ isAuthenticated, userRole }) => {
                     xl={12}
                 >
                     <Row justify="space-around" align="middle">
-                        <SignInForm />
+                        <SignInForm
+                            tempSet={(e) => {
+                                tempSet(e);
+                            }}
+                            templogout={templogout}
+                        />
                     </Row>
                 </Col>
                 <Col

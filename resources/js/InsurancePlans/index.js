@@ -34,7 +34,7 @@ const InsurancePlans = ({ userId }) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     }, []);
@@ -49,7 +49,7 @@ const InsurancePlans = ({ userId }) => {
         };
         const response = await axios.post(
             process.env.MIX_REACT_APP_URL +
-                "/api/update-user-vision-plan-permission",
+            "/api/update-user-vision-plan-permission",
             toggleState
         );
         messageApi.open({
@@ -112,10 +112,10 @@ const InsurancePlans = ({ userId }) => {
                                                                     {...label}
                                                                     defaultChecked={
                                                                         item?.status ===
-                                                                        0
+                                                                            0
                                                                             ? false
                                                                             : true ||
-                                                                              isChecked
+                                                                            isChecked
                                                                     }
                                                                     onChange={(
                                                                         toggleSwitch

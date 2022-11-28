@@ -54,7 +54,7 @@ const EyePrescription = ({ userId }) => {
                     type: "error",
                     content: err.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             }
         };
@@ -245,7 +245,7 @@ const EyePrescription = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: 'custom-postion-error',
             });
         }
     };
@@ -343,9 +343,8 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
     return (
         <Row className={classes["slot-container"]}>
             <Col xs={24} className={classes["slot-header"]}>
-                <div className={classes["header-title"]}>{`Show ${
-                    data?.name || ""
-                } If`}</div>
+                <div className={classes["header-title"]}>{`Show ${data?.name || ""
+                    } If`}</div>
             </Col>
             <Col xs={24} className={classes["slot-body"]}>
                 <Row justify="space-between">

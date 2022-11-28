@@ -33,7 +33,7 @@ const LensesType = ({ userId }) => {
                     type: "error",
                     content: err.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             }
         };
@@ -62,7 +62,7 @@ const LensesType = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: 'custom-postion-error',
             });
         }
     };
@@ -440,9 +440,8 @@ export const LensLabelSlot = ({ title, onClick, active }) => {
     const [isHover, setIsHover] = useState(false);
     return (
         <div
-            className={`${classes["lenses-label-slot-container"]} ${
-                (active || isHover) && classes["slot-color"]
-            }`}
+            className={`${classes["lenses-label-slot-container"]} ${(active || isHover) && classes["slot-color"]
+                }`}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
             onClick={onClick}

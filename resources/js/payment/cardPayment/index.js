@@ -29,14 +29,14 @@ const CardPayment = () => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-               className: 'custom-postion',
+                className: 'custom-postion',
             });
         } catch (err) {
             messageApi.open({
                 type: "error",
                 content: err.message,
                 duration: 5,
-               className: 'custom-postion',
+                className: 'custom-postion-error',
             });
         }
     };

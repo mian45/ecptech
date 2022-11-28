@@ -523,7 +523,7 @@ input:-webkit-autofill:active {
 }
 
 .ant-message-notice-content{
-    background-color: #00940A !important;
+    background-color: #00940A !important ;
     color: white;
     width: 618px;
     height: 37px;
@@ -535,4 +535,29 @@ input:-webkit-autofill:active {
 
 .custom-postion {
     margin-top: 13.5vh;
+    .ant-message-notice-content{
+        background-color: #00940A !important ;
+        color: white;
+        width: 618px;
+        height: 37px;
+    }
+    
+}
+
+
+.custom-postion-error {
+    margin-top: 13.5vh;
+    .ant-message-notice-content{
+        background-color: red !important ;
+        color: white;
+        width: 618px;
+        height: 37px;
+    }
+    
+}
+.d-block{
+    display: block;
+}
+.d-none{
+    display: none;
 }

@@ -34,10 +34,10 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
             } catch (err) {
                 setInvoiceStats(DEFAULT_INVOICES_DATA);
                 messageApi.open({
-                    type: err.message,
-                    content: err,
+                    type: 'error',
+                    content: err.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             }
         };
@@ -62,10 +62,10 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
             } catch (err) {
                 console.log("Error while getting stats");
                 messageApi.open({
-                    type: "success",
+                    type: "error",
                     content: err.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             }
         };

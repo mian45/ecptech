@@ -49,7 +49,7 @@ const ProfitStatsChart = ({ userId, dates }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: 'custom-postion-error',
             });
         }
     };

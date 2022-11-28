@@ -25,7 +25,7 @@ function EditInsurance({ userId }) {
 
         Axios.get(
             process.env.MIX_REACT_APP_URL +
-                `/api/get-client-plan-questions?visionPlanId=${params?.id}`
+            `/api/get-client-plan-questions?visionPlanId=${params?.id}`
         )
             .then((res) => {
                 setSelectedRow(res.data?.data);
@@ -38,7 +38,7 @@ function EditInsurance({ userId }) {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                   className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     }, []);
@@ -121,7 +121,7 @@ function EditInsurance({ userId }) {
         };
         const res = await Axios.post(
             process.env.MIX_REACT_APP_URL +
-                `/api/update-user-plan-question-permission`,
+            `/api/update-user-plan-question-permission`,
             toggle
         )
             .then((response) => {
@@ -130,17 +130,17 @@ function EditInsurance({ userId }) {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                   className: 'custom-postion',
+                    className: 'custom-postion',
                 });
                 setUpdateInsurancePlan([]);
                 setButtonLoader(false);
             })
             .catch((error) => {
                 messageApi.open({
-                    type: "success",
+                    type: "error",
                     content: error.message,
                     duration: 5,
-                   className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             });
     };
@@ -194,14 +194,14 @@ function EditInsurance({ userId }) {
                                             <div
                                                 className={
                                                     classes[
-                                                        "content-header-text"
+                                                    "content-header-text"
                                                     ]
                                                 }
                                             >
                                                 <p
                                                     className={
                                                         classes[
-                                                            "header-text-left"
+                                                        "header-text-left"
                                                         ]
                                                     }
                                                 >
@@ -212,14 +212,14 @@ function EditInsurance({ userId }) {
                                             <div
                                                 className={
                                                     classes[
-                                                        "content-header-text"
+                                                    "content-header-text"
                                                     ]
                                                 }
                                             >
                                                 <p
                                                     className={
                                                         classes[
-                                                            "header-text-right"
+                                                        "header-text-right"
                                                         ]
                                                     }
                                                 >
@@ -233,7 +233,7 @@ function EditInsurance({ userId }) {
                                                     <div
                                                         className={
                                                             classes[
-                                                                "content-body-slot"
+                                                            "content-body-slot"
                                                             ]
                                                         }
                                                         key={item?.id}
@@ -241,12 +241,12 @@ function EditInsurance({ userId }) {
                                                         <CustomCheckbox
                                                             containerClass={
                                                                 classes[
-                                                                    "checkbox-container"
+                                                                "checkbox-container"
                                                                 ]
                                                             }
                                                             labelClass={
                                                                 classes[
-                                                                    "checkbox-label"
+                                                                "checkbox-label"
                                                                 ]
                                                             }
                                                             label={item?.title}
@@ -267,13 +267,13 @@ function EditInsurance({ userId }) {
                                                         <Switch
                                                             disabled={
                                                                 item?.status ==
-                                                                0
+                                                                    0
                                                                     ? true
                                                                     : false
                                                             }
                                                             defaultChecked={
                                                                 item?.optional ==
-                                                                0
+                                                                    0
                                                                     ? false
                                                                     : true
                                                             }

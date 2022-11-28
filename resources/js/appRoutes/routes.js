@@ -1,16 +1,18 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { Route, Switch } from "react-router-dom";
 import CustomLoader from "../components/customLoader";
 import PrivateRoute from "./privateRoute/privateRoute";
 import { allRoutes } from "./routesMetaData";
 
-const Routes = () => {
-   
+const Routes = ({ tempSet, templogout }) => {
     return (
-        <Suspense fallback={
-        <>
-         <CustomLoader buttonBool={false} />
-        </>}>
+        <Suspense
+            fallback={
+                <>
+                    <CustomLoader buttonBool={false} />
+                </>
+            }
+        >
             <Switch>
                 {allRoutes.map((currentRoute, index) => {
                     return currentRoute.isPrivate ? (
@@ -24,7 +26,12 @@ const Routes = () => {
                         <Route
                             key={index}
                             path={currentRoute.path}
-                            component={currentRoute.component}
+                            component={() => {
+                                return currentRoute.component(
+                                    tempSet,
+                                    templogout
+                                );
+                            }}
                             exact={currentRoute.exact || false}
                         />
                     );

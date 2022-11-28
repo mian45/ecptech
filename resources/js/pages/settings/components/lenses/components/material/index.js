@@ -24,7 +24,7 @@ const MaterialSettings = ({ userId }) => {
                     type: "error",
                     content: err.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: 'custom-postion-error',
                 });
             }
         };
@@ -74,7 +74,7 @@ const MaterialSettings = ({ userId }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-               className: 'custom-postion',
+                className: 'custom-postion',
             });
         } catch (err) {
             console.log("error while update lenses");
@@ -82,7 +82,7 @@ const MaterialSettings = ({ userId }) => {
                 type: err.message,
                 content: err,
                 duration: 5,
-               className: 'custom-postion',
+                className: 'custom-postion-error',
             });
         }
     };
