@@ -134,12 +134,12 @@ const LoweredCopay = ({
             }
         } else if (value === false) {
             if (
-                !values?.isCopayPolycarbonate ||
-                !values?.isCopayPhotochromic ||
-                !values?.isCopayHighIndex ||
-                !values?.isCopayAntiReflective ||
-                !values?.isCopayPremiumProgressives ||
-                !values?.isCopayStandardProgressives ||
+                !values?.isCopayPolycarbonate &&
+                !values?.isCopayPhotochromic &&
+                !values?.isCopayHighIndex &&
+                !values?.isCopayAntiReflective &&
+                !values?.isCopayPremiumProgressives &&
+                !values?.isCopayStandardProgressives &&
                 !values?.isCopayCustomProgressives
             ) {
                 setFieldValue("isCopayChecked", "");
