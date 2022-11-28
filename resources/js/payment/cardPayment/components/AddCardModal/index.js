@@ -2,9 +2,20 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
-import { Button, Checkbox, Form, Input, DatePicker, Space, Row, Col } from "antd";
+import {
+    Button,
+    Checkbox,
+    Form,
+    Input,
+    DatePicker,
+    Space,
+    Row,
+    Col,
+    message,
+} from "antd";
 import CustomCheckbox from "../../../../components/customCheckbox";
-const AddCardModal = ({ show, onClose }) => {
+const AddCardModal = ({ show, onClose, getPaymentMethod }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [cardNumber, setCardNumber] = useState("");
     const [validNumber, setValidNumber] = useState(false);
     const [name, setName] = useState("");
@@ -84,15 +95,29 @@ const AddCardModal = ({ show, onClose }) => {
                 `${process.env.MIX_REACT_APP_URL}/api/add-card`,
                 data
             );
+            messageApi.open({
+                type: "success",
+                content: res.data.message,
+                duration: 5,
+                className: 'custom-postion',
+            });
+            getPaymentMethod(true);
             onClose();
         } catch (err) {
             console.log("Error while delete Staff", err);
+            messageApi.open({
+                type: "error",
+                content: err.response.data.message,
+                duration: 5,
+                className: 'custom-postion-error',
+            });
         }
     };
     return (
         <>
             {show ? (
                 <Form className={classes["backdrop"]} onClick={onClose}>
+                    <div>{contextHolder}</div>
                     <Row
                         className={classes["container"]}
                         onClick={(e) => e.stopPropagation()}
@@ -161,11 +186,20 @@ const AddCardModal = ({ show, onClose }) => {
                             ""
                         )}
                         <Row className={classes["inline-input"]}>
-                            <Col xs={24} sm={12} md={11} lg={11} className={classes["inline-left-input"]}>
+                            <Col
+                                xs={24}
+                                sm={12}
+                                md={11}
+                                lg={11}
+                                className={classes["inline-left-input"]}
+                            >
                                 <Col className={classes["input-label"]}>
                                     Card Expiry
                                 </Col>
-                                <Space className={classes["space-styling"]} direction="vertical">
+                                <Space
+                                    className={classes["space-styling"]}
+                                    direction="vertical"
+                                >
                                     <DatePicker
                                         picker="month"
                                         className={classes["input"]}
@@ -190,7 +224,13 @@ const AddCardModal = ({ show, onClose }) => {
                                     ""
                                 )}
                             </Col>
-                            <Col xs={24} sm={12} md={11} lg={11} className={classes["inline-right-input"]}>
+                            <Col
+                                xs={24}
+                                sm={12}
+                                md={11}
+                                lg={11}
+                                className={classes["inline-right-input"]}
+                            >
                                 <Col className={classes["input-label"]}>
                                     CVV
                                 </Col>
@@ -206,7 +246,9 @@ const AddCardModal = ({ show, onClose }) => {
                                                     "^[0-9]*$"
                                                 );
 
-                                                if (regix.test(e.target.value)) {
+                                                if (
+                                                    regix.test(e.target.value)
+                                                ) {
                                                     setCvc(e.target.value);
                                                 }
                                             } else if (e.target.value == "") {

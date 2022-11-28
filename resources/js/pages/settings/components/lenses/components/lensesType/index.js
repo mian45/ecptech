@@ -7,8 +7,11 @@ import editIcon from "../../../../../../../images/edit.png";
 import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-import { Row, Col } from "antd";
+import { Row, Col, message } from "antd";
 const LensesType = ({ userId }) => {
+    const [messageApi, contextHolder] = message.useMessage();
+    const [lensesMaterialAddApi, lensesMaterialAddHolder] =
+        message.useMessage();
     const [isBrands, setIsBrands] = useState(false);
     const [lensesList, setLensesList] = useState([]);
     const [selectedLensType, setSelectedLensType] = useState("");
@@ -26,6 +29,12 @@ const LensesType = ({ userId }) => {
                 setLensesList(res?.data?.data || []);
             } catch (err) {
                 console.log("error while get lenses");
+                messageApi.open({
+                    type: "error",
+                    content: err.response.data.message,
+                    duration: 5,
+                    className: 'custom-postion-error',
+                });
             }
         };
         getLenses();
@@ -37,12 +46,24 @@ const LensesType = ({ userId }) => {
                 user_id: userId,
                 data: lensesList,
             };
-            await Axios.post(
+            const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/update-lense-setting`,
                 payload
             );
+            messageApi.open({
+                type: "success",
+                content: res.data.message,
+                duration: 5,
+                className: 'custom-postion',
+            });
         } catch (err) {
             console.log("error while update lenses");
+            messageApi.open({
+                type: "error",
+                content: err.response.data.message,
+                duration: 5,
+                className: 'custom-postion-error',
+            });
         }
     };
 
@@ -57,6 +78,7 @@ const LensesType = ({ userId }) => {
     return (
         <>
             <Row className={classes["container"]}>
+                <div>{contextHolder}</div>
                 <Col xs={24} md={9} className={classes["left-container"]}>
                     {isBrands ? (
                         <LensesTypeBrandsList
@@ -418,9 +440,8 @@ export const LensLabelSlot = ({ title, onClick, active }) => {
     const [isHover, setIsHover] = useState(false);
     return (
         <div
-            className={`${classes["lenses-label-slot-container"]} ${
-                (active || isHover) && classes["slot-color"]
-            }`}
+            className={`${classes["lenses-label-slot-container"]} ${(active || isHover) && classes["slot-color"]
+                }`}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
             onClick={onClick}

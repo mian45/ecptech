@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services";
-import { Col, Row } from "antd";
+import { Col, Row, message } from "antd";
 const defaultValues = {
     email: "",
     password: "",
@@ -12,6 +12,7 @@ const defaultValues = {
 };
 
 const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [loginInitialValues, setInitialValues] = useState(defaultValues);
     const [isEdit, setIsEdit] = useState(false);
 
@@ -40,9 +41,10 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
         const staffObject = {
             email: values.email,
             password: values.password,
+            password_confirmation: values.confirmPassword,
             id: staffUser.id,
         };
-        dispatch(AuthService.updateStaffLogin(staffObject));
+        dispatch(AuthService.updateStaffLogin(staffObject, messageApi));
     };
 
     const handleClick = (values) => {
@@ -134,6 +136,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
     });
     return (
         <div className={classes["container"]}>
+            <div>{contextHolder}</div>
             <div className={classes["title"]}>Staff Login</div>
             <Formik
                 initialValues={loginInitialValues}
