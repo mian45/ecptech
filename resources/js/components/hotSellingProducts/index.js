@@ -24,7 +24,7 @@ const HotSellingProducts = ({ userId }) => {
             } catch (err) {
                 messageApi.open({
                     type: "error",
-                    content: error.response.data.message,
+                    content: err.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });
