@@ -73,9 +73,10 @@ class User extends Authenticatable
     protected static function booted()
     {
         static::created(function ($user) {
-            event(new \App\Events\AddUserCollectionPermission($user));
-            event(new \App\Events\AddUserAddonPermission($user));
-            event(new \App\Events\AddUserLenseMaterialPermission($user));
+            event(new \App\Providers\UserCollectionPermission($user));
+            event(new \App\Providers\UserAddonPermission($user));
+            event(new \App\Providers\UserLenseMaterialPermission($user));
+            event(new \App\Providers\UserVisionPlanPermissionPermission($user));
         });
     }
 }

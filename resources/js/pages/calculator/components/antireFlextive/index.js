@@ -66,7 +66,9 @@ const AntireFlextive = ({
             });
         }
         if (values.isCopayAntiReflective && e.target.value === "No") {
-            setError("Are you sure? You don't want to avail discount");
+            setError(
+                "Are you sure, you don't want to use the available discount?"
+            );
         } else {
             setError("");
         }

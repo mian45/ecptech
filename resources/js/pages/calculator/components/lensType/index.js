@@ -15,6 +15,7 @@ const LensType = ({
     setCalculatorObj,
     setCalValidations,
     calValidations,
+    getBaseValues,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue, setFieldError } =
         formProps;
@@ -123,13 +124,11 @@ const LensType = ({
         let lenses = [];
         selectedLensType?.brands?.forEach((element) => {
             element?.collections?.forEach((lens) => {
-                
                 if (lens?.display_name) {
                     lenses.push(lens?.display_name);
                 } else {
                     lenses.push(lens?.title);
                 }
-                
             });
         });
         return lenses;
@@ -169,7 +168,54 @@ const LensType = ({
         }
     };
 
-    const handleBrandSelection = (e) => {
+    const resetMaterial = async (e) => {
+        if (values?.lensType) {
+            const lensType = calculatorObj?.lens_types?.find(
+                (item) => item?.title === values?.lensType
+            );
+
+            let activeMaterials = [];
+            lensType?.brands?.forEach((item) => {
+                item?.collections?.forEach((val) => {
+                    if (val?.display_name) {
+                        if (val?.display_name == e?.target?.value) {
+                            activeMaterials = val?.lenses;
+                        }
+                    } else {
+                        if (val?.title == e?.target?.value) {
+                            activeMaterials = val?.lenses;
+                        }
+                    }
+                });
+            });
+
+            if (values?.lensMaterial) {
+                let isMaterialFound = true;
+
+                isMaterialFound = activeMaterials?.some(
+                    (item) =>
+                        item?.lens_material_title?.toLowerCase() ===
+                        values?.lensMaterial?.toLowerCase()
+                );
+                if (activeMaterials?.length > 0 && !isMaterialFound) {
+                    setFieldValue("lensMaterial", "");
+                } else {
+                    if (values?.lensMaterial && e?.target?.value) {
+                        await getBaseValues(
+                            {
+                                ...values,
+                                lensTypeValue: e?.target?.value,
+                            },
+                            calculatorObj
+                        );
+                    }
+                }
+            }
+        }
+    };
+
+    const handleBrandSelection = async (e) => {
+        resetMaterial(e);
         handleChange(e);
         showAlert(e);
         if (values?.lensType === "PAL") {
@@ -211,7 +257,9 @@ const LensType = ({
                 values.isCopayPremiumProgressives ||
                 values.isCopayCustomProgressives
             ) {
-                setError("Are you sure? You don't want to avail discount");
+                setError(
+                    "Are you sure, you don't want to use the available discount?"
+                );
             }
         }
     };

@@ -22,15 +22,16 @@ const CustomCheckbox = ({
             <div
                 style={{
                     ...style,
-                    pointerEvents: isDisable ? "none" : "all",
+                    cursor: isDisable ? "not-allowed" : "pointer",
                 }}
                 className={classes["checkbox"]}
                 onClick={(e) => {
+                    if (isDisable) return;
                     if (onValueChange) onValueChange(!isChecked);
                 }}
                 {...rest}
             >
-                {defaultChecked ? <SVG /> : <SVGBlack />}
+                {defaultChecked ? <SVG /> : <SVGBlack isDisable={isDisable} />}
             </div>
             <div
                 className={`${classes["label"]} ${labelClass}`}
@@ -71,13 +72,14 @@ const SVG = () => {
     );
 };
 
-const SVGBlack = () => {
+const SVGBlack = ({ isDisable }) => {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="19.96"
             height="19.96"
             viewBox="0 0 19.96 19.96"
+            style={{ background: isDisable ? "#dfdfdf" : "transparent" }}
         >
             <g id="check-icon" transform="translate(-4.5 -4.5)">
                 <path
