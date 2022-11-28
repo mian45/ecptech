@@ -27,7 +27,7 @@ const StaffListTable = ({ userId }) => {
                 console.log("Error while getting staff");
                 messageApi.open({
                     type: "error",
-                    content: err.message,
+                    content: err.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });

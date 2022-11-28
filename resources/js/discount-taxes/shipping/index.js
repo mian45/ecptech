@@ -35,14 +35,14 @@ const ShippingSettings = ({ userId }) => {
                 if (err.response.data.statusCode === 404) {
                     messageApi.open({
                         type: "error",
-                        content: err.message,
+                        content: err.response.data.message,
                         duration: 5,
                         className: 'custom-postion-error',
                     });
                 } else {
                     messageApi.open({
                         type: "error",
-                        content: err.message,
+                        content: err.response.data.message,
                         duration: 5,
                         className: 'custom-postion-error',
                     });
@@ -78,7 +78,7 @@ const ShippingSettings = ({ userId }) => {
             console.log("error while delete shipping");
             messageApi.open({
                 type: "error",
-                content: err.message,
+                content: err.response.data.message,
                 duration: 5,
                 className: 'custom-postion-error',
             });
@@ -122,7 +122,7 @@ const ShippingSettings = ({ userId }) => {
             setShippingButtonLoader(false);
             messageApi.open({
                 type: "error",
-                content: err.message,
+                content: err.response.data.message,
                 duration: 5,
                 className: 'custom-postion-error',
             });

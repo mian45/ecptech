@@ -34,7 +34,7 @@ const CardPayment = () => {
         } catch (err) {
             messageApi.open({
                 type: "error",
-                content: err.message,
+                content: err.response.data.message,
                 duration: 5,
                 className: 'custom-postion-error',
             });

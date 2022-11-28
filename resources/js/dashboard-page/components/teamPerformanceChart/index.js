@@ -32,7 +32,7 @@ const TeamPerformanceChart = (userId) => {
                 console.log("Error while getting performance stats", err);
                 messageApi.open({
                     type: "error",
-                    content: err.message,
+                    content: err.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });

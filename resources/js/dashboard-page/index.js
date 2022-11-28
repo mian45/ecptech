@@ -63,7 +63,7 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
                 console.log("Error while getting stats");
                 messageApi.open({
                     type: "error",
-                    content: err.message,
+                    content: err.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });

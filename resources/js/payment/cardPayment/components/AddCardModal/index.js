@@ -106,7 +106,7 @@ const AddCardModal = ({ show, onClose }) => {
             console.log("Error while delete Staff", err);
             messageApi.open({
                 type: "error",
-                content: err.message,
+                content: err.response.data.message,
                 duration: 5,
                 className: 'custom-postion-error',
             });

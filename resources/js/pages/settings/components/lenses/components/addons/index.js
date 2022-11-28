@@ -44,7 +44,7 @@ const Addons = ({ userId }) => {
                 console.log("error while get lenses");
                 messageApi.open({
                     type: "error",
-                    content: err.message,
+                    content: err.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });
@@ -72,7 +72,7 @@ const Addons = ({ userId }) => {
             console.log("error while update lenses");
             messageApi.open({
                 type: "error",
-                content: err.message,
+                content: err.response.data.message,
                 duration: 5,
                 className: 'custom-postion-error',
             });

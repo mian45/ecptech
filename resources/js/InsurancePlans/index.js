@@ -32,7 +32,7 @@ const InsurancePlans = ({ userId }) => {
                 setLoading(true);
                 messageApi.open({
                     type: "error",
-                    content: error.message,
+                    content: error.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });

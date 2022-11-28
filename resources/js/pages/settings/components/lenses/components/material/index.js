@@ -22,7 +22,7 @@ const MaterialSettings = ({ userId }) => {
                 console.log("error while get lenses", err);
                 lensesMaterialApi.open({
                     type: "error",
-                    content: err.message,
+                    content: err.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });

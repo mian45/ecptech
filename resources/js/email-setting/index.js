@@ -152,7 +152,7 @@ const EmailSetting = (props) => {
                 setButtonLoader(false);
                 messageApi.open({
                     type: "error",
-                    content: error.message,
+                    content: error.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });
@@ -232,7 +232,7 @@ const EmailSetting = (props) => {
                 setButtonLoader(false);
                 messageApi.open({
                     type: "error",
-                    content: error.message,
+                    content: error.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });
@@ -266,7 +266,7 @@ const EmailSetting = (props) => {
                 console.log(error);
                 messageApi.open({
                     type: "error",
-                    content: error.message,
+                    content: error.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });
@@ -297,7 +297,7 @@ const EmailSetting = (props) => {
             .catch(function (error) {
                 messageApi.open({
                     type: "error",
-                    content: error.message,
+                    content: error.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });
@@ -429,7 +429,7 @@ const EmailSetting = (props) => {
         } catch (err) {
             messageApi.open({
                 type: "error",
-                content: err.message,
+                content: err.response.data.message,
                 duration: 5,
                 className: 'custom-postion-error',
             });

@@ -52,7 +52,7 @@ const EyePrescription = ({ userId }) => {
                 console.log("Error while getting glasses details");
                 messageApi.open({
                     type: "error",
-                    content: err.message,
+                    content: err.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });
@@ -243,7 +243,7 @@ const EyePrescription = ({ userId }) => {
             console.log("error while save data");
             messageApi.open({
                 type: "error",
-                content: err.message,
+                content: err.response.data.message,
                 duration: 5,
                 className: 'custom-postion-error',
             });

@@ -36,7 +36,7 @@ function EditInsurance({ userId }) {
                 setLoading(false);
                 messageApi.open({
                     type: "error",
-                    content: error.message,
+                    content: error.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });
@@ -138,7 +138,7 @@ function EditInsurance({ userId }) {
             .catch((error) => {
                 messageApi.open({
                     type: "error",
-                    content: error.message,
+                    content: error.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });

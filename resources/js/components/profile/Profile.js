@@ -98,7 +98,7 @@ const ProfileInfoSection = ({ userId, user, getAuthentication }) => {
             console.log("error while save changes", err);
             messageApi.open({
                 type: "error",
-                content: err.message,
+                content: err.response.data.message,
                 duration: 5,
                 className: 'custom-postion-error',
             });
@@ -207,7 +207,7 @@ const ProfilePasswordValidations = ({ userId }) => {
         } catch (err) {
             messageApi.open({
                 type: "error",
-                content: err.message,
+                content: err.response.data.message,
                 duration: 5,
                 className: 'custom-postion-error',
             });

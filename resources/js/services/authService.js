@@ -36,7 +36,7 @@ export function login({ email, password, remember }, messageApi) {
                 .catch((err) => {
                     messageApi.open({
                         type: "error",
-                        content: err.message,
+                        content: err.response.data.message,
                         duration: 5,
                         style: {
                             marginTop: "0vh",
@@ -186,8 +186,8 @@ export function updateStaffLogin(credentials, messageApi) {
                     };
                     messageApi.open({
                         type: "error",
-                        content: err.response.message,
-                        duration: 5,
+                        content: err.response.data.message,
+                        duration: 50,
                         className: 'custom-postion-error',
                     });
                     return reject(data);
