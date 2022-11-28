@@ -18,6 +18,7 @@ import {
     GetPrivatePayMaterialPrice,
     GetPrivatePhotochromicPrice,
 } from "../viewInvoice/helpers/pricesHelper/calculateOtherPlansPrices";
+import { handleCheckboxFalse } from "./helper";
 
 const LoweredCopay = ({
     formProps,
@@ -133,15 +134,8 @@ const LoweredCopay = ({
                 });
             }
         } else if (value === false) {
-            if (
-                !values?.isCopayPolycarbonate &&
-                !values?.isCopayPhotochromic &&
-                !values?.isCopayHighIndex &&
-                !values?.isCopayAntiReflective &&
-                !values?.isCopayPremiumProgressives &&
-                !values?.isCopayStandardProgressives &&
-                !values?.isCopayCustomProgressives
-            ) {
+            const isAllFalse = handleCheckboxFalse(values, key, value);
+            if (isAllFalse) {
                 setFieldValue("isCopayChecked", "");
             }
             if (key === "isCopayPolycarbonate") {
