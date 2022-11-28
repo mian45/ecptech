@@ -164,7 +164,7 @@ const LensType = ({
             setShowInvoiceAlert(true);
         }
         if (!collection?.price && parsedInvoiceData) {
-            setError("Are you sure you want to continue without value");
+            setError("The Retail Price for this brand is not added from the settings. Are you sure you want to continue?");
         }
     };
 
@@ -357,7 +357,7 @@ const LensType = ({
                                                         <CustomRadio
                                                             headClass={
                                                                 classes[
-                                                                    "radio-margin"
+                                                                "radio-margin"
                                                                 ]
                                                             }
                                                             key={index}
