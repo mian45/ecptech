@@ -37,9 +37,7 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
                     type: err.message,
                     content: err,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             }
         };
@@ -67,9 +65,7 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
                     type: "success",
                     content: err.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             }
         };

@@ -46,9 +46,7 @@ const Addons = ({ userId }) => {
                     type: "error",
                     content: err.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             }
         };
@@ -68,9 +66,7 @@ const Addons = ({ userId }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         } catch (err) {
             console.log("error while update lenses");
@@ -78,9 +74,7 @@ const Addons = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         }
     };

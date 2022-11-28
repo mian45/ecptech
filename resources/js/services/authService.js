@@ -172,9 +172,7 @@ export function updateStaffLogin(credentials, messageApi) {
                         type: "success",
                         content: res.data.message,
                         duration: 5,
-                        style: {
-                            marginTop: "13.5vh",
-                        },
+                        className: 'custom-postion',
                     });
                     return resolve();
                 })
@@ -188,9 +186,7 @@ export function updateStaffLogin(credentials, messageApi) {
                         type: "error",
                         content: err.response.message,
                         duration: 5,
-                        style: {
-                            marginTop: "13.5vh",
-                        },
+                        className: 'custom-postion',
                     });
                     return reject(data);
                 });

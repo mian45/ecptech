@@ -37,18 +37,14 @@ const ShippingSettings = ({ userId }) => {
                         type: "success",
                         content: err.message,
                         duration: 5,
-                        style: {
-                            marginTop: "13.5vh",
-                        },
+                        className: 'custom-postion',
                     });
                 } else {
                     messageApi.open({
                         type: "error",
                         content: err.message,
                         duration: 5,
-                        style: {
-                            marginTop: "13.5vh",
-                        },
+                        className: 'custom-postion',
                     });
                 }
                 setShippingLoading(false);
@@ -76,9 +72,7 @@ const ShippingSettings = ({ userId }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         } catch (err) {
             console.log("error while delete shipping");
@@ -86,9 +80,7 @@ const ShippingSettings = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         }
     };
@@ -123,9 +115,7 @@ const ShippingSettings = ({ userId }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         } catch (err) {
             console.log("error while adding shipping");
@@ -134,9 +124,7 @@ const ShippingSettings = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         }
     };

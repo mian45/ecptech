@@ -29,18 +29,14 @@ const CardPayment = () => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+               className: 'custom-postion',
             });
         } catch (err) {
             messageApi.open({
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+               className: 'custom-postion',
             });
         }
     };

@@ -99,9 +99,7 @@ const AddCardModal = ({ show, onClose }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
             onClose();
         } catch (err) {
@@ -110,9 +108,7 @@ const AddCardModal = ({ show, onClose }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         }
     };

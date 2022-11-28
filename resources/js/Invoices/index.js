@@ -71,9 +71,7 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
             setButtonLoader(false);
         } catch (err) {
@@ -83,9 +81,7 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
             setButtonLoader(false);
         }

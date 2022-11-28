@@ -26,9 +26,7 @@ const HotSellingProducts = ({ userId }) => {
                     type: "error",
                     content: err.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 console.log("Error while fetch products", err);
             }

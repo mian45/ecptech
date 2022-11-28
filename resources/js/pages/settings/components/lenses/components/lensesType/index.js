@@ -33,9 +33,7 @@ const LensesType = ({ userId }) => {
                     type: "error",
                     content: err.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             }
         };
@@ -56,9 +54,7 @@ const LensesType = ({ userId }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         } catch (err) {
             console.log("error while update lenses");
@@ -66,9 +62,7 @@ const LensesType = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         }
     };

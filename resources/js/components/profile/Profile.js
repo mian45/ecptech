@@ -92,9 +92,7 @@ const ProfileInfoSection = ({ userId, user, getAuthentication }) => {
                         type: "success",
                         content: response.data.message,
                         duration: 5,
-                        style: {
-                            marginTop: "13.5vh",
-                        },
+                        className: 'custom-postion',
                     });
                 });
         } catch (err) {
@@ -103,9 +101,7 @@ const ProfileInfoSection = ({ userId, user, getAuthentication }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         }
     };
@@ -214,9 +210,7 @@ const ProfilePasswordValidations = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
             console.log("error while save password", err);
         }

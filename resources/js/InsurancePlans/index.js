@@ -34,9 +34,7 @@ const InsurancePlans = ({ userId }) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             });
     }, []);
@@ -58,9 +56,7 @@ const InsurancePlans = ({ userId }) => {
             type: "success",
             content: response.data.message,
             duration: 5,
-            style: {
-                marginTop: "13.5vh",
-            },
+            className: 'custom-postion',
         });
     };
 

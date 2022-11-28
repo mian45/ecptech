@@ -38,9 +38,7 @@ const AddStaffMember = ({ userId }) => {
                     type: "error",
                     content: err.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             }
         };
@@ -70,9 +68,7 @@ const AddStaffMember = ({ userId }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         } catch (err) {
             console.log("Error while edit Staff", err);
@@ -80,9 +76,7 @@ const AddStaffMember = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         }
     };
@@ -107,9 +101,7 @@ const AddStaffMember = ({ userId }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         } catch (err) {
             console.log("Error while create Staff", err);
@@ -117,9 +109,7 @@ const AddStaffMember = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         }
     };
@@ -147,9 +137,7 @@ const AddStaffMember = ({ userId }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
             setEditId(null);
         } catch (err) {
@@ -158,9 +146,7 @@ const AddStaffMember = ({ userId }) => {
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         }
     };

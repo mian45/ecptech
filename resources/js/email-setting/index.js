@@ -142,9 +142,7 @@ const EmailSetting = (props) => {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 setButtonLoader(false);
             })
@@ -156,9 +154,7 @@ const EmailSetting = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             });
     };
@@ -215,9 +211,7 @@ const EmailSetting = (props) => {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 getReminder();
                 setReminderType("");
@@ -240,9 +234,7 @@ const EmailSetting = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             });
     };
@@ -266,9 +258,7 @@ const EmailSetting = (props) => {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 setShowDeleteReminder(false);
             })
@@ -278,9 +268,7 @@ const EmailSetting = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             });
     };
@@ -311,9 +299,7 @@ const EmailSetting = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 setLoading(true);
                 console.log(error);
@@ -438,18 +424,14 @@ const EmailSetting = (props) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
         } catch (err) {
             messageApi.open({
                 type: "error",
                 content: err.message,
                 duration: 5,
-                style: {
-                    marginTop: "13.5vh",
-                },
+                className: 'custom-postion',
             });
             console.log("error");
         }

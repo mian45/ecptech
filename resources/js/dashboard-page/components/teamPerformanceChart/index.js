@@ -34,9 +34,7 @@ const TeamPerformanceChart = (userId) => {
                     type: "error",
                     content: err.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             }
         };

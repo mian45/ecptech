@@ -71,9 +71,7 @@ const DiscountTaxes = (props) => {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 setDiscountId(null);
                 setDiscountName("");
@@ -88,9 +86,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             });
     };
@@ -114,9 +110,7 @@ const DiscountTaxes = (props) => {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 getDiscount();
                 setDiscountId(null);
@@ -128,9 +122,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             });
     };
@@ -159,9 +151,7 @@ const DiscountTaxes = (props) => {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 setTaxName("");
                 setTaxValue("");
@@ -177,9 +167,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             });
     };
@@ -208,9 +196,7 @@ const DiscountTaxes = (props) => {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 getTaxes();
                 setTaxName("");
@@ -225,9 +211,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             });
     };
@@ -251,9 +235,7 @@ const DiscountTaxes = (props) => {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 setShowDeleteTaxes(false);
             })
@@ -263,9 +245,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             });
     };
@@ -290,9 +270,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 console.log(error);
             });
@@ -319,9 +297,7 @@ const DiscountTaxes = (props) => {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 setEditId(null);
                 setDiscountName("");
@@ -335,9 +311,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 console.log(error);
                 setDiscountButtonLoader(false);
@@ -410,9 +384,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             });
     };
@@ -443,9 +415,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             });
     };
@@ -502,9 +472,7 @@ const DiscountTaxes = (props) => {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 getDiscount();
             })
@@ -513,9 +481,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 console.log(error);
             });
@@ -540,9 +506,7 @@ const DiscountTaxes = (props) => {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
             })
             .catch(function (error) {
@@ -550,9 +514,7 @@ const DiscountTaxes = (props) => {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                    className: 'custom-postion',
                 });
                 console.log(error);
             });

@@ -38,9 +38,7 @@ function EditInsurance({ userId }) {
                     type: "error",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                   className: 'custom-postion',
                 });
             });
     }, []);
@@ -132,9 +130,7 @@ function EditInsurance({ userId }) {
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                   className: 'custom-postion',
                 });
                 setUpdateInsurancePlan([]);
                 setButtonLoader(false);
@@ -144,9 +140,7 @@ function EditInsurance({ userId }) {
                     type: "success",
                     content: error.message,
                     duration: 5,
-                    style: {
-                        marginTop: "13.5vh",
-                    },
+                   className: 'custom-postion',
                 });
             });
     };
