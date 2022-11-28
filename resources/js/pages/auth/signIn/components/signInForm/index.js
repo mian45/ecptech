@@ -194,19 +194,22 @@ const EyeCloseSVG = () => (
 const EyeIcon = (props) => <Icon component={EyeSVG} {...props} />;
 const EyeCloseIcon = (props) => <Icon component={EyeCloseSVG} {...props} />;
 
-const SignInForm = ({ userRole, dispatch }) => {
+const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
     const [buttonLoader, setButtonLoader] = useState(false);
     const history = useHistory();
     const handleClick = async (values) => {
         setButtonLoader(true);
         try {
             await dispatch(AuthService.login(values));
-            if (userRole === "staff") {
-                history.push(INVOICES_ROUTE);
-                return;
-            } else {
-                history.push(HOME_ROUTE);
+            if (JSON.parse(templogout) !== true) {
+                if (userRole === "staff") {
+                    history.push(INVOICES_ROUTE);
+                    return;
+                } else {
+                    history.push(HOME_ROUTE);
+                }
             }
+            tempSet("false");
             setButtonLoader(false);
         } catch (err) {
             console.log("error while login");

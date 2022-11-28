@@ -14,7 +14,7 @@ import {
 } from "./routeConstants";
 import { Redirect, Route } from "react-router-dom";
 const Home = React.lazy(() => import("../pages/dashboard/index"));
-const signIn = React.lazy(() => import("../pages/auth/signIn"));
+const SignIn = React.lazy(() => import("../pages/auth/signIn"));
 const Invoices = React.lazy(() => import("../Invoices"));
 const Payment = React.lazy(() => import("../payment"));
 const Settings = React.lazy(() => import("../setting-dashboard"));
@@ -91,7 +91,16 @@ export const allRoutes = [
     },
     {
         path: LOGIN_ROUTE,
-        component: signIn,
+        component: (tempSet, templogout) => {
+            return (
+                <SignIn
+                    tempSet={(e) => {
+                        tempSet(e);
+                    }}
+                    templogout={templogout}
+                />
+            );
+        },
         exact: true,
         isPrivate: false,
     },
