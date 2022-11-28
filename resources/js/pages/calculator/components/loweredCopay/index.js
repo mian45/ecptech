@@ -133,7 +133,17 @@ const LoweredCopay = ({
                 });
             }
         } else if (value === false) {
-            setFieldValue("isCopayChecked", "");
+            if (
+                !values?.isCopayPolycarbonate ||
+                !values?.isCopayPhotochromic ||
+                !values?.isCopayHighIndex ||
+                !values?.isCopayAntiReflective ||
+                !values?.isCopayPremiumProgressives ||
+                !values?.isCopayStandardProgressives ||
+                !values?.isCopayCustomProgressives
+            ) {
+                setFieldValue("isCopayChecked", "");
+            }
             if (key === "isCopayPolycarbonate") {
                 const validations = { ...calValidations };
                 delete validations.isCopayPolycarbonateAmount;
