@@ -4,12 +4,14 @@ import StaffTableHeader from "../staffTableHeader";
 import classes from "./styles.module.scss";
 import Axios from "../../../Http";
 import { connect } from "react-redux";
+import { message } from "antd";
 
 const StaffListTable = ({ userId }) => {
     const [staffList, setStaffList] = useState([]);
+    const [messageApi, contextHolder] = message.useMessage();
 
     useEffect(() => {
-        if (!userId) return;
+        if (userId == null) return;
         const getStaffList = async () => {
             try {
                 const invoiceData = {
@@ -23,6 +25,12 @@ const StaffListTable = ({ userId }) => {
                 setStaffList(res?.data?.data);
             } catch (err) {
                 console.log("Error while getting staff");
+                messageApi.open({
+                    type: "error",
+                    content: err.response.data.message,
+                    duration: 5,
+                    className: 'custom-postion-error',
+                });
             }
         };
 
@@ -31,6 +39,7 @@ const StaffListTable = ({ userId }) => {
 
     return (
         <div className={classes["container"]}>
+            <div>{contextHolder}</div>
             <table className={classes["table"]}>
                 <thead className={classes["table-header"]}>
                     <StaffTableHeader />

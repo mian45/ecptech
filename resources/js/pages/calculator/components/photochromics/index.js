@@ -14,7 +14,7 @@ const Photochromics = ({
     calValidations,
     data,
 }) => {
-    const { values, handleChange, handleBlur } = formProps;
+    const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const photochromicsVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -25,7 +25,7 @@ const Photochromics = ({
     const getPhotochromicList = () => {
         return (
             calculatorObj?.addons?.find(
-                (item) => item?.title === "Photochromoics"
+                (item) => item?.title === "Photochromic"
             )?.addons || []
         );
     };
@@ -41,7 +41,7 @@ const Photochromics = ({
         }
     };
 
-    const handlePhotochromicsChange = (e) => {
+    const handlePhotochromicsChange = async (e) => {
         handleChange(e);
         if (
             e?.target?.value === "Yes" &&
@@ -55,14 +55,21 @@ const Photochromics = ({
                 photochromicsType,
             });
         } else if (e?.target?.value === "No") {
+            await setFieldValue("isCopayPhotochromic", null);
+            await setFieldValue("isCopayPhotochromicAmount", "");
+            await setFieldValue("copayPhotochromicAmount", "");
             const validations = { ...calValidations };
+            delete validations.isCopayPhotochromicAmount;
+            delete validations.copayPhotochromicAmount;
             delete validations.photochromicsType;
             setCalValidations({
                 ...validations,
             });
         }
         if (values.isCopayPhotochromic && e.target.value === "No") {
-            setError("Are you sure? You don't want to avail discount");
+            setError(
+                "Are you sure, you don't want to use the available discount?"
+            );
         } else {
             setError("");
         }
@@ -86,7 +93,6 @@ const Photochromics = ({
                                 active={handleActiveState()}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handlePhotochromicsChange}
                                 value={values?.isPhotochromics}
                                 id="isPhotochromics"
@@ -114,7 +120,6 @@ const Photochromics = ({
                                         Select Photochromics
                                     </div>
                                     <Radio.Group
-                                        onBlur={handleBlur}
                                         onChange={handleChange}
                                         value={values?.photochromicsType}
                                         id="photochromicsType"

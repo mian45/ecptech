@@ -15,7 +15,7 @@ const AntireFlextive = ({
     calValidations,
     data,
 }) => {
-    const { values, handleChange, handleBlur } = formProps;
+    const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const antireflectiveVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -42,28 +42,38 @@ const AntireFlextive = ({
         }
     };
 
-    const handleAntireflectiveChange = (e) => {
+    const handleAntireflectiveChange = async (e) => {
         handleChange(e);
         if (
-            e?.target?.value === "Yes" &&
-            !data?.find((ques) => ques.question === "Antireflective Properties")
-                .optional
+            (e?.target?.value === "Yes" &&
+                !data?.find(
+                    (ques) => ques.question === "Antireflective Properties"
+                ).optional) ||
+            (e?.target?.value === "Yes" && values?.lensType === "NVF")
         ) {
-            const antireflectiveType =
-                Yup.string().required("Option is required");
+            const antireflectiveType = Yup.string().required(
+                "Antireflective type is required"
+            );
             setCalValidations({
                 ...calValidations,
                 antireflectiveType,
             });
         } else if (e?.target?.value === "No") {
+            await setFieldValue("isCopayAntiReflective", null);
+            await setFieldValue("isCopayAntiReflectiveAmount", "");
+            await setFieldValue("copayAntiReflectiveAmount", "");
             const validations = { ...calValidations };
             delete validations.antireflectiveType;
+            delete validations.isCopayAntiReflectiveAmount;
+            delete validations.copayAntiReflectiveAmount;
             setCalValidations({
                 ...validations,
             });
         }
         if (values.isCopayAntiReflective && e.target.value === "No") {
-            setError("Are you sure? You don't want to avail discount");
+            setError(
+                "Are you sure, you don't want to use the available discount?"
+            );
         } else {
             setError("");
         }
@@ -71,7 +81,7 @@ const AntireFlextive = ({
 
     return (
         <>
-            {antireflectiveVisibility && (
+            {(antireflectiveVisibility || values?.lensType === "NVF") && (
                 <Row className={classes["container"]}>
                     {" "}
                     <Col sx={0} sm={0} md={5}>
@@ -87,7 +97,6 @@ const AntireFlextive = ({
                                 active={handleActiveFields()}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleAntireflectiveChange}
                                 value={values?.isAntireflective}
                                 id="isAntireflective"
@@ -100,11 +109,15 @@ const AntireFlextive = ({
                                     active={values?.isAntireflective === "Yes"}
                                 />
 
-                                <CustomRadio
-                                    label={"No"}
-                                    value={"No"}
-                                    active={values?.isAntireflective === "No"}
-                                />
+                                {values?.lensType !== "NVF" && (
+                                    <CustomRadio
+                                        label={"No"}
+                                        value={"No"}
+                                        active={
+                                            values?.isAntireflective === "No"
+                                        }
+                                    />
+                                )}
                             </Radio.Group>
                             <FormikError name={"isAntireflective"} />
                             {error && (
@@ -116,7 +129,6 @@ const AntireFlextive = ({
                                         Select Properties
                                     </div>
                                     <Radio.Group
-                                        onBlur={handleBlur}
                                         onChange={handleChange}
                                         value={values?.antireflectiveType}
                                         id="antireflectiveType"

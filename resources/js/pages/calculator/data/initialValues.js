@@ -13,6 +13,7 @@ export const CalculatorInitialValues = {
     frameContribution: "",
     drillMount: "",
     isloweredCopay: "",
+    isCopayChecked: "",
     isCopayPolycarbonate: null,
     isCopayPhotochromic: null,
     isCopayHighIndex: null,
@@ -54,6 +55,8 @@ export const CalculatorInitialValues = {
     shippingAmount: "0",
     discountType: "",
     discountValue: "",
+    discountAmountType: "percentage",
+    discountId: "",
 };
 
 export const BenifitTypeEnums = Object.freeze({

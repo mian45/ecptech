@@ -7,7 +7,13 @@ import CustomRadio from "../../../../components/customRadio";
 import icon from "../../../../../images/calculator/lens-material.svg";
 import EyePrescriptionModal from "../eyePrescriptionModal";
 
-const LensMeterials = ({ formProps, calculatorObj }) => {
+const LensMeterials = ({
+    formProps,
+    calculatorObj,
+    getBaseValues,
+    calValidations,
+    setCalValidations,
+}) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState("");
@@ -17,7 +23,68 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
             (ques) => ques.question === "Lens Material"
         )?.visibility;
 
-    const handleLensMererialChange = (e) => {
+    const getActiveMaterials = (material) => {
+        const lensType = calculatorObj?.lens_types?.find(
+            (item) => item?.title === values?.lensType
+        );
+
+        let activeMaterials = [];
+        lensType?.brands?.forEach((item) => {
+            item?.collections?.forEach((val) => {
+                if (val?.display_name) {
+                    if (val?.display_name == values?.lensTypeValue) {
+                        activeMaterials = val?.lenses;
+                    }
+                } else {
+                    if (val?.title == values?.lensTypeValue) {
+                        activeMaterials = val?.lenses;
+                    }
+                }
+            });
+        });
+
+        let isMaterialFound = true;
+
+        isMaterialFound = activeMaterials?.some(
+            (item) =>
+                item?.lens_material_title?.toLowerCase() ===
+                material?.toLowerCase()
+        );
+        return activeMaterials?.length > 0 ? !isMaterialFound : false;
+    };
+
+    const handleLensMererialChange = async (e) => {
+        if (e?.target?.value !== "Polycarbonate") {
+            const validations = { ...calValidations };
+            delete validations.isCopayPolycarbonateAmount;
+            delete validations.copayPolycarbonateAmount;
+
+            await setFieldValue("isCopayPolycarbonate", null);
+            await setFieldValue("isCopayPolycarbonateAmount", "");
+            await setFieldValue("copayPolycarbonateAmount", "");
+            setCalValidations({ ...validations });
+        }
+        if (
+            !(
+                e?.target?.value?.includes("Hi index") ||
+                e?.target?.value?.includes("Hi Index")
+            )
+        ) {
+            const validations = { ...calValidations };
+            delete validations.isCopayHighIndexAmount;
+            delete validations.copayHighIndexAmount;
+
+            await setFieldValue("isCopayHighIndex", null);
+            await setFieldValue("isCopayHighIndexAmount", "");
+            await setFieldValue("copayHighIndexAmount", "");
+            setCalValidations({ ...validations });
+        }
+        if (values?.lensTypeValue && e?.target?.value) {
+            await getBaseValues(
+                { ...values, lensMaterial: e?.target?.value },
+                calculatorObj
+            );
+        }
         let currentValue = "";
         if (isLenseTitle(e.target.value)) {
             currentValue = e.target.value;
@@ -34,12 +101,16 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
         }
 
         if (values.isCopayPolycarbonate && e.target.value !== "Polycarbonate") {
-            setError("Are you sure you don't want to avail the discount");
+            setError(
+                "Are you sure, you don't want to use the available discount?"
+            );
         } else if (
             values.isCopayHighIndex &&
             !e.target.value.toLowerCase().includes("Hi Index".toLowerCase())
         ) {
-            setError("Are you sure you don't want to avail the discount");
+            setError(
+                "Are you sure, you don't want to use the available discount?"
+            );
         } else {
             setError("");
         }
@@ -65,7 +136,10 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
             {lensMaterialVisibility ? (
                 <Row className={classes["container"]}>
                     {showModal && (
-                        <EyePrescriptionModal onClose={handleCloseModal} onOpen={showModal}/>
+                        <EyePrescriptionModal
+                            onClose={handleCloseModal}
+                            onOpen={showModal}
+                        />
                     )}
                     <Col sx={0} sm={0} md={5}>
                         <QuestionIcon
@@ -80,7 +154,6 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
                                 active={values?.lensMaterial}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleLensMererialChange}
                                 value={values?.lensMaterial}
                                 id="lensMaterial"
@@ -103,6 +176,9 @@ const LensMeterials = ({ formProps, calculatorObj }) => {
                                                     values?.lensMaterial ===
                                                     lensName?.lens_material_title
                                                 }
+                                                disabled={getActiveMaterials(
+                                                    lensName?.lens_material_title
+                                                )}
                                             />
                                         );
                                     }

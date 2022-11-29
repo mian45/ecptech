@@ -45,7 +45,7 @@ class InvoiceCalculaterController extends Controller
             $data['shipping'] = $shipping->value;
         }
 
-        $discount = Discount::select('id','user_id','name','value','status')->where('user_id',$userId)->orderBy('created_at', 'desc')->get();
+        $discount = Discount::select('id','user_id','name','value','status','type')->where('user_id',$userId)->orderBy('created_at', 'desc')->get();
         if($discount){
             $data['discount'] = $discount;
         }
@@ -86,7 +86,7 @@ class InvoiceCalculaterController extends Controller
                                             ->where('setting.status','active')
                                             ->get();
 
-        return $this->sendResponse($data, 'Calculater Data');
+        return $this->sendResponse($data, 'Calculater data get successfully');
     }
 
     public function storeCSVData(Request $request){
@@ -209,9 +209,17 @@ class InvoiceCalculaterController extends Controller
                         $row++;
                     }
                     fclose($handle);
+
+                    $user = auth()->user();
+                    event(new \App\Providers\UserCollectionPermission($user));
+                    event(new \App\Providers\UserAddonPermission($user));
+                    event(new \App\Providers\UserLenseMaterialPermission($user));
+                    event(new \App\Providers\UserVisionPlanPermissionPermission($user));
+                    
+                     
                     DB::commit();
 
-                    return $this->sendResponse([], 'CSV data uploaded');
+                    return $this->sendResponse([], 'CSV data uploaded successfully');
                 }catch(\Exception $e){
                     DB::rollback();
                     return $this->sendError($e->getMessage());
@@ -276,7 +284,7 @@ class InvoiceCalculaterController extends Controller
                     fclose($handle);
                     DB::commit();
 
-                    return $this->sendResponse([], 'Addon CSV data uploaded');
+                    return $this->sendResponse([], 'Addon CSV data uploaded successfully');
                 }catch(\Exception $e){
                     DB::rollback();
                     return $this->sendError($e->getMessage());
@@ -361,7 +369,7 @@ class InvoiceCalculaterController extends Controller
                     }
                     fclose($handle);
                     DB::commit();
-                    return $this->sendResponse([], 'Code CSV data uploaded');
+                    return $this->sendResponse([], 'Code CSV data uploaded successfully');
                 }catch(\Exception $e){
                     DB::rollback();
                     return $this->sendError($e->getMessage());
@@ -415,7 +423,7 @@ class InvoiceCalculaterController extends Controller
                     }])->select('id','title')->get();
 
 
-        return $this->sendResponse($data, 'Calculater Data');
+        return $this->sendResponse($data, 'Calculater data get successfully');
 
     }
 
@@ -438,22 +446,32 @@ class InvoiceCalculaterController extends Controller
         
         
         $data['collection'] = LenseType::with(['brands'=>function($q)use($userId){
-                    $q->join('brand_permissions as bp','bp.brand_title','=','brands.title');
+                    $q->join('brand_permissions as bp','bp.brand_id','=','brands.id');
                     $q->select('brands.id','lens_type_id','title');
                     $q->where('bp.user_id',$userId);
-                    $q->groupby('brands.id');
                     
                     $q->with(['collections'=>function($q)use($userId){
                         $q->join('collections_permissions as cp', function ($join) {
-                            $join->on('cp.collection_title','=','collections.title');
+                            $join->on('cp.collection_id','=','collections.id');
                         });
-                                                
-                        $q->select('collections.id','collections.category','collections.brand_id','title','cp.name as display_name','cp.price','cp.collection_id',DB::raw('(CASE WHEN cp.collection_id = 62 THEN "biofocal"  END) AS lense_type_title'));
+                        
+                        $q->select('collections.id','collections.category','collections.brand_id','title','cp.name as display_name','cp.price','cp.collection_id');
+
+                        $q->with(['lenses'=>function($q)use($userId){
+                            $q->join('lens_materials as lm', function ($join) {
+                                $join->on('lm.id','=','lenses.lens_material_id');
+                            });
+
+                            $q->select('lm.id','collection_id','lens_material_title'); 
+                            $q->groupby('lm.id','collection_id');
+                            
+                        }]);
+                        
                         $q->where('cp.user_id',$userId)->where('cp.status','active');
                        
                     }]);
                }])->select('id','title','vision_plan_id')->where('vision_plan_id',request()->vision_plan_id)->get();
         
-        return $this->sendResponse($data, 'Collections');
+        return $this->sendResponse($data, 'Collections get successfully');
     }
 }

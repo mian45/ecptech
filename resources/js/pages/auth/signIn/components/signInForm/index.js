@@ -1,4 +1,4 @@
-import { Button, Checkbox, Col, Form, Input, Row } from "antd";
+import { Button, Checkbox, Col, Form, Input, Row, message } from "antd";
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import classes from "./styles.module.scss";
@@ -194,19 +194,23 @@ const EyeCloseSVG = () => (
 const EyeIcon = (props) => <Icon component={EyeSVG} {...props} />;
 const EyeCloseIcon = (props) => <Icon component={EyeCloseSVG} {...props} />;
 
-const SignInForm = ({ userRole, dispatch }) => {
+const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [buttonLoader, setButtonLoader] = useState(false);
     const history = useHistory();
     const handleClick = async (values) => {
         setButtonLoader(true);
         try {
-            await dispatch(AuthService.login(values));
-            if (userRole === "staff") {
-                history.push(INVOICES_ROUTE);
-                return;
-            } else {
-                history.push(HOME_ROUTE);
+            await dispatch(AuthService.login(values, messageApi));
+            if (JSON.parse(templogout) !== true) {
+                if (userRole === "staff") {
+                    history.push(INVOICES_ROUTE);
+                    return;
+                } else {
+                    history.push(HOME_ROUTE);
+                }
             }
+            tempSet("false");
             setButtonLoader(false);
         } catch (err) {
             console.log("error while login");
@@ -214,153 +218,152 @@ const SignInForm = ({ userRole, dispatch }) => {
         }
     };
     return (
-        <Formik
-            initialValues={LoginInitialValues}
-            validationSchema={LoginValidation}
-            onSubmit={handleClick}
-        >
-            {({
-                values,
-                handleChange,
-                handleBlur,
-                handleSubmit,
-                setFieldValue,
-                isSubmitting,
-                isValid,
-                dirty,
-            }) => {
-                return (
-                    <>
-                        <Col xs={22} md={24} lg={18}>
-                            <div className={classes["login-title"]}>Log in</div>
-                            <div className={classes["login-subtitle"]}>
-                                Welcome to Urban Optics. Please put your login
-                                credentials below to start using the app.
-                            </div>
-                        </Col>
-                        <Col xs={22} md={24} lg={18}>
-                            <Form
-                                name="basic"
-                                labelCol={{ span: 6 }}
-                                wrapperCol={{ span: 19 }}
-                                onFinish={handleSubmit}
-                                autoComplete="off"
-                                className={classes["form-width"]}
-                            >
-                                <Row align="middle">
-                                    <Col xs={24}>
-                                        <Form.Item
-                                            name="email"
-                                            label="Email"
-                                            labelAlign="left"
-                                            labelCol={{
-                                                span: 5,
-                                            }}
-                                            wrapperCol={{
-                                                span: 20,
-                                            }}
-                                        >
-                                            <Input
-                                                size="large"
+        <>
+            <div>{contextHolder}</div>
+            <Formik
+                initialValues={LoginInitialValues}
+                validationSchema={LoginValidation}
+                onSubmit={handleClick}
+            >
+                {({
+                    values,
+                    handleChange,
+                    handleSubmit,
+                    setFieldValue,
+                    isSubmitting,
+                    isValid,
+                    dirty,
+                }) => {
+                    return (
+                        <>
+                            <Col xs={22} md={24} lg={18}>
+                                <div className={classes["login-title"]}>Log in</div>
+                                <div className={classes["login-subtitle"]}>
+                                    Welcome to Urban Optics. Please put your login
+                                    credentials below to start using the app.
+                                </div>
+                            </Col>
+                            <Col xs={22} md={24} lg={18}>
+                                <Form
+                                    name="basic"
+                                    labelCol={{ span: 6 }}
+                                    wrapperCol={{ span: 19 }}
+                                    onFinish={handleSubmit}
+                                    autoComplete="off"
+                                    className={classes["form-width"]}
+                                >
+                                    <Row align="middle">
+                                        <Col xs={24}>
+                                            <Form.Item
                                                 name="email"
-                                                className={
-                                                    classes["email-input"]
-                                                }
-                                                value={values.email}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                            />
+                                                label="Email"
+                                                labelAlign="left"
+                                                labelCol={{
+                                                    span: 5,
+                                                }}
+                                                wrapperCol={{
+                                                    span: 20,
+                                                }}
+                                            >
+                                                <Input
+                                                    size="large"
+                                                    name="email"
+                                                    className={
+                                                        classes["email-input"]
+                                                    }
+                                                    value={values.email}
+                                                    onChange={handleChange}
+                                                />
 
-                                            <ErrorMessage
-                                                name={"email"}
-                                                component="div"
-                                                className={classes["error"]}
-                                            />
-                                        </Form.Item>{" "}
-                                    </Col>
-                                </Row>
-                                <Row align="middle">
-                                    <Col xs={24}>
-                                        <Form.Item
-                                            name="password"
-                                            label="Password"
-                                            labelAlign="left"
-                                            labelCol={{
-                                                span: 5,
-                                            }}
-                                            wrapperCol={{
-                                                span: 20,
-                                            }}
-                                            className={classes["form-Item"]}
-                                        >
-                                            <Input.Password
-                                                id="password"
+                                                <ErrorMessage
+                                                    name={"email"}
+                                                    component="div"
+                                                    className={classes["error"]}
+                                                />
+                                            </Form.Item>{" "}
+                                        </Col>
+                                    </Row>
+                                    <Row align="middle">
+                                        <Col xs={24}>
+                                            <Form.Item
                                                 name="password"
-                                                value={values.password}
-                                                onChange={handleChange}
-                                                onBlur={handleBlur}
-                                                className={
-                                                    classes[
+                                                label="Password"
+                                                labelAlign="left"
+                                                labelCol={{
+                                                    span: 5,
+                                                }}
+                                                wrapperCol={{
+                                                    span: 20,
+                                                }}
+                                                className={classes["form-Item"]}
+                                            >
+                                                <Input.Password
+                                                    id="password"
+                                                    name="password"
+                                                    value={values.password}
+                                                    onChange={handleChange}
+                                                    className={
+                                                        classes[
                                                         "password-container"
-                                                    ]
+                                                        ]
+                                                    }
+                                                    iconRender={(visible) =>
+                                                        visible ? (
+                                                            <EyeCloseIcon />
+                                                        ) : (
+                                                            <EyeIcon />
+                                                        )
+                                                    }
+                                                />
+                                                <ErrorMessage
+                                                    name={"password"}
+                                                    component="div"
+                                                    className={classes["error"]}
+                                                />
+                                            </Form.Item>
+                                        </Col>
+                                    </Row>
+                                    <Row align="middle">
+                                        <Col xs={24}>
+                                            <div
+                                                className={
+                                                    classes["forgot-password"]
                                                 }
-                                                iconRender={(visible) =>
-                                                    visible ? (
-                                                        <EyeCloseIcon />
-                                                    ) : (
-                                                        <EyeIcon />
-                                                    )
-                                                }
-                                            />
-                                            <ErrorMessage
-                                                name={"password"}
-                                                component="div"
-                                                className={classes["error"]}
-                                            />
-                                        </Form.Item>
-                                    </Col>
-                                </Row>
-                                <Row align="middle">
-                                    <Col xs={24}>
-                                        <div
-                                            className={
-                                                classes["forgot-password"]
-                                            }
-                                        >
-                                            Forgot Password?
-                                        </div>
-                                        <div className={classes["divider"]} />
+                                            >
+                                                Forgot Password?
+                                            </div>
+                                            <div className={classes["divider"]} />
 
-                                        <Col
-                                            xs={24}
-                                            sm={24}
-                                            md={24}
-                                            lg={24}
-                                            xl={24}
-                                        >
-                                            <Row justify="space-between">
-                                                <Col xs={12}>
-                                                    <CustomCheckbox
-                                                        label="Remember me"
-                                                        id="remember"
-                                                        name="remember"
-                                                        defaultChecked={
-                                                            values?.remember ||
-                                                            false
-                                                        }
-                                                        active={
-                                                            values?.remember ||
-                                                            false
-                                                        }
-                                                        c
-                                                        onValueChange={(e) =>
-                                                            setFieldValue(
-                                                                "remember",
-                                                                e
-                                                            )
-                                                        }
-                                                    />
-                                                    {/* <Checkbox
+                                            <Col
+                                                xs={24}
+                                                sm={24}
+                                                md={24}
+                                                lg={24}
+                                                xl={24}
+                                            >
+                                                <Row justify="space-between">
+                                                    <Col xs={12}>
+                                                        <CustomCheckbox
+                                                            label="Remember me"
+                                                            id="remember"
+                                                            name="remember"
+                                                            defaultChecked={
+                                                                values?.remember ||
+                                                                false
+                                                            }
+                                                            active={
+                                                                values?.remember ||
+                                                                false
+                                                            }
+                                                            c
+                                                            onValueChange={(e) =>
+                                                                setFieldValue(
+                                                                    "remember",
+                                                                    e
+                                                                )
+                                                            }
+                                                        />
+                                                        {/* <Checkbox
                                                         checked={
                                                             values?.remember ||
                                                             false
@@ -376,48 +379,49 @@ const SignInForm = ({ userRole, dispatch }) => {
                                                     >
                                                         Remember me
                                                     </Checkbox> */}
-                                                </Col>
-                                                <Col
-                                                    xs={12}
-                                                    className={
-                                                        classes["btn-wrapper"]
-                                                    }
-                                                >
-                                                    <Button
-                                                        type="primary"
-                                                        htmlType="submit"
+                                                    </Col>
+                                                    <Col
+                                                        xs={12}
                                                         className={
-                                                            classes[
-                                                                "submit-button"
-                                                            ]
+                                                            classes["btn-wrapper"]
                                                         }
                                                     >
-                                                        {buttonLoader ===
-                                                        true ? (
-                                                            <span>
-                                                                <p>Login</p>
-                                                                <CustomLoader
-                                                                    buttonBool={
-                                                                        true
-                                                                    }
-                                                                />
-                                                            </span>
-                                                        ) : (
-                                                            "Login"
-                                                        )}
-                                                    </Button>
-                                                </Col>
-                                            </Row>
+                                                        <Button
+                                                            type="primary"
+                                                            htmlType="submit"
+                                                            className={
+                                                                classes[
+                                                                "submit-button"
+                                                                ]
+                                                            }
+                                                        >
+                                                            {buttonLoader ===
+                                                                true ? (
+                                                                <span>
+                                                                    <p>Login</p>
+                                                                    <CustomLoader
+                                                                        buttonBool={
+                                                                            true
+                                                                        }
+                                                                    />
+                                                                </span>
+                                                            ) : (
+                                                                "Login"
+                                                            )}
+                                                        </Button>
+                                                    </Col>
+                                                </Row>
+                                            </Col>
                                         </Col>
-                                    </Col>
-                                </Row>
-                                <Row></Row>
-                            </Form>
-                        </Col>
-                    </>
-                );
-            }}
-        </Formik>
+                                    </Row>
+                                    <Row></Row>
+                                </Form>
+                            </Col>
+                        </>
+                    );
+                }}
+            </Formik>
+        </>
     );
 };
 

@@ -7,9 +7,18 @@ import CustomRadio from "../../../../components/customRadio";
 import lensIcon from "../../../../../images/calculator/lens.svg";
 import Axios from "../../../../Http";
 import InvoicePriceAlert from "../invoicePriceAlert";
+import * as Yup from "yup";
 
-const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
-    const { values, handleChange, handleBlur, setFieldValue } = formProps;
+const LensType = ({
+    formProps,
+    calculatorObj,
+    setCalculatorObj,
+    setCalValidations,
+    calValidations,
+    getBaseValues,
+}) => {
+    const { values, handleChange, handleBlur, setFieldValue, setFieldError } =
+        formProps;
     const [showInvoiceAlert, setShowInvoiceAlert] = useState(false);
 
     const lensTypeVisibility = calculatorObj?.questions
@@ -52,30 +61,78 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
     };
     const getBrandByLens = async (e) => {
         try {
+            if (e?.target?.value !== "PAL") {
+                delete calValidations.isCopaypremiumProgressiveAmount;
+                delete calValidations.copaypremiumProgressiveAmount;
+                delete calValidations.isCopayStandardProgressiveAmount;
+                delete calValidations.copayStandardProgressiveAmount;
+                delete calValidations.isCopayCustomProgressiveAmount;
+                delete calValidations.copayCustomProgressiveAmount;
+
+                await setFieldValue("isCopayPremiumProgressives", null);
+                await setFieldValue("isCopaypremiumProgressiveAmount", "");
+                await setFieldValue("copaypremiumProgressiveAmount", "");
+                await setFieldValue("isCopayStandardProgressives", null);
+                await setFieldValue("isCopayStandardProgressiveAmount", "");
+                await setFieldValue("copayStandardProgressiveAmount", "");
+                await setFieldValue("isCopayCustomProgressives", null);
+                await setFieldValue("isCopayCustomProgressiveAmount", "");
+                await setFieldValue("copayCustomProgressiveAmount", "");
+            }
+            const lensTypeValue = Yup.string().required("Brand is required");
+            setCalValidations({
+                ...calValidations,
+                lensTypeValue,
+            });
             await handleChange(e);
             await setFieldValue("lensTypeValue", "");
             setError("");
-            return;
-            const targetedLens = calculatorObj["lens_types"]?.find(
-                (val) => val?.title === e?.target?.value
-            );
-            if (targetedLens?.brands && targetedLens?.brands.length > 0) {
-                return;
-            } else {
-                const lensId = targetedLens?.id;
-                const res = await Axios.post(
-                    `${process.env.MIX_REACT_APP_URL}/api/get-brands`,
-                    { lense_type_id: lensId }
-                );
-                const calculatorValues = { ...calculatorObj };
-                const selectedLens = calculatorValues["lens_types"]?.find(
-                    (item) => item.id === lensId
-                );
-                selectedLens.brands = res?.data?.data?.brands;
-                setCalculatorObj(calculatorValues);
-            }
+            handleNVFType(e);
         } catch (err) {
             console.log("error while getting brands");
+        }
+    };
+    const handleNVFType = async (e) => {
+        if (e?.target?.value === "NVF") {
+            let validationObject = {};
+            validationObject.isAntireflective = Yup.string().required(
+                "Antireflective is required"
+            );
+            validationObject.antireflectiveType = Yup.string().required(
+                "Antireflective type is required"
+            );
+            validationObject.lensTypeValue =
+                Yup.string().required("Brand is required");
+            if (values?.isAntireflective === "No") {
+                await setFieldValue("isAntireflective", "");
+            }
+            if (
+                !values?.isAntireflective ||
+                values?.isAntireflective === "No"
+            ) {
+                delete validationObject.antireflectiveType;
+            }
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
+        } else {
+            const antireflectiveVisibility =
+                calculatorObj?.questions
+                    ?.find((item) => item?.title === values?.visionPlan)
+                    ?.question_permissions?.find(
+                        (ques) => ques.question === "Antireflective Properties"
+                    )?.optional === "true";
+            if (!antireflectiveVisibility) {
+                await setFieldError("isAntireflective", "");
+                await setFieldError("antireflectiveType", "");
+                const validations = { ...calValidations };
+                delete validations.isAntireflective;
+                delete validations.antireflectiveType;
+                setCalValidations({
+                    ...validations,
+                });
+            }
         }
     };
     const getLensSubValues = () => {
@@ -85,44 +142,10 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
         let lenses = [];
         selectedLensType?.brands?.forEach((element) => {
             element?.collections?.forEach((lens) => {
-                if (selectedLensType?.title === "Bifocal") {
-                    if (lens?.title !== "Aspherical/Spherical") {
-                        if (lens?.display_name) {
-                            lenses.push(lens?.display_name);
-                        } else {
-                            lenses.push(lens?.title);
-                        }
-                    } else {
-                        if (lens?.lense_type_title === "biofocal") {
-                            if (lens?.display_name) {
-                                lenses.push(lens?.display_name);
-                            } else {
-                                lenses.push(lens?.title);
-                            }
-                        }
-                    }
-                } else if (selectedLensType?.title === "Trifocal") {
-                    if (lens?.title !== "Aspherical/Spherical") {
-                        if (lens?.display_name) {
-                            lenses.push(lens?.display_name);
-                        } else {
-                            lenses.push(lens?.title);
-                        }
-                    } else {
-                        if (lens?.lense_type_title === null) {
-                            if (lens?.display_name) {
-                                lenses.push(lens?.display_name);
-                            } else {
-                                lenses.push(lens?.title);
-                            }
-                        }
-                    }
+                if (lens?.display_name) {
+                    lenses.push(lens?.display_name);
                 } else {
-                    if (lens?.display_name) {
-                        lenses.push(lens?.display_name);
-                    } else {
-                        lenses.push(lens?.title);
-                    }
+                    lenses.push(lens?.title);
                 }
             });
         });
@@ -159,11 +182,60 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
             setShowInvoiceAlert(true);
         }
         if (!collection?.price && parsedInvoiceData) {
-            setError("Are you sure you want to continue without value");
+            setError(
+                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            );
         }
     };
 
-    const handleBrandSelection = (e) => {
+    const resetMaterial = async (e) => {
+        if (values?.lensType) {
+            const lensType = calculatorObj?.lens_types?.find(
+                (item) => item?.title === values?.lensType
+            );
+
+            let activeMaterials = [];
+            lensType?.brands?.forEach((item) => {
+                item?.collections?.forEach((val) => {
+                    if (val?.display_name) {
+                        if (val?.display_name == e?.target?.value) {
+                            activeMaterials = val?.lenses;
+                        }
+                    } else {
+                        if (val?.title == e?.target?.value) {
+                            activeMaterials = val?.lenses;
+                        }
+                    }
+                });
+            });
+
+            if (values?.lensMaterial) {
+                let isMaterialFound = true;
+
+                isMaterialFound = activeMaterials?.some(
+                    (item) =>
+                        item?.lens_material_title?.toLowerCase() ===
+                        values?.lensMaterial?.toLowerCase()
+                );
+                if (activeMaterials?.length > 0 && !isMaterialFound) {
+                    setFieldValue("lensMaterial", "");
+                } else {
+                    if (values?.lensMaterial && e?.target?.value) {
+                        await getBaseValues(
+                            {
+                                ...values,
+                                lensTypeValue: e?.target?.value,
+                            },
+                            calculatorObj
+                        );
+                    }
+                }
+            }
+        }
+    };
+
+    const handleBrandSelection = async (e) => {
+        resetMaterial(e);
         handleChange(e);
         showAlert(e);
         if (values?.lensType === "PAL") {
@@ -205,7 +277,9 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                 values.isCopayPremiumProgressives ||
                 values.isCopayCustomProgressives
             ) {
-                setError("Are you sure? You don't want to avail discount");
+                setError(
+                    "Are you sure, you don't want to use the available discount?"
+                );
             }
         }
     };
@@ -263,7 +337,6 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                                 />
 
                                 <Radio.Group
-                                    onBlur={handleBlur}
                                     onChange={getBrandByLens}
                                     value={values?.lensType}
                                     id="lensType"
@@ -292,7 +365,6 @@ const LensType = ({ formProps, calculatorObj, setCalculatorObj }) => {
                                             Please Choose
                                         </div>
                                         <Radio.Group
-                                            onBlur={handleBlur}
                                             onChange={handleBrandSelection}
                                             value={values?.lensTypeValue}
                                             id="lensTypeValue"

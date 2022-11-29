@@ -33,10 +33,12 @@ import {
 import backArrow from "../../../../../images/black-arrow.svg";
 import CustomLoader from "../../../../components/customLoader";
 import CustomDiscount from "../customDiscount";
-import { Col } from "antd";
+import { Col, message } from "antd";
+import { ScrollToFieldError } from "./helpers/scrollToFieldError";
 
 const CalculatorScreen = () => {
     const history = useHistory();
+    const [messageApi, contextHolder] = message.useMessage();
     const [validationsList, setValidationsList] = useState(null);
     const [defaultValues, setDefaultValues] = useState(null);
     const [showInvoice, setShowInvoice] = useState(false);
@@ -114,6 +116,7 @@ const CalculatorScreen = () => {
                 setValidationsList(allValidations);
                 setCalValidations(allValidations[initialPlan]);
             }
+            getBaseValues(mappedEditValues(editInvoiceState), editCalObject);
             setLoading(false);
         } else {
             const userDetails = history.location?.state?.user;
@@ -186,7 +189,7 @@ const CalculatorScreen = () => {
     const HideInvoice = () => {
         setShowInvoice(false);
     };
-    const getBaseValues = async (values) => {
+    const getBaseValues = async (values, calculatorObj) => {
         setButtonLoader(true);
         try {
             const planId = calculatorObj?.questions?.find(
@@ -201,69 +204,13 @@ const CalculatorScreen = () => {
             let collectionId = null;
             lensType?.brands?.forEach((item) => {
                 item.collections?.forEach((val) => {
-                    if (item?.title === "Bifocal") {
-                        if (val?.title !== "Aspherical/Spherical") {
-                            if (val?.display_name) {
-                                if (val.display_name == values?.lensTypeValue) {
-                                    collectionId = val?.id;
-                                }
-                            } else {
-                                if (val.title == values?.lensTypeValue) {
-                                    collectionId = val?.id;
-                                }
-                            }
-                        } else {
-                            if (val?.lense_type_title === "biofocal") {
-                                if (val?.display_name) {
-                                    if (
-                                        val.display_name ==
-                                        values?.lensTypeValue
-                                    ) {
-                                        collectionId = val?.id;
-                                    }
-                                } else {
-                                    if (val.title == values?.lensTypeValue) {
-                                        collectionId = val?.id;
-                                    }
-                                }
-                            }
-                        }
-                    } else if (item?.title === "Trifocal") {
-                        if (val?.title !== "Aspherical/Spherical") {
-                            if (val?.display_name) {
-                                if (val.display_name == values?.lensTypeValue) {
-                                    collectionId = val?.id;
-                                }
-                            } else {
-                                if (val.title == values?.lensTypeValue) {
-                                    collectionId = val?.id;
-                                }
-                            }
-                        } else {
-                            if (val?.lense_type_title === null) {
-                                if (val?.display_name) {
-                                    if (
-                                        val.display_name ==
-                                        values?.lensTypeValue
-                                    ) {
-                                        collectionId = val?.id;
-                                    }
-                                } else {
-                                    if (val.title == values?.lensTypeValue) {
-                                        collectionId = val?.id;
-                                    }
-                                }
-                            }
+                    if (val?.display_name) {
+                        if (val.display_name == values?.lensTypeValue) {
+                            collectionId = val?.id;
                         }
                     } else {
-                        if (val?.display_name) {
-                            if (val.display_name == values?.lensTypeValue) {
-                                collectionId = val?.id;
-                            }
-                        } else {
-                            if (val.title == values?.lensTypeValue) {
-                                collectionId = val?.id;
-                            }
+                        if (val.title == values?.lensTypeValue) {
+                            collectionId = val?.id;
                         }
                     }
                 });
@@ -288,7 +235,6 @@ const CalculatorScreen = () => {
     };
 
     const handleClick = async (values, actions) => {
-        await getBaseValues(values);
         if (values?.benifitType === "") {
             setShowInvoice(true);
             const arrangedValues = GetMappedPayload(values);
@@ -323,7 +269,7 @@ const CalculatorScreen = () => {
             const permissions = calculatorObj?.questions?.find(
                 (item) => item.title === values?.visionPlan
             )?.question_permissions;
-            const validationObject = GetValidations(permissions, false);
+            const validationObject = GetValidations(permissions, false, values);
             setCalValidations({
                 ...calValidations,
                 ...validationObject,
@@ -362,11 +308,14 @@ const CalculatorScreen = () => {
             const validations = { ...calValidations };
             delete validations.isloweredCopay;
             delete validations.lensType;
-            delete validations.lensTypeValue;
+            if (values.lensType) {
+                delete validations.lensTypeValue;
+            }
             delete validations.lensMaterial;
             delete validations.isPhotochromics;
             delete validations.isSunglasses;
             delete validations.isAntireflective;
+            delete validations.antireflectiveType;
             setCalValidations({
                 ...validations,
             });
@@ -410,10 +359,16 @@ const CalculatorScreen = () => {
                     formProps={formProps}
                     calculatorObj={calculatorObj && calculatorObj}
                     setCalculatorObj={setCalculatorObj}
+                    setCalValidations={setCalValidations}
+                    calValidations={calValidations}
+                    getBaseValues={getBaseValues}
                 />
                 <LensMeterials
                     formProps={formProps}
                     calculatorObj={calculatorObj && calculatorObj}
+                    getBaseValues={getBaseValues}
+                    setCalValidations={setCalValidations}
+                    calValidations={calValidations}
                 />
                 <Photochromics
                     formProps={formProps}
@@ -456,6 +411,7 @@ const CalculatorScreen = () => {
     };
     return (
         <Col className={classes["container"]} sm={24} md={24} lg={18}>
+            <div>{contextHolder}</div>
             {loading ? (
                 <>
                     <CustomLoader buttonBool={false} />
@@ -481,6 +437,9 @@ const CalculatorScreen = () => {
                                         onSubmit={formProps.handleSubmit}
                                         autoComplete="off"
                                     >
+                                        <ScrollToFieldError
+                                            formProps={formProps}
+                                        />
                                         {showInvoice && (
                                             <ViewInvoice
                                                 onClose={HideInvoice}
@@ -491,6 +450,7 @@ const CalculatorScreen = () => {
                                                     editInvoiceState?.id || ""
                                                 }
                                                 lensPrices={lensPrices}
+                                                messageApi={messageApi}
                                             />
                                         )}
                                         <InvoiceInfo
@@ -799,38 +759,6 @@ const CalculatorScreen = () => {
                                                             <></>
                                                         ) : (
                                                             <>
-                                                                {formProps
-                                                                    ?.values
-                                                                    ?.visionPlan !==
-                                                                    "Private Pay" && (
-                                                                    <LoweredCopay
-                                                                        formProps={
-                                                                            formProps
-                                                                        }
-                                                                        calculatorObj={
-                                                                            calculatorObj &&
-                                                                            calculatorObj
-                                                                        }
-                                                                        setCalValidations={
-                                                                            setCalValidations
-                                                                        }
-                                                                        calValidations={
-                                                                            calValidations
-                                                                        }
-                                                                        data={
-                                                                            calculatorObj?.questions?.find(
-                                                                                (
-                                                                                    item
-                                                                                ) =>
-                                                                                    item.title ===
-                                                                                    formProps
-                                                                                        ?.values
-                                                                                        ?.visionPlan
-                                                                            )
-                                                                                ?.question_permissions
-                                                                        }
-                                                                    />
-                                                                )}
                                                                 <RenderLensFields
                                                                     formProps={
                                                                         formProps
@@ -858,6 +786,49 @@ const CalculatorScreen = () => {
                                                                             ?.question_permissions
                                                                     }
                                                                 />
+                                                            </>
+                                                        )}
+                                                        {formProps?.values
+                                                            ?.isLensBenifit ===
+                                                        LensBenifitAvailableEnum.onlyThisTime ? (
+                                                            <></>
+                                                        ) : (
+                                                            <>
+                                                                {formProps
+                                                                    ?.values
+                                                                    ?.visionPlan !==
+                                                                    "Private Pay" && (
+                                                                    <LoweredCopay
+                                                                        lensPrices={
+                                                                            lensPrices
+                                                                        }
+                                                                        formProps={
+                                                                            formProps
+                                                                        }
+                                                                        calculatorObj={
+                                                                            calculatorObj &&
+                                                                            calculatorObj
+                                                                        }
+                                                                        setCalValidations={
+                                                                            setCalValidations
+                                                                        }
+                                                                        calValidations={
+                                                                            calValidations
+                                                                        }
+                                                                        data={
+                                                                            calculatorObj?.questions?.find(
+                                                                                (
+                                                                                    item
+                                                                                ) =>
+                                                                                    item.title ===
+                                                                                    formProps
+                                                                                        ?.values
+                                                                                        ?.visionPlan
+                                                                            )
+                                                                                ?.question_permissions
+                                                                        }
+                                                                    />
+                                                                )}
                                                             </>
                                                         )}
                                                         <ProtectionPlan

@@ -521,3 +521,43 @@ input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
 }
+
+.ant-message-notice-content{
+    background-color: #00940A !important ;
+    color: white;
+    width: 618px;
+    height: 37px;
+}
+
+.anticon  {
+    display: none !important;
+}
+
+.custom-postion {
+    margin-top: 13.5vh;
+    .ant-message-notice-content{
+        background-color: #00940A !important ;
+        color: white;
+        width: 618px;
+        height: 37px;
+    }
+    
+}
+
+
+.custom-postion-error {
+    margin-top: 13.5vh;
+    .ant-message-notice-content{
+        background-color: red !important ;
+        color: white;
+        width: 618px;
+        height: 37px;
+    }
+    
+}
+.d-block{
+    display: block;
+}
+.d-none{
+    display: none;
+}

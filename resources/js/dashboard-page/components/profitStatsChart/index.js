@@ -4,8 +4,10 @@ import classes from "./styles.module.scss";
 import Axios from "../../../Http";
 import { connect } from "react-redux";
 import dayjs from "dayjs";
+import { message } from "antd";
 
 const ProfitStatsChart = ({ userId, dates }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const { startDate, endDate } = dates;
     const options = getChartOptions();
     const [data, setData] = useState([]);
@@ -43,14 +45,22 @@ const ProfitStatsChart = ({ userId, dates }) => {
             }
         } catch (err) {
             console.log("Error while getting profit stats", err);
+            messageApi.open({
+                type: "error",
+                content: err.response.data.message,
+                duration: 5,
+                className: 'custom-postion-error',
+            });
         }
     };
     useEffect(() => {
+        if (userId == null) return;
         getProfitStats();
-    }, [dates]);
+    }, [dates,userId]);
 
     return (
         <div className={`${classes["container"]} profit-chart`}>
+            <div>{contextHolder}</div>
             <div className={classes["label"]}>Profit Sales</div>
             <Chart
                 options={options}

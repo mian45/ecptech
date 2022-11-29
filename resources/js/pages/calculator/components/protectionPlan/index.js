@@ -111,7 +111,7 @@ const ProtectionPlan = ({
             });
         }
     };
-    const handleInputChange = (e) => {
+    const handlePriceChange = (e) => {
         const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
         if (regix.test(e.target.value)) {
             handleChange(e);
@@ -137,7 +137,6 @@ const ProtectionPlan = ({
                                 active={handleActiveFields()}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleProtectionPlanChange}
                                 value={values?.isProtectionPlan}
                                 id="isProtectionPlan"
@@ -163,7 +162,6 @@ const ProtectionPlan = ({
                                         Please Select
                                     </div>
                                     <Radio.Group
-                                        onBlur={handleBlur}
                                         onChange={
                                             handleProtectionPlanTypeChange
                                         }
@@ -228,7 +226,6 @@ const ProtectionPlan = ({
                                                 Please Select
                                             </div>
                                             <Radio.Group
-                                                onBlur={handleBlur}
                                                 onChange={handleIsPaidClick}
                                                 value={
                                                     values?.isProtectionPlanPaid
@@ -282,18 +279,15 @@ const ProtectionPlan = ({
                                                             className={
                                                                 classes["input"]
                                                             }
-                                                            type={"number"}
-                                                            onBlur={handleBlur}
+                                                            type={"text"}
                                                             onChange={
-                                                                handleChange
+                                                                handlePriceChange
                                                             }
                                                             value={
                                                                 values?.protectionPlanAmount
                                                             }
                                                             id="protectionPlanAmount"
                                                             name="protectionPlanAmount"
-                                                            step={0.01}
-                                                            min={0.0}
                                                         />
                                                     </div>
                                                     <FormikError

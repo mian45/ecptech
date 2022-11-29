@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
@@ -8,13 +8,17 @@ import CustomCheckbox from "../../../../components/customCheckbox";
 import visionIcon from "../../../../../images/calculator/vision.svg";
 import { LowerCopayAmountTypeEnum, LowerCopayTypeEnum } from "../../data/enums";
 import * as Yup from "yup";
+import { GetMappedPayload } from "../../data/validationHelper";
 import {
-    ANTI_REFLECTIVE_PROPERTIES,
-    HIGH_INDEX,
-    PHOTOCHROMIC,
-    POLYCARBONATE,
-    PREMIUM_PROGRESSIVE,
-} from "../../data/constants";
+    getPriceByAntireflective,
+    getPriceByPhotochromicMaterial,
+    getPriceFromDB,
+    GetPrivateAntireflectivePrice,
+    GetPrivateLensFee,
+    GetPrivatePayMaterialPrice,
+    GetPrivatePhotochromicPrice,
+} from "../viewInvoice/helpers/pricesHelper/calculateOtherPlansPrices";
+import { handleCheckboxFalse } from "./helper";
 
 const LoweredCopay = ({
     formProps,
@@ -22,8 +26,10 @@ const LoweredCopay = ({
     setCalValidations,
     calValidations,
     data,
+    lensPrices,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
+    const [amountError, setAmountError] = useState(defaultError);
     const copayDollarAmountVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -33,28 +39,30 @@ const LoweredCopay = ({
         handleChange(e);
         if (
             e?.target?.value === "Yes" &&
-            !data?.find(
-                (ques) => ques.question === "Any copay lowered than standard"
-            ).optional
+            data?.find(
+                (ques) => ques.question == "Any copay lowered than standard"
+            )?.optional === "true"
         ) {
             if (
                 !values?.isCopayPolycarbonate ||
                 !values?.isCopayPhotochromic ||
                 !values?.isCopayHighIndex ||
                 !values?.isCopayAntiReflective ||
-                !values?.isCopayPremiumProgressives
+                !values?.isCopayPremiumProgressives ||
+                !values?.isCopayStandardProgressives ||
+                !values?.isCopayCustomProgressives
             ) {
-                const isCopayPolycarbonate = Yup.mixed().required(
+                const isCopayChecked = Yup.mixed().required(
                     "Minimum 1 sub option is required"
                 );
                 setCalValidations({
                     ...calValidations,
-                    isCopayPolycarbonate,
+                    isCopayChecked,
                 });
             }
         } else if (e?.target?.value === "No") {
             const validations = { ...calValidations };
-            delete validations.isCopayPolycarbonate;
+            delete validations.isCopayChecked;
             delete validations.isCopaypremiumProgressiveAmount;
             delete validations.isCopayAntiReflectiveAmount;
             delete validations.isCopayHighIndexAmount;
@@ -71,9 +79,10 @@ const LoweredCopay = ({
         }
     };
 
-    const handleCopoayCheckChange = (value, key) => {
-        setFieldValue(key, value);
+    const handleCopoayCheckChange = async (value, key) => {
+        await setFieldValue(key, value);
         if (value === true) {
+            await setFieldValue("isCopayChecked", true);
             if (key === "isCopayPolycarbonate") {
                 const isCopayPolycarbonateAmount =
                     Yup.string().required("Option is required");
@@ -125,6 +134,17 @@ const LoweredCopay = ({
                 });
             }
         } else if (value === false) {
+            const isAllFalse = handleCheckboxFalse(values, key, value);
+            if (isAllFalse) {
+                setFieldValue("isCopayChecked", "");
+                const isCopayChecked = Yup.mixed().required(
+                    "Minimum 1 sub option is required"
+                );
+                setCalValidations({
+                    ...calValidations,
+                    isCopayChecked,
+                });
+            }
             if (key === "isCopayPolycarbonate") {
                 const validations = { ...calValidations };
                 delete validations.isCopayPolycarbonateAmount;
@@ -186,6 +206,10 @@ const LoweredCopay = ({
                         }}
                         id="isCopayPolycarbonate"
                         name="isCopayPolycarbonate"
+                        isDisable={
+                            Object.keys(lensPrices)?.length === 0 ||
+                            values?.lensMaterial !== "Polycarbonate"
+                        }
                     />
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.photochromic}
@@ -199,6 +223,11 @@ const LoweredCopay = ({
                         }}
                         id="isCopayPhotochromic"
                         name="isCopayPhotochromic"
+                        isDisable={
+                            !values?.isPhotochromics ||
+                            values?.isPhotochromics === "No" ||
+                            !values?.photochromicsType
+                        }
                     />
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.highIndex}
@@ -209,6 +238,13 @@ const LoweredCopay = ({
                         }}
                         id="isCopayHighIndex"
                         name="isCopayHighIndex"
+                        isDisable={
+                            Object.keys(lensPrices)?.length === 0 ||
+                            !(
+                                values?.lensMaterial?.includes("Hi index") ||
+                                values?.lensMaterial?.includes("Hi Index")
+                            )
+                        }
                     />
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.antiReflective}
@@ -222,6 +258,11 @@ const LoweredCopay = ({
                         }}
                         id="isCopayAntiReflective"
                         name="isCopayAntiReflective"
+                        isDisable={
+                            !values?.isAntireflective ||
+                            values?.isAntireflective === "No" ||
+                            !values?.antireflectiveType
+                        }
                     />
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.standardProgressives}
@@ -237,6 +278,11 @@ const LoweredCopay = ({
                         }}
                         id="isCopayStandardProgressives"
                         name="isCopayStandardProgressives"
+                        isDisable={
+                            Object.keys(lensPrices)?.length === 0 ||
+                            (values?.lensType !== "PAL" &&
+                                values?.lensTypeValue)
+                        }
                     />
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.premiumProgressives}
@@ -252,6 +298,11 @@ const LoweredCopay = ({
                         }}
                         id="isCopayPremiumProgressives"
                         name="isCopayPremiumProgressives"
+                        isDisable={
+                            Object.keys(lensPrices).length === 0 ||
+                            (values?.lensType !== "PAL" &&
+                                values?.lensTypeValue)
+                        }
                     />
                     <CustomCheckbox
                         label={LowerCopayTypeEnum.customProgressives}
@@ -267,9 +318,14 @@ const LoweredCopay = ({
                         }}
                         id="isCopayCustomProgressives"
                         name="isCopayCustomProgressives"
+                        isDisable={
+                            Object.keys(lensPrices).length === 0 ||
+                            (values?.lensType !== "PAL" &&
+                                values?.lensTypeValue)
+                        }
                     />
                 </div>
-                <FormikError name={"isCopayPolycarbonate"} />
+                <FormikError name={"isCopayChecked"} />
                 {values?.isCopayPolycarbonate && (
                     <SpecialCopaySlot
                         title={"polycarbonate"}
@@ -279,6 +335,10 @@ const LoweredCopay = ({
                         setCalValidations={setCalValidations}
                         calValidations={calValidations}
                         data={data}
+                        lensPrices={lensPrices}
+                        calculatorObj={calculatorObj}
+                        setAmountError={setAmountError}
+                        amountError={amountError}
                     />
                 )}
                 {values?.isCopayPhotochromic && (
@@ -290,6 +350,10 @@ const LoweredCopay = ({
                         setCalValidations={setCalValidations}
                         calValidations={calValidations}
                         data={data}
+                        lensPrices={lensPrices}
+                        calculatorObj={calculatorObj}
+                        setAmountError={setAmountError}
+                        amountError={amountError}
                     />
                 )}
                 {values?.isCopayHighIndex && (
@@ -301,6 +365,10 @@ const LoweredCopay = ({
                         setCalValidations={setCalValidations}
                         calValidations={calValidations}
                         data={data}
+                        lensPrices={lensPrices}
+                        calculatorObj={calculatorObj}
+                        setAmountError={setAmountError}
+                        amountError={amountError}
                     />
                 )}
                 {values?.isCopayAntiReflective && (
@@ -312,6 +380,10 @@ const LoweredCopay = ({
                         setCalValidations={setCalValidations}
                         calValidations={calValidations}
                         data={data}
+                        lensPrices={lensPrices}
+                        calculatorObj={calculatorObj}
+                        setAmountError={setAmountError}
+                        amountError={amountError}
                     />
                 )}
                 {values?.isCopayStandardProgressives && (
@@ -323,6 +395,10 @@ const LoweredCopay = ({
                         setCalValidations={setCalValidations}
                         calValidations={calValidations}
                         data={data}
+                        lensPrices={lensPrices}
+                        calculatorObj={calculatorObj}
+                        setAmountError={setAmountError}
+                        amountError={amountError}
                     />
                 )}
                 {values?.isCopayPremiumProgressives && (
@@ -334,6 +410,10 @@ const LoweredCopay = ({
                         setCalValidations={setCalValidations}
                         calValidations={calValidations}
                         data={data}
+                        lensPrices={lensPrices}
+                        calculatorObj={calculatorObj}
+                        setAmountError={setAmountError}
+                        amountError={amountError}
                     />
                 )}
                 {values?.isCopayCustomProgressives && (
@@ -345,6 +425,10 @@ const LoweredCopay = ({
                         setCalValidations={setCalValidations}
                         calValidations={calValidations}
                         data={data}
+                        lensPrices={lensPrices}
+                        calculatorObj={calculatorObj}
+                        setAmountError={setAmountError}
+                        amountError={amountError}
                     />
                 )}
             </>
@@ -368,7 +452,6 @@ const LoweredCopay = ({
                                 active={values?.isloweredCopay}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleLoweredCopayClick}
                                 value={values?.isloweredCopay}
                                 id="isloweredCopay"
@@ -407,17 +490,32 @@ const SpecialCopaySlot = ({
     setCalValidations,
     calValidations,
     data,
+    lensPrices,
+    calculatorObj,
+    amountError,
+    setAmountError,
 }) => {
     const { values, handleChange, handleBlur } = formProps;
-    const [err, setErr] = useState("");
 
     const handleInputChange = (e) => {
-        handleChange(e);
-        const price = getPrice(inputValue);
-        if (e.target.value > price) {
-            setErr("Entered amount is greater than actual amount.");
-        } else {
-            setErr("");
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value) || e.target.value === "") {
+            handleChange(e);
+            const price = getPrice(
+                inputValue,
+                calculatorObj,
+                lensPrices,
+                values
+            );
+            if (e.target.value > price) {
+                setAmountError({
+                    ...amountError,
+                    [inputValue]:
+                        "Entered amount is greater than actual amount.",
+                });
+            } else {
+                setAmountError({ ...amountError, [inputValue]: "" });
+            }
         }
     };
 
@@ -445,7 +543,6 @@ const SpecialCopaySlot = ({
                 title={`${LowerCopayTypeEnum[title]} Lower Copay?`}
             />
             <Radio.Group
-                onBlur={handleBlur}
                 onChange={handleValueChange}
                 value={values[radioValue]}
                 id={radioValue}
@@ -474,39 +571,95 @@ const SpecialCopaySlot = ({
                         <div className={classes["slot-input-label"]}>$</div>
                         <input
                             className={classes["slot-input"]}
-                            type={"number"}
-                            onBlur={handleBlur}
+                            type={"text"}
                             onChange={handleInputChange}
                             value={values[inputValue]}
                             id={inputValue}
                             name={inputValue}
-                            step={0.01}
-                            min={0.0}
                         />
                     </div>
                     <FormikError name={inputValue} />
-                    {err && <div className={classes["error"]}>{err}</div>}
+                    {amountError[inputValue] && (
+                        <div className={classes["error"]}>
+                            {amountError[inputValue]}
+                        </div>
+                    )}
                 </>
             )}
         </>
     );
 };
 
-const getPrice = (value) => {
+const getPrice = (value, calculatorObj, lensPrices, values) => {
+    const data = GetMappedPayload(values);
+    let lensPrice = 0;
+    let materialPrice = 0;
+    let antireflective = 0;
+    let photochromic = 0;
+    if (data?.visionPlan === "Private Pay") {
+        lensPrice = parseFloat(GetPrivateLensFee(calculatorObj, data) || 0);
+        materialPrice = parseFloat(
+            GetPrivatePayMaterialPrice(calculatorObj, data) || 0
+        );
+        antireflective = parseFloat(
+            GetPrivateAntireflectivePrice(
+                calculatorObj,
+                data?.antiReflectiveProperties?.type,
+                data
+            ) || 0
+        );
+        photochromic = parseFloat(
+            GetPrivatePhotochromicPrice(
+                data?.photochromics?.type,
+                calculatorObj,
+                data
+            )
+        );
+    } else {
+        lensPrice = parseFloat(
+            getPriceFromDB(data, calculatorObj, lensPrices)?.lensPrice
+        );
+        materialPrice = parseFloat(
+            getPriceFromDB(data, calculatorObj, lensPrices)?.materialPrice
+        );
+        if (data?.antiReflectiveProperties?.status === "Yes") {
+            const price = getPriceByAntireflective(
+                data?.visionPlan,
+                data?.antiReflectiveProperties?.type
+            );
+            antireflective = parseFloat(price || 0);
+        }
+        if (data?.photochromics?.status === "Yes") {
+            const price = getPriceByPhotochromicMaterial(
+                data?.visionPlan,
+                data?.photochromics?.type
+            );
+            photochromic = parseFloat(price || 0);
+        }
+    }
     switch (value) {
         case "copayStandardProgressiveAmount":
-            return PREMIUM_PROGRESSIVE;
+            return lensPrice;
         case "copayCustomProgressiveAmount":
-            return PREMIUM_PROGRESSIVE;
+            return lensPrice;
         case "copaypremiumProgressiveAmount":
-            return PREMIUM_PROGRESSIVE;
+            return lensPrice;
         case "copayAntiReflectiveAmount":
-            return ANTI_REFLECTIVE_PROPERTIES;
+            return antireflective;
         case "copayHighIndexAmount":
-            return HIGH_INDEX;
+            return materialPrice;
         case "copayPhotochromicAmount":
-            return PHOTOCHROMIC;
+            return photochromic;
         case "copayPolycarbonateAmount":
-            return POLYCARBONATE;
+            return materialPrice;
     }
+};
+const defaultError = {
+    copayCustomProgressiveAmount: "",
+    copaypremiumProgressiveAmount: "",
+    copayStandardProgressiveAmount: "",
+    copayAntiReflectiveAmount: "",
+    copayHighIndexAmount: "",
+    copayPhotochromicAmount: "",
+    copayPolycarbonateAmount: "",
 };

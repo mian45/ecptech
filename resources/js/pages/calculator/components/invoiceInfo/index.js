@@ -19,7 +19,7 @@ const InvoiceInfo = ({
     const [staff, setStaff] = useState([]);
     const [staffData, setStaffData] = useState([]);
     useEffect(() => {
-        if (!userId) return;
+        if (userId == null) return;
         const getStaffList = async () => {
             try {
                 let clientId = userId;
@@ -58,7 +58,6 @@ const InvoiceInfo = ({
                     placeholder="John Doe Sunglasses"
                     options={getOptions(userInfo)}
                     className={classes["dropdown-styles"]}
-                    onBlur={handleBlur}
                     onChange={(value) => setFieldValue("invoiceName", value)}
                     value={values?.invoiceName}
                     id="invoiceName"
@@ -71,7 +70,6 @@ const InvoiceInfo = ({
                 <Select
                     options={staffData}
                     placeholder="Select Staff Name"
-                    onBlur={handleBlur}
                     onChange={handleStaffChange}
                     value={
                         values.staffName && {

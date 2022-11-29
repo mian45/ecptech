@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { Formik, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import AuthService from "../../services";
-import { Col, Row } from "antd";
+import { Col, Row, message } from "antd";
 const defaultValues = {
     email: "",
     password: "",
@@ -12,6 +12,7 @@ const defaultValues = {
 };
 
 const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const [loginInitialValues, setInitialValues] = useState(defaultValues);
     const [isEdit, setIsEdit] = useState(false);
 
@@ -40,9 +41,10 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
         const staffObject = {
             email: values.email,
             password: values.password,
+            password_confirmation: values.confirmPassword,
             id: staffUser.id,
         };
-        dispatch(AuthService.updateStaffLogin(staffObject));
+        dispatch(AuthService.updateStaffLogin(staffObject, messageApi));
     };
 
     const handleClick = (values) => {
@@ -130,10 +132,11 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
             }),
         confirmPassword: Yup.string()
             .oneOf([Yup.ref("password"), null], "Passwords don't match")
-            .required("Confirm Password is required"),
+            .required("Please enter a valid password"),
     });
     return (
         <div className={classes["container"]}>
+            <div>{contextHolder}</div>
             <div className={classes["title"]}>Staff Login</div>
             <Formik
                 initialValues={loginInitialValues}
@@ -141,7 +144,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                 onSubmit={handleClick}
                 enableReinitialize={true}
             >
-                {({ values, handleChange, handleSubmit, handleBlur }) => {
+                {({ values, handleChange, handleSubmit }) => {
                     return (
                         <form onSubmit={handleSubmit} autoComplete="off">
                             <Row
@@ -165,7 +168,6 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         className={classes["input"]}
                                         placeholder="Enter email"
                                         onChange={handleChange}
-                                        onBlur={handleBlur}
                                         disabled={!isEdit && staffUser?.id}
                                     />
                                 </Col>
@@ -189,7 +191,6 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                                 : "Enter Password"
                                         }
                                         onChange={handleChange}
-                                        onBlur={handleBlur}
                                         disabled={!isEdit && staffUser?.id}
                                     />
                                 </Col>
@@ -239,7 +240,6 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                         name="confirmPassword"
                                         placeholder="Confirm Password"
                                         onChange={handleChange}
-                                        onBlur={handleBlur}
                                         disabled={!isEdit && staffUser?.id}
                                     />
                                 </Col>

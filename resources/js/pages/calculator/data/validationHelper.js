@@ -63,12 +63,6 @@ export const CreateCalculatorValidations = (data) => {
         );
     }
     if (
-        data?.find((ques) => ques.question == "Lens Type")?.optional === "true"
-    ) {
-        validationObject.lensTypeValue =
-            Yup.string().required("Option is required");
-    }
-    if (
         data?.find((ques) => ques.question == "Lens Material")?.optional ===
         "true"
     ) {
@@ -112,6 +106,15 @@ export const CreateCalculatorValidations = (data) => {
     if (shipping?.optional === "true") {
         validationObject.shipping = Yup.string().required(
             "Add Shipping is required"
+        );
+    }
+    const discount = data?.find((ques) => ques.question == "Discount");
+    if (discount?.optional === "true") {
+        validationObject.discountType = Yup.string().required(
+            "Discount is required"
+        );
+        validationObject.discountValue = Yup.string().required(
+            "Discount Value is required"
         );
     }
     return validationObject;
@@ -213,6 +216,8 @@ export const GetMappedPayload = (data) => {
         discount: {
             type: data?.discountType,
             value: data?.discountValue,
+            amountType: data?.discountAmountType,
+            discountId: data?.discountId,
         },
     };
 };
@@ -296,5 +301,7 @@ export const mappedEditValues = (data) => {
         shippingAmount: userState?.shipping?.price || "",
         discountType: userState?.discount?.type || "",
         discountValue: userState?.discount?.value || "",
+        discountAmountType: userState?.discount?.amountType || "percentage",
+        discountId: userState?.discount?.discountId || "",
     };
 };

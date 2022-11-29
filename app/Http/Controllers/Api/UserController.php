@@ -67,7 +67,7 @@ class UserController extends Controller
         if($result){
             return response()->json([                
                 "success" => true,
-                "message" => "Profile updated successfully.",
+                "message" => "Profile updated successfully",
                 "data" => [
                     'logo' => config('app.url').'/'.'uploads/'.$user_id.'/'.$client->logo,
                     'business_name' => $client->business_name,
@@ -76,7 +76,7 @@ class UserController extends Controller
                 ]                
             ]);
         } else {
-            return response()->json(['error'=> 'Something Went Wrong.'], 401);
+            return response()->json(['error'=> 'Something went wrong!'], 401);
         }
     }
 
@@ -104,7 +104,7 @@ class UserController extends Controller
         $client_card->save();
 
         if($client_card){
-            return $this->sendResponse([], 'Card Added Succesfully');
+            return $this->sendResponse([], 'Card added successfully');
         }
 
         return $this->sendError('Something went wrong!');
@@ -119,6 +119,6 @@ class UserController extends Controller
             return $this->sendResponse($client_card, 'Card get successfully');
         }
 
-        return $this->sendError('Discount not found');
+        return $this->sendError('Card not found');
     }
 }

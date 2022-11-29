@@ -76,7 +76,7 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen 
     }, []);
 
     useEffect(() => {
-        if (!userId) return;
+        if (userId == null) return;
 
         getEyePrescriprion();
     }, [userId]);

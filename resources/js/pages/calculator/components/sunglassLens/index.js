@@ -29,16 +29,16 @@ const SunglassLens = ({
         (item) => item?.title === "Polarized"
     );
     const isSolidTintActive = addons?.some(
-        (item) => item.title === "Solid Tint"
+        (item) => item?.title === "Solid Tint"
     );
     const isGradientTintActive = addons?.some(
-        (item) => item.title === "Gradient Tint"
+        (item) => item?.title === "Gradient Tint"
     );
     const isSkyTypeActive = addons?.some(
-        (item) => item.title === "Ski Type Mirror"
+        (item) => item?.title === "Ski Type Mirror"
     );
     const isSolidTypeActive = addons?.some(
-        (item) => item.title === "Solid/Single Gradient"
+        (item) => item?.title === "Solid/Single Gradient Mirror"
     );
 
     const handleIsSunglassesLensChange = (e) => {
@@ -162,7 +162,6 @@ const SunglassLens = ({
             <>
                 <div className={classes["label"]}>Select Sunglass Lens</div>
                 <Radio.Group
-                    onBlur={handleBlur}
                     onChange={handleSunGlassesLensTypeChange}
                     value={values?.sunglassesType}
                     id="sunglassesType"
@@ -213,7 +212,6 @@ const SunglassLens = ({
                     <>
                         <div className={classes["label"]}>Select Tint Lens</div>
                         <Radio.Group
-                            onBlur={handleBlur}
                             onChange={handleChange}
                             value={values?.tintType}
                             id="tintType"
@@ -261,7 +259,6 @@ const SunglassLens = ({
             <>
                 <CalculatorHeading title="Mirror Coating?" />
                 <Radio.Group
-                    onBlur={handleBlur}
                     onChange={handleMirrirCoatingChange}
                     value={values?.isMirrorCoating}
                     id="isMirrorCoating"
@@ -295,7 +292,9 @@ const SunglassLens = ({
         const getSolidSingle = () => {
             return calculatorObj?.addons
                 ?.find((item) => item?.title === "SunGlasses")
-                ?.addons?.find((val) => val?.title === "Solid/Single Gradient");
+                ?.addons?.find(
+                    (val) => val?.title === "Solid/Single Gradient Mirror"
+                );
         };
         return (
             <>
@@ -303,7 +302,6 @@ const SunglassLens = ({
                     <>
                         <div className={classes["label"]}>Please Select</div>
                         <Radio.Group
-                            onBlur={handleBlur}
                             onChange={handleChange}
                             value={values?.mirrorCoatingType}
                             id="mirrorCoatingType"
@@ -364,7 +362,6 @@ const SunglassLens = ({
                                 active={handleActiveState()}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleIsSunglassesLensChange}
                                 value={values?.isSunglasses}
                                 id="isSunglasses"

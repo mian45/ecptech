@@ -41,11 +41,14 @@ const VisionBenifits = ({
         )?.visibility;
 
     const handleMaterialCopayChange = (e) => {
-        handleChange(e);
-        if (e?.target?.value > 50) {
-            setErr("Entered amount is greater than $50");
-        } else {
-            setErr("");
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value) || e.target.value === "") {
+            handleChange(e);
+            if (e?.target?.value > 50) {
+                setErr("Entered amount is greater than $50");
+            } else {
+                setErr("");
+            }
         }
     };
     const handleFrameBenifitAvailableChange = (event) => {
@@ -103,7 +106,9 @@ const VisionBenifits = ({
             const validations = { ...calValidations };
             delete validations.isloweredCopay;
             delete validations.lensType;
-            delete validations.lensTypeValue;
+            if (values.lensType) {
+                delete validations.lensTypeValue;
+            }
             delete validations.lensMaterial;
             delete validations.isPhotochromics;
             delete validations.isSunglasses;
@@ -121,7 +126,7 @@ const VisionBenifits = ({
                 setFieldValue("benifitType", "");
             }
             setPrivatePayError("");
-            const validationObject = GetValidations(data, false);
+            const validationObject = GetValidations(data, false, values);
             setCalValidations({
                 ...calValidations,
                 ...validationObject,
@@ -147,7 +152,6 @@ const VisionBenifits = ({
                                 active={values?.isFrameBenifit}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleFrameBenifitAvailableChange}
                                 value={values?.isFrameBenifit}
                                 id="isFrameBenifit"
@@ -199,7 +203,6 @@ const VisionBenifits = ({
                                 active={values?.isLensBenifit}
                             />
                             <Radio.Group
-                                onBlur={handleBlur}
                                 onChange={handleLensBenifitsAvailableChange}
                                 value={values?.isLensBenifit}
                                 id="isLensBenifit"
@@ -254,14 +257,11 @@ const VisionBenifits = ({
                                 <div className={classes["input-label"]}>$</div>
                                 <input
                                     className={classes["input"]}
-                                    type={"number"}
-                                    onBlur={handleBlur}
+                                    type={"text"}
                                     onChange={handleMaterialCopayChange}
                                     value={values?.materialCopay}
                                     id="materialCopay"
                                     name="materialCopay"
-                                    step={0.01}
-                                    min={0.0}
                                 />
                             </div>
                             {err && (
@@ -278,7 +278,7 @@ const VisionBenifits = ({
 
 export default VisionBenifits;
 
-export const GetValidations = (data, isLoweredCopay) => {
+export const GetValidations = (data, isLoweredCopay, values) => {
     const validationObject = {};
     if (
         data?.find(
@@ -296,11 +296,9 @@ export const GetValidations = (data, isLoweredCopay) => {
             "Lens type is required"
         );
     }
-    if (
-        data?.find((ques) => ques.question === "Lens Type")?.optional === "true"
-    ) {
-        validationObject.lensTypeValue =
-            Yup.string().required("Option is required");
+    validationObject.lensTypeValue = Yup.string().required("Brand is required");
+    if (!values?.lensType) {
+        delete validationObject.lensTypeValue;
     }
     if (
         data?.find((ques) => ques.question === "Lens Material")?.optional ===
@@ -333,6 +331,12 @@ export const GetValidations = (data, isLoweredCopay) => {
         validationObject.isAntireflective = Yup.string().required(
             "Antireflective is required"
         );
+    }
+    validationObject.antireflectiveType = Yup.string().required(
+        "Antireflective type is required"
+    );
+    if (!values?.isAntireflective || values?.isAntireflective === "No") {
+        delete validationObject.antireflectiveType;
     }
     return validationObject;
 };

@@ -7,14 +7,18 @@ import editIcon from "../../../../../../../images/edit.png";
 import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-import { Row, Col } from 'antd'
+import { Row, Col, message } from "antd";
 const LensesType = ({ userId }) => {
+    const [messageApi, contextHolder] = message.useMessage();
+    const [lensesMaterialAddApi, lensesMaterialAddHolder] =
+        message.useMessage();
     const [isBrands, setIsBrands] = useState(false);
     const [lensesList, setLensesList] = useState([]);
     const [selectedLensType, setSelectedLensType] = useState("");
     const [selectedRow, setSelectedRow] = useState("");
 
     useEffect(() => {
+        if (userId == null) return;
         const getLenses = async () => {
             try {
                 const res = await Axios.get(
@@ -26,10 +30,16 @@ const LensesType = ({ userId }) => {
                 setLensesList(res?.data?.data || []);
             } catch (err) {
                 console.log("error while get lenses");
+                messageApi.open({
+                    type: "error",
+                    content: err.response.data.message,
+                    duration: 5,
+                    className: 'custom-postion-error',
+                });
             }
         };
         getLenses();
-    }, []);
+    }, [userId]);
 
     const submitLensesData = async () => {
         try {
@@ -37,12 +47,24 @@ const LensesType = ({ userId }) => {
                 user_id: userId,
                 data: lensesList,
             };
-            await Axios.post(
+            const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/update-lense-setting`,
                 payload
             );
+            messageApi.open({
+                type: "success",
+                content: res.data.message,
+                duration: 5,
+                className: 'custom-postion',
+            });
         } catch (err) {
             console.log("error while update lenses");
+            messageApi.open({
+                type: "error",
+                content: err.response.data.message,
+                duration: 5,
+                className: 'custom-postion-error',
+            });
         }
     };
 
@@ -56,8 +78,9 @@ const LensesType = ({ userId }) => {
     };
     return (
         <>
-            <Row className={classes["container"]} >
-                <Col xs={24} md={9} className={classes["left-container"]} >
+            <Row className={classes["container"]}>
+                <div>{contextHolder}</div>
+                <Col xs={24} md={9} className={classes["left-container"]}>
                     {isBrands ? (
                         <LensesTypeBrandsList
                             onBackClick={onGoBackClick}
@@ -89,7 +112,8 @@ const LensesType = ({ userId }) => {
                         onClick={submitLensesData}
                     >
                         Save
-                    </button></Col>
+                    </button>
+                </Col>
             </Row>
         </>
     );
@@ -196,10 +220,12 @@ export const CollectionSlot = ({
                     className={classes["collection-edit-container"]}
                     id={collection?.title}
                 >
-                    <Col xs={24} className={classes["collection-edit-header-slot"]}>
-                        <Row className={classes['row-box']}>
-                            <Col xs={2}
-                            >
+                    <Col
+                        xs={24}
+                        className={classes["collection-edit-header-slot"]}
+                    >
+                        <Row className={classes["row-box"]}>
+                            <Col xs={2}>
                                 <CustomCheckbox
                                     label={""}
                                     defaultChecked={
@@ -211,18 +237,23 @@ export const CollectionSlot = ({
                                         handleCheckbox(value, collection);
                                     }}
                                     containerClass={classes["checkbox"]}
-                                /></Col>
-                            <Col xs={17} className={classes["edit-content-title"]}>
+                                />
+                            </Col>
+                            <Col
+                                xs={17}
+                                className={classes["edit-content-title"]}
+                            >
                                 {collection?.title || ""}
                             </Col>
 
-                            <Col xs={3} className={classes['edit-container']}>
+                            <Col xs={3} className={classes["edit-container"]}>
                                 <img
                                     src={tickIcon}
                                     alt={"icon"}
                                     className={classes["tick-icon"]}
                                     onClick={() => setIsEdit(false)}
-                                /></Col>
+                                />
+                            </Col>
                         </Row>
                     </Col>
                     <Row className={classes["edit-slot-sub-wrapper"]}>
@@ -271,7 +302,7 @@ export const CollectionSlot = ({
                     className={classes["collection-show-container"]}
                     id={collection?.title}
                 >
-                    <Col xs={18} >
+                    <Col xs={18}>
                         <Row
                             className={
                                 classes["collection-show-content-container"]
@@ -293,11 +324,19 @@ export const CollectionSlot = ({
                             </Col>
                             <Col xs={18}>
                                 <Row className={classes["collection-content"]}>
-                                    <Col xs={24} className={classes["show-content-title"]}>
+                                    <Col
+                                        xs={24}
+                                        className={
+                                            classes["show-content-title"]
+                                        }
+                                    >
                                         {collection?.title || ""}
                                     </Col>
-                                    <Col xs={24}
-                                        className={classes["show-content-heading"]}
+                                    <Col
+                                        xs={24}
+                                        className={
+                                            classes["show-content-heading"]
+                                        }
                                     >
                                         Display Name:{" "}
                                         <span
@@ -308,8 +347,11 @@ export const CollectionSlot = ({
                                             {collection?.display_name || "---"}
                                         </span>
                                     </Col>
-                                    <Col xs={24}
-                                        className={classes["show-content-heading"]}
+                                    <Col
+                                        xs={24}
+                                        className={
+                                            classes["show-content-heading"]
+                                        }
                                     >
                                         Retail Amount:{" "}
                                         <span
@@ -324,13 +366,14 @@ export const CollectionSlot = ({
                             </Col>
                         </Row>
                     </Col>
-                    <Col xs={6} className={classes['edit-container']}>
+                    <Col xs={6} className={classes["edit-container"]}>
                         <img
                             src={editIcon}
                             alt={"icon"}
                             className={classes["edit-icon"]}
                             onClick={() => setIsEdit(true)}
-                        /></Col>
+                        />
+                    </Col>
                 </Row>
             )}
         </>
