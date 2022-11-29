@@ -137,6 +137,13 @@ const LoweredCopay = ({
             const isAllFalse = handleCheckboxFalse(values, key, value);
             if (isAllFalse) {
                 setFieldValue("isCopayChecked", "");
+                const isCopayChecked = Yup.mixed().required(
+                    "Minimum 1 sub option is required"
+                );
+                setCalValidations({
+                    ...calValidations,
+                    isCopayChecked,
+                });
             }
             if (key === "isCopayPolycarbonate") {
                 const validations = { ...calValidations };
