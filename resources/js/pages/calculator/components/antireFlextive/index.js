@@ -15,7 +15,7 @@ const AntireFlextive = ({
     calValidations,
     data,
 }) => {
-    const { values, handleChange, handleBlur } = formProps;
+    const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const antireflectiveVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -42,7 +42,7 @@ const AntireFlextive = ({
         }
     };
 
-    const handleAntireflectiveChange = (e) => {
+    const handleAntireflectiveChange = async (e) => {
         handleChange(e);
         if (
             (e?.target?.value === "Yes" &&
@@ -59,8 +59,13 @@ const AntireFlextive = ({
                 antireflectiveType,
             });
         } else if (e?.target?.value === "No") {
+            await setFieldValue("isCopayAntiReflective", null);
+            await setFieldValue("isCopayAntiReflectiveAmount", "");
+            await setFieldValue("copayAntiReflectiveAmount", "");
             const validations = { ...calValidations };
             delete validations.antireflectiveType;
+            delete validations.isCopayAntiReflectiveAmount;
+            delete validations.copayAntiReflectiveAmount;
             setCalValidations({
                 ...validations,
             });

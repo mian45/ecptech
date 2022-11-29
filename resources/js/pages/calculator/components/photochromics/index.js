@@ -14,7 +14,7 @@ const Photochromics = ({
     calValidations,
     data,
 }) => {
-    const { values, handleChange, handleBlur } = formProps;
+    const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const photochromicsVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -41,7 +41,7 @@ const Photochromics = ({
         }
     };
 
-    const handlePhotochromicsChange = (e) => {
+    const handlePhotochromicsChange = async (e) => {
         handleChange(e);
         if (
             e?.target?.value === "Yes" &&
@@ -55,7 +55,12 @@ const Photochromics = ({
                 photochromicsType,
             });
         } else if (e?.target?.value === "No") {
+            await setFieldValue("isCopayPhotochromic", null);
+            await setFieldValue("isCopayPhotochromicAmount", "");
+            await setFieldValue("copayPhotochromicAmount", "");
             const validations = { ...calValidations };
+            delete validations.isCopayPhotochromicAmount;
+            delete validations.copayPhotochromicAmount;
             delete validations.photochromicsType;
             setCalValidations({
                 ...validations,
