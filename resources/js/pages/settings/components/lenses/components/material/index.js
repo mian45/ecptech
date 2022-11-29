@@ -8,6 +8,7 @@ const MaterialSettings = ({ userId }) => {
     const [lensesMaterialApi, lensesMaterialHolder] = message.useMessage();
     let [materials, setMaterials] = useState([]);
     useEffect(() => {
+        if (userId == null) return;
         const getMaterialSettings = async () => {
             try {
                 const res = await Axios.get(

@@ -60,9 +60,11 @@ const EmailSetting = (props) => {
         return `editor-alignment-${alignment}`;
     };
     useEffect(() => {
+        if (props.userID == null) return;
         getTimeZones();
-    }, []);
+    }, [userId]);
     useEffect(() => {
+        if (props.userID == null) return;
         getReminder();
     }, [props.userID]);
     const getTimeZones = () => {

@@ -54,8 +54,9 @@ const ProfitStatsChart = ({ userId, dates }) => {
         }
     };
     useEffect(() => {
+        if (userId == null) return;
         getProfitStats();
-    }, [dates]);
+    }, [dates,userId]);
 
     return (
         <div className={`${classes["container"]} profit-chart`}>
