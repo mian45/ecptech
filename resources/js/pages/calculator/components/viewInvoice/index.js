@@ -31,7 +31,10 @@ import { BenifitTypeEnums } from "../../data/initialValues";
 import DetailsList from "./components/detailsList/detailsList";
 import { getPriceFromDB } from "./helpers/getPriceFromDB";
 import { Col, Modal, Row } from "antd";
-import { CalculateTotalPrice } from "./helpers/pricesHelper/calculateTotalPrice";
+import {
+    CalculateTotalPrice,
+    CalculateWithTaxesTotalPrice,
+} from "./helpers/pricesHelper/calculateTotalPrice";
 import UseWindowSize from "../../../../hooks/windowResize";
 
 const ViewInvoice = ({
@@ -89,7 +92,13 @@ const ViewInvoice = ({
             dob: receipt?.userInfo?.dob,
             email: receipt?.userInfo?.email,
             phone: receipt?.userInfo?.phoneNo,
-            amount: calculateTotalDue(),
+            amount: (
+                CalculateWithTaxesTotalPrice(
+                    receipt?.values,
+                    calculatorObj,
+                    lensPrices
+                ) || 0
+            ).toFixed(2),
             vpState: calculatorObj,
             userState: receipt?.values,
         };
@@ -109,7 +118,13 @@ const ViewInvoice = ({
             userId: clientId,
             staffId: receipt?.values?.staffId,
             invoiceName: receipt?.values?.invoiceName,
-            amount: calculateTotalDue(),
+            amount: (
+                CalculateWithTaxesTotalPrice(
+                    receipt?.values,
+                    calculatorObj,
+                    lensPrices
+                ) || 0
+            ).toFixed(2),
             vpState: calculatorObj,
             userState: receipt?.values,
         };
