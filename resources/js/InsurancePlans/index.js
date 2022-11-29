@@ -20,6 +20,7 @@ const InsurancePlans = ({ userId }) => {
     // to fetch data from api
 
     React.useEffect(() => {
+        if (userId == null) return;
         setLoading(true);
         axios
             .get(process.env.MIX_REACT_APP_URL + "/api/get-client-vision-plans")
@@ -37,7 +38,7 @@ const InsurancePlans = ({ userId }) => {
                     className: 'custom-postion-error',
                 });
             });
-    }, []);
+    }, [userId]);
 
     //for toggle switch
 

@@ -11,7 +11,7 @@ const StaffListTable = ({ userId }) => {
     const [messageApi, contextHolder] = message.useMessage();
 
     useEffect(() => {
-        if (!userId) return;
+        if (userId == null) return;
         const getStaffList = async () => {
             try {
                 const invoiceData = {

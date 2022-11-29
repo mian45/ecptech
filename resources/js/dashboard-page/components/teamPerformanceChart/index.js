@@ -5,7 +5,7 @@ import Axios from "../../../Http";
 import { connect } from "react-redux";
 import { message } from "antd";
 
-const TeamPerformanceChart = (userId) => {
+const TeamPerformanceChart = ({userId}) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [points, setPoints] = useState({
         current: [],
@@ -16,7 +16,7 @@ const TeamPerformanceChart = (userId) => {
     const options = getChartOptions(points);
 
     useEffect(() => {
-        if (!userId) return;
+        if (userId == null) return;
         const getStats = async () => {
             try {
                 const payload = {

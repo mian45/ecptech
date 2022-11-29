@@ -21,6 +21,7 @@ const ShippingSettings = ({ userId }) => {
     const [deleteShippingId, setDeleteShippingId] = useState(0);
     let [shippingLoading, setShippingLoading] = useState(false);
     useEffect(() => {
+        if (userId == null) return;
         const getShipping = async () => {
             setShippingLoading(true);
             try {

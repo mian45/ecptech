@@ -18,6 +18,7 @@ const LensesType = ({ userId }) => {
     const [selectedRow, setSelectedRow] = useState("");
 
     useEffect(() => {
+        if (userId == null) return;
         const getLenses = async () => {
             try {
                 const res = await Axios.get(

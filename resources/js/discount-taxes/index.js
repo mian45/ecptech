@@ -42,6 +42,7 @@ const DiscountTaxes = (props) => {
     const [taxButtonLoader, setTaxButtonLoader] = useState(false);
 
     useEffect(() => {
+        if (props.userID == null) return;
         getState();
         getDiscount();
         getTaxes();

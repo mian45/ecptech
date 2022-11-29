@@ -16,7 +16,7 @@ const AddStaffMember = ({ userId }) => {
     const [isHover, setIsHover] = useState(false);
 
     useEffect(() => {
-        if (!userId) return;
+        if (userId == null) return;
         const getAllStaff = async () => {
             try {
                 const payload = { userId: userId };

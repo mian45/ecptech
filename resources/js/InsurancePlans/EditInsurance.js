@@ -20,6 +20,7 @@ function EditInsurance({ userId }) {
 
     //for editing
     React.useEffect(() => {
+        if (userId == null) return;
         setLoading(true);
         setVisionId(params?.id);
 
@@ -41,7 +42,7 @@ function EditInsurance({ userId }) {
                     className: 'custom-postion-error',
                 });
             });
-    }, []);
+    }, [userId]);
 
     //for toggle switch
 

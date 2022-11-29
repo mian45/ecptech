@@ -17,7 +17,7 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
     const [invoiceStats, setInvoiceStats] = useState([]);
     const [summaryStats, setSummaryStats] = useState([]);
     useEffect(() => {
-        if (!userId) return;
+        if (userId == null) return;
         const getInvoiceStats = async () => {
             try {
                 const invoiceData = {
@@ -46,7 +46,7 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
     }, [apiDates, userId]);
 
     useEffect(() => {
-        if (!userId) return;
+        if (userId == null) return;
         const getSummaryStats = async () => {
             try {
                 const invoiceData = {
