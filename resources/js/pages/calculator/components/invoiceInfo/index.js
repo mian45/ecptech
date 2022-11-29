@@ -19,7 +19,7 @@ const InvoiceInfo = ({
     const [staff, setStaff] = useState([]);
     const [staffData, setStaffData] = useState([]);
     useEffect(() => {
-        if (!userId) return;
+        if (userId == null) return;
         const getStaffList = async () => {
             try {
                 let clientId = userId;

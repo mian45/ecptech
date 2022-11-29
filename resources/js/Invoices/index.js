@@ -21,7 +21,7 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
     const history = useHistory();
 
     useEffect(() => {
-        if (!userId) return;
+        if (userId == null) return;
         const getAllInvoices = async () => {
             setLoading(true);
             let clientId = userId;

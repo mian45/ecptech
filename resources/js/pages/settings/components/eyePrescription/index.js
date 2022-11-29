@@ -25,6 +25,7 @@ const EyePrescription = ({ userId }) => {
     }, [cylError, sphError]);
 
     useEffect(() => {
+        if (userId == null) return;
         const getEyePrescriptionDetails = async () => {
             try {
                 setLoading(true);

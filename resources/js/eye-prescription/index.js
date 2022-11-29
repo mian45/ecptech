@@ -102,12 +102,13 @@ const EyePrescription = (props) => {
     };
 
     const addEyePrescriptions = async () => {
+
         try {
             setButtonLoader(true)
             setSaveState(true);
             var data = {
                 eye_prescriptions: updateData,
-                user_id: props.userID,
+                user_id: props.userId,
             };
             const res = await Axios.post(
                 process.env.MIX_REACT_APP_URL + "/api/eye-prescriptions",
@@ -124,7 +125,7 @@ const EyePrescription = (props) => {
             setSaveState(true);
             const res = await Axios.get(
                 process.env.MIX_REACT_APP_URL +
-                    `/api/prescriptions?user_id=${props.userID} `
+                    `/api/prescriptions?user_id=${props.userId} `
             );
             if (res.data.data.length > 0) {
                 let newState = [...showData];
@@ -147,8 +148,9 @@ const EyePrescription = (props) => {
         }
     };
     useEffect(() => {
+        if (props.userId == null) return;
         getEyePrescriptions();
-    }, []);
+    }, [props.userId]);
     return (
         loading == true ? 
                 <CustomLoader buttonBool={false}/>  
@@ -425,6 +427,6 @@ const EyePrescription = (props) => {
 };
 
 const mapStateToProps = (state) => ({
-    userID: state.Auth.user?.id,
+    userId: state.Auth.user?.id,
 });
 export default connect(mapStateToProps)(EyePrescription);
