@@ -33,11 +33,12 @@ import {
 import backArrow from "../../../../../images/black-arrow.svg";
 import CustomLoader from "../../../../components/customLoader";
 import CustomDiscount from "../customDiscount";
-import { Col } from "antd";
+import { Col, message } from "antd";
 import { ScrollToFieldError } from "./helpers/scrollToFieldError";
 
 const CalculatorScreen = () => {
     const history = useHistory();
+    const [messageApi, contextHolder] = message.useMessage();
     const [validationsList, setValidationsList] = useState(null);
     const [defaultValues, setDefaultValues] = useState(null);
     const [showInvoice, setShowInvoice] = useState(false);
@@ -366,6 +367,8 @@ const CalculatorScreen = () => {
                     formProps={formProps}
                     calculatorObj={calculatorObj && calculatorObj}
                     getBaseValues={getBaseValues}
+                    setCalValidations={setCalValidations}
+                    calValidations={calValidations}
                 />
                 <Photochromics
                     formProps={formProps}
@@ -408,6 +411,7 @@ const CalculatorScreen = () => {
     };
     return (
         <Col className={classes["container"]} sm={24} md={24} lg={18}>
+            <div>{contextHolder}</div>
             {loading ? (
                 <>
                     <CustomLoader buttonBool={false} />
@@ -446,6 +450,7 @@ const CalculatorScreen = () => {
                                                     editInvoiceState?.id || ""
                                                 }
                                                 lensPrices={lensPrices}
+                                                messageApi={messageApi}
                                             />
                                         )}
                                         <InvoiceInfo

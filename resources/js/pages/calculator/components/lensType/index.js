@@ -61,6 +61,24 @@ const LensType = ({
     };
     const getBrandByLens = async (e) => {
         try {
+            if (e?.target?.value !== "PAL") {
+                delete calValidations.isCopaypremiumProgressiveAmount;
+                delete calValidations.copaypremiumProgressiveAmount;
+                delete calValidations.isCopayStandardProgressiveAmount;
+                delete calValidations.copayStandardProgressiveAmount;
+                delete calValidations.isCopayCustomProgressiveAmount;
+                delete calValidations.copayCustomProgressiveAmount;
+
+                await setFieldValue("isCopayPremiumProgressives", null);
+                await setFieldValue("isCopaypremiumProgressiveAmount", "");
+                await setFieldValue("copaypremiumProgressiveAmount", "");
+                await setFieldValue("isCopayStandardProgressives", null);
+                await setFieldValue("isCopayStandardProgressiveAmount", "");
+                await setFieldValue("copayStandardProgressiveAmount", "");
+                await setFieldValue("isCopayCustomProgressives", null);
+                await setFieldValue("isCopayCustomProgressiveAmount", "");
+                await setFieldValue("copayCustomProgressiveAmount", "");
+            }
             const lensTypeValue = Yup.string().required("Brand is required");
             setCalValidations({
                 ...calValidations,
@@ -164,7 +182,9 @@ const LensType = ({
             setShowInvoiceAlert(true);
         }
         if (!collection?.price && parsedInvoiceData) {
-            setError("The Retail Price for this brand is not added from the settings. Are you sure you want to continue?");
+            setError(
+                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            );
         }
     };
 
@@ -357,7 +377,7 @@ const LensType = ({
                                                         <CustomRadio
                                                             headClass={
                                                                 classes[
-                                                                "radio-margin"
+                                                                    "radio-margin"
                                                                 ]
                                                             }
                                                             key={index}

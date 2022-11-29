@@ -30,7 +30,7 @@ import InPackPrices from "./components/inPackPrices";
 import { BenifitTypeEnums } from "../../data/initialValues";
 import DetailsList from "./components/detailsList/detailsList";
 import { getPriceFromDB } from "./helpers/getPriceFromDB";
-import { Col, Modal, Row } from "antd";
+import { Col, Modal, Row, message } from "antd";
 import { CalculateTotalPrice } from "./helpers/pricesHelper/calculateTotalPrice";
 import UseWindowSize from "../../../../hooks/windowResize";
 
@@ -45,6 +45,7 @@ const ViewInvoice = ({
     lensPrices,
     clientUserId,
     userRole,
+    messageApi,
 }) => {
     const history = useHistory();
     const [receipt, setReceipt] = useState(null);
@@ -71,6 +72,13 @@ const ViewInvoice = ({
 
             history.push(INVOICES_ROUTE);
         } catch (err) {
+            onClose();
+            messageApi.open({
+                type: "error",
+                content: err.response.data.message,
+                duration: 5,
+                className: "custom-postion-error",
+            });
             console.log("error while save Invoice");
         }
     };
@@ -93,10 +101,16 @@ const ViewInvoice = ({
             vpState: calculatorObj,
             userState: receipt?.values,
         };
-        await Axios.post(
+        const res = await Axios.post(
             `${process.env.MIX_REACT_APP_URL}/api/save-invoice`,
             payload
         );
+        messageApi.open({
+            type: "success",
+            content: res.data.message,
+            duration: 5,
+            className: "custom-postion",
+        });
     };
 
     const onEditInvoice = async () => {
@@ -117,6 +131,12 @@ const ViewInvoice = ({
             `${process.env.MIX_REACT_APP_URL}/api/save-edit-invoice`,
             payload
         );
+        messageApi.open({
+            type: "success",
+            content: res.data.message,
+            duration: 5,
+            className: "custom-postion",
+        });
     };
 
     const calculateTotalDue = () => {

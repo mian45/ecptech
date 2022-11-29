@@ -7,7 +7,13 @@ import CustomRadio from "../../../../components/customRadio";
 import icon from "../../../../../images/calculator/lens-material.svg";
 import EyePrescriptionModal from "../eyePrescriptionModal";
 
-const LensMeterials = ({ formProps, calculatorObj, getBaseValues }) => {
+const LensMeterials = ({
+    formProps,
+    calculatorObj,
+    getBaseValues,
+    calValidations,
+    setCalValidations,
+}) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState("");
@@ -48,6 +54,31 @@ const LensMeterials = ({ formProps, calculatorObj, getBaseValues }) => {
     };
 
     const handleLensMererialChange = async (e) => {
+        if (e?.target?.value !== "Polycarbonate") {
+            const validations = { ...calValidations };
+            delete validations.isCopayPolycarbonateAmount;
+            delete validations.copayPolycarbonateAmount;
+
+            await setFieldValue("isCopayPolycarbonate", null);
+            await setFieldValue("isCopayPolycarbonateAmount", "");
+            await setFieldValue("copayPolycarbonateAmount", "");
+            setCalValidations({ ...validations });
+        }
+        if (
+            !(
+                e?.target?.value?.includes("Hi index") ||
+                e?.target?.value?.includes("Hi Index")
+            )
+        ) {
+            const validations = { ...calValidations };
+            delete validations.isCopayHighIndexAmount;
+            delete validations.copayHighIndexAmount;
+
+            await setFieldValue("isCopayHighIndex", null);
+            await setFieldValue("isCopayHighIndexAmount", "");
+            await setFieldValue("copayHighIndexAmount", "");
+            setCalValidations({ ...validations });
+        }
         if (values?.lensTypeValue && e?.target?.value) {
             await getBaseValues(
                 { ...values, lensMaterial: e?.target?.value },
