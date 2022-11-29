@@ -62,7 +62,7 @@ const EmailSetting = (props) => {
     useEffect(() => {
         if (props.userID == null) return;
         getTimeZones();
-    }, [userId]);
+    }, [props.userID]);
     useEffect(() => {
         if (props.userID == null) return;
         getReminder();
