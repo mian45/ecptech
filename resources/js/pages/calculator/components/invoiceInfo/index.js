@@ -52,20 +52,30 @@ const InvoiceInfo = ({
     };
     return (
         <Row className={classes["container"]}>
-            <Col className={classes["info-section"]} sx={24} md={24} lg={12}>
-                <div className={classes["label"]}>Invoice Name</div>
-                <AutoCompleteSelect
-                    placeholder="John Doe Sunglasses"
-                    options={getOptions(userInfo)}
-                    className={classes["dropdown-styles"]}
-                    onChange={(value) => setFieldValue("invoiceName", value)}
-                    value={values?.invoiceName}
-                    id="invoiceName"
-                    name="invoiceName"
-                />
-                <FormikError name={"invoiceName"} />
+            <Col className={classes["info-section"]} xs={24} md={24} lg={12}>
+                <Row className={classes["row-width"]}>
+                    <Col xs={24} className={classes["label"]}>
+                        Invoice Name
+                    </Col>
+                    <Col xs={24}>
+                        <AutoCompleteSelect
+                            placeholder="John Doe Sunglasses"
+                            options={getOptions(userInfo)}
+                            className={classes["dropdown-styles"]}
+                            onChange={(value) =>
+                                setFieldValue("invoiceName", value)
+                            }
+                            value={values?.invoiceName}
+                            id="invoiceName"
+                            name="invoiceName"
+                        />
+                    </Col>
+                    <Col xs={24}>
+                        <FormikError name={"invoiceName"} />
+                    </Col>
+                </Row>
             </Col>
-            <Col className={classes["info-section-1"]} sx={24} md={24} lg={12}>
+            <Col className={classes["info-section-1"]} xs={24} md={24} lg={12}>
                 <div className={classes["label"]}>Staff Name</div>
                 <Select
                     options={staffData}
