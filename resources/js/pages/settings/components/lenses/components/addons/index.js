@@ -405,7 +405,7 @@ export const CollectionSlot = ({
 const LensesTypeList = ({ onClick, lenses, selectedRow }) => {
     return (
         <div className={classes["lenses-list-container"]}>
-            <div className={classes["lenses-list-title"]}>Add On</div>
+            <div className={classes["lenses-list-title"]}>Add On's</div>
             {lenses?.map((lens, index) => {
                 return (
                     <LensLabelSlot

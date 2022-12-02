@@ -90,7 +90,7 @@ const TabsSection = (props) => {
             <Tabs.TabPane tab={`Discounts & Taxes`} key="3">
                 <DiscountTaxes />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Insurance Plans" key="4">
+            <Tabs.TabPane tab="Vision Plans" key="4">
                 <InsurancePlans />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Glasses Prescription" key="5">
