@@ -34,7 +34,7 @@ class ShippingController extends Controller
             return $this->sendResponse($success, 'Shipping get successfully');
         }
 
-        return $this->sendError('Shipping not found');
+        return $this->sendResponse([], 'Shipping Fee not found');
     }
     public function addShipping(Request $request)
     {
