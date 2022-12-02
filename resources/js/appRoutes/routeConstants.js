@@ -1,7 +1,7 @@
 export const LOGIN_ROUTE = "/login";
 export const HOME_ROUTE = "/dashboard";
 export const INVOICES_ROUTE = "/invoices";
-export const PAYMENT_ROUTE = "/payment";
+export const PAYMENT_ROUTE = "/billing";
 export const SETTINGS_ROUTE = "/settings/emails";
 export const SETTINGS_ROUTE_LENS = "/settings/lens";
 export const SETTINGS_ROUTE_DISCOUNT = "/settings/discounts";
