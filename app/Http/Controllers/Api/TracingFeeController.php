@@ -61,7 +61,7 @@ class TracingFeeController extends Controller
         $validator = Validator::make($request->all(), [
             'userId' => 'required',
             'name' => 'required',
-            'value' => 'required|integer|gt:0'
+            'value' => 'required|regex:/^(([0-9]*)(\.([0-9]+))?)$/'
         ]);
 
         if ($validator->fails()) {
@@ -144,7 +144,7 @@ class TracingFeeController extends Controller
             return $this->sendResponse($success, 'Tracing Fee status changed successfully');
         }
 
-        return $this->sendError('Discount not found');
+        return $this->sendError('Tracing Fee not found');
     }
 
     /**
