@@ -7,7 +7,7 @@ import editIcon from "../../../../images/edit-icon.svg";
 import deleteIcon from "../../../../images/delete-icon.svg";
 import Axios from "../../../Http";
 import DeleteModal from "../../../components/deleteModal/index";
-import { Row, Col, message } from "antd";
+import { Row, Col, message, Tooltip } from "antd";
 const AddStaffMember = ({ userId }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [staffList, setStaffList] = useState([]);
@@ -260,12 +260,14 @@ const StaffMemberSlot = ({ staff, handleEdit, handleDelete }) => {
                 <Col xs={6}>
                     <Row justify="space-between" align="middle">
                         <Col xs={6}>
+                        <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
                             <img
                                 src={editIcon}
                                 alt={"edit-icon"}
                                 className={classes["edit-icon"]}
                                 onClick={() => handleEdit(staff)}
                             />
+                            </Tooltip>
                         </Col>
                         <Col xs={6}>
                             <img
