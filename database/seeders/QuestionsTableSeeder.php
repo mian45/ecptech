@@ -424,8 +424,27 @@ class QuestionsTableSeeder extends Seeder
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
+            array(
 
-          
+                'title' => "Slab Off",
+                'vision_plan_id' => 4,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Speciality Lens",
+                'vision_plan_id' => 4,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Polish",
+                'vision_plan_id' => 4,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
 
             array(
 
