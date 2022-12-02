@@ -37,7 +37,7 @@ class TracingFeeController extends Controller
             return $this->sendResponse($success, 'TracingFee get successfully');
         }
 
-        return $this->sendError('Tracing Fee not found');
+        return $this->sendResponse([], 'Tracing Fee not found');
     }
 
     /**
@@ -143,6 +143,7 @@ class TracingFeeController extends Controller
             $success['created_at'] = $fee->created_at;
             return $this->sendResponse($success, 'Tracing Fee status changed successfully');
         }
+
         return $this->sendError('Discount not found');
     }
 
