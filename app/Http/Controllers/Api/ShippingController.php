@@ -25,16 +25,7 @@ class ShippingController extends Controller
         $user_id = $request->userId;
         $shipping = Shipping::select('id','user_id','name','value')->where('user_id',$user_id)->orderBy('created_at', 'desc')->first();
 
-        if($shipping){
-            $success['id'] = $shipping->id;
-            $success['user_id'] = $shipping->user_id;
-            $success['name'] = $shipping->name;
-            $success['value'] = $shipping->value;
-
-            return $this->sendResponse($success, 'Shipping get successfully');
-        }
-
-        return $this->sendResponse([], 'Shipping Fee not found');
+        return $this->sendResponse($shipping, 'Shipping get successfully');
     }
     public function addShipping(Request $request)
     {

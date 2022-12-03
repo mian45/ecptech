@@ -27,17 +27,8 @@ class TracingFeeController extends Controller
 
         $user_id = $request->userId;
         $fee = TracingFee::select('id','user_id','name','value','status','created_at')->where('user_id',$user_id)->first();
-
-        if($fee){
-            $success['id'] = $fee->id;
-            $success['user_id'] = $fee->user_id;
-            $success['name'] = $fee->name;
-            $success['value'] = $fee->value;
-            $success['status'] = $fee->status;
-            return $this->sendResponse($success, 'TracingFee get successfully');
-        }
-
-        return $this->sendResponse([], 'Tracing Fee not found');
+        return $this->sendResponse($fee, 'TracingFee get successfully');
+        
     }
 
     public function store(Request $request)
