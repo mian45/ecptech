@@ -52,7 +52,7 @@ class TracingFeeController extends Controller
             ['name' => $name,'value' => $value,'status' => 'active'] 
         );
 
-        if($fee){
+        if(isset($fee)){
             $success['id'] = $fee->id;
             $success['user_id'] = $fee->user_id;
             $success['name'] = $fee->name;
@@ -78,7 +78,7 @@ class TracingFeeController extends Controller
 
         $fee =  TracingFee::where('id',$id)->first();
        
-        if($fee){
+        if(isset($fee)){
             $fee->status = $request->status;
             $fee->save();
             $success['id'] = $fee->id;
@@ -96,10 +96,9 @@ class TracingFeeController extends Controller
     public function destroy(Request $request,$id)
     {
         $fee =  TracingFee::find($id);
-        if($fee){
+        if(isset($fee)){
             $fee->delete();
             $success['id'] = $fee->id;
-
             return $this->sendResponse($success, 'Tracing Fee deleted successfully');
         }
 
