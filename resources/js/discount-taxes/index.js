@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 
 import edit from "../../images/edit.png";
 import cross from "../../images/cross.png";
-import ShippingSettings from "./shipping";
 import { Select, Col, Row } from "antd";
 import axios from "axios";
 
@@ -46,7 +45,6 @@ const DiscountTaxes = (props) => {
         getState();
         getDiscount();
         getTaxes();
-        getShipping();
     }, [props.userID]);
 
     const addDiscount = () => {
@@ -420,32 +418,6 @@ const DiscountTaxes = (props) => {
                 });
             });
     };
-
-    const getShipping = () => {
-        setLoading(true);
-        let data = new FormData();
-
-        let config = {
-            method: "get",
-            url: `${process.env.MIX_REACT_APP_URL}/api/get-shipping?userId=${props.userID}`,
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-            data: data,
-        };
-
-        axios(config)
-            .then(function (response) {
-                let shippingTax = response.data.data;
-                setShipping(shippingTax);
-                setLoading(false);
-            })
-            .catch(function (error) {
-                console.log(error);
-                setLoading(false);
-            });
-    };
-
     const updateHandler = (obj) => {
         setIdState(obj.id);
         setTaxName(obj.name);
@@ -1214,9 +1186,6 @@ const DiscountTaxes = (props) => {
                                     </Col>
                                 </Col>
                             </Row>
-                        </Col>
-                        <Col xs={24}>
-                            <ShippingSettings />
                         </Col>
                     </Row>
                 </Col>
