@@ -235,7 +235,7 @@ const LensType = ({
     };
 
     const handleBrandSelection = async (e) => {
-        resetMaterial(e);
+        await resetMaterial(e);
         handleChange(e);
         showAlert(e);
         if (values?.lensType === "PAL") {
