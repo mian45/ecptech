@@ -147,7 +147,7 @@ const TracingSettings = ({ userId,setLoading }) => {
             });
         } catch (err) {
             console.log("error while adding shipping");
-            setShippingButtonLoader(false);
+            setTracingButtonLoader(false);
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,

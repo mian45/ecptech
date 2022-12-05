@@ -541,7 +541,9 @@ input:-webkit-autofill:active {
     
 }
 
-
+.ant-message .anticon {
+    display: none;
+}
 .custom-postion-error {
     margin-top: 13.5vh;
     .ant-message-notice-content{
