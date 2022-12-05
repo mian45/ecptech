@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Switch } from "antd";
+import { Switch, Tooltip } from "antd";
 import "./style.scss";
 import editIcon from "../../images/edit.png";
 import { useHistory } from "react-router";
@@ -93,6 +93,7 @@ const InsurancePlans = ({ userId }) => {
                                                     <div>
                                                         <Row>
                                                             <Col xs={12}>
+                                                            <Tooltip title={"Click to edit Insurance Plans that calculator displays"} color={'#6fa5cb'} key={0}>
                                                                 <img
                                                                     className="insurance-plan-setting-edit-icon"
                                                                     src={
@@ -106,7 +107,7 @@ const InsurancePlans = ({ userId }) => {
                                                                             }
                                                                         );
                                                                     }}
-                                                                />
+                                                                /></Tooltip>
                                                             </Col>
                                                             <Col xs={12}>
                                                                 <Switch

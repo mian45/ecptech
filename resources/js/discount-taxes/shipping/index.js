@@ -7,7 +7,7 @@ import cross from "../../../images/cross.png";
 import CustomLoader from "../../components/customLoader";
 
 import DeleteModal from "../../components/deleteModal/index";
-import { Row, Col, message } from "antd";
+import { Row, Col, message, Tooltip } from "antd";
 const ShippingSettings = ({ userId }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [shippingName, setShippingName] = useState("");
@@ -278,6 +278,7 @@ const ShippingSettings = ({ userId }) => {
                                                         <td>{shipping.name}</td>
                                                         <td>${shipping.value}</td>
                                                         <td className="shipping-custom-col-3">
+                                                        <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
                                                             <img
                                                                 style={{
                                                                     width: "18px",
@@ -298,7 +299,8 @@ const ShippingSettings = ({ userId }) => {
                                                                         shipping
                                                                     );
                                                                 }}
-                                                            />
+                                                            /></Tooltip>
+                                                            <Tooltip title={"Delete"} color={'#6fa5cb'} key={0}>
                                                             <img
                                                                 style={{
                                                                     width: "16px",
@@ -311,7 +313,7 @@ const ShippingSettings = ({ userId }) => {
                                                                         shipping.id
                                                                     );
                                                                 }}
-                                                            />
+                                                            /></Tooltip>
                                                         </td>
                                                     </tr>
                                                 )}
