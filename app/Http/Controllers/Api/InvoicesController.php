@@ -190,7 +190,7 @@ class InvoicesController extends Controller
             'email' => 'email|max:100|nullable',
             'dob'  => 'date|date_format:Y-m-d|nullable'
         ],[
-            'firstName' => 'One of the field is required'
+            'firstName.required_without_all' => 'One of the field is required'
         ]);
 
         if ($validator->fails()) {
