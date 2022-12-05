@@ -6,7 +6,7 @@ import edit from "../../../images/edit.png";
 import cross from "../../../images/cross.png";
 import CustomLoader from "../../components/customLoader";
 import DeleteModal from "../../components/deleteModal/index";
-import { Row, Col, message } from "antd";
+import { Row, Col, message, Tooltip } from "antd";
 const ShippingSettings = ({ userId,setLoading }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [shippingName, setShippingName] = useState("");
@@ -176,7 +176,6 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                             e.target.value
                                                         );
                                                     }}
-                                                    disabled={isSubmitted}
                                                 />
                                             </Col>
                                         </Row>
@@ -204,7 +203,6 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                             e.target.value
                                                         );
                                                     }}
-                                                    disabled={isSubmitted}
                                                 />
                                             </Col>
                                         </Row>
@@ -275,7 +273,8 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                         <td>{shipping.name}</td>
                                                         <td>${shipping.value}</td>
                                                         <td className="shipping-custom-col-3">
-                                                            <img
+                                                        <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
+                                                        <img
                                                                 style={{
                                                                     width: "18px",
                                                                     height: "18px",
@@ -294,6 +293,8 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                                     );
                                                                 }}
                                                             />
+                                                        </Tooltip>
+                                                        <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
                                                             <img
                                                                 style={{
                                                                     width: "16px",
@@ -306,7 +307,7 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                                         shipping.id
                                                                     );
                                                                 }}
-                                                            />
+                                                            /></Tooltip>
                                                         </td>
                                                     </tr>
                                                 )}
