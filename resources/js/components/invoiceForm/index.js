@@ -103,7 +103,7 @@ const InvoicesForm = ({
                     disabled={!(isValid && dirty) || !isSearched}
                     type={"submit"}
                 >
-                    Create New Glasses Estimates
+                    Create New Glasses Estimate under the invoice search filter
                 </ButtonComponent>
             </div>
         </div>

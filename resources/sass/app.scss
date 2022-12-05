@@ -537,6 +537,10 @@ input:-webkit-autofill:active {
         color: white;
         width: 618px;
         height: 37px;
+
+        @media (max-width: 767px) {
+            width: 100%;
+        }
     }
     
 }
@@ -549,6 +553,10 @@ input:-webkit-autofill:active {
         color: white;
         width: 618px;
         height: 37px;
+
+        @media (max-width: 767px) {
+            width: 100%;
+        }
     }
     
 }

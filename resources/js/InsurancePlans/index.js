@@ -71,7 +71,7 @@ const InsurancePlans = ({ userId }) => {
                     <Row justify="start">
                         <Col xs={24}>
                             <p className="other-setting_heading">
-                                Insurance Plans
+                            Vision Plans
                             </p>
                         </Col>
                     </Row>

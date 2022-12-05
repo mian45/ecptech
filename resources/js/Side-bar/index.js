@@ -42,27 +42,27 @@ const SideBar = ({ userRole, isActiveState, dispatch, sidebar }) => {
                 return;
             }
             case PAYMENT_ROUTE: {
-                setState(3);
+                setState(4);
                 return;
             }
             case SETTINGS_ROUTE: {
-                setState(4);
+                setState(3);
                 return;
             }
             case SETTINGS_ROUTE_LENS: {
-                setState(4);
+                setState(3);
                 return;
             }
             case SETTINGS_ROUTE_DISCOUNT: {
-                setState(4);
+                setState(3);
                 return;
             }
             case SETTINGS_ROUTE_INSURANCE: {
-                setState(4);
+                setState(3);
                 return;
             }
             case SETTINGS_ROUTE_GLASSES: {
-                setState(4);
+                setState(3);
                 return;
             }
         }
@@ -95,12 +95,12 @@ const SideBar = ({ userRole, isActiveState, dispatch, sidebar }) => {
             }
             case 3: {
                 setState(value);
-                history.push(PAYMENT_ROUTE);
+                history.push(SETTINGS_ROUTE);
                 return;
             }
             case 4: {
                 setState(value);
-                history.push(SETTINGS_ROUTE);
+                history.push(PAYMENT_ROUTE);
                 return;
             }
         }
@@ -314,13 +314,13 @@ const SIDE_BAR_DATA = [
         index: 2,
     },
     {
-        icon: paymentIcon,
-        name: "Payments",
+        icon: settingsIcon,
+        name: "Settings",
         index: 3,
     },
     {
-        icon: settingsIcon,
-        name: "Settings",
+        icon: paymentIcon,
+        name: "Billing",
         index: 4,
     },
 ];
