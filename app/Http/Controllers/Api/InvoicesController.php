@@ -191,60 +191,42 @@ class InvoicesController extends Controller
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
-        
+
         if(isset($request->fname) OR isset($request->lname) OR isset($request->dob) OR isset($request->email) OR isset($request->phone)){
       
-        $invoices = $invoices->newQuery();
-        $invoices = $invoices->with('customer')->where('user_id',$request->userId);
+        $invoices = $invoices::with('customer')->newQuery();
 
-        // if ($request->has('fname')) {
-        //    $invoices->where('fname', $request->fname);
-        // }
-        // if ($request->has('lname')) {
-        //     $invoices->where('lname', $request->lname);
-        // }
-        // if ($request->has('dob')) {
-        //     $invoices->where('dob', $request->dob);
-        // }
-        // if ($request->has('email')) {
-        //     $invoices->where('email', $request->email);
-        // }
-        // if ($request->has('phone')) {
-        //     $invoices->where('phone', $request->phone);
-        // }
-       
-        // isset($request->phone)
-        $invoices = $invoices->get();
+        if ($request->has('fname')) {
+            $invoices->whereHas('customer', function ($query) use ($request) {
+                $query->where('fname', $request->fname);
+            });
+        }
+        if ($request->has('lname')) {
+            $invoices->whereHas('customer', function ($query) use ($request) {
+                $query->where('lname', $request->lname);
+            });
+        }
+        if ($request->has('email')) {
+            $invoices->whereHas('customer', function ($query) use ($request) {
+                $query->where('email', $request->email);
+            });
+        }
+        if ($request->has('phone')) {
+            $invoices->whereHas('customer', function ($query) use ($request) {
+                $query->where('phone', $request->phone);
+            });
+        }
+        if ($request->has('dob')) {
+            $invoices->whereHas('customer', function ($query) use ($request) {
+                $query->where('dob', $request->dob);
+            });
+        }
+        $invoices = $invoices->where('user_id',$request->userId)->whereNot('status', 'discard')->get();
         return $this->sendResponse($invoices, 'Invoices list get successfully');
-       }
-     
-       return $this->sendResponse([], 'Invoices list get successfully');
-        // $where_clouse['user_id'] = $request->user_id;
-        // $where_clouse['fname'] = $request->fname;
-        // $where_clouse['lname'] = $request->lname;
-        // $where_clouse['dob'] = $request->dob;
-        // $where_clouse['email'] = $request->email;
-
-    //    if(isset($request->phone)){
-    //     $where_clouse['phone'] = $request->phone;
-    //     $invoices = Invoices::with('customer')->whereHas('customer', function($q) use($where_clouse) {
-    //         $q->where('fname',$where_clouse['fname'])
-    //             ->where('lname',$where_clouse['lname'])
-    //             ->where('fname',$where_clouse['fname'])
-    //             ->where('dob',$where_clouse['dob'])
-    //             ->where('email',$where_clouse['email'])
-    //             ->where('phone',$where_clouse['phone']);
-    //     })->where('user_id',$request->userId)->whereNot('status', 'discard')->get();
-    //   }else{
-    //     $invoices = Invoices::with('customer')->whereHas('customer', function($q) use($where_clouse) {
-    //         $q->where('fname',$where_clouse['fname'])
-    //             ->where('lname',$where_clouse['lname'])
-    //             ->where('fname',$where_clouse['fname'])
-    //             ->where('dob',$where_clouse['dob'])
-    //             ->where('email',$where_clouse['email']);
-    //     })->where('user_id',$request->userId)->whereNot('status', 'discard')->get();
-    //   }
+        
+      }
       
+      return $this->sendError('Please select at least one filter');
     }
 
 }
