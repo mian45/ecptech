@@ -294,7 +294,7 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                                 }}
                                                             />
                                                         </Tooltip>
-                                                        <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
+                                                        <Tooltip title={"Delete"} color={'#6fa5cb'} key={0}>
                                                             <img
                                                                 style={{
                                                                     width: "16px",
