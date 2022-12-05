@@ -192,18 +192,18 @@ class InvoicesController extends Controller
             throw (new ValidationException($validator));
         }
 
-        if(isset($request->fname) OR isset($request->lname) OR isset($request->dob) OR isset($request->email) OR isset($request->phone)){
+        if(isset($request->firstName) OR isset($request->lname) OR isset($request->dob) OR isset($request->email) OR isset($request->phoneNo)){
       
         $invoices = $invoices::with('customer')->newQuery();
 
-        if ($request->has('fname')) {
+        if ($request->has('firstName')) {
             $invoices->whereHas('customer', function ($query) use ($request) {
-                $query->where('fname', $request->fname);
+                $query->where('fname', $request->firstName);
             });
         }
-        if ($request->has('lname')) {
+        if ($request->has('lastName')) {
             $invoices->whereHas('customer', function ($query) use ($request) {
-                $query->where('lname', $request->lname);
+                $query->where('lname', $request->lastName);
             });
         }
         if ($request->has('email')) {
@@ -211,9 +211,9 @@ class InvoicesController extends Controller
                 $query->where('email', $request->email);
             });
         }
-        if ($request->has('phone')) {
+        if ($request->has('phoneNo')) {
             $invoices->whereHas('customer', function ($query) use ($request) {
-                $query->where('phone', $request->phone);
+                $query->where('phone', $request->phoneNo);
             });
         }
         if ($request->has('dob')) {
@@ -225,7 +225,7 @@ class InvoicesController extends Controller
         return $this->sendResponse($invoices, 'Invoices list get successfully');
         
       }
-      
+
       return $this->sendError('Please select at least one filter');
     }
 
