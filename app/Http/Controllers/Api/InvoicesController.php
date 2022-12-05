@@ -42,6 +42,7 @@ class InvoicesController extends Controller
             'invoiceName' => 'required',
             'vpState' => 'required',
             'userState' => 'required',
+            'status' => 'required|in:paid,unpaid,draft'
         ]);
         if ($validator->fails()) {
             throw (new ValidationException($validator));
@@ -69,7 +70,7 @@ class InvoicesController extends Controller
       $invoice->vp_state = json_encode($request->vpState);
       $invoice->user_state = json_encode($request->userState);
       $invoice->created_by = $request->userId;
-      $invoice->status = 'unpaid';
+      $invoice->status = $request->status;
 
       $invoice->save();
 
@@ -138,6 +139,8 @@ class InvoicesController extends Controller
             'amount' => 'required',
             'vpState' => 'required',
             'userState' => 'required',
+            'status' => 'required|in:paid,unpaid,draft'
+            
         ]);
         if ($validator->fails()) {
             throw (new ValidationException($validator));
@@ -169,7 +172,7 @@ class InvoicesController extends Controller
             $newInvoice->vp_state = json_encode($request->vpState);
             $newInvoice->user_state = json_encode($request->userState);
             $newInvoice->created_by = $request->userId;
-            $newInvoice->status = 'unpaid';
+            $newInvoice->status = $request->status;
             $newInvoice->save();
       
             if($newInvoice){
