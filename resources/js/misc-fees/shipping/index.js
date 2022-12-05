@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import edit from "../../../images/edit.png";
 import cross from "../../../images/cross.png";
 import CustomLoader from "../../components/customLoader";
-
 import DeleteModal from "../../components/deleteModal/index";
 import { Row, Col, message } from "antd";
 const ShippingSettings = ({ userId,setLoading }) => {
@@ -19,7 +18,6 @@ const ShippingSettings = ({ userId,setLoading }) => {
     const [editState, setEditState] = useState(false);
     const [showDeleteShipping, setShowDeleteShipping] = useState(false);
     const [deleteShippingId, setDeleteShippingId] = useState(0);
-    let [shippingLoading, setShippingLoading] = useState(false);
     useEffect(() => {
         if (userId == null) return;
         setEditState(false);
@@ -290,9 +288,7 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                                     setEditState(
                                                                         true
                                                                     );
-                                                                    setLoading(
-                                                                        true
-                                                                    );
+                                                                  
                                                                     handleUpdateShipping(
                                                                         shipping
                                                                     );
