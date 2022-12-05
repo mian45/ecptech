@@ -192,7 +192,7 @@ class InvoicesController extends Controller
             throw (new ValidationException($validator));
         }
 
-        if(isset($request->firstName) OR isset($request->lname) OR isset($request->dob) OR isset($request->email) OR isset($request->phoneNo)){
+        if(isset($request->firstName) OR isset($request->lastName) OR isset($request->dob) OR isset($request->email) OR isset($request->phoneNo)){
       
         $invoices = $invoices::with('customer')->newQuery();
 
