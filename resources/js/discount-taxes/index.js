@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import edit from "../../images/edit.png";
 import cross from "../../images/cross.png";
-import { Select, Col, Row } from "antd";
+import { Select, Col, Row, Tooltip  } from "antd";
 import axios from "axios";
 
 const { Option } = Select;
@@ -815,6 +815,7 @@ const DiscountTaxes = (props) => {
                                                                                         : "$"}
                                                                                 </td>
                                                                                 <td className="discount-col-3">
+                                                                                <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
                                                                                     <img
                                                                                         style={{
                                                                                             width: "18px",
@@ -831,7 +832,8 @@ const DiscountTaxes = (props) => {
                                                                                                 dis
                                                                                             );
                                                                                         }}
-                                                                                    />
+                                                                                    /></Tooltip>
+                                                                                     <Tooltip title={"Delete"} color={'#6fa5cb'} key={0}>
                                                                                     <img
                                                                                         style={{
                                                                                             width: "16px",
@@ -846,7 +848,7 @@ const DiscountTaxes = (props) => {
                                                                                                 dis.id
                                                                                             );
                                                                                         }}
-                                                                                    />
+                                                                                    /></Tooltip>
                                                                                     <Switch
                                                                                         {...label}
                                                                                         className="switch-margin"
@@ -1123,6 +1125,7 @@ const DiscountTaxes = (props) => {
                                                                                 %
                                                                             </td>
                                                                             <td className="col-4 custom-tax-col-3">
+                                                                            <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
                                                                                 <img
                                                                                     style={{
                                                                                         width: "18px",
@@ -1139,7 +1142,8 @@ const DiscountTaxes = (props) => {
                                                                                             obj
                                                                                         );
                                                                                     }}
-                                                                                />
+                                                                                /></Tooltip>
+                                                                                 <Tooltip title={"Delete"} color={'#6fa5cb'} key={0}>
                                                                                 <img
                                                                                     style={{
                                                                                         width: "16px",
@@ -1154,7 +1158,7 @@ const DiscountTaxes = (props) => {
                                                                                             obj.id
                                                                                         );
                                                                                     }}
-                                                                                />
+                                                                                /></Tooltip>
                                                                                 <Switch
                                                                                     {...label}
                                                                                     className="switch-margin"

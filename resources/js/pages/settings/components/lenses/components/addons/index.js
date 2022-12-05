@@ -7,7 +7,7 @@ import editIcon from "../../../../../../../images/edit.png";
 import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-import { Row, Col, message } from "antd";
+import { Row, Col, message, Tooltip } from "antd";
 const Addons = ({ userId }) => {
     const [addonsList, setAddonsList] = useState([]);
     const [messageApi, contextHolder] = message.useMessage();
@@ -219,6 +219,7 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
                         handleCheckbox={handleCheckbox}
                         handleDisplayNameChange={handleDisplayNameChange}
                         handleAmountNameChange={handleAmountNameChange}
+                        prompt="Click to edit name of add on that calculator displays"
                     />
                 </Col>
             ))}
@@ -231,6 +232,7 @@ export const CollectionSlot = ({
     handleCheckbox,
     handleDisplayNameChange,
     handleAmountNameChange,
+    prompt
 }) => {
     const [isEdit, setIsEdit] = useState(false);
     return (
@@ -389,12 +391,14 @@ export const CollectionSlot = ({
                         </Row>
                     </Col>
                     <Col xs={6} className={classes["edit-container"]}>
+                    <Tooltip title={prompt} color={'#6fa5cb'} key={0}>
                         <img
                             src={editIcon}
                             alt={"icon"}
                             className={classes["edit-icon"]}
                             onClick={() => setIsEdit(true)}
                         />
+                        </Tooltip>
                     </Col>
                 </Row>
             )}

@@ -274,7 +274,7 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                         <td>${shipping.value}</td>
                                                         <td className="shipping-custom-col-3">
                                                         <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
-                                                        <img
+                                                            <img
                                                                 style={{
                                                                     width: "18px",
                                                                     height: "18px",
@@ -292,9 +292,8 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                                         shipping
                                                                     );
                                                                 }}
-                                                            />
-                                                        </Tooltip>
-                                                        <Tooltip title={"Delete"} color={'#6fa5cb'} key={0}>
+                                                            /></Tooltip>
+                                                            <Tooltip title={"Delete"} color={'#6fa5cb'} key={0}>
                                                             <img
                                                                 style={{
                                                                     width: "16px",

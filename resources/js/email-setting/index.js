@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Select } from "antd";
+import { Select, Tooltip } from "antd";
 const { Option } = Select;
 import { connect } from "react-redux";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
@@ -943,6 +943,7 @@ const EmailSetting = (props) => {
                                                         align="middle"
                                                     >
                                                         <Col md={6}>
+                                                        <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
                                                             <img
                                                                 className="edit-icon"
                                                                 src={edit}
@@ -951,12 +952,13 @@ const EmailSetting = (props) => {
                                                                         obj
                                                                     );
                                                                 }}
-                                                            />
+                                                            /></Tooltip>
                                                         </Col>
                                                         <Col md={6}>
                                                             {obj?.is_active ===
                                                                 1 ? (
-                                                                <img
+                                                                    <Tooltip title={"Turn alert off"} color={'#6fa5cb'} key={0}>
+                                                                    <img
                                                                     className="bell-icon"
                                                                     src={
                                                                         bellIcon
@@ -966,8 +968,9 @@ const EmailSetting = (props) => {
                                                                             obj
                                                                         );
                                                                     }}
-                                                                />
+                                                                /></Tooltip>
                                                             ) : (
+                                                                <Tooltip title={"Turn alert on"} color={'#6fa5cb'} key={0}>
                                                                 <img
                                                                     className="bell-icon"
                                                                     src={
@@ -979,9 +982,11 @@ const EmailSetting = (props) => {
                                                                         );
                                                                     }}
                                                                 />
+                                                                </Tooltip>
                                                             )}
                                                         </Col>
                                                         <Col md={6}>
+                                                        <Tooltip title={"Delete"} color={'#6fa5cb'} key={0}>
                                                             <img
                                                                 className="delete-icon"
                                                                 src={cross}
@@ -991,6 +996,7 @@ const EmailSetting = (props) => {
                                                                     );
                                                                 }}
                                                             />
+                                                            </Tooltip>
                                                         </Col>
                                                     </Row>
                                                 </Col>
