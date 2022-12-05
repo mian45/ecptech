@@ -144,6 +144,9 @@ class InvoiceCalculaterController extends Controller
                                 );
                             }
 
+                            //If vision plan is davis 
+                            //else
+
                             if(!empty($data[4])){
                                 if(strtolower($data[4]) == 'null'){
                                     $material_id = null;
@@ -324,6 +327,9 @@ class InvoiceCalculaterController extends Controller
                             if(!empty($data[0])){
                                 $vision_plan = VisionPlan::where('title', $data[0])->first();
                             }
+
+                            //If vision plan is davis then
+                            //else
 
                             if(!empty($data[1])){
                                 $price = str_replace('$','',$data[2]);
