@@ -185,15 +185,23 @@ class InvoicesController extends Controller
     public function search(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'userId' => 'required',
+            'firstName' => 'min:3|max:30|nullable|required_without_all:lastName,email,dob,phoneNo',
+            'lastName' => 'min:3|max:30|nullable',
+            'email' => 'email|max:100|nullable',
+            'dob'  => 'date|date_format:Y-m-d|nullable'
+        ],[
+            'firstName' => 'One of the field is required'
         ]);
 
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
 
-        if(isset($request->firstName) OR isset($request->lastName) OR isset($request->dob) OR isset($request->email) OR isset($request->phoneNo)){
-      
+        $user = auth()->user();
+        $userId=$user->id;
+        if($user->role_id===3){
+          $userId=  $user->client_id;
+        }
         $invoices = Invoices::with('customer')->newQuery();
 
         if ($request->has('firstName')) {
@@ -221,12 +229,9 @@ class InvoicesController extends Controller
                 $query->where('dob', $request->dob);
             });
         }
-        $invoices = $invoices->where('user_id',$request->userId)->whereNot('status', 'discard')->get();
+        $invoices = $invoices->where('user_id',$userId)->whereNot('status', 'discard')->get();
         return $this->sendResponse($invoices, 'Invoices list get successfully');
-        
-      }
 
-      return $this->sendError('Please select at least one filter');
     }
 
 }
