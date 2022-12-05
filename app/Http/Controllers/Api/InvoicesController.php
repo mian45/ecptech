@@ -182,7 +182,7 @@ class InvoicesController extends Controller
       
       return $this->sendError('Something went wrong!');
     }
-    public function search(Request $request,Invoices $invoices){
+    public function search(Request $request){
 
         $validator = Validator::make($request->all(), [
             'userId' => 'required',
@@ -194,7 +194,7 @@ class InvoicesController extends Controller
 
         if(isset($request->firstName) OR isset($request->lastName) OR isset($request->dob) OR isset($request->email) OR isset($request->phoneNo)){
       
-        $invoices = $invoices::with('customer')->newQuery();
+        $invoices = Invoices::with('customer')->newQuery();
 
         if ($request->has('firstName')) {
             $invoices->whereHas('customer', function ($query) use ($request) {
