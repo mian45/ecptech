@@ -5,32 +5,33 @@ import edit from "../../../images/edit.png";
 import cross from "../../../images/cross.png";
 import CustomLoader from "../../components/customLoader";
 import DeleteModal from "../../components/deleteModal/index";
-import { Row, Col, message, Tooltip } from "antd";
-const ShippingSettings = ({ userId,setLoading }) => {
+import { Row, Col, message, Tooltip, Switch } from "antd";
+const label = { inputProps: { "aria-label": "Switch demo" } };
+const TracingSettings = ({ userId,setLoading }) => {
     const [messageApi, contextHolder] = message.useMessage();
-    const [shippingName, setShippingName] = useState("");
-    const [shippingAmount, setShippingAmount] = useState("");
-    const [shipping, setShipping] = useState({});
+    const [TracingName, setTracingName] = useState("");
+    const [TracingAmount, setTracingAmount] = useState("");
+    const [Tracing, setTracing] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [shippingButtonLoader, setShippingButtonLoader] = useState(false);
+    const [TracingButtonLoader, setTracingButtonLoader] = useState(false);
 
     const [editState, setEditState] = useState(false);
-    const [showDeleteShipping, setShowDeleteShipping] = useState(false);
-    const [deleteShippingId, setDeleteShippingId] = useState(0);
+    const [showDeleteTracing, setShowDeleteTracing] = useState(false);
+    const [deleteTracingId, setDeleteTracingId] = useState(0);
     useEffect(() => {
         if (userId == null) return;
         setEditState(false);
-        getShipping();
+        getTracing();
     }, [userId]);
-    const getShipping = async () => {
+    const getTracing = async () => {
         setLoading(true);
         try {
             const res = await Axios.get(
-                process.env.MIX_REACT_APP_URL + "/api/get-shipping",
+                process.env.MIX_REACT_APP_URL + "/api/tracing-fee",
                 { params: { userId: userId } }
             );
-            const shippingData = res?.data?.data;
-            setShipping({ ...shippingData });
+            const TracingData = res?.data?.data;
+            setTracing({ ...TracingData });
             setLoading(false);
         } catch (err) {
             if (err.response.data.statusCode === 404) {
@@ -51,20 +52,19 @@ const ShippingSettings = ({ userId,setLoading }) => {
             setLoading(false);
         }
     };
-    const handleUpdateShipping = async (data) => {
-        setShippingName(data?.name);
-        setShippingAmount(data?.value);
+    const handleUpdateTracing = async (data) => {
+        setTracingName(data?.name);
+        setTracingAmount(data?.value);
         setIsSubmitted(false);
     };
-    const deleteShipping = async (id) => {
+    const deleteTracing = async (id) => {
         try {
-            const res = await Axios.post(
-                process.env.MIX_REACT_APP_URL + "/api/delete-shipping",
-                { id: id }
+            const res = await Axios.delete(
+                process.env.MIX_REACT_APP_URL + `/api/tracing-fee/${id}`,
             );
-            setShipping({});
+            setTracing({});
             setIsSubmitted(false);
-            setShowDeleteShipping(false);
+            setShowDeleteTracing(false);
             messageApi.open({
                 type: "success",
                 content: res.data.message,
@@ -72,7 +72,7 @@ const ShippingSettings = ({ userId,setLoading }) => {
                 className: 'custom-postion',
             });
         } catch (err) {
-            console.log("error while delete shipping");
+            console.log("error while delete Tracing");
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
@@ -81,33 +81,64 @@ const ShippingSettings = ({ userId,setLoading }) => {
             });
         }
     };
-    const handleDeleteShipping = async (id) => {
-        setDeleteShippingId(id);
-        setShowDeleteShipping(true);
-        setShippingName("");
-        setShippingAmount("");
+    const handleDeleteTracing = async (id) => {
+        setDeleteTracingId(id);
+        setShowDeleteTracing(true);
+        setTracingName("");
+        setTracingAmount("");
         setIsSubmitted(true);
     };
-    const handleShippingSubmit = async (e) => {
-        setShippingButtonLoader(true);
+    const handleTracingSubmit = async (e) => {
+        setTracingButtonLoader(true);
         e?.preventDefault();
 
         try {
             const payload = {
                 userId: userId,
-                name: shippingName,
-                value: shippingAmount,
+                name: TracingName,
+                value: TracingAmount,
             };
             const res = await Axios.post(
-                process.env.MIX_REACT_APP_URL + "/api/add-shipping",
+                process.env.MIX_REACT_APP_URL + "/api/tracing-fee",
                 payload
             );
-            setShipping(res?.data?.data);
-            setShippingName("");
+            setTracing(res?.data?.data);
+            setTracingName("");
             setEditState(false);
-            setShippingAmount("");
+            setTracingAmount("");
             setIsSubmitted(true);
-            setShippingButtonLoader(false);
+            setTracingButtonLoader(false);
+            messageApi.open({
+                type: "success",
+                content: res.data.message,
+                duration: 5,
+                className: 'custom-postion',
+            });
+        } catch (err) {
+            console.log("error while adding Tracing");
+            setTracingButtonLoader(false);
+            messageApi.open({
+                type: "error",
+                content: err.response.data.message,
+                duration: 5,
+                className: 'custom-postion-error',
+            });
+        }
+    };
+    const updateStatus=async (status,id)=>{
+        try {
+            const res = await Axios.put(
+                process.env.MIX_REACT_APP_URL + `/api/tracing-fee/${id}`,
+                {
+                    userId:userId,
+                    status:status?"active":"inactive"
+                   }
+            );
+            setTracing(res?.data?.data);
+            setTracingName("");
+            setEditState(false);
+            setTracingAmount("");
+            setIsSubmitted(true);
             messageApi.open({
                 type: "success",
                 content: res.data.message,
@@ -124,19 +155,18 @@ const ShippingSettings = ({ userId,setLoading }) => {
                 className: 'custom-postion-error',
             });
         }
-    };
-
+    }
     return (
         <>
-            {showDeleteShipping ? (
+            {showDeleteTracing ? (
                 <DeleteModal
                     accept={() => {
-                        deleteShipping(deleteShippingId);
+                        deleteTracing(deleteTracingId);
                     }}
                     cancel={() => {
-                        setShowDeleteShipping(false);
+                        setShowDeleteTracing(false);
                     }}
-                    open={showDeleteShipping}
+                    open={showDeleteTracing}
                 />
             ) : null}
             <Row justify="center" align="middle">
@@ -149,7 +179,7 @@ const ShippingSettings = ({ userId,setLoading }) => {
                     <Row justify="center" align="middle">
                         <Col xs={24} md={24}>
                             <div>{contextHolder}</div>
-                            <p className="heading">Shipping</p>
+                            <p className="heading">Tracing</p>
                         </Col>
                         <Col xs={24}>
                             <form>
@@ -169,9 +199,9 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                             <Col xs={24}>
                                                 <input
                                                     placeholder="Enter Text"
-                                                    value={shippingName}
+                                                    value={TracingName}
                                                     onChange={(e) => {
-                                                        setShippingName(
+                                                        setTracingName(
                                                             e.target.value
                                                         );
                                                     }}
@@ -188,7 +218,7 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                         <Row>
                                             <Col xs={24}>
                                                 <p className="input-title">
-                                                    Add Shipping Amount
+                                                    Add Tracing Amount
                                                 </p>
                                             </Col>
                                             <Col xs={24}>
@@ -196,9 +226,9 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                     placeholder="Enter Amount"
                                                     type={"number"}
                                                     min={0}
-                                                    value={shippingAmount}
+                                                    value={TracingAmount}
                                                     onChange={(e) => {
-                                                        setShippingAmount(
+                                                        setTracingAmount(
                                                             e.target.value
                                                         );
                                                     }}
@@ -223,17 +253,17 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                             >
                                                 <button
                                                     onClick={
-                                                        handleShippingSubmit
+                                                        handleTracingSubmit
                                                     }
-                                                    className={`save-button ${!shippingName ||
-                                                        !shippingAmount
+                                                    className={`save-button ${!TracingName ||
+                                                        !TracingAmount
                                                         ? "disable"
                                                         : ""
                                                         } `}
                                                 >
                                                     {editState ? (
                                                         "Update"
-                                                    ) : shippingButtonLoader ==
+                                                    ) : TracingButtonLoader ==
                                                         true ? (
                                                         <span>
                                                             <p>Add</p>
@@ -258,19 +288,19 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                 <Col xs={24} className="discount-output">
                                     <Row justify="center" align="middle">
                                         <table>
-                                            {Object.keys(shipping).length >
+                                            {Object.keys(Tracing).length >
                                                 0 && (
                                                     <tr className="discount-output_head">
-                                                        <th>Shipping Label</th>
+                                                        <th>Tracing Label</th>
                                                         <th>Amount</th>
                                                         <th></th>
                                                     </tr>
                                                 )}
-                                            {Object.keys(shipping).length >
+                                            {Object.keys(Tracing).length >
                                                 0 && (
                                                     <tr className="discount-output_body">
-                                                        <td>{shipping.name}</td>
-                                                        <td>${shipping.value}</td>
+                                                        <td>{Tracing.name}</td>
+                                                        <td>${Tracing.value}</td>
                                                         <td className="shipping-custom-col-3">
                                                         <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
                                                             <img
@@ -287,8 +317,8 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                                         true
                                                                     );
                                                                   
-                                                                    handleUpdateShipping(
-                                                                        shipping
+                                                                    handleUpdateTracing(
+                                                                        Tracing
                                                                     );
                                                                 }}
                                                             /></Tooltip>
@@ -301,11 +331,17 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                                 }}
                                                                 src={cross}
                                                                 onClick={() => {
-                                                                    handleDeleteShipping(
-                                                                        shipping.id
+                                                                    handleDeleteTracing(
+                                                                        Tracing.id
                                                                     );
                                                                 }}
                                                             /></Tooltip>
+                                                            <Switch
+                                                            {...label}
+                                                            className="switch-margin"
+                                                            checked={Tracing?.status ==="active"? true: false}
+                                                            onChange={(e) => { updateStatus(e,Tracing.id)}}
+                                                            />
                                                         </td>
                                                     </tr>
                                                 )}
@@ -324,4 +360,4 @@ const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
     token: state.Auth.token,
 });
-export default connect(mapStateToProps)(ShippingSettings);
+export default connect(mapStateToProps)(TracingSettings);
