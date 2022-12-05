@@ -49,7 +49,7 @@ const CardPayment = () => {
                 <AddCardModal show={showAddCard} onClose={handleCloseModal} getPaymentMethod={getPaymentMethod} />
             )}
             <Col offset={0} className={classes["label"]}>
-                Payment Details
+                Billing Details
             </Col>
             <Col offset={0} className={classes["subtitle"]}>
                 Your card is

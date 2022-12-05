@@ -5,10 +5,9 @@ import { connect } from "react-redux";
 import edit from "../../../images/edit.png";
 import cross from "../../../images/cross.png";
 import CustomLoader from "../../components/customLoader";
-
 import DeleteModal from "../../components/deleteModal/index";
-import { Row, Col, message } from "antd";
-const ShippingSettings = ({ userId }) => {
+import { Row, Col, message, Tooltip } from "antd";
+const ShippingSettings = ({ userId,setLoading }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [shippingName, setShippingName] = useState("");
     const [shippingAmount, setShippingAmount] = useState("");
@@ -19,42 +18,40 @@ const ShippingSettings = ({ userId }) => {
     const [editState, setEditState] = useState(false);
     const [showDeleteShipping, setShowDeleteShipping] = useState(false);
     const [deleteShippingId, setDeleteShippingId] = useState(0);
-    let [shippingLoading, setShippingLoading] = useState(false);
     useEffect(() => {
         if (userId == null) return;
-        const getShipping = async () => {
-            setShippingLoading(true);
-            try {
-                const res = await Axios.get(
-                    process.env.MIX_REACT_APP_URL + "/api/get-shipping",
-                    { params: { userId: userId } }
-                );
-                const shippingData = res?.data?.data;
-                setShipping({ ...shippingData });
-                setShippingLoading(false);
-            } catch (err) {
-                if (err.response.data.statusCode === 404) {
-                    messageApi.open({
-                        type: "error",
-                        content: err.response.data.message,
-                        duration: 5,
-                        className: 'custom-postion-error',
-                    });
-                } else {
-                    messageApi.open({
-                        type: "error",
-                        content: err.response.data.message,
-                        duration: 5,
-                        className: 'custom-postion-error',
-                    });
-                }
-                setShippingLoading(false);
-            }
-        };
         setEditState(false);
         getShipping();
     }, [userId]);
-
+    const getShipping = async () => {
+        setLoading(true);
+        try {
+            const res = await Axios.get(
+                process.env.MIX_REACT_APP_URL + "/api/get-shipping",
+                { params: { userId: userId } }
+            );
+            const shippingData = res?.data?.data;
+            setShipping({ ...shippingData });
+            setLoading(false);
+        } catch (err) {
+            if (err.response.data.statusCode === 404) {
+                messageApi.open({
+                    type: "error",
+                    content: err.response.data.message,
+                    duration: 5,
+                    className: 'custom-postion-error',
+                });
+            } else {
+                messageApi.open({
+                    type: "error",
+                    content: err.response.data.message,
+                    duration: 5,
+                    className: 'custom-postion-error',
+                });
+            }
+            setLoading(false);
+        }
+    };
     const handleUpdateShipping = async (data) => {
         setShippingName(data?.name);
         setShippingAmount(data?.value);
@@ -179,7 +176,6 @@ const ShippingSettings = ({ userId }) => {
                                                             e.target.value
                                                         );
                                                     }}
-                                                    disabled={isSubmitted}
                                                 />
                                             </Col>
                                         </Row>
@@ -207,7 +203,6 @@ const ShippingSettings = ({ userId }) => {
                                                             e.target.value
                                                         );
                                                     }}
-                                                    disabled={isSubmitted}
                                                 />
                                             </Col>
                                         </Row>
@@ -278,6 +273,7 @@ const ShippingSettings = ({ userId }) => {
                                                         <td>{shipping.name}</td>
                                                         <td>${shipping.value}</td>
                                                         <td className="shipping-custom-col-3">
+                                                        <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
                                                             <img
                                                                 style={{
                                                                     width: "18px",
@@ -291,14 +287,13 @@ const ShippingSettings = ({ userId }) => {
                                                                     setEditState(
                                                                         true
                                                                     );
-                                                                    setShippingLoading(
-                                                                        true
-                                                                    );
+                                                                  
                                                                     handleUpdateShipping(
                                                                         shipping
                                                                     );
                                                                 }}
-                                                            />
+                                                            /></Tooltip>
+                                                            <Tooltip title={"Delete"} color={'#6fa5cb'} key={0}>
                                                             <img
                                                                 style={{
                                                                     width: "16px",
@@ -311,7 +306,7 @@ const ShippingSettings = ({ userId }) => {
                                                                         shipping.id
                                                                     );
                                                                 }}
-                                                            />
+                                                            /></Tooltip>
                                                         </td>
                                                     </tr>
                                                 )}

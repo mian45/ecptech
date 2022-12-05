@@ -206,8 +206,7 @@ function EditInsurance({ userId }) {
                                                         ]
                                                     }
                                                 >
-                                                    Please mark the questions
-                                                    for invoice creation
+                                                    Click to Display as Option on Calculator
                                                 </p>
                                             </div>
                                             <div

@@ -116,6 +116,7 @@ const MaterialSettings = ({ userId }) => {
                                         custom_price: item?.price,
                                         title: item?.lens_material_title,
                                     }}
+                                    prompt="Click to edit name of lens material that calculator displays"
                                 />
                             );
                         })}
