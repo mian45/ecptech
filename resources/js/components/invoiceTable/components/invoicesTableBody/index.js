@@ -117,9 +117,8 @@ const InvoiceTableActions = ({ data }) => {
                         }
                     }
                 };
-                
+
                 setCollectionId();
-                
             });
         });
         const payload = {

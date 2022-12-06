@@ -62,16 +62,23 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 dob: values?.dob,
             };
 
+            for (const key of Object.keys(invoiceObject)) {
+                if (invoiceObject[key] === "") {
+                    delete invoiceObject[key];
+                }
+            }
+
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/search-invoices`,
                 invoiceObject
             );
+            console.log("response---", res.data);
             setTableData(res?.data?.data);
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
             setButtonLoader(false);
         } catch (err) {
@@ -81,7 +88,7 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
             setButtonLoader(false);
         }
