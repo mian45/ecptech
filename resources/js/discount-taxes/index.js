@@ -469,13 +469,14 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                console.log(response)
+                getDiscount();
                 messageApi.open({
                     type: "success",
                     content: response.data.message,
                     duration: 5,
                     className: 'custom-postion',
                 });
-                getDiscount();
             })
             .catch(function (error) {
                 messageApi.open({
@@ -561,7 +562,7 @@ const DiscountTaxes = (props) => {
     };
     return (
         <>
-            {contextHolder}
+          
             {loading ? <CustomLoader buttonBool={false} /> : null}
             {showDeleteTaxes ? (
                 <DeleteModal
@@ -592,6 +593,7 @@ const DiscountTaxes = (props) => {
             ) : null}
 
             <Row justify="center">
+            {contextHolder}
                 <Col xs={24}>
                     <Row
                         justify="center"

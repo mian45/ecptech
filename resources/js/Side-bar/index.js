@@ -117,8 +117,8 @@ const SideBar = ({ userRole, isActiveState, dispatch, sidebar }) => {
     return (
         <Row className={classes["side-box"]}>
             <Col>
-                {window.innerWidth > 763 ? (
-                    <>
+                
+                    <div className={classes['sidebarmainbox']}>
                         {userRole === "staff" ? (
                             <div
                                 className={classes["item-container"]}
@@ -198,9 +198,9 @@ const SideBar = ({ userRole, isActiveState, dispatch, sidebar }) => {
                                 })}
                             </>
                         )}
-                    </>
-                ) : sidebar ? (
-                    <>
+                    </div>
+                     {sidebar ? (
+                    <div  className={classes['sidebarmainboxmobile']}>
                         <Drawer
                             title="Basic Drawer"
                             placement={"left"}
@@ -286,7 +286,7 @@ const SideBar = ({ userRole, isActiveState, dispatch, sidebar }) => {
                                 </>
                             )}
                         </Drawer>
-                    </>
+                    </div>
                 ) : null}
             </Col>
         </Row>

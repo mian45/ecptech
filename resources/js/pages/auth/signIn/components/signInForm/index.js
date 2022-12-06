@@ -219,7 +219,7 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
     };
     return (
         <>
-            <div>{contextHolder}</div>
+           {contextHolder}
             <Formik
                 initialValues={LoginInitialValues}
                 validationSchema={LoginValidation}
@@ -342,11 +342,17 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                 xl={24}
                                             >
                                                 <Row justify="space-between">
-                                                    <Col xs={12}>
+                                                    <Col xs={12} 
+                                                        className={
+                                                            classes["chk-wrapper"]
+                                                        } >
                                                         <CustomCheckbox
                                                             label="Remember me"
                                                             id="remember"
                                                             name="remember"
+                                                            containerClass={
+                                                                classes["tag-wrapper"]
+                                                            } 
                                                             defaultChecked={
                                                                 values?.remember ||
                                                                 false

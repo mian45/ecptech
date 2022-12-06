@@ -22,6 +22,9 @@
     margin-bottom: 37px;
     margin-top: 19px;
 }
+.chk-wrapper{
+    display: flex;
+}
 .error {
     font-size: 14px;
     color: red;
@@ -85,7 +88,9 @@
 .form-Item {
     margin-bottom: 33px !important;
 }
-
+.tag-wrapper{
+    margin-bottom: 0px !important;
+}
 .forgot-password {
     font-size: 16px;
     font-family: Montserrat;
