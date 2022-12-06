@@ -117,10 +117,10 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
             const isError = await handleSearchValidation(formProps);
             if (!isError) {
                 await setFieldError(
-                    "firstName",
+                    "lastName",
                     "Please provide a valid First Name"
                 );
-                await setTouched({ firstName }, true);
+                await setTouched({ lastName }, true);
 
                 return;
             }
@@ -132,6 +132,7 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 phoneNo: values?.phoneNo,
                 dob: values?.dob,
             };
+            console.log("formProps", formProps?.errors);
 
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/search-invoices`,
@@ -148,19 +149,22 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
         } catch (err) {
             console.log("error while search", err);
             if (err.response.data.message == "Validation Errors") {
-                await setFieldError(
-                    "firstName",
-                    "One of the field is required"
-                );
-                await setTouched({}, true);
-            } else {
-                messageApi.open({
-                    type: "error",
-                    content: err.response.data.message,
-                    duration: 5,
-                    className: "custom-postion-error",
-                });
+                if (values.firstName) {
+                    await setTouched({ firstName }, true);
+                } else if (values.lastName) {
+                    await setTouched({ lastName }, true);
+                } else if (values.dob) {
+                    await setTouched({ dob }, true);
+                } else if (values.email) {
+                    await setTouched({ email }, true);
+                }
             }
+            messageApi.open({
+                type: "error",
+                content: err.response.data.message,
+                duration: 5,
+                className: "custom-postion-error",
+            });
             setButtonLoader(false);
         }
     };
