@@ -1,7 +1,7 @@
 export const LOGIN_ROUTE = "/login";
 export const HOME_ROUTE = "/dashboard";
 export const INVOICES_ROUTE = "/invoices";
-export const PAYMENT_ROUTE = "/payment";
+export const PAYMENT_ROUTE = "/billing";
 export const SETTINGS_ROUTE = "/settings/emails";
 export const SETTINGS_ROUTE_LENS = "/settings/lens";
 export const SETTINGS_ROUTE_DISCOUNT = "/settings/discounts";
@@ -9,3 +9,4 @@ export const SETTINGS_ROUTE_INSURANCE = "/settings/insurance-plans";
 export const SETTINGS_ROUTE_GLASSES = "/settings/glasses-prescriptions";
 export const CREATE_INVOICE_ROUTE = "/create-invoice";
 export const EDIT_INSURANCE_ROUTE = "/edit-insurance/:id";
+export const SETTINGS_ROUTE_MISC = "/settings/misc-fees";
