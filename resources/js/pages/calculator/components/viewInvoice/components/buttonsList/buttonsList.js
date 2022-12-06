@@ -1,5 +1,6 @@
 import { Col, Row } from "antd";
 import React from "react";
+import ButtonComponent from "../../../../../../components/Button";
 import classes from "./buttonsList.module.scss";
 
 const ButtonsList = ({ mode, handleSendInvoiceClick }) => {
@@ -7,24 +8,30 @@ const ButtonsList = ({ mode, handleSendInvoiceClick }) => {
         <Row>
             {mode !== "view" && (
                 <Col className={classes["button-wrapper"]}>
-                    <button className={classes["send-button"]} disabled={true}>
+                    <ButtonComponent
+                        className={classes["send-button"]}
+                        disabled={true}
+                    >
                         Save as draft
-                    </button>
+                    </ButtonComponent>
                 </Col>
             )}
             <Col className={classes["button-wrapper"]}>
-                <button
+                <ButtonComponent
                     className={classes["send-button"]}
                     onClick={handleSendInvoiceClick}
                 >
                     {mode === "view" ? "Close" : "Save and Sent"}
-                </button>
+                </ButtonComponent>
             </Col>
             {mode !== "view" && (
                 <Col className={classes["button-wrapper"]}>
-                    <button className={classes["send-button"]} disabled={true}>
+                    <ButtonComponent
+                        className={classes["send-button"]}
+                        disabled={true}
+                    >
                         Save and Paid
-                    </button>
+                    </ButtonComponent>
                 </Col>
             )}
         </Row>

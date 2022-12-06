@@ -26,24 +26,24 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices }) => {
         const frameContribution = parseFloat(
             data?.frameOrder?.frameContribution || ""
         );
+        const onlyThisTime = "Only multiple pair benefit only at this time";
+        const newFrame = "New Frame Purchase";
         if (
-            isPrivate ||
-            data?.isFrameBenifit ===
-                "Only multiple pair benefit only at this time"
+            (isPrivate || data?.isFrameBenifit === onlyThisTime) &&
+            data?.frameOrder?.type === newFrame
         ) {
-            if (data?.frameOrder?.type === "New Frame Purchase") {
-                total = retailFee;
-            }
-        } else if (data?.isFrameBenifit === "Yes") {
-            if (data?.frameOrder?.type === "New Frame Purchase") {
-                if (retailFee <= frameContribution) {
-                    total = total + 0;
-                } else if (retailFee > frameContribution) {
-                    const actualPrice = retailFee - frameContribution;
-                    const discount = actualPrice * 0.2;
-                    const payableFramePrice = actualPrice - discount;
-                    total = total + (payableFramePrice || 0);
-                }
+            total = retailFee;
+        } else if (
+            data?.isFrameBenifit === "Yes" &&
+            data?.frameOrder?.type === newFrame
+        ) {
+            if (retailFee <= frameContribution) {
+                total = total + 0;
+            } else if (retailFee > frameContribution) {
+                const actualPrice = retailFee - frameContribution;
+                const discount = actualPrice * 0.2;
+                const payableFramePrice = actualPrice - discount;
+                total = total + (payableFramePrice || 0);
             }
         }
         return (total || 0).toFixed(2);
