@@ -222,6 +222,7 @@ export const CollectionSlot = ({
                     className={classes["collection-edit-container"]}
                     id={collection?.title}
                 >
+                    <Col className={classes["checkbox-title"]} xs={24}>Click to Display as Option on Calculator</Col>
                     <Col
                         xs={24}
                         className={classes["collection-edit-header-slot"]}
@@ -304,6 +305,7 @@ export const CollectionSlot = ({
                     className={classes["collection-show-container"]}
                     id={collection?.title}
                 >
+                    <Col className={classes["checkbox-title"]} xs={24}>Click to Display as Option on Calculator</Col>
                     <Col xs={18}>
                         <Row
                             className={

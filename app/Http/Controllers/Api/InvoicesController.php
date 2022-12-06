@@ -186,44 +186,55 @@ class InvoicesController extends Controller
       return $this->sendError('Something went wrong!');
     }
     public function search(Request $request){
+
         $validator = Validator::make($request->all(), [
-            'userId' => 'required',
-            'fname' => 'required',
-            'lname' => 'required',
-            'dob' => 'required',
-            'email' => 'required',
+            'firstName' => 'min:3|max:30|nullable|required_without_all:lastName,email,dob,phoneNo',
+            'lastName' => 'min:3|max:30|nullable',
+            'email' => 'email|max:100|nullable',
+            'dob'  => 'date|date_format:Y-m-d|nullable'
+        ],[
+            'firstName.required_without_all' => 'One of the field is required'
         ]);
 
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
-        
-        $where_clouse['user_id'] = $request->user_id;
-        $where_clouse['fname'] = $request->fname;
-        $where_clouse['lname'] = $request->lname;
-        $where_clouse['dob'] = $request->dob;
-        $where_clouse['email'] = $request->email;
 
-       if(isset($request->phone)){
-        $where_clouse['phone'] = $request->phone;
-        $invoices = Invoices::with('customer')->whereHas('customer', function($q) use($where_clouse) {
-            $q->where('fname',$where_clouse['fname'])
-                ->where('lname',$where_clouse['lname'])
-                ->where('fname',$where_clouse['fname'])
-                ->where('dob',$where_clouse['dob'])
-                ->where('email',$where_clouse['email'])
-                ->where('phone',$where_clouse['phone']);
-        })->where('user_id',$request->userId)->whereNot('status', 'discard')->get();
-      }else{
-        $invoices = Invoices::with('customer')->whereHas('customer', function($q) use($where_clouse) {
-            $q->where('fname',$where_clouse['fname'])
-                ->where('lname',$where_clouse['lname'])
-                ->where('fname',$where_clouse['fname'])
-                ->where('dob',$where_clouse['dob'])
-                ->where('email',$where_clouse['email']);
-        })->where('user_id',$request->userId)->whereNot('status', 'discard')->get();
-      }
+        $user = auth()->user();
+        $userId=$user->id;
+        if($user->role_id===3){
+          $userId=  $user->client_id;
+        }
+        $invoices = Invoices::with('customer')->newQuery();
+
+        if ($request->has('firstName')) {
+            $invoices->whereHas('customer', function ($query) use ($request) {
+                $query->where('fname', $request->firstName);
+            });
+        }
+        if ($request->has('lastName')) {
+            $invoices->whereHas('customer', function ($query) use ($request) {
+                $query->where('lname', $request->lastName);
+            });
+        }
+        if ($request->has('email')) {
+            $invoices->whereHas('customer', function ($query) use ($request) {
+                $query->where('email', $request->email);
+            });
+        }
+        if ($request->has('phoneNo')) {
+            $invoices->whereHas('customer', function ($query) use ($request) {
+                $query->where('phone', $request->phoneNo);
+            });
+        }
+        if ($request->has('dob')) {
+            $invoices->whereHas('customer', function ($query) use ($request) {
+                $query->where('dob', $request->dob);
+            });
+        }
+        $invoices = $invoices->where('user_id',$userId)->whereNot('status', 'discard')->get();
         return $this->sendResponse($invoices, 'Invoices list get successfully');
+
     }
 
 }
