@@ -12,7 +12,6 @@ export function login({ email, password, remember }, messageApi) {
                     remember_me: remember,
                 })
                 .then((res) => {
-                    message.destroy();
                     messageApi.open({
                         type: "success",
                         content: res.data.message,
@@ -36,7 +35,6 @@ export function login({ email, password, remember }, messageApi) {
                     }, 1000);
                 })
                 .catch((err) => {
-                    message.destroy();
                     messageApi.open({
                         type: "error",
                         content: err.response.data.message,
@@ -173,7 +171,6 @@ export function updateStaffLogin(credentials, messageApi) {
             )
                 .then((res) => {
                     dispatch(action.updateStaffLogin(res.data));
-                    message.destroy();
                     messageApi.open({
                         type: "success",
                         content: res.data.message,
@@ -188,7 +185,6 @@ export function updateStaffLogin(credentials, messageApi) {
                         status,
                         errors,
                     };
-                    message.destroy();
                     messageApi.open({
                         type: "error",
                         content: err.response.data.message,
