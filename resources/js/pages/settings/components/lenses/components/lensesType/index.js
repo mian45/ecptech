@@ -30,11 +30,12 @@ const LensesType = ({ userId }) => {
                 setLensesList(res?.data?.data || []);
             } catch (err) {
                 console.log("error while get lenses");
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: err.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             }
         };
@@ -51,19 +52,21 @@ const LensesType = ({ userId }) => {
                 `${process.env.MIX_REACT_APP_URL}/api/update-lense-setting`,
                 payload
             );
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("error while update lenses");
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -441,8 +444,9 @@ export const LensLabelSlot = ({ title, onClick, active }) => {
     const [isHover, setIsHover] = useState(false);
     return (
         <div
-            className={`${classes["lenses-label-slot-container"]} ${(active || isHover) && classes["slot-color"]
-                }`}
+            className={`${classes["lenses-label-slot-container"]} ${
+                (active || isHover) && classes["slot-color"]
+            }`}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
             onClick={onClick}

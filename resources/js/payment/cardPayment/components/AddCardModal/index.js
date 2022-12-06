@@ -95,21 +95,23 @@ const AddCardModal = ({ show, onClose, getPaymentMethod }) => {
                 `${process.env.MIX_REACT_APP_URL}/api/add-card`,
                 data
             );
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
             getPaymentMethod(true);
             onClose();
         } catch (err) {
             console.log("Error while delete Staff", err);
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };

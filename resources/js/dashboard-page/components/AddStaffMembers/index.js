@@ -34,11 +34,12 @@ const AddStaffMember = ({ userId }) => {
                 );
             } catch (err) {
                 console.log("Error while fetch Staff", err);
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: err.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             }
         };
@@ -64,19 +65,21 @@ const AddStaffMember = ({ userId }) => {
             setStaffList([...staff]);
             setStaffInput("");
             setEditId(null);
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("Error while edit Staff", err);
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -97,19 +100,21 @@ const AddStaffMember = ({ userId }) => {
                 })
             );
             setStaffInput("");
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("Error while create Staff", err);
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -133,20 +138,22 @@ const AddStaffMember = ({ userId }) => {
                 (staff) => staff.id !== id
             );
             setStaffList([...filteredStaff]);
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
             setEditId(null);
         } catch (err) {
             console.log("Error while delete Staff", err);
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -182,8 +189,9 @@ const AddStaffMember = ({ userId }) => {
                 </Col>
                 <Col xs={5}>
                     <Row
-                        className={`${classes["tick-wrapper"]
-                            } ${getBackgroundButton()}`}
+                        className={`${
+                            classes["tick-wrapper"]
+                        } ${getBackgroundButton()}`}
                         onClick={handleSubmit}
                         onMouseEnter={() => setIsHover(true)}
                         onMouseLeave={() => setIsHover(false)}

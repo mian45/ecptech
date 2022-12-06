@@ -76,6 +76,7 @@ const ViewInvoice = ({
             history.push(INVOICES_ROUTE);
         } catch (err) {
             onClose();
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
@@ -114,6 +115,7 @@ const ViewInvoice = ({
             `${process.env.MIX_REACT_APP_URL}/api/save-invoice`,
             payload
         );
+        message.destroy();
         messageApi.open({
             type: "success",
             content: res.data.message,
@@ -146,6 +148,7 @@ const ViewInvoice = ({
             `${process.env.MIX_REACT_APP_URL}/api/save-edit-invoice`,
             payload
         );
+        message.destroy();
         messageApi.open({
             type: "success",
             content: res.data.message,

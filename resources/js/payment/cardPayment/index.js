@@ -26,19 +26,21 @@ const CardPayment = () => {
             );
             setCardData(res.data.data);
             if (isShow) {
+                message.destroy();
                 messageApi.open({
                     type: "success",
                     content: res.data.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: "custom-postion",
                 });
             }
         } catch (err) {
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -46,7 +48,11 @@ const CardPayment = () => {
         <Row className={classes["container"]}>
             <div>{contextHolder}</div>
             {showAddCard && (
-                <AddCardModal show={showAddCard} onClose={handleCloseModal} getPaymentMethod={getPaymentMethod} />
+                <AddCardModal
+                    show={showAddCard}
+                    onClose={handleCloseModal}
+                    getPaymentMethod={getPaymentMethod}
+                />
             )}
             <Col offset={0} className={classes["label"]}>
                 Payment Details
