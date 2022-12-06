@@ -56,14 +56,7 @@ const DetailsList = ({
                 totalTax = totalTax + parseFloat(element?.value || 0);
             }
         });
-        const totalPrice = CalculateTotalPrice(
-            receipt?.values,
-            calculatorObj,
-            lensPrices
-        );
-        const taxValue = totalPrice * 100;
-        const percent = taxValue / (totalTax || 1);
-        return (percent || 0).toFixed(2);
+        return (totalTax || 0).toFixed(2);
     };
 
     const glassesCost = () => {
@@ -240,8 +233,8 @@ const DetailsList = ({
                         <Col xs={24}>
                             <Row className={classes["frame-price-slot"]}>
                                 <Col
-                                    xs={16}
-                                    sm={19}
+                                    xs={14}
+                                    sm={17}
                                     className={
                                         classes["frame-price-slot-title"]
                                     }
@@ -249,8 +242,8 @@ const DetailsList = ({
                                     Tax:
                                 </Col>
                                 <Col
-                                    xs={8}
-                                    sm={5}
+                                    xs={10}
+                                    sm={7}
                                     className={
                                         classes["frame-price-slot-price"]
                                     }
