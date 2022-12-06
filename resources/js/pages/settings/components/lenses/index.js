@@ -45,7 +45,7 @@ const LensesSettings = () => {
                             onClick={() => setActiveTab(3)}
                             xs={6}
                         >
-                            Add On
+                            Add On's
                         </Col>
                     </Row>
                     <div className={classes["buttons-divider"]} />
