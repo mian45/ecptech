@@ -11,6 +11,7 @@ import {
     SETTINGS_ROUTE_DISCOUNT,
     SETTINGS_ROUTE_INSURANCE,
     SETTINGS_ROUTE_GLASSES,
+    SETTINGS_ROUTE_MISC,
 } from "./routeConstants";
 import { Redirect, Route } from "react-router-dom";
 const Home = React.lazy(() => import("../pages/dashboard/index"));
@@ -79,6 +80,12 @@ export const allRoutes = [
     },
     {
         path: SETTINGS_ROUTE_DISCOUNT,
+        component: Settings,
+        exact: true,
+        isPrivate: true,
+    },
+    {
+        path: SETTINGS_ROUTE_MISC,
         component: Settings,
         exact: true,
         isPrivate: true,

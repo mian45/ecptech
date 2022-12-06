@@ -1,11 +1,11 @@
 import { Tabs } from "antd";
-import React, { useEffect } from "react";
+import React from "react";
 import InsurancePlans from "../InsurancePlans";
 import EmailSetting from "../email-setting/index";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
-import AuthServices from "../services";
 import DiscountTaxes from "../discount-taxes/index";
+import MISC from "../misc-fees/index";
 import LensesSettings from "../pages/settings/components/lenses";
 import * as action from "../store/actions";
 import EyePrescription from "../pages/settings/components/eyePrescription";
@@ -34,6 +34,10 @@ const TabsSection = (props) => {
             }
             case "/settings/glasses-prescriptions": {
                 value = "5";
+                break;
+            }
+            case "/settings/misc-fees": {
+                value = "6";
                 break;
             }
             default: {
@@ -65,6 +69,10 @@ const TabsSection = (props) => {
                 history.push("/settings/glasses-prescriptions");
                 break;
             }
+            case "6": {
+                history.push("/settings/misc-fees");
+                break;
+            }
             default: {
                 history.push("/settings/emails");
                 break;
@@ -90,11 +98,14 @@ const TabsSection = (props) => {
             <Tabs.TabPane tab={`Discounts & Taxes`} key="3">
                 <DiscountTaxes />
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Insurance Plans" key="4">
+            <Tabs.TabPane tab="Vision Plans" key="4">
                 <InsurancePlans />
             </Tabs.TabPane>
             <Tabs.TabPane tab="Glasses Prescription" key="5">
                 <EyePrescription />
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Misc. Fees" key="6">
+                <MISC/>
             </Tabs.TabPane>
         </Tabs>
     );

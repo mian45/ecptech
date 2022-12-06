@@ -18,3 +18,9 @@ function includeRouteFiles($folder)
             }
         }
     }
+
+function moneyFormatter($input){
+    $output = str_replace('$','',$input);
+    $output = (float)$output;
+    return $output;
+}

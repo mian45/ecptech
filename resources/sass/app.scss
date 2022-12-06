@@ -339,7 +339,7 @@ input[type="number"] {
     left: -14px !important;
 }
 .ant-tabs-top > .ant-tabs-nav::before {
-    max-width: 668px !important;
+    max-width: 781px !important;
     height: 3px !important;
 }
 
@@ -544,6 +544,7 @@ input:-webkit-autofill:active {
 .ant-collapse-extra {
     margin-right: 13px;
 }
+
 .custom-postion {
     margin-top: 13.5vh;
     .ant-message-notice-content {
@@ -551,6 +552,10 @@ input:-webkit-autofill:active {
         color: white;
         width: 618px;
         height: 37px;
+
+        @media (max-width: 767px) {
+            width: 100%;
+        }
     }
 }
 
@@ -561,6 +566,10 @@ input:-webkit-autofill:active {
         color: white;
         width: 618px;
         height: 37px;
+
+        @media (max-width: 767px) {
+            width: 100%;
+        }
     }
 }
 .d-block {

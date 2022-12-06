@@ -7,7 +7,7 @@ import editIcon from "../../../../../../../images/edit.png";
 import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-import { Row, Col, message } from "antd";
+import { Row, Col, message,Tooltip } from "antd";
 const LensesType = ({ userId }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [lensesMaterialAddApi, lensesMaterialAddHolder] =
@@ -196,6 +196,7 @@ const CollectionSection = ({
                         handleCheckbox={handleCheckbox}
                         handleDisplayNameChange={handleDisplayNameChange}
                         handleAmountNameChange={handleAmountNameChange}
+                        prompt="Click to edit name of lens that calculator displays"
                     />
                 );
             })}
@@ -208,6 +209,7 @@ export const CollectionSlot = ({
     handleCheckbox,
     handleDisplayNameChange,
     handleAmountNameChange,
+    prompt
 }) => {
     const [isEdit, setIsEdit] = useState(false);
 
@@ -220,6 +222,7 @@ export const CollectionSlot = ({
                     className={classes["collection-edit-container"]}
                     id={collection?.title}
                 >
+                    <Col className={classes["checkbox-title"]} xs={24}>Click to Display as Option on Calculator</Col>
                     <Col
                         xs={24}
                         className={classes["collection-edit-header-slot"]}
@@ -302,6 +305,7 @@ export const CollectionSlot = ({
                     className={classes["collection-show-container"]}
                     id={collection?.title}
                 >
+                    <Col className={classes["checkbox-title"]} xs={24}>Click to Display as Option on Calculator</Col>
                     <Col xs={18}>
                         <Row
                             className={
@@ -367,12 +371,14 @@ export const CollectionSlot = ({
                         </Row>
                     </Col>
                     <Col xs={6} className={classes["edit-container"]}>
+
+                        <Tooltip title={prompt} color={'#6fa5cb'} key={0}>
                         <img
                             src={editIcon}
                             alt={"icon"}
                             className={classes["edit-icon"]}
                             onClick={() => setIsEdit(true)}
-                        />
+                        /></Tooltip>
                     </Col>
                 </Row>
             )}
