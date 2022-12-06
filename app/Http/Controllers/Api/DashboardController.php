@@ -102,17 +102,17 @@ class DashboardController extends Controller
         
 
         $client_id = auth()->user()->id;
-        $total_invoices = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->count();
+        $total_invoices = Invoice::where('user_id',$client_id)->where('status', '!=', 'draft')->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->count();
         
-        $total_paid_invoices = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','paid')->count();
-        $total_unpaid_invoices = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','unpaid')->count();
+        $total_paid_invoices = Invoice::where('user_id',$client_id)->where('status', '!=', 'draft')->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','paid')->count();
+        $total_unpaid_invoices = Invoice::where('user_id',$client_id)->where('status', '!=', 'draft')->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','unpaid')->count();
         
         $capture_rate = ($total_invoices>0)? round(($total_paid_invoices/$total_invoices)*100):0;
         
        
 
-        $total_office_paid_invoices = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','paid')->where('payment_mode','office')->count();
-        $total_online_paid_invoices = Invoice::where('user_id',$client_id)->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','paid')->where('payment_mode','online')->count();
+        $total_office_paid_invoices = Invoice::where('user_id',$client_id)->where('status', '!=', 'draft')->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','paid')->where('payment_mode','office')->count();
+        $total_online_paid_invoices = Invoice::where('user_id',$client_id)->where('status', '!=', 'draft')->whereBetween(DB::raw('date(created_at)'), [$request->start_date, $request->end_date])->where('status','paid')->where('payment_mode','online')->count();
 
         $data['invoice']['generated'] = $total_invoices;
         $data['invoice']['office_paid'] = $total_office_paid_invoices;
