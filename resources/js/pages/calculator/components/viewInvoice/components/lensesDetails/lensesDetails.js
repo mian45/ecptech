@@ -79,13 +79,28 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
         receipt?.values,
         calculatorObj
     );
-    const materialCopay = (receipt?.values?.materialCopay || 0).toFixed(2);
+    const copay = parseFloat(receipt?.values?.materialCopay || 0);
+    const materialCopay = copay?.toFixed(2);
     const antiReflectivePrice = RenderAntireflectivePrices(
         receipt?.values,
         calculatorObj
     );
     return (
         <Row>
+            {(materialCopay > 0 || materialCopay < 0) && (
+                <Col xs={24}>
+                    <FramePriceSlot
+                        title={"Material Copay"}
+                        price={`$${materialCopay || 0}`}
+                    />
+                </Col>
+            )}
+            {receipt?.values?.isLensBenifit ===
+                "Only multiple pair benefit only at this time" && (
+                <Col xs={24} className={classes["self-pay"]}>
+                    Estimates under Private Pay
+                </Col>
+            )}
             <Col xs={24}>
                 <FramePriceSlot
                     title={`${
@@ -110,14 +125,7 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                     )}`}
                 />
             </Col>
-            {(materialCopay > 0 || materialCopay < 0) && (
-                <Col xs={24}>
-                    <FramePriceSlot
-                        title={"Material Copay"}
-                        price={`$${materialCopay || 0}`}
-                    />
-                </Col>
-            )}
+
             {receipt?.values?.photochromics?.status === "Yes" && (
                 <Col xs={24}>
                     <FramePriceSlot

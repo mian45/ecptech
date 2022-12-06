@@ -76,6 +76,7 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices }) => {
                         <GetFramePriceByPlan
                             framePrice={renderOnlyFrameFee}
                             drillMount={renderDrillMount}
+                            receipt={receipt}
                         />
                     </Panel>
                 </Collapse>
@@ -85,20 +86,48 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices }) => {
 };
 export default FrameDetails;
 
-const GetFramePriceByPlan = ({ framePrice, drillMount }) => {
-    return (
-        <Row>
-            <Col xs={24}>
-                <FramePriceSlot title={"Frame"} price={`$${framePrice()}`} />
-            </Col>
-            <Col xs={24}>
-                <FramePriceSlot
-                    title={"Drill Mount"}
-                    price={`$${drillMount()}`}
-                />
-            </Col>
-        </Row>
-    );
+const GetFramePriceByPlan = ({ framePrice, drillMount, receipt }) => {
+    if (
+        receipt?.values?.isFrameBenifit ===
+        "Only multiple pair benefit only at this time"
+    ) {
+        return (
+            <Row>
+                <Col xs={24}>
+                    <FramePriceSlot
+                        title={"Drill Mount"}
+                        price={`$${drillMount()}`}
+                    />
+                </Col>
+                <Col xs={24} className={classes["self-pay"]}>
+                    Estimates under Private Pay
+                </Col>
+                <Col xs={24}>
+                    <FramePriceSlot
+                        title={"Frame"}
+                        price={`$${framePrice()}`}
+                    />
+                </Col>
+            </Row>
+        );
+    } else {
+        return (
+            <Row>
+                <Col xs={24}>
+                    <FramePriceSlot
+                        title={"Frame"}
+                        price={`$${framePrice()}`}
+                    />
+                </Col>
+                <Col xs={24}>
+                    <FramePriceSlot
+                        title={"Drill Mount"}
+                        price={`$${drillMount()}`}
+                    />
+                </Col>
+            </Row>
+        );
+    }
 };
 
 export const FramePriceSlot = ({ title, price, className, priceClass }) => {
