@@ -14,7 +14,6 @@ import { message } from "antd";
 
 const Invoices = ({ userId, clientUserId, userRole }) => {
     const [messageApi, contextHolder] = message.useMessage();
-    const [isSearched, setIsSearched] = useState(false);
     const [tableData, setTableData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [buttonLoader, setButtonLoader] = useState(false);
@@ -46,19 +45,91 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
             state: { user: values },
         });
     };
-    const handleSearch = async (values) => {
+    const handleSearchValidation = async (formProps) => {
+        const { values, setFieldError, setTouched } = formProps;
+
+        if (values.firstName) {
+            await setFieldError("firstName", "");
+            await setFieldError("lastName", "");
+            await setFieldError("dob", "");
+            await setFieldError("email", "");
+            await setFieldError("phoneNo", "");
+            await setTouched(
+                { firstName, lastName, dob, phoneNo, email },
+                false
+            );
+            return true;
+        } else if (values.phoneNo) {
+            await setFieldError("firstName", "");
+            await setFieldError("lastName", "");
+            await setFieldError("dob", "");
+            await setFieldError("email", "");
+            await setFieldError("phoneNo", "");
+            await setTouched(
+                { firstName, lastName, dob, phoneNo, email },
+                false
+            );
+            return true;
+        } else if (values.email) {
+            await setFieldError("firstName", "");
+            await setFieldError("lastName", "");
+            await setFieldError("dob", "");
+            await setFieldError("email", "");
+            await setFieldError("phoneNo", "");
+            await setTouched(
+                { firstName, lastName, dob, phoneNo, email },
+                false
+            );
+            return true;
+        } else if (values.dob) {
+            await setFieldError("firstName", "");
+            await setFieldError("lastName", "");
+            await setFieldError("dob", "");
+            await setFieldError("email", "");
+            await setFieldError("phoneNo", "");
+            await setTouched(
+                { firstName, lastName, dob, phoneNo, email },
+                false
+            );
+            return true;
+        } else if (values.lastName) {
+            await setFieldError("firstName", "");
+            await setFieldError("lastName", "");
+            await setFieldError("dob", "");
+            await setFieldError("email", "");
+            await setFieldError("phoneNo", "");
+            await setTouched(
+                { firstName, lastName, dob, phoneNo, email },
+                false
+            );
+            return true;
+        } else {
+            return false;
+        }
+    };
+    const handleSearch = async (formProps) => {
+        const { values, setFieldError, setTouched } = formProps;
         let clientId = userId;
         if (userRole === "staff") {
             clientId = clientUserId;
         }
         try {
-            setIsSearched(true);
+            const isError = await handleSearchValidation(formProps);
+            if (!isError) {
+                await setFieldError(
+                    "firstName",
+                    "Please provide a valid First Name"
+                );
+                await setTouched({ firstName }, true);
+
+                return;
+            }
             const invoiceObject = {
-                fname: values?.firstName,
-                lname: values?.lastName,
+                firstName: values?.firstName,
+                lastName: values?.lastName,
                 userId: clientId,
                 email: values?.email,
-                phone: values?.phoneNo,
+                phoneNo: values?.phoneNo,
                 dob: values?.dob,
             };
 
@@ -71,20 +142,40 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
             setButtonLoader(false);
         } catch (err) {
-            setIsSearched(false);
             console.log("error while search", err);
-            messageApi.open({
-                type: "error",
-                content: err.response.data.message,
-                duration: 5,
-                className: 'custom-postion-error',
-            });
+            if (err.response.data.message == "Validation Errors") {
+                await setFieldError(
+                    "firstName",
+                    "One of the field is required"
+                );
+                await setTouched({}, true);
+            } else {
+                messageApi.open({
+                    type: "error",
+                    content: err.response.data.message,
+                    duration: 5,
+                    className: "custom-postion-error",
+                });
+            }
             setButtonLoader(false);
         }
+    };
+    const isSubmitCase = (formProps) => {
+        const { values } = formProps;
+
+        if (
+            values?.firstName &&
+            values?.lastName &&
+            values?.dob &&
+            values?.email
+        ) {
+            return true;
+        }
+        return false;
     };
 
     return loading == true ? (
@@ -108,8 +199,6 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                                 <InvoicesForm
                                     handleSearch={handleSearch}
                                     formProps={formProps}
-                                    isSearched={isSearched}
-                                    setIsSearched={setIsSearched}
                                 />
                             </form>
                         );
