@@ -235,7 +235,7 @@ const ViewInvoice = ({
             bodyStyle={{
                 padding: 0,
             }}
-            width={width <= 1200 ? "80%" : "45%"}
+            width={width <= 1200 ? "80%" : "50%"}
             footer={null}
         >
             <Row
