@@ -121,6 +121,7 @@
     border-radius: 28px;
     color: white;
     cursor: pointer;
+    
     &:hover {
         background-color: #518fbb;
     }
@@ -143,6 +144,9 @@
 @media only screen and (min-width: 992px) {
     .save-button {
         width: 100%;
+        @media only screen and (width: 1024px){
+            padding: unset !important;
+        }
     }
 }
 .discount-output {
