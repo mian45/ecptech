@@ -21,7 +21,7 @@ const InvoicesTableBodySlot = ({ data }) => {
                 className={classes["first-column"]}
             >{`${data?.customer?.fname} ${data?.customer?.lname}`}</td>
             <td className={classes["first-column"]}>{data?.customer?.email}</td>
-            <td className={classes["first-column"]}>{createdDate}</td>
+            <td className={classes["first-column"]}>{data?.customer?.dob}</td>
             <td className={classes["first-column"]}>${data?.amount}</td>
             <td>
                 <div
