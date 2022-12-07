@@ -2,14 +2,132 @@
     display: flex;
     width: 100%;
     flex-direction: column;
+    padding: 50px;
 }
-.description {
-    font-size: 12px;
+.page-title {
+    font-size: 18px;
     color: #2a2a2a;
     font-family: Montserrat;
-    margin-bottom: 12px;
-    list-style: disc;
-    display: list-item;
-    margin-left: 40px;
-    margin-right: 40px;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+.download-icon {
+    text-align: right;
+}
+.name-slot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-right: 15px;
+}
+.name-slot-title {
+    font-size: 14px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+    font-weight: bold;
+    margin-right: 2px;
+}
+.name-slot-subtitle {
+    font-size: 14px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+    font-weight: 400;
+    text-overflow: ellipsis;
+}
+.title-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+.divider {
+    border-bottom: 3px solid #e8e8e8;
+    margin-top: 15px;
+    margin-bottom: 25px;
+}
+.page-header {
+    margin-bottom: 25px;
+    font-size: 14px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+    font-weight: bold;
+}
+.page-header-title {
+    padding-left: 15px;
+}
+.page-header-subtitle {
+    padding-right: 28px;
+    text-align: end;
+}
+.lenses-container {
+    margin-top: 15px;
+}
+.divider-doted {
+    border-bottom: 3px dashed #e8e8e8;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.frame-price-slot {
+    font-size: 14px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+    font-weight: 400;
+    margin-top: 15px;
+}
+.frame-price-slot-price {
+    text-align: end;
+    padding-right: 28px;
+}
+.frame-price-slot-title {
+    padding-left: 25px;
+}
+.frame-price-slot-price-percent {
+    color: #cbcbcb;
+    margin-right: 2px;
+}
+.tax-Slot {
+    font-size: 14px !important;
+}
+.price-padding {
+    padding-right: 28px !important;
+}
+.total-slot {
+    font-size: 14px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+    font-weight: 400;
+    margin-top: 15px;
+}
+.total-slot-title {
+    padding-left: 25px;
+    background-color: #f3f3f3;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.total-slot-price {
+    background-color: #6fa5cb;
+    text-align: end;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 28px;
+    color: #fff;
+}
+.saving-Slot {
+    font-size: 14px;
+    font-family: Montserrat;
+    font-weight: 600;
+    font-style: italic;
+    margin-top: 15px;
+    text-align: end;
+    padding-right: 28px;
+}
+.saving-title {
+    color: #2a2a2a;
+}
+.saving-price {
+    color: #6fa5cb;
+}
+@media only screen and (max-width: 425px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
 }

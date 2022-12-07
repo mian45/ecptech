@@ -1,4 +1,5 @@
-import { Col } from "antd";
+import Icon from "@ant-design/icons";
+import { Col, Row } from "antd";
 import React from "react";
 import {
     getPrivatePayAntireflective,
@@ -10,7 +11,6 @@ import {
     InvoiceSlot,
 } from "../..";
 import {
-    calculateLensesCopaysFee,
     GetFrameFee,
     GetFrameRetailFee,
 } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
@@ -19,54 +19,18 @@ import {
     CalculateWithTaxesTotalPrice,
     GetAppliedDiscount,
 } from "../../helpers/pricesHelper/calculateTotalPrice";
+import ButtonsList from "../buttonsList/buttonsList";
+import FrameDetails, { FramePriceSlot } from "../frameDetails/frameDetails";
+import LensesDetails from "../lensesDetails/lensesDetails";
 import classes from "./style.module.scss";
 
 const DetailsList = ({
     receipt,
     calculatorObj,
     lensPrices,
-    totalPrice,
-    withoutTaxPrice,
+    mode,
+    handleSendInvoiceClick,
 }) => {
-    const getLensRetailFee = () => {
-        let price = 0;
-        price =
-            price +
-            parseFloat(
-                getPrivatePayLensPices(calculatorObj, receipt, lensPrices)
-            );
-        price =
-            price +
-            parseFloat(
-                getPrivatePayMaterialPices(calculatorObj, receipt, lensPrices)
-            );
-        if (receipt?.values?.photochromics?.status === "Yes") {
-            price =
-                price +
-                parseFloat(
-                    getPrivatePayPhotochromic(
-                        receipt?.values?.photochromics?.type,
-                        calculatorObj
-                    )
-                );
-        } else {
-            price = price + 0;
-        }
-
-        if (receipt?.values?.antiReflectiveProperties?.status === "Yes") {
-            const total = getPrivatePayAntireflective(
-                receipt?.values?.antiReflectiveProperties?.type,
-                calculatorObj
-            );
-            price = price + (total || 0);
-        } else {
-            price = price + 0;
-        }
-        price = price + getPrivatePayGlasses(receipt, calculatorObj);
-
-        return (price || 0).toFixed(2);
-    };
-
     const currentPlan = receipt?.values?.visionPlan;
 
     const getTax = () => {
@@ -84,6 +48,17 @@ const DetailsList = ({
         const taxValue = totalPrice * (totalTax || 0);
         return taxValue / 100;
     };
+
+    const getTaxPercentage = () => {
+        let totalTax = 0;
+        calculatorObj?.tax?.forEach((element) => {
+            if (element?.status === "active") {
+                totalTax = totalTax + parseFloat(element?.value || 0);
+            }
+        });
+        return (totalTax || 0).toFixed(2);
+    };
+
     const glassesCost = () => {
         let total = 0;
         if (receipt?.values?.frameOrder?.type === "New Frame Purchase") {
@@ -96,168 +71,274 @@ const DetailsList = ({
         return total;
     };
 
-    const rendeFrameFee = () => {
-        const price =
-            GetFrameFee(
-                receipt?.values,
-                currentPlan === "Private Pay" ? true : false
-            ) || 0;
-        return (price || 0).toFixed(2);
+    const DownloadIcon = () => {
+        return (
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20.573"
+                height="20.573"
+                viewBox="0 0 20.573 20.573"
+            >
+                <g
+                    id="Icon_feather-download"
+                    data-name="Icon feather-download"
+                    transform="translate(-3.75 -3.75)"
+                >
+                    <path
+                        id="Path_158"
+                        data-name="Path 158"
+                        d="M23.573,22.5v4.238a2.119,2.119,0,0,1-2.119,2.119H6.619A2.119,2.119,0,0,1,4.5,26.738V22.5"
+                        transform="translate(0 -5.285)"
+                        fill="none"
+                        stroke="#000"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                    />
+                    <path
+                        id="Path_159"
+                        data-name="Path 159"
+                        d="M10.5,15l5.3,5.3L21.1,15"
+                        transform="translate(-1.762 -3.083)"
+                        fill="none"
+                        stroke="#000"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                    />
+                    <path
+                        id="Path_160"
+                        data-name="Path 160"
+                        d="M18,17.215V4.5"
+                        transform="translate(-3.963)"
+                        fill="none"
+                        stroke="#000"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="1.5"
+                    />
+                </g>
+            </svg>
+        );
     };
-    const renderLensesCopay = () => {
-        const price =
-            calculateLensesCopaysFee(
+    const RenderDownloadIcon = (props) => (
+        <Icon component={DownloadIcon} {...props} />
+    );
+
+    const RenderDiscount = () => {
+        const discount = (
+            GetAppliedDiscount(
+                CalculateTotalPrice(receipt?.values, calculatorObj, lensPrices),
+                receipt?.values
+            ) || 0
+        )?.toFixed(2);
+        if (discount > 0) {
+            return (
+                <Col xs={24}>
+                    <FramePriceSlot
+                        title={"Discount"}
+                        price={`$${discount}`}
+                        className={classes["tax-Slot"]}
+                        priceClass={classes["price-padding"]}
+                    />
+                </Col>
+            );
+        } else {
+            return <></>;
+        }
+    };
+    const savings = () => {
+        const totalFrame = (glassesCost() || 0).toFixed(2);
+        const discountPrice = (
+            CalculateWithTaxesTotalPrice(
                 receipt?.values,
                 calculatorObj,
-                lensPrices,
-                currentPlan === "Private Pay" ? true : false
-            ) || 0;
-        return (price || 0).toFixed(2);
+                lensPrices
+            ) || 0
+        ).toFixed(2);
+        const discount = totalFrame - discountPrice;
+        return parseFloat(discount || 0).toFixed(2);
     };
 
     return (
-        <Col className={classes["container"]}>
-            <InvoiceSlot title={"Frame:"} subTitle={`$${rendeFrameFee()}`} />
-            <InvoiceSlot
-                title={"Lenses/Copays:"}
-                subTitle={`$${renderLensesCopay()}`}
-            />
-            {getSelectionDetails(receipt)?.map((item, index) => {
-                return (
-                    <div key={index} className={classes["description"]}>
-                        {item}
-                    </div>
-                );
-            })}
-            {receipt?.values?.shipping?.status === "Yes" && (
-                <InvoiceSlot
-                    title={"Shipping:"}
-                    subTitle={`$${(
-                        parseFloat(calculatorObj?.shipping || 0) || 0
-                    ).toFixed(2)}`}
-                />
-            )}
-            <InvoiceSlot
-                title={"Tax:"}
-                subTitle={`$${(getTax() || 0).toFixed(2)}`}
-            />
-            <InvoiceSlot
-                title={"Discount:"}
-                subTitle={`$${(
-                    GetAppliedDiscount(
-                        CalculateTotalPrice(
-                            receipt?.values,
-                            calculatorObj,
-                            lensPrices
-                        ),
-                        receipt?.values
-                    ) || 0
-                )?.toFixed(2)}`}
-            />
-            <InvoiceBoldSlot
-                title={"Your glasses would have cost:"}
-                subTitle={`$${(glassesCost() || 0).toFixed(2)}`}
-            />
-            <InvoiceBoldSlot
-                title={"Your cost with insurance:"}
-                subTitle={`$${(
-                    CalculateWithTaxesTotalPrice(
-                        receipt?.values,
-                        calculatorObj,
-                        lensPrices
-                    ) || 0
-                ).toFixed(2)}`}
-            />
-        </Col>
+        <Row>
+            <Col xs={24} className={classes["container"]}>
+                <Row>
+                    <Col xs={23} className={classes["page-title"]}>
+                        <Row>
+                            <Col
+                                xs={24}
+                            >{`Estimate for ${receipt?.values?.invoiceName}`}</Col>
+                            <Col xs={24} className={classes["title-container"]}>
+                                <NameSlot
+                                    title={"Name:"}
+                                    subtitle={`${receipt?.userInfo?.firstName} ${receipt?.userInfo?.lastName}`}
+                                />
+                                <NameSlot
+                                    title={"Email:"}
+                                    subtitle={`${
+                                        receipt?.userInfo?.email || ""
+                                    }`}
+                                />
+                                {receipt?.userInfo?.phoneNo && (
+                                    <NameSlot
+                                        title={"Phone:"}
+                                        subtitle={`${receipt?.userInfo?.phoneNo}`}
+                                    />
+                                )}
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col xs={1} className={classes["download-icon"]}>
+                        <RenderDownloadIcon />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs={24} className={classes["divider"]} />
+                    <Col xs={24}>
+                        <Row
+                            justify="center"
+                            className={classes["page-header"]}
+                        >
+                            <Col
+                                xs={12}
+                                className={classes["page-header-title"]}
+                            >
+                                Item Description
+                            </Col>
+                            <Col
+                                xs={12}
+                                className={classes["page-header-subtitle"]}
+                            >
+                                Price
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col xs={24}>
+                        <FrameDetails
+                            receipt={receipt}
+                            calculatorObj={calculatorObj}
+                            lensPrices={lensPrices}
+                        />
+                    </Col>
+                    <Col xs={24} className={classes["lenses-container"]}>
+                        <LensesDetails
+                            receipt={receipt}
+                            calculatorObj={calculatorObj}
+                            lensPrices={lensPrices}
+                        />
+                    </Col>
+                    <Col xs={24} className={classes["divider-doted"]} />
+                    {getTax() > 0 && (
+                        <Col xs={24}>
+                            <Row className={classes["frame-price-slot"]}>
+                                <Col
+                                    xs={14}
+                                    sm={17}
+                                    className={
+                                        classes["frame-price-slot-title"]
+                                    }
+                                >
+                                    Tax:
+                                </Col>
+                                <Col
+                                    xs={10}
+                                    sm={7}
+                                    className={
+                                        classes["frame-price-slot-price"]
+                                    }
+                                >
+                                    <span
+                                        className={
+                                            classes[
+                                                "frame-price-slot-price-percent"
+                                            ]
+                                        }
+                                    >
+                                        {`(${getTaxPercentage()}%)`}
+                                    </span>
+                                    <span>{`$${(getTax() || 0).toFixed(
+                                        2
+                                    )}`}</span>
+                                </Col>
+                            </Row>
+                        </Col>
+                    )}
+                    {receipt?.values?.shipping?.status === "Yes" && (
+                        <Col xs={24}>
+                            <FramePriceSlot
+                                title={"Shipping"}
+                                price={`$${(
+                                    parseFloat(calculatorObj?.shipping || 0) ||
+                                    0
+                                ).toFixed(2)}`}
+                                className={classes["tax-Slot"]}
+                                priceClass={classes["price-padding"]}
+                            />
+                        </Col>
+                    )}
+                    <RenderDiscount />
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            className={classes["tax-Slot"]}
+                            priceClass={classes["price-padding"]}
+                            title={
+                                "Retail fee your glasses would have cost without your vision plan"
+                            }
+                            price={`$${(glassesCost() || 0).toFixed(2)}`}
+                        />
+                    </Col>
+                    <Col xs={24}>
+                        <Row className={classes["total-slot"]}>
+                            <Col
+                                xs={14}
+                                sm={19}
+                                className={classes["total-slot-title"]}
+                            >
+                                Out of Pocket Fees After Your Vision Plan
+                                Contribution
+                            </Col>
+                            <Col
+                                xs={10}
+                                sm={5}
+                                className={classes["total-slot-price"]}
+                            >
+                                {`$${(
+                                    CalculateWithTaxesTotalPrice(
+                                        receipt?.values,
+                                        calculatorObj,
+                                        lensPrices
+                                    ) || 0
+                                ).toFixed(2)}`}
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col xs={24} className={classes["saving-Slot"]}>
+                        <span className={classes["saving-title"]}>
+                            Savings of :{" "}
+                        </span>
+                        <span
+                            className={classes["saving-price"]}
+                        >{`$${savings()}`}</span>
+                    </Col>
+                    <Col xs={24}>
+                        <ButtonsList
+                            mode={mode}
+                            handleSendInvoiceClick={handleSendInvoiceClick}
+                        />
+                    </Col>
+                </Row>
+            </Col>
+        </Row>
     );
 };
 export default DetailsList;
-const getSelectionDetails = (receipt) => {
-    const result = [];
-    //materials
-    const lensMaterial = receipt?.values?.lensMaterial;
 
-    if (lensMaterial === "Polycarbonate") {
-        result.push(
-            "Polycarbonate lenses are thinner, lighter weight, and impact resistant space-age lenses."
-        );
-    }
-
-    if (lensMaterial === "Hi Index 1.67") {
-        result.push(
-            "1.67 high index lens material makes your lenses thinner and lighter in weight. These lenses can be up to 50% thinner than traditional plastic lenses."
-        );
-    }
-    if (lensMaterial === "Hi index 1.70 and above") {
-        result.push(
-            "1.74 High Index Lenses are the thinnest, lightest-weight lenses on the market today. Depending on your prescription a 1.74 High Index Lens can be more than 50% thinner than traditional plastic lenses."
-        );
-    }
-    //lenses
-    const lensType = receipt?.values?.lensType?.type;
-    if (lensType === "Single Vision") {
-        result.push("Single Vision");
-    }
-    if (lensType === "PAL") {
-        result.push(
-            "Progressive lenses (no-line bifocals) provide precise vision at all ranges of distance, intermediate and near."
-        );
-    }
-
-    if (lensType === "Bifocal") {
-        result.push(
-            "Bifocal lenses will have a line and focus distant images in the top half of the glasses and focus near images in the bottom half of the glasses."
-        );
-    }
-    if (lensType === "Trifocal") {
-        result.push(
-            "Bifocal lenses will have a line and focus distant images in the top half of the glasses and focus near images in the bottom half of the glasses."
-        );
-    }
-    //Antireflective
-    const antireflective = receipt?.values?.antiReflectiveProperties?.type;
-    if (antireflective === "Crizal Sapphire 360 UV") {
-        result.push(
-            "Viso Pro is the most sophisticated no-glare technology on the market today. It allows for superior cleaning, resists smudges, and provides superior no-glare protection."
-        );
-    }
-    if (antireflective === "Crizal Avance UV") {
-        result.push(
-            "Viso XC+UV no-glare technology provides dust and dirt repellence for clearer vision and less cleaning. They reduce glare, resist scratching, repel water, resist smudges and provide UV protection."
-        );
-    }
-    if (antireflective === "Crizal Easy UV") {
-        result.push(
-            "Crizal Easy no-glare technology makes your lenses easier to clean than ordinary lenses. They reduce glare, resist scratching, repel water, resist smudges and provide UV protection."
-        );
-    }
-    //photochromic
-    const photochromic = receipt?.values?.photochromics?.type;
-    if (photochromic === "Transition Signature") {
-        result.push(
-            "The newest generation of transitions lenses darken well in UV light and lighten completely indoors. Transitions options come in grey, brown, or green."
-        );
-    }
-    if (photochromic === "Transition XTRActive") {
-        result.push(
-            "Transitions XTRA Active darken more than any other Transitions lens. They always has a slight tint indoors and darken slightly behind a windshield."
-        );
-    }
-    //sunglasses
-    if (receipt?.values?.sunGlassesLens?.lensType === "Polarized") {
-        result.push(
-            "Polarized lenses are top-of-the line sunglasses that remove glare and light from reflected surfaces. Polarization is an excellent option for driving and outdoor use."
-        );
-    }
-    if (receipt?.values?.sunGlassesLens?.lensType === "Tint") {
-        result.push(
-            "Tinted lenses provide relief from light sensitivity and come in a variety of colors and darkness levels"
-        );
-    }
-    if (receipt?.values?.sunGlassesLens?.mirrorCoating === "Yes") {
-        result.push(
-            "Mirrored sunglasses have a reflective optical coating on the outside of the lenses to make them appear like small mirrors. They come in a variety of colors and can add a flashy appearance to your sunglasses."
-        );
-    }
-    return result;
+const NameSlot = ({ title, subtitle }) => {
+    return (
+        <Row className={classes["name-slot"]}>
+            <Col className={classes["name-slot-title"]}>{title}</Col>
+            <Col className={classes["name-slot-subtitle"]}>{subtitle}</Col>
+        </Row>
+    );
 };
