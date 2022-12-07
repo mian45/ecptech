@@ -27,7 +27,7 @@ class SettingController extends Controller
     public function getLenseFeaturesBrands(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'plan' => 'in:vsp,davis,eyemed'
+            'plan' => 'in:vsp,davis,eyemed|required'
         ]);
 
         if ($validator->fails()) {
@@ -263,7 +263,7 @@ class SettingController extends Controller
     public function getAddons(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'plan' => 'in:vsp,davis,eyemed',
+            'plan' => 'in:vsp,davis,eyemed|required',
             'type' => 'in:addon,lense_treatment',
         ]);
 
