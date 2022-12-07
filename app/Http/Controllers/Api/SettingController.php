@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 use App\Models\Brand;
 use App\Models\Collection;
+use App\Models\VisionPlan;
+
 
 
 class SettingController extends Controller
@@ -218,15 +220,30 @@ class SettingController extends Controller
     }
         
     public function getAddons(Request $request){
-        $addons = AddonType::with(['addons'=>function($q){
+
+        //VSP, Davis, Eyemed
+        //get type
+        //Check if plan name is vsp then get vision plan where vision plan like vsp signature (only one record)
+        //Else get vision plan where vision plan like plan(eyemed or davis)
+        //Get addonetype where vision plan id equals vsp id and addtye equals type
+
+        if($request->plan == 'vsp'){
+                $vision_plan = VisionPlan::where('title','VSP Signature')->first();
+                $plan = 'vsp';
+        }else{
+            $vision_plan = VisionPlan::where('title','like','%'.$request->plan.'%')->first();
+            $plan = $request->plan;
+        }
+
+        $data[$plan] = AddonType::with(['addons'=>function($q){
            $q->leftJoin('user_addon_settings as setting', function($join){
             $join->on('addons.id', '=', 'setting.addon_id')
             ->where('setting.user_id',  auth()->user()->id);            
             });
-            $q->select('addons.id','addons.category','addons.addon_price','addons.title','addons.addon_type_id',DB::raw('IFNULL(status,"inactive") as status'),'display_name','price');
-        }])->select('id','title','type','vision_plan_id')->get();
+            $q->select('addons.id','addons.title','addons.category','addons.addon_price','addons.addon_type_id',DB::raw('IFNULL(status,"inactive") as status'),'display_name','price');
+        }])->select('id','title')->where('vision_plan_id',$vision_plan->id)->where('type',$request->type)->get();
         
-        return $this->sendResponse($addons, 'Add-Ons');
+        return $this->sendResponse($data, 'Add-Ons');
     }
 
     public function addAddon(Request $request){
@@ -240,17 +257,45 @@ class SettingController extends Controller
         }
 
         $data = $request->data;
+        $plan = key($data);
 
         $i = 0;
-        foreach($data as $addon_type){
+        foreach($data[$plan] as $addon_type){
             
             
             foreach($addon_type['addons'] as $addon){
 
-                $setting = UserAddOnSetting::updateOrCreate(
-                    ['user_id' => auth()->user()->id, 'addon_id' => $addon['id']],
-                    ['status' => $addon['status'], 'price'=>$addon['price'], 'display_name'=>$addon['display_name']]
-                );
+                if($plan == 'vsp'){
+
+
+                    $vision_plans = VisionPlan::where('title','like','%vsp%')->get();
+                    foreach($vision_plans as $vision_plan){
+                        $addon_types_all = AddonType::where('vision_plan_id',$vision_plan->id);
+                        foreach($addon_types_all as $addon_type_single){
+                            if($addon_type_single->title == $addon_type->title){
+                                
+                                $addons_all = Addon::where('addon_type_id',$addon_type_single->id);
+                                foreach($addons_all as $addon_single){
+                                    if($addon_single->title == $addon->title){
+                                        $setting = UserAddOnSetting::updateOrCreate(
+                                            ['user_id' => auth()->user()->id, 'addon_id' => $addon_single->id],
+                                            ['status' => $addon['status'], 'price'=>$addon['price'], 'display_name'=>$addon['display_name']]
+                                        );
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+    
+                }else{
+                    $setting = UserAddOnSetting::updateOrCreate(
+                        ['user_id' => auth()->user()->id, 'addon_id' => $addon['id']],
+                        ['status' => $addon['status'], 'price'=>$addon['price'], 'display_name'=>$addon['display_name']]
+                    );
+                }
+
+                
             }
 
             $permission[$i] = $addon_type;
