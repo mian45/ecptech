@@ -263,16 +263,20 @@ class SettingController extends Controller
 
                 if($plan == 'vsp'){
 
+                    
+
 
                     $vision_plans = VisionPlan::where('title','like','%vsp%')->get();
                     foreach($vision_plans as $vision_plan){
-                        $addon_types_all = AddonType::where('vision_plan_id',$vision_plan->id);
+                        
+                        $addon_types_all = AddonType::where('vision_plan_id',$vision_plan->id)->get();
                         foreach($addon_types_all as $addon_type_single){
-                            if($addon_type_single->title == $addon_type->title){
+                           
+                            if($addon_type_single->title == $addon_type['title']){
                                 
-                                $addons_all = Addon::where('addon_type_id',$addon_type_single->id);
+                                $addons_all = Addon::where('addon_type_id',$addon_type_single->id)->get();
                                 foreach($addons_all as $addon_single){
-                                    if($addon_single->title == $addon->title){
+                                    if($addon_single->title == $addon['title']){
                                         $setting = UserAddOnSetting::updateOrCreate(
                                             ['user_id' => auth()->user()->id, 'addon_id' => $addon_single->id],
                                             ['status' => $addon['status'], 'price'=>$addon['price'], 'display_name'=>$addon['display_name']]
