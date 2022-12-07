@@ -67,13 +67,6 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 invoiceObject
             );
             setTableData(res?.data?.data);
-            message.destroy();
-            messageApi.open({
-                type: "success",
-                content: res.data.message,
-                duration: 5,
-                className: "custom-postion",
-            });
             setButtonLoader(false);
         } catch (err) {
             setIsSearched(false);
