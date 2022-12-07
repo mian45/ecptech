@@ -291,6 +291,7 @@ const AddCardModal = ({ show, onClose, getPaymentMethod }) => {
                                 e.stopPropagation();
                                 postCard();
                             }}
+                            disabled={!cardNumber && !cvc && !name && !date}
                         >
                             Add Card
                         </button>
