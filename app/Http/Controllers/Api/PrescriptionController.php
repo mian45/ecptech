@@ -12,21 +12,21 @@ use Illuminate\Validation\ValidationException;
 class PrescriptionController extends Controller
 {
     public function prescriptions(Request $request){
-        $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            throw (new ValidationException($validator));
+        $user = auth()->user();
+        $user_id=$user->id;
+        if($user->role_id===3){
+          $user_id=  $user->client_id;
         }
-
-        $user_id = $request->user_id;
-        $eye_prescription = Prescription::where('user_id',$user_id)->get();
+        $eye_prescription = Prescription::select('id','name','sphere_from','sphere_to','user_id','created_at','updated_at')->where('user_id',$user_id)->get();
         return $this->sendResponse($eye_prescription, 'Eye prescription data get successfully');
     }
     public function eyePrescriptions(Request $request){
         $prescriptions = $request->eye_prescriptions;
-        $user_id = $request->user_id;  
+        $user = auth()->user();
+        $user_id=$user->id;
+        if($user->role_id===3){
+          $user_id=  $user->client_id;
+        }  
         if($prescriptions){
             foreach($prescriptions as $ep){
                 $id = (isset($ep['id']) ? $ep['id'] : 0);
@@ -37,8 +37,6 @@ class PrescriptionController extends Controller
                         $eyePrescription->name = $ep['name'];
                         $eyePrescription->sphere_from = $ep['sphere_from'];
                         $eyePrescription->sphere_to = $ep['sphere_to'];
-                        $eyePrescription->cylinder_from = $ep['cylinder_from'];
-                        $eyePrescription->cylinder_to = $ep['cylinder_to'];
                         $eyePrescription->save();
                     }
                 } else {
@@ -46,14 +44,12 @@ class PrescriptionController extends Controller
                     $eyePrescriptionsave->name = $ep['name'];
                     $eyePrescriptionsave->sphere_from = $ep['sphere_from'];
                     $eyePrescriptionsave->sphere_to = $ep['sphere_to'];
-                    $eyePrescriptionsave->cylinder_from = $ep['cylinder_from'];
-                    $eyePrescriptionsave->cylinder_to = $ep['cylinder_to'];
                     $eyePrescriptionsave->user_id = $user_id;
                     $eyePrescriptionsave->save();
                 }
                 
             }
-            $eye_prescription = Prescription::where('user_id',$user_id)->get();
+            $eye_prescription = Prescription::select('id','name','sphere_from','sphere_to','user_id','created_at','updated_at')->where('user_id',$user_id)->get();
             return $this->sendResponse($eye_prescription, 'Eye prescription updated successfully');
         } else {
             return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
