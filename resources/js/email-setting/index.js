@@ -824,7 +824,7 @@ const EmailSetting = (props) => {
                                     style={{
                                         marginBottom: "50px",
                                     }}
-                                    disabled={!reminderType && !sentTo && !subject}
+                                    disabled={idState ? !timeZone && !timeSelectorValue : !reminderType && !sentTo && !subject && !editorState && !timeSelectorValue && !timeSelector && !timeZone && !times  }
                                 >
                                     {buttonLoader == false ? (
                                         "Save"
