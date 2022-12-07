@@ -882,7 +882,7 @@ const EmailSetting = (props) => {
                                                         <Col
                                                             xs={6}
                                                             md={4}
-                                                            lg={3}
+                                                            lg={2}
                                                             className="email-setting-content-section-image"
                                                         >
                                                             <img
@@ -894,7 +894,7 @@ const EmailSetting = (props) => {
                                                                 }
                                                             />
                                                         </Col>
-                                                        <Col xs={18} md={20}>
+                                                        <Col xs={18} md={20} lg={21}>
                                                             <p className="email-setting-content-section-heading">
                                                                 {obj.subject}
                                                             </p>
@@ -905,7 +905,7 @@ const EmailSetting = (props) => {
                                                                 <Col
                                                                     xs={24}
                                                                     md={8}
-                                                                    lg={6}
+                                                                    lg={4}
                                                                 >
                                                                     <p
                                                                         className="email-setting-content-section-subsection-heading email-reminder-tag"

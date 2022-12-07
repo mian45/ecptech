@@ -215,7 +215,6 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
                 className={classes["collection-label"]}
             >{`${selectedAddons}`}</div>
             {addonsList?.map((collection, index) => (
-                <Col xs={24}>
                     <CollectionSlot
                         key={`${collection?.title || ""}+${index}`}
                         collection={collection}
@@ -223,7 +222,6 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
                         handleDisplayNameChange={handleDisplayNameChange}
                         handleAmountNameChange={handleAmountNameChange}
                     />
-                </Col>
             ))}
         </Row>
     );

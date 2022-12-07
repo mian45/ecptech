@@ -14,8 +14,11 @@
         box-shadow: 2px 1px 5px 4px #ccc3;
         border-radius: 7px;
         min-height: 75px;
-        padding-bottom: 20px;
-        padding-top: 20px;
+        padding-bottom: 15px;
+        padding-top: 15px;
+        @media only screen and (max-width: 300px) {
+            padding-inline: 27px 27px;
+        }
 
         &-section {
             display: flex;
@@ -23,6 +26,9 @@
 
             &-image {
                 padding-right: 24px;
+                @media only screen and (max-width: 300px) {
+                    padding-right: 15px;
+                }
             }
 
             &-heading {
@@ -53,6 +59,7 @@
             border-radius: 28px;
             background-color: #6fa5cb;
             color: white;
+            min-width: 138px;
             &:hover {
                 background-color: #518fbb;
             }
@@ -135,6 +142,12 @@
                 height: 2.8125em !important;
                 padding: 0;
                 color: black;
+                @media only screen and (width: 598px) {
+                    max-width: unset !important;
+                }
+                @media only screen and (width: 540px) {
+                    max-width: unset !important;
+                }
             }
             .ant-select-short {
                 width: 11.68em !important;
@@ -187,7 +200,13 @@
                 width: 100%;
                 height: 2.8125em;
                 max-width: 23.68em;
-
+                @media only screen and (width: 598px) {
+                    max-width: unset !important;
+                }
+                @media only screen and (width: 540px) {
+                    max-width: unset !important;
+                }
+                
                 &:focus-visible {
                     border: 1px solid #dfdfdf;
                     outline: none;
@@ -343,12 +362,14 @@ p {
 .email-setting-content {
     box-shadow: 0px 0px 6px #00000008;
     border: 1px solid #e8e8e8;
+    max-width: 810px;
     &:hover {
         box-shadow: 0px 11px 30px #00000012;
     }
 }
 .button-margin {
     margin-bottom: 80px;
+    max-width: 810px;
 }
 
 .email-settings-title {
@@ -356,7 +377,7 @@ p {
     font-weight: bold;
     font-size: 24px;
     color: #2a2a2a;
-    margin-top: 30px !important;
+    margin-top: 20px !important;
     margin-bottom: 36px !important;
 }
 .email-setting-slots-container {
@@ -391,6 +412,9 @@ p {
     }
     @media  only screen and  (min-width:1920px) {
         max-width: 88px;
+    }
+    @media only screen and (width: 820px){
+        max-width: unset;
     }
 }
 .picker-padding {

@@ -67,8 +67,11 @@
     font-weight: bold;
 }
 .slot-body {
-    padding: 23px 22px;
+    padding: 23px 22px;;
     width: 100%;
+    @media only screen and (max-width: 417px) {
+        padding: 0px 22px 24px 22px;;
+    }
 }
 .btn-grid {
     justify-content: center;
@@ -85,6 +88,9 @@
     font-family: Montserrat;
     font-weight: 400;
     margin-bottom: 13px;
+    @media only screen and (max-width: 417px) {
+        margin-top: 13px;
+    }
 }
 .slot-body-input-section {
     display: flex;

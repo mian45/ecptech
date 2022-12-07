@@ -484,6 +484,8 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                console.log(response)
+                getDiscount();
                 message.destroy();
                 messageApi.open({
                     type: "success",
@@ -491,7 +493,6 @@ const DiscountTaxes = (props) => {
                     duration: 5,
                     className: "custom-postion",
                 });
-                getDiscount();
             })
             .catch(function (error) {
                 message.destroy();
@@ -580,7 +581,7 @@ const DiscountTaxes = (props) => {
     };
     return (
         <>
-            {contextHolder}
+          
             {loading ? <CustomLoader buttonBool={false} /> : null}
             {showDeleteTaxes ? (
                 <DeleteModal
@@ -611,6 +612,7 @@ const DiscountTaxes = (props) => {
             ) : null}
 
             <Row justify="center">
+            {contextHolder}
                 <Col xs={24}>
                     <Row
                         justify="center"
@@ -705,8 +707,9 @@ const DiscountTaxes = (props) => {
                                                                         xs={1}
                                                                     ></Col>
                                                                     <Col
-                                                                        xs={9}
-                                                                        md={6}
+                                                                        xs={8}
+                                                                        sm={9}
+                                                                        md={7}
                                                                     >
                                                                         {" "}
                                                                         <Select
@@ -868,7 +871,7 @@ const DiscountTaxes = (props) => {
                                                                                             width: "18px",
                                                                                             height: "18px",
                                                                                             marginRight:
-                                                                                                "30px",
+                                                                                                "20px",
                                                                                             cursor: "pointer",
                                                                                         }}
                                                                                         src={
@@ -1177,7 +1180,7 @@ const DiscountTaxes = (props) => {
                                                                                         width: "18px",
                                                                                         height: "18px",
                                                                                         marginRight:
-                                                                                            "30px",
+                                                                                            "20px",
                                                                                         cursor: "pointer",
                                                                                     }}
                                                                                     src={

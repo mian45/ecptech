@@ -54,7 +54,7 @@ const SignIn = ({ isAuthenticated, userRole, tempSet, templogout }) => {
                     lg={12}
                     xl={12}
                 >
-                    <Row justify="space-around" align="middle">
+                    <Row justify="space-around" align="middle" >
                         <SignInForm
                             tempSet={(e) => {
                                 tempSet(e);

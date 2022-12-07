@@ -529,16 +529,19 @@ input:-webkit-autofill:active {
     height: 37px;
 }
 
-.anticon  {
+.ant-message .anticon  {
     display: none !important;
 }
 
 .custom-postion {
-    margin-top: 13.5vh;
+    margin-top: 70px;
     .ant-message-notice-content{
         background-color: #00940A !important ;
         color: white;
         width: 618px;
+        @media only screen and (max-width: 650px) {
+            width: 100%;
+        }
         height: 37px;
 
         @media (max-width: 767px) {
@@ -547,14 +550,19 @@ input:-webkit-autofill:active {
     }
     
 }
-
+.ant-btn[disabled]:hover{
+    background: #cbcbcb !important;
+}
 
 .custom-postion-error {
-    margin-top: 13.5vh;
+    margin-top: 70px;
     .ant-message-notice-content{
         background-color: red !important ;
         color: white;
         width: 618px;
+        @media only screen and (max-width: 650px) {
+            width: 100%;
+        }
         height: 37px;
 
         @media (max-width: 767px) {
@@ -568,4 +576,10 @@ input:-webkit-autofill:active {
 }
 .d-none{
     display: none;
+}
+.ant-tabs-nav{
+    margin-top: 36px !important;
+}
+.ant-switch{
+    min-width: 40px !important;
 }
