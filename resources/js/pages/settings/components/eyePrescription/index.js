@@ -13,6 +13,7 @@ const EyePrescription = ({ userId }) => {
     const [disable, setDisable] = useState(false);
     const [buttonLoader, setButtonLoader] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [isChange , setIsChange] = useState(false)
 
     useEffect(() => {
         const errorsList = [...sphError, ...cylError];
@@ -64,6 +65,7 @@ const EyePrescription = ({ userId }) => {
     }, [userId]);
 
     const handleInputChange = (value, name, key) => {
+        setIsChange(true)
         if (
             key === "sphere_from" &&
             (parseFloat(value) <= -21 || parseFloat(value) >= 21)
@@ -89,6 +91,7 @@ const EyePrescription = ({ userId }) => {
         }
     };
     const handleInputValues = (value, name, key) => {
+        setIsChange(true)
         if (key === "cylinder_from" || key === "cylinder_to") {
             const regix = new RegExp("^[-+]?[0-9]*[/.]?([0-9]*)?$");
             if (regix.test(value) || value === "") {
@@ -312,7 +315,7 @@ const EyePrescription = ({ userId }) => {
                                 <button
                                     className={classes["button"]}
                                     onClick={handleSubmit}
-                                    disabled={disable || isIncompleteRange()}
+                                    disabled={!isChange || isIncompleteRange()}
                                 >
                                     {buttonLoader == false ? (
                                         "Save"

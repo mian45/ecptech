@@ -14,6 +14,7 @@ const Addons = ({ userId }) => {
     const [changedAddOnList, setChangedAddOnList] = useState([]);
     const [selectedAddons, setSelectedAddons] = useState("");
     const [selectedRow, setSelectedRow] = useState("");
+    const [isChange , setIsChange]= useState(false)
 
     useEffect(() => {
         if (userId == null) return;
@@ -104,6 +105,7 @@ const Addons = ({ userId }) => {
                         addons={addonsList}
                         selectedAddons={selectedAddons}
                         setLensesList={setAddonsList}
+                        setIsChange={setIsChange}
                     />
                 </Col>
             </Row>
@@ -112,6 +114,7 @@ const Addons = ({ userId }) => {
                     <button
                         className={classes["save-button"]}
                         onClick={submitLensesData}
+                        disabled={!isChange}
                     >
                         Save
                     </button>
@@ -126,7 +129,7 @@ const mapStateToProps = (state) => ({
 });
 export default connect(mapStateToProps)(Addons);
 
-const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
+const CollectionSection = ({ addons, selectedAddons, setLensesList , setIsChange }) => {
     const [addonsList, setAddonsList] = useState([]);
     const getCollections = () => {
         const data = addons.filter((item, index) => {
@@ -155,6 +158,7 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
         getCollections();
     }, [selectedAddons]);
     const handleCheckbox = (value, collection) => {
+        setIsChange(true)
         const newData = addonsList?.map((item) => {
             if (item.id === collection.id) {
                 return { ...item, status: value ? "active" : "inactive" };
@@ -173,6 +177,7 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
         setAddonsList(newData);
     };
     const handleDisplayNameChange = (value, collection) => {
+        setIsChange(true)
         const newData = addonsList?.map((item) => {
             if (item.id === collection.id) {
                 return { ...item, display_name: value };
@@ -191,6 +196,7 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
         setAddonsList(newData);
     };
     const handleAmountNameChange = (value, collection) => {
+        setIsChange(true)
         const newData = addonsList?.map((item) => {
             if (item.id === collection.id) {
                 return { ...item, price: value };

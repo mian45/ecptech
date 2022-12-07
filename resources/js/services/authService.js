@@ -174,6 +174,7 @@ export function updateStaffLogin(credentials, messageApi) {
             )
                 .then((res) => {
                     dispatch(action.updateStaffLogin(res.data));
+                    message.destroy();
                     messageApi.open({
                         type: "success",
                         content: res.data.message,
@@ -188,6 +189,7 @@ export function updateStaffLogin(credentials, messageApi) {
                         status,
                         errors,
                     };
+                    message.destroy();
                     messageApi.open({
                         type: "error",
                         content: err.response.data.message,

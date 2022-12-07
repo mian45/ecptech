@@ -16,6 +16,7 @@ const LensesType = ({ userId }) => {
     const [lensesList, setLensesList] = useState([]);
     const [selectedLensType, setSelectedLensType] = useState("");
     const [selectedRow, setSelectedRow] = useState("");
+    const [isChange , setIsChange] = useState(false)
 
     useEffect(() => {
         if (userId == null) return;
@@ -105,6 +106,7 @@ const LensesType = ({ userId }) => {
                         lenses={lensesList}
                         selectedLensType={selectedLensType}
                         setLensesList={setLensesList}
+                        setIsChange={setIsChange}
                     />
                 </Col>
             </Row>
@@ -113,6 +115,7 @@ const LensesType = ({ userId }) => {
                     <button
                         className={classes["save-button"]}
                         onClick={submitLensesData}
+                        disabled={!isChange}
                     >
                         Save
                     </button>
@@ -132,6 +135,7 @@ const CollectionSection = ({
     lenses,
     selectedLensType,
     setLensesList,
+    setIsChange,
 }) => {
     const getCollections = () => {
         const brand = lenses.find((lens) => lens?.title === selectedLensType);
@@ -141,6 +145,7 @@ const CollectionSection = ({
         return collection?.collections;
     };
     const handleCheckbox = (value, collection) => {
+        setIsChange(true)
         const lens = [...lenses];
 
         const lensType = [...lens].find(
@@ -156,6 +161,7 @@ const CollectionSection = ({
         setLensesList([...lens]);
     };
     const handleDisplayNameChange = (value, collection) => {
+        setIsChange(true)
         const lens = [...lenses];
 
         const lensType = [...lens].find(
@@ -171,6 +177,7 @@ const CollectionSection = ({
         setLensesList([...lens]);
     };
     const handleAmountNameChange = (value, collection) => {
+        setIsChange(true)
         const lens = [...lenses];
 
         const lensType = [...lens].find(
