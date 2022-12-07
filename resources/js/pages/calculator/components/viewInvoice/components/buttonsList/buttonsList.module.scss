@@ -1,0 +1,24 @@
+.send-button {
+    font-size: 16px;
+    border-radius: 28px;
+    padding: 10px 32px;
+    color: #ffffff;
+    border: none;
+    background-color: #90b0c6;
+    margin-top: 30px;
+    margin-right: 20px;
+    & :hover {
+        background-color: #518fbb !important;
+    }
+    & :disabled {
+        background-color: #cbcbcb;
+    }
+}
+@media only screen and (max-width: 600px) {
+    .button-wrapper {
+        width: 100% !important;
+    }
+    .send-button {
+        width: 100% !important;
+    }
+}
