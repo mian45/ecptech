@@ -824,6 +824,7 @@ const EmailSetting = (props) => {
                                     style={{
                                         marginBottom: "50px",
                                     }}
+                                    disabled={!reminderType && !sentTo && !subject}
                                 >
                                     {buttonLoader == false ? (
                                         "Save"
