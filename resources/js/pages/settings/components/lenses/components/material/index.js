@@ -25,7 +25,7 @@ const MaterialSettings = ({ userId }) => {
                     type: "error",
                     content: err.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             }
         };
@@ -71,19 +71,21 @@ const MaterialSettings = ({ userId }) => {
                 `${process.env.MIX_REACT_APP_URL}/api/add-lense-material-setting`,
                 payload
             );
+            message.destroy();
             lensesMaterialApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("error while update lenses");
+            message.destroy();
             lensesMaterialHolder.open({
                 type: err.message,
                 content: err,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };

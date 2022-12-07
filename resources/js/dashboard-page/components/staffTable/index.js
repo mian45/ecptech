@@ -25,11 +25,12 @@ const StaffListTable = ({ userId }) => {
                 setStaffList(res?.data?.data);
             } catch (err) {
                 console.log("Error while getting staff");
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: err.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             }
         };

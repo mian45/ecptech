@@ -67,21 +67,23 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 invoiceObject
             );
             setTableData(res?.data?.data);
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
             setButtonLoader(false);
         } catch (err) {
             setIsSearched(false);
             console.log("error while search", err);
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
             setButtonLoader(false);
         }

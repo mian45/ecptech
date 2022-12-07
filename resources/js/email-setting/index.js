@@ -140,11 +140,12 @@ const EmailSetting = (props) => {
         axios(config)
             .then(function (response) {
                 getReminder();
+                message.destroy();
                 messageApi.open({
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: "custom-postion",
                 });
                 setButtonLoader(false);
             })
@@ -152,11 +153,12 @@ const EmailSetting = (props) => {
                 setButtonLoader(true);
                 console.log(error);
                 setButtonLoader(false);
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             });
     };
@@ -209,11 +211,12 @@ const EmailSetting = (props) => {
         };
         axios(config)
             .then(function (response) {
+                message.destroy();
                 messageApi.open({
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: "custom-postion",
                 });
                 getReminder();
                 setReminderType("");
@@ -232,11 +235,12 @@ const EmailSetting = (props) => {
                 setButtonLoader(true);
                 console.log(error);
                 setButtonLoader(false);
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             });
     };
@@ -256,21 +260,23 @@ const EmailSetting = (props) => {
 
         axios(config)
             .then(function (response) {
+                message.destroy();
                 messageApi.open({
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: "custom-postion",
                 });
                 setShowDeleteReminder(false);
             })
             .catch(function (error) {
                 console.log(error);
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             });
     };
@@ -297,11 +303,12 @@ const EmailSetting = (props) => {
                 }
             })
             .catch(function (error) {
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
                 setLoading(true);
                 console.log(error);
@@ -422,18 +429,20 @@ const EmailSetting = (props) => {
             );
             [...emails].splice(editIndex, 1, selectedValue);
             setEmailArray([...emails]);
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
             console.log("error");
         }
@@ -879,7 +888,7 @@ const EmailSetting = (props) => {
                                                             <img
                                                                 src={
                                                                     obj.type ==
-                                                                        "reminder"
+                                                                    "reminder"
                                                                         ? iconRemainder
                                                                         : emailButton
                                                                 }
@@ -902,17 +911,17 @@ const EmailSetting = (props) => {
                                                                         className="email-setting-content-section-subsection-heading email-reminder-tag"
                                                                         style={
                                                                             obj.type ==
-                                                                                "reminder"
+                                                                            "reminder"
                                                                                 ? {
-                                                                                    color: "#61C77B",
-                                                                                }
+                                                                                      color: "#61C77B",
+                                                                                  }
                                                                                 : {
-                                                                                    color: "#6FA5CB",
-                                                                                }
+                                                                                      color: "#6FA5CB",
+                                                                                  }
                                                                         }
                                                                     >
                                                                         {obj.type ==
-                                                                            "reminder"
+                                                                        "reminder"
                                                                             ? obj.type
                                                                             : "Order Success"}
                                                                     </p>
@@ -928,7 +937,7 @@ const EmailSetting = (props) => {
                                                                         }}
                                                                     >
                                                                         {obj.type ==
-                                                                            "reminder"
+                                                                        "reminder"
                                                                             ? `${obj.send_after_day} days after invoice`
                                                                             : "Payment Completed"}
                                                                     </p>
@@ -955,7 +964,7 @@ const EmailSetting = (props) => {
                                                         </Col>
                                                         <Col md={6}>
                                                             {obj?.is_active ===
-                                                                1 ? (
+                                                            1 ? (
                                                                 <img
                                                                     className="bell-icon"
                                                                     src={

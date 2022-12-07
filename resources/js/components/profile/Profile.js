@@ -28,8 +28,9 @@ const Profile = ({
             bodyStyle={{ padding: "24px 0px" }}
         >
             <Col
-                className={`${classes["profile"]} ${userRole === "staff" && classes["staff"]
-                    }`}
+                className={`${classes["profile"]} ${
+                    userRole === "staff" && classes["staff"]
+                }`}
                 onClick={(e) => e.stopPropagation()}
             >
                 <ProfileInfoSection
@@ -87,20 +88,22 @@ const ProfileInfoSection = ({ userId, user, getAuthentication }) => {
                 .then(() => {
                     getAuthentication();
                     actions.setSubmitting(false);
+                    message.destroy();
                     messageApi.open({
                         type: "success",
                         content: response.data.message,
                         duration: 5,
-                        className: 'custom-postion',
+                        className: "custom-postion",
                     });
                 });
         } catch (err) {
             console.log("error while save changes", err);
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -205,11 +208,12 @@ const ProfilePasswordValidations = ({ userId }) => {
                 passwordObject
             );
         } catch (err) {
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
             console.log("error while save password", err);
         }

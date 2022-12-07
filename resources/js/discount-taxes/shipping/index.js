@@ -34,18 +34,20 @@ const ShippingSettings = ({ userId }) => {
                 setShippingLoading(false);
             } catch (err) {
                 if (err.response.data.statusCode === 404) {
+                    message.destroy();
                     messageApi.open({
                         type: "error",
                         content: err.response.data.message,
                         duration: 5,
-                        className: 'custom-postion-error',
+                        className: "custom-postion-error",
                     });
                 } else {
+                    message.destroy();
                     messageApi.open({
                         type: "error",
                         content: err.response.data.message,
                         duration: 5,
-                        className: 'custom-postion-error',
+                        className: "custom-postion-error",
                     });
                 }
                 setShippingLoading(false);
@@ -69,19 +71,21 @@ const ShippingSettings = ({ userId }) => {
             setShipping({});
             setIsSubmitted(false);
             setShowDeleteShipping(false);
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("error while delete shipping");
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -112,20 +116,22 @@ const ShippingSettings = ({ userId }) => {
             setShippingAmount("");
             setIsSubmitted(true);
             setShippingButtonLoader(false);
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("error while adding shipping");
             setShippingButtonLoader(false);
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -231,16 +237,17 @@ const ShippingSettings = ({ userId }) => {
                                                     onClick={
                                                         handleShippingSubmit
                                                     }
-                                                    className={`save-button ${!shippingName ||
+                                                    className={`save-button ${
+                                                        !shippingName ||
                                                         !shippingAmount
-                                                        ? "disable"
-                                                        : ""
-                                                        } `}
+                                                            ? "disable"
+                                                            : ""
+                                                    } `}
                                                 >
                                                     {editState ? (
                                                         "Update"
                                                     ) : shippingButtonLoader ==
-                                                        true ? (
+                                                      true ? (
                                                         <span>
                                                             <p>Add</p>
                                                             <CustomLoader
@@ -266,12 +273,12 @@ const ShippingSettings = ({ userId }) => {
                                         <table>
                                             {Object.keys(shipping).length >
                                                 0 && (
-                                                    <tr className="discount-output_head">
-                                                        <th>Shipping Label</th>
-                                                        <th>Amount</th>
-                                                        <th></th>
-                                                    </tr>
-                                                )}
+                                                <tr className="discount-output_head">
+                                                    <th>Shipping Label</th>
+                                                    <th>Amount</th>
+                                                    <th></th>
+                                                </tr>
+                                            )}
                                             {Object.keys(shipping).length >
                                                 0 && (
                                                     <tr className="discount-output_body">
