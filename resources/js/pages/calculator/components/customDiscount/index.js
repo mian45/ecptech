@@ -43,7 +43,7 @@ const CustomDiscount = ({
                 discountType,
             });
         }
-    }, [discount]);
+    }, [discount, values?.visionPlan]);
 
     const getActiveDiscounts = () => {
         return (
