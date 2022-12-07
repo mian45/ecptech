@@ -546,7 +546,9 @@ input:-webkit-autofill:active {
     }
     
 }
-
+.ant-btn[disabled]:hover{
+    background: #cbcbcb !important;
+}
 
 .custom-postion-error {
     margin-top: 70px;

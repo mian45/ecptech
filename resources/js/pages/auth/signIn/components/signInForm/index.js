@@ -230,6 +230,7 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                     handleChange,
                     handleSubmit,
                     setFieldValue,
+                    handleBlur,
                     isSubmitting,
                     isValid,
                     dirty,
@@ -271,6 +272,7 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                     className={
                                                         classes["email-input"]
                                                     }
+                                                    onBlur={handleBlur}
                                                     value={values.email}
                                                     onChange={handleChange}
                                                 />
@@ -302,6 +304,7 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                     name="password"
                                                     value={values.password}
                                                     onChange={handleChange}
+                                                    onBlur={handleBlur}
                                                     className={
                                                         classes[
                                                         "password-container"
@@ -369,22 +372,6 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                                 )
                                                             }
                                                         />
-                                                        {/* <Checkbox
-                                                        checked={
-                                                            values?.remember ||
-                                                            false
-                                                        }
-                                                        id="remember"
-                                                        name="remember"
-                                                        onChange={(e) =>
-                                                            setFieldValue(
-                                                                "remember",
-                                                                e
-                                                            )
-                                                        }
-                                                    >
-                                                        Remember me
-                                                    </Checkbox> */}
                                                     </Col>
                                                     <Col
                                                         xs={12}
@@ -442,7 +429,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(SignInForm);
 
 const LoginValidation = Yup.object().shape({
-    email: Yup.string().email().required("Please enter a valid email address"),
+    email: Yup.string().email("Please enter a valid email address").required("Email is required"),
     password: Yup.string()
         .min(6, "Must have 6 characters")
         .max(15, "Maximum 15 charecter allowed")
