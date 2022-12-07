@@ -299,11 +299,10 @@ input[type="number"] {
 }
 .shipping-custom-col-3 {
     text-align: right;
-    padding-right: 32px;
+    display: flex;
 }
 .custom-tax-col-3 {
     text-align: right;
-    padding-right: 32px;
 }
 
 .hidden-text {
