@@ -239,8 +239,7 @@ p {
     }
     @media only screen and (min-width: 1000px) {
         top: 45% !important;
-        right:6% !important 
-    
+        right: 6% !important;
     }
 }
 .swiper-button-next::after {
@@ -257,11 +256,10 @@ p {
     @media only screen and (max-width: 1000px) {
         top: 40% !important;
         left: 2% !important;
-    
     }
     @media only screen and (min-width: 1000px) {
         top: 45% !important;
-        left:6% !important
+        left: 6% !important;
     }
 }
 .swiper-button-prev::after {
@@ -272,14 +270,14 @@ p {
     opacity: 0.3;
     background: #ffffff !important;
 }
-.swiper-pagination{
+.swiper-pagination {
     bottom: 100px !important;
     @media (min-width: 279px) and (max-width: 1400px) {
         bottom: 50px !important;
     }
 }
-.ant-form-item-label > label{
-    color: #747474 !important
+.ant-form-item-label > label {
+    color: #747474 !important;
 }
 .swiper-pagination-bullet .swiper-pagination-bullet-active {
     background-color: #ffffff !important;
@@ -415,7 +413,9 @@ input[type="number"] {
 .ant-select:not(.ant-select-disabled):hover .ant-select-selector {
     border-color: #dfdfdf !important;
 }
-.ant-select-focused:not(.ant-select-disabled).ant-select:not(.ant-select-customize-input)
+.ant-select-focused:not(.ant-select-disabled).ant-select:not(
+        .ant-select-customize-input
+    )
     .ant-select-selector {
     border-color: #dfdfdf !important;
 }
@@ -522,13 +522,28 @@ input:-webkit-autofill:active {
     transition: background-color 5000s ease-in-out 0s;
 }
 
-.ant-message-notice-content{
-    background-color: #00940A !important ;
+.ant-message-notice-content {
+    background-color: #00940a !important ;
     color: white;
     width: 618px;
     height: 37px;
 }
 
+.ant-collapse-header {
+    background-color: #f3f3f3;
+    height: 33px;
+    align-items: center !important;
+    font-size: 12px;
+    color: #2a2a2a;
+    font-family: Montserrat;
+    font-weight: 400;
+}
+.ant-collapse-expand-icon {
+    margin-top: -4px;
+}
+.ant-collapse-extra {
+    margin-right: 13px;
+}
 
 .custom-postion {
     margin-top: 13.5vh;
@@ -545,9 +560,7 @@ input:-webkit-autofill:active {
             width: 100%;
         }
     }
-    
 }
-
 
 .custom-postion-error {
     margin-top: 13.5vh;
@@ -564,11 +577,10 @@ input:-webkit-autofill:active {
             width: 100%;
         }
     }
-    
 }
-.d-block{
+.d-block {
     display: block;
 }
-.d-none{
+.d-none {
     display: none;
 }
