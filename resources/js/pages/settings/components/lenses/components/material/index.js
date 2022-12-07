@@ -101,15 +101,16 @@ const MaterialSettings = ({ userId }) => {
                 align="middle"
             >
                 <div>{lensesMaterialHolder}</div>
-                <Col xs={24} className={classes["sub-container"]}>
+                <Col xs={24} md={16} className={classes["sub-container"]}>
                     <Row justify="center" align="middle">
-                        <Col xs={24} className={classes["material-label"]}>
+                        <Col xs={21} md={21}className={classes["material-label"]}>
                             Lens Material
                         </Col>
                         {materials?.map((item, index) => {
                             return (
                                 <CollectionSlot
                                     key={index}
+                                    id={index}
                                     handleCheckbox={handleCheckbox}
                                     handleDisplayNameChange={
                                         handleDisplayNameChange

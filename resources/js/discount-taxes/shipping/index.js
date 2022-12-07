@@ -281,47 +281,51 @@ const ShippingSettings = ({ userId }) => {
                                             )}
                                             {Object.keys(shipping).length >
                                                 0 && (
-                                                <tr className="discount-output_body">
-                                                    <td>{shipping.name}</td>
-                                                    <td>${shipping.value}</td>
-                                                    <td className="shipping-custom-col-3">
-                                                        <img
-                                                            style={{
-                                                                width: "18px",
-                                                                height: "18px",
-                                                                marginRight:
-                                                                    "30px",
-                                                                cursor: "pointer",
-                                                            }}
-                                                            src={edit}
-                                                            onClick={() => {
-                                                                setEditState(
-                                                                    true
-                                                                );
-                                                                setShippingLoading(
-                                                                    true
-                                                                );
-                                                                handleUpdateShipping(
-                                                                    shipping
-                                                                );
-                                                            }}
-                                                        />
-                                                        <img
-                                                            style={{
-                                                                width: "16px",
-                                                                height: "16px",
-                                                                cursor: "pointer",
-                                                            }}
-                                                            src={cross}
-                                                            onClick={() => {
-                                                                handleDeleteShipping(
-                                                                    shipping.id
-                                                                );
-                                                            }}
-                                                        />
-                                                    </td>
-                                                </tr>
-                                            )}
+                                                    <tr className="discount-output_body">
+                                                        <td>{shipping.name}</td>
+                                                        <td>${shipping.value}</td>
+                                                        <td className="col-4 custom-tax-col-3">
+                                                                                <img
+                                                                                    style={{
+                                                                                        width: "18px",
+                                                                                        height: "18px",
+                                                                                        marginRight:
+                                                                                            "20px",
+                                                                                        cursor: "pointer",
+                                                                                    }}
+                                                                                    src={
+                                                                                        edit
+                                                                                    }
+                                                                                    onClick={() => {
+                                                                                        setEditState(
+                                                                                            true
+                                                                                        );
+                                                                                        setShippingLoading(
+                                                                                            true
+                                                                                        );
+                                                                                        handleUpdateShipping(
+                                                                                            shipping
+                                                                                        );
+                                                                                    }}
+                                                                                />
+                                                                                <img
+                                                                                    style={{
+                                                                                        width: "16px",
+                                                                                        height: "16px",
+                                                                                        cursor: "pointer",
+                                                                                    }}
+                                                                                    src={
+                                                                                        cross
+                                                                                    }
+                                                                                    onClick={() => {
+                                                                                        handleDeleteShipping(
+                                                                                            shipping.id
+                                                                                        );
+                                                                                    }}
+                                                                                />
+                                                                            </td>
+                                                    </tr>
+                                                )}
                                         </table>
                                     </Row>
                                 </Col>

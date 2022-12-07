@@ -78,7 +78,7 @@ const InsurancePlans = ({ userId }) => {
                         </Col>
                     </Row>
                     <Row justify="center">
-                        <Col xs={24} md={14}>
+                        <Col xs={24} md={14} lg={17}>
                             {/* component to be used in map */}
                             {getData?.length > 0 &&
                                 getData?.map((item) => {

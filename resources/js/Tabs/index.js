@@ -76,6 +76,7 @@ const TabsSection = (props) => {
         <Tabs
             defaultActiveKey={() => DefaultKeySet()}
             onChange={(e) => changeUrl(e)}
+            className="margin-tab-row"
         >
             <Tabs.TabPane tab="Emails" key="1">
                 {props.isActiveSettingState == 1 ? (

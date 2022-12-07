@@ -14,6 +14,7 @@ import {
     message,
 } from "antd";
 import CustomCheckbox from "../../../../components/customCheckbox";
+import { CloseOutlined } from "@ant-design/icons";
 const AddCardModal = ({ show, onClose, getPaymentMethod }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [cardNumber, setCardNumber] = useState("");
@@ -119,14 +120,21 @@ const AddCardModal = ({ show, onClose, getPaymentMethod }) => {
         <>
             {show ? (
                 <Form className={classes["backdrop"]} onClick={onClose}>
-                    <div>{contextHolder}</div>
+                    {contextHolder}
+                   
                     <Row
                         className={classes["container"]}
                         onClick={(e) => e.stopPropagation()}
                     >
+                        <Col xs={24}>
+                        <Row justify="end" className={classes['cross']}>
+                        <CloseOutlined onClick={onClose}/>
+                        </Row>
                         <Row className={classes["label"]}>
                             Enter your card details
                         </Row>
+                       
+                        </Col>
                         <Row className={classes["sub-label"]}>
                             By adding new card, your old card will be removed.
                         </Row>
