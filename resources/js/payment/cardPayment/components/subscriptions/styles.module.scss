@@ -3,10 +3,13 @@
     margin-top: 32px;
     display: flex;
     flex-wrap: wrap;
+    @media only screen and (max-width: 583px) {
+        justify-content: center;
+    }
 }
 .slot-container {
     display: flex;
-    width: 230px;
+    max-width: 232px;
     height: 100px;
     padding: 20px;
     background-color: #ffffff;
@@ -15,6 +18,10 @@
     align-items: center;
     margin-right: 30px;
     box-shadow: 0px 11px 30px #00000012;
+    @media only screen and (max-width: 583px) {
+        max-width: 100%;
+        margin-right: 0px;
+    }
 }
 .icon {
     width: 30px;

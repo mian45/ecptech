@@ -688,8 +688,9 @@ const DiscountTaxes = (props) => {
                                                                         xs={1}
                                                                     ></Col>
                                                                     <Col
-                                                                        xs={9}
-                                                                        md={6}
+                                                                        xs={8}
+                                                                        sm={9}
+                                                                        md={7}
                                                                     >
                                                                         {" "}
                                                                         <Select

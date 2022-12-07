@@ -204,6 +204,7 @@ const CollectionSection = ({
 };
 
 export const CollectionSlot = ({
+    id,
     collection,
     handleCheckbox,
     handleDisplayNameChange,

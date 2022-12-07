@@ -1,53 +1,16 @@
 import React, { useState, useEffect } from "react";
 import AddNewCard from "./components/addCard";
-import AddCardModal from "./components/AddCardModal";
 import CreditCard from "./components/creditCard";
 import Subscriptions from "./components/subscriptions";
 import classes from "./styles.module.scss";
-import { Col, Row, message } from "antd";
-import Axios from "../../Http";
-const CardPayment = () => {
-    const [showAddCard, setShowAddCard] = useState(false);
-    const [messageApi, contextHolder] = message.useMessage();
+import { Col, Row} from "antd";
+const CardPayment = ({setShowAddCard,cardData}) => {
     const handleOpenModal = () => {
         setShowAddCard(true);
     };
-    const handleCloseModal = () => {
-        setShowAddCard(false);
-    };
-    const [cardData, setCardData] = useState({});
-    useEffect(() => {
-        getPaymentMethod(false);
-    }, []);
-    const getPaymentMethod = async (isShow) => {
-        try {
-            const res = await Axios.get(
-                `${process.env.MIX_REACT_APP_URL}/api/get-card`
-            );
-            setCardData(res.data.data);
-            if (isShow) {
-                messageApi.open({
-                    type: "success",
-                    content: res.data.message,
-                    duration: 5,
-                    className: 'custom-postion',
-                });
-            }
-        } catch (err) {
-            messageApi.open({
-                type: "error",
-                content: err.response.data.message,
-                duration: 5,
-                className: 'custom-postion-error',
-            });
-        }
-    };
     return (
-        <Row className={classes["container"]}>
-            <div>{contextHolder}</div>
-            {showAddCard && (
-                <AddCardModal show={showAddCard} onClose={handleCloseModal} getPaymentMethod={getPaymentMethod} />
-            )}
+       <>
+       <Row className={classes["container"]}>
             <Col offset={0} className={classes["label"]}>
                 Payment Details
             </Col>
@@ -69,6 +32,7 @@ const CardPayment = () => {
             </Col>
             <Subscriptions />
         </Row>
+        </>
     );
 };
 

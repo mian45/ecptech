@@ -83,7 +83,7 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
                 >
                     {PROFIT_CARDS_DATA.map((card, index) => {
                         return (
-                            <Col xs={24} md={8} lg={7}>
+                            <Col xs={24} md={8} lg={8} xl={7}>
                                 <ProfitCard
                                     key={index}
                                     cartData={card}
