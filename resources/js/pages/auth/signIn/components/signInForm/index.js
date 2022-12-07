@@ -396,11 +396,13 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                             type="primary"
                                                             htmlType="submit"
                                                             className={
-                                                                classes[
+                                                                isValid? classes[
                                                                 "submit-button"
-                                                                ]
+                                                                ]:classes[
+                                                                    "submit-button-disabled"
+                                                                    ]
                                                             }
-                                                            // disabled={true}
+                                                            disabled={!isValid}
                                                         >
                                                             {buttonLoader ===
                                                                 true ? (

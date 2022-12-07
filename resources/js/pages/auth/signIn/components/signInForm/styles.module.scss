@@ -86,7 +86,7 @@
     cursor: pointer;
 }
 .form-Item {
-    margin-bottom: 33px !important;
+    margin-bottom: 28px !important;
 }
 .tag-wrapper{
     margin-bottom: 0px !important;
@@ -134,6 +134,7 @@
     }
     &:disabled {
         background-color: #cbcbcb;
+        color: #fff;
     }
 
     span {
@@ -144,6 +145,32 @@
             font-size: 14px;
             margin: 0 !important;
             margin-right: 5px !important;
+        }
+    }
+}
+.submit-button-disabled{
+    color: #fff;
+    font-size: 16px;
+    font-family: Montserrat;
+    padding: 8px 30px;
+    border-radius: 28px;
+    border: none;
+    height: 45px;
+    &:disabled {
+        background-color: #cbcbcb;
+        color: #fff;
+    }
+
+    span {
+        display: flex;
+        align-items: center;
+        color: #fff;
+
+        p {
+            font-size: 14px;
+            margin: 0 !important;
+            margin-right: 5px !important;
+            color: #fff;
         }
     }
 }

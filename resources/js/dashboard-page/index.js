@@ -73,9 +73,9 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
         getSummaryStats();
     }, [apiDates, userId]);
     return (
-        <Row className={classes["container"]} span={24} justify="space-between">
+        <Row className={classes["container"]} span={24}>
             <div>{contextHolder}</div>
-            <Col xs={24} lg={17} className={classes["left-stats"]}>
+            <Col xs={24} lg={17}>
                 <Row
                     className={classes["cards-mapper"]}
                     justify="space-between"

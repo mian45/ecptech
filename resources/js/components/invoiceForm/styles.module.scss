@@ -10,23 +10,36 @@
     align-items: flex-start;
     margin-bottom: 24px;
     flex-wrap: wrap;
+    @media only screen and (max-width: 667px) {
+        display: block;
+        margin-bottom: 0px;
+    }
 }
 .input {
     width: 284px;
     margin-right: 20px;
     height: 45px;
+    @media only screen and (max-width: 667px) {
+        margin-right: 0px;
+        width: auto;
+    }
 }
 .dob-wrapper {
     display: flex;
     flex-direction: column;
     width: 284px;
     margin-right: 20px;
+    @media only screen and (max-width: 667px) {
+        margin-right: 0px;
+        width: auto;
+    }
 }
 .dob-label {
     font-size: 16px;
     color: #2a2a2a;
     margin-bottom: 13px;
     font-family: Montserrat;
+    margin-top: 24px;
 }
 .dob-input {
     border: 1px solid #dfdfdf;
@@ -63,5 +76,6 @@
     }
     .search-button {
         margin-bottom: 20px;
+        margin-top: 24px;
     }
 }
