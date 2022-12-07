@@ -221,11 +221,7 @@ class SettingController extends Controller
         
     public function getAddons(Request $request){
 
-        //VSP, Davis, Eyemed
-        //get type
-        //Check if plan name is vsp then get vision plan where vision plan like vsp signature (only one record)
-        //Else get vision plan where vision plan like plan(eyemed or davis)
-        //Get addonetype where vision plan id equals vsp id and addtye equals type
+       
 
         if($request->plan == 'vsp'){
                 $vision_plan = VisionPlan::where('title','VSP Signature')->first();
