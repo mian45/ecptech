@@ -40,12 +40,11 @@ class PrescriptionController extends Controller
                         $eyePrescription->save();
                     }
                 } else {
-                    $eyePrescriptionsave = new Prescription;
-                    $eyePrescriptionsave->name = $ep['name'];
-                    $eyePrescriptionsave->sphere_from = $ep['sphere_from'];
-                    $eyePrescriptionsave->sphere_to = $ep['sphere_to'];
-                    $eyePrescriptionsave->user_id = $user_id;
-                    $eyePrescriptionsave->save();
+                    $prescription = Prescription::updateOrCreate(
+                        ['user_id' => $user_id, 'name' => $ep['name']],
+                        ['sphere_from' => $ep['sphere_from'],'sphere_to' => $ep['sphere_to']]
+                    );
+
                 }
                 
             }
