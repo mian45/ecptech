@@ -223,8 +223,8 @@ class SettingController extends Controller
             $join->on('addons.id', '=', 'setting.addon_id')
             ->where('setting.user_id',  auth()->user()->id);            
             });
-            $q->select('addons.id','addons.title','addons.addon_type_id',DB::raw('IFNULL(status,"inactive") as status'),'display_name','price');
-        }])->select('id','title')->get();
+            $q->select('addons.id','addons.category','addons.addon_price','addons.title','addons.addon_type_id',DB::raw('IFNULL(status,"inactive") as status'),'display_name','price');
+        }])->select('id','title','type','vision_plan_id')->get();
         
         return $this->sendResponse($addons, 'Add-Ons');
     }
