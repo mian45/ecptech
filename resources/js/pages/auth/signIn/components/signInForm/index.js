@@ -201,6 +201,7 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
     const handleClick = async (values) => {
         setButtonLoader(true);
         try {
+            message.destroy();
             await dispatch(AuthService.login(values, messageApi));
             if (JSON.parse(templogout) !== true) {
                 if (userRole === "staff") {
@@ -237,10 +238,13 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                     return (
                         <>
                             <Col xs={22} md={24} lg={18}>
-                                <div className={classes["login-title"]}>Log in</div>
+                                <div className={classes["login-title"]}>
+                                    Log in
+                                </div>
                                 <div className={classes["login-subtitle"]}>
-                                    Welcome to Urban Optics. Please put your login
-                                    credentials below to start using the app.
+                                    Welcome to Urban Optics. Please put your
+                                    login credentials below to start using the
+                                    app.
                                 </div>
                             </Col>
                             <Col xs={22} md={24} lg={18}>
@@ -304,7 +308,7 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                     onChange={handleChange}
                                                     className={
                                                         classes[
-                                                        "password-container"
+                                                            "password-container"
                                                         ]
                                                     }
                                                     iconRender={(visible) =>
@@ -332,7 +336,9 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                             >
                                                 Forgot Password?
                                             </div>
-                                            <div className={classes["divider"]} />
+                                            <div
+                                                className={classes["divider"]}
+                                            />
 
                                             <Col
                                                 xs={24}
@@ -356,7 +362,9 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                                 false
                                                             }
                                                             c
-                                                            onValueChange={(e) =>
+                                                            onValueChange={(
+                                                                e
+                                                            ) =>
                                                                 setFieldValue(
                                                                     "remember",
                                                                     e
@@ -383,7 +391,9 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                     <Col
                                                         xs={12}
                                                         className={
-                                                            classes["btn-wrapper"]
+                                                            classes[
+                                                                "btn-wrapper"
+                                                            ]
                                                         }
                                                     >
                                                         <Button
@@ -391,12 +401,12 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                             htmlType="submit"
                                                             className={
                                                                 classes[
-                                                                "submit-button"
+                                                                    "submit-button"
                                                                 ]
                                                             }
                                                         >
                                                             {buttonLoader ===
-                                                                true ? (
+                                                            true ? (
                                                                 <span>
                                                                     <p>Login</p>
                                                                     <CustomLoader

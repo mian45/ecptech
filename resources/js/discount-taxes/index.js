@@ -68,11 +68,12 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 getDiscount();
+                message.destroy();
                 messageApi.open({
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: "custom-postion",
                 });
                 setDiscountId(null);
                 setDiscountName("");
@@ -83,11 +84,12 @@ const DiscountTaxes = (props) => {
             .catch(function (error) {
                 setDiscountButtonLoader(false);
                 console.log(error);
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             });
     };
@@ -107,11 +109,12 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                message.destroy();
                 messageApi.open({
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: "custom-postion",
                 });
                 getDiscount();
                 setDiscountId(null);
@@ -119,11 +122,12 @@ const DiscountTaxes = (props) => {
             })
             .catch(function (error) {
                 console.log(error);
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             });
     };
@@ -148,11 +152,12 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                message.destroy();
                 messageApi.open({
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: "custom-postion",
                 });
                 setTaxName("");
                 setTaxValue("");
@@ -164,11 +169,12 @@ const DiscountTaxes = (props) => {
             .catch(function (error) {
                 console.log(error);
                 setTaxButtonLoader(false);
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             });
     };
@@ -193,11 +199,12 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                message.destroy();
                 messageApi.open({
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: "custom-postion",
                 });
                 getTaxes();
                 setTaxName("");
@@ -208,11 +215,12 @@ const DiscountTaxes = (props) => {
             .catch(function (error) {
                 console.log(error);
                 setTaxButtonLoader(false);
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             });
     };
@@ -232,21 +240,23 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                message.destroy();
                 messageApi.open({
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: "custom-postion",
                 });
                 setShowDeleteTaxes(false);
             })
             .catch(function (error) {
                 console.log(error);
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             });
     };
@@ -267,11 +277,12 @@ const DiscountTaxes = (props) => {
                 setStateSetting(response.data.data[0].id);
             })
             .catch(function (error) {
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
                 console.log(error);
             });
@@ -294,11 +305,12 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                message.destroy();
                 messageApi.open({
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: "custom-postion",
                 });
                 setEditId(null);
                 setDiscountName("");
@@ -308,11 +320,12 @@ const DiscountTaxes = (props) => {
                 setDiscountButtonLoader(false);
             })
             .catch(function (error) {
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
                 console.log(error);
                 setDiscountButtonLoader(false);
@@ -381,11 +394,12 @@ const DiscountTaxes = (props) => {
             .catch(function (error) {
                 console.log(error);
                 setLoading(false);
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             });
     };
@@ -412,11 +426,12 @@ const DiscountTaxes = (props) => {
             .catch(function (error) {
                 console.log(error);
                 setLoading(false);
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             });
     };
@@ -469,20 +484,22 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
+                message.destroy();
                 messageApi.open({
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: "custom-postion",
                 });
                 getDiscount();
             })
             .catch(function (error) {
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
                 console.log(error);
             });
@@ -503,19 +520,21 @@ const DiscountTaxes = (props) => {
         axios(config)
             .then(function (response) {
                 getTaxes();
+                message.destroy();
                 messageApi.open({
                     type: "success",
                     content: response.data.message,
                     duration: 5,
-                    className: 'custom-postion',
+                    className: "custom-postion",
                 });
             })
             .catch(function (error) {
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
                 console.log(error);
             });
@@ -748,18 +767,19 @@ const DiscountTaxes = (props) => {
                                                                     onClick={
                                                                         handleSubmit
                                                                     }
-                                                                    className={`save-button ${!discountName ||
+                                                                    className={`save-button ${
+                                                                        !discountName ||
                                                                         !discountTax ||
                                                                         discountButtonLoader
-                                                                        ? "disable"
-                                                                        : ""
-                                                                        } `}
+                                                                            ? "disable"
+                                                                            : ""
+                                                                    } `}
                                                                     type="submit"
                                                                 >
                                                                     {discountId ==
-                                                                        null ? (
+                                                                    null ? (
                                                                         discountButtonLoader ==
-                                                                            true ? (
+                                                                        true ? (
                                                                             <span>
                                                                                 <p>
                                                                                     Add
@@ -774,7 +794,7 @@ const DiscountTaxes = (props) => {
                                                                             "Add"
                                                                         )
                                                                     ) : discountButtonLoader ==
-                                                                        true ? (
+                                                                      true ? (
                                                                         <span>
                                                                             <p>
                                                                                 Update
@@ -838,7 +858,7 @@ const DiscountTaxes = (props) => {
                                                                                         dis.value
                                                                                     }{" "}
                                                                                     {dis.type ==
-                                                                                        "percentage"
+                                                                                    "percentage"
                                                                                         ? "%"
                                                                                         : "$"}
                                                                                 </td>
@@ -880,7 +900,7 @@ const DiscountTaxes = (props) => {
                                                                                         className="switch-margin"
                                                                                         checked={
                                                                                             dis?.status ==
-                                                                                                "active"
+                                                                                            "active"
                                                                                                 ? true
                                                                                                 : false
                                                                                         }
@@ -993,11 +1013,11 @@ const DiscountTaxes = (props) => {
                                                                             e
                                                                                 .target
                                                                                 .value <=
-                                                                            100 &&
+                                                                                100 &&
                                                                             e
                                                                                 .target
                                                                                 .value >=
-                                                                            0
+                                                                                0
                                                                         ) {
                                                                             setTaxValue(
                                                                                 e
@@ -1053,26 +1073,27 @@ const DiscountTaxes = (props) => {
                                                                     e
                                                                 ) => {
                                                                     idState !==
-                                                                        null
+                                                                    null
                                                                         ? handlUpdateTax(
-                                                                            e
-                                                                        )
+                                                                              e
+                                                                          )
                                                                         : handleTaxSubmit(
-                                                                            e
-                                                                        );
+                                                                              e
+                                                                          );
                                                                 }}
-                                                                className={`save-button ${!taxName ||
+                                                                className={`save-button ${
+                                                                    !taxName ||
                                                                     !taxValue ||
                                                                     taxButtonLoader
-                                                                    ? "disable"
-                                                                    : ""
-                                                                    } `}
+                                                                        ? "disable"
+                                                                        : ""
+                                                                } `}
                                                                 type="submit"
                                                             >
                                                                 {idState ==
-                                                                    null ? (
+                                                                null ? (
                                                                     taxButtonLoader ==
-                                                                        true ? (
+                                                                    true ? (
                                                                         <span>
                                                                             <p>
                                                                                 Add
@@ -1087,7 +1108,7 @@ const DiscountTaxes = (props) => {
                                                                         "Add"
                                                                     )
                                                                 ) : taxButtonLoader ==
-                                                                    true ? (
+                                                                  true ? (
                                                                     <span>
                                                                         <p>
                                                                             Update
@@ -1188,7 +1209,7 @@ const DiscountTaxes = (props) => {
                                                                                     className="switch-margin"
                                                                                     checked={
                                                                                         obj?.status ===
-                                                                                            "active"
+                                                                                        "active"
                                                                                             ? true
                                                                                             : false
                                                                                     }

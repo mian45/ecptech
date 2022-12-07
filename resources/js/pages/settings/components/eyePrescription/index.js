@@ -51,11 +51,12 @@ const EyePrescription = ({ userId }) => {
                 setLoading(false);
             } catch (err) {
                 console.log("Error while getting glasses details");
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: err.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             }
         };
@@ -234,19 +235,21 @@ const EyePrescription = ({ userId }) => {
                 payload
             );
             setButtonLoader(false);
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("error while save data");
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -344,8 +347,9 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
     return (
         <Row className={classes["slot-container"]}>
             <Col xs={24} className={classes["slot-header"]}>
-                <div className={classes["header-title"]}>{`Show ${data?.name || ""
-                    } If`}</div>
+                <div className={classes["header-title"]}>{`Show ${
+                    data?.name || ""
+                } If`}</div>
             </Col>
             <Col xs={24} className={classes["slot-body"]}>
                 <Row justify="space-between">

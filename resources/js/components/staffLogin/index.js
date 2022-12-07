@@ -44,6 +44,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
             password_confirmation: values.confirmPassword,
             id: staffUser.id,
         };
+        message.destroy();
         dispatch(AuthService.updateStaffLogin(staffObject, messageApi));
     };
 
@@ -283,8 +284,8 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                         </form>
                     );
                 }}
-            </Formik >
-        </div >
+            </Formik>
+        </div>
     );
 };
 const mapStateToProps = (state) => ({
