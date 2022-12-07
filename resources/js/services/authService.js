@@ -1,6 +1,7 @@
 import Http from "../Http";
 import * as action from "../store/actions";
 import axios from "axios";
+import { message } from "antd";
 
 export function login({ email, password, remember }, messageApi) {
     return (dispatch) =>
@@ -12,6 +13,7 @@ export function login({ email, password, remember }, messageApi) {
                     remember_me: remember,
                 })
                 .then((res) => {
+                    message.destroy();
                     messageApi.open({
                         type: "success",
                         content: res.data.message,
@@ -35,6 +37,7 @@ export function login({ email, password, remember }, messageApi) {
                     }, 1000);
                 })
                 .catch((err) => {
+                    message.destroy();
                     messageApi.open({
                         type: "error",
                         content: err.response.data.message,
