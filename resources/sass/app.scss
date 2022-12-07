@@ -535,6 +535,9 @@ input:-webkit-autofill:active {
 
 .custom-postion {
     margin-top: 13.5vh;
+    .anticon-check-circle {
+        display: none !important;
+    }
     .ant-message-notice-content{
         background-color: #00940A !important ;
         color: white;
@@ -551,6 +554,9 @@ input:-webkit-autofill:active {
 
 .custom-postion-error {
     margin-top: 13.5vh;
+    .anticon-check-circle {
+        display: none !important;
+    }
     .ant-message-notice-content{
         background-color: red !important ;
         color: white;
