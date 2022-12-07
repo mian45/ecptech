@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { Row, Col, message } from "antd";
 const MaterialSettings = ({ userId }) => {
     const [lensesMaterialApi, lensesMaterialHolder] = message.useMessage();
+    const [isChange , setIsChange] = useState(false)
     let [materials, setMaterials] = useState([]);
     useEffect(() => {
         if (userId == null) return;
@@ -33,6 +34,7 @@ const MaterialSettings = ({ userId }) => {
     }, [userId]);
 
     const handleCheckbox = (value, collection) => {
+        setIsChange(true)
         const newData = materials.map((item, index) => {
             if (item.id === collection.id) {
                 return { ...item, status: value ? "active" : "inactive" };
@@ -43,6 +45,7 @@ const MaterialSettings = ({ userId }) => {
         setMaterials(newData);
     };
     const handleDisplayNameChange = (value, collection) => {
+        setIsChange(true)
         const newData = materials.map((item, index) => {
             if (item.id === collection.id) {
                 return { ...item, display_name: value };
@@ -53,6 +56,7 @@ const MaterialSettings = ({ userId }) => {
         setMaterials(newData);
     };
     const handleAmountNameChange = (value, collection) => {
+        setIsChange(true)
         const newData = materials.map((item, index) => {
             if (item.id === collection.id) {
                 return { ...item, price: value };
@@ -129,6 +133,7 @@ const MaterialSettings = ({ userId }) => {
                     <button
                         className={classes["save-button"]}
                         onClick={submitMaterialSettings}
+                        disabled={!isChange}
                     >
                         Save
                     </button>
