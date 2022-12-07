@@ -145,6 +145,9 @@
                 @media only screen and (width: 598px) {
                     max-width: unset !important;
                 }
+                @media only screen and (width: 540px) {
+                    max-width: unset !important;
+                }
             }
             .ant-select-short {
                 width: 11.68em !important;
@@ -200,7 +203,10 @@
                 @media only screen and (width: 598px) {
                     max-width: unset !important;
                 }
-
+                @media only screen and (width: 540px) {
+                    max-width: unset !important;
+                }
+                
                 &:focus-visible {
                     border: 1px solid #dfdfdf;
                     outline: none;
