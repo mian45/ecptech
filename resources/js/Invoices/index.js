@@ -54,11 +54,11 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
         try {
             setIsSearched(true);
             const invoiceObject = {
-                fname: values?.firstName,
-                lname: values?.lastName,
+                firstName: values?.firstName,
+                lastName: values?.lastName,
                 userId: clientId,
                 email: values?.email,
-                phone: values?.phoneNo,
+                phoneNo: values?.phoneNo,
                 dob: values?.dob,
             };
 

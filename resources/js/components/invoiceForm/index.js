@@ -10,8 +10,7 @@ const InvoicesForm = ({
     handleSearch,
     setIsSearched,
 }) => {
-    const { values, handleChange, isSubmitting, isValid, dirty } =
-        formProps;
+    const { values, handleChange, isSubmitting, isValid, dirty } = formProps;
     return (
         <div className={classes["container"]}>
             <div className={classes["form-slot"]}>
@@ -94,7 +93,7 @@ const InvoicesForm = ({
                 <ButtonComponent
                     className={classes["search-button"]}
                     type={"button"}
-                    disabled={!(isValid && dirty) || isSubmitting || isSearched}
+                    // disabled={!(isValid && dirty) || isSubmitting || isSearched}
                     onClick={() => handleSearch(values)}
                 >
                     Search Invoices
