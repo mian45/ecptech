@@ -45,85 +45,13 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
             state: { user: values },
         });
     };
-    const handleSearchValidation = async (formProps) => {
-        const { values, setFieldError, setTouched } = formProps;
-
-        if (values.firstName) {
-            await setFieldError("firstName", "");
-            await setFieldError("lastName", "");
-            await setFieldError("dob", "");
-            await setFieldError("email", "");
-            await setFieldError("phoneNo", "");
-            await setTouched(
-                { firstName, lastName, dob, phoneNo, email },
-                false
-            );
-            return true;
-        } else if (values.phoneNo) {
-            await setFieldError("firstName", "");
-            await setFieldError("lastName", "");
-            await setFieldError("dob", "");
-            await setFieldError("email", "");
-            await setFieldError("phoneNo", "");
-            await setTouched(
-                { firstName, lastName, dob, phoneNo, email },
-                false
-            );
-            return true;
-        } else if (values.email) {
-            await setFieldError("firstName", "");
-            await setFieldError("lastName", "");
-            await setFieldError("dob", "");
-            await setFieldError("email", "");
-            await setFieldError("phoneNo", "");
-            await setTouched(
-                { firstName, lastName, dob, phoneNo, email },
-                false
-            );
-            return true;
-        } else if (values.dob) {
-            await setFieldError("firstName", "");
-            await setFieldError("lastName", "");
-            await setFieldError("dob", "");
-            await setFieldError("email", "");
-            await setFieldError("phoneNo", "");
-            await setTouched(
-                { firstName, lastName, dob, phoneNo, email },
-                false
-            );
-            return true;
-        } else if (values.lastName) {
-            await setFieldError("firstName", "");
-            await setFieldError("lastName", "");
-            await setFieldError("dob", "");
-            await setFieldError("email", "");
-            await setFieldError("phoneNo", "");
-            await setTouched(
-                { firstName, lastName, dob, phoneNo, email },
-                false
-            );
-            return true;
-        } else {
-            return false;
-        }
-    };
     const handleSearch = async (formProps) => {
-        const { values, setFieldError, setTouched } = formProps;
+        const { values, setTouched } = formProps;
         let clientId = userId;
         if (userRole === "staff") {
             clientId = clientUserId;
         }
         try {
-            const isError = await handleSearchValidation(formProps);
-            if (!isError) {
-                await setFieldError(
-                    "lastName",
-                    "Please provide a valid First Name"
-                );
-                await setTouched({ lastName }, true);
-
-                return;
-            }
             const invoiceObject = {
                 firstName: values?.firstName,
                 lastName: values?.lastName,
