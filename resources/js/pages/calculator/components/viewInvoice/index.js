@@ -36,6 +36,7 @@ import {
     CalculateWithTaxesTotalPrice,
 } from "./helpers/pricesHelper/calculateTotalPrice";
 import UseWindowSize from "../../../../hooks/windowResize";
+import ButtonsList from "./components/buttonsList/buttonsList";
 
 const ViewInvoice = ({
     onClose,
@@ -234,7 +235,7 @@ const ViewInvoice = ({
             bodyStyle={{
                 padding: 0,
             }}
-            width={width <= 600 ? "80%" : "60%"}
+            width={width <= 1200 ? "80%" : "50%"}
             footer={null}
         >
             <Row
@@ -244,30 +245,14 @@ const ViewInvoice = ({
                     e.stopPropagation();
                 }}
             >
-                <Col xs={24} sm={24} md={8} lg={8}>
-                    <UserInfo receipt={receipt} />
-                </Col>
-                <Col
-                    xs={24}
-                    sm={24}
-                    md={16}
-                    lg={16}
-                    className={classes["sub-right-container"]}
-                >
+                <Col xs={24}>
                     <DetailsList
                         receipt={receipt}
                         calculatorObj={calculatorObj}
                         lensPrices={lensPrices}
-                        withoutTaxPrice={totalWithoutTax()}
-                        totalPrice={calculateTotalDue()}
+                        mode={mode}
+                        handleSendInvoiceClick={handleSendInvoiceClick}
                     />
-
-                    <button
-                        className={classes["send-button"]}
-                        onClick={handleSendInvoiceClick}
-                    >
-                        {mode === "view" ? "Close" : "Send Invoice"}
-                    </button>
                 </Col>
             </Row>
         </Modal>

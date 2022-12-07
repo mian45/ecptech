@@ -283,6 +283,8 @@ class InvoiceCalculaterController extends Controller
                 DB::beginTransaction();
 
                 $row = 0;
+                $price = NULL;
+                $category = NULL;
                 try{
                     while(($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
                         if($row==0){
@@ -292,20 +294,48 @@ class InvoiceCalculaterController extends Controller
                             $data = $this->clear_encoding_str($data);
 
                             if(!empty($data[0])){
-                                $addon_type = AddonType::updateOrCreate(['title'=> $data[0]]);
+                                $vision_plan = VisionPlan::updateOrCreate(['title'=> $data[0]]);
                             }
 
                             if(!empty($data[1])){
+                                if(!empty($data[5])){
+                                    $type = $data[5];
+                                }
+                                $addon_type = AddonType::updateOrCreate(
+                                    [
+                                        'vision_plan_id'=>$vision_plan->id, 
+                                        'title'=> $data[1], 
+                                        'type' => $type
+                                    ]);
+                            }
+
+                            if(!empty($data[3])){
+
+                                if(!empty($data[4])){
+                                    $price = moneyFormatter($data[4]);
+                                }
+
+                                if(strpos($addon_type->title, 'Reflective') !== false){
+                                    if(!empty($data[2])){
+                                        $category = $data[2];
+                                    }
+                                }else{
+                                    $category = NULL;
+                                }
+
+                                
+                                
+
                                 $addon = AddOn::updateOrCreate(
-                                    ['title'=> $data[1], 'addon_type_id'=>$addon_type->id]
+                                    [
+                                        'title'=> $data[3], 
+                                        'addon_type_id'=>$addon_type->id,
+                                        'addon_price' => $price,
+                                        'category' => $category
+                                    ]
                                 );
                             }
 
-                            if(!empty($data[2])){
-                                $addon_extra = AddonExtra::updateOrCreate(
-                                    ['title'=> $data[2], 'addon_id'=>$addon->id]
-                                );
-                            }
 
                         }
 

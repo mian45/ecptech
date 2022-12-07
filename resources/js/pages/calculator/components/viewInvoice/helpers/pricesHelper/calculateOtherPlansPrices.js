@@ -107,7 +107,7 @@ export const GetFrameFee = (data, isPrivate) => {
     return total;
 };
 
-const GetPhotochromicPrice = (data) => {
+export const GetPhotochromicPrice = (data) => {
     let total = 0;
     if (data?.photochromics?.status === "Yes") {
         const isPhotochromicActive =
@@ -166,7 +166,7 @@ const getSignaturePhotochromic = (value) => {
     }
 };
 
-const GetAntireflectivePrice = (data) => {
+export const GetAntireflectivePrice = (data) => {
     let total = 0;
     if (data?.antiReflectiveProperties?.status === "Yes") {
         const isAntireflectiveActive =
@@ -304,7 +304,7 @@ const GetProtectionPlanPrice = (data) => {
     }
     return total;
 };
-const getLensByLowerCopay = (data, calculatorObj, lensPrices) => {
+export const getLensByLowerCopay = (data, calculatorObj, lensPrices) => {
     const lensPrice = parseFloat(
         getPriceFromDB(data, calculatorObj, lensPrices)?.lensPrice || 0
     );
@@ -370,7 +370,7 @@ const getLensByLowerCopay = (data, calculatorObj, lensPrices) => {
     }
 };
 
-const getMaterialByLowerCopay = (data, calculatorObj, lensPrices) => {
+export const getMaterialByLowerCopay = (data, calculatorObj, lensPrices) => {
     const materialPrice = parseFloat(
         getPriceFromDB(data, calculatorObj, lensPrices)?.materialPrice || 0
     );
@@ -1110,5 +1110,7 @@ export const calculateLensesCopaysFee = (
                 )
             );
     }
+    //add material copay
+    total = total + parseFloat(data?.materialCopay || 0);
     return total;
 };
