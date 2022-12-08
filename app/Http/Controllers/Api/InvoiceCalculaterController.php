@@ -20,6 +20,7 @@ use App\Models\AddonType;
 use App\Models\AddOn;
 use App\Models\AddonExtra;
 use Validator;
+use App\Models\TracingFee;
 use Illuminate\Validation\ValidationException;
 
 
@@ -31,6 +32,7 @@ class InvoiceCalculaterController extends Controller
         $data['shipping'] = "";
         $data['tax'] = "";
         $data['discount'] = "";
+        $data['tracing_fee'] = [];
 
         $user=auth()->user();
 
@@ -39,6 +41,10 @@ class InvoiceCalculaterController extends Controller
             $userId=  $user->client_id;
         }
 
+        $tracing = TracingFee::where('user_id',$userId)->where('status','active')->orderBy('created_at', 'desc')->get();
+        if(count($tracing) > 0){
+            $data['tracing'] = $tracing;
+        }
 
         $shipping = Shipping::where('user_id',$userId)->orderBy('created_at', 'desc')->first();
         if($shipping){
