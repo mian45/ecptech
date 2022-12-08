@@ -54,13 +54,19 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
         try {
             setIsSearched(true);
             const invoiceObject = {
-                fname: values?.firstName,
-                lname: values?.lastName,
+                firstName: values?.firstName,
+                lastName: values?.lastName,
                 userId: clientId,
                 email: values?.email,
-                phone: values?.phoneNo,
+                phoneNo: values?.phoneNo,
                 dob: values?.dob,
             };
+
+            for (const key of Object.keys(invoiceObject)) {
+                if (invoiceObject[key] === "") {
+                    delete invoiceObject[key];
+                }
+            }
 
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/search-invoices`,
@@ -71,7 +77,7 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
             setButtonLoader(false);
         } catch (err) {
@@ -81,7 +87,7 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
             setButtonLoader(false);
         }
