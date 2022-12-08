@@ -72,7 +72,6 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 `${process.env.MIX_REACT_APP_URL}/api/search-invoices`,
                 invoiceObject
             );
-            console.log("response---", res.data);
             setTableData(res?.data?.data);
             messageApi.open({
                 type: "success",
