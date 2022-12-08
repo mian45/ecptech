@@ -157,7 +157,13 @@ class InvoicesController extends Controller
        $a1 = $invoice->user_state;
      
       if($a1 == $a2 && $invoice->name == $request->invoiceName){
-            return $this->sendResponse($invoice, 'No update in invoice');
+            if($invoice->status  == $request->status){
+                return $this->sendResponse($invoice, 'No update in invoice');
+            }else{
+                $invoice->status = $request->status;
+                $invoice->save();
+                return $this->sendResponse($invoice, 'Invoice status update successfully.');
+            }
       }else{
 
             $invoice->status = 'discard';

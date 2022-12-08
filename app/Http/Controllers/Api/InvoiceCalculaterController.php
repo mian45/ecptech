@@ -20,6 +20,7 @@ use App\Models\AddonType;
 use App\Models\AddOn;
 use App\Models\AddonExtra;
 use Validator;
+use App\Models\TracingFee;
 use Illuminate\Validation\ValidationException;
 
 
@@ -31,6 +32,7 @@ class InvoiceCalculaterController extends Controller
         $data['shipping'] = "";
         $data['tax'] = "";
         $data['discount'] = "";
+        $data['tracing_fee'] = "";
 
         $user=auth()->user();
 
@@ -39,6 +41,10 @@ class InvoiceCalculaterController extends Controller
             $userId=  $user->client_id;
         }
 
+        $tracing = TracingFee::where('user_id',$userId)->where('status','active')->orderBy('created_at', 'desc')->first();
+        if($tracing){
+            $data['tracing_fee'] = $tracing;
+        }
 
         $shipping = Shipping::where('user_id',$userId)->orderBy('created_at', 'desc')->first();
         if($shipping){
@@ -55,13 +61,19 @@ class InvoiceCalculaterController extends Controller
             $data['tax'] = $tax;
         }
 
-        $data['addons'] = AddonType::with(['addons' => function($q)use($userId){
-            $q->join('user_addon_settings as setting','setting.addon_id','=','addons.id');
-            $q->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id');
-            $q->where('setting.user_id',$userId)->where('setting.status','active');
+        $data['addons'] = VisionPlan::with(['addon_types' => function($q)use($userId){
+
+            $q->select('id','title','vision_plan_id')
+            ->where('type','addon');
+
+            $q->with(['addons' => function($q)use($userId){
+                $q->join('user_addon_settings as setting','setting.addon_id','=','addons.id')
+                ->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id')
+                ->where('setting.user_id',$userId)->where('setting.status','active');
+            }]);
+            
         }])->select('id','title')->get();
-
-
+        
 
 
         $data['questions'] = VisionPlan::with(['question_permissions' => function($q)use($userId){
@@ -608,8 +620,12 @@ class InvoiceCalculaterController extends Controller
                         $q->join('collections_permissions as cp', function ($join) {
                             $join->on('cp.collection_id','=','collections.id');
                         });
+
+                        $q->leftjoin('codes as c', function ($join) {
+                            $join->on('c.id','=','collections.code_id');
+                        });
                         
-                        $q->select('collections.id','collections.category','collections.brand_id','title','cp.name as display_name','cp.price','cp.collection_id');
+                        $q->select('collections.id','collections.category','collections.brand_id','title','c.price as lense_price','cp.name as display_name','cp.price','cp.collection_id');
 
                         $q->with(['lenses'=>function($q)use($userId){
                             $q->join('lens_materials as lm', function ($join) {
@@ -625,6 +641,31 @@ class InvoiceCalculaterController extends Controller
                        
                     }]);
                }])->select('id','title','vision_plan_id')->where('vision_plan_id',request()->vision_plan_id)->get();
+
+        $vision_plan = VisionPlan::find($request->vision_plan_id);
+        if($vision_plan->title == 'Davis Vision' OR $vision_plan->title == 'Eyemed'){
+            $data['additional_lense_setting'] = VisionPlan::with(['addon_types' => function($q)use($userId){
+
+                $q->select('id','title','vision_plan_id')
+                ->where('type','lense_treatment');
+    
+                $q->with(['addons' => function($q)use($userId){
+                    $q->join('user_addon_settings as setting','setting.addon_id','=','addons.id')
+                    ->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id')
+                    ->where('setting.user_id',$userId)->where('setting.status','active');
+                }]);
+                
+            }])->select('id','title')->where('id',$request->vision_plan_id)->get();
+        }
+
+        if($vision_plan->title == 'Davis Vision'){
+            $data['lense_materials'] = Code::where('vision_plan_id',$vision_plan->id)
+                                        ->join('lens_materials', 'lens_materials.id', '=', 'codes.lense_material_id')
+                                        ->select('lens_materials.id','lens_materials.lens_material_title','codes.price')
+                                        ->whereNotNull('lense_material_id')->get();
+        }
+
+       
         
         return $this->sendResponse($data, 'Collections get successfully');
     }

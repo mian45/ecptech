@@ -547,8 +547,11 @@ input:-webkit-autofill:active {
 
 .custom-postion {
     margin-top: 13.5vh;
-    .ant-message-notice-content {
-        background-color: #00940a !important ;
+    .anticon-check-circle {
+        display: none !important;
+    }
+    .ant-message-notice-content{
+        background-color: #00940A !important ;
         color: white;
         width: 618px;
         height: 37px;
@@ -559,9 +562,15 @@ input:-webkit-autofill:active {
     }
 }
 
+.ant-message .anticon {
+    display: none;
+}
 .custom-postion-error {
     margin-top: 13.5vh;
-    .ant-message-notice-content {
+    .anticon-check-circle {
+        display: none !important;
+    }
+    .ant-message-notice-content{
         background-color: red !important ;
         color: white;
         width: 618px;
