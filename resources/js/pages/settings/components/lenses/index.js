@@ -38,6 +38,9 @@ const LensesSettings = () => {
                                     defaultValue="vsp"
                                     value={plan}
                                     onChange={(e) => {
+                                        if (activeTab === 4 && e == "vsp") {
+                                            setActiveTab(1);
+                                        }
                                         setPlan(e);
                                     }}
                                 >
@@ -83,34 +86,48 @@ const LensesSettings = () => {
                     >
                         <Col
                             className={`${
-                                classes["first-buttons"]
+                                plan !== "vsp" ? "" : classes["first-buttons"]
                             } ${getActiveClass(1)}`}
                             onClick={() => setActiveTab(1)}
-                            xs={6}
+                            xs={plan !== "vsp" ? 5 : 6}
                         >
                             Lens Type
                         </Col>
                         <Col
                             className={getActiveClass(2)}
                             onClick={() => setActiveTab(2)}
-                            xs={6}
+                            xs={plan !== "vsp" ? 5 : 6}
                         >
                             Lens Material
                         </Col>
                         <Col
                             className={getActiveClass(3)}
                             onClick={() => setActiveTab(3)}
-                            xs={6}
+                            xs={plan !== "vsp" ? 5 : 6}
                         >
                             Add On's
                         </Col>
+                        {plan !== "vsp" ? (
+                            <Col
+                                className={getActiveClass(4)}
+                                onClick={() => setActiveTab(4)}
+                                xs={5}
+                            >
+                                Lense Treatment
+                            </Col>
+                        ) : null}
                     </Row>
                     <div className={classes["buttons-divider"]} />
                 </Col>
                 <Col xs={24} md={22} lg={18}>
                     {activeTab === 1 && <LensesType plan={plan} />}
                     {activeTab === 2 && <MaterialSettings />}
-                    {activeTab === 3 && <AddonSettings plan={plan} />}
+                    {activeTab === 3 && (
+                        <AddonSettings plan={plan} type={"addon"} />
+                    )}
+                    {activeTab === 4 && (
+                        <AddonSettings plan={plan} type={"lense_treatment"} />
+                    )}
                 </Col>
             </Row>
         </div>

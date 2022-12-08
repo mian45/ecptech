@@ -46,7 +46,9 @@ const LensesType = ({ userId, plan }) => {
         try {
             const payload = {
                 user_id: userId,
-                data: lensesList,
+                data: {
+                    [plan]: lensesList,
+                },
             };
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/update-lense-setting`,

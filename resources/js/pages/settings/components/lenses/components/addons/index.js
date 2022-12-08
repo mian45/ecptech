@@ -8,7 +8,7 @@ import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
 import { Row, Col, message, Tooltip } from "antd";
-const Addons = ({ userId, plan }) => {
+const Addons = ({ userId, plan, type }) => {
     const [addonsList, setAddonsList] = useState([]);
     const [messageApi, contextHolder] = message.useMessage();
     const [changedAddOnList, setChangedAddOnList] = useState([]);
@@ -20,7 +20,7 @@ const Addons = ({ userId, plan }) => {
         const getLenses = async () => {
             try {
                 await Axios.get(
-                    `${process.env.MIX_REACT_APP_URL}/api/addon-settings?type=addon&plan=${plan}`,
+                    `${process.env.MIX_REACT_APP_URL}/api/addon-settings?type=${type}&plan=${plan}`,
                     {
                         params: { userId: userId },
                     }
@@ -57,7 +57,9 @@ const Addons = ({ userId, plan }) => {
     const submitLensesData = async () => {
         try {
             const payload = {
-                data: addonsList,
+                data: {
+                    [plan]: addonsList,
+                },
             };
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/add-addon-setting`,
@@ -94,6 +96,7 @@ const Addons = ({ userId, plan }) => {
                         onClick={onLensTypeClick}
                         lenses={addonsList}
                         selectedRow={selectedRow}
+                        type={type}
                     />
                 </Col>
                 <Col xs={24} md={15} className={classes["right-container"]}>
@@ -412,10 +415,12 @@ export const CollectionSlot = ({
     );
 };
 
-const LensesTypeList = ({ onClick, lenses, selectedRow }) => {
+const LensesTypeList = ({ onClick, lenses, selectedRow, type }) => {
     return (
         <div className={classes["lenses-list-container"]}>
-            <div className={classes["lenses-list-title"]}>Add On's</div>
+            <div className={classes["lenses-list-title"]}>
+                {type == "addon" ? "Add On's" : "Lense Treatment"}
+            </div>
             {lenses?.map((lens, index) => {
                 return (
                     <LensLabelSlot
