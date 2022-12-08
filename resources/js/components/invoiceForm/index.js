@@ -4,7 +4,12 @@ import ButtonComponent from "../Button";
 import InputField from "../inputField";
 import classes from "./styles.module.scss";
 
-const InvoicesForm = ({ formProps, handleSearch }) => {
+const InvoicesForm = ({
+    formProps,
+    isSearched,
+    handleSearch,
+    setIsSearched,
+}) => {
     const { values, handleChange, isSubmitting, isValid, dirty } = formProps;
     return (
         <div className={classes["container"]}>

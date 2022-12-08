@@ -62,7 +62,21 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
         };
 
         try {
-            console.log("formProps", formProps?.errors);
+            setIsSearched(true);
+            const invoiceObject = {
+                firstName: values?.firstName,
+                lastName: values?.lastName,
+                userId: clientId,
+                email: values?.email,
+                phoneNo: values?.phoneNo,
+                dob: values?.dob,
+            };
+
+            for (const key of Object.keys(invoiceObject)) {
+                if (invoiceObject[key] === "") {
+                    delete invoiceObject[key];
+                }
+            }
 
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/search-invoices`,

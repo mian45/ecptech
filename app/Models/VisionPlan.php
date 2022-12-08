@@ -18,5 +18,9 @@ class VisionPlan extends Model
         return $this->hasMany(QuestionPermission::class);
     }
 
+    public function addon_types(){
+        return $this->hasMany(AddonType::class);
+    }
+
 
 }
