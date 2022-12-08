@@ -11,8 +11,11 @@ import isBetween from "dayjs/plugin/isBetween";
 import classes from "./styles.module.scss";
 import DashboardPage from "../../dashboard-page";
 import { Col } from "antd";
+import ButtonComponent from "../../components/Button";
+import { useHistory } from "react-router";
 
 const Dashboard = () => {
+    const history = useHistory();
     const DateRangePicker = daterange.DateRangePicker;
     dayjs.extend(quarterOfYear);
     const [date, setDate] = useState([
@@ -54,27 +57,34 @@ const Dashboard = () => {
             } else {
                 setLabel("Last Week");
             }
-        } else if (new Date().getMonth()=== new Date(date1).getMonth() && 
-        new Date(date1).getMonth()=== new Date(date2).getMonth() ) {
+        } else if (
+            new Date().getMonth() === new Date(date1).getMonth() &&
+            new Date(date1).getMonth() === new Date(date2).getMonth()
+        ) {
             setLabel("This Month");
-        } else if (new Date().getMonth() !== new Date(date1).getMonth() &&
-        new Date(date1).getMonth()=== new Date(date2).getMonth()) {
+        } else if (
+            new Date().getMonth() !== new Date(date1).getMonth() &&
+            new Date(date1).getMonth() === new Date(date2).getMonth()
+        ) {
             setLabel("Last Month");
         } else if (
             new Date(date1).getFullYear() == new Date().getFullYear() - 1 &&
             new Date(date2).getFullYear() == new Date().getFullYear() - 1
         ) {
             setLabel("Last Year");
-        }else if(new Date(endDate).getMonth()-new Date(startDate).getMonth()==2){
-            if(new Date(startDate).getMonth()<=new Date().getMonth() && new Date().getMonth()<=new Date(endDate).getMonth())
-            {setLabel("This Quarter")}
-            else{
-
-                setLabel("Last Quarter")
+        } else if (
+            new Date(endDate).getMonth() - new Date(startDate).getMonth() ==
+            2
+        ) {
+            if (
+                new Date(startDate).getMonth() <= new Date().getMonth() &&
+                new Date().getMonth() <= new Date(endDate).getMonth()
+            ) {
+                setLabel("This Quarter");
+            } else {
+                setLabel("Last Quarter");
             }
-        }
-        
-         else {
+        } else {
             setLabel("Custom");
         }
         setApiDates({
@@ -82,17 +92,13 @@ const Dashboard = () => {
             endDate: dayjs(endDate).format("YYYY-MM-DD"),
         });
     }, [date, startDate, endDate]);
-    const staticRanges=[
+    const staticRanges = [
         ...daterange.defaultStaticRanges,
         {
             label: "This Quarter",
             range: () => ({
-                startDate: new Date(
-                    dayjs().startOf("quarter").$d
-                ),
-                endDate: new Date(
-                    dayjs().endOf("quarter").$d
-                ),
+                startDate: new Date(dayjs().startOf("quarter").$d),
+                endDate: new Date(dayjs().endOf("quarter").$d),
             }),
             isSelected() {
                 return false;
@@ -103,30 +109,18 @@ const Dashboard = () => {
             range: () => ({
                 startDate: new Date(
                     new Date().getFullYear(),
-                    Math.floor(
-                        new Date().getMonth() / 3
-                    ) *
-                        3 -
-                        3,
+                    Math.floor(new Date().getMonth() / 3) * 3 - 3,
                     1
                 ),
                 endDate: new Date(
                     new Date(
                         new Date().getFullYear(),
-                        Math.floor(
-                            new Date().getMonth() / 3
-                        ) *
-                            3 -
-                            3,
+                        Math.floor(new Date().getMonth() / 3) * 3 - 3,
                         1
                     ).getFullYear(),
                     new Date(
                         new Date().getFullYear(),
-                        Math.floor(
-                            new Date().getMonth() / 3
-                        ) *
-                            3 -
-                            3,
+                        Math.floor(new Date().getMonth() / 3) * 3 - 3,
                         1
                     ).getMonth() + 3,
                     0
@@ -139,22 +133,14 @@ const Dashboard = () => {
         {
             label: "Last Year",
             range: () => ({
-                startDate: new Date(
-                    `${
-                        new Date().getFullYear() - 1
-                    }-01-01`
-                ),
-                endDate: new Date(
-                    `${
-                        new Date().getFullYear() - 1
-                    }-12-31`
-                ),
+                startDate: new Date(`${new Date().getFullYear() - 1}-01-01`),
+                endDate: new Date(`${new Date().getFullYear() - 1}-12-31`),
             }),
             isSelected() {
                 return false;
             },
         },
-    ]
+    ];
     return (
         <div className={classes["main-container"]}>
             <div className={classes["date-container"]}>
@@ -176,35 +162,45 @@ const Dashboard = () => {
                     </div>
                 </div>
                 {showDatePicker ? (
-                   <div className={classes["backdrop"]} onClick={()=>{
-                    setShowDatePicker(false)
-                   }}>
-                   
-                     <div className={classes["picker-container"]}>
-                         <Col xs={24}>
-                    <DateRangePicker
-                    className="picker"
-                            onChange={(item) => {
-                                setDate([item.selection]);
-                                setShowDatePicker(false);
-                                setStartDate(item.selection.startDate);
-                                setEndDate(item.selection.endDate);
-                            }}
-                            showSelectionPreview={true}
-                            moveRangeOnFirstSelection={false}
-                            months={2}
-                            ranges={date}
-                            direction={window.innerWidth<=1024?"vertical":"horizontal"}
-                            staticRanges={staticRanges}
-                            inputRanges={[]}
-                        
-                            
-                        />
-                    
-                    </Col>
-                    </div>
+                    <div
+                        className={classes["backdrop"]}
+                        onClick={() => {
+                            setShowDatePicker(false);
+                        }}
+                    >
+                        <div className={classes["picker-container"]}>
+                            <Col xs={24}>
+                                <DateRangePicker
+                                    className="picker"
+                                    onChange={(item) => {
+                                        setDate([item.selection]);
+                                        setShowDatePicker(false);
+                                        setStartDate(item.selection.startDate);
+                                        setEndDate(item.selection.endDate);
+                                    }}
+                                    showSelectionPreview={true}
+                                    moveRangeOnFirstSelection={false}
+                                    months={2}
+                                    ranges={date}
+                                    direction={
+                                        window.innerWidth <= 1024
+                                            ? "vertical"
+                                            : "horizontal"
+                                    }
+                                    staticRanges={staticRanges}
+                                    inputRanges={[]}
+                                />
+                            </Col>
+                        </div>
                     </div>
                 ) : null}
+                <ButtonComponent
+                    className={classes["invoice-button"]}
+                    type={"button"}
+                    onClick={() => history.push("/invoices")}
+                >
+                    Create New Estimate
+                </ButtonComponent>
             </div>
             <DashboardPage apiDates={apiDates} />
         </div>
