@@ -63,13 +63,13 @@ class InvoiceCalculaterController extends Controller
 
         $data['addons'] = VisionPlan::with(['addon_types' => function($q)use($userId){
 
-            $q->select('id','title','vision_plan_id');
-            $q->where('type','addon');
+            $q->select('id','title','vision_plan_id')
+            ->where('type','addon');
 
             $q->with(['addons' => function($q)use($userId){
-                $q->join('user_addon_settings as setting','setting.addon_id','=','addons.id');
-                $q->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id');
-                $q->where('setting.user_id',$userId)->where('setting.status','active');
+                $q->join('user_addon_settings as setting','setting.addon_id','=','addons.id')
+                ->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id')
+                ->where('setting.user_id',$userId)->where('setting.status','active');
             }]);
             
         }])->select('id','title')->get();
@@ -646,13 +646,13 @@ class InvoiceCalculaterController extends Controller
         if($vision_plan->title == 'Davis Vision' OR $vision_plan->title == 'Eyemed'){
             $data['additional_lense_setting'] = VisionPlan::with(['addon_types' => function($q)use($userId){
 
-                $q->select('id','title','vision_plan_id');
-                $q->where('type','lense_treatment');
+                $q->select('id','title','vision_plan_id')
+                ->where('type','lense_treatment');
     
                 $q->with(['addons' => function($q)use($userId){
-                    $q->join('user_addon_settings as setting','setting.addon_id','=','addons.id');
-                    $q->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id');
-                    $q->where('setting.user_id',$userId)->where('setting.status','active');
+                    $q->join('user_addon_settings as setting','setting.addon_id','=','addons.id')
+                    ->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id')
+                    ->where('setting.user_id',$userId)->where('setting.status','active');
                 }]);
                 
             }])->select('id','title')->where('id',$request->vision_plan_id)->get();
