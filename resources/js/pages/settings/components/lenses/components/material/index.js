@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { Row, Col, message } from "antd";
 const MaterialSettings = ({ userId }) => {
     const [lensesMaterialApi, lensesMaterialHolder] = message.useMessage();
-    const [isChange , setIsChange] = useState(false)
+    const [isChange, setIsChange] = useState(false);
     let [materials, setMaterials] = useState([]);
     useEffect(() => {
         if (userId == null) return;
@@ -34,7 +34,7 @@ const MaterialSettings = ({ userId }) => {
     }, [userId]);
 
     const handleCheckbox = (value, collection) => {
-        setIsChange(true)
+        setIsChange(true);
         const newData = materials.map((item, index) => {
             if (item.id === collection.id) {
                 return { ...item, status: value ? "active" : "inactive" };
@@ -45,7 +45,7 @@ const MaterialSettings = ({ userId }) => {
         setMaterials(newData);
     };
     const handleDisplayNameChange = (value, collection) => {
-        setIsChange(true)
+        setIsChange(true);
         const newData = materials.map((item, index) => {
             if (item.id === collection.id) {
                 return { ...item, display_name: value };
@@ -56,7 +56,7 @@ const MaterialSettings = ({ userId }) => {
         setMaterials(newData);
     };
     const handleAmountNameChange = (value, collection) => {
-        setIsChange(true)
+        setIsChange(true);
         const newData = materials.map((item, index) => {
             if (item.id === collection.id) {
                 return { ...item, price: value };
@@ -67,6 +67,7 @@ const MaterialSettings = ({ userId }) => {
         setMaterials(newData);
     };
     const submitMaterialSettings = async () => {
+        setIsChange(false);
         try {
             const payload = {
                 data: [...materials],
@@ -103,7 +104,11 @@ const MaterialSettings = ({ userId }) => {
                 <div>{lensesMaterialHolder}</div>
                 <Col xs={24} md={16} className={classes["sub-container"]}>
                     <Row justify="center" align="middle">
-                        <Col xs={21} md={21}className={classes["material-label"]}>
+                        <Col
+                            xs={21}
+                            md={21}
+                            className={classes["material-label"]}
+                        >
                             Lens Material
                         </Col>
                         {materials?.map((item, index) => {
