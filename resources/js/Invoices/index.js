@@ -46,20 +46,22 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
         });
     };
     const handleSearch = async (formProps) => {
-        const { values, setTouched } = formProps;
+        const { values, setTouched, setFieldError } = formProps;
         let clientId = userId;
         if (userRole === "staff") {
             clientId = clientUserId;
         }
+
+        const invoiceObject = {
+            firstName: values?.firstName,
+            lastName: values?.lastName,
+            userId: clientId,
+            email: values?.email,
+            phoneNo: values?.phoneNo,
+            dob: values?.dob,
+        };
+
         try {
-            const invoiceObject = {
-                firstName: values?.firstName,
-                lastName: values?.lastName,
-                userId: clientId,
-                email: values?.email,
-                phoneNo: values?.phoneNo,
-                dob: values?.dob,
-            };
             console.log("formProps", formProps?.errors);
 
             const res = await Axios.post(
@@ -77,14 +79,19 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
         } catch (err) {
             console.log("error while search", err);
             if (err.response.data.message == "Validation Errors") {
-                if (values.firstName) {
+                const errors = err.response.data.data;
+                if (errors.firstName) {
                     await setTouched({ firstName }, true);
-                } else if (values.lastName) {
+                    return;
+                } else if (errors.lastName) {
                     await setTouched({ lastName }, true);
-                } else if (values.dob) {
+                    return;
+                } else if (errors.dob) {
                     await setTouched({ dob }, true);
-                } else if (values.email) {
+                    return;
+                } else if (errors.email) {
                     await setTouched({ email }, true);
+                    return;
                 }
             }
             messageApi.open({
