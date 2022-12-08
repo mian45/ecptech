@@ -8,7 +8,7 @@ import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
 import { Row, Col, message, Tooltip } from "antd";
-const Addons = ({ userId }) => {
+const Addons = ({ userId, plan }) => {
     const [addonsList, setAddonsList] = useState([]);
     const [messageApi, contextHolder] = message.useMessage();
     const [changedAddOnList, setChangedAddOnList] = useState([]);
@@ -20,12 +20,12 @@ const Addons = ({ userId }) => {
         const getLenses = async () => {
             try {
                 await Axios.get(
-                    `${process.env.MIX_REACT_APP_URL}/api/addon-settings`,
+                    `${process.env.MIX_REACT_APP_URL}/api/addon-settings?type=addon&plan=${plan}`,
                     {
                         params: { userId: userId },
                     }
                 ).then((res) => {
-                    const newData = res.data.data?.map((item) => {
+                    const newData = res.data.data[plan]?.map((item) => {
                         if (
                             item.price != null &&
                             item.price != undefined &&
@@ -47,12 +47,12 @@ const Addons = ({ userId }) => {
                     type: "error",
                     content: err.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             }
         };
         getLenses();
-    }, [userId]);
+    }, [userId, plan]);
 
     const submitLensesData = async () => {
         try {
@@ -67,7 +67,7 @@ const Addons = ({ userId }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("error while update lenses");
@@ -75,7 +75,7 @@ const Addons = ({ userId }) => {
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -232,7 +232,7 @@ export const CollectionSlot = ({
     handleCheckbox,
     handleDisplayNameChange,
     handleAmountNameChange,
-    prompt
+    prompt,
 }) => {
     const [isEdit, setIsEdit] = useState(false);
     return (
@@ -244,7 +244,9 @@ export const CollectionSlot = ({
                     className={classes["collection-edit-container"]}
                     id={collection?.title}
                 >
-                    <Col className={classes["checkbox-title"]} xs={24}>Click to Display as Option on Calculator</Col>
+                    <Col className={classes["checkbox-title"]} xs={24}>
+                        Click to Display as Option on Calculator
+                    </Col>
                     <Col
                         xs={24}
                         className={classes["collection-edit-header-slot"]}
@@ -327,7 +329,9 @@ export const CollectionSlot = ({
                     id={collection?.title}
                     justify="space-between"
                 >
-                    <Col className={classes["checkbox-title"]} xs={24}>Click to Display as Option on Calculator</Col>
+                    <Col className={classes["checkbox-title"]} xs={24}>
+                        Click to Display as Option on Calculator
+                    </Col>
                     <Col xs={18}>
                         <Row
                             className={
@@ -393,13 +397,13 @@ export const CollectionSlot = ({
                         </Row>
                     </Col>
                     <Col xs={6} className={classes["edit-container"]}>
-                    <Tooltip title={prompt} color={'#6fa5cb'} key={0}>
-                        <img
-                            src={editIcon}
-                            alt={"icon"}
-                            className={classes["edit-icon"]}
-                            onClick={() => setIsEdit(true)}
-                        />
+                        <Tooltip title={prompt} color={"#6fa5cb"} key={0}>
+                            <img
+                                src={editIcon}
+                                alt={"icon"}
+                                className={classes["edit-icon"]}
+                                onClick={() => setIsEdit(true)}
+                            />
                         </Tooltip>
                     </Col>
                 </Row>
@@ -430,8 +434,9 @@ const LensLabelSlot = ({ title, onClick, active }) => {
     const [isHover, setIsHover] = useState(false);
     return (
         <div
-            className={`${classes["lenses-label-slot-container"]} ${(active || isHover) && classes["slot-color"]
-                }`}
+            className={`${classes["lenses-label-slot-container"]} ${
+                (active || isHover) && classes["slot-color"]
+            }`}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
             onClick={onClick}
