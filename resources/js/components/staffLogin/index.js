@@ -34,7 +34,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
             clientId: clientUser.id,
             roleId: 3,
         };
-        dispatch(AuthService.staffLogin(registerObject));
+        dispatch(AuthService.staffLogin(registerObject , messageApi));
     };
 
     const updateStaff = (values) => {
@@ -149,13 +149,12 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                         <form onSubmit={handleSubmit} autoComplete="off">
                             <Row
                                 className={classes["sub-container"]}
-                                justify="center"
                                 align="middle"
                             >
                                 <Col
                                     className={classes["input-wrapper"]}
                                     xs={24}
-                                    md={11}
+                                    md={12}
                                 >
                                     <div className={classes["subtitle"]}>
                                         Email Address
