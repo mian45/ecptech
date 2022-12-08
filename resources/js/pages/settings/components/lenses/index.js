@@ -23,7 +23,7 @@ const LensesSettings = () => {
                 their labels.
             </div>
             <Col
-                className="email-remainder_input-sections_input-section"
+                className={`email-remainder-davis_input-sections_input-section ${classes["margindefault"]}`}
                 xs={24}
             >
                 <Row align="middle">
