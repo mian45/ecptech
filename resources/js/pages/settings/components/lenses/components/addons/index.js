@@ -14,7 +14,7 @@ const Addons = ({ userId }) => {
     const [changedAddOnList, setChangedAddOnList] = useState([]);
     const [selectedAddons, setSelectedAddons] = useState("");
     const [selectedRow, setSelectedRow] = useState("");
-    const [isChange , setIsChange]= useState(false)
+    const [isChange, setIsChange] = useState(false);
 
     useEffect(() => {
         if (userId == null) return;
@@ -57,6 +57,7 @@ const Addons = ({ userId }) => {
     }, [userId]);
 
     const submitLensesData = async () => {
+        setIsChange(false);
         try {
             const payload = {
                 data: addonsList,
@@ -129,7 +130,12 @@ const mapStateToProps = (state) => ({
 });
 export default connect(mapStateToProps)(Addons);
 
-const CollectionSection = ({ addons, selectedAddons, setLensesList , setIsChange }) => {
+const CollectionSection = ({
+    addons,
+    selectedAddons,
+    setLensesList,
+    setIsChange,
+}) => {
     const [addonsList, setAddonsList] = useState([]);
     const getCollections = () => {
         const data = addons.filter((item, index) => {
@@ -158,7 +164,7 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList , setIsChange
         getCollections();
     }, [selectedAddons]);
     const handleCheckbox = (value, collection) => {
-        setIsChange(true)
+        setIsChange(true);
         const newData = addonsList?.map((item) => {
             if (item.id === collection.id) {
                 return { ...item, status: value ? "active" : "inactive" };
@@ -177,7 +183,7 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList , setIsChange
         setAddonsList(newData);
     };
     const handleDisplayNameChange = (value, collection) => {
-        setIsChange(true)
+        setIsChange(true);
         const newData = addonsList?.map((item) => {
             if (item.id === collection.id) {
                 return { ...item, display_name: value };
@@ -196,7 +202,7 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList , setIsChange
         setAddonsList(newData);
     };
     const handleAmountNameChange = (value, collection) => {
-        setIsChange(true)
+        setIsChange(true);
         const newData = addonsList?.map((item) => {
             if (item.id === collection.id) {
                 return { ...item, price: value };
@@ -221,13 +227,13 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList , setIsChange
                 className={classes["collection-label"]}
             >{`${selectedAddons}`}</div>
             {addonsList?.map((collection, index) => (
-                    <CollectionSlot
-                        key={`${collection?.title || ""}+${index}`}
-                        collection={collection}
-                        handleCheckbox={handleCheckbox}
-                        handleDisplayNameChange={handleDisplayNameChange}
-                        handleAmountNameChange={handleAmountNameChange}
-                    />
+                <CollectionSlot
+                    key={`${collection?.title || ""}+${index}`}
+                    collection={collection}
+                    handleCheckbox={handleCheckbox}
+                    handleDisplayNameChange={handleDisplayNameChange}
+                    handleAmountNameChange={handleAmountNameChange}
+                />
             ))}
         </Row>
     );

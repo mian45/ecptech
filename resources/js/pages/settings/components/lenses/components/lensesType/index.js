@@ -16,7 +16,7 @@ const LensesType = ({ userId }) => {
     const [lensesList, setLensesList] = useState([]);
     const [selectedLensType, setSelectedLensType] = useState("");
     const [selectedRow, setSelectedRow] = useState("");
-    const [isChange , setIsChange] = useState(false)
+    const [isChange, setIsChange] = useState(false);
 
     useEffect(() => {
         if (userId == null) return;
@@ -44,6 +44,7 @@ const LensesType = ({ userId }) => {
     }, [userId]);
 
     const submitLensesData = async () => {
+        setIsChange(false);
         try {
             const payload = {
                 user_id: userId,
@@ -145,7 +146,7 @@ const CollectionSection = ({
         return collection?.collections;
     };
     const handleCheckbox = (value, collection) => {
-        setIsChange(true)
+        setIsChange(true);
         const lens = [...lenses];
 
         const lensType = [...lens].find(
@@ -161,7 +162,7 @@ const CollectionSection = ({
         setLensesList([...lens]);
     };
     const handleDisplayNameChange = (value, collection) => {
-        setIsChange(true)
+        setIsChange(true);
         const lens = [...lenses];
 
         const lensType = [...lens].find(
@@ -177,7 +178,7 @@ const CollectionSection = ({
         setLensesList([...lens]);
     };
     const handleAmountNameChange = (value, collection) => {
-        setIsChange(true)
+        setIsChange(true);
         const lens = [...lenses];
 
         const lensType = [...lens].find(
