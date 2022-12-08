@@ -187,7 +187,7 @@ class InvoicesController extends Controller
         $validator = Validator::make($request->all(), [
             'firstName' => 'min:3|max:30|nullable|required_without_all:lastName,email,dob,phoneNo',
             'lastName' => 'min:3|max:30|nullable',
-            'email' => 'email:rfc,dns|max:100|nullable',
+            'email' => 'email:strict|max:100|nullable',
             'dob'  => 'date|date_format:Y-m-d|nullable'
         ],[
             'firstName.required_without_all' => 'One of the field is required'
