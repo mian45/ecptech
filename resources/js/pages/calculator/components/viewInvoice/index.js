@@ -54,7 +54,6 @@ const ViewInvoice = ({
     const history = useHistory();
     const [receipt, setReceipt] = useState(null);
     const { width } = UseWindowSize();
-
     useEffect(() => {
         setReceipt({
             userInfo: userInfo,
@@ -62,16 +61,16 @@ const ViewInvoice = ({
         });
     }, [calValues]);
 
-    const handleSendInvoiceClick = async () => {
+    const handleSendInvoiceClick = async (status) => {
         if (mode === "view") {
             onClose();
             return;
         }
         try {
             if (invoiceId) {
-                await onEditInvoice();
+                await onEditInvoice(status);
             } else {
-                await createNewInvoice();
+                await createNewInvoice(status);
             }
 
             history.push(INVOICES_ROUTE);
@@ -87,7 +86,7 @@ const ViewInvoice = ({
         }
     };
 
-    const createNewInvoice = async () => {
+    const createNewInvoice = async (status) => {
         let clientId = userId;
         if (userRole === "staff") {
             clientId = clientUserId;
@@ -101,6 +100,7 @@ const ViewInvoice = ({
             dob: receipt?.userInfo?.dob,
             email: receipt?.userInfo?.email,
             phone: receipt?.userInfo?.phoneNo,
+            status: status,
             amount: (
                 CalculateWithTaxesTotalPrice(
                     receipt?.values,
@@ -123,7 +123,7 @@ const ViewInvoice = ({
         });
     };
 
-    const onEditInvoice = async () => {
+    const onEditInvoice = async (status) => {
         let clientId = userId;
         if (userRole === "staff") {
             clientId = clientUserId;
@@ -133,6 +133,7 @@ const ViewInvoice = ({
             userId: clientId,
             staffId: receipt?.values?.staffId,
             invoiceName: receipt?.values?.invoiceName,
+            status: status,
             amount: (
                 CalculateWithTaxesTotalPrice(
                     receipt?.values,

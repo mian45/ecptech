@@ -13,6 +13,8 @@ import {
 } from "../../data/enums";
 import { BenifitTypeEnums } from "../../data/initialValues";
 import * as Yup from "yup";
+import { AllPlans } from "../../data/plansList";
+import { connect } from "react-redux";
 
 const VisionBenifits = ({
     formProps,
@@ -20,6 +22,7 @@ const VisionBenifits = ({
     setCalValidations,
     calValidations,
     data,
+    language,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const [err, setErr] = useState("");
@@ -39,6 +42,7 @@ const VisionBenifits = ({
         ?.question_permissions?.find(
             (ques) => ques.question === "Material Copay"
         )?.visibility;
+    const eyemedPlan = AllPlans[language]?.eyemed;
 
     const handleMaterialCopayChange = (e) => {
         const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
@@ -63,6 +67,10 @@ const VisionBenifits = ({
             setFieldValue("benifitType", BenifitTypeEnums.frame);
             const validations = { ...calValidations };
             delete validations.frameOrderType;
+            delete validations.frameRetailFee;
+            delete validations.frameContribution;
+            delete validations.drillMount;
+            delete validations.drillMountValue;
             setCalValidations({
                 ...validations,
             });
@@ -85,6 +93,24 @@ const VisionBenifits = ({
                         "Frame Order is required"
                     ),
                 };
+                if (values?.frameOrderType === "New Frame Purchase") {
+                    validationObject.frameRetailFee = Yup.string().required(
+                        "Retail fee is required"
+                    );
+                    validationObject.frameContribution = Yup.string().required(
+                        "Contribution is required"
+                    );
+                    validationObject.drillMount = Yup.string().required(
+                        "Drill mount is required"
+                    );
+                    if (
+                        values?.visionPlan === eyemedPlan &&
+                        values?.drillMount === "Yes"
+                    ) {
+                        validationObject.drillMountValue =
+                            Yup.string().required("Drill mount is required");
+                    }
+                }
                 setCalValidations({
                     ...calValidations,
                     ...validationObject,
@@ -276,7 +302,11 @@ const VisionBenifits = ({
     );
 };
 
-export default VisionBenifits;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
+
+export default connect(mapStateToProps)(VisionBenifits);
 
 export const GetValidations = (data, isLoweredCopay, values) => {
     const validationObject = {};

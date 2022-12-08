@@ -31,6 +31,7 @@ const initialState = {
     userRole: defaultUserRole,
     activeSettingsIndex: "1",
     sidebar: false,
+    language: "en",
 };
 
 const activeState = (state, payload) => {

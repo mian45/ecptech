@@ -8,6 +8,10 @@ import lensIcon from "../../../../../images/calculator/lens.svg";
 import Axios from "../../../../Http";
 import InvoicePriceAlert from "../invoicePriceAlert";
 import * as Yup from "yup";
+import { AllPlans } from "../../data/plansList";
+import { PLANS } from "../../data/plansJson";
+import { connect } from "react-redux";
+import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 
 const LensType = ({
     formProps,
@@ -16,6 +20,7 @@ const LensType = ({
     setCalValidations,
     calValidations,
     getBaseValues,
+    language,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue, setFieldError } =
         formProps;
@@ -27,11 +32,20 @@ const LensType = ({
             (ques) => ques.question === "Lens Type"
         )?.visibility;
     const [error, setError] = useState("");
+    const eyemedPlan = AllPlans[language]?.eyemed;
+    const lensBenifitYes =
+        PLANS[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+
     const showActiveState = () => {
-        if (values?.lensType && values?.lensTypeValue) {
-            return true;
-        }
-        return false;
+        return (values?.lensType &&
+            values?.lensTypeValue &&
+            values?.visionPlan !== eyemedPlan) ||
+            (values?.lensType &&
+                values?.lensTypeValue &&
+                values?.visionPlan === eyemedPlan &&
+                values?.lensTypeInput)
+            ? true
+            : false;
     };
     const lensTypeValues = () => {
         const sortedLenses = [];
@@ -235,9 +249,32 @@ const LensType = ({
     };
 
     const handleBrandSelection = async (e) => {
-        await resetMaterial(e);
+        if (values?.visionPlan !== eyemedPlan) {
+            await resetMaterial(e);
+        }
         handleChange(e);
         showAlert(e);
+        if (
+            values?.lensType &&
+            e?.target?.value &&
+            values?.visionPlan === eyemedPlan &&
+            values?.isLensBenifit === lensBenifitYes
+        ) {
+            const validationObject = {};
+            validationObject.lensTypeInput =
+                Yup.string().required("Price is required");
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
+        } else {
+            const validations = { ...calValidations };
+            delete validations.lensTypeInput;
+            setCalValidations({
+                ...validations,
+            });
+        }
+
         if (values?.lensType === "PAL") {
             const targetedLens = calculatorObj["lens_types"]?.find(
                 (val) => val?.title === "PAL"
@@ -296,6 +333,14 @@ const LensType = ({
             setShowInvoiceAlert(false);
         } else {
             setShowInvoiceAlert(false);
+        }
+    };
+    const handleInputChange = (e) => {
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value)) {
+            handleChange(e);
+        } else if (e.target.value == "") {
+            handleChange(e);
         }
     };
     const RenderModal = React.useMemo(() => {
@@ -400,6 +445,17 @@ const LensType = ({
                                         <FormikError name={"lensTypeValue"} />
                                     </>
                                 )}
+                                {values?.lensType &&
+                                    values?.lensTypeValue &&
+                                    values?.visionPlan === eyemedPlan &&
+                                    values?.isLensBenifit ===
+                                        lensBenifitYes && (
+                                        <CalculatorInput
+                                            onChange={handleInputChange}
+                                            value={values?.lensTypeInput}
+                                            name={"lensTypeInput"}
+                                        />
+                                    )}
                             </div>
                         </Col>
                     </Row>
@@ -409,7 +465,11 @@ const LensType = ({
     );
 };
 
-export default LensType;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
+
+export default connect(mapStateToProps)(LensType);
 
 const LENS_TYPES = ["Single Vision", "PAL", "NVF", "Bifocal/Trifocal"];
 
