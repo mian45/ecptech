@@ -122,12 +122,12 @@ const LensesSettings = () => {
                 <Col xs={24} md={22} lg={18}>
                     {activeTab === 1 && <LensesType plan={plan} />}
                     {activeTab === 2 && <MaterialSettings />}
-                    {activeTab === 3 && (
-                        <AddonSettings plan={plan} type={"addon"} />
-                    )}
-                    {activeTab === 4 && (
-                        <AddonSettings plan={plan} type={"lense_treatment"} />
-                    )}
+                    {activeTab === 3 || activeTab === 4 ? (
+                        <AddonSettings
+                            plan={plan}
+                            type={activeTab === 3 ? "addon" : "lense_treatment"}
+                        />
+                    ) : null}
                 </Col>
             </Row>
         </div>
