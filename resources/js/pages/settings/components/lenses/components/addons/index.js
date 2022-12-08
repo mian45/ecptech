@@ -19,6 +19,7 @@ const Addons = ({ userId, plan, type }) => {
         if (userId == null) return;
         const getLenses = async () => {
             setAddonsList([]);
+            setSelectedAddons("");
             try {
                 await Axios.get(
                     `${process.env.MIX_REACT_APP_URL}/api/addon-settings?type=${type}&plan=${plan}`,
