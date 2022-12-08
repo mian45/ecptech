@@ -25,18 +25,26 @@ class SettingController extends Controller
 {
 
     public function getLenseFeaturesBrands(Request $request){
+
         $validator = Validator::make($request->all(), [
-            'userId' => 'required'
+            'plan' => 'in:vsp,davis,eyemed|required'
         ]);
 
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
-        $user_id = $request->userId;
-        if(auth()->user()->id != $user_id){
-            return $this->sendError('invalid user id!');
+        
+        $user_id = auth()->user()->id;
+        
+        if($request->plan == 'vsp'){
+            $vision_plan = VisionPlan::where('title','VSP Signature')->first();
+            $plan = 'vsp';
+        }else{
+            $vision_plan = VisionPlan::where('title','like','%'.$request->plan.'%')->first();
+            $plan = $request->plan;
         }
-        $data = LenseType::with(['brands'=>function($q){
+
+        $data[$plan] = LenseType::with(['brands'=>function($q){
             $q->leftJoin('brand_permissions as setting', function($join){
                 $join->on('setting.brand_id', '=', 'brands.id')
            ->where('setting.user_id',  auth()->user()->id);
@@ -49,7 +57,7 @@ class SettingController extends Controller
                 });
                 $q->select('collections.id','collections.brand_id','title','collection_setting.name as display_name','collection_setting.price as custom_price',DB::raw('IFNULL(status,"inactive") as status'));
             }]);
-        }])->selectRaw("MIN(id) AS id,title")->groupby('title')->get();
+        }])->select("id","title")->where('vision_plan_id',$vision_plan->id)->get();
  
 
        return $this->sendResponse($data, 'Lense data get successfully');
@@ -58,31 +66,37 @@ class SettingController extends Controller
     public function updateLenseSettings(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required',
             'data' => 'required'
         ]);
 
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
-        $user_id = $request->user_id;
+
+        $user_id = auth()->user()->id;
+
         $data = $request->data;
-        if(auth()->user()->id != $user_id){
-            return $this->sendError('invalid user id!');
-        }
+        $plan = key($data);
+        
         $i = 0;
-        foreach($data as $lense_type){
-            
+        foreach($data[$plan] as $lense_type){
+
+           
             $lense_type_id = $lense_type['id'];
             $lense_type_title = $lense_type['title'];
 
-            $lense_types = LenseType::where('title',$lense_type_title)->get();
+            if($plan == 'vsp'){
+
+                $vision_plans = VisionPlan::where('title','like','%vsp%')->get();
+                foreach($vision_plans as $vision_plan){
+
+                $lense = LenseType::where('title',$lense_type_title)->where('vision_plan_id',$vision_plan->id)->first();
+                
 
             foreach($lense_type['brands'] as $brand){
                 $brand_id = $brand['id'];
                 $brand_title = $brand['title'];
 
-                foreach($lense_types as $lense){
                     $brands = Brand::where('lens_type_id',$lense->id)->get();
                     
                     foreach($brands as $b){
@@ -110,7 +124,7 @@ class SettingController extends Controller
                                         
                                     
                                     if($c->title ==  $collection_title){
-                                       
+            
                                         $collectionPermission = CollectionPermission::updateOrCreate(
                                             ['user_id' => $user_id, 'brand_id' => $b->id, 'collection_id' => $c->id],
                                             ['price' => $price,'name' => $name,'status' => $status, 'brand_title' => $brand_title, 'collection_title' => $collection_title],
@@ -126,9 +140,36 @@ class SettingController extends Controller
                         }
 
                     }
-                }
+                
 
                 
+                    }
+                }
+            }else{
+                foreach($lense_type['brands'] as $brand){
+                    $brand_id = $brand['id'];
+                    $brand_title = $brand['title'];
+
+                    $brandPermission = BrandPermission::updateOrCreate(
+                        ['user_id' => $user_id, 'lense_type_id' => $lense_type_id,'brand_id'=>$brand_id],
+                        ['status' => $brand['status'],'lense_type_title' => $lense_type_title,'brand_title'=>$brand_title]
+                    );
+
+                    foreach($brand['collections'] as $collection){
+            
+                        $collection_id = $collection['id'];
+                        $collection_title = $collection['title'];
+                        $name = $collection['display_name'];
+                        $price = $collection['custom_price'];
+                        $status = $collection['status'];
+
+                        $collectionPermission = CollectionPermission::updateOrCreate(
+                            ['user_id' => $user_id, 'brand_id' => $brand_id, 'collection_id' => $collection_id],
+                            ['price' => $price,'name' => $name,'status' => $status, 'brand_title' => $brand_title, 'collection_title' => $collection_title],
+                        );
+
+                    }
+                }
             }
 
             $permission[$i] = $lense_type;
@@ -221,7 +262,14 @@ class SettingController extends Controller
         
     public function getAddons(Request $request){
 
-       
+        $validator = Validator::make($request->all(), [
+            'plan' => 'in:vsp,davis,eyemed|required',
+            'type' => 'in:addon,lense_treatment',
+        ]);
+
+        if ($validator->fails()) {
+            throw (new ValidationException($validator));
+        }
 
         if($request->plan == 'vsp'){
                 $vision_plan = VisionPlan::where('title','VSP Signature')->first();

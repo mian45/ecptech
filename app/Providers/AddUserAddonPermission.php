@@ -10,6 +10,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use App\Models\AddOn;
 use App\Models\AddonType;
 use App\Models\UserAddOnSetting;
+use App\Models\VisionPlan;
 
 class AddUserAddonPermission
 {
@@ -32,27 +33,30 @@ class AddUserAddonPermission
     public function handle(UserAddonPermission $event)
     {
         $user = $event->user;
-            $addon_types = AddonType::all();
+        $vision_plans = VisionPlan::all();
+        foreach($vision_plans as $vision_plan){
+
+            $addon_types = AddonType::where('vision_plan_id',$vision_plan->id)->get();
             foreach($addon_types as $addon_type){
                 
                 $addons = AddOn::where('addon_type_id',$addon_type->id)->get();
                 foreach($addons as $addon){
                     if(
                         (
-                            strpos($addon_type->title, 'Photochrom') !== false
+                            strpos(strtolower($addon_type->title), 'photochrom') !== false
                                                     
                         )
                         OR
                         (
-                            strpos($addon_type->title, 'Anti Reflective') !== false AND 
+                            strpos(strtolower($addon_type->title), 'reflective') !== false AND 
                             (
-                                strpos($addon->title, 'Glacier') !== false 
-                                OR strpos($addon->title, 'Sunshield') !== false
+                                strpos(strtolower($addon->title), 'glacier') !== false 
+                                OR strpos(strtolower($addon->title), 'sunshield') !== false
                             )                          
                         )
                         OR
                         (
-                            strpos($addon_type->title, 'SunGlasses') !== false                 
+                            strpos(strtolower($addon_type->title), 'sunglass') !== false                 
                         )
 
                     ){
@@ -65,5 +69,6 @@ class AddUserAddonPermission
                 }
 
             }
+        }
     }
 }
