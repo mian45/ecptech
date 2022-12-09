@@ -10,8 +10,7 @@ const InvoicesForm = ({
     handleSearch,
     setIsSearched,
 }) => {
-    const { values, handleChange, isSubmitting, isValid, dirty } =
-        formProps;
+    const { values, handleChange, isSubmitting, isValid, dirty } = formProps;
     return (
         <div className={classes["container"]}>
             <div className={classes["form-slot"]}>
@@ -24,7 +23,6 @@ const InvoicesForm = ({
                     value={values.firstName}
                     onChange={(e) => {
                         handleChange(e);
-                        setIsSearched(false);
                     }}
                 />
 
@@ -37,7 +35,6 @@ const InvoicesForm = ({
                     value={values.lastName}
                     onChange={(e) => {
                         handleChange(e);
-                        setIsSearched(false);
                     }}
                 />
             </div>
@@ -53,7 +50,6 @@ const InvoicesForm = ({
                         value={values.dob}
                         onChange={(e) => {
                             handleChange(e);
-                            setIsSearched(false);
                         }}
                     />
                     <ErrorMessage
@@ -71,7 +67,6 @@ const InvoicesForm = ({
                     value={values.email}
                     onChange={(e) => {
                         handleChange(e);
-                        setIsSearched(false);
                     }}
                 />
                 <InputField
@@ -84,7 +79,6 @@ const InvoicesForm = ({
                     onChange={(e) => {
                         if (e.target.value.length <= 10) {
                             handleChange(e);
-                            setIsSearched(false);
                         }
                     }}
                     type={"number"}
@@ -93,16 +87,21 @@ const InvoicesForm = ({
             <div className={classes["form-slot-button"]}>
                 <ButtonComponent
                     className={classes["search-button"]}
+                    disabled={
+                        !(
+                            values.firstName ||
+                            values.lastName ||
+                            values.dob ||
+                            values.phoneNo ||
+                            values.email
+                        )
+                    }
+                    onClick={() => handleSearch(formProps)}
                     type={"button"}
-                    disabled={!(isValid && dirty) || isSubmitting || isSearched}
-                    onClick={() => handleSearch(values)}
                 >
                     Search Invoices
                 </ButtonComponent>
-                <ButtonComponent
-                    disabled={!(isValid && dirty) || !isSearched}
-                    type={"submit"}
-                >
+                <ButtonComponent disabled={!(isValid && dirty)} type={"submit"}>
                     Create New Glasses Estimate under the invoice search filter
                 </ButtonComponent>
             </div>

@@ -14,7 +14,6 @@ import { message } from "antd";
 
 const Invoices = ({ userId, clientUserId, userRole }) => {
     const [messageApi, contextHolder] = message.useMessage();
-    const [isSearched, setIsSearched] = useState(false);
     const [tableData, setTableData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [buttonLoader, setButtonLoader] = useState(false);
@@ -46,21 +45,38 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
             state: { user: values },
         });
     };
-    const handleSearch = async (values) => {
+    const handleSearch = async (formProps) => {
+        const { values, setTouched, setFieldError } = formProps;
         let clientId = userId;
         if (userRole === "staff") {
             clientId = clientUserId;
         }
+
+        const invoiceObject = {
+            firstName: values?.firstName,
+            lastName: values?.lastName,
+            userId: clientId,
+            email: values?.email,
+            phoneNo: values?.phoneNo,
+            dob: values?.dob,
+        };
+
         try {
             setIsSearched(true);
             const invoiceObject = {
-                fname: values?.firstName,
-                lname: values?.lastName,
+                firstName: values?.firstName,
+                lastName: values?.lastName,
                 userId: clientId,
                 email: values?.email,
-                phone: values?.phoneNo,
+                phoneNo: values?.phoneNo,
                 dob: values?.dob,
             };
+
+            for (const key of Object.keys(invoiceObject)) {
+                if (invoiceObject[key] === "") {
+                    delete invoiceObject[key];
+                }
+            }
 
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/search-invoices`,
@@ -71,20 +87,48 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
             setButtonLoader(false);
         } catch (err) {
-            setIsSearched(false);
             console.log("error while search", err);
+            if (err.response.data.message == "Validation Errors") {
+                const errors = err.response.data.data;
+                if (errors.firstName) {
+                    await setTouched({ firstName }, true);
+                    return;
+                } else if (errors.lastName) {
+                    await setTouched({ lastName }, true);
+                    return;
+                } else if (errors.dob) {
+                    await setTouched({ dob }, true);
+                    return;
+                } else if (errors.email) {
+                    await setTouched({ email }, true);
+                    return;
+                }
+            }
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
             setButtonLoader(false);
         }
+    };
+    const isSubmitCase = (formProps) => {
+        const { values } = formProps;
+
+        if (
+            values?.firstName &&
+            values?.lastName &&
+            values?.dob &&
+            values?.email
+        ) {
+            return true;
+        }
+        return false;
     };
 
     return loading == true ? (
@@ -108,8 +152,6 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                                 <InvoicesForm
                                     handleSearch={handleSearch}
                                     formProps={formProps}
-                                    isSearched={isSearched}
-                                    setIsSearched={setIsSearched}
                                 />
                             </form>
                         );

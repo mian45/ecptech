@@ -10,3 +10,4 @@ export const SETTINGS_ROUTE_GLASSES = "/settings/glasses-prescriptions";
 export const CREATE_INVOICE_ROUTE = "/create-invoice";
 export const EDIT_INSURANCE_ROUTE = "/edit-insurance/:id";
 export const SETTINGS_ROUTE_MISC = "/settings/misc-fees";
+export const SETTINGS_STAFF_SETTING = "/settings/staff-setting";

@@ -7,8 +7,8 @@ import editIcon from "../../../../../../../images/edit.png";
 import tickIcon from "../../../../../../../images/tick-green.svg";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
-import { Row, Col, message,Tooltip } from "antd";
-const LensesType = ({ userId }) => {
+import { Row, Col, message, Tooltip } from "antd";
+const LensesType = ({ userId, plan }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [lensesMaterialAddApi, lensesMaterialAddHolder] =
         message.useMessage();
@@ -22,30 +22,33 @@ const LensesType = ({ userId }) => {
         const getLenses = async () => {
             try {
                 const res = await Axios.get(
-                    `${process.env.MIX_REACT_APP_URL}/api/get-lense-features-brands`,
+                    `${process.env.MIX_REACT_APP_URL}/api/get-lense-features-brands?plan=${plan}`,
                     {
                         params: { userId: userId },
                     }
                 );
-                setLensesList(res?.data?.data || []);
+                console.log(res?.data?.data[plan]);
+                setLensesList(res?.data?.data[plan] || []);
             } catch (err) {
                 console.log("error while get lenses");
                 messageApi.open({
                     type: "error",
                     content: err.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             }
         };
         getLenses();
-    }, [userId]);
+    }, [userId, plan]);
 
     const submitLensesData = async () => {
         try {
             const payload = {
                 user_id: userId,
-                data: lensesList,
+                data: {
+                    [plan]: lensesList,
+                },
             };
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/update-lense-setting`,
@@ -55,7 +58,7 @@ const LensesType = ({ userId }) => {
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("error while update lenses");
@@ -63,7 +66,7 @@ const LensesType = ({ userId }) => {
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -209,7 +212,7 @@ export const CollectionSlot = ({
     handleCheckbox,
     handleDisplayNameChange,
     handleAmountNameChange,
-    prompt
+    prompt,
 }) => {
     const [isEdit, setIsEdit] = useState(false);
 
@@ -222,7 +225,9 @@ export const CollectionSlot = ({
                     className={classes["collection-edit-container"]}
                     id={collection?.title}
                 >
-                    <Col className={classes["checkbox-title"]} xs={24}>Click to Display as Option on Calculator</Col>
+                    <Col className={classes["checkbox-title"]} xs={24}>
+                        Click to Display as Option on Calculator
+                    </Col>
                     <Col
                         xs={24}
                         className={classes["collection-edit-header-slot"]}
@@ -305,7 +310,9 @@ export const CollectionSlot = ({
                     className={classes["collection-show-container"]}
                     id={collection?.title}
                 >
-                    <Col className={classes["checkbox-title"]} xs={24}>Click to Display as Option on Calculator</Col>
+                    <Col className={classes["checkbox-title"]} xs={24}>
+                        Click to Display as Option on Calculator
+                    </Col>
                     <Col xs={18}>
                         <Row
                             className={
@@ -371,14 +378,14 @@ export const CollectionSlot = ({
                         </Row>
                     </Col>
                     <Col xs={6} className={classes["edit-container"]}>
-
-                        <Tooltip title={prompt} color={'#6fa5cb'} key={0}>
-                        <img
-                            src={editIcon}
-                            alt={"icon"}
-                            className={classes["edit-icon"]}
-                            onClick={() => setIsEdit(true)}
-                        /></Tooltip>
+                        <Tooltip title={prompt} color={"#6fa5cb"} key={0}>
+                            <img
+                                src={editIcon}
+                                alt={"icon"}
+                                className={classes["edit-icon"]}
+                                onClick={() => setIsEdit(true)}
+                            />
+                        </Tooltip>
                     </Col>
                 </Row>
             )}
@@ -447,8 +454,9 @@ export const LensLabelSlot = ({ title, onClick, active }) => {
     const [isHover, setIsHover] = useState(false);
     return (
         <div
-            className={`${classes["lenses-label-slot-container"]} ${(active || isHover) && classes["slot-color"]
-                }`}
+            className={`${classes["lenses-label-slot-container"]} ${
+                (active || isHover) && classes["slot-color"]
+            }`}
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
             onClick={onClick}

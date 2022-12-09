@@ -1,13 +1,17 @@
 .container {
+    max-width: 787px;
     border-radius: 10px;
     border: 1px solid #e8e8e8;
-    padding: 25px;
+    padding: 25px 36px 27.5px 25px;
     background-color: #ffffff;
-    margin-top: 37px;
     box-shadow: 0px 11px 30px #00000012;
+
+    @media (max-width: 767px) {
+        padding: 25px;
+    }
 }
 .title {
-    font-size: 1.1em;
+    font-size: 18px;
     font-weight: bold;
     color: #2a2a2a;
     margin-bottom: 31.5px;
@@ -19,17 +23,16 @@
 .sub-container {
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    column-gap: 24px;
 }
 .input-wrapper {
-    width: 49%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
 }
 .subtitle {
-    font-size: 1em;
+    font-size: 16px;
     color: #2a2a2a;
     margin-bottom: 13.5px;
     font-family: Montserrat;
@@ -38,7 +41,7 @@
     width: 100%;
     border: 1px solid #dfdfdf;
     border-radius: 23px;
-    padding: 10px 15px;
+    padding: 10px 22px;
     font-size: 16px;
     &::placeholder {
         color: #c4c4c4;
