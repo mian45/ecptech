@@ -3,6 +3,11 @@
     padding-inline-end: 2.5em;
     width: 100%;
     padding-left: 34px !important;
+    @media only screen and (max-width: 320px){
+        padding-inline-end: 1em;
+        padding-left: 15px !important;
+    }
+
 }
 
 .MuiBox-root .css-1mb7ed4 {

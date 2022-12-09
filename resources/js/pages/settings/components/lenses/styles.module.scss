@@ -68,10 +68,16 @@
     .buttons-active{
         height: 64px;
         font-size: 14px;
+        @media only screen and (max-width: 320px){
+            font-size: 10px;
+        }
     }
     .buttons-inActive{
         height: 64px;
         font-size: 14px;
+        @media only screen and (max-width: 320px){
+            font-size: 10px;
+        }
     }
 
 }
