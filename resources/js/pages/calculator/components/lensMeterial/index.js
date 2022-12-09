@@ -150,7 +150,7 @@ const LensMeterials = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["vision-container"]}>
                             <CalculatorHeading
-                                title="Lens Material?"
+                                title="Lens Material ?"
                                 active={values?.lensMaterial}
                             />
                             <Radio.Group
