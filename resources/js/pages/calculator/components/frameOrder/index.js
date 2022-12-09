@@ -34,6 +34,9 @@ const FrameOrder = ({
     const drillMountYes =
         PLANS[language][values?.visionPlan]?.frameOrder?.options?.newFrame
             ?.subQuestion?.options?.yes;
+    const drillMountTitle =
+        PLANS[language][values?.visionPlan]?.frameOrder?.options?.newFrame
+            ?.subQuestion?.question;
 
     const handleInputChange = (e) => {
         const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
@@ -121,7 +124,7 @@ const FrameOrder = ({
                     )}
                 </Row>
                 <div className={classes["frame-sub-container"]}>
-                    <CalculatorHeading title="Drill Mount?" />
+                    <CalculatorHeading title={drillMountTitle} />
                     <Radio.Group
                         onChange={handleDrillMountChange}
                         value={values?.drillMount}

@@ -10,18 +10,70 @@ const yesNoOptions = {
 export const PLANS = {
     en: {
         "VSP Signature": {
+            frameOrder: {
+                question: "Frame Order?",
+                options: {
+                    newFrame: {
+                        question: "New Frame Purchase",
+                        subOptions: {
+                            retailFee: "Retail fee of frame?",
+                            frameContribution: "Frame Contribution?",
+                        },
+                        subQuestion: {
+                            question: "Drill Mount?",
+                            options: yesNoOptions,
+                        },
+                    },
+                    ownFrame: { question: "Patient Own Frame" },
+                },
+            },
             tracingFee: {
                 question: "Tracing Fee?",
                 options: yesNoOptions,
             },
         },
+
         "VSP Choice": {
+            frameOrder: {
+                question: "Frame Order?",
+                options: {
+                    newFrame: {
+                        question: "New Frame Purchase",
+                        subOptions: {
+                            retailFee: "Retail fee of frame?",
+                            frameContribution: "Frame Contribution?",
+                        },
+                        subQuestion: {
+                            question: "Drill Mount?",
+                            options: yesNoOptions,
+                        },
+                    },
+                    ownFrame: { question: "Patient Own Frame" },
+                },
+            },
             tracingFee: {
                 question: "Tracing Fee?",
                 options: yesNoOptions,
             },
         },
         "VSP Advantage": {
+            frameOrder: {
+                question: "Frame Order?",
+                options: {
+                    newFrame: {
+                        question: "New Frame Purchase",
+                        subOptions: {
+                            retailFee: "Retail fee of frame?",
+                            frameContribution: "Frame Contribution?",
+                        },
+                        subQuestion: {
+                            question: "Drill Mount?",
+                            options: yesNoOptions,
+                        },
+                    },
+                    ownFrame: { question: "Patient Own Frame" },
+                },
+            },
             tracingFee: {
                 question: "Tracing Fee?",
                 options: yesNoOptions,
@@ -122,7 +174,31 @@ export const PLANS = {
                 options: yesNoOptions,
             },
         },
+        "Davis Vision": {
+            frameOrder: {
+                question: "Frame Order?",
+                options: {
+                    newFrame: {
+                        question: "New Frame Purchase",
+                        subOptions: {
+                            retailFee: "Retail fee of frame?",
+                            frameContribution: "Frame Contribution?",
+                        },
+                        subQuestion: {
+                            question: "Rimless Drill?",
+                            options: yesNoOptions,
+                        },
+                    },
+                    ownFrame: { question: "Patient Own Frame" },
+                },
+            },
+            tracingFee: {
+                question: "Tracing Fee?",
+                options: yesNoOptions,
+            },
+        },
         "Private Pay": {
+            materialCopay: { question: "Material Copay?" },
             tracingFee: {
                 question: "Tracing Fee?",
                 options: yesNoOptions,

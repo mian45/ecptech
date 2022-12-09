@@ -139,6 +139,7 @@ const VisionBenifits = ({
             delete validations.isPhotochromics;
             delete validations.isSunglasses;
             delete validations.isAntireflective;
+            delete validations.isAdditionalLensOptions;
             setCalValidations({
                 ...validations,
             });
@@ -309,7 +310,23 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(VisionBenifits);
 
 export const GetValidations = (data, isLoweredCopay, values) => {
+    const slabOff =
+        data?.find((ques) => ques?.question == "Slab Off")?.optional === "true";
+    const specialityLens =
+        data?.find((ques) => ques?.question == "Speciality Lens")?.optional ===
+        "true";
+    const polish =
+        data?.find((ques) => ques?.question == "Polish")?.optional === "true";
+
     const validationObject = {};
+    if (
+        (slabOff || specialityLens || polish) &&
+        values?.visionPlan === "Eyemed"
+    ) {
+        validationObject.isAdditionalLensOptions = Yup.string().required(
+            "Additional lens options is required"
+        );
+    }
     if (
         data?.find(
             (ques) => ques.question === "Any copay lowered than standard"
