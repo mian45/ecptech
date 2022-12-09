@@ -1,6 +1,7 @@
 import Http from "../Http";
 import * as action from "../store/actions";
 import axios from "axios";
+import { message } from "antd";
 
 export function login({ email, password, remember }, messageApi) {
     return (dispatch) =>
@@ -139,7 +140,7 @@ export function updatePassword(credentials) {
         });
 }
 
-export function staffLogin(credentials) {
+export function staffLogin(credentials , messageApi) {
     return (dispatch) =>
         new Promise((resolve, reject) => {
             Http.post(
@@ -148,6 +149,13 @@ export function staffLogin(credentials) {
             )
                 .then((res) => {
                     dispatch(action.staffLogin(res.data));
+                    message.destroy();
+                    messageApi.open({
+                        type: "success",
+                        content: res.data.message,
+                        duration: 5,
+                        className: 'custom-postion',
+                    });
                     return resolve();
                 })
                 .catch((err) => {
@@ -156,6 +164,12 @@ export function staffLogin(credentials) {
                         status,
                         errors,
                     };
+                    messageApi.open({
+                        type: "error",
+                        content: err.response.data.message,
+                        duration: 50,
+                        className: 'custom-postion-error',
+                    });
                     return reject(data);
                 });
         });

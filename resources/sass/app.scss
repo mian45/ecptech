@@ -339,7 +339,7 @@ input[type="number"] {
     left: -14px !important;
 }
 .ant-tabs-top > .ant-tabs-nav::before {
-    max-width: 781px !important;
+    max-width: 880px !important;
     height: 3px !important;
 }
 
@@ -562,6 +562,9 @@ input:-webkit-autofill:active {
     }
 }
 
+.ant-message .anticon {
+    display: none;
+}
 .custom-postion-error {
     margin-top: 13.5vh;
     .anticon-check-circle {
