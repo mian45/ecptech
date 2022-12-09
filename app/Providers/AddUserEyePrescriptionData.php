@@ -33,7 +33,7 @@ class AddUserEyePrescriptionData
                 'name' => "Hi index 1.70",
                 'sphere_from' => 5,
                 'sphere_to' => 20,
-                'user_id' => 2,
+                'user_id' => $user->id,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
@@ -42,7 +42,7 @@ class AddUserEyePrescriptionData
                 'name' => "Hi index 1.70",
                 'sphere_from' => -5,
                 'sphere_to' => -20,
-                'user_id' => 2,
+                'user_id' => $user->id,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
@@ -51,7 +51,7 @@ class AddUserEyePrescriptionData
                 'name' => "Hi Index 1.67",
                 'sphere_from' => -4.25,
                 'sphere_to' => -4.50,
-                'user_id' => 2,
+                'user_id' => $user->id,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
@@ -60,7 +60,7 @@ class AddUserEyePrescriptionData
                 'name' => "Hi Index 1.67",
                 'sphere_from' => -4.75,
                 'sphere_to' => 4.25,
-                'user_id' => 2,
+                'user_id' => $user->id,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
@@ -69,7 +69,7 @@ class AddUserEyePrescriptionData
                 'name' => "Hi Index 1.67",
                 'sphere_from' => 4.50,
                 'sphere_to' => 4.75,
-                'user_id' => 2,
+                'user_id' => $user->id,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
@@ -78,7 +78,7 @@ class AddUserEyePrescriptionData
                 'name' => "Trivex",
                 'sphere_from' => 4,
                 'sphere_to' => -4,
-                'user_id' => 2,
+                'user_id' => $user->id,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             )
