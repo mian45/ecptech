@@ -43,7 +43,7 @@ class InvoiceCalculaterController extends Controller
 
         $tracing = TracingFee::where('user_id',$userId)->where('status','active')->orderBy('created_at', 'desc')->first();
         if($tracing){
-            $data['tracing_fee'] = $tracing;
+            $data['tracing_fee'] = $tracing->value;
         }
 
         $shipping = Shipping::where('user_id',$userId)->orderBy('created_at', 'desc')->first();
