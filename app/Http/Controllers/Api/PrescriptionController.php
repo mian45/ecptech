@@ -18,41 +18,48 @@ class PrescriptionController extends Controller
           $user_id=  $user->client_id;
         }
         $eye_prescription = Prescription::select('id','name','sphere_from','sphere_to','user_id','created_at','updated_at')->where('user_id',$user_id)->get();
-        return $this->sendResponse($eye_prescription, 'Eye prescription data get successfully');
+        $data = array();
+        foreach($eye_prescription as $row){
+
+            if(isset($data[$row->name]) == false){
+                $data[$row->name] = array();
+            }
+            array_push($data[$row->name],$row);
+        }
+        return $this->sendResponse($data, 'Eye prescription data get successfully');
     }
     public function eyePrescriptions(Request $request){
+    
         $prescriptions = $request->eye_prescriptions;
         $user = auth()->user();
         $user_id=$user->id;
         if($user->role_id===3){
           $user_id=  $user->client_id;
         }  
-        if($prescriptions){
-            foreach($prescriptions as $ep){
-                $id = (isset($ep['id']) ? $ep['id'] : 0);
-                $prescriptionExist = Prescription::where('id', $id)->where('user_id', $user_id)->first();                                   
-                if(isset($prescriptionExist)){
-                    $eyePrescription =  Prescription::find($id);
-                    if($eyePrescription){
-                        $eyePrescription->name = $ep['name'];
-                        $eyePrescription->sphere_from = $ep['sphere_from'];
-                        $eyePrescription->sphere_to = $ep['sphere_to'];
-                        $eyePrescription->save();
-                    }
-                } else {
-                    $prescription = Prescription::updateOrCreate(
-                        ['user_id' => $user_id, 'name' => $ep['name']],
-                        ['sphere_from' => $ep['sphere_from'],'sphere_to' => $ep['sphere_to']]
-                    );
-
-                }
-                
+   
+        
+        Prescription::where('user_id', $user_id)->delete();
+            foreach($prescriptions as $data){      
+                foreach($data as $row){
+                    $eyePrescription = new Prescription;
+                    $eyePrescription->name = $row['name'];
+                    $eyePrescription->sphere_from = $row['sphere_from'];
+                    $eyePrescription->sphere_to = $row['sphere_to'];
+                    $eyePrescription->user_id = $user_id;
+                    $eyePrescription->save();
+                }                        
             }
             $eye_prescription = Prescription::select('id','name','sphere_from','sphere_to','user_id','created_at','updated_at')->where('user_id',$user_id)->get();
-            return $this->sendResponse($eye_prescription, 'Eye prescription updated successfully');
-        } else {
-            return $this->sendError('Unauthorised.', ['error' => 'Unauthorised']);
-        }               
+            $data = array();
+            foreach($eye_prescription as $row){
+    
+                if(isset($data[$row->name]) == false){
+                    $data[$row->name] = array();
+                }
+                array_push($data[$row->name],$row);
+            }
+            return $this->sendResponse($data, 'Eye prescription data update successfully');
+
     }
 
     public function eyePrescriptionsCalculator(Request $request){
