@@ -157,7 +157,13 @@ class InvoicesController extends Controller
        $a1 = $invoice->user_state;
      
       if($a1 == $a2 && $invoice->name == $request->invoiceName){
-            return $this->sendResponse($invoice, 'No update in invoice');
+            if($invoice->status  == $request->status){
+                return $this->sendResponse($invoice, 'No update in invoice');
+            }else{
+                $invoice->status = $request->status;
+                $invoice->save();
+                return $this->sendResponse($invoice, 'Invoice status update successfully.');
+            }
       }else{
 
             $invoice->status = 'discard';
@@ -190,7 +196,7 @@ class InvoicesController extends Controller
         $validator = Validator::make($request->all(), [
             'firstName' => 'min:3|max:30|nullable|required_without_all:lastName,email,dob,phoneNo',
             'lastName' => 'min:3|max:30|nullable',
-            'email' => 'email|max:100|nullable',
+            'email' => 'email:strict|max:100|nullable',
             'dob'  => 'date|date_format:Y-m-d|nullable'
         ],[
             'firstName.required_without_all' => 'One of the field is required'
