@@ -55,13 +55,7 @@ class QuestionsTableSeeder extends Seeder
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
-            array(
-
-                'title' => "Any copay lowered than standard",
-                'vision_plan_id' => 1,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
+            
             array(
 
                 'title' => "Lens Type",
@@ -85,14 +79,21 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Sunglass Lens",
+                'title' => "Sunglass Options",
                 'vision_plan_id' => 1,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
             array(
 
-                'title' => "Antireflective Properties",
+                'title' => "Anti-Reflective Properties",
+                'vision_plan_id' => 1,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Any copay lowered than standard",
                 'vision_plan_id' => 1,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
@@ -156,13 +157,7 @@ class QuestionsTableSeeder extends Seeder
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
-            array(
-
-                'title' => "Any copay lowered than standard",
-                'vision_plan_id' => 2,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
+            
             array(
 
                 'title' => "Lens Type",
@@ -186,14 +181,21 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Sunglass Lens",
+                'title' => "Sunglass Options",
                 'vision_plan_id' => 2,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
             array(
 
-                'title' => "Antireflective Properties",
+                'title' => "Anti-Reflective Properties",
+                'vision_plan_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Any copay lowered than standard",
                 'vision_plan_id' => 2,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
@@ -260,13 +262,6 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Any copay lowered than standard",
-                'vision_plan_id' => 3,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
-            array(
-
                 'title' => "Lens Type",
                 'vision_plan_id' => 3,
                 'created_at' => date("Y-m-d H:i:s"),
@@ -288,14 +283,21 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Sunglass Lens",
+                'title' => "Sunglass Options",
                 'vision_plan_id' => 3,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
             array(
 
-                'title' => "Antireflective Properties",
+                'title' => "Anti-Reflective Properties",
+                'vision_plan_id' => 3,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Any copay lowered than standard",
                 'vision_plan_id' => 3,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
@@ -362,13 +364,6 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Any copay lowered than standard",
-                'vision_plan_id' => 4,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
-            array(
-
                 'title' => "Lens Type",
                 'vision_plan_id' => 4,
                 'created_at' => date("Y-m-d H:i:s"),
@@ -390,36 +385,14 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Sunglass Lens",
+                'title' => "Sunglass Options",
                 'vision_plan_id' => 4,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
             array(
 
-                'title' => "Antireflective Properties",
-                'vision_plan_id' => 4,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
-            array(
-
-                'title' => "Protection Plan",
-                'vision_plan_id' => 4,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
-            array(
-
-                'title' => "Add Shipping",
-                'vision_plan_id' => 4,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
-
-            array(
-
-                'title' => "Discount",
+                'title' => "Anti-Reflective Properties",
                 'vision_plan_id' => 4,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
@@ -445,6 +418,34 @@ class QuestionsTableSeeder extends Seeder
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
+            array(
+
+                'title' => "Any copay lowered than standard",
+                'vision_plan_id' => 4,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Protection Plan",
+                'vision_plan_id' => 4,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Add Shipping",
+                'vision_plan_id' => 4,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Discount",
+                'vision_plan_id' => 4,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
 
             array(
 
@@ -483,13 +484,6 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Any copay lowered than standard",
-                'vision_plan_id' => 5,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
-            array(
-
                 'title' => "Lens Type",
                 'vision_plan_id' => 5,
                 'created_at' => date("Y-m-d H:i:s"),
@@ -511,14 +505,21 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Sunglass Lens",
+                'title' => "Sunglass Options",
                 'vision_plan_id' => 5,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
             array(
 
-                'title' => "Antireflective Properties",
+                'title' => "Anti-Reflective Properties",
+                'vision_plan_id' => 5,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Any copay lowered than standard",
                 'vision_plan_id' => 5,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
@@ -582,13 +583,7 @@ class QuestionsTableSeeder extends Seeder
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
-            array(
-
-                'title' => "Any copay lowered than standard",
-                'vision_plan_id' => 6,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
+            
             array(
 
                 'title' => "Lens Type",
@@ -612,14 +607,42 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Sunglass Lens",
+                'title' => "Sunglass Options",
                 'vision_plan_id' => 6,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
             array(
 
-                'title' => "Antireflective Properties",
+                'title' => "Anti-Reflective Properties",
+                'vision_plan_id' => 6,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Slab Off",
+                'vision_plan_id' => 6,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Speciality Lens",
+                'vision_plan_id' => 6,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Polish",
+                'vision_plan_id' => 6,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Any copay lowered than standard",
                 'vision_plan_id' => 6,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
@@ -642,27 +665,6 @@ class QuestionsTableSeeder extends Seeder
             array(
 
                 'title' => "Discount",
-                'vision_plan_id' => 6,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
-            array(
-
-                'title' => "Slab Off",
-                'vision_plan_id' => 6,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
-            array(
-
-                'title' => "Speciality Lens",
-                'vision_plan_id' => 6,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
-            array(
-
-                'title' => "Polish",
                 'vision_plan_id' => 6,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
@@ -705,13 +707,7 @@ class QuestionsTableSeeder extends Seeder
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
-            array(
-
-                'title' => "Any copay lowered than standard",
-                'vision_plan_id' => 7,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
+            
             array(
 
                 'title' => "Lens Type",
@@ -735,14 +731,21 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Sunglass Lens",
+                'title' => "Sunglass Options",
                 'vision_plan_id' => 7,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
             array(
 
-                'title' => "Antireflective Properties",
+                'title' => "Anti-Reflective Properties",
+                'vision_plan_id' => 7,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Any copay lowered than standard",
                 'vision_plan_id' => 7,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
@@ -806,13 +809,7 @@ class QuestionsTableSeeder extends Seeder
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
-            array(
-
-                'title' => "Any copay lowered than standard",
-                'vision_plan_id' => 8,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
+            
             array(
 
                 'title' => "Lens Type",
@@ -836,14 +833,21 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Sunglass Lens",
+                'title' => "Sunglass Options",
                 'vision_plan_id' => 8,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
             array(
 
-                'title' => "Antireflective Properties",
+                'title' => "Anti-Reflective Properties",
+                'vision_plan_id' => 8,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'title' => "Any copay lowered than standard",
                 'vision_plan_id' => 8,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
