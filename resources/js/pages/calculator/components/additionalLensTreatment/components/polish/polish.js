@@ -90,6 +90,15 @@ const Polish = ({
             });
         }
     };
+
+    const getPolishTypes = () => {
+        return (
+            calculatorObj?.additional_lense_setting
+                ?.find((plan) => plan?.title === values?.visionPlan)
+                ?.addon_types?.find((item) => item?.title === "Polish")
+                ?.addons || []
+        );
+    };
     return (
         <>
             <div className={classes["label"]}>{polishTitle}</div>
@@ -125,14 +134,18 @@ const Polish = ({
                         name="polishType"
                         className={classes["custom-radio"]}
                     >
-                        {Polish_Data?.map((value, index) => {
+                        {getPolishTypes()?.map((value, index) => {
                             return (
                                 <CustomRadio
                                     key={index}
-                                    label={value}
-                                    value={value}
+                                    label={
+                                        value?.display_name
+                                            ? value?.display_name
+                                            : value?.title
+                                    }
+                                    value={value?.title}
                                     headClass={classes["radio-margin"]}
-                                    active={values?.polishType === value}
+                                    active={values?.polishType === value?.title}
                                 />
                             );
                         })}

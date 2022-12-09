@@ -16,6 +16,7 @@ import {
     RenderPhotochromicPrices,
     RenderPolarizedFee,
     RenderTintFee,
+    RenderAdditionalLens,
 } from "./lensPricesHelper";
 
 const { Panel } = Collapse;
@@ -117,7 +118,7 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                 <FramePriceSlot
                     title={`${
                         receipt?.values?.lensType?.brand || ""
-                    } ( Lens Material ${receipt?.values?.lensMaterial} )`}
+                    } ( Lens Material: ${receipt?.values?.lensMaterial} )`}
                     price={`$${RenderLensMaterialPrice(
                         receipt?.values,
                         calculatorObj,
@@ -129,7 +130,7 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
             {receipt?.values?.photochromics?.status === "Yes" && (
                 <Col xs={24}>
                     <FramePriceSlot
-                        title={`Photochromic Option: ${receipt?.values?.photochromics?.type}`}
+                        title={`Photochromics: ${receipt?.values?.photochromics?.type}`}
                         price={`$${photochromicPrice || 0}`}
                     />
                 </Col>
@@ -137,7 +138,7 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
             {receipt?.values?.antiReflectiveProperties?.status === "Yes" && (
                 <Col xs={24}>
                     <FramePriceSlot
-                        title={`Antireflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
+                        title={`Anti-Reflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
                         price={`$${antiReflectivePrice || 0}`}
                     />
                 </Col>
@@ -148,6 +149,52 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                 calculatorObj={calculatorObj}
                 receipt={receipt}
             />
+            {receipt?.values?.visionPlan === "Eyemed" &&
+                receipt?.values?.slabOff?.status === "Yes" && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={`Slab Off`}
+                            price={`$${
+                                RenderAdditionalLens(
+                                    receipt?.values,
+                                    calculatorObj,
+                                    "Slab off"
+                                ) || 0
+                            }`}
+                        />
+                    </Col>
+                )}
+            {receipt?.values?.visionPlan === "Eyemed" &&
+                receipt?.values?.specialtyLens?.status === "Yes" && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={`Specialty Lens`}
+                            price={`$${
+                                RenderAdditionalLens(
+                                    receipt?.values,
+                                    calculatorObj,
+                                    "Speciality Lens"
+                                ) || 0
+                            }`}
+                        />
+                    </Col>
+                )}
+            {receipt?.values?.visionPlan === "Eyemed" &&
+                receipt?.values?.polish?.status === "Yes" &&
+                receipt?.values?.polish?.type && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={`Polish: ${receipt?.values?.polish?.type}`}
+                            price={`$${
+                                RenderAdditionalLens(
+                                    receipt?.values,
+                                    calculatorObj,
+                                    "Polish"
+                                ) || 0
+                            }`}
+                        />
+                    </Col>
+                )}
         </Row>
     );
 };

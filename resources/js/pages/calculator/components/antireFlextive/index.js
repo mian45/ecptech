@@ -36,9 +36,11 @@ const AntireFlextive = ({
 
     const getAntireflectiveList = () => {
         return (
-            calculatorObj?.addons?.find(
-                (item) => item?.title === "Anti Reflective"
-            )?.addons || []
+            calculatorObj?.addons
+                ?.find((plan) => plan?.title === values?.visionPlan)
+                ?.addon_types?.find(
+                    (item) => item?.title === "Anti-Reflective Properties"
+                )?.addons || []
         );
     };
 
@@ -193,7 +195,9 @@ const AntireFlextive = ({
                                                         }
                                                         value={value?.title}
                                                         headClass={
-                                                            classes["radio"]
+                                                            classes[
+                                                                "radio-margin"
+                                                            ]
                                                         }
                                                         active={
                                                             values?.antireflectiveType ===

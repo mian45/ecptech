@@ -1,8 +1,11 @@
+import { CalculateEyemedPlansPrices } from "./calculateEyemedPrice";
 import { CalculateOtherPlansPrices } from "./calculateOtherPlansPrices";
 
 export const CalculateTotalPrice = (data, calculatorObj, lensPrices) => {
     if (data?.visionPlan === "Private Pay") {
         return CalculateOtherPlansPrices(data, calculatorObj, lensPrices, true);
+    } else if (data?.visionPlan === "Eyemed") {
+        return CalculateEyemedPlansPrices(data, calculatorObj);
     } else {
         return CalculateOtherPlansPrices(
             data,

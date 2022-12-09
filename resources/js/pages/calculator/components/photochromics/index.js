@@ -34,9 +34,10 @@ const Photochromics = ({
 
     const getPhotochromicList = () => {
         return (
-            calculatorObj?.addons?.find(
-                (item) => item?.title === "Photochromic"
-            )?.addons || []
+            calculatorObj?.addons
+                ?.find((plan) => plan?.title === values?.visionPlan)
+                ?.addon_types?.find((item) => item?.title === "Photochromics")
+                ?.addons || []
         );
     };
 

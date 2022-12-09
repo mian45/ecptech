@@ -41,9 +41,11 @@ const SunglassLens = ({
     const mirrorCoatingYes =
         PLANS[language][values?.visionPlan]?.sunglasses?.subQuestion
             ?.subQuestion?.options?.yes;
-    const addons = calculatorObj?.addons?.find(
-        (item) => item.title === "SunGlasses"
-    )?.addons;
+    const addons = calculatorObj?.addons
+        ?.find((plan) => plan?.title === values?.visionPlan)
+        ?.addon_types?.find(
+            (item) => item.title === "Sunglass Options"
+        )?.addons;
     const isPolirizedActive = addons?.some(
         (item) => item?.title === "Polarized"
     );
@@ -241,9 +243,7 @@ const SunglassLens = ({
             : false;
     };
     const getPolorized = () => {
-        return calculatorObj?.addons
-            ?.find((item) => item?.title === "SunGlasses")
-            ?.addons?.find((val) => val?.title === "Polarized");
+        return addons?.find((val) => val?.title === "Polarized");
     };
 
     const renderSunGlassLens = () => {
@@ -296,14 +296,10 @@ const SunglassLens = ({
     };
     const renderTintLens = () => {
         const getSolid = () => {
-            return calculatorObj?.addons
-                ?.find((item) => item?.title === "SunGlasses")
-                ?.addons?.find((val) => val?.title === "Solid Tint");
+            return addons?.find((val) => val?.title === "Solid Tint");
         };
         const getGradient = () => {
-            return calculatorObj?.addons
-                ?.find((item) => item?.title === "SunGlasses")
-                ?.addons?.find((val) => val?.title === "Gradient Tint");
+            return addons?.find((val) => val?.title === "Gradient Tint");
         };
         return (
             <>
@@ -394,16 +390,12 @@ const SunglassLens = ({
     };
     const renderMirrorType = () => {
         const getSkyType = () => {
-            return calculatorObj?.addons
-                ?.find((item) => item?.title === "SunGlasses")
-                ?.addons?.find((val) => val?.title === "Ski Type Mirror");
+            return addons?.find((val) => val?.title === "Ski Type Mirror");
         };
         const getSolidSingle = () => {
-            return calculatorObj?.addons
-                ?.find((item) => item?.title === "SunGlasses")
-                ?.addons?.find(
-                    (val) => val?.title === "Solid/Single Gradient Mirror"
-                );
+            return addons?.find(
+                (val) => val?.title === "Solid/Single Gradient Mirror"
+            );
         };
         return (
             <>

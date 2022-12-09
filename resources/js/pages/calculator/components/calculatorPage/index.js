@@ -134,6 +134,8 @@ const CalculatorScreen = () => {
                 { vision_plan_id: firstPlan?.id }
             );
             resData.lens_types = colRes?.data?.data?.collection;
+            resData.additional_lense_setting = [];
+
             setCalculatorObj(resData);
             const questions = resData?.questions;
 

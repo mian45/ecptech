@@ -1,19 +1,7 @@
 import Icon from "@ant-design/icons";
 import { Col, Row } from "antd";
 import React from "react";
-import {
-    getPrivatePayAntireflective,
-    getPrivatePayGlasses,
-    getPrivatePayLensPices,
-    getPrivatePayMaterialPices,
-    getPrivatePayPhotochromic,
-    InvoiceBoldSlot,
-    InvoiceSlot,
-} from "../..";
-import {
-    GetFrameFee,
-    GetFrameRetailFee,
-} from "../../helpers/pricesHelper/calculateOtherPlansPrices";
+import { GetFrameRetailFee } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
 import {
     CalculateTotalPrice,
     CalculateWithTaxesTotalPrice,

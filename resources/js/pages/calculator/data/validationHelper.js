@@ -147,7 +147,7 @@ export const GetMappedPayload = (data) => {
                     price: data?.copayPolycarbonateAmount,
                 },
                 {
-                    type: "Photochromic",
+                    type: "Photochromics",
                     status: data?.isCopayPhotochromic,
                     copayType: data?.isCopayPhotochromicAmount,
                     price: data?.copayPhotochromicAmount,
@@ -255,7 +255,7 @@ export const mappedEditValues = (data) => {
         (item) => item.type === "Polycarbonate"
     );
     const photochromic = lowerCopay.find(
-        (item) => item.type === "Photochromic"
+        (item) => item.type === "Photochromics"
     );
     const hignIndex = lowerCopay.find((item) => item.type === "High Index");
     const antiReflective = lowerCopay.find(

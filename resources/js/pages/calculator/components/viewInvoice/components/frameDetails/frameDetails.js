@@ -4,17 +4,32 @@ import React from "react";
 import classes from "./frameDetails.module.scss";
 import { GetFrameFee } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
 import { DRILL_MOUNT } from "../../../../data/constants";
+import {
+    GetEyemedDrillMountFee,
+    GetEyemedFrameFee,
+} from "../../helpers/pricesHelper/calculateEyemedPrice";
 
 const { Panel } = Collapse;
 
 const FrameDetails = ({ receipt, calculatorObj, lensPrices }) => {
     const currentPlan = receipt?.values?.visionPlan;
     const rendeFrameFee = () => {
-        const price =
-            GetFrameFee(
-                receipt?.values,
-                currentPlan === "Private Pay" ? true : false
-            ) || 0;
+        let price = 0;
+        if (currentPlan === "Eyemed") {
+            // add Frame Fee
+            price =
+                price +
+                parseFloat(GetEyemedFrameFee(receipt?.values, calculatorObj));
+            //add drill mount fee
+            price = price + parseFloat(GetEyemedDrillMountFee(receipt?.values));
+        } else {
+            price =
+                GetFrameFee(
+                    calculatorObj,
+                    receipt?.values,
+                    currentPlan === "Private Pay" ? true : false
+                ) || 0;
+        }
         return (price || 0).toFixed(2);
     };
 
@@ -45,17 +60,36 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices }) => {
                 const payableFramePrice = actualPrice - discount;
                 total = total + (payableFramePrice || 0);
             }
+        } else if (
+            data?.isFrameBenifit === "Yes" &&
+            data?.frameOrder?.type === "Patient Own Frame" &&
+            data?.tracing?.status === "Yes"
+        ) {
+            total = total + (calculatorObj?.tracing_fee || 0);
         }
         return (total || 0).toFixed(2);
     };
 
     const renderDrillMount = () => {
-        const data = receipt?.values;
         let total = 0;
-        if (data?.frameOrder?.drillMount === "Yes") {
+        const data = receipt?.values;
+        if (
+            currentPlan === "Eyemed" &&
+            data?.frameOrder?.drillMount === "Yes"
+        ) {
+            total = total + parseFloat(data?.frameOrder?.drillMountPrice || "");
+        } else if (data?.frameOrder?.drillMount === "Yes") {
             total = total + DRILL_MOUNT;
         }
         return (total || 0).toFixed(2);
+    };
+
+    const renderTracing = () => {
+        data?.isFrameBenifit === "Yes" &&
+        data?.frameOrder?.type === "Patient Own Frame" &&
+        data?.tracing?.status === "Yes"
+            ? "(Tracing Fee)"
+            : "";
     };
 
     return (
@@ -77,6 +111,7 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices }) => {
                             framePrice={renderOnlyFrameFee}
                             drillMount={renderDrillMount}
                             receipt={receipt}
+                            renderTracing={renderTracing}
                         />
                     </Panel>
                 </Collapse>
@@ -86,7 +121,12 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices }) => {
 };
 export default FrameDetails;
 
-const GetFramePriceByPlan = ({ framePrice, drillMount, receipt }) => {
+const GetFramePriceByPlan = ({
+    framePrice,
+    drillMount,
+    receipt,
+    renderTracing,
+}) => {
     if (
         receipt?.values?.isFrameBenifit ===
         "Only multiple pair benefit only at this time"
@@ -104,7 +144,7 @@ const GetFramePriceByPlan = ({ framePrice, drillMount, receipt }) => {
                 </Col>
                 <Col xs={24}>
                     <FramePriceSlot
-                        title={"Frame"}
+                        title={`${Frame} ${renderTracing()}`}
                         price={`$${framePrice()}`}
                     />
                 </Col>

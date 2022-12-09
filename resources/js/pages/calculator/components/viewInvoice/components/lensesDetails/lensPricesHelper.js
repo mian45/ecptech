@@ -6,6 +6,20 @@ import {
     SOLID_TINT,
 } from "../../../../data/constants";
 import {
+    GetEyemedAntireflectiveFee,
+    GetEyemedCoatingFee,
+    GetEyemedLensFee,
+    GetEyemedMaterialFee,
+    GetEyemedPhotochromicFee,
+    GetEyemedPolarizedFee,
+    GetEyemedPolishFee,
+    GetEyemedSlabOffFee,
+    GetEyemedSpecialityLensFee,
+    GetEyemedTintFee,
+    GetPrivateSlabOffPrice,
+    GetPrivateSpecialityLensPrice,
+} from "../../helpers/pricesHelper/calculateEyemedPrice";
+import {
     GetAntireflectivePrice,
     getLensByLowerCopay,
     getMaterialByLowerCopay,
@@ -22,7 +36,11 @@ export const RenderPhotochromicPrices = (data, calculatorObj) => {
     const isPrivate = currentPlan === "Private Pay" ? true : false;
     let total = 0;
     if (data?.isLensBenifit === "Yes") {
-        total = total + parseFloat(GetPhotochromicPrice(data));
+        if (currentPlan === "Eyemed") {
+            total = total + parseFloat(GetEyemedPhotochromicFee(data));
+        } else {
+            total = total + parseFloat(GetPhotochromicPrice(data));
+        }
     } else if (
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
@@ -45,7 +63,11 @@ export const RenderAntireflectivePrices = (data, calculatorObj) => {
     const isPrivate = currentPlan === "Private Pay" ? true : false;
     let total = 0;
     if (data?.isLensBenifit === "Yes") {
-        total = total + parseFloat(GetAntireflectivePrice(data));
+        if (currentPlan === "Eyemed") {
+            total = total + parseFloat(GetEyemedAntireflectiveFee(data));
+        } else {
+            total = total + parseFloat(GetAntireflectivePrice(data));
+        }
     } else if (
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
@@ -68,19 +90,23 @@ export const RenderPolarizedFee = (data, calculatorObj) => {
     const isPrivate = currentPlan === "Private Pay" ? true : false;
     let total = 0;
     if (data?.isLensBenifit === "Yes") {
-        if (
-            data?.sunGlassesLens?.status === "Yes" &&
-            data?.sunGlassesLens?.lensType === "Polarized"
-        ) {
-            total = POLARIZED;
+        if (currentPlan === "Eyemed") {
+            total = total + parseFloat(GetEyemedPolarizedFee(data));
+        } else {
+            if (
+                data?.sunGlassesLens?.status === "Yes" &&
+                data?.sunGlassesLens?.lensType === "Polarized"
+            ) {
+                total = POLARIZED;
+            }
         }
     } else if (
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
-        const glassesAddons = calculatorObj?.addons?.find(
-            (item) => item?.title === "SunGlasses"
-        );
+        const glassesAddons = calculatorObj?.addons
+            ?.find((plan) => plan?.title === data?.visionPlan)
+            ?.addon_types?.find((item) => item?.title === "Sunglass Options");
         if (
             data?.sunGlassesLens?.status === "Yes" &&
             data?.sunGlassesLens?.lensType === "Polarized"
@@ -99,23 +125,27 @@ export const RenderTintFee = (data, calculatorObj) => {
     const isPrivate = currentPlan === "Private Pay" ? true : false;
     let total = 0;
     if (data?.isLensBenifit === "Yes") {
-        if (
-            data?.sunGlassesLens?.status === "Yes" &&
-            data?.sunGlassesLens?.lensType === "Tint"
-        ) {
-            if (data?.sunGlassesLens?.tintType === "Solid Tint") {
-                total = total + SOLID_TINT;
-            } else {
-                total = total + GRADIENT_TINT;
+        if (currentPlan === "Eyemed") {
+            total = total + parseFloat(GetEyemedTintFee(data));
+        } else {
+            if (
+                data?.sunGlassesLens?.status === "Yes" &&
+                data?.sunGlassesLens?.lensType === "Tint"
+            ) {
+                if (data?.sunGlassesLens?.tintType === "Solid Tint") {
+                    total = total + SOLID_TINT;
+                } else {
+                    total = total + GRADIENT_TINT;
+                }
             }
         }
     } else if (
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
-        const glassesAddons = calculatorObj?.addons?.find(
-            (item) => item?.title === "SunGlasses"
-        );
+        const glassesAddons = calculatorObj?.addons
+            ?.find((plan) => plan?.title === data?.visionPlan)
+            ?.addon_types?.find((item) => item?.title === "Sunglass Options");
         if (
             data?.sunGlassesLens?.status === "Yes" &&
             data?.sunGlassesLens?.lensType === "Tint"
@@ -141,23 +171,27 @@ export const RenderCoatingFee = (data, calculatorObj) => {
     const isPrivate = currentPlan === "Private Pay" ? true : false;
     let total = 0;
     if (data?.isLensBenifit === "Yes") {
-        if (
-            data?.sunGlassesLens?.status === "Yes" &&
-            data?.sunGlassesLens?.mirrorCoating === "Yes"
-        ) {
-            if (data?.sunGlassesLens?.coatingType === "Ski Type Mirror") {
-                total = SKI_TYPE_MIRROR;
-            } else {
-                total = SOLID_SINGLE_GRADIENT;
+        if (currentPlan === "Eyemed") {
+            total = total + parseFloat(GetEyemedCoatingFee(data));
+        } else {
+            if (
+                data?.sunGlassesLens?.status === "Yes" &&
+                data?.sunGlassesLens?.mirrorCoating === "Yes"
+            ) {
+                if (data?.sunGlassesLens?.coatingType === "Ski Type Mirror") {
+                    total = SKI_TYPE_MIRROR;
+                } else {
+                    total = SOLID_SINGLE_GRADIENT;
+                }
             }
         }
     } else if (
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
-        const glassesAddons = calculatorObj?.addons?.find(
-            (item) => item?.title === "SunGlasses"
-        );
+        const glassesAddons = calculatorObj?.addons
+            ?.find((plan) => plan?.title === data?.visionPlan)
+            ?.addon_types?.find((item) => item?.title === "Sunglass Options");
         if (
             data?.sunGlassesLens?.status === "Yes" &&
             data?.sunGlassesLens?.mirrorCoating === "Yes"
@@ -182,9 +216,15 @@ export const RenderBasePrice = (data, calculatorObj, lensPrices) => {
     const isPrivate = currentPlan === "Private Pay" ? true : false;
     let total = 0;
     if (data?.isLensBenifit === "Yes") {
-        total =
-            total +
-            parseFloat(GetLensFee(data, calculatorObj, lensPrices)?.lensPrice);
+        if (currentPlan === "Eyemed") {
+            total = total + parseFloat(GetEyemedLensFee(data));
+        } else {
+            total =
+                total +
+                parseFloat(
+                    GetLensFee(data, calculatorObj, lensPrices)?.lensPrice
+                );
+        }
     } else if (
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
@@ -199,11 +239,15 @@ export const RenderLensMaterialPrice = (data, calculatorObj, lensPrices) => {
     const isPrivate = currentPlan === "Private Pay" ? true : false;
     let total = 0;
     if (data?.isLensBenifit === "Yes") {
-        total =
-            total +
-            parseFloat(
-                GetLensFee(data, calculatorObj, lensPrices)?.materialPrice
-            );
+        if (currentPlan === "Eyemed") {
+            total = total + parseFloat(GetEyemedMaterialFee(data));
+        } else {
+            total =
+                total +
+                parseFloat(
+                    GetLensFee(data, calculatorObj, lensPrices)?.materialPrice
+                );
+        }
     } else if (
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
@@ -446,4 +490,34 @@ const GetLensFee = (data, calculatorObj, lensPrices) => {
     } else {
         return { lensPrice: 0, materialPrice: 0 };
     }
+};
+
+export const RenderAdditionalLens = (data, calculatorObj, type) => {
+    let total = 0;
+    const currentPlan = data?.visionPlan;
+    if (currentPlan === "Eyemed" && data?.isLensBenifit === "Yes") {
+        if (type === "Slab off") {
+            total = total + parseFloat(GetEyemedSlabOffFee(data));
+        } else if (type === "Speciality Lens") {
+            total = total + parseFloat(GetEyemedSpecialityLensFee(data));
+        } else if (type === "Polish") {
+            total = total + parseFloat(GetEyemedPolishFee(data));
+        }
+    } else if (
+        currentPlan === "Eyemed" &&
+        data?.isLensBenifit === "Only multiple pair benefit only at this time"
+    ) {
+        if (type === "Slab off") {
+            total =
+                total + parseFloat(GetPrivateSlabOffPrice(calculatorObj, data));
+        } else if (type === "Speciality Lens") {
+            total =
+                total +
+                parseFloat(GetPrivateSpecialityLensPrice(calculatorObj, data));
+        } else if (type === "Polish") {
+            total =
+                total + parseFloat(GetPrivatePolishPrice(calculatorObj, data));
+        }
+    }
+    return (total || 0).toFixed(2);
 };
