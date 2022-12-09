@@ -68,16 +68,7 @@ class UserTableSeeder extends Seeder
 
                 'name' => "Hi Index 1.67",
                 'sphere_from' => -4.25,
-                'sphere_to' => 4.25,
-                'user_id' => 2,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
-            array(
-
-                'name' => "Hi Index 1.67",
-                'sphere_from' => -4.50,
-                'sphere_to' => 4.50,
+                'sphere_to' => -4.50,
                 'user_id' => 2,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
@@ -86,6 +77,15 @@ class UserTableSeeder extends Seeder
 
                 'name' => "Hi Index 1.67",
                 'sphere_from' => -4.75,
+                'sphere_to' => 4.25,
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi Index 1.67",
+                'sphere_from' => 4.50,
                 'sphere_to' => 4.75,
                 'user_id' => 2,
                 'created_at' => date("Y-m-d H:i:s"),
@@ -94,8 +94,8 @@ class UserTableSeeder extends Seeder
             array(
 
                 'name' => "Trivex",
-                'sphere_from' => -4,
-                'sphere_to' => 4,
+                'sphere_from' => 4,
+                'sphere_to' => -4,
                 'user_id' => 2,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
