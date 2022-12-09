@@ -14,4 +14,10 @@ class AddonType extends Model
     public function addons(){
         return $this->hasMany(AddOn::class);
     }
+
+    public function vision_plan(){
+        return $this->belongsTo(VisionPlan::class);
+    }
+
+
 }
