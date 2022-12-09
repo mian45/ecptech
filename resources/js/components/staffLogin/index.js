@@ -154,7 +154,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                 <Col
                                     className={classes["input-wrapper"]}
                                     xs={24}
-                                    md={12}
+                                    md={11}
                                 >
                                     <div className={classes["subtitle"]}>
                                         Email Address
@@ -173,7 +173,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                 <Col
                                     className={classes["input-wrapper"]}
                                     xs={24}
-                                    md={12}
+                                    md={11}
                                 >
                                     <div className={classes["subtitle"]}>
                                         Password
@@ -202,7 +202,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                 <Col
                                     className={classes["input-wrapper"]}
                                     xs={24}
-                                    md={12}
+                                    md={11}
                                 >
                                     <ErrorMessage
                                         name="email"
@@ -213,7 +213,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                 <Col
                                     className={classes["input-wrapper"]}
                                     xs={24}
-                                    md={12}
+                                    md={11}
                                 >
                                     <ErrorMessage
                                         name="password"
@@ -226,7 +226,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                 <Col
                                     className={`${classes["input-wrapper"]} ${classes["margin-top-container"]}`}
                                     xs={24}
-                                    md={12}
+                                    md={11}
                                 >
                                     <div className={classes["subtitle"]}>
                                         Confirm Password
@@ -247,7 +247,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                 <Col
                                     className={`${classes["input-wrapper"]} ${classes["margin-top-container"]}`}
                                     xs={24}
-                                    md={12}
+                                    md={11}
                                 >
                                     <ErrorMessage
                                         name="confirmPassword"
