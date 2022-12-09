@@ -27,12 +27,12 @@ const LensesSettings = () => {
                 xs={24}
             >
                 <Row align="middle">
-                    <Col xs={24} md={4}>
+                    <Col xs={24} md={3}>
                         Select Vision Plans
                     </Col>
                     <Col xs={24} md={12}>
                         <Row justify="center" align="middle">
-                            <Col xs={24}>
+                            <Col xs={24} className={classes["centeredContent"]}>
                                 <Select
                                     className="no-outline select-width"
                                     defaultValue="vsp"

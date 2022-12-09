@@ -67,6 +67,10 @@
         font-size: 13px;
     }
 }
+.centeredContent{
+    display: flex;
+    align-items: center;
+}
 @media only screen and (max-width: 768px){
     .first-buttons {
         margin-left: 0px;
