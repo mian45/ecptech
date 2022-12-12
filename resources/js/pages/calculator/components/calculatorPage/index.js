@@ -456,6 +456,7 @@ const CalculatorScreen = () => {
                                 ...calValidations,
                             })}
                             onSubmit={handleClick}
+                            validateOnMount
                             enableReinitialize
                         >
                             {(formProps) => {
