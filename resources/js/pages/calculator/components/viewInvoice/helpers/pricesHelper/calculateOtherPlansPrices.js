@@ -13,6 +13,21 @@ import {
     TRANSITION_XTRACTION,
     ZEISS_PHOTOFUSION,
 } from "../../../../data/constants";
+import {
+    GetEyemedAntireflectiveFee,
+    GetEyemedCoatingFee,
+    GetEyemedLensFee,
+    GetEyemedMaterialFee,
+    GetEyemedPhotochromicFee,
+    GetEyemedPolarizedFee,
+    GetEyemedPolishFee,
+    GetEyemedSlabOffFee,
+    GetEyemedSpecialityLensFee,
+    GetEyemedTintFee,
+    GetPrivatePolishPrice,
+    GetPrivateSlabOffPrice,
+    GetPrivateSpecialityLensPrice,
+} from "./calculateEyemedPrice";
 
 export const CalculateOtherPlansPrices = (
     data,
@@ -24,7 +39,7 @@ export const CalculateOtherPlansPrices = (
     // add material copay
     total = total + (parseFloat(data?.materialCopay || "") || 0);
     // add Frame Fee
-    total = total + parseFloat(GetFrameFee(data, isPrivate));
+    total = total + parseFloat(GetFrameFee(calculatorObj, data, isPrivate));
     if (data?.isLensBenifit === "Yes") {
         // add lens Prices
         total = total + parseFloat(GetLensFee(data, calculatorObj, lensPrices));
@@ -73,7 +88,7 @@ export const CalculateOtherPlansPrices = (
     return total;
 };
 
-export const GetFrameFee = (data, isPrivate) => {
+export const GetFrameFee = (calculatorObj, data, isPrivate) => {
     let total = 0;
     const retailFee = parseFloat(data?.frameOrder?.retailFee || "");
     const frameContribution = parseFloat(
@@ -102,6 +117,11 @@ export const GetFrameFee = (data, isPrivate) => {
             if (data?.frameOrder?.drillMount === "Yes") {
                 total = total + DRILL_MOUNT;
             }
+        } else if (
+            data?.frameOrder?.type === "Patient Own Frame" &&
+            data?.tracing?.status === "Yes"
+        ) {
+            total = total + parseFloat(calculatorObj?.tracing_fee || 0);
         }
     }
     return total;
@@ -112,7 +132,7 @@ export const GetPhotochromicPrice = (data) => {
     if (data?.photochromics?.status === "Yes") {
         const isPhotochromicActive =
             data?.lowerCopaythanStandard?.copayList?.find(
-                (item) => item?.type === "Photochromic"
+                (item) => item?.type === "Photochromics"
             );
         if (isPhotochromicActive?.status) {
             if (isPhotochromicActive?.copayType === "$0 Copay") {
@@ -294,10 +314,11 @@ const getMirrorCoating = (data) => {
     }
     return total;
 };
-const GetProtectionPlanPrice = (data) => {
+export const GetProtectionPlanPrice = (data) => {
     let total = 0;
     if (
         data?.protectionPlan?.status === "Yes" &&
+        data?.protectionPlan?.type &&
         data?.protectionPlan?.paymentStatus === "Paid"
     ) {
         total = parseFloat(data?.protectionPlan?.price || "") || 0;
@@ -734,9 +755,9 @@ export const GetPrivatePayMaterialPrice = (calculatorObj, data) => {
 };
 
 export const GetPrivatePhotochromicPrice = (value, calculatorObj, data) => {
-    const photochromicAddons = calculatorObj?.addons?.find(
-        (item) => item?.title === "Photochromic"
-    );
+    const photochromicAddons = calculatorObj?.addons
+        ?.find((plan) => plan?.title === data?.visionPlan)
+        ?.addon_types?.find((item) => item?.title === "Photochromics");
     if (data?.photochromics?.status === "Yes") {
         const selectedPhotochromic = photochromicAddons?.addons?.find(
             (item) => item.title === value
@@ -745,10 +766,10 @@ export const GetPrivatePhotochromicPrice = (value, calculatorObj, data) => {
     }
     return 0;
 };
-const GetPrivateSunGlassesPrice = (calculatorObj, data) => {
-    const glassesAddons = calculatorObj?.addons?.find(
-        (item) => item?.title === "SunGlasses"
-    );
+export const GetPrivateSunGlassesPrice = (calculatorObj, data) => {
+    const glassesAddons = calculatorObj?.addons
+        ?.find((plan) => plan?.title === data?.visionPlan)
+        ?.addon_types?.find((item) => item?.title === "Sunglass Options");
     let total = 0;
     if (data?.sunGlassesLens?.status === "Yes") {
         if (data?.sunGlassesLens?.lensType === "Polarized") {
@@ -802,9 +823,11 @@ const GetPrivateMirrorCoating = (glassesAddons, data) => {
 };
 
 export const GetPrivateAntireflectivePrice = (calculatorObj, value, data) => {
-    const antiReflectiveAddons = calculatorObj?.addons?.find(
-        (item) => item?.title === "Anti Reflective"
-    );
+    const antiReflectiveAddons = calculatorObj?.addons
+        ?.find((plan) => plan?.title === data?.visionPlan)
+        ?.addon_types?.find(
+            (item) => item?.title === "Anti-Reflective Properties"
+        );
     let total = 0;
     if (data?.antiReflectiveProperties?.status === "Yes") {
         const selectedAntireflective =
@@ -1058,6 +1081,11 @@ export const GetFrameRetailFee = (calculatorObj, data) => {
             );
     }
     total = total + GetPrivateSunGlassesPrice(calculatorObj, data);
+    if (data?.visionPlan === "Eyemed") {
+        total = total + GetPrivateSlabOffPrice(calculatorObj, data);
+        total = total + GetPrivateSpecialityLensPrice(calculatorObj, data);
+        total = total + GetPrivatePolishPrice(calculatorObj, data);
+    }
     return total;
 };
 
@@ -1068,7 +1096,7 @@ export const calculateLensesCopaysFee = (
     isPrivate
 ) => {
     let total = 0;
-    if (data?.isLensBenifit === "Yes") {
+    if (data?.isLensBenifit === "Yes" && data?.visionPlan !== "Eyemed") {
         // add lens Prices
         total = total + parseFloat(GetLensFee(data, calculatorObj, lensPrices));
         // add photochromic price
@@ -1077,6 +1105,27 @@ export const calculateLensesCopaysFee = (
         total = total + parseFloat(GetSunGlassesPrice(data));
         // add antireflective price
         total = total + parseFloat(GetAntireflectivePrice(data));
+    } else if (data?.isLensBenifit === "Yes" && data?.visionPlan === "Eyemed") {
+        // add lens Prices
+        total = total + parseFloat(GetEyemedLensFee(data));
+        // add material Prices
+        total = total + parseFloat(GetEyemedMaterialFee(data));
+        // add photochromic price
+        total = total + parseFloat(GetEyemedPhotochromicFee(data));
+        // add sun glasses polarized price
+        total = total + parseFloat(GetEyemedPolarizedFee(data));
+        // add sun glasses tint price
+        total = total + parseFloat(GetEyemedTintFee(data));
+        // add sun glasses Mirror coating price
+        total = total + parseFloat(GetEyemedCoatingFee(data));
+        // add antireflective price
+        total = total + parseFloat(GetEyemedAntireflectiveFee(data));
+        // add Slab off price
+        total = total + parseFloat(GetEyemedSlabOffFee(data));
+        // add Speciality Lens Price
+        total = total + parseFloat(GetEyemedSpecialityLensFee(data));
+        // add Polish Price
+        total = total + parseFloat(GetEyemedPolishFee(data));
     } else if (
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
@@ -1109,8 +1158,15 @@ export const calculateLensesCopaysFee = (
                     data
                 )
             );
+        // add addetional treatments
+        if (data?.visionPlan === "Eyemed") {
+            total = total + GetPrivateSlabOffPrice(calculatorObj, data);
+            total = total + GetPrivateSpecialityLensPrice(calculatorObj, data);
+            total = total + GetPrivatePolishPrice(calculatorObj, data);
+        }
     }
     //add material copay
     total = total + parseFloat(data?.materialCopay || 0);
+
     return total;
 };

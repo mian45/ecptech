@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { Col, Radio, Row } from "antd";
+import * as Yup from "yup";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
 import CustomRadio from "../../../../components/customRadio";
 import icon from "../../../../../images/calculator/lens-material.svg";
 import EyePrescriptionModal from "../eyePrescriptionModal";
+import { AllPlans } from "../../data/plansList";
+import { Plans } from "../../data/plansJson";
+import { connect } from "react-redux";
+import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 
 const LensMeterials = ({
     formProps,
@@ -13,6 +18,7 @@ const LensMeterials = ({
     getBaseValues,
     calValidations,
     setCalValidations,
+    language,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const [showModal, setShowModal] = useState(false);
@@ -23,7 +29,14 @@ const LensMeterials = ({
             (ques) => ques.question === "Lens Material"
         )?.visibility;
 
+    const eyemedPlan = AllPlans[language]?.eyemed;
+    const lensBenifitYes =
+        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+
     const getActiveMaterials = (material) => {
+        if (values?.visionPlan === eyemedPlan) {
+            return false;
+        }
         const lensType = calculatorObj?.lens_types?.find(
             (item) => item?.title === values?.lensType
         );
@@ -79,7 +92,11 @@ const LensMeterials = ({
             await setFieldValue("copayHighIndexAmount", "");
             setCalValidations({ ...validations });
         }
-        if (values?.lensTypeValue && e?.target?.value) {
+        if (
+            values?.lensTypeValue &&
+            e?.target?.value &&
+            values?.visionPlan !== eyemedPlan
+        ) {
             await getBaseValues(
                 { ...values, lensMaterial: e?.target?.value },
                 calculatorObj
@@ -114,6 +131,25 @@ const LensMeterials = ({
         } else {
             setError("");
         }
+        if (
+            e.target.value &&
+            values?.visionPlan === eyemedPlan &&
+            values?.isLensBenifit === lensBenifitYes
+        ) {
+            const validationObject = {};
+            validationObject.lensMaterialValue =
+                Yup.string().required("Price is required");
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
+        } else {
+            const validations = { ...calValidations };
+            delete validations.lensMaterialValue;
+            setCalValidations({
+                ...validations,
+            });
+        }
     };
 
     const handleOpenModal = () => {
@@ -131,6 +167,23 @@ const LensMeterials = ({
         }
     };
 
+    const handleInputChange = (e) => {
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value)) {
+            handleChange(e);
+        } else if (e.target.value == "") {
+            handleChange(e);
+        }
+    };
+    const handleActiveIcon = () => {
+        return (values?.lensMaterial && values?.visionPlan !== eyemedPlan) ||
+            (values?.visionPlan === eyemedPlan &&
+                values?.lensMaterial &&
+                values?.lensMaterialValue)
+            ? true
+            : false;
+    };
+
     return (
         <>
             {lensMaterialVisibility ? (
@@ -142,16 +195,13 @@ const LensMeterials = ({
                         />
                     )}
                     <Col sx={0} sm={0} md={5}>
-                        <QuestionIcon
-                            icon={icon}
-                            active={values?.lensMaterial}
-                        />
+                        <QuestionIcon icon={icon} active={handleActiveIcon()} />
                     </Col>
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["vision-container"]}>
                             <CalculatorHeading
                                 title="Lens Material?"
-                                active={values?.lensMaterial}
+                                active={handleActiveIcon()}
                             />
                             <Radio.Group
                                 onChange={handleLensMererialChange}
@@ -188,6 +238,16 @@ const LensMeterials = ({
                             {error && (
                                 <div className={classes["error"]}>{error}</div>
                             )}
+                            {values?.lensMaterial &&
+                                values?.visionPlan === eyemedPlan &&
+                                values?.isLensBenifit === lensBenifitYes && (
+                                    <CalculatorInput
+                                        onChange={handleInputChange}
+                                        value={values?.lensMaterialValue}
+                                        name={"lensMaterialValue"}
+                                        headClass={classes["custom-input"]}
+                                    />
+                                )}
                             <div className={classes["tagline-box"]}>
                                 <span
                                     className={classes["tagline"]}
@@ -208,7 +268,12 @@ const LensMeterials = ({
     );
 };
 
-export default LensMeterials;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
+
+export default connect(mapStateToProps)(LensMeterials);
+
 const isLenseTitle = (value) => {
     switch (value) {
         case "CR39":

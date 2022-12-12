@@ -10,7 +10,7 @@ const ButtonsList = ({ mode, handleSendInvoiceClick }) => {
                 <Col className={classes["button-wrapper"]}>
                     <ButtonComponent
                         className={classes["send-button"]}
-                        disabled={true}
+                        onClick={() => handleSendInvoiceClick("draft")}
                     >
                         Save as draft
                     </ButtonComponent>
@@ -19,7 +19,7 @@ const ButtonsList = ({ mode, handleSendInvoiceClick }) => {
             <Col className={classes["button-wrapper"]}>
                 <ButtonComponent
                     className={classes["send-button"]}
-                    onClick={handleSendInvoiceClick}
+                    onClick={() => handleSendInvoiceClick("unpaid")}
                 >
                     {mode === "view" ? "Close" : "Save and Sent"}
                 </ButtonComponent>
@@ -28,7 +28,7 @@ const ButtonsList = ({ mode, handleSendInvoiceClick }) => {
                 <Col className={classes["button-wrapper"]}>
                     <ButtonComponent
                         className={classes["send-button"]}
-                        disabled={true}
+                        onClick={() => handleSendInvoiceClick("paid")}
                     >
                         Save and Paid
                     </ButtonComponent>
