@@ -48,7 +48,7 @@ class VisionPlanController extends Controller
             ['status' => $status]
         );
         if($permission){
-            return $this->sendResponse($permission, 'Successfully updated user permission');
+            return $this->sendResponse($permission, 'User permission updated successfully  ');
         }
         return $this->sendError('Something went wrong!');
     }
@@ -101,7 +101,7 @@ class VisionPlanController extends Controller
             $i++;
         }
         
-        return $this->sendResponse($permission, 'Successfully updated user permission');
+        return $this->sendResponse($permission, 'User permission updated successfully ');
         
     }
 }
