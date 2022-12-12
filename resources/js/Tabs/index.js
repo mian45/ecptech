@@ -10,6 +10,7 @@ import LensesSettings from "../pages/settings/components/lenses";
 import * as action from "../store/actions";
 import EyePrescription from "../pages/settings/components/eyePrescription";
 import { useRouteMatch, useHistory } from "react-router";
+import StaffSetting from "../staff-setting";
 const TabsSection = (props) => {
     const { url } = useRouteMatch();
     const history = useHistory();
@@ -38,6 +39,10 @@ const TabsSection = (props) => {
             }
             case "/settings/misc-fees": {
                 value = "6";
+                break;
+            }
+            case "/settings/staff-setting": {
+                value = "7";
                 break;
             }
             default: {
@@ -73,6 +78,10 @@ const TabsSection = (props) => {
                 history.push("/settings/misc-fees");
                 break;
             }
+            case "7": {
+                history.push("/settings/staff-setting");
+                break;
+            }
             default: {
                 history.push("/settings/emails");
                 break;
@@ -106,6 +115,9 @@ const TabsSection = (props) => {
             </Tabs.TabPane>
             <Tabs.TabPane tab="Misc. Fees" key="6">
                 <MISC/>
+            </Tabs.TabPane>
+            <Tabs.TabPane tab="Staff Setting" key="7">
+                <StaffSetting/>
             </Tabs.TabPane>
         </Tabs>
     );

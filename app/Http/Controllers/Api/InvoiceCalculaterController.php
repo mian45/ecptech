@@ -43,7 +43,7 @@ class InvoiceCalculaterController extends Controller
 
         $tracing = TracingFee::where('user_id',$userId)->where('status','active')->orderBy('created_at', 'desc')->first();
         if($tracing){
-            $data['tracing_fee'] = $tracing;
+            $data['tracing_fee'] = $tracing->value;
         }
 
         $shipping = Shipping::where('user_id',$userId)->orderBy('created_at', 'desc')->first();
@@ -68,7 +68,7 @@ class InvoiceCalculaterController extends Controller
 
             $q->with(['addons' => function($q)use($userId){
                 $q->join('user_addon_settings as setting','setting.addon_id','=','addons.id')
-                ->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id')
+                ->select('addons.id','addons.addon_type_id','addons.title','addons.addon_price','setting.status','setting.display_name','setting.price','setting.addon_id')
                 ->where('setting.user_id',$userId)->where('setting.status','active');
             }]);
             
@@ -651,7 +651,7 @@ class InvoiceCalculaterController extends Controller
     
                 $q->with(['addons' => function($q)use($userId){
                     $q->join('user_addon_settings as setting','setting.addon_id','=','addons.id')
-                    ->select('addons.id','addons.addon_type_id','addons.title','setting.status','setting.display_name','setting.price','setting.addon_id')
+                    ->select('addons.id','addons.addon_type_id','addons.title','addons.addon_price','setting.status','setting.display_name','setting.price','setting.addon_id')
                     ->where('setting.user_id',$userId)->where('setting.status','active');
                 }]);
                 
