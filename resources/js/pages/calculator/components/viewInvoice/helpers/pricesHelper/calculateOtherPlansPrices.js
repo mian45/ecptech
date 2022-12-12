@@ -121,7 +121,7 @@ export const GetFrameFee = (calculatorObj, data, isPrivate) => {
             data?.frameOrder?.type === "Patient Own Frame" &&
             data?.tracing?.status === "Yes"
         ) {
-            total = total + (calculatorObj?.tracing_fee || 0);
+            total = total + parseFloat(calculatorObj?.tracing_fee || 0);
         }
     }
     return total;

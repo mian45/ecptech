@@ -74,7 +74,7 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
             data?.frameOrder?.type === "Patient Own Frame" &&
             data?.tracing?.status === "Yes"
         ) {
-            total = total + (calculatorObj?.tracing_fee || 0);
+            total = total + parseFloat(calculatorObj?.tracing_fee || 0);
         }
         return (total || 0).toFixed(2);
     };
@@ -94,9 +94,9 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
     };
 
     const renderTracing = () => {
-        data?.isFrameBenifit === "Yes" &&
-        data?.frameOrder?.type === "Patient Own Frame" &&
-        data?.tracing?.status === "Yes"
+        return receipt?.values?.isFrameBenifit === "Yes" &&
+            receipt?.values?.frameOrder?.type === "Patient Own Frame" &&
+            receipt?.values?.tracing?.status === "Yes"
             ? "(Tracing Fee)"
             : "";
     };
@@ -149,7 +149,7 @@ const GetFramePriceByPlan = ({
                 <Col xs={24}>
                     <FramePriceSlot
                         title={"Drill Mount"}
-                        price={`$${drillMount()}`}
+                        price={`$${drillMount() || 0}`}
                     />
                 </Col>
                 <Col xs={24} className={classes["self-pay"]}>
@@ -157,8 +157,8 @@ const GetFramePriceByPlan = ({
                 </Col>
                 <Col xs={24}>
                     <FramePriceSlot
-                        title={`${Frame} ${renderTracing()}`}
-                        price={`$${framePrice()}`}
+                        title={`${"Frame"} ${renderTracing()}`}
+                        price={`$${framePrice() || 0}`}
                     />
                 </Col>
             </Row>
@@ -168,14 +168,14 @@ const GetFramePriceByPlan = ({
             <Row>
                 <Col xs={24}>
                     <FramePriceSlot
-                        title={"Frame"}
-                        price={`$${framePrice()}`}
+                        title={`${"Frame"} ${renderTracing()}`}
+                        price={`$${framePrice() || 0}`}
                     />
                 </Col>
                 <Col xs={24}>
                     <FramePriceSlot
                         title={"Drill Mount"}
-                        price={`$${drillMount()}`}
+                        price={`$${drillMount() || 0}`}
                     />
                 </Col>
             </Row>
