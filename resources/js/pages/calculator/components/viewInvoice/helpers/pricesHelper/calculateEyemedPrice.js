@@ -8,15 +8,24 @@ import {
     GetProtectionPlanPrice,
 } from "./calculateOtherPlansPrices";
 
-export const CalculateEyemedPlansPrices = (data, calculatorObj) => {
+export const CalculateEyemedPlansPrices = (
+    data,
+    calculatorObj,
+    plansList,
+    plansJson
+) => {
     let total = 0;
     // add material copay
     total = total + (parseFloat(data?.materialCopay || "") || 0);
     // add Frame Fee
-    total = total + parseFloat(GetEyemedFrameFee(data, calculatorObj));
+    total =
+        total + parseFloat(GetEyemedFrameFee(data, calculatorObj, plansJson));
     //add drill mount fee
-    total = total + parseFloat(GetEyemedDrillMountFee(data));
-    if (data?.isLensBenifit === "Yes") {
+    total = total + parseFloat(GetEyemedDrillMountFee(data, plansJson));
+    if (
+        data?.isLensBenifit ===
+        plansJson[data?.visionPlan]?.lensBenifit?.options?.yes
+    ) {
         // add lens Prices
         total = total + parseFloat(GetEyemedLensFee(data));
         // add material Prices
@@ -38,7 +47,8 @@ export const CalculateEyemedPlansPrices = (data, calculatorObj) => {
         // add Polish Price
         total = total + parseFloat(GetEyemedPolishFee(data));
     } else if (
-        data?.isLensBenifit === "Only multiple pair benefit only at this time"
+        data?.isLensBenifit ===
+        plansJson[data?.visionPlan]?.lensBenifit?.options?.no
     ) {
         // add lens Prices
         total = total + parseFloat(GetPrivateLensFee(calculatorObj, data) || 0);
@@ -82,21 +92,28 @@ export const CalculateEyemedPlansPrices = (data, calculatorObj) => {
     total = total + parseFloat(GetProtectionPlanPrice(data));
     return total;
 };
-export const GetEyemedFrameFee = (data, calculatorObj) => {
+export const GetEyemedFrameFee = (data, calculatorObj, plansJson) => {
     let total = 0;
     const retailFee = parseFloat(data?.frameOrder?.retailFee || "");
     const frameContribution = parseFloat(
         data?.frameOrder?.frameContribution || ""
     );
+    const newFrame =
+        plansJson[data?.visionPlan]?.frameOrder?.options?.newFrame?.question;
+    const frameBenifitYes =
+        plansJson[data?.visionPlan]?.frameBenifit?.options?.yes;
+    const ownFrame =
+        plansJson[data?.visionPlan]?.frameOrder?.options?.ownFrame?.question;
+    const tracingYes = plansJson[data?.visionPlan]?.tracingFee?.options?.yes;
     if (
         data?.isFrameBenifit ===
-            "Only multiple pair benefit only at this time" &&
-        data?.frameOrder?.type === "New Frame Purchase"
+            plansJson[data?.visionPlan]?.frameBenifit?.options?.no &&
+        data?.frameOrder?.type === newFrame
     ) {
         total = total + retailFee;
     } else if (
-        data?.isFrameBenifit === "Yes" &&
-        data?.frameOrder?.type === "New Frame Purchase"
+        data?.isFrameBenifit === frameBenifitYes &&
+        data?.frameOrder?.type === newFrame
     ) {
         if (retailFee <= frameContribution) {
             total = total + 0;
@@ -107,22 +124,30 @@ export const GetEyemedFrameFee = (data, calculatorObj) => {
             total = total + (payableFramePrice || 0);
         }
     } else if (
-        data?.isFrameBenifit === "Yes" &&
-        data?.frameOrder?.type === "Patient Own Frame" &&
-        data?.tracing?.status === "Yes"
+        data?.isFrameBenifit === frameBenifitYes &&
+        data?.frameOrder?.type === ownFrame &&
+        data?.tracing?.status === tracingYes
     ) {
         total = total + (calculatorObj?.tracing_fee || 0);
     }
     return total;
 };
-export const GetEyemedDrillMountFee = (data) => {
-    return (data?.isFrameBenifit ===
-        "Only multiple pair benefit only at this time" &&
-        data?.frameOrder?.type === "New Frame Purchase" &&
-        data?.frameOrder?.drillMount === "Yes") ||
-        (data?.isFrameBenifit === "Yes" &&
-            data?.frameOrder?.type === "New Frame Purchase" &&
-            data?.frameOrder?.drillMount === "Yes")
+export const GetEyemedDrillMountFee = (data, plansJson) => {
+    const frameBenifitNo =
+        plansJson[data?.visionPlan]?.frameBenifit?.options?.no;
+    const frameBenifitYes =
+        plansJson[data?.visionPlan]?.frameBenifit?.options?.yes;
+    const newFrame =
+        plansJson[data?.visionPlan]?.frameOrder?.options?.newFrame?.question;
+    const drillMountYes =
+        plansJson[data?.visionPlan]?.frameOrder?.options?.newFrame?.subQuestion
+            ?.options?.yes;
+    return (data?.isFrameBenifit === frameBenifitNo &&
+        data?.frameOrder?.type === newFrame &&
+        data?.frameOrder?.drillMount === drillMountYes) ||
+        (data?.isFrameBenifit === frameBenifitYes &&
+            data?.frameOrder?.type === newFrame &&
+            data?.frameOrder?.drillMount === drillMountYes)
         ? DRILL_MOUNT
         : 0;
 };

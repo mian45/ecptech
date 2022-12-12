@@ -8,33 +8,42 @@ import {
     GetEyemedDrillMountFee,
     GetEyemedFrameFee,
 } from "../../helpers/pricesHelper/calculateEyemedPrice";
+import { AllPlans } from "../../../../data/plansList";
+import { PLANS } from "../../../../data/plansJson";
+import { connect } from "react-redux";
 
 const { Panel } = Collapse;
 
-const FrameDetails = ({ receipt, calculatorObj, lensPrices }) => {
+const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
     const currentPlan = receipt?.values?.visionPlan;
+    const plansList = AllPlans[language];
+    const plansJson = PLANS[language];
     const rendeFrameFee = () => {
         let price = 0;
-        if (currentPlan === "Eyemed") {
+        if (currentPlan === plansList?.eyemed) {
             // add Frame Fee
             price =
                 price +
-                parseFloat(GetEyemedFrameFee(receipt?.values, calculatorObj));
+                parseFloat(
+                    GetEyemedFrameFee(receipt?.values, calculatorObj, plansJson)
+                );
             //add drill mount fee
-            price = price + parseFloat(GetEyemedDrillMountFee(receipt?.values));
+            price =
+                price +
+                parseFloat(GetEyemedDrillMountFee(receipt?.values, plansJson));
         } else {
             price =
                 GetFrameFee(
                     calculatorObj,
                     receipt?.values,
-                    currentPlan === "Private Pay" ? true : false
+                    currentPlan === plansList?.privatePay ? true : false
                 ) || 0;
         }
         return (price || 0).toFixed(2);
     };
 
     const renderOnlyFrameFee = () => {
-        const isPrivate = currentPlan === "Private Pay" ? true : false;
+        const isPrivate = currentPlan === plansList?.privatePay ? true : false;
         const data = receipt?.values;
         let total = 0;
         const retailFee = parseFloat(data?.frameOrder?.retailFee || "");
@@ -74,7 +83,7 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices }) => {
         let total = 0;
         const data = receipt?.values;
         if (
-            currentPlan === "Eyemed" &&
+            currentPlan === plansList?.eyemed &&
             data?.frameOrder?.drillMount === "Yes"
         ) {
             total = total + parseFloat(data?.frameOrder?.drillMountPrice || "");
@@ -119,7 +128,11 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices }) => {
         </Row>
     );
 };
-export default FrameDetails;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
+
+export default connect(mapStateToProps)(FrameDetails);
 
 const GetFramePriceByPlan = ({
     framePrice,

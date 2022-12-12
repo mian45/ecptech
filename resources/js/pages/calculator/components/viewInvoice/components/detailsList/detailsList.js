@@ -1,6 +1,9 @@
 import Icon from "@ant-design/icons";
 import { Col, Row } from "antd";
 import React from "react";
+import { connect } from "react-redux";
+import { PLANS } from "../../../../data/plansJson";
+import { AllPlans } from "../../../../data/plansList";
 import { GetFrameRetailFee } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
 import {
     CalculateTotalPrice,
@@ -18,8 +21,11 @@ const DetailsList = ({
     lensPrices,
     mode,
     handleSendInvoiceClick,
+    language,
 }) => {
     const currentPlan = receipt?.values?.visionPlan;
+    const plansList = AllPlans[language];
+    const plansJson = PLANS[language];
 
     const getTax = () => {
         let totalTax = 0;
@@ -31,7 +37,9 @@ const DetailsList = ({
         const totalPrice = CalculateTotalPrice(
             receipt?.values,
             calculatorObj,
-            lensPrices
+            lensPrices,
+            plansList,
+            plansJson
         );
         const taxValue = totalPrice * (totalTax || 0);
         return taxValue / 100;
@@ -116,7 +124,13 @@ const DetailsList = ({
     const RenderDiscount = () => {
         const discount = (
             GetAppliedDiscount(
-                CalculateTotalPrice(receipt?.values, calculatorObj, lensPrices),
+                CalculateTotalPrice(
+                    receipt?.values,
+                    calculatorObj,
+                    lensPrices,
+                    plansList,
+                    plansJson
+                ),
                 receipt?.values
             ) || 0
         )?.toFixed(2);
@@ -141,7 +155,9 @@ const DetailsList = ({
             CalculateWithTaxesTotalPrice(
                 receipt?.values,
                 calculatorObj,
-                lensPrices
+                lensPrices,
+                plansList,
+                plansJson
             ) || 0
         ).toFixed(2);
         const discount = totalFrame - discountPrice;
@@ -295,7 +311,9 @@ const DetailsList = ({
                                     CalculateWithTaxesTotalPrice(
                                         receipt?.values,
                                         calculatorObj,
-                                        lensPrices
+                                        lensPrices,
+                                        plansList,
+                                        plansJson
                                     ) || 0
                                 ).toFixed(2)}`}
                             </Col>
@@ -320,7 +338,11 @@ const DetailsList = ({
         </Row>
     );
 };
-export default DetailsList;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
+
+export default connect(mapStateToProps)(DetailsList);
 
 const NameSlot = ({ title, subtitle }) => {
     return (

@@ -31,12 +31,11 @@ import { BenifitTypeEnums } from "../../data/initialValues";
 import DetailsList from "./components/detailsList/detailsList";
 import { getPriceFromDB } from "./helpers/getPriceFromDB";
 import { Col, Modal, Row, message } from "antd";
-import {
-    CalculateTotalPrice,
-    CalculateWithTaxesTotalPrice,
-} from "./helpers/pricesHelper/calculateTotalPrice";
+import { CalculateWithTaxesTotalPrice } from "./helpers/pricesHelper/calculateTotalPrice";
 import UseWindowSize from "../../../../hooks/windowResize";
 import ButtonsList from "./components/buttonsList/buttonsList";
+import { AllPlans } from "../../data/plansList";
+import { PLANS } from "../../data/plansJson";
 
 const ViewInvoice = ({
     onClose,
@@ -50,10 +49,13 @@ const ViewInvoice = ({
     clientUserId,
     userRole,
     messageApi,
+    language,
 }) => {
     const history = useHistory();
     const [receipt, setReceipt] = useState(null);
     const { width } = UseWindowSize();
+    const plansList = AllPlans[language];
+    const plansJson = PLANS[language];
     useEffect(() => {
         setReceipt({
             userInfo: userInfo,
@@ -105,7 +107,9 @@ const ViewInvoice = ({
                 CalculateWithTaxesTotalPrice(
                     receipt?.values,
                     calculatorObj,
-                    lensPrices
+                    lensPrices,
+                    plansList,
+                    plansJson
                 ) || 0
             ).toFixed(2),
             vpState: calculatorObj,
@@ -138,7 +142,9 @@ const ViewInvoice = ({
                 CalculateWithTaxesTotalPrice(
                     receipt?.values,
                     calculatorObj,
-                    lensPrices
+                    lensPrices,
+                    plansList,
+                    plansJson
                 ) || 0
             ).toFixed(2),
             vpState: calculatorObj,
@@ -264,6 +270,7 @@ const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
     userRole: state.Auth.userRole?.name,
     clientUserId: state.Auth.clientUser?.id,
+    language: state.Auth.language,
 });
 export default connect(mapStateToProps)(ViewInvoice);
 
