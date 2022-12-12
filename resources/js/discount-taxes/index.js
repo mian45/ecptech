@@ -484,7 +484,7 @@ const DiscountTaxes = (props) => {
 
         axios(config)
             .then(function (response) {
-                console.log(response)
+                console.log(response);
                 getDiscount();
                 message.destroy();
                 messageApi.open({
@@ -581,7 +581,6 @@ const DiscountTaxes = (props) => {
     };
     return (
         <>
-          
             {loading ? <CustomLoader buttonBool={false} /> : null}
             {showDeleteTaxes ? (
                 <DeleteModal
@@ -612,7 +611,7 @@ const DiscountTaxes = (props) => {
             ) : null}
 
             <Row justify="center">
-            {contextHolder}
+                {contextHolder}
                 <Col xs={24}>
                     <Row
                         justify="center"
@@ -679,16 +678,27 @@ const DiscountTaxes = (props) => {
                                                         className="discount-container_first-form_section"
                                                     >
                                                         <Row>
-                                                            <Col xs={24}>
+                                                            <Col xs={12}>
                                                                 <p className="input-title">
                                                                     Discount
+                                                                </p>
+                                                            </Col>
+                                                            <Col xs={1}></Col>
+                                                            <Col
+                                                                xs={11}
+                                                                sm={12}
+                                                                md={10}
+                                                            >
+                                                                <p className="input-title">
+                                                                    Discount
+                                                                    Type
                                                                 </p>
                                                             </Col>
                                                             <Col xs={24}>
                                                                 <Row justify="start">
                                                                     <Col
-                                                                        xs={14}
-                                                                        md={14}
+                                                                        xs={12}
+                                                                        md={12}
                                                                     >
                                                                         {" "}
                                                                         <input
@@ -707,9 +717,9 @@ const DiscountTaxes = (props) => {
                                                                         xs={1}
                                                                     ></Col>
                                                                     <Col
-                                                                        xs={8}
-                                                                        sm={9}
-                                                                        md={7}
+                                                                        xs={10}
+                                                                        sm={11}
+                                                                        md={9}
                                                                     >
                                                                         {" "}
                                                                         <Select
@@ -857,13 +867,10 @@ const DiscountTaxes = (props) => {
                                                                                     }
                                                                                 </td>
                                                                                 <td>
-                                                                                    {
-                                                                                        dis.value
-                                                                                    }{" "}
                                                                                     {dis.type ==
                                                                                     "percentage"
-                                                                                        ? "%"
-                                                                                        : "$"}
+                                                                                        ? `${dis.value} %`
+                                                                                        : `$ ${dis.value}`}
                                                                                 </td>
                                                                                 <td className="discount-col-3">
                                                                                     <img

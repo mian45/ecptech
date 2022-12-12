@@ -448,7 +448,7 @@ const LoweredCopay = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["vision-container"]}>
                             <CalculatorHeading
-                                title="Any copay dollar amount less than standard?"
+                                title="Any copay dollar amount less than standard ?"
                                 active={values?.isloweredCopay}
                             />
                             <Radio.Group

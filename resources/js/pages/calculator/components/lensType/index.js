@@ -103,6 +103,7 @@ const LensType = ({
             );
             validationObject.lensTypeValue =
                 Yup.string().required("Brand is required");
+            await setFieldValue("isAntireflective", "Yes");
             if (values?.isAntireflective === "No") {
                 await setFieldValue("isAntireflective", "");
             }
@@ -332,7 +333,7 @@ const LensType = ({
                         <Col sx={24} sm={24} md={19}>
                             <div className={classes["vision-container"]}>
                                 <CalculatorHeading
-                                    title="Lens Type?"
+                                    title="Lens Type ?"
                                     active={showActiveState()}
                                 />
 
