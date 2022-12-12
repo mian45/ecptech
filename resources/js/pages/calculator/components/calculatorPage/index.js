@@ -170,11 +170,11 @@ const CalculatorScreen = () => {
                 item?.question_permissions
             );
             if (item?.title === "Private Pay") {
-                delete validations?.isloweredCopay;
+                delete validations?.isLoweredCopay;
                 delete validations?.isLensBenifit;
                 delete validations?.isFrameBenifit;
             } else if (item?.title === "Eyemed") {
-                delete validations?.isloweredCopay;
+                delete validations?.isLoweredCopay;
                 const slabOff =
                     item?.question_permissions?.find(
                         (ques) => ques?.question == "Slab Off"
@@ -321,7 +321,7 @@ const CalculatorScreen = () => {
 
         if (values?.submitBenifitType === BenifitTypeEnums.lens) {
             const validations = { ...calValidations };
-            delete validations.isloweredCopay;
+            delete validations.isLoweredCopay;
             delete validations.lensType;
             if (values.lensType) {
                 delete validations.lensTypeValue;

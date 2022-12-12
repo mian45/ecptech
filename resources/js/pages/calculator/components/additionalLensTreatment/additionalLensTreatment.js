@@ -7,7 +7,7 @@ import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./additionalLensTreatment.module.scss";
 import icon from "../../../../../images/calculator/additional-lens.svg";
-import { PLANS } from "../../data/plansJson";
+import { Plans } from "../../data/plansJson";
 import CustomRadio from "../../../../components/customRadio";
 import SlabOff from "./components/slabOff/slabOff";
 import SpecialtyLens from "./components/specialtyLens/specialtyLens";
@@ -24,11 +24,11 @@ const AdditionalLensTreatment = ({
     const { values, handleChange } = formProps;
     const eyemedPlan = AllPlans[language]?.eyemed;
     const additionalLensTitle =
-        PLANS[language][values?.visionPlan]?.additionalLens?.question;
+        Plans[language][values?.visionPlan]?.additionalLens?.question;
     const additionalLensYes =
-        PLANS[language][values?.visionPlan]?.additionalLens?.options?.yes;
+        Plans[language][values?.visionPlan]?.additionalLens?.options?.yes;
     const additionalLensNo =
-        PLANS[language][values?.visionPlan]?.additionalLens?.options?.no;
+        Plans[language][values?.visionPlan]?.additionalLens?.options?.no;
     const currentPlanVisibility = calculatorObj?.questions?.find(
         (item) => item?.title === values?.visionPlan
     )?.question_permissions;
@@ -93,7 +93,7 @@ const AdditionalLensTreatment = ({
         }
     };
 
-    const isNoHidden = () => {
+    const isNoOptionHidden = () => {
         const slabOff =
             data?.find((ques) => ques?.question == "Slab Off")?.optional ===
             "true";
@@ -103,13 +103,10 @@ const AdditionalLensTreatment = ({
         const polish =
             data?.find((ques) => ques?.question == "Polish")?.optional ===
             "true";
-        if (
-            values?.visionPlan === eyemedPlan &&
+        return values?.visionPlan === eyemedPlan &&
             (slabOff || specialityLens || polish)
-        ) {
-            return true;
-        }
-        return false;
+            ? true
+            : false;
     };
 
     const actionProps = {
@@ -147,7 +144,7 @@ const AdditionalLensTreatment = ({
                                 }
                             />
 
-                            {!isNoHidden() && (
+                            {!isNoOptionHidden() && (
                                 <CustomRadio
                                     label={additionalLensNo}
                                     value={additionalLensNo}
@@ -180,7 +177,8 @@ const AdditionalLensTreatment = ({
     };
     return (
         <>
-            {values?.visionPlan === eyemedPlan ? (
+            {values?.visionPlan === eyemedPlan &&
+            (slabOffVisibility || specialityVisibility || polishVisibility) ? (
                 renderAddiotionalTreatment()
             ) : (
                 <></>

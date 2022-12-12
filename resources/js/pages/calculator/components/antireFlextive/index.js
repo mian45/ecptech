@@ -8,7 +8,7 @@ import icon from "../../../../../images/calculator/antireflictive.svg";
 import { AntireflectiveTypeEnum } from "../../data/enums";
 import * as Yup from "yup";
 import { AllPlans } from "../../data/plansList";
-import { PLANS } from "../../data/plansJson";
+import { Plans } from "../../data/plansJson";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 import { connect } from "react-redux";
 
@@ -24,15 +24,15 @@ const AntireFlextive = ({
     const antireflectiveVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
-            (ques) => ques.question === "Antireflective Properties"
+            (ques) => ques.question === "Anti-Reflective Properties"
         )?.visibility;
     const [error, setError] = useState("");
 
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
-        PLANS[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const antireflectiveYes =
-        PLANS[language][values?.visionPlan]?.antireflective?.options?.yes;
+        Plans[language][values?.visionPlan]?.antireflective?.options?.yes;
 
     const getAntireflectiveList = () => {
         return (
@@ -62,7 +62,7 @@ const AntireFlextive = ({
         if (
             (e?.target?.value === "Yes" &&
                 !data?.find(
-                    (ques) => ques.question === "Antireflective Properties"
+                    (ques) => ques.question === "Anti-Reflective Properties"
                 ).optional) ||
             (e?.target?.value === "Yes" && values?.lensType === "NVF")
         ) {
@@ -139,7 +139,7 @@ const AntireFlextive = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["vision-container"]}>
                             <CalculatorHeading
-                                title="Antireflective Properties?"
+                                title="Anti-Reflective Properties?"
                                 active={handleActiveFields()}
                             />
                             <Radio.Group

@@ -9,7 +9,7 @@ import { DrillMountTypeEnum, FrameOrderTypeEnum } from "../../data/enums";
 import * as Yup from "yup";
 import { AllPlans } from "../../data/plansList";
 import { connect } from "react-redux";
-import { PLANS } from "../../data/plansJson";
+import { Plans } from "../../data/plansJson";
 import CalculatorInput from "./components/calculatorInput/calculatorInput";
 
 const FrameOrder = ({
@@ -30,12 +30,12 @@ const FrameOrder = ({
 
     const eyemedPlan = AllPlans[language]?.eyemed;
     const frameBenifitYes =
-        PLANS[language][values?.visionPlan]?.frameBenifit?.options?.yes;
+        Plans[language][values?.visionPlan]?.frameBenifit?.options?.yes;
     const drillMountYes =
-        PLANS[language][values?.visionPlan]?.frameOrder?.options?.newFrame
+        Plans[language][values?.visionPlan]?.frameOrder?.options?.newFrame
             ?.subQuestion?.options?.yes;
     const drillMountTitle =
-        PLANS[language][values?.visionPlan]?.frameOrder?.options?.newFrame
+        Plans[language][values?.visionPlan]?.frameOrder?.options?.newFrame
             ?.subQuestion?.question;
 
     const handleInputChange = (e) => {

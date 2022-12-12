@@ -130,7 +130,7 @@ const VisionBenifits = ({
             }
             setFieldValue("benifitType", BenifitTypeEnums.lens);
             const validations = { ...calValidations };
-            delete validations.isloweredCopay;
+            delete validations.isLoweredCopay;
             delete validations.lensType;
             if (values.lensType) {
                 delete validations.lensTypeValue;
@@ -333,7 +333,7 @@ export const GetValidations = (data, isLoweredCopay, values) => {
         )?.optional === "true" &&
         isLoweredCopay
     ) {
-        validationObject.isloweredCopay =
+        validationObject.isLoweredCopay =
             Yup.string().required("Option is required");
     }
     if (
@@ -364,7 +364,7 @@ export const GetValidations = (data, isLoweredCopay, values) => {
         );
     }
     if (
-        data?.find((ques) => ques.question === "Sunglass Lens")?.optional ===
+        data?.find((ques) => ques.question === "Sunglass Options")?.optional ===
         "true"
     ) {
         validationObject.isSunglasses = Yup.string().required(
@@ -372,7 +372,7 @@ export const GetValidations = (data, isLoweredCopay, values) => {
         );
     }
     if (
-        data?.find((ques) => ques.question === "Antireflective Properties")
+        data?.find((ques) => ques.question === "Anti-Reflective Properties")
             ?.optional === "true"
     ) {
         validationObject.isAntireflective = Yup.string().required(

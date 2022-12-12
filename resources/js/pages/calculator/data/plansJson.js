@@ -7,7 +7,7 @@ const yesNoOptions = {
     no: "No",
 };
 
-export const PLANS = {
+export const Plans = {
     en: {
         "VSP Signature": {
             frameOrder: {
@@ -115,7 +115,7 @@ export const PLANS = {
                 subQuestion: { question: "Select Photochromics" },
             },
             sunglasses: {
-                question: "Sunglass Lens?",
+                question: "Sunglass Options?",
                 options: yesNoOptions,
                 subQuestion: {
                     question: "Select Sunglass Lens",
@@ -146,7 +146,7 @@ export const PLANS = {
                 },
             },
             antireflective: {
-                question: "Antireflective Properties?",
+                question: "Anti-Reflective Properties?",
                 options: yesNoOptions,
                 subQuestion: { question: "Select Properties" },
             },

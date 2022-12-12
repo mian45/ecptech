@@ -8,7 +8,7 @@ import CustomRadio from "../../../../components/customRadio";
 import icon from "../../../../../images/calculator/lens-material.svg";
 import EyePrescriptionModal from "../eyePrescriptionModal";
 import { AllPlans } from "../../data/plansList";
-import { PLANS } from "../../data/plansJson";
+import { Plans } from "../../data/plansJson";
 import { connect } from "react-redux";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 
@@ -31,7 +31,7 @@ const LensMeterials = ({
 
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
-        PLANS[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
 
     const getActiveMaterials = (material) => {
         if (values?.visionPlan === eyemedPlan) {

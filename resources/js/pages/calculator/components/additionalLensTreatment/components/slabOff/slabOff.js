@@ -2,7 +2,7 @@ import { Radio } from "antd";
 import React from "react";
 import { connect } from "react-redux";
 import CustomRadio from "../../../../../../components/customRadio";
-import { PLANS } from "../../../../data/plansJson";
+import { Plans } from "../../../../data/plansJson";
 import { AllPlans } from "../../../../data/plansList";
 import CalculatorInput from "../../../frameOrder/components/calculatorInput/calculatorInput";
 import { FormikError } from "../../../selectVisionPlan";
@@ -20,18 +20,18 @@ const SlabOff = ({
     const { values, handleChange } = formProps;
     const eyemedPlan = AllPlans[language]?.eyemed;
     const slapOffTitle =
-        PLANS[language][values?.visionPlan]?.additionalLens?.subQuestion
+        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion
             ?.slabOff?.question;
     const slabOffYes =
-        PLANS[language][values?.visionPlan]?.additionalLens?.subQuestion
+        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion
             ?.slabOff?.options?.yes;
     const slabOffNo =
-        PLANS[language][values?.visionPlan]?.additionalLens?.subQuestion
+        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion
             ?.slabOff?.options?.no;
     const lensBenifitYes =
-        PLANS[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const additionalLensYes =
-        PLANS[language][values?.visionPlan]?.additionalLens?.options?.yes;
+        Plans[language][values?.visionPlan]?.additionalLens?.options?.yes;
 
     const handleSlabOffChange = (e) => {
         handleChange(e);

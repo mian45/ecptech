@@ -35,7 +35,7 @@ import { CalculateWithTaxesTotalPrice } from "./helpers/pricesHelper/calculateTo
 import UseWindowSize from "../../../../hooks/windowResize";
 import ButtonsList from "./components/buttonsList/buttonsList";
 import { AllPlans } from "../../data/plansList";
-import { PLANS } from "../../data/plansJson";
+import { Plans } from "../../data/plansJson";
 
 const ViewInvoice = ({
     onClose,
@@ -55,7 +55,7 @@ const ViewInvoice = ({
     const [receipt, setReceipt] = useState(null);
     const { width } = UseWindowSize();
     const plansList = AllPlans[language];
-    const plansJson = PLANS[language];
+    const plansJson = Plans[language];
     useEffect(() => {
         setReceipt({
             userInfo: userInfo,

@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { connect } from "react-redux";
 import classes from "./tracingFee.module.scss";
 import CustomRadio from "../../../../components/customRadio";
-import { PLANS } from "../../data/plansJson";
+import { Plans } from "../../data/plansJson";
 import { AllPlans } from "../../data/plansList";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
@@ -20,11 +20,11 @@ const TracingFee = ({
     const { values, handleChange, setFieldValue } = formProps;
     const eyemedPlan = AllPlans[language]?.eyemed;
     const tracingTitle =
-        PLANS[language][values?.visionPlan]?.tracingFee?.question;
+        Plans[language][values?.visionPlan]?.tracingFee?.question;
     const tracingTypeYes =
-        PLANS[language][values?.visionPlan]?.tracingFee?.options?.yes;
+        Plans[language][values?.visionPlan]?.tracingFee?.options?.yes;
     const tracingTypeNo =
-        PLANS[language][values?.visionPlan]?.tracingFee?.options?.no;
+        Plans[language][values?.visionPlan]?.tracingFee?.options?.no;
 
     useEffect(() => {
         setFieldValue("tracingPrice", calculatorObj?.tracing_fee);

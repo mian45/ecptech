@@ -142,14 +142,21 @@ export const GetEyemedDrillMountFee = (data, plansJson) => {
     const drillMountYes =
         plansJson[data?.visionPlan]?.frameOrder?.options?.newFrame?.subQuestion
             ?.options?.yes;
-    return (data?.isFrameBenifit === frameBenifitNo &&
+    let price = 0;
+    if (
+        data?.isFrameBenifit === frameBenifitNo &&
         data?.frameOrder?.type === newFrame &&
-        data?.frameOrder?.drillMount === drillMountYes) ||
-        (data?.isFrameBenifit === frameBenifitYes &&
-            data?.frameOrder?.type === newFrame &&
-            data?.frameOrder?.drillMount === drillMountYes)
-        ? DRILL_MOUNT
-        : 0;
+        data?.frameOrder?.drillMount === drillMountYes
+    ) {
+        price = DRILL_MOUNT;
+    } else if (
+        data?.isFrameBenifit === frameBenifitYes &&
+        data?.frameOrder?.type === newFrame &&
+        data?.frameOrder?.drillMount === drillMountYes
+    ) {
+        price = data?.frameOrder?.drillMountPrice;
+    }
+    return parseFloat(price || 0);
 };
 
 export const GetEyemedLensFee = (data) => {

@@ -52,7 +52,7 @@ export const CreateCalculatorValidations = (data) => {
         data?.find((ques) => ques.question == "Any copay lowered than standard")
             ?.optional === "true"
     ) {
-        validationObject.isloweredCopay =
+        validationObject.isLoweredCopay =
             Yup.string().required("Option is required");
     }
     if (
@@ -79,7 +79,7 @@ export const CreateCalculatorValidations = (data) => {
         );
     }
     if (
-        data?.find((ques) => ques.question == "Sunglass Lens")?.optional ===
+        data?.find((ques) => ques.question == "Sunglass Options")?.optional ===
         "true"
     ) {
         validationObject.isSunglasses = Yup.string().required(
@@ -87,7 +87,7 @@ export const CreateCalculatorValidations = (data) => {
         );
     }
     if (
-        data?.find((ques) => ques.question == "Antireflective Properties")
+        data?.find((ques) => ques.question == "Anti-Reflective Properties")
             ?.optional === "true"
     ) {
         validationObject.isAntireflective = Yup.string().required(
@@ -138,7 +138,7 @@ export const GetMappedPayload = (data) => {
             drillMountPrice: data?.drillMountValue,
         },
         lowerCopaythanStandard: {
-            value: data?.isloweredCopay,
+            value: data?.isLoweredCopay,
             copayList: [
                 {
                     type: "Polycarbonate",
@@ -286,7 +286,7 @@ export const mappedEditValues = (data) => {
         frameContribution: userState?.frameOrder?.frameContribution || "",
         drillMount: userState?.frameOrder?.drillMount || "",
         drillMountValue: userState?.frameOrder?.drillMountPrice || "",
-        isloweredCopay: userState?.lowerCopaythanStandard?.value || "",
+        isLoweredCopay: userState?.lowerCopaythanStandard?.value || "",
         isCopayPolycarbonate: polycarbonate?.status || null,
         isCopayPhotochromic: photochromic?.status || null,
         isCopayHighIndex: hignIndex?.status || null,

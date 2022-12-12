@@ -3,7 +3,7 @@ import React from "react";
 import * as Yup from "yup";
 import { connect } from "react-redux";
 import CustomRadio from "../../../../../../components/customRadio";
-import { PLANS } from "../../../../data/plansJson";
+import { Plans } from "../../../../data/plansJson";
 import { AllPlans } from "../../../../data/plansList";
 import CalculatorInput from "../../../frameOrder/components/calculatorInput/calculatorInput";
 import { FormikError } from "../../../selectVisionPlan";
@@ -20,21 +20,21 @@ const Polish = ({
     const { values, handleChange } = formProps;
     const eyemedPlan = AllPlans[language]?.eyemed;
     const polishTitle =
-        PLANS[language][values?.visionPlan]?.additionalLens?.subQuestion?.polish
+        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion?.polish
             ?.question;
     const polishTypeTitle =
-        PLANS[language][values?.visionPlan]?.additionalLens?.subQuestion?.polish
+        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion?.polish
             ?.subQuestion?.question;
     const polishYes =
-        PLANS[language][values?.visionPlan]?.additionalLens?.subQuestion?.polish
+        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion?.polish
             ?.options?.yes;
     const polishNo =
-        PLANS[language][values?.visionPlan]?.additionalLens?.subQuestion?.polish
+        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion?.polish
             ?.options?.no;
     const lensBenifitYes =
-        PLANS[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const additionalLensYes =
-        PLANS[language][values?.visionPlan]?.additionalLens?.options?.yes;
+        Plans[language][values?.visionPlan]?.additionalLens?.options?.yes;
 
     const handleInputChange = (e) => {
         const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
@@ -173,9 +173,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps)(Polish);
-const Polish_Data = [
-    "Edge Polish",
-    "High Luster Edge Polish",
-    "Roll and Polish",
-    "Roll Edge",
-];

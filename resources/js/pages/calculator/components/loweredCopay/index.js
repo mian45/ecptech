@@ -447,37 +447,37 @@ const LoweredCopay = ({
                         <Col sx={0} sm={0} md={5}>
                             <QuestionIcon
                                 icon={visionIcon}
-                                active={values?.isloweredCopay}
+                                active={values?.isLoweredCopay}
                             />
                         </Col>
                         <Col sx={24} sm={24} md={19}>
                             <div className={classes["vision-container"]}>
                                 <CalculatorHeading
                                     title="Any copay dollar amount less than standard?"
-                                    active={values?.isloweredCopay}
+                                    active={values?.isLoweredCopay}
                                 />
                                 <Radio.Group
                                     onChange={handleLoweredCopayClick}
-                                    value={values?.isloweredCopay}
-                                    id="isloweredCopay"
-                                    name="isloweredCopay"
+                                    value={values?.isLoweredCopay}
+                                    id="isLoweredCopay"
+                                    name="isLoweredCopay"
                                     className={classes["radio-group"]}
                                 >
                                     <CustomRadio
                                         label={"Yes"}
                                         value={"Yes"}
                                         active={
-                                            values?.isloweredCopay === "Yes"
+                                            values?.isLoweredCopay === "Yes"
                                         }
                                     />
                                     <CustomRadio
                                         label={"No"}
                                         value={"No"}
-                                        active={values?.isloweredCopay === "No"}
+                                        active={values?.isLoweredCopay === "No"}
                                     />
                                 </Radio.Group>
-                                <FormikError name={"isloweredCopay"} />
-                                {values?.isloweredCopay === "Yes" &&
+                                <FormikError name={"isLoweredCopay"} />
+                                {values?.isLoweredCopay === "Yes" &&
                                     copayProperties()}
                             </div>
                         </Col>

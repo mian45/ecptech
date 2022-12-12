@@ -496,27 +496,39 @@ export const RenderAdditionalLens = (data, calculatorObj, type) => {
     let total = 0;
     const currentPlan = data?.visionPlan;
     if (currentPlan === "Eyemed" && data?.isLensBenifit === "Yes") {
-        if (type === "Slab off") {
-            total = total + parseFloat(GetEyemedSlabOffFee(data));
-        } else if (type === "Speciality Lens") {
-            total = total + parseFloat(GetEyemedSpecialityLensFee(data));
-        } else if (type === "Polish") {
-            total = total + parseFloat(GetEyemedPolishFee(data));
+        switch (type) {
+            case "Slab off":
+                total = total + parseFloat(GetEyemedSlabOffFee(data));
+                break;
+            case "Speciality Lens":
+                total = total + parseFloat(GetEyemedSpecialityLensFee(data));
+                break;
+            case "Polish":
+                total = total + parseFloat(GetEyemedPolishFee(data));
+                break;
         }
     } else if (
         currentPlan === "Eyemed" &&
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
-        if (type === "Slab off") {
-            total =
-                total + parseFloat(GetPrivateSlabOffPrice(calculatorObj, data));
-        } else if (type === "Speciality Lens") {
-            total =
-                total +
-                parseFloat(GetPrivateSpecialityLensPrice(calculatorObj, data));
-        } else if (type === "Polish") {
-            total =
-                total + parseFloat(GetPrivatePolishPrice(calculatorObj, data));
+        switch (type) {
+            case "Slab off":
+                total =
+                    total +
+                    parseFloat(GetPrivateSlabOffPrice(calculatorObj, data));
+                break;
+            case "Speciality Lens":
+                total =
+                    total +
+                    parseFloat(
+                        GetPrivateSpecialityLensPrice(calculatorObj, data)
+                    );
+                break;
+            case "Speciality Lens":
+                total =
+                    total +
+                    parseFloat(GetPrivatePolishPrice(calculatorObj, data));
+                break;
         }
     }
     return (total || 0).toFixed(2);

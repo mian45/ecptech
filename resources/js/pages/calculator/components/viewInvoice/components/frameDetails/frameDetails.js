@@ -9,7 +9,7 @@ import {
     GetEyemedFrameFee,
 } from "../../helpers/pricesHelper/calculateEyemedPrice";
 import { AllPlans } from "../../../../data/plansList";
-import { PLANS } from "../../../../data/plansJson";
+import { Plans } from "../../../../data/plansJson";
 import { connect } from "react-redux";
 
 const { Panel } = Collapse;
@@ -17,7 +17,7 @@ const { Panel } = Collapse;
 const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
     const currentPlan = receipt?.values?.visionPlan;
     const plansList = AllPlans[language];
-    const plansJson = PLANS[language];
+    const plansJson = Plans[language];
     const rendeFrameFee = () => {
         let price = 0;
         if (currentPlan === plansList?.eyemed) {
@@ -27,6 +27,7 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
                 parseFloat(
                     GetEyemedFrameFee(receipt?.values, calculatorObj, plansJson)
                 );
+
             //add drill mount fee
             price =
                 price +

@@ -2,7 +2,7 @@ import Icon from "@ant-design/icons";
 import { Col, Row } from "antd";
 import React from "react";
 import { connect } from "react-redux";
-import { PLANS } from "../../../../data/plansJson";
+import { Plans } from "../../../../data/plansJson";
 import { AllPlans } from "../../../../data/plansList";
 import { GetFrameRetailFee } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
 import {
@@ -25,7 +25,7 @@ const DetailsList = ({
 }) => {
     const currentPlan = receipt?.values?.visionPlan;
     const plansList = AllPlans[language];
-    const plansJson = PLANS[language];
+    const plansJson = Plans[language];
 
     const getTax = () => {
         let totalTax = 0;

@@ -13,7 +13,7 @@ export const CalculatorInitialValues = {
     frameContribution: "",
     drillMount: "",
     drillMountValue: "",
-    isloweredCopay: "",
+    isLoweredCopay: "",
     isCopayChecked: "",
     isCopayPolycarbonate: null,
     isCopayPhotochromic: null,

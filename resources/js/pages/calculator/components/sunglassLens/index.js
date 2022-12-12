@@ -8,7 +8,7 @@ import icon from "../../../../../images/calculator/sunglasses.svg";
 import * as Yup from "yup";
 import { connect } from "react-redux";
 import { AllPlans } from "../../data/plansList";
-import { PLANS } from "../../data/plansJson";
+import { Plans } from "../../data/plansJson";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 
 const SunglassLens = ({
@@ -24,22 +24,22 @@ const SunglassLens = ({
     const sunglassLensVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
-            (ques) => ques.question === "Sunglass Lens"
+            (ques) => ques.question === "Sunglass Options"
         )?.visibility;
 
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
-        PLANS[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const sunglassesYes =
-        PLANS[language][values?.visionPlan]?.sunglasses?.options?.yes;
+        Plans[language][values?.visionPlan]?.sunglasses?.options?.yes;
     const polarizedType =
-        PLANS[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
+        Plans[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
             ?.polarized?.question;
     const tintType =
-        PLANS[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
+        Plans[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
             ?.tint?.question;
     const mirrorCoatingYes =
-        PLANS[language][values?.visionPlan]?.sunglasses?.subQuestion
+        Plans[language][values?.visionPlan]?.sunglasses?.subQuestion
             ?.subQuestion?.options?.yes;
     const addons = calculatorObj?.addons
         ?.find((plan) => plan?.title === values?.visionPlan)
@@ -75,7 +75,7 @@ const SunglassLens = ({
         handleChange(e);
         if (
             e?.target?.value === "Yes" &&
-            data?.find((ques) => ques.question === "Sunglass Lens")
+            data?.find((ques) => ques.question === "Sunglass Options")
                 ?.optional === "true"
         ) {
             const sunglassesType = Yup.string().required("Option is required");
@@ -470,7 +470,7 @@ const SunglassLens = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["vision-container"]}>
                             <CalculatorHeading
-                                title="Sunglass Lens?"
+                                title="Sunglass Options?"
                                 active={handleActiveState()}
                             />
                             <Radio.Group

@@ -8,7 +8,7 @@ import icon from "../../../../../images/calculator/photochromics.svg";
 import * as Yup from "yup";
 import { connect } from "react-redux";
 import { AllPlans } from "../../data/plansList";
-import { PLANS } from "../../data/plansJson";
+import { Plans } from "../../data/plansJson";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 
 const Photochromics = ({
@@ -28,9 +28,9 @@ const Photochromics = ({
     const [error, setError] = useState("");
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
-        PLANS[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const photochromicsYes =
-        PLANS[language][values?.visionPlan]?.photochromics?.options?.yes;
+        Plans[language][values?.visionPlan]?.photochromics?.options?.yes;
 
     const getPhotochromicList = () => {
         return (

@@ -9,7 +9,7 @@ import Axios from "../../../../Http";
 import InvoicePriceAlert from "../invoicePriceAlert";
 import * as Yup from "yup";
 import { AllPlans } from "../../data/plansList";
-import { PLANS } from "../../data/plansJson";
+import { Plans } from "../../data/plansJson";
 import { connect } from "react-redux";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 
@@ -34,7 +34,7 @@ const LensType = ({
     const [error, setError] = useState("");
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
-        PLANS[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
 
     const showActiveState = () => {
         return (values?.lensType &&
@@ -135,7 +135,7 @@ const LensType = ({
                 calculatorObj?.questions
                     ?.find((item) => item?.title === values?.visionPlan)
                     ?.question_permissions?.find(
-                        (ques) => ques.question === "Antireflective Properties"
+                        (ques) => ques.question === "Anti-Reflective Properties"
                     )?.optional === "true";
             if (!antireflectiveVisibility) {
                 await setFieldError("isAntireflective", "");
