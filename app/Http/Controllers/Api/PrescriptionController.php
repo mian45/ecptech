@@ -74,31 +74,48 @@ class PrescriptionController extends Controller
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
-        $right_eye_material = Prescription::where('sphere_from', '<=', $request->right_eye_sphere)
-        ->where('sphere_to', '>=', $request->right_eye_sphere)
-        ->where('cylinder_from', '<=', $request->right_eye_cylinder)
-        ->where('cylinder_to', '>=', $request->right_eye_cylinder)
-        ->where('user_id', $request->user_id)->first();
-
+        $user = auth()->user();
+        $user_id=$user->id;
+        if($user->role_id===3){
+          $user_id=  $user->client_id;
+        }
+        $resultRight = $request->right_eye_sphere + $request->right_eye_cylinder;
+        $resultRight = ($request->right_eye_sphere >= $resultRight)? $request->right_eye_sphere : $resultRight;
+        $right_eye_material = Prescription::where('sphere_from', '<=', $resultRight)
+        ->where('sphere_to', '>=', $resultRight)
+        ->where('user_id', $user_id)->first();
+    
+        $resultLeft = $request->left_eye_sphere + $request->left_eye_cylinder;
+        $resultLeft = ($request->left_eye_sphere >= $resultLeft)? $request->left_eye_sphere : $resultLeft;
         $left_eye_material = Prescription::where('sphere_from', '<=', $request->left_eye_sphere)
         ->where('sphere_to', '>=', $request->left_eye_sphere)
-        ->where('cylinder_from', '<=', $request->left_eye_cylinder)
-        ->where('cylinder_to', '>=', $request->left_eye_cylinder)
-        ->where('user_id', $request->user_id)->first();
+        ->where('user_id', $user_id)->first();
+        $meterial_name = '';
+        if(isset($right_eye_material) && isset($left_eye_material)){
+           if($right_eye_material->id < $left_eye_material->id){
+             $meterial_name = $right_eye_material->name;
+           }else{
+            $meterial_name = $left_eye_material->name;
+           }
+        }elseif(isset($right_eye_material)){
+            $meterial_name = $right_eye_material->name;
+        }elseif($left_eye_material){
+            $meterial_name = $left_eye_material->name;
+        }
         $success = [
             'use_material' => [
                 'right_eye_material' => [
-                    'used_meterial' => isset($right_eye_material->name) ? $right_eye_material->name : '',
+                    'used_meterial' => $meterial_name,
                     'sphere' => $request->right_eye_sphere,
                     'cylinder' => $request->right_eye_cylinder
                     ], 
                 'left_eye_material' => [
-                    'used_meterial' => isset($left_eye_material->name) ? $left_eye_material->name : '',
+                    'used_meterial' => $meterial_name,
                     'sphere' => $request->left_eye_sphere,
                     'cylinder' => $request->left_eye_cylinder
                     ]
                 ]
-            ];
+        ];
         return $this->sendResponse($success, 'Eye prescription calculater');   
     }
 
