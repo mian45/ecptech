@@ -128,7 +128,7 @@ export const GetEyemedFrameFee = (data, calculatorObj, plansJson) => {
         data?.frameOrder?.type === ownFrame &&
         data?.tracing?.status === tracingYes
     ) {
-        total = total + (calculatorObj?.tracing_fee || 0);
+        total = total + parseFloat(calculatorObj?.tracing_fee || 0);
     }
     return total;
 };

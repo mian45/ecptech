@@ -14,9 +14,16 @@ import {
     ZEISS_PHOTOFUSION,
 } from "../../../../data/constants";
 import {
+    GetEyemedAntireflectiveFee,
+    GetEyemedCoatingFee,
+    GetEyemedLensFee,
+    GetEyemedMaterialFee,
+    GetEyemedPhotochromicFee,
+    GetEyemedPolarizedFee,
     GetEyemedPolishFee,
     GetEyemedSlabOffFee,
     GetEyemedSpecialityLensFee,
+    GetEyemedTintFee,
     GetPrivatePolishPrice,
     GetPrivateSlabOffPrice,
     GetPrivateSpecialityLensPrice,
@@ -1089,7 +1096,7 @@ export const calculateLensesCopaysFee = (
     isPrivate
 ) => {
     let total = 0;
-    if (data?.isLensBenifit === "Yes") {
+    if (data?.isLensBenifit === "Yes" && data?.visionPlan !== "Eyemed") {
         // add lens Prices
         total = total + parseFloat(GetLensFee(data, calculatorObj, lensPrices));
         // add photochromic price
@@ -1098,11 +1105,27 @@ export const calculateLensesCopaysFee = (
         total = total + parseFloat(GetSunGlassesPrice(data));
         // add antireflective price
         total = total + parseFloat(GetAntireflectivePrice(data));
-        if (data?.visionPlan === "Eyemed") {
-            total = total + parseFloat(GetEyemedSlabOffFee(data));
-            total = total + parseFloat(GetEyemedSpecialityLensFee(data));
-            total = total + parseFloat(GetEyemedPolishFee(data));
-        }
+    } else if (data?.isLensBenifit === "Yes" && data?.visionPlan === "Eyemed") {
+        // add lens Prices
+        total = total + parseFloat(GetEyemedLensFee(data));
+        // add material Prices
+        total = total + parseFloat(GetEyemedMaterialFee(data));
+        // add photochromic price
+        total = total + parseFloat(GetEyemedPhotochromicFee(data));
+        // add sun glasses polarized price
+        total = total + parseFloat(GetEyemedPolarizedFee(data));
+        // add sun glasses tint price
+        total = total + parseFloat(GetEyemedTintFee(data));
+        // add sun glasses Mirror coating price
+        total = total + parseFloat(GetEyemedCoatingFee(data));
+        // add antireflective price
+        total = total + parseFloat(GetEyemedAntireflectiveFee(data));
+        // add Slab off price
+        total = total + parseFloat(GetEyemedSlabOffFee(data));
+        // add Speciality Lens Price
+        total = total + parseFloat(GetEyemedSpecialityLensFee(data));
+        // add Polish Price
+        total = total + parseFloat(GetEyemedPolishFee(data));
     } else if (
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
@@ -1135,15 +1158,15 @@ export const calculateLensesCopaysFee = (
                     data
                 )
             );
+        // add addetional treatments
+        if (data?.visionPlan === "Eyemed") {
+            total = total + GetPrivateSlabOffPrice(calculatorObj, data);
+            total = total + GetPrivateSpecialityLensPrice(calculatorObj, data);
+            total = total + GetPrivatePolishPrice(calculatorObj, data);
+        }
     }
     //add material copay
     total = total + parseFloat(data?.materialCopay || 0);
-    // add addetional treatments
-    if (data?.visionPlan === "Eyemed") {
-        total = total + GetPrivateSlabOffPrice(calculatorObj, data);
-        total = total + GetPrivateSpecialityLensPrice(calculatorObj, data);
-        total = total + GetPrivatePolishPrice(calculatorObj, data);
-    }
 
     return total;
 };
