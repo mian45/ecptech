@@ -52,7 +52,7 @@ export const CreateCalculatorValidations = (data) => {
         data?.find((ques) => ques.question == "Any copay lowered than standard")
             ?.optional === "true"
     ) {
-        validationObject.isloweredCopay =
+        validationObject.isLoweredCopay =
             Yup.string().required("Option is required");
     }
     if (
@@ -79,7 +79,7 @@ export const CreateCalculatorValidations = (data) => {
         );
     }
     if (
-        data?.find((ques) => ques.question == "Sunglass Lens")?.optional ===
+        data?.find((ques) => ques.question == "Sunglass Options")?.optional ===
         "true"
     ) {
         validationObject.isSunglasses = Yup.string().required(
@@ -87,7 +87,7 @@ export const CreateCalculatorValidations = (data) => {
         );
     }
     if (
-        data?.find((ques) => ques.question == "Antireflective Properties")
+        data?.find((ques) => ques.question == "Anti-Reflective Properties")
             ?.optional === "true"
     ) {
         validationObject.isAntireflective = Yup.string().required(
@@ -135,9 +135,10 @@ export const GetMappedPayload = (data) => {
             retailFee: data?.frameRetailFee,
             frameContribution: data?.frameContribution,
             drillMount: data?.drillMount,
+            drillMountPrice: data?.drillMountValue,
         },
         lowerCopaythanStandard: {
-            value: data?.isloweredCopay,
+            value: data?.isLoweredCopay,
             copayList: [
                 {
                     type: "Polycarbonate",
@@ -146,7 +147,7 @@ export const GetMappedPayload = (data) => {
                     price: data?.copayPolycarbonateAmount,
                 },
                 {
-                    type: "Photochromic",
+                    type: "Photochromics",
                     status: data?.isCopayPhotochromic,
                     copayType: data?.isCopayPhotochromicAmount,
                     price: data?.copayPhotochromicAmount,
@@ -186,22 +187,29 @@ export const GetMappedPayload = (data) => {
         lensType: {
             type: data?.lensType,
             brand: data?.lensTypeValue,
+            brandPrice: data?.lensTypeInput,
         },
         lensMaterial: data?.lensMaterial,
+        lensMaterialPrice: data?.lensMaterialValue,
         photochromics: {
             status: data?.isPhotochromics,
             type: data?.photochromicsType,
+            price: data?.photochromicValue,
         },
         sunGlassesLens: {
             status: data?.isSunglasses,
             lensType: data?.sunglassesType,
+            polarizedPrice: data?.polarizedTypePrice,
             tintType: data?.tintType,
+            tintPrice: data?.tintTypePrice,
             mirrorCoating: data?.isMirrorCoating,
             coatingType: data?.mirrorCoatingType,
+            coatingPrice: data?.mirrorCoatingPrice,
         },
         antiReflectiveProperties: {
             status: data?.isAntireflective,
             type: data?.antireflectiveType,
+            price: data?.antireflectiveValue,
         },
         protectionPlan: {
             status: data?.isProtectionPlan,
@@ -219,6 +227,24 @@ export const GetMappedPayload = (data) => {
             amountType: data?.discountAmountType,
             discountId: data?.discountId,
         },
+        additionalLens: data?.isAdditionalLensOptions,
+        slabOff: {
+            status: data?.isSlabOff,
+            price: data?.slabOffPrice,
+        },
+        specialtyLens: {
+            status: data?.isSpecialtyLens,
+            price: data?.specialityLensPrice,
+        },
+        polish: {
+            status: data?.isPolish,
+            type: data?.polishType,
+            price: data?.polishPrice,
+        },
+        tracing: {
+            status: data?.tracingFee,
+            price: data?.tracingPrice,
+        },
     };
 };
 
@@ -229,7 +255,7 @@ export const mappedEditValues = (data) => {
         (item) => item.type === "Polycarbonate"
     );
     const photochromic = lowerCopay.find(
-        (item) => item.type === "Photochromic"
+        (item) => item.type === "Photochromics"
     );
     const hignIndex = lowerCopay.find((item) => item.type === "High Index");
     const antiReflective = lowerCopay.find(
@@ -259,7 +285,8 @@ export const mappedEditValues = (data) => {
         frameRetailFee: userState?.frameOrder?.retailFee || "",
         frameContribution: userState?.frameOrder?.frameContribution || "",
         drillMount: userState?.frameOrder?.drillMount || "",
-        isloweredCopay: userState?.lowerCopaythanStandard?.value || "",
+        drillMountValue: userState?.frameOrder?.drillMountPrice || "",
+        isLoweredCopay: userState?.lowerCopaythanStandard?.value || "",
         isCopayPolycarbonate: polycarbonate?.status || null,
         isCopayPhotochromic: photochromic?.status || null,
         isCopayHighIndex: hignIndex?.status || null,
@@ -283,16 +310,23 @@ export const mappedEditValues = (data) => {
         copayCustomProgressiveAmount: customProgresive?.price || "",
         lensType: userState?.lensType?.type || "",
         lensTypeValue: userState?.lensType?.brand || "",
+        lensTypeInput: userState?.lensType?.brandPrice || "",
         lensMaterial: userState?.lensMaterial || "",
+        lensMaterialValue: userState?.lensMaterialPrice || "",
         isPhotochromics: userState?.photochromics?.status || "",
         photochromicsType: userState?.photochromics?.type || "",
+        photochromicValue: userState?.photochromics?.price || "",
         isSunglasses: userState?.sunGlassesLens?.status || "",
         sunglassesType: userState?.sunGlassesLens?.lensType || "",
+        polarizedTypePrice: userState?.sunGlassesLens?.polarizedPrice || "",
+        tintTypePrice: userState?.sunGlassesLens?.tintPrice || "",
+        mirrorCoatingPrice: userState?.sunGlassesLens?.coatingPrice || "",
         tintType: userState?.sunGlassesLens?.tintType || "",
         isMirrorCoating: userState?.sunGlassesLens?.mirrorCoating || "",
         mirrorCoatingType: userState?.sunGlassesLens?.coatingType || "",
         isAntireflective: userState?.antiReflectiveProperties?.status || "",
         antireflectiveType: userState?.antiReflectiveProperties?.type || "",
+        antireflectiveValue: userState?.antiReflectiveProperties?.price || "",
         isProtectionPlan: userState?.protectionPlan?.status || "",
         protectionPlanType: userState?.protectionPlan?.type || "",
         isProtectionPlanPaid: userState?.protectionPlan?.paymentStatus || "",
@@ -303,5 +337,15 @@ export const mappedEditValues = (data) => {
         discountValue: userState?.discount?.value || "",
         discountAmountType: userState?.discount?.amountType || "percentage",
         discountId: userState?.discount?.discountId || "",
+        isAdditionalLensOptions: userState?.additionalLens || "",
+        isSlabOff: userState?.slabOff?.status || "",
+        slabOffPrice: userState?.slabOff?.price || "",
+        isSpecialtyLens: userState?.specialtyLens?.status || "",
+        specialityLensPrice: userState?.specialtyLens?.price || "",
+        isPolish: userState?.polish?.status || "",
+        polishType: userState?.polish?.type || "",
+        polishPrice: userState?.polish?.price || "",
+        tracingFee: userState?.tracing?.status || "",
+        tracingPrice: userState?.tracing?.price || "",
     };
 };

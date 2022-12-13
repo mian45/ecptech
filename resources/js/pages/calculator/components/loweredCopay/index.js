@@ -19,6 +19,8 @@ import {
     GetPrivatePhotochromicPrice,
 } from "../viewInvoice/helpers/pricesHelper/calculateOtherPlansPrices";
 import { handleCheckboxFalse } from "./helper";
+import { AllPlans } from "../../data/plansList";
+import { connect } from "react-redux";
 
 const LoweredCopay = ({
     formProps,
@@ -27,6 +29,7 @@ const LoweredCopay = ({
     calValidations,
     data,
     lensPrices,
+    language,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const [amountError, setAmountError] = useState(defaultError);
@@ -35,6 +38,7 @@ const LoweredCopay = ({
         ?.question_permissions?.find(
             (ques) => ques.question === "Any copay lowered than standard"
         )?.visibility;
+    const eyemedPlan = AllPlans[language]?.eyemed;
     const handleLoweredCopayClick = (e) => {
         handleChange(e);
         if (
@@ -434,53 +438,64 @@ const LoweredCopay = ({
             </>
         );
     };
-    return (
-        <>
-            {copayDollarAmountVisibility ? (
-                <Row className={classes["container"]}>
-                    {" "}
-                    <Col sx={0} sm={0} md={5}>
-                        <QuestionIcon
-                            icon={visionIcon}
-                            active={values?.isloweredCopay}
-                        />
-                    </Col>
-                    <Col sx={24} sm={24} md={19}>
-                        <div className={classes["vision-container"]}>
-                            <CalculatorHeading
-                                title="Any copay dollar amount less than standard?"
-                                active={values?.isloweredCopay}
+    const renderCopayScreen = () => {
+        return (
+            <>
+                {copayDollarAmountVisibility ? (
+                    <Row className={classes["container"]}>
+                        {" "}
+                        <Col sx={0} sm={0} md={5}>
+                            <QuestionIcon
+                                icon={visionIcon}
+                                active={values?.isLoweredCopay}
                             />
-                            <Radio.Group
-                                onChange={handleLoweredCopayClick}
-                                value={values?.isloweredCopay}
-                                id="isloweredCopay"
-                                name="isloweredCopay"
-                                className={classes["radio-group"]}
-                            >
-                                <CustomRadio
-                                    label={"Yes"}
-                                    value={"Yes"}
-                                    active={values?.isloweredCopay === "Yes"}
+                        </Col>
+                        <Col sx={24} sm={24} md={19}>
+                            <div className={classes["vision-container"]}>
+                                <CalculatorHeading
+                                    title="Any copay dollar amount less than standard?"
+                                    active={values?.isLoweredCopay}
                                 />
-                                <CustomRadio
-                                    label={"No"}
-                                    value={"No"}
-                                    active={values?.isloweredCopay === "No"}
-                                />
-                            </Radio.Group>
-                            <FormikError name={"isloweredCopay"} />
-                            {values?.isloweredCopay === "Yes" &&
-                                copayProperties()}
-                        </div>
-                    </Col>
-                </Row>
-            ) : null}
-        </>
+                                <Radio.Group
+                                    onChange={handleLoweredCopayClick}
+                                    value={values?.isLoweredCopay}
+                                    id="isLoweredCopay"
+                                    name="isLoweredCopay"
+                                    className={classes["radio-group"]}
+                                >
+                                    <CustomRadio
+                                        label={"Yes"}
+                                        value={"Yes"}
+                                        active={
+                                            values?.isLoweredCopay === "Yes"
+                                        }
+                                    />
+                                    <CustomRadio
+                                        label={"No"}
+                                        value={"No"}
+                                        active={values?.isLoweredCopay === "No"}
+                                    />
+                                </Radio.Group>
+                                <FormikError name={"isLoweredCopay"} />
+                                {values?.isLoweredCopay === "Yes" &&
+                                    copayProperties()}
+                            </div>
+                        </Col>
+                    </Row>
+                ) : null}
+            </>
+        );
+    };
+    return (
+        <>{values?.visionPlan === eyemedPlan ? <></> : renderCopayScreen()}</>
     );
 };
 
-export default LoweredCopay;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
+
+export default connect(mapStateToProps)(LoweredCopay);
 
 const SpecialCopaySlot = ({
     title,

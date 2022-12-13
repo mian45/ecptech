@@ -298,7 +298,7 @@ const OutPackPrices = ({
                 {receipt?.values?.antiReflectiveProperties?.status ===
                     "Yes" && (
                     <InvoiceSlot
-                        title={`Antireflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
+                        title={`Anti-Reflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
                         subTitle={`$${
                             (getAntireflectivePrice() || 0).toFixed(2) || 0
                         }`}
@@ -440,7 +440,7 @@ const OutPackPrices = ({
                 {receipt?.values?.antiReflectiveProperties?.status ===
                     "Yes" && (
                     <InvoiceSlot
-                        title={`Antireflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
+                        title={`Anti-Reflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`}
                         subTitle={`$${
                             (getAntireflectivePrice() || 0).toFixed(2) || 0
                         }`}

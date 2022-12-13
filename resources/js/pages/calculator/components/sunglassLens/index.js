@@ -6,6 +6,10 @@ import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./styles.module.scss";
 import icon from "../../../../../images/calculator/sunglasses.svg";
 import * as Yup from "yup";
+import { connect } from "react-redux";
+import { AllPlans } from "../../data/plansList";
+import { Plans } from "../../data/plansJson";
+import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 
 const SunglassLens = ({
     formProps,
@@ -13,18 +17,35 @@ const SunglassLens = ({
     setCalValidations,
     calValidations,
     data,
+    language,
 }) => {
     const { values, handleChange, handleBlur } = formProps;
 
     const sunglassLensVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
-            (ques) => ques.question === "Sunglass Lens"
+            (ques) => ques.question === "Sunglass Options"
         )?.visibility;
 
-    const addons = calculatorObj?.addons?.find(
-        (item) => item.title === "SunGlasses"
-    )?.addons;
+    const eyemedPlan = AllPlans[language]?.eyemed;
+    const lensBenifitYes =
+        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+    const sunglassesYes =
+        Plans[language][values?.visionPlan]?.sunglasses?.options?.yes;
+    const polarizedType =
+        Plans[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
+            ?.polarized?.question;
+    const tintType =
+        Plans[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
+            ?.tint?.question;
+    const mirrorCoatingYes =
+        Plans[language][values?.visionPlan]?.sunglasses?.subQuestion
+            ?.subQuestion?.options?.yes;
+    const addons = calculatorObj?.addons
+        ?.find((plan) => plan?.title === values?.visionPlan)
+        ?.addon_types?.find(
+            (item) => item.title === "Sunglass Options"
+        )?.addons;
     const isPolirizedActive = addons?.some(
         (item) => item?.title === "Polarized"
     );
@@ -41,11 +62,20 @@ const SunglassLens = ({
         (item) => item?.title === "Solid/Single Gradient Mirror"
     );
 
+    const handleInputChange = (e) => {
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value)) {
+            handleChange(e);
+        } else if (e.target.value == "") {
+            handleChange(e);
+        }
+    };
+
     const handleIsSunglassesLensChange = (e) => {
         handleChange(e);
         if (
             e?.target?.value === "Yes" &&
-            data?.find((ques) => ques.question === "Sunglass Lens")
+            data?.find((ques) => ques.question === "Sunglass Options")
                 ?.optional === "true"
         ) {
             const sunglassesType = Yup.string().required("Option is required");
@@ -59,6 +89,9 @@ const SunglassLens = ({
             delete validations.tintType;
             delete validations.isMirrorCoating;
             delete validations.mirrorCoatingType;
+            delete validations.polarizedTypePrice;
+            delete validations.tintTypePrice;
+            delete validations.mirrorCoatingPrice;
             setCalValidations({
                 ...validations,
             });
@@ -66,27 +99,44 @@ const SunglassLens = ({
     };
     const handleSunGlassesLensTypeChange = (e) => {
         handleChange(e);
-        if (
-            e?.target?.value === "Polarized" &&
-            data?.find((ques) => ques.question === "Sunglass Lens")
-                ?.optional === "true"
-        ) {
+        if (e?.target?.value === "Polarized") {
             const validations = { ...calValidations };
             delete validations.tintType;
-            const isMirrorCoating = Yup.string().required("Option is required");
+            delete validations.tintTypePrice;
+            const validationObject = {};
+            validationObject.isMirrorCoating =
+                Yup.string().required("Option is required");
+            if (
+                values?.visionPlan === eyemedPlan &&
+                values?.isLensBenifit === lensBenifitYes &&
+                values?.isSunglasses === sunglassesYes &&
+                e?.target?.value === polarizedType
+            ) {
+                validationObject.polarizedTypePrice =
+                    Yup.string().required("Price is required");
+            }
             setCalValidations({
                 ...validations,
-                isMirrorCoating,
+                ...validationObject,
             });
-        } else if (
-            e?.target?.value === "Tint" &&
-            data?.find((ques) => ques.question === "Sunglass Lens")
-                ?.optional === "true"
-        ) {
-            const validationObj = {
-                tintType: Yup.string().required("Option is required"),
-                isMirrorCoating: Yup.string().required("Option is required"),
-            };
+        } else if (e?.target?.value === "Tint") {
+            const validations = { ...calValidations };
+            delete validations.polarizedTypePrice;
+            const validationObj = {};
+            validationObj.tintType =
+                Yup.string().required("Option is required");
+            validationObj.isMirrorCoating =
+                Yup.string().required("Option is required");
+            if (
+                values?.visionPlan === eyemedPlan &&
+                values?.isLensBenifit === lensBenifitYes &&
+                values?.isSunglasses === sunglassesYes &&
+                e?.target?.value === tintType
+            ) {
+                validationObj.tintTypePrice =
+                    Yup.string().required("Price is required");
+            }
+
             setCalValidations({
                 ...calValidations,
                 ...validationObj,
@@ -96,11 +146,7 @@ const SunglassLens = ({
 
     const handleMirrirCoatingChange = (e) => {
         handleChange(e);
-        if (
-            e?.target?.value === "Yes" &&
-            data?.find((ques) => ques.question === "Sunglass Lens")
-                ?.optional === "true"
-        ) {
+        if (e?.target?.value === "Yes") {
             const mirrorCoatingType =
                 Yup.string().required("Option is required");
             setCalValidations({
@@ -110,51 +156,94 @@ const SunglassLens = ({
         } else if (e?.target?.value === "No") {
             const validations = { ...calValidations };
             delete validations.mirrorCoatingType;
+            delete validations.mirrorCoatingPrice;
             setCalValidations({
                 ...validations,
             });
         }
     };
-
-    const handleActiveState = () => {
-        if (values?.isSunglasses === "No") {
-            return true;
+    const handleMirrorCoatingChange = (e) => {
+        handleChange(e);
+        if (
+            values?.visionPlan === eyemedPlan &&
+            values?.isLensBenifit === lensBenifitYes &&
+            values?.isSunglasses === sunglassesYes &&
+            values?.isMirrorCoating === mirrorCoatingYes &&
+            e?.target?.value
+        ) {
+            const validationObject = {};
+            validationObject.mirrorCoatingPrice =
+                Yup.string().required("Price is required");
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
         } else {
-            if (values?.sunglassesType) {
-                if (values?.sunglassesType === "Polarized") {
-                    if (values?.isMirrorCoating === "No") {
-                        return true;
-                    } else {
-                        if (values?.mirrorCoatingType) {
-                            return true;
-                        }
-                        return false;
-                    }
-                } else {
-                    if (values?.sunglassesType === "Tint") {
-                        if (
-                            values?.isMirrorCoating === "No" &&
-                            values?.tintType
-                        ) {
-                            return true;
-                        } else {
-                            if (values?.mirrorCoatingType && values?.tintType) {
-                                return true;
-                            }
-                            return false;
-                        }
-                    }
-                    return false;
-                }
-                return false;
-            }
-            return false;
+            const validations = { ...calValidations };
+            delete validations.mirrorCoatingPrice;
+            setCalValidations({
+                ...validations,
+            });
         }
     };
+    const getOtherPlanActiveState = () => {
+        return values?.isSunglasses === "No" ||
+            (values?.isSunglasses === "Yes" &&
+                values?.sunglassesType === "Polarized" &&
+                values?.isMirrorCoating === "No") ||
+            (values?.isSunglasses === "Yes" &&
+                values?.sunglassesType === "Polarized" &&
+                values?.isMirrorCoating === "Yes" &&
+                values?.mirrorCoatingType) ||
+            (values?.isSunglasses === "Yes" &&
+                values?.sunglassesType === "Tint" &&
+                values?.isMirrorCoating === "No" &&
+                values?.tintType) ||
+            (values?.isSunglasses === "Yes" &&
+                values?.sunglassesType === "Tint" &&
+                values?.isMirrorCoating === "Yes" &&
+                values?.tintType &&
+                values?.mirrorCoatingType)
+            ? true
+            : false;
+    };
+    const getEyemedPlanActiveState = () => {
+        return values?.isSunglasses === "No" ||
+            (values?.isSunglasses === "Yes" &&
+                values?.sunglassesType === "Polarized" &&
+                values?.polarizedTypePrice &&
+                values?.isMirrorCoating === "No") ||
+            (values?.isSunglasses === "Yes" &&
+                values?.sunglassesType === "Polarized" &&
+                values?.polarizedTypePrice &&
+                values?.isMirrorCoating === "Yes" &&
+                values?.mirrorCoatingType &&
+                values?.mirrorCoatingPrice) ||
+            (values?.isSunglasses === "Yes" &&
+                values?.sunglassesType === "Tint" &&
+                values?.isMirrorCoating === "No" &&
+                values?.tintTypePrice &&
+                values?.tintType) ||
+            (values?.isSunglasses === "Yes" &&
+                values?.sunglassesType === "Tint" &&
+                values?.isMirrorCoating === "Yes" &&
+                values?.tintType &&
+                values?.tintTypePrice &&
+                values?.mirrorCoatingType &&
+                values?.mirrorCoatingPrice)
+            ? true
+            : false;
+    };
+    const handleActiveState = () => {
+        const otherPlan = getOtherPlanActiveState();
+        const eyemedPlan = getEyemedPlanActiveState();
+        return (values.visionPlan !== eyemedPlan && otherPlan) ||
+            (values.visionPlan === eyemedPlan && eyemedPlan)
+            ? true
+            : false;
+    };
     const getPolorized = () => {
-        return calculatorObj?.addons
-            ?.find((item) => item?.title === "SunGlasses")
-            ?.addons?.find((val) => val?.title === "Polarized");
+        return addons?.find((val) => val?.title === "Polarized");
     };
 
     const renderSunGlassLens = () => {
@@ -192,19 +281,25 @@ const SunglassLens = ({
                     )}
                 </Radio.Group>
                 <FormikError name={"sunglassesType"} />
+                {values?.visionPlan === eyemedPlan &&
+                    values?.isLensBenifit === lensBenifitYes &&
+                    values?.isSunglasses === sunglassesYes &&
+                    values?.sunglassesType === polarizedType && (
+                        <CalculatorInput
+                            onChange={handleInputChange}
+                            value={values?.polarizedTypePrice}
+                            name={"polarizedTypePrice"}
+                        />
+                    )}
             </>
         );
     };
     const renderTintLens = () => {
         const getSolid = () => {
-            return calculatorObj?.addons
-                ?.find((item) => item?.title === "SunGlasses")
-                ?.addons?.find((val) => val?.title === "Solid Tint");
+            return addons?.find((val) => val?.title === "Solid Tint");
         };
         const getGradient = () => {
-            return calculatorObj?.addons
-                ?.find((item) => item?.title === "SunGlasses")
-                ?.addons?.find((val) => val?.title === "Gradient Tint");
+            return addons?.find((val) => val?.title === "Gradient Tint");
         };
         return (
             <>
@@ -249,6 +344,16 @@ const SunglassLens = ({
                             )}
                         </Radio.Group>
                         <FormikError name={"tintType"} />
+                        {values?.visionPlan === eyemedPlan &&
+                            values?.isLensBenifit === lensBenifitYes &&
+                            values?.isSunglasses === sunglassesYes &&
+                            values?.sunglassesType === tintType && (
+                                <CalculatorInput
+                                    onChange={handleInputChange}
+                                    value={values?.tintTypePrice}
+                                    name={"tintTypePrice"}
+                                />
+                            )}
                     </>
                 )}
             </>
@@ -285,16 +390,12 @@ const SunglassLens = ({
     };
     const renderMirrorType = () => {
         const getSkyType = () => {
-            return calculatorObj?.addons
-                ?.find((item) => item?.title === "SunGlasses")
-                ?.addons?.find((val) => val?.title === "Ski Type Mirror");
+            return addons?.find((val) => val?.title === "Ski Type Mirror");
         };
         const getSolidSingle = () => {
-            return calculatorObj?.addons
-                ?.find((item) => item?.title === "SunGlasses")
-                ?.addons?.find(
-                    (val) => val?.title === "Solid/Single Gradient Mirror"
-                );
+            return addons?.find(
+                (val) => val?.title === "Solid/Single Gradient Mirror"
+            );
         };
         return (
             <>
@@ -302,7 +403,7 @@ const SunglassLens = ({
                     <>
                         <div className={classes["label"]}>Please Select</div>
                         <Radio.Group
-                            onChange={handleChange}
+                            onChange={handleMirrorCoatingChange}
                             value={values?.mirrorCoatingType}
                             id="mirrorCoatingType"
                             name="mirrorCoatingType"
@@ -340,6 +441,17 @@ const SunglassLens = ({
                             )}
                         </Radio.Group>
                         <FormikError name={"mirrorCoatingType"} />
+                        {values?.visionPlan === eyemedPlan &&
+                            values?.isLensBenifit === lensBenifitYes &&
+                            values?.isSunglasses === sunglassesYes &&
+                            values?.isMirrorCoating === mirrorCoatingYes &&
+                            values?.mirrorCoatingType && (
+                                <CalculatorInput
+                                    onChange={handleInputChange}
+                                    value={values?.mirrorCoatingPrice}
+                                    name={"mirrorCoatingPrice"}
+                                />
+                            )}
                     </>
                 )}
             </>
@@ -358,7 +470,7 @@ const SunglassLens = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["vision-container"]}>
                             <CalculatorHeading
-                                title="Sunglass Lens?"
+                                title="Sunglass Options?"
                                 active={handleActiveState()}
                             />
                             <Radio.Group
@@ -407,4 +519,8 @@ const SunglassLens = ({
     );
 };
 
-export default SunglassLens;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
+
+export default connect(mapStateToProps)(SunglassLens);

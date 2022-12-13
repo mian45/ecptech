@@ -77,6 +77,7 @@ class User extends Authenticatable
             event(new \App\Providers\UserAddonPermission($user));
             event(new \App\Providers\UserLenseMaterialPermission($user));
             event(new \App\Providers\UserVisionPlanPermissionPermission($user));
+            event(new \App\Providers\UserEyePrescriptionData($user));
         });
     }
 }

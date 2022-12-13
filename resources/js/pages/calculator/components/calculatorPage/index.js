@@ -35,6 +35,8 @@ import CustomLoader from "../../../../components/customLoader";
 import CustomDiscount from "../customDiscount";
 import { Col, message } from "antd";
 import { ScrollToFieldError } from "./helpers/scrollToFieldError";
+import AdditionalLensTreatment from "../additionalLensTreatment/additionalLensTreatment";
+import TracingFee from "../tracingFee/tracingFee";
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -101,20 +103,7 @@ const CalculatorScreen = () => {
                 allValues[initialPlan] = mappedEditValues(editInvoiceState);
                 setDefaultValues(allValues);
                 setCalculatorState(allValues[initialPlan]);
-                let allValidations = {};
-                vpState?.questions?.forEach((item) => {
-                    const validations = CreateCalculatorValidations(
-                        item?.question_permissions
-                    );
-                    if (item?.title === "Private Pay") {
-                        delete validations?.isloweredCopay;
-                        delete validations?.isLensBenifit;
-                        delete validations?.isFrameBenifit;
-                    }
-                    allValidations[item.title] = validations;
-                });
-                setValidationsList(allValidations);
-                setCalValidations(allValidations[initialPlan]);
+                manageValidationObject(vpState?.questions, initialPlan);
             }
             getBaseValues(mappedEditValues(editInvoiceState), editCalObject);
             setLoading(false);
@@ -145,6 +134,8 @@ const CalculatorScreen = () => {
                 { vision_plan_id: firstPlan?.id }
             );
             resData.lens_types = colRes?.data?.data?.collection;
+            resData.additional_lense_setting = [];
+
             setCalculatorObj(resData);
             const questions = resData?.questions;
 
@@ -165,25 +156,49 @@ const CalculatorScreen = () => {
             });
             setDefaultValues(allValues);
             setCalculatorState(allValues[initialPlan]);
-
-            let allValidations = {};
-            questions?.forEach((item) => {
-                const validations = CreateCalculatorValidations(
-                    item?.question_permissions
-                );
-                if (item?.title === "Private Pay") {
-                    delete validations?.isloweredCopay;
-                    delete validations?.isLensBenifit;
-                    delete validations?.isFrameBenifit;
-                }
-                allValidations[item.title] = validations;
-            });
-            setValidationsList(allValidations);
-            setCalValidations(allValidations[initialPlan]);
+            manageValidationObject(questions, initialPlan);
             setLoading(false);
         } catch (err) {
             console.log("error while fetching Data");
         }
+    };
+
+    const manageValidationObject = (question, initialPlan) => {
+        let allValidations = {};
+        question?.forEach((item) => {
+            const validations = CreateCalculatorValidations(
+                item?.question_permissions
+            );
+            if (item?.title === "Private Pay") {
+                delete validations?.isLoweredCopay;
+                delete validations?.isLensBenifit;
+                delete validations?.isFrameBenifit;
+            } else if (item?.title === "Eyemed") {
+                delete validations?.isLoweredCopay;
+                const slabOff =
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Slab Off"
+                    )?.optional === "true";
+                const specialityLens =
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Speciality Lens"
+                    )?.optional === "true";
+                const polish =
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Polish"
+                    )?.optional === "true";
+                if (slabOff || specialityLens || polish) {
+                    validations.isAdditionalLensOptions = Yup.string().required(
+                        "Additional lens options is required"
+                    );
+                } else {
+                    delete validations.isAdditionalLensOptions;
+                }
+            }
+            allValidations[item.title] = validations;
+        });
+        setValidationsList(allValidations);
+        setCalValidations(allValidations[initialPlan]);
     };
 
     const HideInvoice = () => {
@@ -306,7 +321,7 @@ const CalculatorScreen = () => {
 
         if (values?.submitBenifitType === BenifitTypeEnums.lens) {
             const validations = { ...calValidations };
-            delete validations.isloweredCopay;
+            delete validations.isLoweredCopay;
             delete validations.lensType;
             if (values.lensType) {
                 delete validations.lensTypeValue;
@@ -403,6 +418,18 @@ const CalculatorScreen = () => {
                         calculatorObj?.questions?.find(
                             (item) =>
                                 item.title === formProps?.values?.visionPlan
+                        )?.question_permissions
+                    }
+                />
+                <AdditionalLensTreatment
+                    formProps={formProps}
+                    calculatorObj={calculatorObj && calculatorObj}
+                    setCalValidations={setCalValidations}
+                    calValidations={calValidations}
+                    data={
+                        calculatorObj?.questions?.find(
+                            (item) =>
+                                item?.title === formProps?.values?.visionPlan
                         )?.question_permissions
                     }
                 />
@@ -854,6 +881,21 @@ const CalculatorScreen = () => {
                                                                             ?.visionPlan
                                                                 )
                                                                     ?.question_permissions
+                                                            }
+                                                        />
+                                                        <TracingFee
+                                                            formProps={
+                                                                formProps
+                                                            }
+                                                            calculatorObj={
+                                                                calculatorObj &&
+                                                                calculatorObj
+                                                            }
+                                                            setCalValidations={
+                                                                setCalValidations
+                                                            }
+                                                            calValidations={
+                                                                calValidations
                                                             }
                                                         />
                                                         <GlassesProtection
