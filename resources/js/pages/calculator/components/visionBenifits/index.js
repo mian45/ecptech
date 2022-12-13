@@ -71,6 +71,7 @@ const VisionBenifits = ({
             delete validations.frameContribution;
             delete validations.drillMount;
             delete validations.drillMountValue;
+            delete validations.shipping;
             setCalValidations({
                 ...validations,
             });
@@ -110,6 +111,11 @@ const VisionBenifits = ({
                         validationObject.drillMountValue =
                             Yup.string().required("Drill mount is required");
                     }
+                }
+                if (values?.frameOrderType === "Patient Own Frame") {
+                    validationObject.tracingFee = Yup.string().required(
+                        "Tracing Fee is required"
+                    );
                 }
                 setCalValidations({
                     ...calValidations,
