@@ -70,7 +70,6 @@ class PrescriptionController extends Controller
             'left_eye_cylinder' => 'required',
             'user_id' => 'required'
         ]);
-
         if ($validator->fails()) {
             throw (new ValidationException($validator));
         }
@@ -81,14 +80,14 @@ class PrescriptionController extends Controller
         }
         $resultRight = $request->right_eye_sphere + $request->right_eye_cylinder;
         $resultRight = ($request->right_eye_sphere >= $resultRight)? $request->right_eye_sphere : $resultRight;
-        $right_eye_material = Prescription::where('sphere_from', '<=', $resultRight)
-        ->where('sphere_to', '>=', $resultRight)
+        $right_eye_material = Prescription::where('sphere_from', '>=', $resultRight)
+        ->where('sphere_to', '<=', $resultRight)
         ->where('user_id', $user_id)->first();
     
         $resultLeft = $request->left_eye_sphere + $request->left_eye_cylinder;
         $resultLeft = ($request->left_eye_sphere >= $resultLeft)? $request->left_eye_sphere : $resultLeft;
-        $left_eye_material = Prescription::where('sphere_from', '<=', $request->left_eye_sphere)
-        ->where('sphere_to', '>=', $request->left_eye_sphere)
+        $left_eye_material = Prescription::where('sphere_from', '>=', $request->left_eye_sphere)
+        ->where('sphere_to', '<=', $request->left_eye_sphere)
         ->where('user_id', $user_id)->first();
         $meterial_name = '';
         if(isset($right_eye_material) && isset($left_eye_material)){
