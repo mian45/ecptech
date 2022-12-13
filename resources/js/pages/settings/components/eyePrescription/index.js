@@ -5,7 +5,6 @@ import { connect } from "react-redux";
 import { defaultMaterials } from "./data";
 import { Row, Col, message } from "antd";
 import CustomLoader from "../../../../components/customLoader";
-import addIcon from "../../../../../images/add-card-icon.png";
 import removeIcon from "../../../../../images/cross.svg";
 const EyePrescription = ({ userId }) => {
     const [messageApi, contextHolder] = message.useMessage();
@@ -379,7 +378,6 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, eyeData }) => {
                                                     )
                                                 }
                                             />
-                                            {console.log(item["sphere_to"])}
                                             <div>
                                                 {index == 0 ? (
                                                     <div
