@@ -44,7 +44,7 @@ class UserTableSeeder extends Seeder
                 'updated_at' => date("Y-m-d H:i:s")
             )
         ));
-        DB::table('prescriptions')->truncate();
+        DB::table('prescriptions')->where('user_id',2)->truncate();
         DB::table('prescriptions')->insert(array(
             array(
 
