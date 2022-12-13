@@ -218,7 +218,10 @@ const EyePrescription = ({ userId }) => {
                     if (key == item.name) {
                         detailedObject = {
                             ...detailedObject,
-                            [item.name]: [...detailedObject[item.name], item],
+                            [item.name]: [
+                                ...detailedObject[item.name],
+                                { ...item, user_id: userId },
+                            ],
                         };
                     }
                 });
