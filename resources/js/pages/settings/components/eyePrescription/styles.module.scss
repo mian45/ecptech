@@ -90,6 +90,7 @@
     display: flex;
     width: 100%;
     align-items: center;
+    margin-top: 20px;
 }
 .input {
     width: 44% !important;
@@ -123,4 +124,30 @@
     font-size: 14px !important;
     font-family: Montserrat !important;
     margin-top: 10px !important;
+}
+.add{
+    background-color:#6fa5cb;
+    padding: 9px;
+    border-radius:50%;
+    margin-left: 10px;
+    transform:matrix(0, -1, 1, 0, 0, 0);
+    transform: rotate(45deg);
+}
+.add-disabled{
+    background-color:#cbcbcb;
+    padding: 9px;
+    border-radius:50%;
+    margin-left: 10px;
+    transform:matrix(0, -1, 1, 0, 0, 0);
+    transform: rotate(45deg);
+}
+.remove{
+    background-color:#cbcbcb;
+    padding: 9px;
+    border-radius:50%;
+    margin-left: 10px;
+    transform:matrix(0, -1, 1, 0, 0, 0);
+}
+.remove:hover{
+    background-color:red;
 }
