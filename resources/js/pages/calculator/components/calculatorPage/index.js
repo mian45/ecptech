@@ -79,6 +79,7 @@ const CalculatorScreen = () => {
                 price_calculation_data: vpState?.price_calculation_data,
                 shipping: vpState?.shipping,
                 tax: vpState?.tax,
+                tracing_fee: vpState?.tracing_fee,
             };
             setCalculatorObj(editCalObject);
             if (editInvoiceState && editInvoiceState?.vp_state) {
@@ -577,6 +578,19 @@ const CalculatorScreen = () => {
                                                     }
                                                     isFrame={true}
                                                 />
+                                                <TracingFee
+                                                    formProps={formProps}
+                                                    calculatorObj={
+                                                        calculatorObj &&
+                                                        calculatorObj
+                                                    }
+                                                    setCalValidations={
+                                                        setCalValidations
+                                                    }
+                                                    calValidations={
+                                                        calValidations
+                                                    }
+                                                />
                                             </div>
                                         )}
                                         {formProps.values?.submitBenifitType ===
@@ -884,21 +898,25 @@ const CalculatorScreen = () => {
                                                                     ?.question_permissions
                                                             }
                                                         />
-                                                        <TracingFee
-                                                            formProps={
-                                                                formProps
-                                                            }
-                                                            calculatorObj={
-                                                                calculatorObj &&
-                                                                calculatorObj
-                                                            }
-                                                            setCalValidations={
-                                                                setCalValidations
-                                                            }
-                                                            calValidations={
-                                                                calValidations
-                                                            }
-                                                        />
+                                                        {formProps?.values
+                                                            ?.isFrameBenifit ===
+                                                            FrameBenifitAvailableEnum.yes && (
+                                                            <TracingFee
+                                                                formProps={
+                                                                    formProps
+                                                                }
+                                                                calculatorObj={
+                                                                    calculatorObj &&
+                                                                    calculatorObj
+                                                                }
+                                                                setCalValidations={
+                                                                    setCalValidations
+                                                                }
+                                                                calValidations={
+                                                                    calValidations
+                                                                }
+                                                            />
+                                                        )}
                                                         <GlassesProtection
                                                             formProps={
                                                                 formProps
@@ -951,6 +969,8 @@ const CalculatorScreen = () => {
                                                         buttonBool={true}
                                                     />
                                                 </span>
+                                            ) : editInvoiceState?.id ? (
+                                                "Update Invoice"
                                             ) : (
                                                 "Create Invoice"
                                             )}
