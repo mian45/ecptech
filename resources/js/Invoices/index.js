@@ -62,7 +62,6 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
         };
 
         try {
-            setIsSearched(true);
             const invoiceObject = {
                 firstName: values?.firstName,
                 lastName: values?.lastName,
