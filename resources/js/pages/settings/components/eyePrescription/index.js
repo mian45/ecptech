@@ -324,7 +324,7 @@ const EyePrescription = ({ userId }) => {
                                 <button
                                     className={classes["button"]}
                                     onClick={handleSubmit}
-                                    // disabled={disable || isIncompleteRange()}
+                                    disabled={disable || isIncompleteRange()}
                                 >
                                     {buttonLoader == false ? (
                                         "Save"
@@ -490,10 +490,7 @@ const EyePrescriptionSlot = ({
                                             </div>
                                         </div>
                                         {sphErrValue && (
-                                            <div
-                                                className={classes["error"]}
-                                                onC
-                                            >
+                                            <div className={classes["error"]}>
                                                 {sphErrValue}
                                             </div>
                                         )}
