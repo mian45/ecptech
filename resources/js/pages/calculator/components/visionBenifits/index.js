@@ -13,6 +13,8 @@ import {
 } from "../../data/enums";
 import { BenifitTypeEnums } from "../../data/initialValues";
 import * as Yup from "yup";
+import { AllPlans } from "../../data/plansList";
+import { connect } from "react-redux";
 
 const VisionBenifits = ({
     formProps,
@@ -20,6 +22,7 @@ const VisionBenifits = ({
     setCalValidations,
     calValidations,
     data,
+    language,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const [err, setErr] = useState("");
@@ -39,6 +42,7 @@ const VisionBenifits = ({
         ?.question_permissions?.find(
             (ques) => ques.question === "Material Copay"
         )?.visibility;
+    const eyemedPlan = AllPlans[language]?.eyemed;
 
     const handleMaterialCopayChange = (e) => {
         const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
@@ -63,6 +67,11 @@ const VisionBenifits = ({
             setFieldValue("benifitType", BenifitTypeEnums.frame);
             const validations = { ...calValidations };
             delete validations.frameOrderType;
+            delete validations.frameRetailFee;
+            delete validations.frameContribution;
+            delete validations.drillMount;
+            delete validations.drillMountValue;
+            delete validations.shipping;
             setCalValidations({
                 ...validations,
             });
@@ -85,6 +94,29 @@ const VisionBenifits = ({
                         "Frame Order is required"
                     ),
                 };
+                if (values?.frameOrderType === "New Frame Purchase") {
+                    validationObject.frameRetailFee = Yup.string().required(
+                        "Retail fee is required"
+                    );
+                    validationObject.frameContribution = Yup.string().required(
+                        "Contribution is required"
+                    );
+                    validationObject.drillMount = Yup.string().required(
+                        "Drill mount is required"
+                    );
+                    if (
+                        values?.visionPlan === eyemedPlan &&
+                        values?.drillMount === "Yes"
+                    ) {
+                        validationObject.drillMountValue =
+                            Yup.string().required("Drill mount is required");
+                    }
+                }
+                if (values?.frameOrderType === "Patient Own Frame") {
+                    validationObject.tracingFee = Yup.string().required(
+                        "Tracing Fee is required"
+                    );
+                }
                 setCalValidations({
                     ...calValidations,
                     ...validationObject,
@@ -104,7 +136,7 @@ const VisionBenifits = ({
             }
             setFieldValue("benifitType", BenifitTypeEnums.lens);
             const validations = { ...calValidations };
-            delete validations.isloweredCopay;
+            delete validations.isLoweredCopay;
             delete validations.lensType;
             if (values.lensType) {
                 delete validations.lensTypeValue;
@@ -113,6 +145,7 @@ const VisionBenifits = ({
             delete validations.isPhotochromics;
             delete validations.isSunglasses;
             delete validations.isAntireflective;
+            delete validations.isAdditionalLensOptions;
             setCalValidations({
                 ...validations,
             });
@@ -276,17 +309,37 @@ const VisionBenifits = ({
     );
 };
 
-export default VisionBenifits;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
+
+export default connect(mapStateToProps)(VisionBenifits);
 
 export const GetValidations = (data, isLoweredCopay, values) => {
+    const slabOff =
+        data?.find((ques) => ques?.question == "Slab Off")?.optional === "true";
+    const specialityLens =
+        data?.find((ques) => ques?.question == "Speciality Lens")?.optional ===
+        "true";
+    const polish =
+        data?.find((ques) => ques?.question == "Polish")?.optional === "true";
+
     const validationObject = {};
+    if (
+        (slabOff || specialityLens || polish) &&
+        values?.visionPlan === "Eyemed"
+    ) {
+        validationObject.isAdditionalLensOptions = Yup.string().required(
+            "Additional lens options is required"
+        );
+    }
     if (
         data?.find(
             (ques) => ques.question === "Any copay lowered than standard"
         )?.optional === "true" &&
         isLoweredCopay
     ) {
-        validationObject.isloweredCopay =
+        validationObject.isLoweredCopay =
             Yup.string().required("Option is required");
     }
     if (
@@ -317,7 +370,7 @@ export const GetValidations = (data, isLoweredCopay, values) => {
         );
     }
     if (
-        data?.find((ques) => ques.question === "Sunglass Lens")?.optional ===
+        data?.find((ques) => ques.question === "Sunglass Options")?.optional ===
         "true"
     ) {
         validationObject.isSunglasses = Yup.string().required(
@@ -325,7 +378,7 @@ export const GetValidations = (data, isLoweredCopay, values) => {
         );
     }
     if (
-        data?.find((ques) => ques.question === "Antireflective Properties")
+        data?.find((ques) => ques.question === "Anti-Reflective Properties")
             ?.optional === "true"
     ) {
         validationObject.isAntireflective = Yup.string().required(

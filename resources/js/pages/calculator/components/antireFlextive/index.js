@@ -7,6 +7,10 @@ import classes from "./styles.module.scss";
 import icon from "../../../../../images/calculator/antireflictive.svg";
 import { AntireflectiveTypeEnum } from "../../data/enums";
 import * as Yup from "yup";
+import { AllPlans } from "../../data/plansList";
+import { Plans } from "../../data/plansJson";
+import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
+import { connect } from "react-redux";
 
 const AntireFlextive = ({
     formProps,
@@ -14,32 +18,43 @@ const AntireFlextive = ({
     setCalValidations,
     calValidations,
     data,
+    language,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const antireflectiveVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
-            (ques) => ques.question === "Antireflective Properties"
+            (ques) => ques.question === "Anti-Reflective Properties"
         )?.visibility;
     const [error, setError] = useState("");
 
+    const eyemedPlan = AllPlans[language]?.eyemed;
+    const lensBenifitYes =
+        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+    const antireflectiveYes =
+        Plans[language][values?.visionPlan]?.antireflective?.options?.yes;
+
     const getAntireflectiveList = () => {
         return (
-            calculatorObj?.addons?.find(
-                (item) => item?.title === "Anti Reflective"
-            )?.addons || []
+            calculatorObj?.addons
+                ?.find((plan) => plan?.title === values?.visionPlan)
+                ?.addon_types?.find(
+                    (item) => item?.title === "Anti-Reflective Properties"
+                )?.addons || []
         );
     };
 
     const handleActiveFields = () => {
-        if (values?.isAntireflective === "No") {
-            return true;
-        } else {
-            if (values?.antireflectiveType) {
-                return true;
-            }
-            return false;
-        }
+        return (values?.isAntireflective === "Yes" &&
+            values?.antireflectiveType &&
+            values?.visionPlan !== eyemedPlan) ||
+            values?.isAntireflective === "No" ||
+            (values?.isAntireflective === "Yes" &&
+                values?.antireflectiveType &&
+                values?.visionPlan === eyemedPlan &&
+                values?.antireflectiveValue)
+            ? true
+            : false;
     };
 
     const handleAntireflectiveChange = async (e) => {
@@ -47,7 +62,7 @@ const AntireFlextive = ({
         if (
             (e?.target?.value === "Yes" &&
                 !data?.find(
-                    (ques) => ques.question === "Antireflective Properties"
+                    (ques) => ques.question === "Anti-Reflective Properties"
                 ).optional) ||
             (e?.target?.value === "Yes" && values?.lensType === "NVF")
         ) {
@@ -78,12 +93,43 @@ const AntireFlextive = ({
             setError("");
         }
     };
+    const handleInputChange = (e) => {
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value)) {
+            handleChange(e);
+        } else if (e.target.value == "") {
+            handleChange(e);
+        }
+    };
+
+    const handleAntireflectiveTypeChange = (e) => {
+        handleChange(e);
+        if (
+            values?.visionPlan === eyemedPlan &&
+            values?.isLensBenifit === lensBenifitYes &&
+            values?.isAntireflective === antireflectiveYes &&
+            e?.target?.value
+        ) {
+            const validationObject = {};
+            validationObject.antireflectiveValue =
+                Yup.string().required("Price is required");
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
+        } else {
+            const validations = { ...calValidations };
+            delete validations.antireflectiveValue;
+            setCalValidations({
+                ...validations,
+            });
+        }
+    };
 
     return (
         <>
             {(antireflectiveVisibility || values?.lensType === "NVF") && (
                 <Row className={classes["container"]}>
-                    {" "}
                     <Col sx={0} sm={0} md={5}>
                         <QuestionIcon
                             icon={icon}
@@ -93,7 +139,7 @@ const AntireFlextive = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["vision-container"]}>
                             <CalculatorHeading
-                                title="Antireflective Properties?"
+                                title="Anti-Reflective Properties?"
                                 active={handleActiveFields()}
                             />
                             <Radio.Group
@@ -129,7 +175,9 @@ const AntireFlextive = ({
                                         Select Properties
                                     </div>
                                     <Radio.Group
-                                        onChange={handleChange}
+                                        onChange={
+                                            handleAntireflectiveTypeChange
+                                        }
                                         value={values?.antireflectiveType}
                                         id="antireflectiveType"
                                         name="antireflectiveType"
@@ -147,7 +195,9 @@ const AntireFlextive = ({
                                                         }
                                                         value={value?.title}
                                                         headClass={
-                                                            classes["radio"]
+                                                            classes[
+                                                                "radio-margin"
+                                                            ]
                                                         }
                                                         active={
                                                             values?.antireflectiveType ===
@@ -161,6 +211,17 @@ const AntireFlextive = ({
                                     <FormikError name={"antireflectiveType"} />
                                 </>
                             )}
+                            {values?.visionPlan === eyemedPlan &&
+                                values?.isLensBenifit === lensBenifitYes &&
+                                values?.isAntireflective ===
+                                    antireflectiveYes &&
+                                values?.antireflectiveType && (
+                                    <CalculatorInput
+                                        onChange={handleInputChange}
+                                        value={values?.antireflectiveValue}
+                                        name={"antireflectiveValue"}
+                                    />
+                                )}
                         </div>
                     </Col>
                 </Row>
@@ -169,4 +230,8 @@ const AntireFlextive = ({
     );
 };
 
-export default AntireFlextive;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
+
+export default connect(mapStateToProps)(AntireFlextive);

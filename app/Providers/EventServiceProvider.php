@@ -33,6 +33,10 @@ class EventServiceProvider extends ServiceProvider
 
         UserVisionPlanPermissionPermission::class => [
             AddUserVisionPlanPermission::class
+        ],
+
+        UserEyePrescriptionData::class => [
+            AddUserEyePrescriptionData::class
         ]
         
     ];

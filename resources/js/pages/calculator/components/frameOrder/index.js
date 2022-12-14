@@ -7,6 +7,10 @@ import classes from "./styles.module.scss";
 import frameIcon from "../../../../../images/calculator/frame-glass.svg";
 import { DrillMountTypeEnum, FrameOrderTypeEnum } from "../../data/enums";
 import * as Yup from "yup";
+import { AllPlans } from "../../data/plansList";
+import { connect } from "react-redux";
+import { Plans } from "../../data/plansJson";
+import CalculatorInput from "./components/calculatorInput/calculatorInput";
 
 const FrameOrder = ({
     formProps,
@@ -15,6 +19,7 @@ const FrameOrder = ({
     calValidations,
     data,
     isFrame,
+    language,
 }) => {
     const { values, handleChange } = formProps;
     const frameOrderVisibility = calculatorObj?.questions
@@ -22,12 +27,47 @@ const FrameOrder = ({
         ?.question_permissions?.find(
             (ques) => ques.question === "Frame Order"
         )?.visibility;
+
+    const eyemedPlan = AllPlans[language]?.eyemed;
+    const frameBenifitYes =
+        Plans[language][values?.visionPlan]?.frameBenifit?.options?.yes;
+    const drillMountYes =
+        Plans[language][values?.visionPlan]?.frameOrder?.options?.newFrame
+            ?.subQuestion?.options?.yes;
+    const drillMountTitle =
+        Plans[language][values?.visionPlan]?.frameOrder?.options?.newFrame
+            ?.subQuestion?.question;
+
     const handleInputChange = (e) => {
         const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
         if (regix.test(e.target.value)) {
             handleChange(e);
         } else if (e.target.value == "") {
             handleChange(e);
+        }
+    };
+    const handleDrillMountChange = (e) => {
+        handleChange(e);
+
+        if (
+            values?.visionPlan === eyemedPlan &&
+            e?.target?.value === drillMountYes
+        ) {
+            const validationObject = {
+                drillMountValue: Yup.string().required(
+                    "Drill mount is required"
+                ),
+            };
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
+        } else {
+            const validations = { ...calValidations };
+            delete validations.drillMountValue;
+            setCalValidations({
+                ...validations,
+            });
         }
     };
 
@@ -84,9 +124,9 @@ const FrameOrder = ({
                     )}
                 </Row>
                 <div className={classes["frame-sub-container"]}>
-                    <CalculatorHeading title="Drill Mount?" />
+                    <CalculatorHeading title={drillMountTitle} />
                     <Radio.Group
-                        onChange={handleChange}
+                        onChange={handleDrillMountChange}
                         value={values?.drillMount}
                         id="drillMount"
                         name="drillMount"
@@ -110,6 +150,15 @@ const FrameOrder = ({
                     </Radio.Group>
                     <FormikError name={"drillMount"} />
                 </div>
+                {values?.visionPlan === eyemedPlan &&
+                    values?.isFrameBenifit === frameBenifitYes &&
+                    values?.drillMount === drillMountYes && (
+                        <CalculatorInput
+                            onChange={handleInputChange}
+                            value={values?.drillMountValue}
+                            name={"drillMountValue"}
+                        />
+                    )}
             </>
         );
     };
@@ -125,7 +174,11 @@ const FrameOrder = ({
                 values?.frameContribution &&
                 values?.drillMount
             ) {
-                return true;
+                return values.visionPlan !== eyemedPlan ||
+                    (values.visionPlan === eyemedPlan &&
+                        values?.drillMountValue)
+                    ? true
+                    : false;
             }
             return false;
         }
@@ -134,21 +187,28 @@ const FrameOrder = ({
 
     const handleFrameOrderChange = (e) => {
         handleChange(e);
-        if (
-            e?.target?.value === "New Frame Purchase" &&
-            data?.find((ques) => ques.question === "Frame Order")?.optional ===
-                "true"
-        ) {
+        if (e?.target?.value === "New Frame Purchase") {
             const validationObject = {
                 frameRetailFee: Yup.string().required("Retail fee is required"),
                 frameContribution: Yup.string().required(
                     "Contribution is required"
                 ),
                 drillMount: Yup.string().required("Drill mount is required"),
+                drillMountValue: Yup.string().required(
+                    "Drill mount is required"
+                ),
             };
+            if (
+                values?.visionPlan === eyemedPlan &&
+                values?.drillMount !== drillMountYes
+            ) {
+                delete validationObject.drillMountValue;
+            }
             if (isFrame || values.visionPlan === "Private Pay") {
                 delete validationObject.frameContribution;
             }
+            delete calValidations.tracingFee;
+            delete calValidations.tracingPrice;
             setCalValidations({
                 ...calValidations,
                 ...validationObject,
@@ -158,6 +218,10 @@ const FrameOrder = ({
             delete validations.frameRetailFee;
             delete validations.frameContribution;
             delete validations.drillMount;
+            delete validations.drillMountValue;
+            validations.tracingFee = Yup.string().required(
+                "Tracing Fee is required"
+            );
             setCalValidations({
                 ...validations,
             });
@@ -217,4 +281,8 @@ const FrameOrder = ({
     );
 };
 
-export default FrameOrder;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
+
+export default connect(mapStateToProps)(FrameOrder);

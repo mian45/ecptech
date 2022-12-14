@@ -31,12 +31,11 @@ import { BenifitTypeEnums } from "../../data/initialValues";
 import DetailsList from "./components/detailsList/detailsList";
 import { getPriceFromDB } from "./helpers/getPriceFromDB";
 import { Col, Modal, Row, message } from "antd";
-import {
-    CalculateTotalPrice,
-    CalculateWithTaxesTotalPrice,
-} from "./helpers/pricesHelper/calculateTotalPrice";
+import { CalculateWithTaxesTotalPrice } from "./helpers/pricesHelper/calculateTotalPrice";
 import UseWindowSize from "../../../../hooks/windowResize";
 import ButtonsList from "./components/buttonsList/buttonsList";
+import { AllPlans } from "../../data/plansList";
+import { Plans } from "../../data/plansJson";
 
 const ViewInvoice = ({
     onClose,
@@ -50,11 +49,13 @@ const ViewInvoice = ({
     clientUserId,
     userRole,
     messageApi,
+    language,
 }) => {
     const history = useHistory();
     const [receipt, setReceipt] = useState(null);
     const { width } = UseWindowSize();
-
+    const plansList = AllPlans[language];
+    const plansJson = Plans[language];
     useEffect(() => {
         setReceipt({
             userInfo: userInfo,
@@ -62,16 +63,16 @@ const ViewInvoice = ({
         });
     }, [calValues]);
 
-    const handleSendInvoiceClick = async () => {
+    const handleSendInvoiceClick = async (status) => {
         if (mode === "view") {
             onClose();
             return;
         }
         try {
             if (invoiceId) {
-                await onEditInvoice();
+                await onEditInvoice(status);
             } else {
-                await createNewInvoice();
+                await createNewInvoice(status);
             }
 
             history.push(INVOICES_ROUTE);
@@ -87,7 +88,7 @@ const ViewInvoice = ({
         }
     };
 
-    const createNewInvoice = async () => {
+    const createNewInvoice = async (status) => {
         let clientId = userId;
         if (userRole === "staff") {
             clientId = clientUserId;
@@ -101,11 +102,14 @@ const ViewInvoice = ({
             dob: receipt?.userInfo?.dob,
             email: receipt?.userInfo?.email,
             phone: receipt?.userInfo?.phoneNo,
+            status: status,
             amount: (
                 CalculateWithTaxesTotalPrice(
                     receipt?.values,
                     calculatorObj,
-                    lensPrices
+                    lensPrices,
+                    plansList,
+                    plansJson
                 ) || 0
             ).toFixed(2),
             vpState: calculatorObj,
@@ -123,7 +127,7 @@ const ViewInvoice = ({
         });
     };
 
-    const onEditInvoice = async () => {
+    const onEditInvoice = async (status) => {
         let clientId = userId;
         if (userRole === "staff") {
             clientId = clientUserId;
@@ -133,11 +137,14 @@ const ViewInvoice = ({
             userId: clientId,
             staffId: receipt?.values?.staffId,
             invoiceName: receipt?.values?.invoiceName,
+            status: status,
             amount: (
                 CalculateWithTaxesTotalPrice(
                     receipt?.values,
                     calculatorObj,
-                    lensPrices
+                    lensPrices,
+                    plansList,
+                    plansJson
                 ) || 0
             ).toFixed(2),
             vpState: calculatorObj,
@@ -263,6 +270,7 @@ const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
     userRole: state.Auth.userRole?.name,
     clientUserId: state.Auth.clientUser?.id,
+    language: state.Auth.language,
 });
 export default connect(mapStateToProps)(ViewInvoice);
 
