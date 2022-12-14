@@ -6,6 +6,10 @@ import classes from "./styles.module.scss";
 import CustomRadio from "../../../../components/customRadio";
 import icon from "../../../../../images/calculator/photochromics.svg";
 import * as Yup from "yup";
+import { connect } from "react-redux";
+import { AllPlans } from "../../data/plansList";
+import { Plans } from "../../data/plansJson";
+import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 
 const Photochromics = ({
     formProps,
@@ -13,6 +17,7 @@ const Photochromics = ({
     setCalValidations,
     calValidations,
     data,
+    language,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const photochromicsVisibility = calculatorObj?.questions
@@ -21,24 +26,32 @@ const Photochromics = ({
             (ques) => ques.question === "Photochromics"
         )?.visibility;
     const [error, setError] = useState("");
+    const eyemedPlan = AllPlans[language]?.eyemed;
+    const lensBenifitYes =
+        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+    const photochromicsYes =
+        Plans[language][values?.visionPlan]?.photochromics?.options?.yes;
 
     const getPhotochromicList = () => {
         return (
-            calculatorObj?.addons?.find(
-                (item) => item?.title === "Photochromic"
-            )?.addons || []
+            calculatorObj?.addons
+                ?.find((plan) => plan?.title === values?.visionPlan)
+                ?.addon_types?.find((item) => item?.title === "Photochromics")
+                ?.addons || []
         );
     };
 
     const handleActiveState = () => {
-        if (values?.isPhotochromics === "No") {
-            return true;
-        } else {
-            if (values?.photochromicsType) {
-                return true;
-            }
-            return false;
-        }
+        return (values?.isPhotochromics === "Yes" &&
+            values?.photochromicsType &&
+            values?.visionPlan !== eyemedPlan) ||
+            values?.isPhotochromics === "No" ||
+            (values?.isPhotochromics === "Yes" &&
+                values?.photochromicsType &&
+                values?.visionPlan === eyemedPlan &&
+                values?.photochromicValue)
+            ? true
+            : false;
     };
 
     const handlePhotochromicsChange = async (e) => {
@@ -75,11 +88,42 @@ const Photochromics = ({
         }
     };
 
+    const handleInputChange = (e) => {
+        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(e.target.value)) {
+            handleChange(e);
+        } else if (e.target.value == "") {
+            handleChange(e);
+        }
+    };
+    const handlePhotochromicsTypeChange = (e) => {
+        handleChange(e);
+        if (
+            values?.visionPlan === eyemedPlan &&
+            values?.isLensBenifit === lensBenifitYes &&
+            values?.isPhotochromics === photochromicsYes &&
+            e?.target?.value
+        ) {
+            const validationObject = {};
+            validationObject.photochromicValue =
+                Yup.string().required("Price is required");
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
+        } else {
+            const validations = { ...calValidations };
+            delete validations.photochromicValue;
+            setCalValidations({
+                ...validations,
+            });
+        }
+    };
+
     return (
         <>
             {photochromicsVisibility ? (
                 <Row className={classes["container"]}>
-                    {" "}
                     <Col sx={0} sm={0} md={5}>
                         <QuestionIcon
                             icon={icon}
@@ -120,7 +164,7 @@ const Photochromics = ({
                                         Select Photochromics
                                     </div>
                                     <Radio.Group
-                                        onChange={handleChange}
+                                        onChange={handlePhotochromicsTypeChange}
                                         value={values?.photochromicsType}
                                         id="photochromicsType"
                                         name="photochromicsType"
@@ -152,6 +196,16 @@ const Photochromics = ({
                                     <FormikError name={"photochromicsType"} />
                                 </>
                             )}
+                            {values?.visionPlan === eyemedPlan &&
+                                values?.isLensBenifit === lensBenifitYes &&
+                                values?.isPhotochromics === photochromicsYes &&
+                                values?.photochromicsType && (
+                                    <CalculatorInput
+                                        onChange={handleInputChange}
+                                        value={values?.photochromicValue}
+                                        name={"photochromicValue"}
+                                    />
+                                )}
                         </div>
                     </Col>
                 </Row>
@@ -160,7 +214,11 @@ const Photochromics = ({
     );
 };
 
-export default Photochromics;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
+
+export default connect(mapStateToProps)(Photochromics);
 
 const PHOTOCHROMICS_VALUES = [
     "Transition Signature",

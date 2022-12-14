@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50" height="50" viewBox="0 0 50 50">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_579" data-name="Rectangle 579" width="50" height="50" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="Group_431" data-name="Group 431" clip-path="url(#clip-path)">
+    <path id="Icon_material-lens" data-name="Icon material-lens" d="M18,3A15,15,0,1,0,33,18,15.005,15.005,0,0,0,18,3Z" transform="translate(7 7)" fill="#fff"/>
+  </g>
+</svg>

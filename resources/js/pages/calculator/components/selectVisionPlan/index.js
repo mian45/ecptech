@@ -37,6 +37,11 @@ const SelectVisionPlan = ({
                 { vision_plan_id: currentPlan?.id }
             );
             calculatorObj.lens_types = res?.data?.data?.collection;
+            calculatorObj.additional_lense_setting = [];
+            if (value.target?.value === "Eyemed") {
+                calculatorObj.additional_lense_setting =
+                    res?.data?.data?.additional_lense_setting;
+            }
             setCalculatorObj(calculatorObj);
         } catch (err) {
             console.log("error while get collections....");

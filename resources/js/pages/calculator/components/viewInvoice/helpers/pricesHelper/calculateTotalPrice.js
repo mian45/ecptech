@@ -1,8 +1,22 @@
+import { CalculateEyemedPlansPrices } from "./calculateEyemedPrice";
 import { CalculateOtherPlansPrices } from "./calculateOtherPlansPrices";
 
-export const CalculateTotalPrice = (data, calculatorObj, lensPrices) => {
-    if (data?.visionPlan === "Private Pay") {
+export const CalculateTotalPrice = (
+    data,
+    calculatorObj,
+    lensPrices,
+    plansList,
+    plansJson
+) => {
+    if (data?.visionPlan === plansList?.privatePay) {
         return CalculateOtherPlansPrices(data, calculatorObj, lensPrices, true);
+    } else if (data?.visionPlan === plansList?.eyemed) {
+        return CalculateEyemedPlansPrices(
+            data,
+            calculatorObj,
+            plansList,
+            plansJson
+        );
     } else {
         return CalculateOtherPlansPrices(
             data,
@@ -16,11 +30,21 @@ export const CalculateTotalPrice = (data, calculatorObj, lensPrices) => {
 export const CalculateWithTaxesTotalPrice = (
     data,
     calculatorObj,
-    lensPrices
+    lensPrices,
+    plansList,
+    plansJson
 ) => {
     let total = 0;
     // without taxes price
-    total = total + CalculateTotalPrice(data, calculatorObj, lensPrices);
+    total =
+        total +
+        CalculateTotalPrice(
+            data,
+            calculatorObj,
+            lensPrices,
+            plansList,
+            plansJson
+        );
     //remove disount price
     total = total - GetAppliedDiscount(total, data);
     //add tax
@@ -31,7 +55,13 @@ export const CalculateWithTaxesTotalPrice = (
         }
     });
     const tax =
-        (CalculateTotalPrice(data, calculatorObj, lensPrices) *
+        (CalculateTotalPrice(
+            data,
+            calculatorObj,
+            lensPrices,
+            plansList,
+            plansJson
+        ) *
             (totalTax || 0)) /
         100;
     total = total + tax;

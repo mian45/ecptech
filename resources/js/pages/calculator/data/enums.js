@@ -8,7 +8,7 @@ export const DrillMountTypeEnum = Object.freeze({
 });
 export const LowerCopayTypeEnum = Object.freeze({
     polycarbonate: "Polycarbonate",
-    photochromic: "Photochromic",
+    photochromic: "Photochromics",
     highIndex: "High Index",
     antiReflective: "Anti-Reflective Properties",
     standardProgressives: "Standard Progressives",
