@@ -11,6 +11,7 @@ import { AllPlans } from "../../data/plansList";
 import { Plans } from "../../data/plansJson";
 import { connect } from "react-redux";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
+import { resetLowerCopayMaterial } from "./helpers/resetLowerCopayMaterial";
 
 const LensMeterials = ({
     formProps,
@@ -31,7 +32,7 @@ const LensMeterials = ({
 
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
-        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
 
     const getActiveMaterials = (material) => {
         if (values?.visionPlan === eyemedPlan) {
@@ -67,31 +68,13 @@ const LensMeterials = ({
     };
 
     const handleLensMererialChange = async (e) => {
-        if (e?.target?.value !== "Polycarbonate") {
-            const validations = { ...calValidations };
-            delete validations.isCopayPolycarbonateAmount;
-            delete validations.copayPolycarbonateAmount;
+        await resetLowerCopayMaterial(
+            e,
+            calValidations,
+            setCalValidations,
+            formProps
+        );
 
-            await setFieldValue("isCopayPolycarbonate", null);
-            await setFieldValue("isCopayPolycarbonateAmount", "");
-            await setFieldValue("copayPolycarbonateAmount", "");
-            setCalValidations({ ...validations });
-        }
-        if (
-            !(
-                e?.target?.value?.includes("Hi index") ||
-                e?.target?.value?.includes("Hi Index")
-            )
-        ) {
-            const validations = { ...calValidations };
-            delete validations.isCopayHighIndexAmount;
-            delete validations.copayHighIndexAmount;
-
-            await setFieldValue("isCopayHighIndex", null);
-            await setFieldValue("isCopayHighIndexAmount", "");
-            await setFieldValue("copayHighIndexAmount", "");
-            setCalValidations({ ...validations });
-        }
         if (
             values?.lensTypeValue &&
             e?.target?.value &&

@@ -621,6 +621,13 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
+                'title' => "Blue Light Filtering",
+                'vision_plan_id' => 6,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
                 'title' => "Slab Off",
                 'vision_plan_id' => 6,
                 'created_at' => date("Y-m-d H:i:s"),

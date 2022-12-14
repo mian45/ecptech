@@ -29,17 +29,17 @@ const SunglassLens = ({
 
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
-        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const sunglassesYes =
-        Plans[language][values?.visionPlan]?.sunglasses?.options?.yes;
+        Plans()[language][values?.visionPlan]?.sunglasses?.options?.yes;
     const polarizedType =
-        Plans[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
+        Plans()[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
             ?.polarized?.question;
     const tintType =
-        Plans[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
+        Plans()[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
             ?.tint?.question;
     const mirrorCoatingYes =
-        Plans[language][values?.visionPlan]?.sunglasses?.subQuestion
+        Plans()[language][values?.visionPlan]?.sunglasses?.subQuestion
             ?.subQuestion?.options?.yes;
     const addons = calculatorObj?.addons
         ?.find((plan) => plan?.title === values?.visionPlan)

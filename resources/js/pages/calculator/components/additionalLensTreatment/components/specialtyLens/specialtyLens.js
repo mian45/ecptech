@@ -20,18 +20,18 @@ const SpecialtyLens = ({
     const { values, handleChange } = formProps;
     const eyemedPlan = AllPlans[language]?.eyemed;
     const specialtyLensTitle =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
             ?.specialtyLens?.question;
     const specialtyLensYes =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
             ?.specialtyLens?.options?.yes;
     const specialtyLensNo =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
             ?.specialtyLens?.options?.no;
     const lensBenifitYes =
-        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const additionalLensYes =
-        Plans[language][values?.visionPlan]?.additionalLens?.options?.yes;
+        Plans()[language][values?.visionPlan]?.additionalLens?.options?.yes;
     const handleSpecialityLensChange = (e) => {
         handleChange(e);
         if (

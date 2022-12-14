@@ -55,6 +55,7 @@ const CalculatorScreen = () => {
     const [loading, setLoading] = useState(true);
     const [buttonLoader, setButtonLoader] = useState(false);
     const [noPlanFound, setNoPlanFound] = useState(false);
+    const [davisMaterials, setDavisMaterials] = useState([]);
     const editInvoiceState = history?.location?.state?.invoice;
     let scrollRef = useRef();
 
@@ -137,6 +138,7 @@ const CalculatorScreen = () => {
             resData.lens_types = colRes?.data?.data?.collection;
             resData.additional_lense_setting = [];
 
+            setDavisMaterials(resData?.lense_materials || []);
             setCalculatorObj(resData);
             const questions = resData?.questions;
 
@@ -736,6 +738,9 @@ const CalculatorScreen = () => {
                                                             setCalculatorState={
                                                                 setCalculatorState
                                                             }
+                                                            setDavisMaterials={
+                                                                setDavisMaterials
+                                                            }
                                                         />
                                                         <VisionBenifits
                                                             formProps={
@@ -841,6 +846,9 @@ const CalculatorScreen = () => {
                                                                     ?.visionPlan !==
                                                                     "Private Pay" && (
                                                                     <LoweredCopay
+                                                                        davisMaterials={
+                                                                            davisMaterials
+                                                                        }
                                                                         lensPrices={
                                                                             lensPrices
                                                                         }

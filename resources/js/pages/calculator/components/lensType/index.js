@@ -12,6 +12,7 @@ import { AllPlans } from "../../data/plansList";
 import { Plans } from "../../data/plansJson";
 import { connect } from "react-redux";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
+import { selectLensTypeValidations } from "./helpers/selectLensTypeValidations";
 
 const LensType = ({
     formProps,
@@ -34,7 +35,7 @@ const LensType = ({
     const [error, setError] = useState("");
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
-        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
 
     const showActiveState = () => {
         return (values?.lensType &&
@@ -75,33 +76,16 @@ const LensType = ({
     };
     const getBrandByLens = async (e) => {
         try {
-            if (e?.target?.value !== "PAL") {
-                delete calValidations.isCopaypremiumProgressiveAmount;
-                delete calValidations.copaypremiumProgressiveAmount;
-                delete calValidations.isCopayStandardProgressiveAmount;
-                delete calValidations.copayStandardProgressiveAmount;
-                delete calValidations.isCopayCustomProgressiveAmount;
-                delete calValidations.copayCustomProgressiveAmount;
-
-                await setFieldValue("isCopayPremiumProgressives", null);
-                await setFieldValue("isCopaypremiumProgressiveAmount", "");
-                await setFieldValue("copaypremiumProgressiveAmount", "");
-                await setFieldValue("isCopayStandardProgressives", null);
-                await setFieldValue("isCopayStandardProgressiveAmount", "");
-                await setFieldValue("copayStandardProgressiveAmount", "");
-                await setFieldValue("isCopayCustomProgressives", null);
-                await setFieldValue("isCopayCustomProgressiveAmount", "");
-                await setFieldValue("copayCustomProgressiveAmount", "");
-            }
-            const lensTypeValue = Yup.string().required("Brand is required");
-            setCalValidations({
-                ...calValidations,
-                lensTypeValue,
-            });
+            await selectLensTypeValidations(
+                e,
+                formProps,
+                calValidations,
+                setCalValidations
+            );
             await handleChange(e);
             await setFieldValue("lensTypeValue", "");
             setError("");
-            handleNVFType(e);
+            await handleNVFType(e);
         } catch (err) {
             console.log("error while getting brands");
         }

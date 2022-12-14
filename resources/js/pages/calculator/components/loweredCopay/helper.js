@@ -8,7 +8,13 @@ export const handleCheckboxFalse = (values, key, value) => {
                 !values?.isCopayAntiReflective &&
                 !values?.isCopayPremiumProgressives &&
                 !values?.isCopayStandardProgressives &&
-                !values?.isCopayCustomProgressives
+                !values?.isCopayCustomProgressives &&
+                !values?.isCopayUltraProgressives &&
+                !values?.isCopayUltimateProgressives &&
+                !values?.isCopayStandardAntireflective &&
+                !values?.isCopayPremiumAntireflective &&
+                !values?.isCopayUltraAntireflective &&
+                !values?.isCopayUltimateAntireflective
             );
         case "isCopayPhotochromic":
             return (
@@ -18,7 +24,13 @@ export const handleCheckboxFalse = (values, key, value) => {
                 !values?.isCopayAntiReflective &&
                 !values?.isCopayPremiumProgressives &&
                 !values?.isCopayStandardProgressives &&
-                !values?.isCopayCustomProgressives
+                !values?.isCopayCustomProgressives &&
+                !values?.isCopayUltraProgressives &&
+                !values?.isCopayUltimateProgressives &&
+                !values?.isCopayStandardAntireflective &&
+                !values?.isCopayPremiumAntireflective &&
+                !values?.isCopayUltraAntireflective &&
+                !values?.isCopayUltimateAntireflective
             );
         case "isCopayHighIndex":
             return (
@@ -28,7 +40,13 @@ export const handleCheckboxFalse = (values, key, value) => {
                 !values?.isCopayAntiReflective &&
                 !values?.isCopayPremiumProgressives &&
                 !values?.isCopayStandardProgressives &&
-                !values?.isCopayCustomProgressives
+                !values?.isCopayCustomProgressives &&
+                !values?.isCopayUltraProgressives &&
+                !values?.isCopayUltimateProgressives &&
+                !values?.isCopayStandardAntireflective &&
+                !values?.isCopayPremiumAntireflective &&
+                !values?.isCopayUltraAntireflective &&
+                !values?.isCopayUltimateAntireflective
             );
         case "isCopayAntiReflective":
             return (
@@ -38,7 +56,13 @@ export const handleCheckboxFalse = (values, key, value) => {
                 !values?.isCopayPolycarbonate &&
                 !values?.isCopayPremiumProgressives &&
                 !values?.isCopayStandardProgressives &&
-                !values?.isCopayCustomProgressives
+                !values?.isCopayCustomProgressives &&
+                !values?.isCopayUltraProgressives &&
+                !values?.isCopayUltimateProgressives &&
+                !values?.isCopayStandardAntireflective &&
+                !values?.isCopayPremiumAntireflective &&
+                !values?.isCopayUltraAntireflective &&
+                !values?.isCopayUltimateAntireflective
             );
         case "isCopayPremiumProgressives":
             return (
@@ -48,7 +72,13 @@ export const handleCheckboxFalse = (values, key, value) => {
                 !values?.isCopayAntiReflective &&
                 !values?.isCopayPolycarbonate &&
                 !values?.isCopayStandardProgressives &&
-                !values?.isCopayCustomProgressives
+                !values?.isCopayCustomProgressives &&
+                !values?.isCopayUltraProgressives &&
+                !values?.isCopayUltimateProgressives &&
+                !values?.isCopayStandardAntireflective &&
+                !values?.isCopayPremiumAntireflective &&
+                !values?.isCopayUltraAntireflective &&
+                !values?.isCopayUltimateAntireflective
             );
         case "isCopayStandardProgressives":
             return (
@@ -58,7 +88,13 @@ export const handleCheckboxFalse = (values, key, value) => {
                 !values?.isCopayAntiReflective &&
                 !values?.isCopayPremiumProgressives &&
                 !values?.isCopayPolycarbonate &&
-                !values?.isCopayCustomProgressives
+                !values?.isCopayCustomProgressives &&
+                !values?.isCopayUltraProgressives &&
+                !values?.isCopayUltimateProgressives &&
+                !values?.isCopayStandardAntireflective &&
+                !values?.isCopayPremiumAntireflective &&
+                !values?.isCopayUltraAntireflective &&
+                !values?.isCopayUltimateAntireflective
             );
         case "isCopayCustomProgressives":
             return (
@@ -68,7 +104,109 @@ export const handleCheckboxFalse = (values, key, value) => {
                 !values?.isCopayAntiReflective &&
                 !values?.isCopayPremiumProgressives &&
                 !values?.isCopayStandardProgressives &&
-                !values?.isCopayPolycarbonate
+                !values?.isCopayPolycarbonate &&
+                !values?.isCopayUltraProgressives &&
+                !values?.isCopayUltimateProgressives &&
+                !values?.isCopayStandardAntireflective &&
+                !values?.isCopayPremiumAntireflective &&
+                !values?.isCopayUltraAntireflective &&
+                !values?.isCopayUltimateAntireflective
+            );
+        case "isCopayUltraProgressives":
+            return (
+                !value &&
+                !values?.isCopayPhotochromic &&
+                !values?.isCopayHighIndex &&
+                !values?.isCopayAntiReflective &&
+                !values?.isCopayPremiumProgressives &&
+                !values?.isCopayStandardProgressives &&
+                !values?.isCopayPolycarbonate &&
+                !values?.isCopayCustomProgressives &&
+                !values?.isCopayUltimateProgressives &&
+                !values?.isCopayStandardAntireflective &&
+                !values?.isCopayPremiumAntireflective &&
+                !values?.isCopayUltraAntireflective &&
+                !values?.isCopayUltimateAntireflective
+            );
+        case "isCopayUltimateProgressives":
+            return (
+                !value &&
+                !values?.isCopayPhotochromic &&
+                !values?.isCopayHighIndex &&
+                !values?.isCopayAntiReflective &&
+                !values?.isCopayPremiumProgressives &&
+                !values?.isCopayStandardProgressives &&
+                !values?.isCopayPolycarbonate &&
+                !values?.isCopayUltraProgressives &&
+                !values?.isCopayCustomProgressives &&
+                !values?.isCopayStandardAntireflective &&
+                !values?.isCopayPremiumAntireflective &&
+                !values?.isCopayUltraAntireflective &&
+                !values?.isCopayUltimateAntireflective
+            );
+        case "isCopayStandardAntireflective":
+            return (
+                !value &&
+                !values?.isCopayPhotochromic &&
+                !values?.isCopayHighIndex &&
+                !values?.isCopayAntiReflective &&
+                !values?.isCopayPremiumProgressives &&
+                !values?.isCopayStandardProgressives &&
+                !values?.isCopayPolycarbonate &&
+                !values?.isCopayUltraProgressives &&
+                !values?.isCopayUltimateProgressives &&
+                !values?.isCopayCustomProgressives &&
+                !values?.isCopayPremiumAntireflective &&
+                !values?.isCopayUltraAntireflective &&
+                !values?.isCopayUltimateAntireflective
+            );
+        case "isCopayPremiumAntireflective":
+            return (
+                !value &&
+                !values?.isCopayPhotochromic &&
+                !values?.isCopayHighIndex &&
+                !values?.isCopayAntiReflective &&
+                !values?.isCopayPremiumProgressives &&
+                !values?.isCopayStandardProgressives &&
+                !values?.isCopayPolycarbonate &&
+                !values?.isCopayUltraProgressives &&
+                !values?.isCopayUltimateProgressives &&
+                !values?.isCopayStandardAntireflective &&
+                !values?.isCopayCustomProgressives &&
+                !values?.isCopayUltraAntireflective &&
+                !values?.isCopayUltimateAntireflective
+            );
+        case "isCopayUltraAntireflective":
+            return (
+                !value &&
+                !values?.isCopayPhotochromic &&
+                !values?.isCopayHighIndex &&
+                !values?.isCopayAntiReflective &&
+                !values?.isCopayPremiumProgressives &&
+                !values?.isCopayStandardProgressives &&
+                !values?.isCopayPolycarbonate &&
+                !values?.isCopayUltraProgressives &&
+                !values?.isCopayUltimateProgressives &&
+                !values?.isCopayStandardAntireflective &&
+                !values?.isCopayPremiumAntireflective &&
+                !values?.isCopayCustomProgressives &&
+                !values?.isCopayUltimateAntireflective
+            );
+        case "isCopayUltimateAntireflective":
+            return (
+                !value &&
+                !values?.isCopayPhotochromic &&
+                !values?.isCopayHighIndex &&
+                !values?.isCopayAntiReflective &&
+                !values?.isCopayPremiumProgressives &&
+                !values?.isCopayStandardProgressives &&
+                !values?.isCopayPolycarbonate &&
+                !values?.isCopayUltraProgressives &&
+                !values?.isCopayUltimateProgressives &&
+                !values?.isCopayStandardAntireflective &&
+                !values?.isCopayPremiumAntireflective &&
+                !values?.isCopayUltraAntireflective &&
+                !values?.isCopayCustomProgressives
             );
     }
 };

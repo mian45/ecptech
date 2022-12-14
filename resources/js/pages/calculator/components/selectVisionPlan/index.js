@@ -23,6 +23,7 @@ const SelectVisionPlan = ({
     validationsList,
     setDefaultValues,
     defaultValues,
+    setDavisMaterials,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const plansList = calculatorObj?.questions?.map((plan) => plan?.title);
@@ -42,6 +43,7 @@ const SelectVisionPlan = ({
                 calculatorObj.additional_lense_setting =
                     res?.data?.data?.additional_lense_setting;
             }
+            setDavisMaterials(res?.data?.data?.lense_materials || []);
             setCalculatorObj(calculatorObj);
         } catch (err) {
             console.log("error while get collections....");

@@ -20,11 +20,11 @@ const TracingFee = ({
     const { values, handleChange, setFieldValue } = formProps;
     const eyemedPlan = AllPlans[language]?.eyemed;
     const tracingTitle =
-        Plans[language][values?.visionPlan]?.tracingFee?.question;
+        Plans()[language][values?.visionPlan]?.tracingFee?.question;
     const tracingTypeYes =
-        Plans[language][values?.visionPlan]?.tracingFee?.options?.yes;
+        Plans()[language][values?.visionPlan]?.tracingFee?.options?.yes;
     const tracingTypeNo =
-        Plans[language][values?.visionPlan]?.tracingFee?.options?.no;
+        Plans()[language][values?.visionPlan]?.tracingFee?.options?.no;
 
     useEffect(() => {
         setFieldValue("tracingPrice", calculatorObj?.tracing_fee);

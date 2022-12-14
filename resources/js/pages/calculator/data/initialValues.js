@@ -75,6 +75,25 @@ export const CalculatorInitialValues = {
     polishPrice: "",
     tracingFee: "",
     tracingPrice: "",
+    isCopayUltraProgressives: null,
+    isCopayUltraProgressiveAmount: "",
+    copayUltraProgressiveAmount: "",
+    isCopayUltimateProgressives: null,
+    isCopayUltimateProgressiveAmount: "",
+    copayUltimateProgressiveAmount: "",
+    //anti reflective copay types
+    isCopayStandardAntireflective: null,
+    isCopayStandardAntireflectiveAmount: "",
+    copayStandardAntireflectiveAmount: "",
+    isCopayPremiumAntireflective: null,
+    isCopayPremiumAntireflectiveAmount: "",
+    copayPremiumAntireflectiveAmount: "",
+    isCopayUltraAntireflective: null,
+    isCopayUltraAntireflectiveAmount: "",
+    copayUltraAntireflectiveAmount: "",
+    isCopayUltimateAntireflective: null,
+    isCopayUltimateAntireflectiveAmount: "",
+    copayUltimateAntireflectiveAmount: "",
 };
 
 export const BenifitTypeEnums = Object.freeze({

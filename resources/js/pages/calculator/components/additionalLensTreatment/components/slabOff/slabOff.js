@@ -20,18 +20,18 @@ const SlabOff = ({
     const { values, handleChange } = formProps;
     const eyemedPlan = AllPlans[language]?.eyemed;
     const slapOffTitle =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
             ?.slabOff?.question;
     const slabOffYes =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
             ?.slabOff?.options?.yes;
     const slabOffNo =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
             ?.slabOff?.options?.no;
     const lensBenifitYes =
-        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const additionalLensYes =
-        Plans[language][values?.visionPlan]?.additionalLens?.options?.yes;
+        Plans()[language][values?.visionPlan]?.additionalLens?.options?.yes;
 
     const handleSlabOffChange = (e) => {
         handleChange(e);

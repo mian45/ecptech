@@ -25,7 +25,7 @@ const DetailsList = ({
 }) => {
     const currentPlan = receipt?.values?.visionPlan;
     const plansList = AllPlans[language];
-    const plansJson = Plans[language];
+    const plansJson = Plans()[language];
 
     const getTax = () => {
         let totalTax = 0;

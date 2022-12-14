@@ -17,7 +17,7 @@ const { Panel } = Collapse;
 const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
     const currentPlan = receipt?.values?.visionPlan;
     const plansList = AllPlans[language];
-    const plansJson = Plans[language];
+    const plansJson = Plans()[language];
     const rendeFrameFee = () => {
         let price = 0;
         if (currentPlan === plansList?.eyemed) {

@@ -28,9 +28,9 @@ const Photochromics = ({
     const [error, setError] = useState("");
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
-        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const photochromicsYes =
-        Plans[language][values?.visionPlan]?.photochromics?.options?.yes;
+        Plans()[language][values?.visionPlan]?.photochromics?.options?.yes;
 
     const getPhotochromicList = () => {
         return (

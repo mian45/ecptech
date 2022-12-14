@@ -14,6 +14,12 @@ export const LowerCopayTypeEnum = Object.freeze({
     standardProgressives: "Standard Progressives",
     premiumProgressives: "Premium Progressives",
     customProgressives: "Custom Progressives",
+    ultraProgressive: "Ultra Progressives",
+    ultimateProgressive: "Ultimate Progressives",
+    standardAntireflective: "Standard Anti-Reflective",
+    premiumAntireflective: "Premium Anti-Reflective",
+    ultraAntireflective: "Ultra Anti-Reflective",
+    ultimateAntireflective: "Ultimate Anti-Reflective",
 });
 export const LowerCopayAmountTypeEnum = Object.freeze({
     amount: "Lowered copay dollar amount",

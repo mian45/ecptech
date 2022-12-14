@@ -20,21 +20,21 @@ const Polish = ({
     const { values, handleChange } = formProps;
     const eyemedPlan = AllPlans[language]?.eyemed;
     const polishTitle =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion?.polish
-            ?.question;
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
+            ?.polish?.question;
     const polishTypeTitle =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion?.polish
-            ?.subQuestion?.question;
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
+            ?.polish?.subQuestion?.question;
     const polishYes =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion?.polish
-            ?.options?.yes;
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
+            ?.polish?.options?.yes;
     const polishNo =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion?.polish
-            ?.options?.no;
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
+            ?.polish?.options?.no;
     const lensBenifitYes =
-        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const additionalLensYes =
-        Plans[language][values?.visionPlan]?.additionalLens?.options?.yes;
+        Plans()[language][values?.visionPlan]?.additionalLens?.options?.yes;
 
     const handleInputChange = (e) => {
         const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");

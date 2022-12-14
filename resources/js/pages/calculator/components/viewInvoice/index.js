@@ -55,7 +55,7 @@ const ViewInvoice = ({
     const [receipt, setReceipt] = useState(null);
     const { width } = UseWindowSize();
     const plansList = AllPlans[language];
-    const plansJson = Plans[language];
+    const plansJson = Plans()[language];
     useEffect(() => {
         setReceipt({
             userInfo: userInfo,

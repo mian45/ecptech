@@ -11,6 +11,7 @@ import { AllPlans } from "../../data/plansList";
 import { Plans } from "../../data/plansJson";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 import { connect } from "react-redux";
+import { handleAntiReflectiveNoValidations } from "./helpers/handleAntireflectiveNoValidations";
 
 const AntireFlextive = ({
     formProps,
@@ -30,9 +31,9 @@ const AntireFlextive = ({
 
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
-        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const antireflectiveYes =
-        Plans[language][values?.visionPlan]?.antireflective?.options?.yes;
+        Plans()[language][values?.visionPlan]?.antireflective?.options?.yes;
 
     const getAntireflectiveList = () => {
         return (
@@ -74,16 +75,11 @@ const AntireFlextive = ({
                 antireflectiveType,
             });
         } else if (e?.target?.value === "No") {
-            await setFieldValue("isCopayAntiReflective", null);
-            await setFieldValue("isCopayAntiReflectiveAmount", "");
-            await setFieldValue("copayAntiReflectiveAmount", "");
-            const validations = { ...calValidations };
-            delete validations.antireflectiveType;
-            delete validations.isCopayAntiReflectiveAmount;
-            delete validations.copayAntiReflectiveAmount;
-            setCalValidations({
-                ...validations,
-            });
+            await handleAntiReflectiveNoValidations(
+                formProps,
+                calValidations,
+                setCalValidations
+            );
         }
         if (values.isCopayAntiReflective && e.target.value === "No") {
             setError(

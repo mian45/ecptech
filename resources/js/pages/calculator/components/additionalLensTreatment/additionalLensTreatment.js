@@ -24,11 +24,11 @@ const AdditionalLensTreatment = ({
     const { values, handleChange } = formProps;
     const eyemedPlan = AllPlans[language]?.eyemed;
     const additionalLensTitle =
-        Plans[language][values?.visionPlan]?.additionalLens?.question;
+        Plans()[language][values?.visionPlan]?.additionalLens?.question;
     const additionalLensYes =
-        Plans[language][values?.visionPlan]?.additionalLens?.options?.yes;
+        Plans()[language][values?.visionPlan]?.additionalLens?.options?.yes;
     const additionalLensNo =
-        Plans[language][values?.visionPlan]?.additionalLens?.options?.no;
+        Plans()[language][values?.visionPlan]?.additionalLens?.options?.no;
     const currentPlanVisibility = calculatorObj?.questions?.find(
         (item) => item?.title === values?.visionPlan
     )?.question_permissions;
