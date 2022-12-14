@@ -67,8 +67,7 @@ class PrescriptionController extends Controller
             'right_eye_sphere' => 'required',
             'right_eye_cylinder' => 'required',
             'left_eye_sphere' => 'required',
-            'left_eye_cylinder' => 'required',
-            'user_id' => 'required'
+            'left_eye_cylinder' => 'required'
         ]);
         if ($validator->fails()) {
             throw (new ValidationException($validator));
