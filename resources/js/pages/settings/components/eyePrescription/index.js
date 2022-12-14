@@ -77,7 +77,9 @@ const EyePrescription = ({ userId }) => {
         };
         getEyePrescriptionDetails();
     }, [userId]);
-
+    useEffect(() => {
+        isIncompleteRange();
+    }, [eyeDetails]);
     const handleInputChange = (value, name, key, index) => {
         if (
             key === "sphere_from" &&
@@ -138,10 +140,14 @@ const EyePrescription = ({ userId }) => {
         const isError = [...eyeDetails]?.some((item) => {
             if (
                 item !== selectedMaterial &&
-                parseFloat(item?.sphere_from) >=
+                ((parseFloat(item?.sphere_from) >=
                     parseFloat(selectedMaterial.sphere_from * 1) &&
-                parseFloat(item?.sphere_to) <=
-                    parseFloat(selectedMaterial.sphere_to * 1)
+                    parseFloat(item?.sphere_to) <=
+                        parseFloat(selectedMaterial.sphere_from * 1)) ||
+                    (parseFloat(item?.sphere_from) <=
+                        parseFloat(selectedMaterial.sphere_to * 1) &&
+                        parseFloat(item?.sphere_to) >=
+                            parseFloat(selectedMaterial.sphere_to * 1)))
             ) {
                 return true;
             }
@@ -255,32 +261,24 @@ const EyePrescription = ({ userId }) => {
 
     const isIncompleteRange = () => {
         let isDisabled = false;
-        for (let i = 0; i < eyeDetails?.length - 1; i++) {
+        for (let i = 0; i <= eyeDetails?.length - 1; i++) {
             if (
-                (Boolean(eyeDetails[i]?.sphere_from) &&
-                    Boolean(eyeDetails[i]?.sphere_to)) ||
-                (eyeDetails[i]?.sphere_from === "" &&
-                    eyeDetails[i]?.sphere_to === "")
+                eyeDetails[i]?.sphere_from === "" ||
+                eyeDetails[i]?.sphere_from === null ||
+                eyeDetails[i]?.sphere_from === undefined ||
+                eyeDetails[i]?.sphere_to === "" ||
+                eyeDetails[i]?.sphere_to === null ||
+                eyeDetails[i]?.sphere_to === undefined
             ) {
-                isDisabled = false;
-            } else {
                 isDisabled = true;
                 break;
-            }
-            if (
-                (Boolean(eyeDetails[i]?.cylinder_from) &&
-                    Boolean(eyeDetails[i]?.cylinder_to)) ||
-                (eyeDetails[i]?.cylinder_from === "" &&
-                    eyeDetails[i]?.cylinder_to === "")
-            ) {
-                isDisabled = false;
             } else {
-                isDisabled = true;
-                break;
+                console.log("the data is here", eyeDetails[i]?.sphere_from);
+                isDisabled = false;
             }
         }
-
-        return isDisabled;
+        console.log("is disabled", isDisabled);
+        setDisable(isDisabled);
     };
     const removePrescription = (item) => {
         const filteredData = eyeDetails.filter((range) => {
@@ -303,7 +301,7 @@ const EyePrescription = ({ userId }) => {
             </Col>
             <Col xs={24} className={classes["content-map-container"]}>
                 <Row justify="center" align="middle">
-                    <Col xs={24} md={14}>
+                    <Col xs={24} md={18} className={classes["max-container"]}>
                         {defaultMaterials?.map((item, index) => {
                             return (
                                 <EyePrescriptionSlot
@@ -324,7 +322,7 @@ const EyePrescription = ({ userId }) => {
                                 <button
                                     className={classes["button"]}
                                     onClick={handleSubmit}
-                                    disabled={disable || isIncompleteRange()}
+                                    disabled={disable}
                                 >
                                     {buttonLoader == false ? (
                                         "Save"
@@ -473,7 +471,14 @@ const EyePrescriptionSlot = ({
                                                                   });
                                                         }}
                                                     >
-                                                        <img src={removeIcon} />
+                                                        <img
+                                                            src={removeIcon}
+                                                            className={
+                                                                classes[
+                                                                    "add-image"
+                                                                ]
+                                                            }
+                                                        />
                                                     </div>
                                                 ) : (
                                                     <div
@@ -484,7 +489,14 @@ const EyePrescriptionSlot = ({
                                                             removeItem(item);
                                                         }}
                                                     >
-                                                        <img src={removeIcon} />
+                                                        <img
+                                                            src={removeIcon}
+                                                            className={
+                                                                classes[
+                                                                    "remove-img"
+                                                                ]
+                                                            }
+                                                        />
                                                     </div>
                                                 )}
                                             </div>
