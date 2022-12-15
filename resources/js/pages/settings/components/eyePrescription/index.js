@@ -135,17 +135,30 @@ const EyePrescription = ({ userId }) => {
             }
         });
         selectedMaterial[key] = value;
-        const from = parseFloat(selectedMaterial.sphere_from * 1);
-        const to = parseFloat(selectedMaterial.sphere_to * 1);
+        const from =
+            parseFloat(selectedMaterial.sphere_from * 1) >
+            parseFloat(selectedMaterial.sphere_to * 1)
+                ? parseFloat(selectedMaterial.sphere_from * 1)
+                : parseFloat(selectedMaterial.sphere_to * 1);
+        const to =
+            parseFloat(selectedMaterial.sphere_from * 1) <
+            parseFloat(selectedMaterial.sphere_to * 1)
+                ? parseFloat(selectedMaterial.sphere_from * 1)
+                : parseFloat(selectedMaterial.sphere_to * 1);
         const isError = [...eyeDetails]?.some((item, index) => {
-            const item_from = parseFloat(item?.sphere_from);
-            const item_to = parseFloat(item?.sphere_to);
+            const item_from =
+                parseFloat(item?.sphere_from) > parseFloat(item?.sphere_to)
+                    ? parseFloat(item?.sphere_from)
+                    : parseFloat(item?.sphere_to);
+            const item_to =
+                parseFloat(item?.sphere_from) < parseFloat(item?.sphere_to)
+                    ? parseFloat(item?.sphere_from)
+                    : parseFloat(item?.sphere_to);
             console.log("scenario 2", item_from >= from && item_to <= from);
             console.log("scenario 2", item_from <= to && item_to >= to);
             if (
                 item !== selectedMaterial &&
-                ((item_from >= from && item_to <= from) ||
-                    (item_from <= to && item_to >= to))
+                (item_from >= from || item_to >= to)
             ) {
                 return true;
             }
