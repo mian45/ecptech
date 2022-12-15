@@ -228,6 +228,7 @@ const EyePrescription = ({ userId }) => {
                 `${process.env.MIX_REACT_APP_URL}/api/eye-prescriptions`,
                 payload
             );
+            setErrors([]);
             setButtonLoader(false);
             messageApi.open({
                 type: "success",
@@ -247,7 +248,7 @@ const EyePrescription = ({ userId }) => {
     };
 
     const isIncompleteRange = () => {
-        let isDisabled = false;
+        let isDisabled = [];
         for (let i = 0; i <= eyeDetails?.length - 1; i++) {
             if (
                 eyeDetails[i]?.sphere_from === "" ||
@@ -257,13 +258,14 @@ const EyePrescription = ({ userId }) => {
                 eyeDetails[i]?.sphere_to === null ||
                 eyeDetails[i]?.sphere_to === undefined
             ) {
-                isDisabled = true;
+                isDisabled.push(true);
                 break;
             } else {
-                isDisabled = false;
+                isDisabled.push(false);
             }
         }
-        setDisable(isDisabled);
+
+        setDisable(isDisabled.includes(true));
     };
     const removePrescription = (item) => {
         const filteredData = eyeDetails.filter((range) => {
@@ -314,7 +316,7 @@ const EyePrescription = ({ userId }) => {
                                             ? true
                                             : errors.includes(true)
                                             ? true
-                                            : false
+                                            : disable
                                     }
                                 >
                                     {buttonLoader == false ? (
