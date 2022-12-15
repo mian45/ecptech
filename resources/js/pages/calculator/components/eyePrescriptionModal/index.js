@@ -135,7 +135,7 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen 
             return;
         } else if (
             key === "leftEyeCYL" &&
-            (parseFloat(value) <= -21 || parseFloat(value) >= 21)
+            (parseFloat(value) <= -11 || parseFloat(value) >= 11)
         ) {
             return;
         } else {
@@ -160,10 +160,10 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen 
                 clientId = clientUserId;
             }
             const formData = new FormData();
-            formData.append("right_eye_sphere", eyeValues?.rightEyeSPH);
-            formData.append("right_eye_cylinder", eyeValues?.rightEyeCYL);
-            formData.append("left_eye_sphere", eyeValues?.leftEyeSPH);
-            formData.append("left_eye_cylinder", eyeValues?.leftEyeCYL);
+            formData.append("right_eye_sphere", parseFloat(eyeValues?.rightEyeSPH));
+            formData.append("right_eye_cylinder", parseFloat(eyeValues?.rightEyeCYL));
+            formData.append("left_eye_sphere", parseFloat(eyeValues?.leftEyeSPH));
+            formData.append("left_eye_cylinder", parseFloat(eyeValues?.leftEyeCYL));
             formData.append("user_id", clientId);
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/eye-prescriptions-calculator`,
