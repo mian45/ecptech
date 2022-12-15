@@ -84,15 +84,18 @@
     color: #2a2a2a;
     font-family: Montserrat;
     font-weight: 400;
-    margin-bottom: 13px;
 }
 .slot-body-input-section {
     display: flex;
     width: 100%;
     align-items: center;
+    margin-top: 13px;
+}
+.max-container{
+max-width: 748px;
 }
 .input {
-    width: 44% !important;
+    width: 42.8% !important;
     border: 1px solid #dfdfdf;
     border-radius: 23px;
     font-size: 16px;
@@ -123,4 +126,52 @@
     font-size: 14px !important;
     font-family: Montserrat !important;
     margin-top: 10px !important;
+}
+.add{
+    background-color:#6fa5cb;
+    padding: 6px;
+    border-radius:50%;
+    margin-left: 10px;
+    cursor: pointer;
+    @media (max-width: 425px) {
+        padding: 3px;
+       
+    }
+}
+.add-image{
+    transform:matrix(0, -1, 1, 0, 0, 0);
+    transform: rotate(45deg);
+    @media (max-width: 425px) {
+    max-width: unset;}
+}
+.add-disabled{
+    background-color:#cbcbcb;
+    padding: 6px;
+    border-radius:50%;
+    margin-left: 10px;
+    cursor: not-allowed;
+    @media (max-width: 425px) {
+        padding: 3px;
+    }
+}
+.remove{
+    background-color:#cbcbcb;
+    padding: 6px;
+    border-radius:50%;
+    margin-left: 10px;
+    transform:matrix(0, -1, 1, 0, 0, 0);
+    cursor: pointer;
+    @media (max-width: 425px) {
+        padding: 3px;
+       
+    }
+    
+}
+.remove-img{
+    @media (max-width: 425px) {
+        max-width: unset;
+    }
+}
+.remove:hover{
+    background-color:red;
 }
