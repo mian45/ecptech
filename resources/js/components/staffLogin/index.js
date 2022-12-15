@@ -32,6 +32,7 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
             password: values.password,
             name: clientUser.name,
             clientId: clientUser.id,
+            password_confirmation: values.confirmPassword,
             roleId: 3,
         };
         dispatch(AuthService.staffLogin(registerObject , messageApi));
