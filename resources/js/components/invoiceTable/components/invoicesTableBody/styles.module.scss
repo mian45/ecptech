@@ -45,6 +45,16 @@
     padding: 0px 16px;
     text-transform: capitalize;
 }
+.draft-status-tag {
+    border-radius: 15px;
+    text-align: center;
+    background-color: rgb(255 191 0 / 48%);
+    color: #dda602;
+    display: inline-block;
+    height: 29px;
+    padding: 0px 16px;
+    text-transform: capitalize;
+}
 .more-icon {
     cursor: pointer;
 }
