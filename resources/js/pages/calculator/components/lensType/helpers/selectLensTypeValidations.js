@@ -5,7 +5,7 @@ export const selectLensTypeValidations = async (
     calValidations,
     setCalValidations
 ) => {
-    const { setFieldValue } = formProps;
+    const { values, setFieldValue } = formProps;
     const validations = { ...calValidations };
 
     if (e?.target?.value !== "PAL") {
@@ -53,6 +53,20 @@ export const selectLensTypeValidations = async (
         await setFieldValue("isCopayUltimateProgressives", null);
         await setFieldValue("isCopayUltimateProgressiveAmount", "");
         await setFieldValue("copayUltimateProgressiveAmount", "");
+    }
+    if (
+        values?.visionPlan === "Davis Vision" &&
+        (e?.target?.value === "Bifocal" || e?.target?.value === "Trifocal")
+    ) {
+        validations.blendedBifocal = Yup.string().required(
+            "Blended biofocal is required"
+        );
+    } else if (
+        values?.visionPlan === "Davis Vision" &&
+        (e?.target?.value !== "Bifocal" || e?.target?.value !== "Trifocal")
+    ) {
+        delete validations?.blendedBifocal;
+        await setFieldValue("blendedBifocal", "");
     }
     validations.lensTypeValue = Yup.string().required("Brand is required");
     setCalValidations({

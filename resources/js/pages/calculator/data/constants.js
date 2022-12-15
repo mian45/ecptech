@@ -19,3 +19,5 @@ export const POLYCARBONATE = 23;
 export const PREMIUM_PROGRESSIVE = 65;
 export const HIGH_INDEX = 51;
 export const ANTI_REFLECTIVE_PROPERTIES = 37;
+export const RIMLESS_DRILL = 86;
+export const BLENDED_BIFOCAL = 20;

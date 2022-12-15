@@ -1,5 +1,6 @@
 import { Col, Collapse, Row } from "antd";
 import React from "react";
+import { RenderBlueLight } from "../../helpers/pricesHelper/calculateDavisPrice";
 import { calculateLensesCopaysFee } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
 import { GetSelectionDetails } from "../../helpers/selectedMenuList";
 import {
@@ -21,7 +22,12 @@ import {
 
 const { Panel } = Collapse;
 
-const LensesDetails = ({ receipt, calculatorObj, lensPrices }) => {
+const LensesDetails = ({
+    receipt,
+    calculatorObj,
+    lensPrices,
+    davisMaterials,
+}) => {
     const currentPlan = receipt?.values?.visionPlan;
 
     const renderLensesCopay = () => {
@@ -53,6 +59,7 @@ const LensesDetails = ({ receipt, calculatorObj, lensPrices }) => {
                             receipt={receipt}
                             calculatorObj={calculatorObj}
                             lensPrices={lensPrices}
+                            davisMaterials={davisMaterials}
                         />
                     </Panel>
                 </Collapse>
@@ -75,7 +82,12 @@ const LensesDetails = ({ receipt, calculatorObj, lensPrices }) => {
 };
 export default LensesDetails;
 
-const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
+const GetLensPriceByPlan = ({
+    receipt,
+    calculatorObj,
+    lensPrices,
+    davisMaterials,
+}) => {
     const photochromicPrice = RenderPhotochromicPrices(
         receipt?.values,
         calculatorObj
@@ -122,7 +134,8 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                     price={`$${RenderLensMaterialPrice(
                         receipt?.values,
                         calculatorObj,
-                        lensPrices
+                        lensPrices,
+                        davisMaterials
                     )}`}
                 />
             </Col>
@@ -149,7 +162,8 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                 calculatorObj={calculatorObj}
                 receipt={receipt}
             />
-            {receipt?.values?.visionPlan === "Eyemed" &&
+            {(receipt?.values?.visionPlan === "Eyemed" ||
+                receipt?.values?.visionPlan === "Davis Vision") &&
                 receipt?.values?.slabOff?.status === "Yes" && (
                     <Col xs={24}>
                         <FramePriceSlot
@@ -164,7 +178,8 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                         />
                     </Col>
                 )}
-            {receipt?.values?.visionPlan === "Eyemed" &&
+            {(receipt?.values?.visionPlan === "Eyemed" ||
+                receipt?.values?.visionPlan === "Davis Vision") &&
                 receipt?.values?.specialtyLens?.status === "Yes" && (
                     <Col xs={24}>
                         <FramePriceSlot
@@ -179,7 +194,8 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                         />
                     </Col>
                 )}
-            {receipt?.values?.visionPlan === "Eyemed" &&
+            {(receipt?.values?.visionPlan === "Eyemed" ||
+                receipt?.values?.visionPlan === "Davis Vision") &&
                 receipt?.values?.polish?.status === "Yes" &&
                 receipt?.values?.polish?.type && (
                     <Col xs={24}>
@@ -190,6 +206,20 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                                     receipt?.values,
                                     calculatorObj,
                                     "Polish"
+                                ) || 0
+                            }`}
+                        />
+                    </Col>
+                )}
+            {receipt?.values?.visionPlan === "Davis Vision" &&
+                receipt?.values?.blueLight === "Yes" && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={`Blue Light Filtering`}
+                            price={`$${
+                                RenderBlueLight(
+                                    calculatorObj,
+                                    receipt?.values
                                 ) || 0
                             }`}
                         />

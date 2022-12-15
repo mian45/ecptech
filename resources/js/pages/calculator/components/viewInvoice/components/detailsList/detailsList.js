@@ -22,6 +22,7 @@ const DetailsList = ({
     mode,
     handleSendInvoiceClick,
     language,
+    davisMaterials,
 }) => {
     const currentPlan = receipt?.values?.visionPlan;
     const plansList = AllPlans[language];
@@ -39,7 +40,8 @@ const DetailsList = ({
             calculatorObj,
             lensPrices,
             plansList,
-            plansJson
+            plansJson,
+            davisMaterials
         );
         const taxValue = totalPrice * (totalTax || 0);
         return taxValue / 100;
@@ -129,7 +131,8 @@ const DetailsList = ({
                     calculatorObj,
                     lensPrices,
                     plansList,
-                    plansJson
+                    plansJson,
+                    davisMaterials
                 ),
                 receipt?.values
             ) || 0
@@ -157,7 +160,8 @@ const DetailsList = ({
                 calculatorObj,
                 lensPrices,
                 plansList,
-                plansJson
+                plansJson,
+                davisMaterials
             ) || 0
         ).toFixed(2);
         const discount = totalFrame - discountPrice;
@@ -230,6 +234,7 @@ const DetailsList = ({
                             receipt={receipt}
                             calculatorObj={calculatorObj}
                             lensPrices={lensPrices}
+                            davisMaterials={davisMaterials}
                         />
                     </Col>
                     <Col xs={24} className={classes["divider-doted"]} />
@@ -313,7 +318,8 @@ const DetailsList = ({
                                         calculatorObj,
                                         lensPrices,
                                         plansList,
-                                        plansJson
+                                        plansJson,
+                                        davisMaterials
                                     ) || 0
                                 ).toFixed(2)}`}
                             </Col>

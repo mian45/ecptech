@@ -94,6 +94,8 @@ export const CalculatorInitialValues = {
     isCopayUltimateAntireflective: null,
     isCopayUltimateAntireflectiveAmount: "",
     copayUltimateAntireflectiveAmount: "",
+    blueLight: "",
+    blendedBifocal: "",
 };
 
 export const BenifitTypeEnums = Object.freeze({

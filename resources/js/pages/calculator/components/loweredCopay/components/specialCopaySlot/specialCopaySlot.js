@@ -59,7 +59,7 @@ const SpecialCopaySlot = ({
                 ...calValidations,
                 ...validationObject,
             });
-        } else if (values[radioValue] === LowerCopayAmountTypeEnum.noAmount) {
+        } else if (e?.target?.value === LowerCopayAmountTypeEnum.noAmount) {
             const validations = { ...calValidations };
             delete validations[inputValue];
             setCalValidations({

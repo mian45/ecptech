@@ -34,6 +34,7 @@ const LensType = ({
         )?.visibility;
     const [error, setError] = useState("");
     const eyemedPlan = AllPlans[language]?.eyemed;
+    const davisPlan = AllPlans[language]?.davis;
     const lensBenifitYes =
         Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
 
@@ -99,11 +100,18 @@ const LensType = ({
             validationObject.antireflectiveType = Yup.string().required(
                 "Antireflective type is required"
             );
+            validationObject.blueLight = Yup.string().required(
+                "Blue light filtering is required"
+            );
             validationObject.lensTypeValue =
                 Yup.string().required("Brand is required");
             if (values?.isAntireflective === "No") {
                 await setFieldValue("isAntireflective", "");
             }
+            if (values?.blueLight === "No") {
+                await setFieldValue("blueLight", "");
+            }
+            await setFieldValue("blueLight", "Yes");
             if (
                 !values?.isAntireflective ||
                 values?.isAntireflective === "No"
@@ -121,12 +129,26 @@ const LensType = ({
                     ?.question_permissions?.find(
                         (ques) => ques.question === "Anti-Reflective Properties"
                     )?.optional === "true";
+            const blueLightVisibility =
+                calculatorObj?.questions
+                    ?.find((item) => item?.title === values?.visionPlan)
+                    ?.question_permissions?.find(
+                        (ques) => ques.question === "Blue Light Filtering"
+                    )?.optional === "true";
             if (!antireflectiveVisibility) {
                 await setFieldError("isAntireflective", "");
                 await setFieldError("antireflectiveType", "");
                 const validations = { ...calValidations };
                 delete validations.isAntireflective;
                 delete validations.antireflectiveType;
+                setCalValidations({
+                    ...validations,
+                });
+            }
+            if (!blueLightVisibility) {
+                await setFieldError("blueLight", "");
+                const validations = { ...calValidations };
+                delete validations.blueLight;
                 setCalValidations({
                     ...validations,
                 });
@@ -233,7 +255,10 @@ const LensType = ({
     };
 
     const handleBrandSelection = async (e) => {
-        if (values?.visionPlan !== eyemedPlan) {
+        if (
+            values?.visionPlan !== eyemedPlan ||
+            values?.visionPlan !== davisPlan
+        ) {
             await resetMaterial(e);
         }
         handleChange(e);
@@ -439,6 +464,48 @@ const LensType = ({
                                             value={values?.lensTypeInput}
                                             name={"lensTypeInput"}
                                         />
+                                    )}
+                                {values?.visionPlan === "Davis Vision" &&
+                                    (values?.lensType === "Bifocal" ||
+                                        values?.lensType === "Trifocal") && (
+                                        <>
+                                            <div
+                                                className={
+                                                    classes["choose-label"]
+                                                }
+                                            >
+                                                Blended Bifocal
+                                            </div>
+                                            <Radio.Group
+                                                onChange={handleChange}
+                                                value={values?.blendedBifocal}
+                                                id="blendedBifocal"
+                                                name="blendedBifocal"
+                                                className={
+                                                    classes["radio-group"]
+                                                }
+                                            >
+                                                <CustomRadio
+                                                    label={"Yes"}
+                                                    value={"Yes"}
+                                                    active={
+                                                        values?.blendedBifocal ===
+                                                        "Yes"
+                                                    }
+                                                />
+                                                <CustomRadio
+                                                    label={"No"}
+                                                    value={"No"}
+                                                    active={
+                                                        values?.blendedBifocal ===
+                                                        "No"
+                                                    }
+                                                />
+                                            </Radio.Group>
+                                            <FormikError
+                                                name={"blendedBifocal"}
+                                            />
+                                        </>
                                     )}
                             </div>
                         </Col>

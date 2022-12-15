@@ -22,7 +22,7 @@ const AdditionalLensTreatment = ({
     language,
 }) => {
     const { values, handleChange } = formProps;
-    const eyemedPlan = AllPlans[language]?.eyemed;
+    const allPlans = AllPlans[language];
     const additionalLensTitle =
         Plans()[language][values?.visionPlan]?.additionalLens?.question;
     const additionalLensYes =
@@ -103,7 +103,8 @@ const AdditionalLensTreatment = ({
         const polish =
             data?.find((ques) => ques?.question == "Polish")?.optional ===
             "true";
-        return values?.visionPlan === eyemedPlan &&
+        return (values?.visionPlan === allPlans?.eyemedPlan ||
+            values?.visionPlan === allPlans?.davis) &&
             (slabOff || specialityLens || polish)
             ? true
             : false;
@@ -177,7 +178,8 @@ const AdditionalLensTreatment = ({
     };
     return (
         <>
-            {values?.visionPlan === eyemedPlan &&
+            {(values?.visionPlan === allPlans?.eyemedPlan ||
+                values?.visionPlan === allPlans?.davis) &&
             (slabOffVisibility || specialityVisibility || polishVisibility) ? (
                 renderAddiotionalTreatment()
             ) : (

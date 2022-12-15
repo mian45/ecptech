@@ -4,6 +4,7 @@ export const AllPlans = {
         vspChoice: "VSP Choice",
         vspAdvantage: "VSP Advantage",
         eyemed: "Eyemed",
+        davis: "Davis Vision",
         privatePay: "Private Pay",
     },
 };

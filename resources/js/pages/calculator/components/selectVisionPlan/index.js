@@ -39,7 +39,10 @@ const SelectVisionPlan = ({
             );
             calculatorObj.lens_types = res?.data?.data?.collection;
             calculatorObj.additional_lense_setting = [];
-            if (value.target?.value === "Eyemed") {
+            if (
+                value.target?.value === "Eyemed" ||
+                value.target?.value === "Davis Vision"
+            ) {
                 calculatorObj.additional_lense_setting =
                     res?.data?.data?.additional_lense_setting;
             }

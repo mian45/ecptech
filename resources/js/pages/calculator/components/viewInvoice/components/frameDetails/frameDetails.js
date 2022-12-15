@@ -3,7 +3,7 @@ import Icon from "@ant-design/icons";
 import React from "react";
 import classes from "./frameDetails.module.scss";
 import { GetFrameFee } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
-import { DRILL_MOUNT } from "../../../../data/constants";
+import { DRILL_MOUNT, RIMLESS_DRILL } from "../../../../data/constants";
 import {
     GetEyemedDrillMountFee,
     GetEyemedFrameFee,
@@ -11,6 +11,7 @@ import {
 import { AllPlans } from "../../../../data/plansList";
 import { Plans } from "../../../../data/plansJson";
 import { connect } from "react-redux";
+import { GetDavisDrillMountFee } from "../../helpers/pricesHelper/calculateDavisPrice";
 
 const { Panel } = Collapse;
 
@@ -32,6 +33,18 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
             price =
                 price +
                 parseFloat(GetEyemedDrillMountFee(receipt?.values, plansJson));
+        } else if (currentPlan === plansList?.davis) {
+            // add Frame Fee
+            price =
+                price +
+                parseFloat(
+                    GetEyemedFrameFee(receipt?.values, calculatorObj, plansJson)
+                );
+
+            //add drill mount fee
+            price =
+                price +
+                parseFloat(GetDavisDrillMountFee(receipt?.values, plansJson));
         } else {
             price =
                 GetFrameFee(
@@ -88,6 +101,11 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
             data?.frameOrder?.drillMount === "Yes"
         ) {
             total = total + parseFloat(data?.frameOrder?.drillMountPrice || "");
+        } else if (
+            currentPlan === plansList?.davis &&
+            data?.frameOrder?.drillMount === "Yes"
+        ) {
+            total = total + parseFloat(RIMLESS_DRILL || 0);
         } else if (data?.frameOrder?.drillMount === "Yes") {
             total = total + DRILL_MOUNT;
         }
@@ -147,12 +165,14 @@ const GetFramePriceByPlan = ({
     ) {
         return (
             <Row>
-                <Col xs={24}>
-                    <FramePriceSlot
-                        title={"Drill Mount"}
-                        price={`$${drillMount() || 0}`}
-                    />
-                </Col>
+                {receipt?.values?.frameOrder?.type !== "Patient Own Frame" && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={"Drill Mount"}
+                            price={`$${drillMount() || 0}`}
+                        />
+                    </Col>
+                )}
                 <Col xs={24} className={classes["self-pay"]}>
                     Estimates under Private Pay
                 </Col>
@@ -173,12 +193,14 @@ const GetFramePriceByPlan = ({
                         price={`$${framePrice() || 0}`}
                     />
                 </Col>
-                <Col xs={24}>
-                    <FramePriceSlot
-                        title={"Drill Mount"}
-                        price={`$${drillMount() || 0}`}
-                    />
-                </Col>
+                {receipt?.values?.frameOrder?.type !== "Patient Own Frame" && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={"Drill Mount"}
+                            price={`$${drillMount() || 0}`}
+                        />
+                    </Col>
+                )}
             </Row>
         );
     }

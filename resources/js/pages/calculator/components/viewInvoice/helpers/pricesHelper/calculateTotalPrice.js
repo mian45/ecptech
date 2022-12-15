@@ -1,3 +1,4 @@
+import { CalculateDavisPlansPrices } from "./calculateDavisPrice";
 import { CalculateEyemedPlansPrices } from "./calculateEyemedPrice";
 import { CalculateOtherPlansPrices } from "./calculateOtherPlansPrices";
 
@@ -6,7 +7,8 @@ export const CalculateTotalPrice = (
     calculatorObj,
     lensPrices,
     plansList,
-    plansJson
+    plansJson,
+    davisMaterials
 ) => {
     if (data?.visionPlan === plansList?.privatePay) {
         return CalculateOtherPlansPrices(data, calculatorObj, lensPrices, true);
@@ -16,6 +18,14 @@ export const CalculateTotalPrice = (
             calculatorObj,
             plansList,
             plansJson
+        );
+    } else if (data?.visionPlan === plansList?.davis) {
+        return CalculateDavisPlansPrices(
+            data,
+            calculatorObj,
+            plansList,
+            plansJson,
+            davisMaterials
         );
     } else {
         return CalculateOtherPlansPrices(
@@ -32,7 +42,8 @@ export const CalculateWithTaxesTotalPrice = (
     calculatorObj,
     lensPrices,
     plansList,
-    plansJson
+    plansJson,
+    davisMaterials
 ) => {
     let total = 0;
     // without taxes price
@@ -43,7 +54,8 @@ export const CalculateWithTaxesTotalPrice = (
             calculatorObj,
             lensPrices,
             plansList,
-            plansJson
+            plansJson,
+            davisMaterials
         );
     //remove disount price
     total = total - GetAppliedDiscount(total, data);
@@ -60,6 +72,7 @@ export const CalculateWithTaxesTotalPrice = (
             calculatorObj,
             lensPrices,
             plansList,
+            davisMaterials,
             plansJson
         ) *
             (totalTax || 0)) /

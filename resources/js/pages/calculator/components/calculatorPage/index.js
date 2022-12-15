@@ -37,6 +37,7 @@ import { Col, message } from "antd";
 import { ScrollToFieldError } from "./helpers/scrollToFieldError";
 import AdditionalLensTreatment from "../additionalLensTreatment/additionalLensTreatment";
 import TracingFee from "../tracingFee/tracingFee";
+import BlueLightFiltering from "../blueLightFiltering/blueLightFiltering";
 
 const CalculatorScreen = () => {
     const history = useHistory();
@@ -176,8 +177,13 @@ const CalculatorScreen = () => {
                 delete validations?.isLoweredCopay;
                 delete validations?.isLensBenifit;
                 delete validations?.isFrameBenifit;
-            } else if (item?.title === "Eyemed") {
-                delete validations?.isLoweredCopay;
+            } else if (
+                item?.title === "Eyemed" ||
+                item?.title === "Davis Vision"
+            ) {
+                if (item?.title === "Eyemed") {
+                    delete validations?.isLoweredCopay;
+                }
                 const slabOff =
                     item?.question_permissions?.find(
                         (ques) => ques?.question == "Slab Off"
@@ -196,6 +202,15 @@ const CalculatorScreen = () => {
                     );
                 } else {
                     delete validations.isAdditionalLensOptions;
+                }
+                const blueLight =
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Blue Light Filtering"
+                    )?.optional === "true";
+                if (item?.title === "Davis Vision" && blueLight) {
+                    validations.blueLight = Yup.string().required(
+                        "Blue light filtering is required"
+                    );
                 }
             }
             allValidations[item.title] = validations;
@@ -424,6 +439,18 @@ const CalculatorScreen = () => {
                         )?.question_permissions
                     }
                 />
+                <BlueLightFiltering
+                    formProps={formProps}
+                    calculatorObj={calculatorObj && calculatorObj}
+                    setCalValidations={setCalValidations}
+                    calValidations={calValidations}
+                    data={
+                        calculatorObj?.questions?.find(
+                            (item) =>
+                                item?.title === formProps?.values?.visionPlan
+                        )?.question_permissions
+                    }
+                />
                 <AdditionalLensTreatment
                     formProps={formProps}
                     calculatorObj={calculatorObj && calculatorObj}
@@ -482,6 +509,7 @@ const CalculatorScreen = () => {
                                                 }
                                                 lensPrices={lensPrices}
                                                 messageApi={messageApi}
+                                                davisMaterials={davisMaterials}
                                             />
                                         )}
                                         <InvoiceInfo

@@ -50,6 +50,7 @@ const ViewInvoice = ({
     userRole,
     messageApi,
     language,
+    davisMaterials,
 }) => {
     const history = useHistory();
     const [receipt, setReceipt] = useState(null);
@@ -109,7 +110,8 @@ const ViewInvoice = ({
                     calculatorObj,
                     lensPrices,
                     plansList,
-                    plansJson
+                    plansJson,
+                    davisMaterials
                 ) || 0
             ).toFixed(2),
             vpState: calculatorObj,
@@ -144,7 +146,8 @@ const ViewInvoice = ({
                     calculatorObj,
                     lensPrices,
                     plansList,
-                    plansJson
+                    plansJson,
+                    davisMaterials
                 ) || 0
             ).toFixed(2),
             vpState: calculatorObj,
@@ -259,6 +262,7 @@ const ViewInvoice = ({
                         lensPrices={lensPrices}
                         mode={mode}
                         handleSendInvoiceClick={handleSendInvoiceClick}
+                        davisMaterials={davisMaterials}
                     />
                 </Col>
             </Row>

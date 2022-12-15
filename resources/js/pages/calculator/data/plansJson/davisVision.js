@@ -72,6 +72,10 @@ export const DavisVisionJson = () => {
             options: yesNoOptions(),
             subQuestion: { question: "Select Properties" },
         },
+        blueLightFiltering: {
+            question: "Blue Light Filtering.",
+            options: yesNoOptions(),
+        },
         additionalLens: {
             question: "Additional Lens Treatments?",
             options: yesNoOptions(),

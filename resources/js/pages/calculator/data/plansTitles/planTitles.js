@@ -72,6 +72,10 @@ const PlanTitles = (language, currentPlan) => {
         antireflectiveYes: plan?.antireflective?.options?.yes,
         antireflectiveNo: plan?.antireflective?.options?.no,
         antireflectiveTypeTitle: plan?.antireflective?.subQuestion,
+        // blue light filtering
+        blueLightTitle: plan?.blueLightFiltering?.question,
+        blueLightYes: plan?.blueLightFiltering?.options?.yes,
+        blueLightNo: plan?.blueLightFiltering?.options?.no,
         //additional Lens Title
         additionalLensTitle: plan?.additionalLens?.question,
         additionalLensYes: plan?.additionalLens?.options?.yes,

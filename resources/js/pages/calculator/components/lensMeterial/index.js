@@ -78,7 +78,8 @@ const LensMeterials = ({
         if (
             values?.lensTypeValue &&
             e?.target?.value &&
-            values?.visionPlan !== eyemedPlan
+            (values?.visionPlan !== eyemedPlan ||
+                values?.visionPlan !== "Davis Vision")
         ) {
             await getBaseValues(
                 { ...values, lensMaterial: e?.target?.value },
