@@ -8,12 +8,12 @@ import CustomLoader from "../../../../components/customLoader";
 import removeIcon from "../../../../../images/cross.svg";
 const EyePrescription = ({ userId }) => {
     const [messageApi, contextHolder] = message.useMessage();
-    const [eyeDetails, setEyeDetails] = useState([]);
+    let [eyeDetails, setEyeDetails] = useState([]);
     const [sphError, setSphError] = useState([...defaultSphError]);
     const [disable, setDisable] = useState(false);
     const [buttonLoader, setButtonLoader] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    const [errors, setErrors] = useState([]);
     useEffect(() => {
         const errorsList = [...sphError];
         const isError = errorsList.every((item) => item.value === "");
@@ -43,7 +43,12 @@ const EyePrescription = ({ userId }) => {
                 });
                 const material = [
                     ...totalMaterails.map((item) => {
-                        return { ...item, title: item.name };
+                        return {
+                            ...item,
+                            title: item.name,
+                            from: false,
+                            to: false,
+                        };
                     }),
                     ...defaultMaterials?.filter((item) => {
                         const singleMaterial = totalMaterails?.find(
@@ -54,13 +59,14 @@ const EyePrescription = ({ userId }) => {
                                 ...item,
                                 sphere_from: "",
                                 sphere_to: "",
+                                error: false,
                             };
                         }
                     }),
                 ];
                 setSphError(
                     material.map((item, index) => {
-                        return { ...item, from: false, to: false };
+                        return { ...item, error: false };
                     })
                 );
                 setEyeDetails(material);
@@ -134,90 +140,60 @@ const EyePrescription = ({ userId }) => {
                 index_selected = index;
             }
         });
+
         selectedMaterial[key] = value;
-        const from =
-            parseFloat(selectedMaterial.sphere_from * 1) >
-            parseFloat(selectedMaterial.sphere_to * 1)
-                ? parseFloat(selectedMaterial.sphere_from * 1)
-                : parseFloat(selectedMaterial.sphere_to * 1);
-        const to =
-            parseFloat(selectedMaterial.sphere_from * 1) <
-            parseFloat(selectedMaterial.sphere_to * 1)
-                ? parseFloat(selectedMaterial.sphere_from * 1)
-                : parseFloat(selectedMaterial.sphere_to * 1);
-        const isError = [...eyeDetails]?.some((item, index) => {
-            const item_from =
-                parseFloat(item?.sphere_from) > parseFloat(item?.sphere_to)
-                    ? parseFloat(item?.sphere_from)
-                    : parseFloat(item?.sphere_to);
-            const item_to =
-                parseFloat(item?.sphere_from) < parseFloat(item?.sphere_to)
-                    ? parseFloat(item?.sphere_from)
-                    : parseFloat(item?.sphere_to);
-            console.log("scenario 2", item_from >= from && item_to <= from);
-            console.log("scenario 2", item_from <= to && item_to >= to);
+
+        const from = parseFloat(selectedMaterial.sphere_from * 1);
+        const to = parseFloat(selectedMaterial.sphere_to * 1);
+
+        const isErrorArray = eyeDetails?.map((item, index) => {
+            const item_from = parseFloat(item?.sphere_from * 1);
+            const item_to = parseFloat(item?.sphere_to * 1);
             if (
-                item !== selectedMaterial &&
-                (item_from >= from || item_to >= to)
+                (item_from <= from &&
+                    item_to <= from &&
+                    item_to <= to &&
+                    item_from <= to) ||
+                (item_from >= from &&
+                    item_to >= from &&
+                    item_to >= to &&
+                    item_from >= to)
             ) {
-                return true;
+                return false;
+            } else {
+                if (index == index_selected) {
+                    return false;
+                } else {
+                    return true;
+                }
             }
         });
-        const error = [...sphError];
-        const selectedError = [...error].find((item) => {
-            return item?.name === name;
+        console.log("isError array", isErrorArray);
+        eyeDetails = eyeDetails.map((item, index) => {
+            if (index == index_selected) {
+                if (isErrorArray[index] == true) {
+                    return {
+                        ...item,
+                        error: true,
+                        [key]: selectedMaterial[key],
+                    };
+                } else {
+                    return {
+                        ...item,
+                        error: false,
+                        [key]: selectedMaterial[key],
+                    };
+                }
+            } else {
+                if (isErrorArray[index] == true) {
+                    return { ...item, error: true };
+                } else {
+                    return { ...item, error: false };
+                }
+            }
         });
-        if (isError) {
-            if (key === "sphere_from") {
-                selectedError.from = true;
-            }
-            if (key === "sphere_to") {
-                selectedError.to = true;
-            }
-            handleSPHError(name);
-            setEyeDetails(
-                [...eyeDetails].map((item, item_index) => {
-                    if (index_selected == item_index) {
-                        return item;
-                    } else {
-                        return item;
-                    }
-                })
-            );
-        } else {
-            if (key === "sphere_from") {
-                selectedError.from = false;
-            }
-            if (key === "sphere_to") {
-                selectedError.to = false;
-            }
-            if (
-                (key === "sphere_from" && selectedError.to === false) ||
-                (key === "sphere_to" && selectedError.from === false)
-            ) {
-                selectedError.value = "";
-                setSphError([...error]);
-                setEyeDetails(
-                    [...eyeDetails].map((item, item_index) => {
-                        if (index_selected == item_index) {
-                            return item;
-                        } else {
-                            return item;
-                        }
-                    })
-                );
-            } else if (key === "sphere_from" || key === "sphere_to") {
-                setEyeDetails(
-                    [...eyeDetails].map((item, item_index) => {
-                        if (index_selected == item_index) {
-                            return item;
-                        } else {
-                            return item;
-                        }
-                    })
-                );
-            }
-        }
+        setErrors(isErrorArray);
+        setEyeDetails([...eyeDetails]);
     };
 
     const handleSubmit = async () => {
@@ -300,6 +276,7 @@ const EyePrescription = ({ userId }) => {
     const addPrescription = (item) => {
         setEyeDetails([...eyeDetails, item]);
     };
+
     return loading == true ? (
         <CustomLoader buttonBool={false} />
     ) : (
@@ -321,6 +298,7 @@ const EyePrescription = ({ userId }) => {
                                     eyeData={eyeDetails}
                                     removeItem={removePrescription}
                                     addItem={addPrescription}
+                                    btnError={errors}
                                 />
                             );
                         })}
@@ -331,7 +309,13 @@ const EyePrescription = ({ userId }) => {
                                 <button
                                     className={classes["button"]}
                                     onClick={handleSubmit}
-                                    disabled={disable}
+                                    disabled={
+                                        errors.length == 0
+                                            ? true
+                                            : errors.includes(true)
+                                            ? true
+                                            : false
+                                    }
                                 >
                                     {buttonLoader == false ? (
                                         "Save"
@@ -359,14 +343,10 @@ export default connect(mapStateToProps)(EyePrescription);
 const EyePrescriptionSlot = ({
     data,
     onChange,
-    sphError,
     eyeData,
     removeItem,
     addItem,
 }) => {
-    const sphErrValue = sphError?.find((item) => {
-        return data?.name === item?.name;
-    })?.value;
     const isDisabled = () => {
         const eyeArray = eyeData.filter((item) => {
             if (item.name == data.name) {
@@ -510,11 +490,11 @@ const EyePrescriptionSlot = ({
                                                 )}
                                             </div>
                                         </div>
-                                        {sphErrValue && (
+                                        {item.error == true ? (
                                             <div className={classes["error"]}>
-                                                {sphErrValue}
+                                                please select a valid range
                                             </div>
-                                        )}
+                                        ) : null}
                                     </>
                                 );
                             })}
