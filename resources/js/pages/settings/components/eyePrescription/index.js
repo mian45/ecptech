@@ -5,24 +5,24 @@ import { connect } from "react-redux";
 import { defaultMaterials } from "./data";
 import { Row, Col, message } from "antd";
 import CustomLoader from "../../../../components/customLoader";
+import removeIcon from "../../../../../images/cross.svg";
 const EyePrescription = ({ userId }) => {
     const [messageApi, contextHolder] = message.useMessage();
-    const [eyeDetails, setEyeDetails] = useState([]);
+    let [eyeDetails, setEyeDetails] = useState([]);
     const [sphError, setSphError] = useState([...defaultSphError]);
-    const [cylError, setCylError] = useState([...defaultCylError]);
     const [disable, setDisable] = useState(false);
     const [buttonLoader, setButtonLoader] = useState(false);
     const [loading, setLoading] = useState(false);
-
+    const [errors, setErrors] = useState([]);
     useEffect(() => {
-        const errorsList = [...sphError, ...cylError];
+        const errorsList = [...sphError];
         const isError = errorsList.every((item) => item.value === "");
         if (!isError) {
             setDisable(true);
         } else {
             setDisable(false);
         }
-    }, [cylError, sphError]);
+    }, [sphError]);
 
     useEffect(() => {
         if (userId == null) return;
@@ -35,18 +35,40 @@ const EyePrescription = ({ userId }) => {
                         params: { user_id: userId },
                     }
                 );
-                const material = defaultMaterials?.map((item) => {
-                    const singleMaterial = res?.data?.data?.find(
-                        (val) => val?.name === item?.name
+                let totalMaterails = [];
+                Object.keys(res?.data?.data).map((item) => {
+                    res?.data?.data[item].map((element) =>
+                        totalMaterails.push(element)
                     );
-                    return {
-                        ...item,
-                        sphere_from: singleMaterial?.sphere_from || "",
-                        sphere_to: singleMaterial?.sphere_to || "",
-                        cylinder_from: singleMaterial?.cylinder_from || "",
-                        cylinder_to: singleMaterial?.cylinder_to || "",
-                    };
                 });
+                const material = [
+                    ...totalMaterails.map((item) => {
+                        return {
+                            ...item,
+                            title: item.name,
+                            from: false,
+                            to: false,
+                        };
+                    }),
+                    ...defaultMaterials?.filter((item) => {
+                        const singleMaterial = totalMaterails?.find(
+                            (val) => val?.name === item?.name
+                        );
+                        if (singleMaterial == undefined) {
+                            return {
+                                ...item,
+                                sphere_from: "",
+                                sphere_to: "",
+                                error: false,
+                            };
+                        }
+                    }),
+                ];
+                setSphError(
+                    material.map((item, index) => {
+                        return { ...item, error: false };
+                    })
+                );
                 setEyeDetails(material);
                 setLoading(false);
             } catch (err) {
@@ -55,14 +77,16 @@ const EyePrescription = ({ userId }) => {
                     type: "error",
                     content: err.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             }
         };
         getEyePrescriptionDetails();
     }, [userId]);
-
-    const handleInputChange = (value, name, key) => {
+    useEffect(() => {
+        isIncompleteRange();
+    }, [eyeDetails]);
+    const handleInputChange = (value, name, key, index) => {
         if (
             key === "sphere_from" &&
             (parseFloat(value) <= -21 || parseFloat(value) >= 21)
@@ -73,172 +97,158 @@ const EyePrescription = ({ userId }) => {
             (parseFloat(value) >= 21 || parseFloat(value) <= -21)
         ) {
             return;
-        } else if (
-            key === "cylinder_from" &&
-            (parseFloat(value) <= -11 || parseFloat(value) >= 11)
-        ) {
-            return;
-        } else if (
-            key === "cylinder_to" &&
-            (parseFloat(value) >= 11 || parseFloat(value) <= -11)
-        ) {
-            return;
         } else {
-            handleInputValues(value, name, key);
+            handleInputValues(value, name, key, index);
         }
     };
-    const handleInputValues = (value, name, key) => {
-        if (key === "cylinder_from" || key === "cylinder_to") {
-            const regix = new RegExp("^[-+]?[0-9]*[/.]?([0-9]*)?$");
-            if (regix.test(value) || value === "") {
-                handleCyl(value, name, key, +value);
-            } else {
-                return;
-            }
+    const handleInputValues = (value, name, key, index) => {
+        const regix = new RegExp("^[-+]?[0-9]*[/.]?([0-9]*)?$");
+        if (regix.test(value) || value === "") {
+            handleSph(value, name, key, +value, index);
         } else {
-            const regix = new RegExp("^[-+]?[0-9]*[/.]?([0-9]*)?$");
-            if (regix.test(value) || value === "") {
-                handleSph(value, name, key, +value);
-            } else {
-                return;
-            }
+            return;
         }
-    };
-
-    const setEyeValue = (value, name, key) => {
-        const eyePrescription = [...eyeDetails];
-        const selectedMaterial = [...eyePrescription].find(
-            (material) => material?.name === name
-        );
-        selectedMaterial[key] = value;
-        setEyeDetails([...eyePrescription]);
-    };
-    const handleCYLError = (name) => {
-        const error = [...cylError];
-        const selectedError = [...error].find((item) => item?.label === name);
-        selectedError.value = "Please choose a valid range";
-        setCylError([...error]);
     };
     const handleSPHError = (name) => {
         const error = [...sphError];
-        const selectedError = [...error].find((item) => item?.label === name);
+        const selectedError = [...error].find((item) => item?.name === name);
         selectedError.value = "Please choose a valid range";
         setSphError([...error]);
     };
-    const handleCyl = (value, name, key, parsedValue) => {
-        if (value > 10 || value < -10) {
-            handleCYLError(name);
-            return;
-        }
-        const eyePrescription = [...eyeDetails];
-        const selectedMaterial = [...eyePrescription].find(
-            (material) => material?.name === name
-        );
-        selectedMaterial[key] = "";
-        const isError = eyeDetails?.some((item) => {
-            if (
-                parseFloat(item?.cylinder_from) <= parsedValue &&
-                parseFloat(item?.cylinder_to) >= parsedValue
-            ) {
-                return true;
-            }
-        });
-        const error = [...cylError];
-        const selectedError = [...error].find((item) => item?.label === name);
-        if (isError) {
-            if (key === "cylinder_from") {
-                selectedError.from = true;
-            }
-            if (key === "cylinder_to") {
-                selectedError.to = true;
-            }
-            handleCYLError(name);
-            setEyeValue(value, name, key);
-        } else {
-            if (key === "cylinder_from") {
-                selectedError.from = false;
-            }
-            if (key === "cylinder_to") {
-                selectedError.to = false;
-            }
-            if (
-                (key === "cylinder_from" && selectedError.to === false) ||
-                (key === "cylinder_to" && selectedError.from === false)
-            ) {
-                selectedError.value = "";
-                setCylError([...error]);
-                setEyeValue(value, name, key);
-            } else if (key === "cylinder_from" || key === "cylinder_to") {
-                setEyeValue(value, name, key);
-            }
-        }
-    };
-    const handleSph = (value, name, key, parsedValue) => {
+    const handleSph = (value, name, key, parsedValue, index) => {
         if (value > 20 || value < -20) {
             handleSPHError(name);
             return;
         }
         const eyePrescription = [...eyeDetails];
-        const selectedMaterial = [...eyePrescription].find(
-            (material) => material?.name === name
-        );
-        selectedMaterial[key] = "";
-        const isError = [...eyeDetails]?.some((item) => {
-            if (
-                parseFloat(item?.sphere_from) <= parsedValue &&
-                parseFloat(item?.sphere_to) >= parsedValue
-            ) {
-                return true;
+        let selectedMaterial = [...eyePrescription]
+            .filter((item) => {
+                if (item.name == name) {
+                    return {
+                        ...item,
+                    };
+                }
+            })
+            .find((material, mat_id) => {
+                if (mat_id === index) {
+                    return material;
+                }
+            });
+        let index_selected;
+        [...eyePrescription].map((item, index) => {
+            if (item == selectedMaterial) {
+                index_selected = index;
             }
         });
-        const error = [...sphError];
-        const selectedError = [...error].find((item) => item?.label === name);
-        if (isError) {
-            if (key === "sphere_from") {
-                selectedError.from = true;
-            }
-            if (key === "sphere_to") {
-                selectedError.to = true;
-            }
-            handleSPHError(name);
-            setEyeValue(value, name, key);
-        } else {
-            if (key === "sphere_from") {
-                selectedError.from = false;
-            }
-            if (key === "sphere_to") {
-                selectedError.to = false;
-            }
+
+        selectedMaterial[key] = value;
+
+        const from = parseFloat(selectedMaterial.sphere_from * 1);
+        const to = parseFloat(selectedMaterial.sphere_to * 1);
+
+        const isErrorArray = eyeDetails?.map((item, index) => {
+            const item_from = parseFloat(item?.sphere_from * 1);
+            const item_to = parseFloat(item?.sphere_to * 1);
             if (
-                (key === "sphere_from" && selectedError.to === false) ||
-                (key === "sphere_to" && selectedError.from === false)
+                (item_from <= from &&
+                    item_to <= from &&
+                    item_to <= to &&
+                    item_from <= to) ||
+                (item_from >= from &&
+                    item_to >= from &&
+                    item_to >= to &&
+                    item_from >= to)
             ) {
-                selectedError.value = "";
-                setSphError([...error]);
-                setEyeValue(value, name, key);
-            } else if (key === "sphere_from" || key === "sphere_to") {
-                setEyeValue(value, name, key);
+                return false;
+            } else {
+                if (index == index_selected) {
+                    return false;
+                } else {
+                    return true;
+                }
             }
-        }
+        });
+        console.log("isError array", isErrorArray);
+        eyeDetails = eyeDetails.map((item, index) => {
+            if (index == index_selected) {
+                if (isErrorArray[index] == true) {
+                    return {
+                        ...item,
+                        error: true,
+                        [key]: selectedMaterial[key],
+                    };
+                } else {
+                    return {
+                        ...item,
+                        error: false,
+                        [key]: selectedMaterial[key],
+                    };
+                }
+            } else {
+                if (isErrorArray[index] == true) {
+                    return { ...item, error: true };
+                } else {
+                    return { ...item, error: false };
+                }
+            }
+        });
+        setErrors(isErrorArray);
+        setEyeDetails([...eyeDetails]);
     };
 
     const handleSubmit = async () => {
         try {
             setButtonLoader(true);
+            let detailedObject = {
+                "Hi index 1.70": [],
+                "Hi Index 1.67": [],
+                "Hi index 1.60": [],
+                Trivex: [],
+                Polycarbonate: [],
+            };
+            eyeDetails
+                .filter((item, index) => {
+                    if (
+                        item?.sphere_from !== "" &&
+                        item?.sphere_from !== null &&
+                        item?.sphere_from !== undefined &&
+                        item?.sphere_to !== "" &&
+                        item?.sphere_to !== null &&
+                        item?.sphere_to !== undefined
+                    ) {
+                        console.log(item);
+                        return item;
+                    }
+                })
+                .map((item) => {
+                    Object.keys(detailedObject).map((key) => {
+                        if (key == item.name) {
+                            detailedObject = {
+                                ...detailedObject,
+                                [item.name]: [
+                                    ...detailedObject[item.name],
+                                    { ...item, user_id: userId },
+                                ],
+                            };
+                        }
+                    });
+                });
+            console.log("the data to be posted is here", detailedObject);
             const payload = {
-                eye_prescriptions: eyeDetails,
+                eye_prescriptions: detailedObject,
                 user_id: userId,
             };
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/eye-prescriptions`,
                 payload
             );
+            setErrors([]);
             setButtonLoader(false);
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("error while save data");
@@ -246,40 +256,42 @@ const EyePrescription = ({ userId }) => {
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
 
     const isIncompleteRange = () => {
-        let isDisabled = false;
-        for (let i = 0; i < eyeDetails?.length - 1; i++) {
+        let isDisabled = [];
+        for (let i = 0; i <= eyeDetails?.length - 1; i++) {
             if (
-                (Boolean(eyeDetails[i]?.sphere_from) &&
-                    Boolean(eyeDetails[i]?.sphere_to)) ||
-                (eyeDetails[i]?.sphere_from === "" &&
-                    eyeDetails[i]?.sphere_to === "")
+                eyeDetails[i]?.sphere_from === "" ||
+                eyeDetails[i]?.sphere_from === null ||
+                eyeDetails[i]?.sphere_from === undefined ||
+                eyeDetails[i]?.sphere_to === "" ||
+                eyeDetails[i]?.sphere_to === null ||
+                eyeDetails[i]?.sphere_to === undefined
             ) {
-                isDisabled = false;
-            } else {
-                isDisabled = true;
+                isDisabled.push(true);
                 break;
-            }
-            if (
-                (Boolean(eyeDetails[i]?.cylinder_from) &&
-                    Boolean(eyeDetails[i]?.cylinder_to)) ||
-                (eyeDetails[i]?.cylinder_from === "" &&
-                    eyeDetails[i]?.cylinder_to === "")
-            ) {
-                isDisabled = false;
             } else {
-                isDisabled = true;
-                break;
+                isDisabled.push(false);
             }
         }
-
-        return isDisabled;
+        setDisable(isDisabled.includes(false));
     };
+    const removePrescription = (item) => {
+        const filteredData = eyeDetails.filter((range) => {
+            if (item != range) {
+                return item;
+            }
+        });
+        setEyeDetails(filteredData);
+    };
+    const addPrescription = (item) => {
+        setEyeDetails([...eyeDetails, item]);
+    };
+
     return loading == true ? (
         <CustomLoader buttonBool={false} />
     ) : (
@@ -290,15 +302,18 @@ const EyePrescription = ({ userId }) => {
             </Col>
             <Col xs={24} className={classes["content-map-container"]}>
                 <Row justify="center" align="middle">
-                    <Col xs={24} md={14}>
-                        {eyeDetails?.map((item, index) => {
+                    <Col xs={24} md={18} className={classes["max-container"]}>
+                        {defaultMaterials?.map((item, index) => {
                             return (
                                 <EyePrescriptionSlot
                                     key={index}
                                     data={item}
                                     onChange={handleInputChange}
                                     sphError={sphError}
-                                    cylError={cylError}
+                                    eyeData={eyeDetails}
+                                    removeItem={removePrescription}
+                                    addItem={addPrescription}
+                                    btnError={errors}
                                 />
                             );
                         })}
@@ -309,7 +324,13 @@ const EyePrescription = ({ userId }) => {
                                 <button
                                     className={classes["button"]}
                                     onClick={handleSubmit}
-                                    disabled={disable || isIncompleteRange()}
+                                    disabled={
+                                        errors.length == 0
+                                            ? true
+                                            : errors.includes(true)
+                                            ? true
+                                            : !disable
+                                    }
                                 >
                                     {buttonLoader == false ? (
                                         "Save"
@@ -334,108 +355,164 @@ const mapStateToProps = (state) => ({
 });
 export default connect(mapStateToProps)(EyePrescription);
 
-const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
-    const sphErrValue = sphError?.find(
-        (item) => data?.name === item?.label
-    )?.value;
-    const cylErrValue = cylError?.find(
-        (item) => data?.name === item?.label
-    )?.value;
+const EyePrescriptionSlot = ({
+    data,
+    onChange,
+    eyeData,
+    removeItem,
+    addItem,
+}) => {
+    const isDisabled = () => {
+        const eyeArray = eyeData.filter((item) => {
+            if (item.name == data.name) {
+                return {
+                    ...item,
+                };
+            }
+        });
+        const arrayLength = eyeArray.length;
+        const item = eyeArray[arrayLength - 1];
+        return item["sphere_to"] == "" ||
+            item["sphere_to"] == null ||
+            item["sphere_from"] == "" ||
+            item["sphere_from"] == null
+            ? true
+            : false;
+    };
+
     return (
         <Row className={classes["slot-container"]}>
             <Col xs={24} className={classes["slot-header"]}>
-                <div className={classes["header-title"]}>{`Show ${data?.name || ""
-                    } If`}</div>
+                <div className={classes["header-title"]}>{`Show ${
+                    data?.title || ""
+                } If`}</div>
             </Col>
             <Col xs={24} className={classes["slot-body"]}>
                 <Row justify="space-between">
                     <Col
                         xs={24}
                         md={24}
-                        lg={12}
+                        lg={24}
                         className={classes["slot-body-content"]}
                     >
                         <div className={classes["slot-body-label"]}>
-                            Sphere (SPH)
+                            Select Range
                         </div>
-                        <div className={classes["slot-body-input-section"]}>
-                            <input
-                                type={"text"}
-                                placeholder={"From"}
-                                className={classes["input"]}
-                                value={data["sphere_from"] || ""}
-                                onChange={(e) =>
-                                    onChange(
-                                        e.target?.value,
-                                        data?.name,
-                                        "sphere_from"
-                                    )
+                        {eyeData
+                            .filter((item) => {
+                                if (item.name == data.name) {
+                                    return {
+                                        ...item,
+                                    };
                                 }
-                            />
-                            <div className={classes["to-label"]}>to</div>
-                            <input
-                                placeholder={"Select"}
-                                className={classes["input"]}
-                                type={"text"}
-                                value={data["sphere_to"] || ""}
-                                onChange={(e) =>
-                                    onChange(
-                                        e.target?.value,
-                                        data?.name,
-                                        "sphere_to"
-                                    )
-                                }
-                            />
-                        </div>
-                        {sphErrValue && (
-                            <div className={classes["error"]}>
-                                {sphErrValue}
-                            </div>
-                        )}
-                    </Col>
-                    <Col
-                        xs={24}
-                        md={24}
-                        lg={12}
-                        className={classes["slot-body-content"]}
-                    >
-                        <div className={classes["slot-body-label"]}>
-                            Cylinder (CYL)
-                        </div>
-                        <div className={classes["slot-body-input-section"]}>
-                            <input
-                                placeholder={"From"}
-                                className={classes["input"]}
-                                type={"text"}
-                                value={data["cylinder_from"] || ""}
-                                onChange={(e) =>
-                                    onChange(
-                                        e.target?.value,
-                                        data?.name,
-                                        "cylinder_from"
-                                    )
-                                }
-                            />
-                            <div className={classes["to-label"]}>to</div>
-                            <input
-                                placeholder={"Select"}
-                                className={classes["input"]}
-                                type={"text"}
-                                value={data["cylinder_to"] || ""}
-                                onChange={(e) =>
-                                    onChange(
-                                        e.target?.value,
-                                        data?.name,
-                                        "cylinder_to"
-                                    )
-                                }
-                            />
-                        </div>
-                        {cylErrValue && (
-                            <div className={classes["error"]}>
-                                {cylErrValue}
-                            </div>
-                        )}
+                            })
+                            .map((item, index) => {
+                                return (
+                                    <>
+                                        <div
+                                            className={
+                                                classes[
+                                                    "slot-body-input-section"
+                                                ]
+                                            }
+                                        >
+                                            <input
+                                                type={"text"}
+                                                placeholder={"From"}
+                                                className={classes["input"]}
+                                                value={
+                                                    item["sphere_from"] || ""
+                                                }
+                                                onChange={(e) =>
+                                                    onChange(
+                                                        e.target?.value,
+                                                        item?.name,
+                                                        "sphere_from",
+                                                        index
+                                                    )
+                                                }
+                                            />
+                                            <div
+                                                className={classes["to-label"]}
+                                            >
+                                                to
+                                            </div>
+                                            <input
+                                                placeholder={"Select"}
+                                                className={classes["input"]}
+                                                type={"text"}
+                                                value={item["sphere_to"] || ""}
+                                                onChange={(e) =>
+                                                    onChange(
+                                                        e.target?.value,
+                                                        item?.name,
+                                                        "sphere_to",
+                                                        index
+                                                    )
+                                                }
+                                            />
+                                            <div>
+                                                {index == 0 ? (
+                                                    <div
+                                                        className={
+                                                            isDisabled(item)
+                                                                ? classes[
+                                                                      "add-disabled"
+                                                                  ]
+                                                                : classes["add"]
+                                                        }
+                                                        onClick={() => {
+                                                            isDisabled(item)
+                                                                ? null
+                                                                : addItem({
+                                                                      id: null,
+                                                                      name: item.name,
+                                                                      sphere_from:
+                                                                          "",
+                                                                      sphere_to:
+                                                                          "",
+                                                                      title: item.name,
+                                                                  });
+                                                        }}
+                                                    >
+                                                        <img
+                                                            src={removeIcon}
+                                                            className={
+                                                                classes[
+                                                                    "add-image"
+                                                                ]
+                                                            }
+                                                        />
+                                                    </div>
+                                                ) : (
+                                                    <div
+                                                        className={
+                                                            classes["remove"]
+                                                        }
+                                                        onClick={() => {
+                                                            removeItem(item);
+                                                        }}
+                                                    >
+                                                        <img
+                                                            src={removeIcon}
+                                                            className={
+                                                                classes[
+                                                                    "remove-img"
+                                                                ]
+                                                            }
+                                                        />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        {item.error == true ? (
+                                            <div className={classes["error"]}>
+                                                please select a valid range
+                                            </div>
+                                        ) : null}
+                                    </>
+                                );
+                            })}
                     </Col>
                 </Row>
             </Col>
@@ -444,28 +521,18 @@ const EyePrescriptionSlot = ({ data, onChange, sphError, cylError }) => {
 };
 
 const materialArrangement = [
-    "Hi index 1.70 & above",
-    "Hi index 1.67",
+    "Hi index 1.70",
+    "Hi Index 1.67",
     "Hi index 1.60",
     "Trivex",
     "Polycarbonate",
-    "CR39",
 ];
 const defaultSphError = [
-    { value: "", label: "Hi index 1.70 & above", from: false, to: false },
-    { value: "", label: "Hi index 1.67", from: false, to: false },
+    { value: "", label: "Hi index 1.70", from: false, to: false },
+    { value: "", label: "Hi Index 1.67", from: false, to: false },
     { value: "", label: "Hi index 1.60", from: false, to: false },
     { value: "", label: "Trivex", from: false, to: false },
     { value: "", label: "Polycarbonate", from: false, to: false },
-    { value: "", label: "CR39", from: false, to: false },
-];
-const defaultCylError = [
-    { value: "", label: "Hi index 1.70 & above", from: false, to: false },
-    { value: "", label: "Hi index 1.67", from: false, to: false },
-    { value: "", label: "Hi index 1.60", from: false, to: false },
-    { value: "", label: "Trivex", from: false, to: false },
-    { value: "", label: "Polycarbonate", from: false, to: false },
-    { value: "", label: "CR39", from: false, to: false },
 ];
 
 const getArrangedMaterials = (data) => {
