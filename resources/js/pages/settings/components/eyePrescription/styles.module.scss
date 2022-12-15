@@ -149,8 +149,6 @@ max-width: 748px;
     padding: 6px;
     border-radius:50%;
     margin-left: 10px;
-    transform:matrix(0, -1, 1, 0, 0, 0);
-    transform: rotate(45deg);
     cursor: not-allowed;
     @media (max-width: 425px) {
         padding: 3px;

@@ -98,7 +98,6 @@ const EyePrescription = ({ userId }) => {
     const handleInputValues = (value, name, key, index) => {
         const regix = new RegExp("^[-+]?[0-9]*[/.]?([0-9]*)?$");
         if (regix.test(value) || value === "") {
-            console.log("success");
             handleSph(value, name, key, +value, index);
         } else {
             return;
@@ -136,18 +135,21 @@ const EyePrescription = ({ userId }) => {
             }
         });
         selectedMaterial[key] = value;
-
-        const isError = [...eyeDetails]?.some((item) => {
+        const from = parseFloat(selectedMaterial.sphere_from * 1);
+        const to = parseFloat(selectedMaterial.sphere_to * 1);
+        const isError = [...eyeDetails]?.some((item, index) => {
+            const item_from =
+                parseFloat(item?.sphere_from) > parseFloat(item?.sphere_to)
+                    ? parseFloat(item?.sphere_from)
+                    : parseFloat(item?.sphere_to);
+            const item_to =
+                parseFloat(item?.sphere_from) < parseFloat(item?.sphere_to)
+                    ? parseFloat(item?.sphere_from)
+                    : parseFloat(item?.sphere_to);
             if (
                 item !== selectedMaterial &&
-                ((parseFloat(item?.sphere_from) >=
-                    parseFloat(selectedMaterial.sphere_from * 1) &&
-                    parseFloat(item?.sphere_to) <=
-                        parseFloat(selectedMaterial.sphere_from * 1)) ||
-                    (parseFloat(item?.sphere_from) <=
-                        parseFloat(selectedMaterial.sphere_to * 1) &&
-                        parseFloat(item?.sphere_to) >=
-                            parseFloat(selectedMaterial.sphere_to * 1)))
+                ((item_from >= from && item_to <= from) ||
+                    (item_from <= to && item_to >= to))
             ) {
                 return true;
             }
@@ -273,11 +275,9 @@ const EyePrescription = ({ userId }) => {
                 isDisabled = true;
                 break;
             } else {
-                console.log("the data is here", eyeDetails[i]?.sphere_from);
                 isDisabled = false;
             }
         }
-        console.log("is disabled", isDisabled);
         setDisable(isDisabled);
     };
     const removePrescription = (item) => {
