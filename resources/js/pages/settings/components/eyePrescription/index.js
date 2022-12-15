@@ -206,19 +206,33 @@ const EyePrescription = ({ userId }) => {
                 Trivex: [],
                 Polycarbonate: [],
             };
-            eyeDetails.map((item) => {
-                Object.keys(detailedObject).map((key) => {
-                    if (key == item.name) {
-                        detailedObject = {
-                            ...detailedObject,
-                            [item.name]: [
-                                ...detailedObject[item.name],
-                                { ...item, user_id: userId },
-                            ],
-                        };
+            eyeDetails
+                .filter((item, index) => {
+                    if (
+                        item?.sphere_from !== "" &&
+                        item?.sphere_from !== null &&
+                        item?.sphere_from !== undefined &&
+                        item?.sphere_to !== "" &&
+                        item?.sphere_to !== null &&
+                        item?.sphere_to !== undefined
+                    ) {
+                        console.log(item);
+                        return item;
                     }
+                })
+                .map((item) => {
+                    Object.keys(detailedObject).map((key) => {
+                        if (key == item.name) {
+                            detailedObject = {
+                                ...detailedObject,
+                                [item.name]: [
+                                    ...detailedObject[item.name],
+                                    { ...item, user_id: userId },
+                                ],
+                            };
+                        }
+                    });
                 });
-            });
             console.log("the data to be posted is here", detailedObject);
             const payload = {
                 eye_prescriptions: detailedObject,
@@ -264,8 +278,7 @@ const EyePrescription = ({ userId }) => {
                 isDisabled.push(false);
             }
         }
-
-        setDisable(isDisabled.includes(true));
+        setDisable(isDisabled.includes(false));
     };
     const removePrescription = (item) => {
         const filteredData = eyeDetails.filter((range) => {
@@ -316,7 +329,7 @@ const EyePrescription = ({ userId }) => {
                                             ? true
                                             : errors.includes(true)
                                             ? true
-                                            : disable
+                                            : !disable
                                     }
                                 >
                                     {buttonLoader == false ? (
