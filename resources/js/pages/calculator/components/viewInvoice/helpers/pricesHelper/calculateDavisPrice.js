@@ -217,7 +217,7 @@ const getProgressiveLensPrice = (data, calculatorObj) => {
             return parseFloat(isUltimateProg?.price || 0);
         }
     } else {
-        return parseFloat(getProgressiveLensPrice(data, calculatorObj) || 0);
+        return parseFloat(getPriceForLens(data, calculatorObj) || 0);
     }
 };
 export const GetDavisMaterialFee = (data, davisMaterials) => {
