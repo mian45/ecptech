@@ -12,6 +12,8 @@ import { Plans } from "../../data/plansJson";
 import { connect } from "react-redux";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 import { resetLowerCopayMaterial } from "./helpers/resetLowerCopayMaterial";
+import { useDispatch } from "react-redux";
+import * as action from "../../../../store/actions";
 
 const LensMeterials = ({
     formProps,
@@ -21,6 +23,7 @@ const LensMeterials = ({
     setCalValidations,
     language,
 }) => {
+    const dipatch = useDispatch();
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const [showModal, setShowModal] = useState(false);
     const [error, setError] = useState("");
@@ -66,8 +69,28 @@ const LensMeterials = ({
         );
         return activeMaterials?.length > 0 ? !isMaterialFound : false;
     };
+    const showAlert = (e) => {
+        const material = calculatorObj?.lens_material(
+            (val) => val?.lens_material_title === e?.target?.value
+        );
+        const invoiceData = localStorage.getItem("CALCULATOR_DATA");
+        let parsedInvoiceData = false;
+        if (invoiceData) {
+            const data = JSON.parse(invoiceData);
+            parsedInvoiceData = data?.invoicePriceData || false;
+        }
 
+        if (!material?.retail_price && !parsedInvoiceData) {
+            dipatch(action.showRetailPopup());
+        }
+        if (!material?.retail_price && parsedInvoiceData) {
+            setError(
+                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            );
+        }
+    };
     const handleLensMererialChange = async (e) => {
+        showAlert(e);
         await resetLowerCopayMaterial(
             e,
             calValidations,

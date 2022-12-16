@@ -10,6 +10,8 @@ import { connect } from "react-redux";
 import { AllPlans } from "../../data/plansList";
 import { Plans } from "../../data/plansJson";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
+import { useDispatch } from "react-redux";
+import * as action from "../../../../store/actions";
 
 const Photochromics = ({
     formProps,
@@ -19,6 +21,7 @@ const Photochromics = ({
     data,
     language,
 }) => {
+    const dipatch = useDispatch();
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const photochromicsVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
@@ -96,8 +99,30 @@ const Photochromics = ({
             handleChange(e);
         }
     };
+    const showAlert = (e) => {
+        const material = calculatorObj?.addons
+            ?.find((val) => val?.title === values?.visionPlan)
+            ?.addon_types?.find((item) => item?.title === "Photochromics")
+            ?.addons?.find((ele) => ele?.title === e?.target?.value);
+        const invoiceData = localStorage.getItem("CALCULATOR_DATA");
+        let parsedInvoiceData = false;
+        if (invoiceData) {
+            const data = JSON.parse(invoiceData);
+            parsedInvoiceData = data?.invoicePriceData || false;
+        }
+
+        if (!material?.price && !parsedInvoiceData) {
+            dipatch(action.showRetailPopup());
+        }
+        if (!material?.price && parsedInvoiceData) {
+            setError(
+                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            );
+        }
+    };
     const handlePhotochromicsTypeChange = (e) => {
         handleChange(e);
+        showAlert(e);
         if (
             values?.visionPlan === eyemedPlan &&
             values?.isLensBenifit === lensBenifitYes &&

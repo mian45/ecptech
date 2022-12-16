@@ -8,6 +8,8 @@ import icon from "../../../../../images/calculator/additional-lens.svg";
 import { Col, Radio, Row } from "antd";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import CustomRadio from "../../../../components/customRadio";
+import { useDispatch } from "react-redux";
+import * as action from "../../../../store/actions";
 
 const BlueLightFiltering = ({
     formProps,
@@ -18,6 +20,7 @@ const BlueLightFiltering = ({
     language,
 }) => {
     const { values, handleChange } = formProps;
+    const dipatch = useDispatch();
     const allPlans = AllPlans[language];
     const { blueLightTitle, blueLightYes, blueLightNo } = PlanTitles(
         language,
@@ -28,6 +31,29 @@ const BlueLightFiltering = ({
         ?.question_permissions?.find(
             (ques) => ques.question === "Blue Light Filtering"
         )?.visibility;
+    const showAlert = () => {
+        const material = calculatorObj?.addons
+            ?.find((val) => val?.title === values?.visionPlan)
+            ?.addon_types?.find(
+                (item) => item?.title === "Blue Light Filtering"
+            )
+            ?.addons?.find((ele) => ele?.title === "Blue Light Filtering");
+        const invoiceData = localStorage.getItem("CALCULATOR_DATA");
+        let parsedInvoiceData = false;
+        if (invoiceData) {
+            const data = JSON.parse(invoiceData);
+            parsedInvoiceData = data?.invoicePriceData || false;
+        }
+
+        if (!material?.price && !parsedInvoiceData) {
+            dipatch(action.showRetailPopup());
+        }
+        if (!material?.price && parsedInvoiceData) {
+            setError(
+                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            );
+        }
+    };
     const renderBlueLight = () => {
         return (
             <Row className={classes["container"]}>
@@ -41,7 +67,10 @@ const BlueLightFiltering = ({
                             active={values?.blueLight}
                         />
                         <Radio.Group
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                handleChange(e);
+                                showAlert();
+                            }}
                             value={values?.blueLight}
                             id="blueLight"
                             name="blueLight"

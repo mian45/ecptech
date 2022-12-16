@@ -8,7 +8,7 @@ export function useOuterClick(callback) {
     useEffect(() => {
         // useEffect wrapper to be safe for concurrent mode
         callbackRef.current = callback;
-    });
+    }, []);
 
     useEffect(() => {
         document.addEventListener("click", handleClick);

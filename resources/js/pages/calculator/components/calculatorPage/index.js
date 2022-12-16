@@ -38,8 +38,11 @@ import { ScrollToFieldError } from "./helpers/scrollToFieldError";
 import AdditionalLensTreatment from "../additionalLensTreatment/additionalLensTreatment";
 import TracingFee from "../tracingFee/tracingFee";
 import BlueLightFiltering from "../blueLightFiltering/blueLightFiltering";
+import InvoicePriceAlert from "../invoicePriceAlert";
+import { connect, useDispatch } from "react-redux";
+import * as action from "../../../../store/actions";
 
-const CalculatorScreen = () => {
+const CalculatorScreen = ({ retailPopup }) => {
     const history = useHistory();
     const [messageApi, contextHolder] = message.useMessage();
     const [validationsList, setValidationsList] = useState(null);
@@ -59,6 +62,7 @@ const CalculatorScreen = () => {
     const [davisMaterials, setDavisMaterials] = useState([]);
     const editInvoiceState = history?.location?.state?.invoice;
     let scrollRef = useRef();
+    const dipatch = useDispatch();
 
     useEffect(() => {
         if (editInvoiceState?.id) {
@@ -466,6 +470,35 @@ const CalculatorScreen = () => {
             </>
         );
     };
+    const handleSaveClick = (dontShow) => {
+        if (dontShow) {
+            const calculatorData = {
+                invoicePriceData: true,
+            };
+            localStorage.setItem(
+                "CALCULATOR_DATA",
+                JSON.stringify(calculatorData)
+            );
+            dipatch(action.showRetailPopup());
+        } else {
+            dipatch(action.showRetailPopup());
+        }
+    };
+    const RenderModal = React.useMemo(() => {
+        return (
+            <>
+                {retailPopup && (
+                    <InvoicePriceAlert
+                        accept={handleSaveClick}
+                        cancel={() => {
+                            dipatch(action.showRetailPopup());
+                        }}
+                        open={retailPopup}
+                    />
+                )}
+            </>
+        );
+    }, [retailPopup]);
     return (
         <Col className={classes["container"]} sm={24} md={24} lg={18}>
             <div>{contextHolder}</div>
@@ -498,6 +531,7 @@ const CalculatorScreen = () => {
                                         <ScrollToFieldError
                                             formProps={formProps}
                                         />
+                                        {RenderModal}
                                         {showInvoice && (
                                             <ViewInvoice
                                                 onClose={HideInvoice}
@@ -1022,7 +1056,12 @@ const CalculatorScreen = () => {
     );
 };
 
-export default CalculatorScreen;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+    retailPopup: state.Auth.retailPopup,
+});
+
+export default connect(mapStateToProps)(CalculatorScreen);
 const getPrivatePayTitle = (value) => {
     switch (value) {
         case BenifitTypeEnums.lens:

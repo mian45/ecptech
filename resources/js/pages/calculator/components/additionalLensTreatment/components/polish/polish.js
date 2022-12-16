@@ -8,6 +8,8 @@ import { AllPlans } from "../../../../data/plansList";
 import CalculatorInput from "../../../frameOrder/components/calculatorInput/calculatorInput";
 import { FormikError } from "../../../selectVisionPlan";
 import classes from "./polish.module.scss";
+import { useDispatch } from "react-redux";
+import * as action from "../../../../../../store/actions";
 
 const Polish = ({
     formProps,
@@ -18,6 +20,7 @@ const Polish = ({
     language,
 }) => {
     const { values, handleChange } = formProps;
+    const dipatch = useDispatch();
     const eyemedPlan = AllPlans[language]?.eyemed;
     const polishTitle =
         Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
@@ -65,9 +68,31 @@ const Polish = ({
             });
         }
     };
+    const showAlert = (e) => {
+        const material = calculatorObj?.additional_lense_setting
+            ?.find((item) => item?.title === data?.visionPlan)
+            ?.addon_types?.find((val) => val?.title === "Polish")
+            ?.addons?.find((ele) => ele?.title === e?.target?.value);
+        const invoiceData = localStorage.getItem("CALCULATOR_DATA");
+        let parsedInvoiceData = false;
+        if (invoiceData) {
+            const data = JSON.parse(invoiceData);
+            parsedInvoiceData = data?.invoicePriceData || false;
+        }
+
+        if (!material?.price && !parsedInvoiceData) {
+            dipatch(action.showRetailPopup());
+        }
+        if (!material?.price && parsedInvoiceData) {
+            setError(
+                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            );
+        }
+    };
 
     const handlePolishTypeChange = (e) => {
         handleChange(e);
+        showAlert(e);
         if (
             values?.visionPlan === eyemedPlan &&
             values?.isLensBenifit === lensBenifitYes &&

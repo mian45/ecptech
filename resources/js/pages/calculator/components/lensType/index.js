@@ -13,6 +13,8 @@ import { Plans } from "../../data/plansJson";
 import { connect } from "react-redux";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 import { selectLensTypeValidations } from "./helpers/selectLensTypeValidations";
+import { useDispatch } from "react-redux";
+import * as action from "../../../../store/actions";
 
 const LensType = ({
     formProps,
@@ -23,6 +25,7 @@ const LensType = ({
     getBaseValues,
     language,
 }) => {
+    const dipatch = useDispatch();
     const { values, handleChange, handleBlur, setFieldValue, setFieldError } =
         formProps;
     const [showInvoiceAlert, setShowInvoiceAlert] = useState(false);
@@ -199,7 +202,7 @@ const LensType = ({
         }
 
         if (!collection?.price && !parsedInvoiceData) {
-            setShowInvoiceAlert(true);
+            dipatch(action.showRetailPopup());
         }
         if (!collection?.price && parsedInvoiceData) {
             setError(
