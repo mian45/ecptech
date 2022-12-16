@@ -1,4 +1,24 @@
-import { BLENDED_BIFOCAL, RIMLESS_DRILL } from "../../../../data/constants";
+import {
+    BLENDED_BIFOCAL,
+    DAVIS_BLUE_LIGHT,
+    DAVIS_EDGE_POLISH,
+    DAVIS_GRADIENT_MIRROR,
+    DAVIS_GRADIENT_TINT,
+    DAVIS_HIGH_EDGH_POLISH,
+    DAVIS_PHOTOCHROMIC,
+    DAVIS_POLARIZED,
+    DAVIS_PREMIUM_ANTIREFLECTIVE,
+    DAVIS_ROLL_AND_POLISH,
+    DAVIS_ROLL_EDGE_POLISH,
+    DAVIS_SKY_MIRROR,
+    DAVIS_SLAB_OFF,
+    DAVIS_SOLID_TINT,
+    DAVIS_SPECIALITY_LENS,
+    DAVIS_STANDARD_ANTIREFLECTIVE,
+    DAVIS_ULTIMATE_ANTIREFLECTIVE,
+    DAVIS_ULTRA_ANTIREFLECTIVE,
+    RIMLESS_DRILL,
+} from "../../../../data/constants";
 import {
     GetEyemedFrameFee,
     GetPrivatePolishPrice,
@@ -262,29 +282,16 @@ export const GetDavisPhotochromicFee = (data, calculatorObj) => {
                     (parseFloat(isPhotochromicActive?.price || "") || 0);
             }
         } else {
-            total =
-                calculatorObj?.addons
-                    ?.find((item) => item?.title === data?.visionPlan)
-                    ?.addon_types?.find((val) => val?.title === "Photochromics")
-                    ?.addons?.find(
-                        (ele) => ele.title === data?.photochromics?.type
-                    )?.addon_price || 0;
+            total = DAVIS_PHOTOCHROMIC;
         }
     }
     return parseFloat(total || 0);
 };
 
 export const GetDavisPolarizedFee = (data, calculatorObj) => {
-    const total =
-        calculatorObj?.addons
-            ?.find((item) => item?.title === data?.visionPlan)
-            ?.addon_types?.find((val) => val?.title === "Sunglass Options")
-            ?.addons?.find((ele) => ele.title === "Polarized")?.addon_price ||
-        0;
-
     return data?.sunGlassesLens?.status === "Yes" &&
         data?.sunGlassesLens?.lensType === "Polarized"
-        ? parseFloat(total || 0)
+        ? parseFloat(DAVIS_POLARIZED || 0)
         : 0;
 };
 
@@ -295,23 +302,13 @@ export const GetDavisTintFee = (data, calculatorObj) => {
         data?.sunGlassesLens?.lensType === "Tint" &&
         data?.sunGlassesLens?.tintType === "Solid Tint"
     ) {
-        total =
-            calculatorObj?.addons
-                ?.find((item) => item?.title === data?.visionPlan)
-                ?.addon_types?.find((val) => val?.title === "Sunglass Options")
-                ?.addons?.find((ele) => ele?.title === "Solid Tint")
-                ?.addon_price || 0;
+        total = DAVIS_SOLID_TINT || 0;
     } else if (
         data?.sunGlassesLens?.status === "Yes" &&
         data?.sunGlassesLens?.lensType === "Tint" &&
         data?.sunGlassesLens?.tintType === "Gradient Tint"
     ) {
-        total =
-            calculatorObj?.addons
-                ?.find((item) => item?.title === data?.visionPlan)
-                ?.addon_types?.find((val) => val?.title === "Sunglass Options")
-                ?.addons?.find((ele) => ele?.title === "Gradient Tint")
-                ?.addon_price || 0;
+        total = DAVIS_GRADIENT_TINT || 0;
     }
 
     return parseFloat(total || 0);
@@ -324,25 +321,14 @@ export const GetDavisCoatingFee = (data, calculatorObj) => {
         data?.sunGlassesLens?.mirrorCoating === "Yes" &&
         data?.sunGlassesLens?.coatingType === "Ski Type Mirror"
     ) {
-        total =
-            calculatorObj?.addons
-                ?.find((item) => item?.title === data?.visionPlan)
-                ?.addon_types?.find((val) => val?.title === "Sunglass Options")
-                ?.addons?.find((ele) => ele?.title === "Ski Type Mirror")
-                ?.addon_price || 0;
+        total = DAVIS_SKY_MIRROR || 0;
     } else if (
         data?.sunGlassesLens?.status === "Yes" &&
         data?.sunGlassesLens?.lensType &&
         data?.sunGlassesLens?.mirrorCoating === "Yes" &&
         data?.sunGlassesLens?.coatingType === "Solid/Single Gradient Mirror"
     ) {
-        total =
-            calculatorObj?.addons
-                ?.find((item) => item?.title === data?.visionPlan)
-                ?.addon_types?.find((val) => val?.title === "Sunglass Options")
-                ?.addons?.find(
-                    (ele) => ele?.title === "Solid/Single Gradient Mirror"
-                )?.addon_price || 0;
+        total = DAVIS_GRADIENT_MIRROR || 0;
     }
 
     return parseFloat(total || 0);
@@ -405,59 +391,54 @@ export const GetDavisAntireflectiveFee = (data, calculatorObj) => {
                 return parseFloat(isUltimateAnti?.price || 0);
             }
         } else {
-            const antiPrice =
-                calculatorObj?.addons
-                    ?.find((item) => item?.title === data?.visionPlan)
-                    ?.addon_types?.find(
-                        (val) => val?.title === "Anti-Reflective Properties"
-                    )
-                    ?.addons?.find(
-                        (ele) =>
-                            ele?.title === data?.antiReflectiveProperties?.type
-                    )?.addon_price || 0;
+            const antiPrice = getAntireflective(antiCategory) || 0;
             return parseFloat(antiPrice || 0);
         }
     } else {
         return 0;
     }
 };
+const getAntireflective = (category) => {
+    switch (category) {
+        case "Standard":
+            return DAVIS_STANDARD_ANTIREFLECTIVE;
+        case "Premium":
+            return DAVIS_PREMIUM_ANTIREFLECTIVE;
+        case "Ultra":
+            return DAVIS_ULTRA_ANTIREFLECTIVE;
+        case "Ultimate":
+            return DAVIS_ULTIMATE_ANTIREFLECTIVE;
+    }
+};
 export const GetDavisBlueLightFee = (data, calculatorObj) => {
-    const total =
-        calculatorObj?.addons
-            ?.find((item) => item?.title === data?.visionPlan)
-            ?.addon_types?.find((val) => val?.title === "Blue Light Filtering")
-            ?.addons?.find((ele) => ele?.title === "Blue Light Filtering")
-            ?.addon_price || 0;
-
-    return data?.blueLight === "Yes" ? parseFloat(total || 0) : 0;
+    return data?.blueLight === "Yes" ? parseFloat(DAVIS_BLUE_LIGHT || 0) : 0;
 };
 export const GetDavisSlabOffFee = (data, calculatorObj) => {
-    const total =
-        calculatorObj?.additional_lense_setting
-            ?.find((item) => item?.title === data?.visionPlan)
-            ?.addon_types?.find((val) => val?.title === "Slab Off")
-            ?.addons?.find((ele) => ele?.title === "Slab Off")?.addon_price ||
-        0;
-
-    return data?.slabOff?.status === "Yes" ? parseFloat(total || 0) : 0;
+    return data?.slabOff?.status === "Yes"
+        ? parseFloat(DAVIS_SLAB_OFF || 0)
+        : 0;
 };
 export const GetDavisSpecialityLensFee = (data, calculatorObj) => {
-    const total =
-        calculatorObj?.additional_lense_setting
-            ?.find((item) => item?.title === data?.visionPlan)
-            ?.addon_types?.find((val) => val?.title === "Speciality Lens")
-            ?.addons?.find((ele) => ele?.title === "Speciality Lens")
-            ?.addon_price || 0;
-
-    return data?.specialtyLens?.status === "Yes" ? parseFloat(total || 0) : 0;
+    return data?.specialtyLens?.status === "Yes"
+        ? parseFloat(DAVIS_SPECIALITY_LENS || 0)
+        : 0;
 };
 export const GetDavisPolishFee = (data, calculatorObj) => {
-    const total =
-        calculatorObj?.additional_lense_setting
-            ?.find((item) => item?.title === data?.visionPlan)
-            ?.addon_types?.find((val) => val?.title === "Polish")
-            ?.addons?.find((ele) => ele?.title === data?.polish?.type)
-            ?.addon_price || 0;
+    let total = 0;
+    switch (data?.polish?.type) {
+        case "Edge Polish":
+            total = DAVIS_EDGE_POLISH;
+            break;
+        case "High Luster Edge Polish":
+            total = DAVIS_HIGH_EDGH_POLISH;
+            break;
+        case "Roll & Polish":
+            total = DAVIS_ROLL_AND_POLISH;
+            break;
+        case "Roll Edge":
+            total = DAVIS_ROLL_EDGE_POLISH;
+            break;
+    }
 
     return data?.polish?.status === "Yes" && data?.polish?.type
         ? parseFloat(total || 0)

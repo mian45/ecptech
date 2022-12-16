@@ -21,3 +21,22 @@ export const HIGH_INDEX = 51;
 export const ANTI_REFLECTIVE_PROPERTIES = 37;
 export const RIMLESS_DRILL = 86;
 export const BLENDED_BIFOCAL = 20;
+export const DAVIS_PHOTOCHROMIC = 65;
+export const DAVIS_POLARIZED = 75;
+export const DAVIS_SOLID_TINT = 0;
+export const DAVIS_GRADIENT_TINT = 0;
+export const DAVIS_SKY_MIRROR = 86;
+export const DAVIS_GRADIENT_MIRROR = 86;
+export const DAVIS_BLUE_LIGHT = 15;
+export const DAVIS_SLAB_OFF = 186;
+export const DAVIS_SPECIALITY_LENS = 206;
+
+export const DAVIS_STANDARD_ANTIREFLECTIVE = 50;
+export const DAVIS_PREMIUM_ANTIREFLECTIVE = 90;
+export const DAVIS_ULTRA_ANTIREFLECTIVE = 140;
+export const DAVIS_ULTIMATE_ANTIREFLECTIVE = 175;
+
+export const DAVIS_EDGE_POLISH = 22;
+export const DAVIS_HIGH_EDGH_POLISH = 70;
+export const DAVIS_ROLL_AND_POLISH = 16;
+export const DAVIS_ROLL_EDGE_POLISH = 24;
