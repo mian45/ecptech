@@ -178,7 +178,7 @@ const AdditionalLensTreatment = ({
     };
     return (
         <>
-            {(values?.visionPlan === allPlans?.eyemedPlan ||
+            {(values?.visionPlan === allPlans?.eyemed ||
                 values?.visionPlan === allPlans?.davis) &&
             (slabOffVisibility || specialityVisibility || polishVisibility) ? (
                 renderAddiotionalTreatment()

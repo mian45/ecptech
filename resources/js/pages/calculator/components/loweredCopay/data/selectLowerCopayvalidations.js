@@ -41,7 +41,7 @@ export const handleLowerCopayNoValidations = (
 ) => {
     const validations = { ...calValidations };
     delete validations?.isCopayChecked;
-    //remove polucarbonate
+    //remove policarbonate
     delete validations?.isCopayPolycarbonateAmount;
     delete validations?.copayPolycarbonateAmount;
     //remove photochromic

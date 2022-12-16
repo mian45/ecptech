@@ -41,7 +41,6 @@ export const getOriginalPrice = (
             )
         );
     } else if (data?.visionPlan === "Davis Vision") {
-        console.log("davisMaterials", davisMaterials);
         //get lens type price
         const lensType = calculatorObj?.lens_types?.find(
             (item) => item.title === values?.lensType

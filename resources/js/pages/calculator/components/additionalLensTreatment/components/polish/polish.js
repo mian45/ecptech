@@ -10,6 +10,7 @@ import { FormikError } from "../../../selectVisionPlan";
 import classes from "./polish.module.scss";
 import { useDispatch } from "react-redux";
 import * as action from "../../../../../../store/actions";
+import { getAdditionalTreatment } from "../slabOff/helpers/additionalTreatment";
 
 const Polish = ({
     formProps,
@@ -69,10 +70,12 @@ const Polish = ({
         }
     };
     const showAlert = (e) => {
-        const material = calculatorObj?.additional_lense_setting
-            ?.find((item) => item?.title === data?.visionPlan)
-            ?.addon_types?.find((val) => val?.title === "Polish")
-            ?.addons?.find((ele) => ele?.title === e?.target?.value);
+        const material = getAdditionalTreatment(
+            calculatorObj,
+            "Polish",
+            e?.target?.value,
+            values?.visionPlan
+        );
         const invoiceData = localStorage.getItem("CALCULATOR_DATA");
         let parsedInvoiceData = false;
         if (invoiceData) {

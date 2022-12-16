@@ -12,6 +12,7 @@ import { Plans } from "../../data/plansJson";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
+import { getAddons } from "../antireFlextive/helpers/addonsHelper";
 
 const SunglassLens = ({
     formProps,
@@ -100,10 +101,12 @@ const SunglassLens = ({
         }
     };
     const showAlert = (e) => {
-        const material = calculatorObj?.addons
-            ?.find((val) => val?.title === values?.visionPlan)
-            ?.addon_types?.find((item) => item?.title === "Sunglass Options")
-            ?.addons?.find((ele) => ele?.title === e?.target?.value);
+        const material = getAddons(
+            calculatorObj,
+            "Sunglass Options",
+            e?.target?.value,
+            values?.visionPlan
+        );
         const invoiceData = localStorage.getItem("CALCULATOR_DATA");
         let parsedInvoiceData = false;
         if (invoiceData) {

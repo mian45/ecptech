@@ -971,9 +971,12 @@ const CalculatorScreen = ({ retailPopup }) => {
                                                                     ?.question_permissions
                                                             }
                                                         />
-                                                        {formProps?.values
+                                                        {(formProps?.values
                                                             ?.isFrameBenifit ===
-                                                            FrameBenifitAvailableEnum.yes && (
+                                                            FrameBenifitAvailableEnum.yes ||
+                                                            formProps?.values
+                                                                ?.visionPlan ===
+                                                                "Private Pay") && (
                                                             <TracingFee
                                                                 formProps={
                                                                     formProps

@@ -10,6 +10,7 @@ import classes from "./slabOff.module.scss";
 import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import * as action from "../../../../../../store/actions";
+import { getAdditionalTreatment } from "./helpers/additionalTreatment";
 
 const SlabOff = ({
     formProps,
@@ -36,10 +37,12 @@ const SlabOff = ({
     const additionalLensYes =
         Plans()[language][values?.visionPlan]?.additionalLens?.options?.yes;
     const showAlert = (e) => {
-        const material = calculatorObj?.additional_lense_setting
-            ?.find((item) => item?.title === data?.visionPlan)
-            ?.addon_types?.find((val) => val?.title === "Slab Off")
-            ?.addons?.find((ele) => ele?.title === "Slab Off");
+        const material = getAdditionalTreatment(
+            calculatorObj,
+            "Slab Off",
+            "Slab Off",
+            values?.visionPlan
+        );
         const invoiceData = localStorage.getItem("CALCULATOR_DATA");
         let parsedInvoiceData = false;
         if (invoiceData) {

@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 import { handleAntiReflectiveNoValidations } from "./helpers/handleAntireflectiveNoValidations";
 import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
+import { getAddons } from "./helpers/addonsHelper";
 
 const AntireFlextive = ({
     formProps,
@@ -101,12 +102,13 @@ const AntireFlextive = ({
         }
     };
     const showAlert = (e) => {
-        const material = calculatorObj?.addons
-            ?.find((val) => val?.title === values?.visionPlan)
-            ?.addon_types?.find(
-                (item) => item?.title === "Anti-Reflective Properties"
-            )
-            ?.addons?.find((ele) => ele?.title === e?.target?.value);
+        const material = getAddons(
+            calculatorObj,
+            "Anti-Reflective Properties",
+            e?.target?.value,
+            values?.visionPlan
+        );
+
         const invoiceData = localStorage.getItem("CALCULATOR_DATA");
         let parsedInvoiceData = false;
         if (invoiceData) {
