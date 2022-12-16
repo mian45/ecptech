@@ -86,6 +86,7 @@ const CalculatorScreen = ({ retailPopup }) => {
                 shipping: vpState?.shipping,
                 tax: vpState?.tax,
                 tracing_fee: vpState?.tracing_fee,
+                additional_lense_setting: vpState?.additional_lense_setting,
             };
             setCalculatorObj(editCalObject);
             if (editInvoiceState && editInvoiceState?.vp_state) {
@@ -143,7 +144,7 @@ const CalculatorScreen = ({ retailPopup }) => {
             resData.lens_types = colRes?.data?.data?.collection;
             resData.additional_lense_setting = [];
 
-            setDavisMaterials(resData?.lense_materials || []);
+            setDavisMaterials(colRes?.data?.data?.lense_materials || []);
             setCalculatorObj(resData);
             const questions = resData?.questions;
 
@@ -543,7 +544,9 @@ const CalculatorScreen = ({ retailPopup }) => {
                                                 }
                                                 lensPrices={lensPrices}
                                                 messageApi={messageApi}
-                                                davisMaterials={davisMaterials}
+                                                davisLensMaterials={
+                                                    davisMaterials
+                                                }
                                             />
                                         )}
                                         <InvoiceInfo

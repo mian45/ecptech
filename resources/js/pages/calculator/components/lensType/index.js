@@ -259,8 +259,10 @@ const LensType = ({
 
     const handleBrandSelection = async (e) => {
         if (
-            values?.visionPlan !== eyemedPlan ||
-            values?.visionPlan !== davisPlan
+            !(
+                values?.visionPlan === eyemedPlan ||
+                values?.visionPlan === davisPlan
+            )
         ) {
             await resetMaterial(e);
         }

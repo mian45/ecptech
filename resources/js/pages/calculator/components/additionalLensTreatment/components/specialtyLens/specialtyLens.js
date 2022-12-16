@@ -58,7 +58,7 @@ const SpecialtyLens = ({
     };
     const handleSpecialityLensChange = (e) => {
         handleChange(e);
-        showAlert(e);
+        if (e?.target?.value === "Yes") showAlert(e);
         if (
             values?.visionPlan === eyemedPlan &&
             values?.isLensBenifit === lensBenifitYes &&

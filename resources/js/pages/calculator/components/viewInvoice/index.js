@@ -22,7 +22,6 @@ import {
 } from "../../data/constants";
 import Axios from "../../../../Http";
 import { connect } from "react-redux";
-import { useHistory } from "react-router";
 import { INVOICES_ROUTE } from "../../../../appRoutes/routeConstants";
 import UserInfo from "./components/userInfo";
 import OutPackPrices from "./components/outPackPrices";
@@ -36,6 +35,7 @@ import UseWindowSize from "../../../../hooks/windowResize";
 import ButtonsList from "./components/buttonsList/buttonsList";
 import { AllPlans } from "../../data/plansList";
 import { Plans } from "../../data/plansJson";
+import { useHistory } from "react-router";
 
 const ViewInvoice = ({
     onClose,
@@ -50,10 +50,13 @@ const ViewInvoice = ({
     userRole,
     messageApi,
     language,
-    davisMaterials,
+    davisLensMaterials,
 }) => {
     const history = useHistory();
     const [receipt, setReceipt] = useState(null);
+    const [davisMaterials, setDavisMaterials] = useState([
+        ...(davisLensMaterials || []),
+    ]);
     const { width } = UseWindowSize();
     const plansList = AllPlans[language];
     const plansJson = Plans()[language];
@@ -63,6 +66,25 @@ const ViewInvoice = ({
             values: { ...calValues },
         });
     }, [calValues]);
+    useEffect(() => {
+        const getDavisMaterial = async () => {
+            const currentPlan = calculatorObj?.questions?.find(
+                (item) => item?.title === calValues?.visionPlan || ""
+            );
+            const res = await Axios.post(
+                process.env.MIX_REACT_APP_URL + "/api/get-collections",
+                { vision_plan_id: currentPlan?.id }
+            );
+
+            setDavisMaterials(res?.data?.data?.lense_materials || []);
+        };
+        if (
+            calValues?.visionPlan === "Davis Vision" &&
+            (mode === "view" || invoiceId)
+        ) {
+            getDavisMaterial();
+        }
+    }, [calculatorObj, calValues, davisLensMaterials]);
 
     const handleSendInvoiceClick = async (status) => {
         if (mode === "view") {
@@ -75,8 +97,6 @@ const ViewInvoice = ({
             } else {
                 await createNewInvoice(status);
             }
-
-            history.push(INVOICES_ROUTE);
         } catch (err) {
             onClose();
             messageApi.open({
@@ -94,39 +114,51 @@ const ViewInvoice = ({
         if (userRole === "staff") {
             clientId = clientUserId;
         }
-        const payload = {
-            userId: clientId,
-            staffId: receipt?.values?.staffId,
-            invoiceName: receipt?.values?.invoiceName,
-            fname: receipt?.userInfo?.firstName,
-            lname: receipt?.userInfo?.lastName,
-            dob: receipt?.userInfo?.dob,
-            email: receipt?.userInfo?.email,
-            phone: receipt?.userInfo?.phoneNo,
-            status: status,
-            amount: (
-                CalculateWithTaxesTotalPrice(
-                    receipt?.values,
-                    calculatorObj,
-                    lensPrices,
-                    plansList,
-                    plansJson,
-                    davisMaterials
-                ) || 0
-            ).toFixed(2),
-            vpState: calculatorObj,
-            userState: receipt?.values,
-        };
-        const res = await Axios.post(
-            `${process.env.MIX_REACT_APP_URL}/api/save-invoice`,
-            payload
-        );
-        messageApi.open({
-            type: "success",
-            content: res.data.message,
-            duration: 5,
-            className: "custom-postion",
-        });
+        try {
+            const payload = {
+                userId: clientId,
+                staffId: receipt?.values?.staffId,
+                invoiceName: receipt?.values?.invoiceName,
+                fname: receipt?.userInfo?.firstName,
+                lname: receipt?.userInfo?.lastName,
+                dob: receipt?.userInfo?.dob,
+                email: receipt?.userInfo?.email,
+                phone: receipt?.userInfo?.phoneNo,
+                status: status,
+                amount: (
+                    CalculateWithTaxesTotalPrice(
+                        receipt?.values,
+                        calculatorObj,
+                        lensPrices,
+                        plansList,
+                        plansJson,
+                        davisMaterials
+                    ) || 0
+                ).toFixed(2),
+                vpState: calculatorObj,
+                userState: receipt?.values,
+            };
+            const res = await Axios.post(
+                `${process.env.MIX_REACT_APP_URL}/api/save-invoice`,
+                payload
+            );
+            messageApi.open({
+                type: "success",
+                content: res.data.message,
+                duration: 5,
+                className: "custom-postion",
+            });
+            history.push(INVOICES_ROUTE);
+        } catch (err) {
+            onClose();
+            messageApi.open({
+                type: "error",
+                content: err.response.data.message,
+                duration: 5,
+                className: "custom-postion-error",
+            });
+            console.log("error while save Invoice");
+        }
     };
 
     const onEditInvoice = async (status) => {
@@ -134,35 +166,47 @@ const ViewInvoice = ({
         if (userRole === "staff") {
             clientId = clientUserId;
         }
-        const payload = {
-            id: invoiceId,
-            userId: clientId,
-            staffId: receipt?.values?.staffId,
-            invoiceName: receipt?.values?.invoiceName,
-            status: status,
-            amount: (
-                CalculateWithTaxesTotalPrice(
-                    receipt?.values,
-                    calculatorObj,
-                    lensPrices,
-                    plansList,
-                    plansJson,
-                    davisMaterials
-                ) || 0
-            ).toFixed(2),
-            vpState: calculatorObj,
-            userState: receipt?.values,
-        };
-        await Axios.post(
-            `${process.env.MIX_REACT_APP_URL}/api/save-edit-invoice`,
-            payload
-        );
-        messageApi.open({
-            type: "success",
-            content: res.data.message,
-            duration: 5,
-            className: "custom-postion",
-        });
+        try {
+            const payload = {
+                id: invoiceId,
+                userId: clientId,
+                staffId: receipt?.values?.staffId,
+                invoiceName: receipt?.values?.invoiceName,
+                status: status,
+                amount: (
+                    CalculateWithTaxesTotalPrice(
+                        receipt?.values,
+                        calculatorObj,
+                        lensPrices,
+                        plansList,
+                        plansJson,
+                        davisMaterials
+                    ) || 0
+                ).toFixed(2),
+                vpState: calculatorObj,
+                userState: receipt?.values,
+            };
+            const res = await Axios.post(
+                `${process.env.MIX_REACT_APP_URL}/api/save-edit-invoice`,
+                payload
+            );
+            history.push(INVOICES_ROUTE);
+            messageApi.open({
+                type: "success",
+                content: res?.data?.message,
+                duration: 5,
+                className: "custom-postion",
+            });
+        } catch (err) {
+            onClose();
+            messageApi.open({
+                type: "error",
+                content: err.response.data.message,
+                duration: 5,
+                className: "custom-postion-error",
+            });
+            console.log("error while save Invoice");
+        }
     };
 
     const calculateTotalDue = () => {

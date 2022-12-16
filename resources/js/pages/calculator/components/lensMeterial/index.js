@@ -70,7 +70,7 @@ const LensMeterials = ({
         return activeMaterials?.length > 0 ? !isMaterialFound : false;
     };
     const showAlert = (e) => {
-        const material = calculatorObj?.lens_material(
+        const material = calculatorObj?.lens_material?.find(
             (val) => val?.lens_material_title === e?.target?.value
         );
         const invoiceData = localStorage.getItem("CALCULATOR_DATA");
@@ -101,8 +101,10 @@ const LensMeterials = ({
         if (
             values?.lensTypeValue &&
             e?.target?.value &&
-            (values?.visionPlan !== eyemedPlan ||
-                values?.visionPlan !== "Davis Vision")
+            !(
+                values?.visionPlan === eyemedPlan ||
+                values?.visionPlan === "Davis Vision"
+            )
         ) {
             await getBaseValues(
                 { ...values, lensMaterial: e?.target?.value },

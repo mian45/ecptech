@@ -12,6 +12,7 @@ import { AllPlans } from "../../../../data/plansList";
 import { Plans } from "../../../../data/plansJson";
 import { connect } from "react-redux";
 import { GetDavisDrillMountFee } from "../../helpers/pricesHelper/calculateDavisPrice";
+import PlanTitles from "../../../../data/plansTitles/planTitles";
 
 const { Panel } = Collapse;
 
@@ -19,6 +20,10 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
     const currentPlan = receipt?.values?.visionPlan;
     const plansList = AllPlans[language];
     const plansJson = Plans()[language];
+    const { drillMountTitle } = PlanTitles(
+        language,
+        receipt?.values?.visionPlan
+    );
     const rendeFrameFee = () => {
         let price = 0;
         if (currentPlan === plansList?.eyemed) {
@@ -140,6 +145,7 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
                             drillMount={renderDrillMount}
                             receipt={receipt}
                             renderTracing={renderTracing}
+                            drillMountTitle={drillMountTitle}
                         />
                     </Panel>
                 </Collapse>
@@ -158,6 +164,7 @@ const GetFramePriceByPlan = ({
     drillMount,
     receipt,
     renderTracing,
+    drillMountTitle,
 }) => {
     if (
         receipt?.values?.isFrameBenifit ===
@@ -168,7 +175,7 @@ const GetFramePriceByPlan = ({
                 {receipt?.values?.frameOrder?.type !== "Patient Own Frame" && (
                     <Col xs={24}>
                         <FramePriceSlot
-                            title={"Drill Mount"}
+                            title={drillMountTitle}
                             price={`$${drillMount() || 0}`}
                         />
                     </Col>
@@ -196,7 +203,7 @@ const GetFramePriceByPlan = ({
                 {receipt?.values?.frameOrder?.type !== "Patient Own Frame" && (
                     <Col xs={24}>
                         <FramePriceSlot
-                            title={"Drill Mount"}
+                            title={drillMountTitle}
                             price={`$${drillMount() || 0}`}
                         />
                     </Col>

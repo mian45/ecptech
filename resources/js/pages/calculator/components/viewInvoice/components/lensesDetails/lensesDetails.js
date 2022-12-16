@@ -1,5 +1,7 @@
 import { Col, Collapse, Row } from "antd";
 import React from "react";
+import { connect } from "react-redux";
+import PlanTitles from "../../../../data/plansTitles/planTitles";
 import { RenderBlueLight } from "../../helpers/pricesHelper/calculateDavisPrice";
 import { calculateLensesCopaysFee } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
 import { GetSelectionDetails } from "../../helpers/selectedMenuList";
@@ -27,8 +29,13 @@ const LensesDetails = ({
     calculatorObj,
     lensPrices,
     davisMaterials,
+    language,
 }) => {
     const currentPlan = receipt?.values?.visionPlan;
+    const { materialCopayTitle } = PlanTitles(
+        language,
+        receipt?.values?.visionPlan
+    );
 
     const renderLensesCopay = () => {
         const price =
@@ -36,7 +43,8 @@ const LensesDetails = ({
                 receipt?.values,
                 calculatorObj,
                 lensPrices,
-                currentPlan === "Private Pay" ? true : false
+                currentPlan === "Private Pay" ? true : false,
+                davisMaterials
             ) || 0;
         return (price || 0).toFixed(2);
     };
@@ -60,6 +68,7 @@ const LensesDetails = ({
                             calculatorObj={calculatorObj}
                             lensPrices={lensPrices}
                             davisMaterials={davisMaterials}
+                            materialCopayTitle={materialCopayTitle}
                         />
                     </Panel>
                 </Collapse>
@@ -80,13 +89,18 @@ const LensesDetails = ({
         </Row>
     );
 };
-export default LensesDetails;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
+
+export default connect(mapStateToProps)(LensesDetails);
 
 const GetLensPriceByPlan = ({
     receipt,
     calculatorObj,
     lensPrices,
     davisMaterials,
+    materialCopayTitle,
 }) => {
     const photochromicPrice = RenderPhotochromicPrices(
         receipt?.values,
@@ -103,7 +117,7 @@ const GetLensPriceByPlan = ({
             {(materialCopay > 0 || materialCopay < 0) && (
                 <Col xs={24}>
                     <FramePriceSlot
-                        title={"Material Copay"}
+                        title={materialCopayTitle}
                         price={`$${materialCopay || 0}`}
                     />
                 </Col>

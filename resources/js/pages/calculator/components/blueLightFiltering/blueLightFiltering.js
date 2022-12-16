@@ -54,6 +54,10 @@ const BlueLightFiltering = ({
             );
         }
     };
+    const handleBlueLightChange = (e) => {
+        handleChange(e);
+        if (e?.target?.value === "Yes") showAlert();
+    };
     const renderBlueLight = () => {
         return (
             <Row className={classes["container"]}>
@@ -67,10 +71,7 @@ const BlueLightFiltering = ({
                             active={values?.blueLight}
                         />
                         <Radio.Group
-                            onChange={(e) => {
-                                handleChange(e);
-                                showAlert();
-                            }}
+                            onChange={handleBlueLightChange}
                             value={values?.blueLight}
                             id="blueLight"
                             name="blueLight"
