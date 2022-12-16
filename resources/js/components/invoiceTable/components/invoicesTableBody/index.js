@@ -28,6 +28,8 @@ const InvoicesTableBodySlot = ({ data }) => {
                     className={
                         data?.status === "paid" || data?.status === "discard"
                             ? classes["paid-status-tag"]
+                            : data?.status === "draft"
+                            ? classes["draft-status-tag"]
                             : classes["un-paid-status-tag"]
                     }
                 >
