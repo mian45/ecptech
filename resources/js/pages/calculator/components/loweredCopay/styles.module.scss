@@ -19,32 +19,3 @@
     display: flex;
     flex-wrap: wrap;
 }
-
-.slot-input-container {
-    display: flex;
-    align-items: center;
-}
-.slot-input-label {
-    font-size: 16px;
-    color: #2a2a2a;
-    font-family: Montserrat;
-    font-weight: bold;
-    margin-right: 13px;
-}
-.slot-input {
-    border: 1px solid #dfdfdf;
-    border-radius: 23px;
-    font-size: 16px;
-    padding: 10px 20px;
-    color: #747474;
-    width: 150px;
-    outline: none;
-    &::placeholder {
-        color: #cbcbcb;
-    }
-}
-.error {
-    font-size: 14px;
-    color: red;
-    margin-top: 10px;
-}

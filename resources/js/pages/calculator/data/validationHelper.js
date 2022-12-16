@@ -182,12 +182,49 @@ export const GetMappedPayload = (data) => {
                     copayType: data?.isCopayCustomProgressiveAmount,
                     price: data?.copayCustomProgressiveAmount,
                 },
+                {
+                    type: "Ultra Progressives",
+                    status: data?.isCopayUltraProgressives,
+                    copayType: data?.isCopayUltraProgressiveAmount,
+                    price: data?.copayUltraProgressiveAmount,
+                },
+                {
+                    type: "Ultimate Progressives",
+                    status: data?.isCopayUltimateProgressives,
+                    copayType: data?.isCopayUltimateProgressiveAmount,
+                    price: data?.copayUltimateProgressiveAmount,
+                },
+                {
+                    type: "Standard Anti-Reflective Properties",
+                    status: data?.isCopayStandardAntireflective,
+                    copayType: data?.isCopayStandardAntireflectiveAmount,
+                    price: data?.copayStandardAntireflectiveAmount,
+                },
+                {
+                    type: "Premium Anti-Reflective Properties",
+                    status: data?.isCopayPremiumAntireflective,
+                    copayType: data?.isCopayPremiumAntireflectiveAmount,
+                    price: data?.copayPremiumAntireflectiveAmount,
+                },
+                {
+                    type: "Ultra Anti-Reflective Properties",
+                    status: data?.isCopayUltraAntireflective,
+                    copayType: data?.isCopayUltraAntireflectiveAmount,
+                    price: data?.copayUltraAntireflectiveAmount,
+                },
+                {
+                    type: "Ultimate Anti-Reflective Properties",
+                    status: data?.isCopayUltimateAntireflective,
+                    copayType: data?.isCopayUltimateAntireflectiveAmount,
+                    price: data?.copayUltimateAntireflectiveAmount,
+                },
             ],
         },
         lensType: {
             type: data?.lensType,
             brand: data?.lensTypeValue,
             brandPrice: data?.lensTypeInput,
+            blendedBifocal: data?.blendedBifocal,
         },
         lensMaterial: data?.lensMaterial,
         lensMaterialPrice: data?.lensMaterialValue,
@@ -211,6 +248,7 @@ export const GetMappedPayload = (data) => {
             type: data?.antireflectiveType,
             price: data?.antireflectiveValue,
         },
+        blueLight: data?.blueLight,
         protectionPlan: {
             status: data?.isProtectionPlan,
             type: data?.protectionPlanType,
@@ -270,6 +308,24 @@ export const mappedEditValues = (data) => {
     const customProgresive = lowerCopay.find(
         (item) => item.type === "Custom Progressives"
     );
+    const ultraProgresive = lowerCopay.find(
+        (item) => item.type === "Ultra Progressives"
+    );
+    const ultimateProgresive = lowerCopay.find(
+        (item) => item.type === "Ultimate Progressives"
+    );
+    const standardAntireflective = lowerCopay.find(
+        (item) => item.type === "Standard Anti-Reflective Properties"
+    );
+    const premiumAntireflective = lowerCopay.find(
+        (item) => item.type === "Premium Anti-Reflective Properties"
+    );
+    const ultraAntireflective = lowerCopay.find(
+        (item) => item.type === "Ultra Anti-Reflective Properties"
+    );
+    const ultimateAntireflective = lowerCopay.find(
+        (item) => item.type === "Ultimate Anti-Reflective Properties"
+    );
 
     return {
         benifitType: userState?.submitBenifitType || "",
@@ -308,6 +364,34 @@ export const mappedEditValues = (data) => {
         copayStandardProgressiveAmount: standardProgresive?.price || "",
         isCopayCustomProgressiveAmount: customProgresive?.copayType || "",
         copayCustomProgressiveAmount: customProgresive?.price || "",
+        //ultra progressive
+        isCopayUltraProgressives: ultraProgresive?.price || null,
+        isCopayUltraProgressiveAmount: ultraProgresive?.copayType || "",
+        copayUltraProgressiveAmount: ultraProgresive?.price || "",
+        //ultimate progressive
+        isCopayUltimateProgressives: ultimateProgresive?.price || null,
+        isCopayUltimateProgressiveAmount: ultimateProgresive?.copayType || "",
+        copayUltimateProgressiveAmount: ultimateProgresive?.price || "",
+        //standard anti reflective
+        isCopayStandardAntireflective: standardAntireflective?.price || null,
+        isCopayStandardAntireflectiveAmount:
+            standardAntireflective?.copayType || "",
+        copayStandardAntireflectiveAmount: standardAntireflective?.price || "",
+        //Premium anti reflective
+        isCopayPremiumAntireflective: premiumAntireflective?.price || null,
+        isCopayPremiumAntireflectiveAmount:
+            premiumAntireflective?.copayType || "",
+        copayPremiumAntireflectiveAmount: premiumAntireflective?.price || "",
+        //Ultra anti reflective
+        isCopayUltraAntireflective: ultraAntireflective?.price || null,
+        isCopayUltraAntireflectiveAmount: ultraAntireflective?.copayType || "",
+        copayUltraAntireflectiveAmount: ultraAntireflective?.price || "",
+        //Ultimate anti reflective
+        isCopayUltimateAntireflective: ultimateAntireflective?.price || null,
+        isCopayUltimateAntireflectiveAmount:
+            ultimateAntireflective?.copayType || "",
+        copayUltimateAntireflectiveAmount: ultimateAntireflective?.price || "",
+        // lens type
         lensType: userState?.lensType?.type || "",
         lensTypeValue: userState?.lensType?.brand || "",
         lensTypeInput: userState?.lensType?.brandPrice || "",
@@ -347,5 +431,7 @@ export const mappedEditValues = (data) => {
         polishPrice: userState?.polish?.price || "",
         tracingFee: userState?.tracing?.status || "",
         tracingPrice: userState?.tracing?.price || "",
+        blueLight: userState?.blueLight || "",
+        blendedBifocal: userState?.lensType?.blendedBifocal || "",
     };
 };

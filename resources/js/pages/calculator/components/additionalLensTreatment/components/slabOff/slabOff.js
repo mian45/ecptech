@@ -8,6 +8,9 @@ import CalculatorInput from "../../../frameOrder/components/calculatorInput/calc
 import { FormikError } from "../../../selectVisionPlan";
 import classes from "./slabOff.module.scss";
 import * as Yup from "yup";
+import { useDispatch } from "react-redux";
+import * as action from "../../../../../../store/actions";
+import { getAdditionalTreatment } from "./helpers/additionalTreatment";
 
 const SlabOff = ({
     formProps,
@@ -18,23 +21,47 @@ const SlabOff = ({
     language,
 }) => {
     const { values, handleChange } = formProps;
+    const dipatch = useDispatch();
     const eyemedPlan = AllPlans[language]?.eyemed;
     const slapOffTitle =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
             ?.slabOff?.question;
     const slabOffYes =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
             ?.slabOff?.options?.yes;
     const slabOffNo =
-        Plans[language][values?.visionPlan]?.additionalLens?.subQuestion
+        Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
             ?.slabOff?.options?.no;
     const lensBenifitYes =
-        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const additionalLensYes =
-        Plans[language][values?.visionPlan]?.additionalLens?.options?.yes;
+        Plans()[language][values?.visionPlan]?.additionalLens?.options?.yes;
+    const showAlert = (e) => {
+        const material = getAdditionalTreatment(
+            calculatorObj,
+            "Slab Off",
+            "Slab Off",
+            values?.visionPlan
+        );
+        const invoiceData = localStorage.getItem("CALCULATOR_DATA");
+        let parsedInvoiceData = false;
+        if (invoiceData) {
+            const data = JSON.parse(invoiceData);
+            parsedInvoiceData = data?.invoicePriceData || false;
+        }
 
+        if (!material?.price && !parsedInvoiceData) {
+            dipatch(action.showRetailPopup());
+        }
+        if (!material?.price && parsedInvoiceData) {
+            setError(
+                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            );
+        }
+    };
     const handleSlabOffChange = (e) => {
         handleChange(e);
+        if (e?.target?.value === "Yes") showAlert(e);
         if (
             values?.visionPlan === eyemedPlan &&
             values?.isLensBenifit === lensBenifitYes &&

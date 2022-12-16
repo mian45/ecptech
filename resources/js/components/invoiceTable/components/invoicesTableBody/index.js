@@ -28,6 +28,8 @@ const InvoicesTableBodySlot = ({ data }) => {
                     className={
                         data?.status === "paid" || data?.status === "discard"
                             ? classes["paid-status-tag"]
+                            : data?.status === "draft"
+                            ? classes["draft-status-tag"]
                             : classes["un-paid-status-tag"]
                     }
                 >
@@ -87,6 +89,8 @@ const InvoiceTableActions = ({ data }) => {
             price_calculation_data: vpState?.price_calculation_data,
             shipping: vpState?.shipping,
             tax: vpState?.tax,
+            tracing_fee: vpState?.tracing_fee,
+            additional_lense_setting: vpState?.additional_lense_setting,
         };
     };
     const getLensTypes = async () => {

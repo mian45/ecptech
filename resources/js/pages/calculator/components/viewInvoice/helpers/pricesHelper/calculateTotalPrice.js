@@ -1,3 +1,4 @@
+import { CalculateDavisPlansPrices } from "./calculateDavisPrice";
 import { CalculateEyemedPlansPrices } from "./calculateEyemedPrice";
 import { CalculateOtherPlansPrices } from "./calculateOtherPlansPrices";
 
@@ -6,7 +7,8 @@ export const CalculateTotalPrice = (
     calculatorObj,
     lensPrices,
     plansList,
-    plansJson
+    plansJson,
+    davisMaterials
 ) => {
     if (data?.visionPlan === plansList?.privatePay) {
         return CalculateOtherPlansPrices(data, calculatorObj, lensPrices, true);
@@ -16,6 +18,14 @@ export const CalculateTotalPrice = (
             calculatorObj,
             plansList,
             plansJson
+        );
+    } else if (data?.visionPlan === plansList?.davis) {
+        return CalculateDavisPlansPrices(
+            data,
+            calculatorObj,
+            plansList,
+            plansJson,
+            davisMaterials
         );
     } else {
         return CalculateOtherPlansPrices(
@@ -32,7 +42,8 @@ export const CalculateWithTaxesTotalPrice = (
     calculatorObj,
     lensPrices,
     plansList,
-    plansJson
+    plansJson,
+    davisMaterials
 ) => {
     let total = 0;
     // without taxes price
@@ -43,7 +54,8 @@ export const CalculateWithTaxesTotalPrice = (
             calculatorObj,
             lensPrices,
             plansList,
-            plansJson
+            plansJson,
+            davisMaterials
         );
     //remove disount price
     total = total - GetAppliedDiscount(total, data);
@@ -54,16 +66,18 @@ export const CalculateWithTaxesTotalPrice = (
             totalTax = totalTax + parseFloat(element?.value || 0);
         }
     });
-    const tax =
-        (CalculateTotalPrice(
-            data,
-            calculatorObj,
-            lensPrices,
-            plansList,
-            plansJson
-        ) *
-            (totalTax || 0)) /
-        100;
+    let totalAmount = CalculateTotalPrice(
+        data,
+        calculatorObj,
+        lensPrices,
+        plansList,
+        plansJson,
+        davisMaterials
+    );
+    if (data?.frameOrder?.type === "Patient Own Frame") {
+        totalAmount = totalAmount - data?.tracing?.price;
+    }
+    const tax = (totalAmount * (totalTax || 0)) / 100;
     total = total + tax;
     //add shipping
     if (data?.shipping?.status === "Yes") {

@@ -10,6 +10,9 @@ import { connect } from "react-redux";
 import { AllPlans } from "../../data/plansList";
 import { Plans } from "../../data/plansJson";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
+import { useDispatch } from "react-redux";
+import * as action from "../../../../store/actions";
+import { getAddons } from "../antireFlextive/helpers/addonsHelper";
 
 const SunglassLens = ({
     formProps,
@@ -20,7 +23,7 @@ const SunglassLens = ({
     language,
 }) => {
     const { values, handleChange, handleBlur } = formProps;
-
+    const dipatch = useDispatch();
     const sunglassLensVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -29,17 +32,17 @@ const SunglassLens = ({
 
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
-        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const sunglassesYes =
-        Plans[language][values?.visionPlan]?.sunglasses?.options?.yes;
+        Plans()[language][values?.visionPlan]?.sunglasses?.options?.yes;
     const polarizedType =
-        Plans[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
+        Plans()[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
             ?.polarized?.question;
     const tintType =
-        Plans[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
+        Plans()[language][values?.visionPlan]?.sunglasses?.subQuestion?.options
             ?.tint?.question;
     const mirrorCoatingYes =
-        Plans[language][values?.visionPlan]?.sunglasses?.subQuestion
+        Plans()[language][values?.visionPlan]?.sunglasses?.subQuestion
             ?.subQuestion?.options?.yes;
     const addons = calculatorObj?.addons
         ?.find((plan) => plan?.title === values?.visionPlan)
@@ -97,9 +100,33 @@ const SunglassLens = ({
             });
         }
     };
+    const showAlert = (e) => {
+        const material = getAddons(
+            calculatorObj,
+            "Sunglass Options",
+            e?.target?.value,
+            values?.visionPlan
+        );
+        const invoiceData = localStorage.getItem("CALCULATOR_DATA");
+        let parsedInvoiceData = false;
+        if (invoiceData) {
+            const data = JSON.parse(invoiceData);
+            parsedInvoiceData = data?.invoicePriceData || false;
+        }
+
+        if (!material?.price && !parsedInvoiceData) {
+            dipatch(action.showRetailPopup());
+        }
+        if (!material?.price && parsedInvoiceData) {
+            setError(
+                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            );
+        }
+    };
     const handleSunGlassesLensTypeChange = (e) => {
         handleChange(e);
         if (e?.target?.value === "Polarized") {
+            showAlert(e);
             const validations = { ...calValidations };
             delete validations.tintType;
             delete validations.tintTypePrice;
@@ -164,6 +191,8 @@ const SunglassLens = ({
     };
     const handleMirrorCoatingChange = (e) => {
         handleChange(e);
+        showAlert(e);
+
         if (
             values?.visionPlan === eyemedPlan &&
             values?.isLensBenifit === lensBenifitYes &&
@@ -307,7 +336,10 @@ const SunglassLens = ({
                     <>
                         <div className={classes["label"]}>Select Tint Lens</div>
                         <Radio.Group
-                            onChange={handleChange}
+                            onChange={(e) => {
+                                handleChange(e);
+                                showAlert(e);
+                            }}
                             value={values?.tintType}
                             id="tintType"
                             name="tintType"

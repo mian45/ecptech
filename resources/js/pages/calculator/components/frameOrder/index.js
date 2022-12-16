@@ -30,12 +30,12 @@ const FrameOrder = ({
 
     const eyemedPlan = AllPlans[language]?.eyemed;
     const frameBenifitYes =
-        Plans[language][values?.visionPlan]?.frameBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.frameBenifit?.options?.yes;
     const drillMountYes =
-        Plans[language][values?.visionPlan]?.frameOrder?.options?.newFrame
+        Plans()[language][values?.visionPlan]?.frameOrder?.options?.newFrame
             ?.subQuestion?.options?.yes;
     const drillMountTitle =
-        Plans[language][values?.visionPlan]?.frameOrder?.options?.newFrame
+        Plans()[language][values?.visionPlan]?.frameOrder?.options?.newFrame
             ?.subQuestion?.question;
 
     const handleInputChange = (e) => {

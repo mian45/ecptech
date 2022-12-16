@@ -6,6 +6,18 @@ import {
     SOLID_TINT,
 } from "../../../../data/constants";
 import {
+    GetDavisAntireflectiveFee,
+    GetDavisCoatingFee,
+    GetDavisLensFee,
+    GetDavisMaterialFee,
+    GetDavisPhotochromicFee,
+    GetDavisPolarizedFee,
+    GetDavisPolishFee,
+    GetDavisSlabOffFee,
+    GetDavisSpecialityLensFee,
+    GetDavisTintFee,
+} from "../../helpers/pricesHelper/calculateDavisPrice";
+import {
     GetEyemedAntireflectiveFee,
     GetEyemedCoatingFee,
     GetEyemedLensFee,
@@ -38,6 +50,10 @@ export const RenderPhotochromicPrices = (data, calculatorObj) => {
     if (data?.isLensBenifit === "Yes") {
         if (currentPlan === "Eyemed") {
             total = total + parseFloat(GetEyemedPhotochromicFee(data));
+        } else if (currentPlan === "Davis Vision") {
+            total =
+                total +
+                parseFloat(GetDavisPhotochromicFee(data, calculatorObj));
         } else {
             total = total + parseFloat(GetPhotochromicPrice(data));
         }
@@ -65,6 +81,10 @@ export const RenderAntireflectivePrices = (data, calculatorObj) => {
     if (data?.isLensBenifit === "Yes") {
         if (currentPlan === "Eyemed") {
             total = total + parseFloat(GetEyemedAntireflectiveFee(data));
+        } else if (currentPlan === "Davis Vision") {
+            total =
+                total +
+                parseFloat(GetDavisAntireflectiveFee(data, calculatorObj));
         } else {
             total = total + parseFloat(GetAntireflectivePrice(data));
         }
@@ -92,6 +112,9 @@ export const RenderPolarizedFee = (data, calculatorObj) => {
     if (data?.isLensBenifit === "Yes") {
         if (currentPlan === "Eyemed") {
             total = total + parseFloat(GetEyemedPolarizedFee(data));
+        } else if (currentPlan === "Davis Vision") {
+            total =
+                total + parseFloat(GetDavisPolarizedFee(data, calculatorObj));
         } else {
             if (
                 data?.sunGlassesLens?.status === "Yes" &&
@@ -127,6 +150,8 @@ export const RenderTintFee = (data, calculatorObj) => {
     if (data?.isLensBenifit === "Yes") {
         if (currentPlan === "Eyemed") {
             total = total + parseFloat(GetEyemedTintFee(data));
+        } else if (currentPlan === "Davis Vision") {
+            total = total + parseFloat(GetDavisTintFee(data, calculatorObj));
         } else {
             if (
                 data?.sunGlassesLens?.status === "Yes" &&
@@ -173,6 +198,8 @@ export const RenderCoatingFee = (data, calculatorObj) => {
     if (data?.isLensBenifit === "Yes") {
         if (currentPlan === "Eyemed") {
             total = total + parseFloat(GetEyemedCoatingFee(data));
+        } else if (currentPlan === "Davis Vision") {
+            total = total + parseFloat(GetDavisCoatingFee(data, calculatorObj));
         } else {
             if (
                 data?.sunGlassesLens?.status === "Yes" &&
@@ -218,6 +245,8 @@ export const RenderBasePrice = (data, calculatorObj, lensPrices) => {
     if (data?.isLensBenifit === "Yes") {
         if (currentPlan === "Eyemed") {
             total = total + parseFloat(GetEyemedLensFee(data));
+        } else if (currentPlan === "Davis Vision") {
+            total = total + parseFloat(GetDavisLensFee(data, calculatorObj));
         } else {
             total =
                 total +
@@ -234,13 +263,21 @@ export const RenderBasePrice = (data, calculatorObj, lensPrices) => {
     return (total || 0).toFixed(2);
 };
 
-export const RenderLensMaterialPrice = (data, calculatorObj, lensPrices) => {
+export const RenderLensMaterialPrice = (
+    data,
+    calculatorObj,
+    lensPrices,
+    davisMaterials
+) => {
     const currentPlan = data?.visionPlan;
     const isPrivate = currentPlan === "Private Pay" ? true : false;
     let total = 0;
     if (data?.isLensBenifit === "Yes") {
         if (currentPlan === "Eyemed") {
             total = total + parseFloat(GetEyemedMaterialFee(data));
+        } else if (currentPlan === "Davis Vision") {
+            total =
+                total + parseFloat(GetDavisMaterialFee(data, davisMaterials));
         } else {
             total =
                 total +
@@ -508,7 +545,26 @@ export const RenderAdditionalLens = (data, calculatorObj, type) => {
                 break;
         }
     } else if (
-        currentPlan === "Eyemed" &&
+        currentPlan === "Davis Vision" &&
+        data?.isLensBenifit === "Yes"
+    ) {
+        switch (type) {
+            case "Slab off":
+                total =
+                    total + parseFloat(GetDavisSlabOffFee(data, calculatorObj));
+                break;
+            case "Speciality Lens":
+                total =
+                    total +
+                    parseFloat(GetDavisSpecialityLensFee(data, calculatorObj));
+                break;
+            case "Polish":
+                total =
+                    total + parseFloat(GetDavisPolishFee(data, calculatorObj));
+                break;
+        }
+    } else if (
+        (currentPlan === "Eyemed" || currentPlan === "Davis Vision") &&
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
         switch (type) {
