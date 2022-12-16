@@ -35,7 +35,7 @@ const DetailsList = ({
                 totalTax = totalTax + parseFloat(element?.value || 0);
             }
         });
-        const totalPrice = CalculateTotalPrice(
+        let totalPrice = CalculateTotalPrice(
             receipt?.values,
             calculatorObj,
             lensPrices,
@@ -43,6 +43,10 @@ const DetailsList = ({
             plansJson,
             davisMaterials
         );
+        if (receipt?.values?.frameOrder?.type === "Patient Own Frame") {
+            totalPrice =
+                totalPrice - parseFloat(receipt?.values?.tracing?.price || 0);
+        }
         const taxValue = totalPrice * (totalTax || 0);
         return taxValue / 100;
     };

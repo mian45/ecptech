@@ -66,17 +66,18 @@ export const CalculateWithTaxesTotalPrice = (
             totalTax = totalTax + parseFloat(element?.value || 0);
         }
     });
-    const tax =
-        (CalculateTotalPrice(
-            data,
-            calculatorObj,
-            lensPrices,
-            plansList,
-            davisMaterials,
-            plansJson
-        ) *
-            (totalTax || 0)) /
-        100;
+    let totalAmount = CalculateTotalPrice(
+        data,
+        calculatorObj,
+        lensPrices,
+        plansList,
+        plansJson,
+        davisMaterials
+    );
+    if (data?.frameOrder?.type === "Patient Own Frame") {
+        totalAmount = totalAmount - data?.tracing?.price;
+    }
+    const tax = (totalAmount * (totalTax || 0)) / 100;
     total = total + tax;
     //add shipping
     if (data?.shipping?.status === "Yes") {

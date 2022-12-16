@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50" height="50" viewBox="0 0 50 50">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_580" data-name="Rectangle 580" width="50" height="50" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="Group_432" data-name="Group 432" clip-path="url(#clip-path)">
+    <path id="Icon_metro-eye" data-name="Icon metro-eye" d="M20.851,7.712A20.475,20.475,0,0,0,2.571,19.137a20.337,20.337,0,0,0,36.561,0A20.475,20.475,0,0,0,20.851,7.712Z" transform="translate(4.156 5.503)" fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.25"/>
+    <path id="Subtraction_2" data-name="Subtraction 2" d="M10446.5,15a7.5,7.5,0,0,1-6.365-11.468,3.5,3.5,0,1,0,2.394-2.394A7.5,7.5,0,1,1,10446.5,15Z" transform="translate(-10421.918 17.14)" fill="#fff"/>
+  </g>
+</svg>

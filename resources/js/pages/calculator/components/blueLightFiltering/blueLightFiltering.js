@@ -4,7 +4,7 @@ import { AllPlans } from "../../data/plansList";
 import PlanTitles from "../../data/plansTitles/planTitles";
 import QuestionIcon from "../questionIcon";
 import classes from "./blueLightFiltering.module.scss";
-import icon from "../../../../../images/calculator/additional-lens.svg";
+import icon from "../../../../../images/calculator/blue-light.svg";
 import { Col, Radio, Row } from "antd";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import CustomRadio from "../../../../components/customRadio";
