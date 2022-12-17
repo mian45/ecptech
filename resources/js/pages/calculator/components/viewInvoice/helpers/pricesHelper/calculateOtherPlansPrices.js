@@ -14,6 +14,20 @@ import {
     ZEISS_PHOTOFUSION,
 } from "../../../../data/constants";
 import {
+    GetDavisAntireflectiveFee,
+    GetDavisBlueLightFee,
+    GetDavisCoatingFee,
+    GetDavisLensFee,
+    GetDavisMaterialFee,
+    GetDavisPhotochromicFee,
+    GetDavisPolarizedFee,
+    GetDavisPolishFee,
+    GetDavisSlabOffFee,
+    GetDavisSpecialityLensFee,
+    GetDavisTintFee,
+    GetPrivateBlueLightPrice,
+} from "./calculateDavisPrice";
+import {
     GetEyemedAntireflectiveFee,
     GetEyemedCoatingFee,
     GetEyemedLensFee,
@@ -1093,10 +1107,15 @@ export const calculateLensesCopaysFee = (
     data,
     calculatorObj,
     lensPrices,
-    isPrivate
+    isPrivate,
+    davisMaterials
 ) => {
     let total = 0;
-    if (data?.isLensBenifit === "Yes" && data?.visionPlan !== "Eyemed") {
+    if (
+        data?.isLensBenifit === "Yes" &&
+        data?.visionPlan !== "Eyemed" &&
+        data?.visionPlan !== "Davis Vision"
+    ) {
         // add lens Prices
         total = total + parseFloat(GetLensFee(data, calculatorObj, lensPrices));
         // add photochromic price
@@ -1126,6 +1145,35 @@ export const calculateLensesCopaysFee = (
         total = total + parseFloat(GetEyemedSpecialityLensFee(data));
         // add Polish Price
         total = total + parseFloat(GetEyemedPolishFee(data));
+    } else if (
+        data?.isLensBenifit === "Yes" &&
+        data?.visionPlan === "Davis Vision"
+    ) {
+        // add lens Prices
+        total = total + parseFloat(GetDavisLensFee(data, calculatorObj));
+        // add material Prices
+        total = total + parseFloat(GetDavisMaterialFee(data, davisMaterials));
+        // add photochromic price
+        total =
+            total + parseFloat(GetDavisPhotochromicFee(data, calculatorObj));
+        // add sun glasses polarized price
+        total = total + parseFloat(GetDavisPolarizedFee(data, calculatorObj));
+        // add sun glasses tint price
+        total = total + parseFloat(GetDavisTintFee(data, calculatorObj));
+        // add sun glasses Mirror coating price
+        total = total + parseFloat(GetDavisCoatingFee(data, calculatorObj));
+        // add antireflective price
+        total =
+            total + parseFloat(GetDavisAntireflectiveFee(data, calculatorObj));
+        // add blue light price
+        total = total + parseFloat(GetDavisBlueLightFee(data, calculatorObj));
+        // add Slab off price
+        total = total + parseFloat(GetDavisSlabOffFee(data, calculatorObj));
+        // add Speciality Lens Price
+        total =
+            total + parseFloat(GetDavisSpecialityLensFee(data, calculatorObj));
+        // add Polish Price
+        total = total + parseFloat(GetDavisPolishFee(data));
     } else if (
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
@@ -1159,10 +1207,17 @@ export const calculateLensesCopaysFee = (
                 )
             );
         // add addetional treatments
-        if (data?.visionPlan === "Eyemed") {
+        if (
+            data?.visionPlan === "Eyemed" ||
+            data?.visionPlan === "Davis Vision"
+        ) {
             total = total + GetPrivateSlabOffPrice(calculatorObj, data);
             total = total + GetPrivateSpecialityLensPrice(calculatorObj, data);
             total = total + GetPrivatePolishPrice(calculatorObj, data);
+        }
+        // add blue light filtering
+        if (data?.visionPlan === "Davis Vision") {
+            total = total + GetPrivateBlueLightPrice(calculatorObj, data);
         }
     }
     //add material copay

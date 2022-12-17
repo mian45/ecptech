@@ -1,7 +1,6 @@
 import * as ActionTypes from "../action-types";
-export function showSideBar(payload){
-    return {type:ActionTypes.SHOW_SIDEBAR,
-    payload}
+export function showSideBar(payload) {
+    return { type: ActionTypes.SHOW_SIDEBAR, payload };
 }
 export function authLogin(payload) {
     return {
@@ -48,6 +47,12 @@ export function updateStaffLogin(payload) {
 export function updateSettingsTab(payload) {
     return {
         type: ActionTypes.ACTIVE_SETTINGS_TAB,
+        payload,
+    };
+}
+export function showRetailPopup(payload) {
+    return {
+        type: ActionTypes.RETAIL_POPUP,
         payload,
     };
 }

@@ -12,6 +12,9 @@ import { AllPlans } from "../../data/plansList";
 import { Plans } from "../../data/plansJson";
 import { connect } from "react-redux";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
+import { selectLensTypeValidations } from "./helpers/selectLensTypeValidations";
+import { useDispatch } from "react-redux";
+import * as action from "../../../../store/actions";
 
 const LensType = ({
     formProps,
@@ -22,6 +25,7 @@ const LensType = ({
     getBaseValues,
     language,
 }) => {
+    const dipatch = useDispatch();
     const { values, handleChange, handleBlur, setFieldValue, setFieldError } =
         formProps;
     const [showInvoiceAlert, setShowInvoiceAlert] = useState(false);
@@ -33,8 +37,9 @@ const LensType = ({
         )?.visibility;
     const [error, setError] = useState("");
     const eyemedPlan = AllPlans[language]?.eyemed;
+    const davisPlan = AllPlans[language]?.davis;
     const lensBenifitYes =
-        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
 
     const showActiveState = () => {
         return (values?.lensType &&
@@ -75,33 +80,16 @@ const LensType = ({
     };
     const getBrandByLens = async (e) => {
         try {
-            if (e?.target?.value !== "PAL") {
-                delete calValidations.isCopaypremiumProgressiveAmount;
-                delete calValidations.copaypremiumProgressiveAmount;
-                delete calValidations.isCopayStandardProgressiveAmount;
-                delete calValidations.copayStandardProgressiveAmount;
-                delete calValidations.isCopayCustomProgressiveAmount;
-                delete calValidations.copayCustomProgressiveAmount;
-
-                await setFieldValue("isCopayPremiumProgressives", null);
-                await setFieldValue("isCopaypremiumProgressiveAmount", "");
-                await setFieldValue("copaypremiumProgressiveAmount", "");
-                await setFieldValue("isCopayStandardProgressives", null);
-                await setFieldValue("isCopayStandardProgressiveAmount", "");
-                await setFieldValue("copayStandardProgressiveAmount", "");
-                await setFieldValue("isCopayCustomProgressives", null);
-                await setFieldValue("isCopayCustomProgressiveAmount", "");
-                await setFieldValue("copayCustomProgressiveAmount", "");
-            }
-            const lensTypeValue = Yup.string().required("Brand is required");
-            setCalValidations({
-                ...calValidations,
-                lensTypeValue,
-            });
+            await selectLensTypeValidations(
+                e,
+                formProps,
+                calValidations,
+                setCalValidations
+            );
             await handleChange(e);
             await setFieldValue("lensTypeValue", "");
             setError("");
-            handleNVFType(e);
+            await handleNVFType(e);
         } catch (err) {
             console.log("error while getting brands");
         }
@@ -115,11 +103,18 @@ const LensType = ({
             validationObject.antireflectiveType = Yup.string().required(
                 "Antireflective type is required"
             );
+            validationObject.blueLight = Yup.string().required(
+                "Blue light filtering is required"
+            );
             validationObject.lensTypeValue =
                 Yup.string().required("Brand is required");
             if (values?.isAntireflective === "No") {
                 await setFieldValue("isAntireflective", "");
             }
+            if (values?.blueLight === "No") {
+                await setFieldValue("blueLight", "");
+            }
+            await setFieldValue("blueLight", "Yes");
             if (
                 !values?.isAntireflective ||
                 values?.isAntireflective === "No"
@@ -137,12 +132,26 @@ const LensType = ({
                     ?.question_permissions?.find(
                         (ques) => ques.question === "Anti-Reflective Properties"
                     )?.optional === "true";
+            const blueLightVisibility =
+                calculatorObj?.questions
+                    ?.find((item) => item?.title === values?.visionPlan)
+                    ?.question_permissions?.find(
+                        (ques) => ques.question === "Blue Light Filtering"
+                    )?.optional === "true";
             if (!antireflectiveVisibility) {
                 await setFieldError("isAntireflective", "");
                 await setFieldError("antireflectiveType", "");
                 const validations = { ...calValidations };
                 delete validations.isAntireflective;
                 delete validations.antireflectiveType;
+                setCalValidations({
+                    ...validations,
+                });
+            }
+            if (!blueLightVisibility) {
+                await setFieldError("blueLight", "");
+                const validations = { ...calValidations };
+                delete validations.blueLight;
                 setCalValidations({
                     ...validations,
                 });
@@ -193,7 +202,7 @@ const LensType = ({
         }
 
         if (!collection?.price && !parsedInvoiceData) {
-            setShowInvoiceAlert(true);
+            dipatch(action.showRetailPopup());
         }
         if (!collection?.price && parsedInvoiceData) {
             setError(
@@ -249,7 +258,12 @@ const LensType = ({
     };
 
     const handleBrandSelection = async (e) => {
-        if (values?.visionPlan !== eyemedPlan) {
+        if (
+            !(
+                values?.visionPlan === eyemedPlan ||
+                values?.visionPlan === davisPlan
+            )
+        ) {
             await resetMaterial(e);
         }
         handleChange(e);
@@ -455,6 +469,48 @@ const LensType = ({
                                             value={values?.lensTypeInput}
                                             name={"lensTypeInput"}
                                         />
+                                    )}
+                                {values?.visionPlan === "Davis Vision" &&
+                                    (values?.lensType === "Bifocal" ||
+                                        values?.lensType === "Trifocal") && (
+                                        <>
+                                            <div
+                                                className={
+                                                    classes["choose-label"]
+                                                }
+                                            >
+                                                Blended Bifocal
+                                            </div>
+                                            <Radio.Group
+                                                onChange={handleChange}
+                                                value={values?.blendedBifocal}
+                                                id="blendedBifocal"
+                                                name="blendedBifocal"
+                                                className={
+                                                    classes["radio-group"]
+                                                }
+                                            >
+                                                <CustomRadio
+                                                    label={"Yes"}
+                                                    value={"Yes"}
+                                                    active={
+                                                        values?.blendedBifocal ===
+                                                        "Yes"
+                                                    }
+                                                />
+                                                <CustomRadio
+                                                    label={"No"}
+                                                    value={"No"}
+                                                    active={
+                                                        values?.blendedBifocal ===
+                                                        "No"
+                                                    }
+                                                />
+                                            </Radio.Group>
+                                            <FormikError
+                                                name={"blendedBifocal"}
+                                            />
+                                        </>
                                     )}
                             </div>
                         </Col>

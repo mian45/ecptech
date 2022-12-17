@@ -32,6 +32,7 @@ const initialState = {
     activeSettingsIndex: "1",
     sidebar: false,
     language: "en",
+    retailPopup: false,
 };
 
 const activeState = (state, payload) => {
@@ -158,6 +159,13 @@ const Auth = (state = initialState, { type, payload = null }) => {
         }
         case ActionTypes.STAFF_LOGIN:
             return staffLogin(state, payload);
+        case ActionTypes.RETAIL_POPUP: {
+            const stateObj = {
+                ...state,
+                retailPopup: !state.retailPopup,
+            };
+            return stateObj;
+        }
         case ActionTypes.UPDATE_STAFF_LOGIN:
             return updateStaffLogin(state, payload);
         case ActionTypes.SHOW_SIDEBAR: {

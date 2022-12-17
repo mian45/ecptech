@@ -11,6 +11,10 @@ import { AllPlans } from "../../data/plansList";
 import { Plans } from "../../data/plansJson";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 import { connect } from "react-redux";
+import { handleAntiReflectiveNoValidations } from "./helpers/handleAntireflectiveNoValidations";
+import { useDispatch } from "react-redux";
+import * as action from "../../../../store/actions";
+import { getAddons } from "./helpers/addonsHelper";
 
 const AntireFlextive = ({
     formProps,
@@ -21,6 +25,7 @@ const AntireFlextive = ({
     language,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
+    const dipatch = useDispatch();
     const antireflectiveVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -30,9 +35,9 @@ const AntireFlextive = ({
 
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
-        Plans[language][values?.visionPlan]?.lensBenifit?.options?.yes;
+        Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
     const antireflectiveYes =
-        Plans[language][values?.visionPlan]?.antireflective?.options?.yes;
+        Plans()[language][values?.visionPlan]?.antireflective?.options?.yes;
 
     const getAntireflectiveList = () => {
         return (
@@ -74,16 +79,11 @@ const AntireFlextive = ({
                 antireflectiveType,
             });
         } else if (e?.target?.value === "No") {
-            await setFieldValue("isCopayAntiReflective", null);
-            await setFieldValue("isCopayAntiReflectiveAmount", "");
-            await setFieldValue("copayAntiReflectiveAmount", "");
-            const validations = { ...calValidations };
-            delete validations.antireflectiveType;
-            delete validations.isCopayAntiReflectiveAmount;
-            delete validations.copayAntiReflectiveAmount;
-            setCalValidations({
-                ...validations,
-            });
+            await handleAntiReflectiveNoValidations(
+                formProps,
+                calValidations,
+                setCalValidations
+            );
         }
         if (values.isCopayAntiReflective && e.target.value === "No") {
             setError(
@@ -101,9 +101,34 @@ const AntireFlextive = ({
             handleChange(e);
         }
     };
+    const showAlert = (e) => {
+        const material = getAddons(
+            calculatorObj,
+            "Anti-Reflective Properties",
+            e?.target?.value,
+            values?.visionPlan
+        );
+
+        const invoiceData = localStorage.getItem("CALCULATOR_DATA");
+        let parsedInvoiceData = false;
+        if (invoiceData) {
+            const data = JSON.parse(invoiceData);
+            parsedInvoiceData = data?.invoicePriceData || false;
+        }
+
+        if (!material?.price && !parsedInvoiceData) {
+            dipatch(action.showRetailPopup());
+        }
+        if (!material?.price && parsedInvoiceData) {
+            setError(
+                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            );
+        }
+    };
 
     const handleAntireflectiveTypeChange = (e) => {
         handleChange(e);
+        showAlert(e);
         if (
             values?.visionPlan === eyemedPlan &&
             values?.isLensBenifit === lensBenifitYes &&

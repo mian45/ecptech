@@ -1,3 +1,10 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="20.013" height="20.001" viewBox="0 0 20.013 20.001">
-  <path id="_43" data-name="43" d="M22,3.16A1,1,0,0,0,21,2H17a1,1,0,0,0,0,2h2.82l-.67,4H15.72L14,2.68A1,1,0,0,0,13,2H3a1.008,1.008,0,0,0-.95,1.32L4,9.16V21a1,1,0,0,0,1,1H20a1,1,0,0,0,1-1V9.08ZM12.28,4l1.33,4H5.72L4.39,4ZM6,10h8V20H6ZM19,20H16V10h3Z" transform="translate(-2 -1.999)" fill="#f9f9fb"/>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="50" height="50" viewBox="0 0 50 50">
+  <defs>
+    <clipPath id="clip-path">
+      <rect id="Rectangle_580" data-name="Rectangle 580" width="50" height="50" fill="#fff"/>
+    </clipPath>
+  </defs>
+  <g id="Group_432" data-name="Group 432" clip-path="url(#clip-path)">
+    <path id="_43" data-name="43" d="M22,3.16A1,1,0,0,0,21,2H17a1,1,0,0,0,0,2h2.82l-.67,4H15.72L14,2.68A1,1,0,0,0,13,2H3a1.008,1.008,0,0,0-.95,1.32L4,9.16V21a1,1,0,0,0,1,1H20a1,1,0,0,0,1-1V9.08ZM12.28,4l1.33,4H5.72L4.39,4ZM6,10h8V20H6ZM19,20H16V10h3Z" transform="translate(13 13.001)" fill="#f9f9fb"/>
+  </g>
 </svg>

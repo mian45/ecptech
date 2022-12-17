@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useState } from "react";
 import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
@@ -6,21 +6,21 @@ import classes from "./styles.module.scss";
 import { Col, Radio, Row } from "antd";
 import CustomCheckbox from "../../../../components/customCheckbox";
 import visionIcon from "../../../../../images/calculator/vision.svg";
-import { LowerCopayAmountTypeEnum, LowerCopayTypeEnum } from "../../data/enums";
 import * as Yup from "yup";
-import { GetMappedPayload } from "../../data/validationHelper";
-import {
-    getPriceByAntireflective,
-    getPriceByPhotochromicMaterial,
-    getPriceFromDB,
-    GetPrivateAntireflectivePrice,
-    GetPrivateLensFee,
-    GetPrivatePayMaterialPrice,
-    GetPrivatePhotochromicPrice,
-} from "../viewInvoice/helpers/pricesHelper/calculateOtherPlansPrices";
 import { handleCheckboxFalse } from "./helper";
 import { AllPlans } from "../../data/plansList";
 import { connect } from "react-redux";
+import SpecialCopaySlot from "./components/specialCopaySlot/specialCopaySlot";
+import { GetCopayOptionsJson } from "./data/getCopayOptionsJson";
+import { GetSpecialCopayJson } from "./data/getSpecialCopayJson";
+import {
+    handleLowerCopayNoValidations,
+    handleLowerCopayYesValidations,
+} from "./data/selectLowerCopayvalidations";
+import {
+    handleLowerCopayCheckboxNoValidations,
+    handleLowerCopayCheckboxYesValidations,
+} from "./data/selectLowerCopayCheckboxHelper";
 
 const LoweredCopay = ({
     formProps,
@@ -30,8 +30,9 @@ const LoweredCopay = ({
     data,
     lensPrices,
     language,
+    davisMaterials,
 }) => {
-    const { values, handleChange, handleBlur, setFieldValue } = formProps;
+    const { values, handleChange, setFieldValue } = formProps;
     const [amountError, setAmountError] = useState(defaultError);
     const copayDollarAmountVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
@@ -41,102 +42,26 @@ const LoweredCopay = ({
     const eyemedPlan = AllPlans[language]?.eyemed;
     const handleLoweredCopayClick = (e) => {
         handleChange(e);
-        if (
-            e?.target?.value === "Yes" &&
-            data?.find(
-                (ques) => ques.question == "Any copay lowered than standard"
-            )?.optional === "true"
-        ) {
-            if (
-                !values?.isCopayPolycarbonate ||
-                !values?.isCopayPhotochromic ||
-                !values?.isCopayHighIndex ||
-                !values?.isCopayAntiReflective ||
-                !values?.isCopayPremiumProgressives ||
-                !values?.isCopayStandardProgressives ||
-                !values?.isCopayCustomProgressives
-            ) {
-                const isCopayChecked = Yup.mixed().required(
-                    "Minimum 1 sub option is required"
-                );
-                setCalValidations({
-                    ...calValidations,
-                    isCopayChecked,
-                });
-            }
+        if (e?.target?.value === "Yes") {
+            handleLowerCopayYesValidations(
+                values,
+                setCalValidations,
+                calValidations
+            );
         } else if (e?.target?.value === "No") {
-            const validations = { ...calValidations };
-            delete validations.isCopayChecked;
-            delete validations.isCopaypremiumProgressiveAmount;
-            delete validations.isCopayAntiReflectiveAmount;
-            delete validations.isCopayHighIndexAmount;
-            delete validations.isCopayPhotochromicAmount;
-            delete validations.isCopayPolycarbonateAmount;
-            delete validations.copayPolycarbonateAmount;
-            delete validations.copayPhotochromicAmount;
-            delete validations.copayHighIndexAmount;
-            delete validations.copayAntiReflectiveAmount;
-            delete validations.copaypremiumProgressiveAmount;
-            setCalValidations({
-                ...validations,
-            });
+            handleLowerCopayNoValidations(setCalValidations, calValidations);
         }
     };
 
     const handleCopoayCheckChange = async (value, key) => {
         await setFieldValue(key, value);
         if (value === true) {
-            await setFieldValue("isCopayChecked", true);
-            if (key === "isCopayPolycarbonate") {
-                const isCopayPolycarbonateAmount =
-                    Yup.string().required("Option is required");
-                setCalValidations({
-                    ...calValidations,
-                    isCopayPolycarbonateAmount,
-                });
-            } else if (key === "isCopayPhotochromic") {
-                const isCopayPhotochromicAmount =
-                    Yup.string().required("Option is required");
-                setCalValidations({
-                    ...calValidations,
-                    isCopayPhotochromicAmount,
-                });
-            } else if (key === "isCopayHighIndex") {
-                const isCopayHighIndexAmount =
-                    Yup.string().required("Option is required");
-                setCalValidations({
-                    ...calValidations,
-                    isCopayHighIndexAmount,
-                });
-            } else if (key === "isCopayAntiReflective") {
-                const isCopayAntiReflectiveAmount =
-                    Yup.string().required("Option is required");
-                setCalValidations({
-                    ...calValidations,
-                    isCopayAntiReflectiveAmount,
-                });
-            } else if (key === "isCopayPremiumProgressives") {
-                const isCopaypremiumProgressiveAmount =
-                    Yup.string().required("Option is required");
-                setCalValidations({
-                    ...calValidations,
-                    isCopaypremiumProgressiveAmount,
-                });
-            } else if (key === "isCopayStandardProgressives") {
-                const isCopayStandardProgressiveAmount =
-                    Yup.string().required("Option is required");
-                setCalValidations({
-                    ...calValidations,
-                    isCopayStandardProgressiveAmount,
-                });
-            } else if (key === "isCopayCustomProgressives") {
-                const isCopayCustomProgressiveAmount =
-                    Yup.string().required("Option is required");
-                setCalValidations({
-                    ...calValidations,
-                    isCopayCustomProgressiveAmount,
-                });
-            }
+            await handleLowerCopayCheckboxYesValidations(
+                setFieldValue,
+                key,
+                setCalValidations,
+                calValidations
+            );
         } else if (value === false) {
             const isAllFalse = handleCheckboxFalse(values, key, value);
             if (isAllFalse) {
@@ -149,292 +74,77 @@ const LoweredCopay = ({
                     isCopayChecked,
                 });
             }
-            if (key === "isCopayPolycarbonate") {
-                const validations = { ...calValidations };
-                delete validations.isCopayPolycarbonateAmount;
-                setCalValidations({
-                    ...validations,
-                });
-            } else if (key === "isCopayPhotochromic") {
-                const validations = { ...calValidations };
-                delete validations.isCopayPhotochromicAmount;
-                setCalValidations({
-                    ...validations,
-                });
-            } else if (key === "isCopayHighIndex") {
-                const validations = { ...calValidations };
-                delete validations.isCopayHighIndexAmount;
-                setCalValidations({
-                    ...validations,
-                });
-            } else if (key === "isCopayAntiReflective") {
-                const validations = { ...calValidations };
-                delete validations.isCopayAntiReflectiveAmount;
-                setCalValidations({
-                    ...validations,
-                });
-            } else if (key === "isCopayPremiumProgressives") {
-                const validations = { ...calValidations };
-                delete validations.isCopaypremiumProgressiveAmount;
-                setCalValidations({
-                    ...validations,
-                });
-            } else if (key === "isCopayStandardProgressives") {
-                const validations = { ...calValidations };
-                delete validations.isCopayStandardProgressiveAmount;
-                setCalValidations({
-                    ...validations,
-                });
-            } else if (key === "isCopayCustomProgressives") {
-                const validations = { ...calValidations };
-                delete validations.isCopayCustomProgressiveAmount;
-                setCalValidations({
-                    ...validations,
-                });
-            }
+            handleLowerCopayCheckboxNoValidations(
+                key,
+                setCalValidations,
+                calValidations
+            );
         }
     };
     const copayProperties = () => {
+        const copayOptionsProps = {
+            values: values,
+            onChange: handleCopoayCheckChange,
+            lensPrices: lensPrices,
+        };
+        const specialCopayProps = {
+            formProps: formProps,
+            setCalValidations: setCalValidations,
+            calValidations: calValidations,
+            data: data,
+            lensPrices: lensPrices,
+            calculatorObj: calculatorObj,
+            setAmountError: setAmountError,
+            amountError: amountError,
+        };
+        const copayList = GetCopayOptionsJson(copayOptionsProps) || [];
+        const specialCopayList = GetSpecialCopayJson(specialCopayProps) || [];
         return (
             <>
                 <div className={classes["checkbox-group"]}>
-                    <CustomCheckbox
-                        label={LowerCopayTypeEnum.polycarbonate}
-                        defaultChecked={values?.isCopayPolycarbonate || false}
-                        active={values?.isCopayPolycarbonate || false}
-                        onValueChange={(value) => {
-                            handleCopoayCheckChange(
-                                value,
-                                "isCopayPolycarbonate"
-                            );
-                        }}
-                        id="isCopayPolycarbonate"
-                        name="isCopayPolycarbonate"
-                        isDisable={
-                            Object.keys(lensPrices)?.length === 0 ||
-                            values?.lensMaterial !== "Polycarbonate"
-                        }
-                    />
-                    <CustomCheckbox
-                        label={LowerCopayTypeEnum.photochromic}
-                        defaultChecked={values?.isCopayPhotochromic || false}
-                        active={values?.isCopayPhotochromic || false}
-                        onValueChange={(value) => {
-                            handleCopoayCheckChange(
-                                value,
-                                "isCopayPhotochromic"
-                            );
-                        }}
-                        id="isCopayPhotochromic"
-                        name="isCopayPhotochromic"
-                        isDisable={
-                            !values?.isPhotochromics ||
-                            values?.isPhotochromics === "No" ||
-                            !values?.photochromicsType
-                        }
-                    />
-                    <CustomCheckbox
-                        label={LowerCopayTypeEnum.highIndex}
-                        defaultChecked={values?.isCopayHighIndex || false}
-                        active={values?.isCopayHighIndex || false}
-                        onValueChange={(value) => {
-                            handleCopoayCheckChange(value, "isCopayHighIndex");
-                        }}
-                        id="isCopayHighIndex"
-                        name="isCopayHighIndex"
-                        isDisable={
-                            Object.keys(lensPrices)?.length === 0 ||
-                            !(
-                                values?.lensMaterial?.includes("Hi index") ||
-                                values?.lensMaterial?.includes("Hi Index")
-                            )
-                        }
-                    />
-                    <CustomCheckbox
-                        label={LowerCopayTypeEnum.antiReflective}
-                        defaultChecked={values?.isCopayAntiReflective || false}
-                        active={values?.isCopayAntiReflective || false}
-                        onValueChange={(value) => {
-                            handleCopoayCheckChange(
-                                value,
-                                "isCopayAntiReflective"
-                            );
-                        }}
-                        id="isCopayAntiReflective"
-                        name="isCopayAntiReflective"
-                        isDisable={
-                            !values?.isAntireflective ||
-                            values?.isAntireflective === "No" ||
-                            !values?.antireflectiveType
-                        }
-                    />
-                    <CustomCheckbox
-                        label={LowerCopayTypeEnum.standardProgressives}
-                        defaultChecked={
-                            values?.isCopayStandardProgressives || false
-                        }
-                        active={values?.isCopayStandardProgressives || false}
-                        onValueChange={(value) => {
-                            handleCopoayCheckChange(
-                                value,
-                                "isCopayStandardProgressives"
-                            );
-                        }}
-                        id="isCopayStandardProgressives"
-                        name="isCopayStandardProgressives"
-                        isDisable={
-                            Object.keys(lensPrices)?.length === 0 ||
-                            (values?.lensType !== "PAL" &&
-                                values?.lensTypeValue)
-                        }
-                    />
-                    <CustomCheckbox
-                        label={LowerCopayTypeEnum.premiumProgressives}
-                        defaultChecked={
-                            values?.isCopayPremiumProgressives || false
-                        }
-                        active={values?.isCopayPremiumProgressives || false}
-                        onValueChange={(value) => {
-                            handleCopoayCheckChange(
-                                value,
-                                "isCopayPremiumProgressives"
-                            );
-                        }}
-                        id="isCopayPremiumProgressives"
-                        name="isCopayPremiumProgressives"
-                        isDisable={
-                            Object.keys(lensPrices).length === 0 ||
-                            (values?.lensType !== "PAL" &&
-                                values?.lensTypeValue)
-                        }
-                    />
-                    <CustomCheckbox
-                        label={LowerCopayTypeEnum.customProgressives}
-                        defaultChecked={
-                            values?.isCopayCustomProgressives || false
-                        }
-                        active={values?.isCopayCustomProgressives || false}
-                        onValueChange={(value) => {
-                            handleCopoayCheckChange(
-                                value,
-                                "isCopayCustomProgressives"
-                            );
-                        }}
-                        id="isCopayCustomProgressives"
-                        name="isCopayCustomProgressives"
-                        isDisable={
-                            Object.keys(lensPrices).length === 0 ||
-                            (values?.lensType !== "PAL" &&
-                                values?.lensTypeValue)
-                        }
-                    />
+                    {copayList?.map((item, index) => {
+                        return (
+                            <Fragment key={index}>
+                                {item?.isShow && (
+                                    <CustomCheckbox
+                                        label={item?.label}
+                                        defaultChecked={item?.defaultChecked}
+                                        active={item?.active}
+                                        onValueChange={(value) => {
+                                            item?.onChange(value, item?.id);
+                                        }}
+                                        id={item?.id}
+                                        name={item?.name}
+                                        isDisable={item?.isDisable}
+                                    />
+                                )}
+                            </Fragment>
+                        );
+                    })}
                 </div>
                 <FormikError name={"isCopayChecked"} />
-                {values?.isCopayPolycarbonate && (
-                    <SpecialCopaySlot
-                        title={"polycarbonate"}
-                        formProps={formProps}
-                        radioValue={"isCopayPolycarbonateAmount"}
-                        inputValue={"copayPolycarbonateAmount"}
-                        setCalValidations={setCalValidations}
-                        calValidations={calValidations}
-                        data={data}
-                        lensPrices={lensPrices}
-                        calculatorObj={calculatorObj}
-                        setAmountError={setAmountError}
-                        amountError={amountError}
-                    />
-                )}
-                {values?.isCopayPhotochromic && (
-                    <SpecialCopaySlot
-                        title={"photochromic"}
-                        formProps={formProps}
-                        radioValue={"isCopayPhotochromicAmount"}
-                        inputValue={"copayPhotochromicAmount"}
-                        setCalValidations={setCalValidations}
-                        calValidations={calValidations}
-                        data={data}
-                        lensPrices={lensPrices}
-                        calculatorObj={calculatorObj}
-                        setAmountError={setAmountError}
-                        amountError={amountError}
-                    />
-                )}
-                {values?.isCopayHighIndex && (
-                    <SpecialCopaySlot
-                        title={"highIndex"}
-                        formProps={formProps}
-                        radioValue={"isCopayHighIndexAmount"}
-                        inputValue={"copayHighIndexAmount"}
-                        setCalValidations={setCalValidations}
-                        calValidations={calValidations}
-                        data={data}
-                        lensPrices={lensPrices}
-                        calculatorObj={calculatorObj}
-                        setAmountError={setAmountError}
-                        amountError={amountError}
-                    />
-                )}
-                {values?.isCopayAntiReflective && (
-                    <SpecialCopaySlot
-                        title={"antiReflective"}
-                        formProps={formProps}
-                        radioValue={"isCopayAntiReflectiveAmount"}
-                        inputValue={"copayAntiReflectiveAmount"}
-                        setCalValidations={setCalValidations}
-                        calValidations={calValidations}
-                        data={data}
-                        lensPrices={lensPrices}
-                        calculatorObj={calculatorObj}
-                        setAmountError={setAmountError}
-                        amountError={amountError}
-                    />
-                )}
-                {values?.isCopayStandardProgressives && (
-                    <SpecialCopaySlot
-                        title={"standardProgressives"}
-                        formProps={formProps}
-                        radioValue={"isCopayStandardProgressiveAmount"}
-                        inputValue={"copayStandardProgressiveAmount"}
-                        setCalValidations={setCalValidations}
-                        calValidations={calValidations}
-                        data={data}
-                        lensPrices={lensPrices}
-                        calculatorObj={calculatorObj}
-                        setAmountError={setAmountError}
-                        amountError={amountError}
-                    />
-                )}
-                {values?.isCopayPremiumProgressives && (
-                    <SpecialCopaySlot
-                        title={"premiumProgressives"}
-                        formProps={formProps}
-                        radioValue={"isCopaypremiumProgressiveAmount"}
-                        inputValue={"copaypremiumProgressiveAmount"}
-                        setCalValidations={setCalValidations}
-                        calValidations={calValidations}
-                        data={data}
-                        lensPrices={lensPrices}
-                        calculatorObj={calculatorObj}
-                        setAmountError={setAmountError}
-                        amountError={amountError}
-                    />
-                )}
-                {values?.isCopayCustomProgressives && (
-                    <SpecialCopaySlot
-                        title={"customProgressives"}
-                        formProps={formProps}
-                        radioValue={"isCopayCustomProgressiveAmount"}
-                        inputValue={"copayCustomProgressiveAmount"}
-                        setCalValidations={setCalValidations}
-                        calValidations={calValidations}
-                        data={data}
-                        lensPrices={lensPrices}
-                        calculatorObj={calculatorObj}
-                        setAmountError={setAmountError}
-                        amountError={amountError}
-                    />
-                )}
+                {specialCopayList?.map((item, index) => {
+                    return (
+                        <Fragment key={index}>
+                            {item?.isShow && (
+                                <SpecialCopaySlot
+                                    title={item?.title}
+                                    formProps={item?.formProps}
+                                    radioValue={item?.radioValue}
+                                    inputValue={item?.inputValue}
+                                    setCalValidations={item?.setCalValidations}
+                                    calValidations={item?.calValidations}
+                                    data={item?.data}
+                                    lensPrices={item?.lensPrices}
+                                    calculatorObj={item?.calculatorObj}
+                                    setAmountError={item?.setAmountError}
+                                    amountError={item?.amountError}
+                                    davisMaterials={davisMaterials}
+                                />
+                            )}
+                        </Fragment>
+                    );
+                })}
             </>
         );
     };
@@ -443,7 +153,6 @@ const LoweredCopay = ({
             <>
                 {copayDollarAmountVisibility ? (
                     <Row className={classes["container"]}>
-                        {" "}
                         <Col sx={0} sm={0} md={5}>
                             <QuestionIcon
                                 icon={visionIcon}
@@ -497,178 +206,6 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps)(LoweredCopay);
 
-const SpecialCopaySlot = ({
-    title,
-    formProps,
-    radioValue,
-    inputValue,
-    setCalValidations,
-    calValidations,
-    data,
-    lensPrices,
-    calculatorObj,
-    amountError,
-    setAmountError,
-}) => {
-    const { values, handleChange, handleBlur } = formProps;
-
-    const handleInputChange = (e) => {
-        const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
-        if (regix.test(e.target.value) || e.target.value === "") {
-            handleChange(e);
-            const price = getPrice(
-                inputValue,
-                calculatorObj,
-                lensPrices,
-                values
-            );
-            if (e.target.value > price) {
-                setAmountError({
-                    ...amountError,
-                    [inputValue]:
-                        "Entered amount is greater than actual amount.",
-                });
-            } else {
-                setAmountError({ ...amountError, [inputValue]: "" });
-            }
-        }
-    };
-
-    const handleValueChange = (e) => {
-        handleChange(e);
-        if (e?.target?.value === LowerCopayAmountTypeEnum.amount) {
-            const validationObject = {
-                [inputValue]: Yup.string().required("Amount is required"),
-            };
-            setCalValidations({
-                ...calValidations,
-                ...validationObject,
-            });
-        } else if (values[radioValue] === LowerCopayAmountTypeEnum.noAmount) {
-            const validations = { ...calValidations };
-            delete validations[inputValue];
-            setCalValidations({
-                ...validations,
-            });
-        }
-    };
-    return (
-        <>
-            <CalculatorHeading
-                title={`${LowerCopayTypeEnum[title]} Lower Copay?`}
-            />
-            <Radio.Group
-                onChange={handleValueChange}
-                value={values[radioValue]}
-                id={radioValue}
-                name={radioValue}
-                className={classes["radio-group"]}
-            >
-                <CustomRadio
-                    label={"Lower copay dollar amount"}
-                    value={LowerCopayAmountTypeEnum.amount}
-                    active={
-                        values[radioValue] === LowerCopayAmountTypeEnum.amount
-                    }
-                />
-                <CustomRadio
-                    label={LowerCopayAmountTypeEnum.noAmount}
-                    value={LowerCopayAmountTypeEnum.noAmount}
-                    active={
-                        values[radioValue] === LowerCopayAmountTypeEnum.noAmount
-                    }
-                />
-            </Radio.Group>
-            <FormikError name={radioValue} />
-            {values[radioValue] === LowerCopayAmountTypeEnum.amount && (
-                <>
-                    <div className={classes["slot-input-container"]}>
-                        <div className={classes["slot-input-label"]}>$</div>
-                        <input
-                            className={classes["slot-input"]}
-                            type={"text"}
-                            onChange={handleInputChange}
-                            value={values[inputValue]}
-                            id={inputValue}
-                            name={inputValue}
-                        />
-                    </div>
-                    <FormikError name={inputValue} />
-                    {amountError[inputValue] && (
-                        <div className={classes["error"]}>
-                            {amountError[inputValue]}
-                        </div>
-                    )}
-                </>
-            )}
-        </>
-    );
-};
-
-const getPrice = (value, calculatorObj, lensPrices, values) => {
-    const data = GetMappedPayload(values);
-    let lensPrice = 0;
-    let materialPrice = 0;
-    let antireflective = 0;
-    let photochromic = 0;
-    if (data?.visionPlan === "Private Pay") {
-        lensPrice = parseFloat(GetPrivateLensFee(calculatorObj, data) || 0);
-        materialPrice = parseFloat(
-            GetPrivatePayMaterialPrice(calculatorObj, data) || 0
-        );
-        antireflective = parseFloat(
-            GetPrivateAntireflectivePrice(
-                calculatorObj,
-                data?.antiReflectiveProperties?.type,
-                data
-            ) || 0
-        );
-        photochromic = parseFloat(
-            GetPrivatePhotochromicPrice(
-                data?.photochromics?.type,
-                calculatorObj,
-                data
-            )
-        );
-    } else {
-        lensPrice = parseFloat(
-            getPriceFromDB(data, calculatorObj, lensPrices)?.lensPrice
-        );
-        materialPrice = parseFloat(
-            getPriceFromDB(data, calculatorObj, lensPrices)?.materialPrice
-        );
-        if (data?.antiReflectiveProperties?.status === "Yes") {
-            const price = getPriceByAntireflective(
-                data?.visionPlan,
-                data?.antiReflectiveProperties?.type
-            );
-            antireflective = parseFloat(price || 0);
-        }
-        if (data?.photochromics?.status === "Yes") {
-            const price = getPriceByPhotochromicMaterial(
-                data?.visionPlan,
-                data?.photochromics?.type
-            );
-            photochromic = parseFloat(price || 0);
-        }
-    }
-    switch (value) {
-        case "copayStandardProgressiveAmount":
-            return lensPrice;
-        case "copayCustomProgressiveAmount":
-            return lensPrice;
-        case "copaypremiumProgressiveAmount":
-            return lensPrice;
-        case "copayAntiReflectiveAmount":
-            return antireflective;
-        case "copayHighIndexAmount":
-            return materialPrice;
-        case "copayPhotochromicAmount":
-            return photochromic;
-        case "copayPolycarbonateAmount":
-            return materialPrice;
-    }
-};
 const defaultError = {
     copayCustomProgressiveAmount: "",
     copaypremiumProgressiveAmount: "",
@@ -677,4 +214,10 @@ const defaultError = {
     copayHighIndexAmount: "",
     copayPhotochromicAmount: "",
     copayPolycarbonateAmount: "",
+    copayUltraProgressiveAmount: "",
+    copayUltimateProgressiveAmount: "",
+    copayStandardAntireflectiveAmount: "",
+    copayPremiumAntireflectiveAmount: "",
+    copayUltraAntireflectiveAmount: "",
+    copayUltimateAntireflectiveAmount: "",
 };

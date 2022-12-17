@@ -15,6 +15,7 @@ import { BenifitTypeEnums } from "../../data/initialValues";
 import * as Yup from "yup";
 import { AllPlans } from "../../data/plansList";
 import { connect } from "react-redux";
+import { Plans } from "../../data/plansJson";
 
 const VisionBenifits = ({
     formProps,
@@ -43,7 +44,8 @@ const VisionBenifits = ({
             (ques) => ques.question === "Material Copay"
         )?.visibility;
     const eyemedPlan = AllPlans[language]?.eyemed;
-
+    const materialCopayTitle =
+        Plans()[language][values?.visionPlan]?.materialCopay?.question;
     const handleMaterialCopayChange = (e) => {
         const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
         if (regix.test(e.target.value) || e.target.value === "") {
@@ -283,7 +285,7 @@ const VisionBenifits = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["question-container"]}>
                             <CalculatorHeading
-                                title="Material Copay?"
+                                title={materialCopayTitle}
                                 active={values?.materialCopay !== ""}
                             />
                             <div className={classes["input-container"]}>

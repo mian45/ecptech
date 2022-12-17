@@ -1,5 +1,8 @@
 import { Col, Collapse, Row } from "antd";
 import React from "react";
+import { connect } from "react-redux";
+import PlanTitles from "../../../../data/plansTitles/planTitles";
+import { RenderBlueLight } from "../../helpers/pricesHelper/calculateDavisPrice";
 import { calculateLensesCopaysFee } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
 import { GetSelectionDetails } from "../../helpers/selectedMenuList";
 import {
@@ -21,8 +24,18 @@ import {
 
 const { Panel } = Collapse;
 
-const LensesDetails = ({ receipt, calculatorObj, lensPrices }) => {
+const LensesDetails = ({
+    receipt,
+    calculatorObj,
+    lensPrices,
+    davisMaterials,
+    language,
+}) => {
     const currentPlan = receipt?.values?.visionPlan;
+    const { materialCopayTitle } = PlanTitles(
+        language,
+        receipt?.values?.visionPlan
+    );
 
     const renderLensesCopay = () => {
         const price =
@@ -30,7 +43,8 @@ const LensesDetails = ({ receipt, calculatorObj, lensPrices }) => {
                 receipt?.values,
                 calculatorObj,
                 lensPrices,
-                currentPlan === "Private Pay" ? true : false
+                currentPlan === "Private Pay" ? true : false,
+                davisMaterials
             ) || 0;
         return (price || 0).toFixed(2);
     };
@@ -53,6 +67,8 @@ const LensesDetails = ({ receipt, calculatorObj, lensPrices }) => {
                             receipt={receipt}
                             calculatorObj={calculatorObj}
                             lensPrices={lensPrices}
+                            davisMaterials={davisMaterials}
+                            materialCopayTitle={materialCopayTitle}
                         />
                     </Panel>
                 </Collapse>
@@ -73,9 +89,19 @@ const LensesDetails = ({ receipt, calculatorObj, lensPrices }) => {
         </Row>
     );
 };
-export default LensesDetails;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+});
 
-const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
+export default connect(mapStateToProps)(LensesDetails);
+
+const GetLensPriceByPlan = ({
+    receipt,
+    calculatorObj,
+    lensPrices,
+    davisMaterials,
+    materialCopayTitle,
+}) => {
     const photochromicPrice = RenderPhotochromicPrices(
         receipt?.values,
         calculatorObj
@@ -91,7 +117,7 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
             {(materialCopay > 0 || materialCopay < 0) && (
                 <Col xs={24}>
                     <FramePriceSlot
-                        title={"Material Copay"}
+                        title={materialCopayTitle}
                         price={`$${materialCopay || 0}`}
                     />
                 </Col>
@@ -122,7 +148,8 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                     price={`$${RenderLensMaterialPrice(
                         receipt?.values,
                         calculatorObj,
-                        lensPrices
+                        lensPrices,
+                        davisMaterials
                     )}`}
                 />
             </Col>
@@ -149,7 +176,8 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                 calculatorObj={calculatorObj}
                 receipt={receipt}
             />
-            {receipt?.values?.visionPlan === "Eyemed" &&
+            {(receipt?.values?.visionPlan === "Eyemed" ||
+                receipt?.values?.visionPlan === "Davis Vision") &&
                 receipt?.values?.slabOff?.status === "Yes" && (
                     <Col xs={24}>
                         <FramePriceSlot
@@ -164,7 +192,8 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                         />
                     </Col>
                 )}
-            {receipt?.values?.visionPlan === "Eyemed" &&
+            {(receipt?.values?.visionPlan === "Eyemed" ||
+                receipt?.values?.visionPlan === "Davis Vision") &&
                 receipt?.values?.specialtyLens?.status === "Yes" && (
                     <Col xs={24}>
                         <FramePriceSlot
@@ -179,7 +208,8 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                         />
                     </Col>
                 )}
-            {receipt?.values?.visionPlan === "Eyemed" &&
+            {(receipt?.values?.visionPlan === "Eyemed" ||
+                receipt?.values?.visionPlan === "Davis Vision") &&
                 receipt?.values?.polish?.status === "Yes" &&
                 receipt?.values?.polish?.type && (
                     <Col xs={24}>
@@ -190,6 +220,20 @@ const GetLensPriceByPlan = ({ receipt, calculatorObj, lensPrices }) => {
                                     receipt?.values,
                                     calculatorObj,
                                     "Polish"
+                                ) || 0
+                            }`}
+                        />
+                    </Col>
+                )}
+            {receipt?.values?.visionPlan === "Davis Vision" &&
+                receipt?.values?.blueLight === "Yes" && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={`Blue Light Filtering`}
+                            price={`$${
+                                RenderBlueLight(
+                                    calculatorObj,
+                                    receipt?.values
                                 ) || 0
                             }`}
                         />

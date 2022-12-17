@@ -37,8 +37,12 @@ import { Col, message } from "antd";
 import { ScrollToFieldError } from "./helpers/scrollToFieldError";
 import AdditionalLensTreatment from "../additionalLensTreatment/additionalLensTreatment";
 import TracingFee from "../tracingFee/tracingFee";
+import BlueLightFiltering from "../blueLightFiltering/blueLightFiltering";
+import InvoicePriceAlert from "../invoicePriceAlert";
+import { connect, useDispatch } from "react-redux";
+import * as action from "../../../../store/actions";
 
-const CalculatorScreen = () => {
+const CalculatorScreen = ({ retailPopup }) => {
     const history = useHistory();
     const [messageApi, contextHolder] = message.useMessage();
     const [validationsList, setValidationsList] = useState(null);
@@ -55,8 +59,10 @@ const CalculatorScreen = () => {
     const [loading, setLoading] = useState(true);
     const [buttonLoader, setButtonLoader] = useState(false);
     const [noPlanFound, setNoPlanFound] = useState(false);
+    const [davisMaterials, setDavisMaterials] = useState([]);
     const editInvoiceState = history?.location?.state?.invoice;
     let scrollRef = useRef();
+    const dipatch = useDispatch();
 
     useEffect(() => {
         if (editInvoiceState?.id) {
@@ -80,6 +86,7 @@ const CalculatorScreen = () => {
                 shipping: vpState?.shipping,
                 tax: vpState?.tax,
                 tracing_fee: vpState?.tracing_fee,
+                additional_lense_setting: vpState?.additional_lense_setting,
             };
             setCalculatorObj(editCalObject);
             if (editInvoiceState && editInvoiceState?.vp_state) {
@@ -137,6 +144,7 @@ const CalculatorScreen = () => {
             resData.lens_types = colRes?.data?.data?.collection;
             resData.additional_lense_setting = [];
 
+            setDavisMaterials(colRes?.data?.data?.lense_materials || []);
             setCalculatorObj(resData);
             const questions = resData?.questions;
 
@@ -174,8 +182,13 @@ const CalculatorScreen = () => {
                 delete validations?.isLoweredCopay;
                 delete validations?.isLensBenifit;
                 delete validations?.isFrameBenifit;
-            } else if (item?.title === "Eyemed") {
-                delete validations?.isLoweredCopay;
+            } else if (
+                item?.title === "Eyemed" ||
+                item?.title === "Davis Vision"
+            ) {
+                if (item?.title === "Eyemed") {
+                    delete validations?.isLoweredCopay;
+                }
                 const slabOff =
                     item?.question_permissions?.find(
                         (ques) => ques?.question == "Slab Off"
@@ -194,6 +207,15 @@ const CalculatorScreen = () => {
                     );
                 } else {
                     delete validations.isAdditionalLensOptions;
+                }
+                const blueLight =
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Blue Light Filtering"
+                    )?.optional === "true";
+                if (item?.title === "Davis Vision" && blueLight) {
+                    validations.blueLight = Yup.string().required(
+                        "Blue light filtering is required"
+                    );
                 }
             }
             allValidations[item.title] = validations;
@@ -422,6 +444,18 @@ const CalculatorScreen = () => {
                         )?.question_permissions
                     }
                 />
+                <BlueLightFiltering
+                    formProps={formProps}
+                    calculatorObj={calculatorObj && calculatorObj}
+                    setCalValidations={setCalValidations}
+                    calValidations={calValidations}
+                    data={
+                        calculatorObj?.questions?.find(
+                            (item) =>
+                                item?.title === formProps?.values?.visionPlan
+                        )?.question_permissions
+                    }
+                />
                 <AdditionalLensTreatment
                     formProps={formProps}
                     calculatorObj={calculatorObj && calculatorObj}
@@ -437,6 +471,35 @@ const CalculatorScreen = () => {
             </>
         );
     };
+    const handleSaveClick = (dontShow) => {
+        if (dontShow) {
+            const calculatorData = {
+                invoicePriceData: true,
+            };
+            localStorage.setItem(
+                "CALCULATOR_DATA",
+                JSON.stringify(calculatorData)
+            );
+            dipatch(action.showRetailPopup());
+        } else {
+            dipatch(action.showRetailPopup());
+        }
+    };
+    const RenderModal = React.useMemo(() => {
+        return (
+            <>
+                {retailPopup && (
+                    <InvoicePriceAlert
+                        accept={handleSaveClick}
+                        cancel={() => {
+                            dipatch(action.showRetailPopup());
+                        }}
+                        open={retailPopup}
+                    />
+                )}
+            </>
+        );
+    }, [retailPopup]);
     return (
         <Col className={classes["container"]} sm={24} md={24} lg={18}>
             <div>{contextHolder}</div>
@@ -469,6 +532,7 @@ const CalculatorScreen = () => {
                                         <ScrollToFieldError
                                             formProps={formProps}
                                         />
+                                        {RenderModal}
                                         {showInvoice && (
                                             <ViewInvoice
                                                 onClose={HideInvoice}
@@ -480,6 +544,9 @@ const CalculatorScreen = () => {
                                                 }
                                                 lensPrices={lensPrices}
                                                 messageApi={messageApi}
+                                                davisLensMaterials={
+                                                    davisMaterials
+                                                }
                                             />
                                         )}
                                         <InvoiceInfo
@@ -736,6 +803,9 @@ const CalculatorScreen = () => {
                                                             setCalculatorState={
                                                                 setCalculatorState
                                                             }
+                                                            setDavisMaterials={
+                                                                setDavisMaterials
+                                                            }
                                                         />
                                                         <VisionBenifits
                                                             formProps={
@@ -841,6 +911,9 @@ const CalculatorScreen = () => {
                                                                     ?.visionPlan !==
                                                                     "Private Pay" && (
                                                                     <LoweredCopay
+                                                                        davisMaterials={
+                                                                            davisMaterials
+                                                                        }
                                                                         lensPrices={
                                                                             lensPrices
                                                                         }
@@ -898,9 +971,12 @@ const CalculatorScreen = () => {
                                                                     ?.question_permissions
                                                             }
                                                         />
-                                                        {formProps?.values
+                                                        {(formProps?.values
                                                             ?.isFrameBenifit ===
-                                                            FrameBenifitAvailableEnum.yes && (
+                                                            FrameBenifitAvailableEnum.yes ||
+                                                            formProps?.values
+                                                                ?.visionPlan ===
+                                                                "Private Pay") && (
                                                             <TracingFee
                                                                 formProps={
                                                                     formProps
@@ -986,7 +1062,12 @@ const CalculatorScreen = () => {
     );
 };
 
-export default CalculatorScreen;
+const mapStateToProps = (state) => ({
+    language: state.Auth.language,
+    retailPopup: state.Auth.retailPopup,
+});
+
+export default connect(mapStateToProps)(CalculatorScreen);
 const getPrivatePayTitle = (value) => {
     switch (value) {
         case BenifitTypeEnums.lens:
