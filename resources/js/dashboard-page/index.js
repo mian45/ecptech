@@ -96,13 +96,11 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
 
                 <InvoicesStatsChart data={invoiceStats} />
                 <StaffListTable />
-                {userRole !== "staff" && <StaffLogin />}
             </Col>
             <Col xs={24} lg={6} className={classes["left-stats"]}>
                 <ProfitStatsChart dates={apiDates} />
                 <HotSellingProducts />
                 <TeamPerformanceChart />
-                {userRole !== "staff" && <AddStaffMembers />}
             </Col>
         </Row>
     );

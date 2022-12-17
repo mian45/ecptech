@@ -51,7 +51,7 @@ const InvoiceInfo = ({
         await setFieldValue("staffId", selectedStaff?.id);
     };
     return (
-        <Row className={classes["container"]}>
+        <Row className={`${classes["container"]} invoice-container`}>
             <Col className={classes["info-section"]} xs={24} md={24} lg={12}>
                 <Row className={classes["row-width"]}>
                     <Col xs={24} className={classes["label"]}>

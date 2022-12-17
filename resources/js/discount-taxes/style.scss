@@ -309,6 +309,8 @@ input[type="number"] {
         margin-left: 0px !important;
     }
 }
+
+
 .ant-select-short {
     width: 11.68em !important;
     height: 45px !important;
@@ -349,4 +351,15 @@ input[type="number"] {
     top: 0;
     left: 0;
     border-radius: 23px !important;
+}
+.invoice-container .ant-select-selector {
+    height: 45px !important;
+    position: relative !important;
+    top: 0;
+    left: 0;
+    border-radius: 23px !important;
+}
+
+.invoice-container .ant-select {
+    max-width: 98% !important;
 }
