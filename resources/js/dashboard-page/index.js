@@ -33,11 +33,12 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
                 setInvoiceStats(mappedStats);
             } catch (err) {
                 setInvoiceStats(DEFAULT_INVOICES_DATA);
+                message.destroy();
                 messageApi.open({
-                    type: 'error',
+                    type: "error",
                     content: err.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             }
         };
@@ -61,11 +62,12 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
                 setSummaryStats(mappedSummary);
             } catch (err) {
                 console.log("Error while getting stats");
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: err.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             }
         };
@@ -73,9 +75,9 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
         getSummaryStats();
     }, [apiDates, userId]);
     return (
-        <Row className={classes["container"]} span={24} justify="space-between">
+        <Row className={classes["container"]} span={24}>
             <div>{contextHolder}</div>
-            <Col xs={24} lg={17} className={classes["left-stats"]}>
+            <Col xs={24} lg={17}>
                 <Row
                     className={classes["cards-mapper"]}
                     justify="space-between"
@@ -83,7 +85,7 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
                 >
                     {PROFIT_CARDS_DATA.map((card, index) => {
                         return (
-                            <Col xs={24} md={8} lg={7}>
+                            <Col xs={24} md={8} lg={8} xl={7}>
                                 <ProfitCard
                                     key={index}
                                     cartData={card}

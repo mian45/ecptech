@@ -1,9 +1,12 @@
 .main-container {
     margin-left: 88px;
-    margin-top: 100px;
+    margin-top: 85px;
     background-color: #f9f9fb;
     min-height: 100vh;
-    padding: 34px;
+    padding: 34px 34px 34px 53px;
+    @media only screen and (max-width: 992px) {
+        padding: 30px;
+    }
 }
 .backdrop{
     width: 100%;

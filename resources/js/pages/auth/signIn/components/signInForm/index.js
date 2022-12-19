@@ -201,6 +201,7 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
     const handleClick = async (values) => {
         setButtonLoader(true);
         try {
+            message.destroy();
             await dispatch(AuthService.login(values, messageApi));
             if (JSON.parse(templogout) !== true) {
                 if (userRole === "staff") {
@@ -219,7 +220,7 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
     };
     return (
         <>
-            <div>{contextHolder}</div>
+           {contextHolder}
             <Formik
                 initialValues={LoginInitialValues}
                 validationSchema={LoginValidation}
@@ -230,6 +231,7 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                     handleChange,
                     handleSubmit,
                     setFieldValue,
+                    handleBlur,
                     isSubmitting,
                     isValid,
                     dirty,
@@ -237,10 +239,13 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                     return (
                         <>
                             <Col xs={22} md={24} lg={18}>
-                                <div className={classes["login-title"]}>Log in</div>
+                                <div className={classes["login-title"]}>
+                                    Log in
+                                </div>
                                 <div className={classes["login-subtitle"]}>
-                                    Welcome to Urban Optics. Please put your login
-                                    credentials below to start using the app.
+                                    Welcome to Urban Optics. Please put your
+                                    login credentials below to start using the
+                                    app.
                                 </div>
                             </Col>
                             <Col xs={22} md={24} lg={18}>
@@ -271,6 +276,7 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                     className={
                                                         classes["email-input"]
                                                     }
+                                                    onBlur={handleBlur}
                                                     value={values.email}
                                                     onChange={handleChange}
                                                 />
@@ -302,9 +308,10 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                     name="password"
                                                     value={values.password}
                                                     onChange={handleChange}
+                                                    onBlur={handleBlur}
                                                     className={
                                                         classes[
-                                                        "password-container"
+                                                            "password-container"
                                                         ]
                                                     }
                                                     iconRender={(visible) =>
@@ -332,7 +339,9 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                             >
                                                 Forgot Password?
                                             </div>
-                                            <div className={classes["divider"]} />
+                                            <div
+                                                className={classes["divider"]}
+                                            />
 
                                             <Col
                                                 xs={24}
@@ -342,11 +351,17 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                 xl={24}
                                             >
                                                 <Row justify="space-between">
-                                                    <Col xs={12}>
+                                                    <Col xs={12} 
+                                                        className={
+                                                            classes["chk-wrapper"]
+                                                        } >
                                                         <CustomCheckbox
                                                             label="Remember me"
                                                             id="remember"
                                                             name="remember"
+                                                            containerClass={
+                                                                classes["tag-wrapper"]
+                                                            } 
                                                             defaultChecked={
                                                                 values?.remember ||
                                                                 false
@@ -356,47 +371,38 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                                 false
                                                             }
                                                             c
-                                                            onValueChange={(e) =>
+                                                            onValueChange={(
+                                                                e
+                                                            ) =>
                                                                 setFieldValue(
                                                                     "remember",
                                                                     e
                                                                 )
                                                             }
                                                         />
-                                                        {/* <Checkbox
-                                                        checked={
-                                                            values?.remember ||
-                                                            false
-                                                        }
-                                                        id="remember"
-                                                        name="remember"
-                                                        onChange={(e) =>
-                                                            setFieldValue(
-                                                                "remember",
-                                                                e
-                                                            )
-                                                        }
-                                                    >
-                                                        Remember me
-                                                    </Checkbox> */}
                                                     </Col>
                                                     <Col
                                                         xs={12}
                                                         className={
-                                                            classes["btn-wrapper"]
+                                                            classes[
+                                                                "btn-wrapper"
+                                                            ]
                                                         }
                                                     >
                                                         <Button
                                                             type="primary"
                                                             htmlType="submit"
                                                             className={
-                                                                classes[
+                                                                isValid? classes[
                                                                 "submit-button"
-                                                                ]
+                                                                ]:classes[
+                                                                    "submit-button-disabled"
+                                                                    ]
                                                             }
+                                                            disabled={!isValid}
                                                         >
                                                             {buttonLoader ===
-                                                                true ? (
+                                                            true ? (
                                                                 <span>
                                                                     <p>Login</p>
                                                                     <CustomLoader
@@ -433,7 +439,7 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(SignInForm);
 
 const LoginValidation = Yup.object().shape({
-    email: Yup.string().email().required("Please enter a valid email address"),
+    email: Yup.string().email("Please enter a valid email address").required("Email is required"),
     password: Yup.string()
         .min(6, "Must have 6 characters")
         .max(15, "Maximum 15 charecter allowed")

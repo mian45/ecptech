@@ -183,7 +183,7 @@ const VisionBenifits = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["question-container"]}>
                             <CalculatorHeading
-                                title="Frame Benefit Available?"
+                                title="Frame Benefit Available ?"
                                 active={values?.isFrameBenifit}
                             />
                             <Radio.Group
@@ -234,7 +234,7 @@ const VisionBenifits = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["question-container"]}>
                             <CalculatorHeading
-                                title="Lens Benefit Available?"
+                                title="Lens Benefit Available ?"
                                 active={values?.isLensBenifit}
                             />
                             <Radio.Group

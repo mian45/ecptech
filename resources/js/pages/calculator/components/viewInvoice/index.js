@@ -99,13 +99,13 @@ const ViewInvoice = ({
             }
         } catch (err) {
             onClose();
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
                 className: "custom-postion-error",
             });
-            console.log("error while save Invoice");
         }
     };
 
@@ -142,6 +142,7 @@ const ViewInvoice = ({
                 `${process.env.MIX_REACT_APP_URL}/api/save-invoice`,
                 payload
             );
+           message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
@@ -151,13 +152,13 @@ const ViewInvoice = ({
             history.push(INVOICES_ROUTE);
         } catch (err) {
             onClose();
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
                 className: "custom-postion-error",
             });
-            console.log("error while save Invoice");
         }
     };
 
@@ -191,6 +192,7 @@ const ViewInvoice = ({
                 payload
             );
             history.push(INVOICES_ROUTE);
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res?.data?.message,
@@ -199,15 +201,14 @@ const ViewInvoice = ({
             });
         } catch (err) {
             onClose();
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
                 className: "custom-postion-error",
             });
-            console.log("error while save Invoice");
-        }
-    };
+        }    };
 
     const calculateTotalDue = () => {
         let total = 0;

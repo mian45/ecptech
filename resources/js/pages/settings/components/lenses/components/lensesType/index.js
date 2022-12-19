@@ -16,6 +16,7 @@ const LensesType = ({ userId, plan }) => {
     const [lensesList, setLensesList] = useState([]);
     const [selectedLensType, setSelectedLensType] = useState("");
     const [selectedRow, setSelectedRow] = useState("");
+    const [isChange, setIsChange] = useState(false);
 
     useEffect(() => {
         if (userId == null) return;
@@ -31,6 +32,7 @@ const LensesType = ({ userId, plan }) => {
                 setLensesList(res?.data?.data[plan] || []);
             } catch (err) {
                 console.log("error while get lenses");
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: err.response.data.message,
@@ -43,6 +45,7 @@ const LensesType = ({ userId, plan }) => {
     }, [userId, plan]);
 
     const submitLensesData = async () => {
+        setIsChange(false);
         try {
             const payload = {
                 user_id: userId,
@@ -54,6 +57,7 @@ const LensesType = ({ userId, plan }) => {
                 `${process.env.MIX_REACT_APP_URL}/api/update-lense-setting`,
                 payload
             );
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
@@ -62,6 +66,7 @@ const LensesType = ({ userId, plan }) => {
             });
         } catch (err) {
             console.log("error while update lenses");
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
@@ -105,6 +110,7 @@ const LensesType = ({ userId, plan }) => {
                         lenses={lensesList}
                         selectedLensType={selectedLensType}
                         setLensesList={setLensesList}
+                        setIsChange={setIsChange}
                     />
                 </Col>
             </Row>
@@ -113,6 +119,7 @@ const LensesType = ({ userId, plan }) => {
                     <button
                         className={classes["save-button"]}
                         onClick={submitLensesData}
+                        disabled={!isChange}
                     >
                         Save
                     </button>
@@ -132,6 +139,7 @@ const CollectionSection = ({
     lenses,
     selectedLensType,
     setLensesList,
+    setIsChange,
 }) => {
     const getCollections = () => {
         const brand = lenses.find((lens) => lens?.title === selectedLensType);
@@ -141,6 +149,7 @@ const CollectionSection = ({
         return collection?.collections;
     };
     const handleCheckbox = (value, collection) => {
+        setIsChange(true);
         const lens = [...lenses];
 
         const lensType = [...lens].find(
@@ -156,6 +165,7 @@ const CollectionSection = ({
         setLensesList([...lens]);
     };
     const handleDisplayNameChange = (value, collection) => {
+        setIsChange(true);
         const lens = [...lenses];
 
         const lensType = [...lens].find(
@@ -171,6 +181,7 @@ const CollectionSection = ({
         setLensesList([...lens]);
     };
     const handleAmountNameChange = (value, collection) => {
+        setIsChange(true);
         const lens = [...lenses];
 
         const lensType = [...lens].find(
@@ -208,6 +219,7 @@ const CollectionSection = ({
 };
 
 export const CollectionSlot = ({
+    id,
     collection,
     handleCheckbox,
     handleDisplayNameChange,

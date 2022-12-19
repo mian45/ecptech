@@ -266,7 +266,13 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                                 <button
                                     type="submit"
                                     className={classes["button"]}
-                                    disabled={!isEdit && staffUser?.id}
+                                    disabled={
+                                        !isEdit &&
+                                        !staffUser?.id &&
+                                        !values.email &&
+                                        !values.password &&
+                                        !values.confirmPassword
+                                    }
                                 >
                                     {staffUser?.id ? "Update" : "Save"}
                                 </button>
@@ -283,8 +289,8 @@ const StaffLogin = ({ dispatch, clientUser, staffUser }) => {
                         </form>
                     );
                 }}
-            </Formik >
-        </div >
+            </Formik>
+        </div>
     );
 };
 const mapStateToProps = (state) => ({

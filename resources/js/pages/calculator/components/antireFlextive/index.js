@@ -170,7 +170,7 @@ const AntireFlextive = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["vision-container"]}>
                             <CalculatorHeading
-                                title="Anti-Reflective Properties?"
+                                title="Anti-Reflective Properties ?"
                                 active={handleActiveFields()}
                             />
                             <Radio.Group

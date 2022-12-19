@@ -80,7 +80,7 @@ const FrameOrder = ({
                         style={{ marginRight: "50px" }}
                     >
                         <div className={classes["sub-label"]}>
-                            Retail fee of frame?
+                            Retail fee of frame ?
                         </div>
                         <div className={classes["input-container"]}>
                             <div className={classes["input-label"]}>$</div>
@@ -102,7 +102,7 @@ const FrameOrder = ({
                                     className={classes["amount-sub-container"]}
                                 >
                                     <div className={classes["sub-label"]}>
-                                        Frame Contribution?
+                                        Frame Contribution ?
                                     </div>
                                     <div className={classes["input-container"]}>
                                         <div className={classes["input-label"]}>
@@ -241,7 +241,7 @@ const FrameOrder = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["frame-container"]}>
                             <CalculatorHeading
-                                title="Frame Order?"
+                                title="Frame Order ?"
                                 active={handleActiveIcons()}
                             />
                             <Radio.Group

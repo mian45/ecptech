@@ -31,11 +31,12 @@ const InsurancePlans = ({ userId }) => {
             .catch((error) => {
                 console.log({ error });
                 setLoading(true);
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: error.response.data.message,
                     duration: 5,
-                    className: 'custom-postion-error',
+                    className: "custom-postion-error",
                 });
             });
     }, [userId]);
@@ -50,14 +51,15 @@ const InsurancePlans = ({ userId }) => {
         };
         const response = await axios.post(
             process.env.MIX_REACT_APP_URL +
-            "/api/update-user-vision-plan-permission",
+                "/api/update-user-vision-plan-permission",
             toggleState
         );
+        message.destroy();
         messageApi.open({
             type: "success",
             content: response.data.message,
             duration: 5,
-            className: 'custom-postion',
+            className: "custom-postion",
         });
     };
 
@@ -76,7 +78,7 @@ const InsurancePlans = ({ userId }) => {
                         </Col>
                     </Row>
                     <Row justify="center">
-                        <Col xs={24} md={14}>
+                        <Col xs={24} md={14} lg={17}>
                             {/* component to be used in map */}
                             {getData?.length > 0 &&
                                 getData?.map((item) => {
@@ -114,10 +116,10 @@ const InsurancePlans = ({ userId }) => {
                                                                     {...label}
                                                                     defaultChecked={
                                                                         item?.status ===
-                                                                            0
+                                                                        0
                                                                             ? false
                                                                             : true ||
-                                                                            isChecked
+                                                                              isChecked
                                                                     }
                                                                     onChange={(
                                                                         toggleSwitch

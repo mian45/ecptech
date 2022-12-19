@@ -44,11 +44,10 @@ const Header = ({ }) => {
     };
     return (
         <Row align="middle" className={classes["header-box"]}>
-            {window.innerWidth < 763 ? (
-                <Col xs={2} sm={3}>
+           
+                <Col xs={2} sm={3} className={classes['menu-item']}>
                     <MenuOutlined onClick={showSideBar} />
                 </Col>
-            ) : null}
             <Col xs={11} sm={12} md={12}>
                 <img
                     src={user?.logo ? user?.logo : logo}
@@ -57,7 +56,7 @@ const Header = ({ }) => {
                 />
             </Col>
             <Col xs={11} sm={9} md={12}>
-                <Row justify={window.innerWidth < 763 ? "center" : "end"}>
+                <Row className={classes['row-Class']}>
                     <Col
                         xs={20}
                         md={10}

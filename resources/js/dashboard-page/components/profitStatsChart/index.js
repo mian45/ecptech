@@ -45,18 +45,19 @@ const ProfitStatsChart = ({ userId, dates }) => {
             }
         } catch (err) {
             console.log("Error while getting profit stats", err);
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
     useEffect(() => {
         if (userId == null) return;
         getProfitStats();
-    }, [dates,userId]);
+    }, [dates, userId]);
 
     return (
         <div className={`${classes["container"]} profit-chart`}>

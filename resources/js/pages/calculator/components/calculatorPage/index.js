@@ -1023,12 +1023,17 @@ const CalculatorScreen = ({ retailPopup }) => {
                                             className={classes["submit-button"]}
                                             type={"submit"}
                                             disabled={
-                                                formProps?.values
+                                                (formProps?.values
                                                     ?.isFrameBenifit ===
                                                     FrameBenifitAvailableEnum.onlyThisTime &&
-                                                formProps?.values
-                                                    ?.isLensBenifit ===
-                                                    LensBenifitAvailableEnum.onlyThisTime
+                                                    formProps?.values
+                                                        ?.isLensBenifit ===
+                                                        LensBenifitAvailableEnum.onlyThisTime) ||
+                                                !(
+                                                    formProps?.isValid &&
+                                                    formProps?.dirty
+                                                ) ||
+                                                formProps?.isSubmitting
                                             }
                                         >
                                             {buttonLoader == true ? (

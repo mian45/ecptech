@@ -21,6 +21,19 @@
     object-fit: contain;
     margin-bottom: 10px;
 }
+.sidebarmainbox{
+    display: block;
+    @media only screen and (max-width: 763px) {
+        display: none;
+    }
+}
+.sidebarmainboxmobile{
+    display: none;
+    @media only screen and (max-width: 763px) {
+        display: block;
+    }
+
+}
 .sidebar-label {
     color: #ffffff;
     font-size: 14px;

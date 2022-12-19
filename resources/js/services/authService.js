@@ -13,6 +13,7 @@ export function login({ email, password, remember }, messageApi) {
                     remember_me: remember,
                 })
                 .then((res) => {
+                    message.destroy();
                     messageApi.open({
                         type: "success",
                         content: res.data.message,
@@ -20,12 +21,13 @@ export function login({ email, password, remember }, messageApi) {
                         style: {
                             marginTop: "0vh",
                         },
-                        className: 'custom-postion',
+                        className: "custom-postion",
                     });
                     setTimeout(() => {
-
                         if (res?.data?.data?.error !== "Unauthorised") {
-                            console.log(res?.data?.data?.error !== "Unauthorised");
+                            console.log(
+                                res?.data?.data?.error !== "Unauthorised"
+                            );
                             localStorage.setItem("remember", remember);
                             dispatch(action.authLogin(res.data));
                             localStorage.setItem("temp", false);
@@ -35,6 +37,7 @@ export function login({ email, password, remember }, messageApi) {
                     }, 1000);
                 })
                 .catch((err) => {
+                    message.destroy();
                     messageApi.open({
                         type: "error",
                         content: err.response.data.message,
@@ -42,7 +45,7 @@ export function login({ email, password, remember }, messageApi) {
                         style: {
                             marginTop: "0vh",
                         },
-                        className: 'custom-postion-error',
+                        className: "custom-postion-error",
                     });
                     const { status, errors } = err.response.data;
                     const data = {
@@ -184,11 +187,12 @@ export function updateStaffLogin(credentials, messageApi) {
             )
                 .then((res) => {
                     dispatch(action.updateStaffLogin(res.data));
+                    message.destroy();
                     messageApi.open({
                         type: "success",
                         content: res.data.message,
                         duration: 5,
-                        className: 'custom-postion',
+                        className: "custom-postion",
                     });
                     return resolve();
                 })
@@ -198,11 +202,12 @@ export function updateStaffLogin(credentials, messageApi) {
                         status,
                         errors,
                     };
+                    message.destroy();
                     messageApi.open({
                         type: "error",
                         content: err.response.data.message,
                         duration: 50,
-                        className: 'custom-postion-error',
+                        className: "custom-postion-error",
                     });
                     return reject(data);
                 });

@@ -167,7 +167,7 @@ const Photochromics = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["vision-container"]}>
                             <CalculatorHeading
-                                title="Photochromics?"
+                                title="Photochromics ?"
                                 active={handleActiveState()}
                             />
                             <Radio.Group

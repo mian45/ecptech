@@ -279,7 +279,7 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen 
             <Row justify="center">
                 <Col sm={24}>
                     <div className={classes["top-label"]}>
-                    GLASSES PRESCRIPTION CALCULATOR
+                        GLASSES PRESCRIPTION CALCULATOR
                     </div>
                 </Col>
             </Row>

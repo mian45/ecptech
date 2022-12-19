@@ -6,7 +6,7 @@ import cross from "../../../images/cross.png";
 import CustomLoader from "../../components/customLoader";
 import DeleteModal from "../../components/deleteModal/index";
 import { Row, Col, message, Tooltip } from "antd";
-const ShippingSettings = ({ userId,setLoading }) => {
+const ShippingSettings = ({ userId, setLoading }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const [shippingName, setShippingName] = useState("");
     const [shippingAmount, setShippingAmount] = useState("");
@@ -17,6 +17,7 @@ const ShippingSettings = ({ userId,setLoading }) => {
     const [editState, setEditState] = useState(false);
     const [showDeleteShipping, setShowDeleteShipping] = useState(false);
     const [deleteShippingId, setDeleteShippingId] = useState(0);
+    let [shippingLoading, setShippingLoading] = useState(false);
     useEffect(() => {
         if (userId == null) return;
         setEditState(false);
@@ -24,6 +25,7 @@ const ShippingSettings = ({ userId,setLoading }) => {
     }, [userId]);
     const getShipping = async () => {
         setLoading(true);
+        setShippingLoading(true);
         try {
             const res = await Axios.get(
                 process.env.MIX_REACT_APP_URL + "/api/get-shipping",
@@ -32,22 +34,16 @@ const ShippingSettings = ({ userId,setLoading }) => {
             const shippingData = res?.data?.data;
             setShipping({ ...shippingData });
             setLoading(false);
+            setShippingLoading(false);
         } catch (err) {
-            if (err.response.data.statusCode === 404) {
-                messageApi.open({
-                    type: "error",
-                    content: err.response.data.message,
-                    duration: 5,
-                    className: 'custom-postion-error',
-                });
-            } else {
-                messageApi.open({
-                    type: "error",
-                    content: err.response.data.message,
-                    duration: 5,
-                    className: 'custom-postion-error',
-                });
-            }
+            message.destroy();
+            messageApi.open({
+                type: "error",
+                content: err.response.data.message,
+                duration: 5,
+                className: "custom-postion-error",
+            });
+            setShippingLoading(false);
             setLoading(false);
         }
     };
@@ -65,19 +61,21 @@ const ShippingSettings = ({ userId,setLoading }) => {
             setShipping({});
             setIsSubmitted(false);
             setShowDeleteShipping(false);
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("error while delete shipping");
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -108,20 +106,22 @@ const ShippingSettings = ({ userId,setLoading }) => {
             setShippingAmount("");
             setIsSubmitted(true);
             setShippingButtonLoader(false);
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
-                className: 'custom-postion',
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("error while adding shipping");
             setShippingButtonLoader(false);
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
-                className: 'custom-postion-error',
+                className: "custom-postion-error",
             });
         }
     };
@@ -225,16 +225,17 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                     onClick={
                                                         handleShippingSubmit
                                                     }
-                                                    className={`save-button ${!shippingName ||
+                                                    className={`save-button ${
+                                                        !shippingName ||
                                                         !shippingAmount
-                                                        ? "disable"
-                                                        : ""
-                                                        } `}
+                                                            ? "disable"
+                                                            : ""
+                                                    } `}
                                                 >
                                                     {editState ? (
                                                         "Update"
                                                     ) : shippingButtonLoader ==
-                                                        true ? (
+                                                      true ? (
                                                         <span>
                                                             <p>Add</p>
                                                             <CustomLoader
@@ -260,25 +261,29 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                         <table>
                                             {Object.keys(shipping).length >
                                                 0 && (
-                                                    <tr className="discount-output_head">
-                                                        <th>Shipping Label</th>
-                                                        <th>Amount</th>
-                                                        <th></th>
-                                                    </tr>
-                                                )}
+                                                <tr className="discount-output_head">
+                                                    <th>Shipping Label</th>
+                                                    <th>Amount</th>
+                                                    <th></th>
+                                                </tr>
+                                            )}
                                             {Object.keys(shipping).length >
                                                 0 && (
-                                                    <tr className="discount-output_body">
-                                                        <td>{shipping.name}</td>
-                                                        <td>${shipping.value}</td>
-                                                        <td className="shipping-custom-col-3">
-                                                        <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
+                                                <tr className="discount-output_body">
+                                                    <td>{shipping.name}</td>
+                                                    <td>${shipping.value}</td>
+                                                    <td className="col-4 custom-tax-col-3">
+                                                        <Tooltip
+                                                            title={"Edit"}
+                                                            color={"#6fa5cb"}
+                                                            key={0}
+                                                        >
                                                             <img
                                                                 style={{
                                                                     width: "18px",
                                                                     height: "18px",
                                                                     marginRight:
-                                                                        "30px",
+                                                                        "20px",
                                                                     cursor: "pointer",
                                                                 }}
                                                                 src={edit}
@@ -286,13 +291,20 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                                     setEditState(
                                                                         true
                                                                     );
-                                                                  
+                                                                    setShippingLoading(
+                                                                        true
+                                                                    );
                                                                     handleUpdateShipping(
                                                                         shipping
                                                                     );
                                                                 }}
-                                                            /></Tooltip>
-                                                            <Tooltip title={"Delete"} color={'#6fa5cb'} key={0}>
+                                                            />
+                                                        </Tooltip>
+                                                        <Tooltip
+                                                            title={"Delete"}
+                                                            color={"#6fa5cb"}
+                                                            key={0}
+                                                        >
                                                             <img
                                                                 style={{
                                                                     width: "16px",
@@ -305,10 +317,11 @@ const ShippingSettings = ({ userId,setLoading }) => {
                                                                         shipping.id
                                                                     );
                                                                 }}
-                                                            /></Tooltip>
-                                                        </td>
-                                                    </tr>
-                                                )}
+                                                            />
+                                                        </Tooltip>
+                                                    </td>
+                                                </tr>
+                                            )}
                                         </table>
                                     </Row>
                                 </Col>

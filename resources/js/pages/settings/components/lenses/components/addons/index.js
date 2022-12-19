@@ -14,6 +14,7 @@ const Addons = ({ userId, plan, type }) => {
     const [changedAddOnList, setChangedAddOnList] = useState([]);
     const [selectedAddons, setSelectedAddons] = useState("");
     const [selectedRow, setSelectedRow] = useState("");
+    const [isChange, setIsChange] = useState(false);
 
     useEffect(() => {
         if (userId == null) return;
@@ -45,6 +46,7 @@ const Addons = ({ userId, plan, type }) => {
                 });
             } catch (err) {
                 console.log("error while get lenses");
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: err.response.data.message,
@@ -57,6 +59,7 @@ const Addons = ({ userId, plan, type }) => {
     }, [userId, plan, type]);
 
     const submitLensesData = async () => {
+        setIsChange(false);
         try {
             const payload = {
                 data: {
@@ -67,6 +70,7 @@ const Addons = ({ userId, plan, type }) => {
                 `${process.env.MIX_REACT_APP_URL}/api/add-addon-setting`,
                 payload
             );
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
@@ -75,6 +79,7 @@ const Addons = ({ userId, plan, type }) => {
             });
         } catch (err) {
             console.log("error while update lenses");
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
@@ -106,6 +111,7 @@ const Addons = ({ userId, plan, type }) => {
                         addons={addonsList}
                         selectedAddons={selectedAddons}
                         setLensesList={setAddonsList}
+                        setIsChange={setIsChange}
                     />
                 </Col>
             </Row>
@@ -114,6 +120,7 @@ const Addons = ({ userId, plan, type }) => {
                     <button
                         className={classes["save-button"]}
                         onClick={submitLensesData}
+                        disabled={!isChange}
                     >
                         Save
                     </button>
@@ -128,7 +135,12 @@ const mapStateToProps = (state) => ({
 });
 export default connect(mapStateToProps)(Addons);
 
-const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
+const CollectionSection = ({
+    addons,
+    selectedAddons,
+    setLensesList,
+    setIsChange,
+}) => {
     const [addonsList, setAddonsList] = useState([]);
     const getCollections = () => {
         const data = addons.filter((item, index) => {
@@ -157,6 +169,7 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
         getCollections();
     }, [selectedAddons]);
     const handleCheckbox = (value, collection) => {
+        setIsChange(true);
         const newData = addonsList?.map((item) => {
             if (item.id === collection.id) {
                 return { ...item, status: value ? "active" : "inactive" };
@@ -175,6 +188,7 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
         setAddonsList(newData);
     };
     const handleDisplayNameChange = (value, collection) => {
+        setIsChange(true);
         const newData = addonsList?.map((item) => {
             if (item.id === collection.id) {
                 return { ...item, display_name: value };
@@ -193,6 +207,7 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
         setAddonsList(newData);
     };
     const handleAmountNameChange = (value, collection) => {
+        setIsChange(true);
         const newData = addonsList?.map((item) => {
             if (item.id === collection.id) {
                 return { ...item, price: value };
@@ -217,16 +232,14 @@ const CollectionSection = ({ addons, selectedAddons, setLensesList }) => {
                 className={classes["collection-label"]}
             >{`${selectedAddons}`}</div>
             {addonsList?.map((collection, index) => (
-                <Col xs={24}>
-                    <CollectionSlot
-                        key={`${collection?.title || ""}+${index}`}
-                        collection={collection}
-                        handleCheckbox={handleCheckbox}
-                        handleDisplayNameChange={handleDisplayNameChange}
-                        handleAmountNameChange={handleAmountNameChange}
-                        prompt="Click to edit name of add on that calculator displays"
-                    />
-                </Col>
+                <CollectionSlot
+                    key={`${collection?.title || ""}+${index}`}
+                    collection={collection}
+                    handleCheckbox={handleCheckbox}
+                    handleDisplayNameChange={handleDisplayNameChange}
+                    handleAmountNameChange={handleAmountNameChange}
+                    prompt="Click to edit name of add on that calculator displays"
+                />
             ))}
         </Row>
     );

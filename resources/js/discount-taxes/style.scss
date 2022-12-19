@@ -20,6 +20,7 @@
                     border: 1px solid #dfdfdf;
                     border-radius: 23px;
                     height: 45px;
+                    margin-bottom: 5px;
 
                     &::placeholder {
                         color: rgba($color: #cbcbcb, $alpha: 1);
@@ -121,6 +122,7 @@
     border-radius: 28px;
     color: white;
     cursor: pointer;
+    
     &:hover {
         background-color: #518fbb;
     }
@@ -143,17 +145,20 @@
 @media only screen and (min-width: 992px) {
     .save-button {
         width: 100%;
+        @media only screen and (width: 1024px){
+            padding: unset !important;
+        }
     }
 }
 .discount-output {
-    margin-top: 29px;
-    margin-bottom: 50px;
+    margin-top:20px;
+    margin-bottom: 20px;
     border-radius: 10px 10px 0 0;
 
     &_head {
         padding-block: 13px;
         padding-inline-start: 32px;
-        background-color: #e8e8e8;
+        background-color: #6FA5CB;
         border-radius: 10px 10px 0 0;
     }
 
@@ -185,12 +190,16 @@
 
 .discount-tax .heading {
     font-weight: bold;
-    margin-bottom: 16px;
+    margin-bottom: 5px;
     font-family: Montserrat !important;
     color: #2a2a2a !important;
-    margin-top: 36px !important;
-    margin-bottom: 36px !important;
+    margin-top: 0px !important;
+    margin-bottom: 20px !important;
     width: 100%;
+    @media only screen and (max-width: 417px) {
+        margin-top: 20px !important;
+        margin-bottom: 4px !important;
+    }
 }
 
 .main {
@@ -211,9 +220,10 @@ th {
 }
 
 th {
-    background-color: #e8e8e8;
+    background-color: #6FA5CB;
     padding-block: 14px;
     padding-inline-start: 32px;
+    color:#F9F9FB;
 
     &:first-child {
         border-radius: 10px 0 0 0;
@@ -268,12 +278,16 @@ input[type="number"] {
     justify-content: flex-start;
     align-items: center;
     flex-direction: column;
+    max-width: 710px;
 }
 .input-title {
     font-weight: 400 !important;
-    margin-bottom: 16px !important;
+    margin-bottom: 5px !important;
     font-family: Montserrat !important;
     color: #2a2a2a !important;
+    @media only screen and (max-width: 417px) {
+        margin-top: 16px !important;
+    }
 }
 .state-select {
     .ant-select-single .ant-select-selector .ant-select-selection-item {
@@ -287,15 +301,15 @@ input[type="number"] {
     }
 }
 .discount-container-page-title {
-    margin-top: 30px !important;
+    margin-top: 10px !important;
+    margin-bottom: 20px !important;
 }
 .shipping-custom-col-3 {
     text-align: right;
-    padding-right: 32px;
+    display: flex;
 }
 .custom-tax-col-3 {
     text-align: right;
-    padding-right: 32px;
 }
 
 .hidden-text {

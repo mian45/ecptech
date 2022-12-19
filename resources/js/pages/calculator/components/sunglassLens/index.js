@@ -413,7 +413,7 @@ const SunglassLens = ({
     const renderMirrorCoating = () => {
         return (
             <>
-                <CalculatorHeading title="Mirror Coating?" />
+                <CalculatorHeading title="Mirror Coating ?" />
                 <Radio.Group
                     onChange={handleMirrirCoatingChange}
                     value={values?.isMirrorCoating}
@@ -522,7 +522,7 @@ const SunglassLens = ({
                     <Col sx={24} sm={24} md={19}>
                         <div className={classes["vision-container"]}>
                             <CalculatorHeading
-                                title="Sunglass Options?"
+                                title="Sunglass Options ?"
                                 active={handleActiveState()}
                             />
                             <Radio.Group

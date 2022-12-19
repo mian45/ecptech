@@ -107,6 +107,7 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                     return;
                 }
             }
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,

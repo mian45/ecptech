@@ -10,8 +10,18 @@
 
 .label {
     margin-left: 10px;
-    color: #2a2a2a;
+    color: #747474;
     font-size: 16px;
     font-family: Montserrat;
     margin-top: 3px;
+    
+    @media only screen and (width: 768px) and (height:1024px) {
+        font-size: 15px;
+    }
+    @media only screen and (max-width: 417px) {
+        font-size: 10px;
+    }
+    @media only screen and (max-width: 290px) {
+        font-size: 7px;
+    }
 }

@@ -73,10 +73,12 @@ const EyePrescription = ({ userId }) => {
                 setLoading(false);
             } catch (err) {
                 console.log("Error while getting glasses details");
+                message.destroy();
                 messageApi.open({
                     type: "error",
                     content: err.response.data.message,
                     duration: 5,
+                    className: "custom-postion-error",
                     className: "custom-postion-error",
                 });
             }
@@ -244,18 +246,22 @@ const EyePrescription = ({ userId }) => {
             );
             setErrors([]);
             setButtonLoader(false);
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
                 duration: 5,
                 className: "custom-postion",
+                className: "custom-postion",
             });
         } catch (err) {
             console.log("error while save data");
+            message.destroy();
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
                 duration: 5,
+                className: "custom-postion-error",
                 className: "custom-postion-error",
             });
         }
