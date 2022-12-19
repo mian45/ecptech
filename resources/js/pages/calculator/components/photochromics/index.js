@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
 import { getAddons } from "../antireFlextive/helpers/addonsHelper";
 import RetailError from "./components/retailError/retailError";
+import { retailErrorMessage } from "../sunglassLens/helpers/constants";
 
 const Photochromics = ({
     formProps,
@@ -22,6 +23,7 @@ const Photochromics = ({
     calValidations,
     data,
     language,
+    retailError,
 }) => {
     const dipatch = useDispatch();
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
@@ -31,7 +33,6 @@ const Photochromics = ({
             (ques) => ques.question === "Photochromics"
         )?.visibility;
     const [error, setError] = useState("");
-    const [retailError, setRetailError] = useState("");
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
         Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
@@ -120,8 +121,11 @@ const Photochromics = ({
             dipatch(action.showRetailPopup());
         }
         if (!material?.price && parsedInvoiceData) {
-            setRetailError(
-                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            dipatch(
+                action.retailError({
+                    type: "photochromics",
+                    error: retailErrorMessage("this photochromics"),
+                })
             );
         }
     };
@@ -224,7 +228,9 @@ const Photochromics = ({
                                         )}
                                     </Radio.Group>
                                     <FormikError name={"photochromicsType"} />
-                                    <RetailError error={retailError} />
+                                    <RetailError
+                                        error={retailError?.photochromics}
+                                    />
                                 </>
                             )}
                             {values?.visionPlan === eyemedPlan &&
@@ -247,6 +253,7 @@ const Photochromics = ({
 
 const mapStateToProps = (state) => ({
     language: state.Auth.language,
+    retailError: state?.persistStore?.retailError,
 });
 
 export default connect(mapStateToProps)(Photochromics);

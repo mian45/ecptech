@@ -13,7 +13,11 @@ import CalculatorInput from "../frameOrder/components/calculatorInput/calculator
 import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
 import { getAddons } from "../antireFlextive/helpers/addonsHelper";
-import { retailErrors } from "./helpers/constants";
+import {
+    retailErrorMessage,
+    retailErrors,
+    retailErrorsMessage,
+} from "./helpers/constants";
 import RetailError from "../photochromics/components/retailError/retailError";
 
 const SunglassLens = ({
@@ -23,14 +27,11 @@ const SunglassLens = ({
     calValidations,
     data,
     language,
+    retailError,
 }) => {
     const { values, handleChange, handleBlur } = formProps;
     const dipatch = useDispatch();
-    const [retailError, setRetailError] = useState({
-        polarized: "",
-        tint: "",
-        coating: "",
-    });
+
     const sunglassLensVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -125,10 +126,12 @@ const SunglassLens = ({
             dipatch(action.showRetailPopup());
         }
         if (!material?.price && parsedInvoiceData) {
-            setRetailError({
-                ...error,
-                [type]: "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?",
-            });
+            dipatch(
+                action.retailError({
+                    type: type,
+                    error: retailErrorMessage(retailErrorsMessage(type)),
+                })
+            );
         }
     };
     const handleSunGlassesLensTypeChange = (e) => {
@@ -155,6 +158,12 @@ const SunglassLens = ({
                 ...validationObject,
             });
         } else if (e?.target?.value === "Tint") {
+            dipatch(
+                action.retailError({
+                    type: "polarized",
+                    error: "",
+                })
+            );
             const validations = { ...calValidations };
             delete validations.polarizedTypePrice;
             const validationObj = {};
@@ -564,6 +573,7 @@ const SunglassLens = ({
 
 const mapStateToProps = (state) => ({
     language: state.Auth.language,
+    retailError: state?.persistStore?.retailError,
 });
 
 export default connect(mapStateToProps)(SunglassLens);

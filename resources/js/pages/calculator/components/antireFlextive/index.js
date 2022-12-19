@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
 import { getAddons } from "./helpers/addonsHelper";
 import RetailError from "../photochromics/components/retailError/retailError";
+import { retailErrorMessage } from "../sunglassLens/helpers/constants";
 
 const AntireFlextive = ({
     formProps,
@@ -24,6 +25,7 @@ const AntireFlextive = ({
     calValidations,
     data,
     language,
+    retailError,
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const dipatch = useDispatch();
@@ -33,7 +35,6 @@ const AntireFlextive = ({
             (ques) => ques.question === "Anti-Reflective Properties"
         )?.visibility;
     const [error, setError] = useState("");
-    const [retailError, setRetailError] = useState("");
 
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
@@ -122,8 +123,11 @@ const AntireFlextive = ({
             dipatch(action.showRetailPopup());
         }
         if (!material?.price && parsedInvoiceData) {
-            setRetailError(
-                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            dipatch(
+                action.retailError({
+                    type: "antiReflective",
+                    error: retailErrorMessage("this Anti-Reflective"),
+                })
             );
         }
     };
@@ -236,7 +240,9 @@ const AntireFlextive = ({
                                         )}
                                     </Radio.Group>
                                     <FormikError name={"antireflectiveType"} />
-                                    <RetailError error={retailError} />
+                                    <RetailError
+                                        error={retailError?.antiReflective}
+                                    />
                                 </>
                             )}
                             {values?.visionPlan === eyemedPlan &&
@@ -260,6 +266,7 @@ const AntireFlextive = ({
 
 const mapStateToProps = (state) => ({
     language: state.Auth.language,
+    retailError: state?.persistStore?.retailError,
 });
 
 export default connect(mapStateToProps)(AntireFlextive);

@@ -56,3 +56,11 @@ export function showRetailPopup(payload) {
         payload,
     };
 }
+
+//calculator
+export function retailError(payload) {
+    return {
+        type: ActionTypes.RETAIL_ERROR,
+        payload,
+    };
+}

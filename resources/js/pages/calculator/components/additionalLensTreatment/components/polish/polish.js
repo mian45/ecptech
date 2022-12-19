@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import * as action from "../../../../../../store/actions";
 import { getAdditionalTreatment } from "../slabOff/helpers/additionalTreatment";
 import RetailError from "../../../photochromics/components/retailError/retailError";
+import { retailErrorMessage } from "../../../sunglassLens/helpers/constants";
 
 const Polish = ({
     formProps,
@@ -20,10 +21,10 @@ const Polish = ({
     calValidations,
     data,
     language,
+    retailError,
 }) => {
     const { values, handleChange } = formProps;
     const dipatch = useDispatch();
-    const [retailError, setRetailError] = useState("");
     const eyemedPlan = AllPlans[language]?.eyemed;
     const polishTitle =
         Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
@@ -89,8 +90,11 @@ const Polish = ({
             dipatch(action.showRetailPopup());
         }
         if (!material?.price && parsedInvoiceData) {
-            setRetailError(
-                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            dipatch(
+                action.retailError({
+                    type: "polish",
+                    error: retailErrorMessage("this polish"),
+                })
             );
         }
     };
@@ -181,7 +185,7 @@ const Polish = ({
                         })}
                     </Radio.Group>
                     <FormikError name={"polishType"} />
-                    <RetailError error={retailError} />
+                    <RetailError error={retailError?.polish} />
                 </>
             )}
             {values?.visionPlan === eyemedPlan &&
@@ -201,6 +205,7 @@ const Polish = ({
 
 const mapStateToProps = (state) => ({
     language: state.Auth.language,
+    retailError: state?.persistStore?.retailError,
 });
 
 export default connect(mapStateToProps)(Polish);
