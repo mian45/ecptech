@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { AllPlans } from "../../data/plansList";
 import PlanTitles from "../../data/plansTitles/planTitles";
@@ -10,6 +10,7 @@ import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import CustomRadio from "../../../../components/customRadio";
 import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
+import RetailError from "../photochromics/components/retailError/retailError";
 
 const BlueLightFiltering = ({
     formProps,
@@ -21,6 +22,7 @@ const BlueLightFiltering = ({
 }) => {
     const { values, handleChange } = formProps;
     const dipatch = useDispatch();
+    const [retailError, setRetailError] = useState("");
     const allPlans = AllPlans[language];
     const { blueLightTitle, blueLightYes, blueLightNo } = PlanTitles(
         language,
@@ -49,7 +51,7 @@ const BlueLightFiltering = ({
             dipatch(action.showRetailPopup());
         }
         if (!material?.price && parsedInvoiceData) {
-            setError(
+            setRetailError(
                 "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
             );
         }
@@ -92,6 +94,7 @@ const BlueLightFiltering = ({
                             )}
                         </Radio.Group>
                         <FormikError name={"blueLight"} />
+                        <RetailError error={retailError} />
                     </div>
                 </Col>
             </Row>

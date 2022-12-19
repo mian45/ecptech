@@ -15,6 +15,7 @@ import { handleAntiReflectiveNoValidations } from "./helpers/handleAntireflectiv
 import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
 import { getAddons } from "./helpers/addonsHelper";
+import RetailError from "../photochromics/components/retailError/retailError";
 
 const AntireFlextive = ({
     formProps,
@@ -32,6 +33,7 @@ const AntireFlextive = ({
             (ques) => ques.question === "Anti-Reflective Properties"
         )?.visibility;
     const [error, setError] = useState("");
+    const [retailError, setRetailError] = useState("");
 
     const eyemedPlan = AllPlans[language]?.eyemed;
     const lensBenifitYes =
@@ -120,7 +122,7 @@ const AntireFlextive = ({
             dipatch(action.showRetailPopup());
         }
         if (!material?.price && parsedInvoiceData) {
-            setError(
+            setRetailError(
                 "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
             );
         }
@@ -234,6 +236,7 @@ const AntireFlextive = ({
                                         )}
                                     </Radio.Group>
                                     <FormikError name={"antireflectiveType"} />
+                                    <RetailError error={retailError} />
                                 </>
                             )}
                             {values?.visionPlan === eyemedPlan &&

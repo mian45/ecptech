@@ -37,7 +37,7 @@ const TracingFee = ({
 
     return (
         <>
-            {values?.frameOrderType === "Patient Own Frame" ? (
+            {values?.frameOrderType === "Patient Own Frame" && (
                 <Row className={classes["container"]}>
                     <Col sx={0} sm={0} md={5}>
                         <QuestionIcon
@@ -93,13 +93,17 @@ const TracingFee = ({
                                             {calculatorObj?.tracing_fee}
                                         </div>
                                     </div>
+                                    {!calculatorObj?.tracing_fee && (
+                                        <div className={classes["error"]}>
+                                            Please go to settings to add Tracing
+                                            Fee.
+                                        </div>
+                                    )}
                                 </>
                             )}
                         </div>
                     </Col>
                 </Row>
-            ) : (
-                <></>
             )}
         </>
     );

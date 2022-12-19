@@ -1,5 +1,5 @@
 import { Radio } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import CustomRadio from "../../../../../../components/customRadio";
 import { Plans } from "../../../../data/plansJson";
@@ -11,6 +11,7 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import * as action from "../../../../../../store/actions";
 import { getAdditionalTreatment } from "../slabOff/helpers/additionalTreatment";
+import RetailError from "../../../photochromics/components/retailError/retailError";
 
 const SpecialtyLens = ({
     formProps,
@@ -22,6 +23,7 @@ const SpecialtyLens = ({
 }) => {
     const { values, handleChange } = formProps;
     const dipatch = useDispatch();
+    const [retailError, setRetailError] = useState("");
     const eyemedPlan = AllPlans[language]?.eyemed;
     const specialtyLensTitle =
         Plans()[language][values?.visionPlan]?.additionalLens?.subQuestion
@@ -54,7 +56,7 @@ const SpecialtyLens = ({
             dipatch(action.showRetailPopup());
         }
         if (!material?.price && parsedInvoiceData) {
-            setError(
+            setRetailError(
                 "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
             );
         }
@@ -114,6 +116,7 @@ const SpecialtyLens = ({
                 />
             </Radio.Group>
             <FormikError name={"isSpecialtyLens"} />
+            <RetailError error={retailError} />
             {values?.visionPlan === eyemedPlan &&
                 values?.isLensBenifit === lensBenifitYes &&
                 values?.isAdditionalLensOptions === additionalLensYes &&

@@ -38,7 +38,11 @@ const LensMeterials = ({
         Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
 
     const getActiveMaterials = (material) => {
-        if (values?.visionPlan === eyemedPlan) {
+        if (
+            values?.visionPlan === eyemedPlan ||
+            values?.visionPlan === AllPlans[language]?.davis ||
+            values?.visionPlan === AllPlans[language]?.privatePay
+        ) {
             return false;
         }
         const lensType = calculatorObj?.lens_types?.find(

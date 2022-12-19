@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Col, Radio, Row } from "antd";
 import CustomRadio from "../../../../components/customRadio";
 import QuestionIcon from "../questionIcon";
@@ -13,6 +13,8 @@ import CalculatorInput from "../frameOrder/components/calculatorInput/calculator
 import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
 import { getAddons } from "../antireFlextive/helpers/addonsHelper";
+import { retailErrors } from "./helpers/constants";
+import RetailError from "../photochromics/components/retailError/retailError";
 
 const SunglassLens = ({
     formProps,
@@ -24,6 +26,11 @@ const SunglassLens = ({
 }) => {
     const { values, handleChange, handleBlur } = formProps;
     const dipatch = useDispatch();
+    const [retailError, setRetailError] = useState({
+        polarized: "",
+        tint: "",
+        coating: "",
+    });
     const sunglassLensVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -100,7 +107,7 @@ const SunglassLens = ({
             });
         }
     };
-    const showAlert = (e) => {
+    const showAlert = (e, type) => {
         const material = getAddons(
             calculatorObj,
             "Sunglass Options",
@@ -118,15 +125,16 @@ const SunglassLens = ({
             dipatch(action.showRetailPopup());
         }
         if (!material?.price && parsedInvoiceData) {
-            setError(
-                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
-            );
+            setRetailError({
+                ...error,
+                [type]: "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?",
+            });
         }
     };
     const handleSunGlassesLensTypeChange = (e) => {
         handleChange(e);
         if (e?.target?.value === "Polarized") {
-            showAlert(e);
+            showAlert(e, retailErrors()?.polarized);
             const validations = { ...calValidations };
             delete validations.tintType;
             delete validations.tintTypePrice;
@@ -191,7 +199,7 @@ const SunglassLens = ({
     };
     const handleMirrorCoatingChange = (e) => {
         handleChange(e);
-        showAlert(e);
+        showAlert(e, retailErrors()?.coating);
 
         if (
             values?.visionPlan === eyemedPlan &&
@@ -310,6 +318,7 @@ const SunglassLens = ({
                     )}
                 </Radio.Group>
                 <FormikError name={"sunglassesType"} />
+                <RetailError error={retailError?.polarized} />
                 {values?.visionPlan === eyemedPlan &&
                     values?.isLensBenifit === lensBenifitYes &&
                     values?.isSunglasses === sunglassesYes &&
@@ -338,7 +347,7 @@ const SunglassLens = ({
                         <Radio.Group
                             onChange={(e) => {
                                 handleChange(e);
-                                showAlert(e);
+                                showAlert(e, retailErrors()?.tint);
                             }}
                             value={values?.tintType}
                             id="tintType"
@@ -376,6 +385,7 @@ const SunglassLens = ({
                             )}
                         </Radio.Group>
                         <FormikError name={"tintType"} />
+                        <RetailError error={retailError?.tint} />
                         {values?.visionPlan === eyemedPlan &&
                             values?.isLensBenifit === lensBenifitYes &&
                             values?.isSunglasses === sunglassesYes &&
@@ -473,6 +483,7 @@ const SunglassLens = ({
                             )}
                         </Radio.Group>
                         <FormikError name={"mirrorCoatingType"} />
+                        <RetailError error={retailError?.coating} />
                         {values?.visionPlan === eyemedPlan &&
                             values?.isLensBenifit === lensBenifitYes &&
                             values?.isSunglasses === sunglassesYes &&

@@ -60,7 +60,6 @@ const GlassesProtection = ({ formProps, calculatorObj }) => {
                                     <div className={classes["label"]}>
                                         Amount
                                     </div>
-
                                     <div className={classes["input-container"]}>
                                         <div className={classes["input-label"]}>
                                             $
@@ -72,7 +71,13 @@ const GlassesProtection = ({ formProps, calculatorObj }) => {
                                         >
                                             {calculatorObj?.shipping}
                                         </div>
-                                    </div>
+                                    </div>{" "}
+                                    {!calculatorObj?.shipping && (
+                                        <div className={classes["error"]}>
+                                            Please go to settings to add
+                                            Shipping.
+                                        </div>
+                                    )}
                                 </>
                             )}
                         </div>
