@@ -301,7 +301,7 @@ const TracingSettings = ({ userId,setLoading }) => {
                                                     <tr className="discount-output_body">
                                                         <td>{Tracing.name}</td>
                                                         <td>${Tracing.value}</td>
-                                                        <td className="shipping-custom-col-3">
+                                                        <td className="col-4 custom-tax-col-3">
                                                         <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
                                                             <img
                                                                 style={{

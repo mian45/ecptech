@@ -9,7 +9,7 @@ const InvoicesTableHeader = () => {
             <th className={classes['invoice-second']}>Email</th>
             <th className={classes['invoice-second']}>Date</th>
             <th className={classes['invoice-second']}>Price</th>
-            <th >Status</th>
+            <th className={classes['invoice-center']}>Status</th>
             <th className={classes["action-column"]}>Action</th>
         </tr>
     );

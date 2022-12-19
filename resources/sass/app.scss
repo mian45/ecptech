@@ -592,7 +592,9 @@ input:-webkit-autofill:active {
     }
 }
 .d-block {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    margin-top: 85px;
 }
 .d-none {
     display: none;
