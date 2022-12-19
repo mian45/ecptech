@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { AllPlans } from "../../data/plansList";
 import PlanTitles from "../../data/plansTitles/planTitles";
@@ -10,6 +10,8 @@ import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import CustomRadio from "../../../../components/customRadio";
 import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
+import RetailError from "../photochromics/components/retailError/retailError";
+import { retailErrorMessage } from "../sunglassLens/helpers/constants";
 
 const BlueLightFiltering = ({
     formProps,
@@ -18,6 +20,7 @@ const BlueLightFiltering = ({
     calValidations,
     data,
     language,
+    retailError,
 }) => {
     const { values, handleChange } = formProps;
     const dipatch = useDispatch();
@@ -49,8 +52,11 @@ const BlueLightFiltering = ({
             dipatch(action.showRetailPopup());
         }
         if (!material?.price && parsedInvoiceData) {
-            setError(
-                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            dipatch(
+                action.retailError({
+                    type: "blueLightFilter",
+                    error: retailErrorMessage("blue light filtering"),
+                })
             );
         }
     };
@@ -92,6 +98,7 @@ const BlueLightFiltering = ({
                             )}
                         </Radio.Group>
                         <FormikError name={"blueLight"} />
+                        <RetailError error={retailError?.blueLightFilter} />
                     </div>
                 </Col>
             </Row>
@@ -109,6 +116,7 @@ const BlueLightFiltering = ({
 };
 const mapStateToProps = (state) => ({
     language: state.Auth.language,
+    retailError: state?.persistStore?.retailError,
 });
 
 export default connect(mapStateToProps)(BlueLightFiltering);

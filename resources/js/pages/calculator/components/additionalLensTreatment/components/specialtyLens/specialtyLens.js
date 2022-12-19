@@ -1,5 +1,5 @@
 import { Radio } from "antd";
-import React from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import CustomRadio from "../../../../../../components/customRadio";
 import { Plans } from "../../../../data/plansJson";
@@ -11,6 +11,8 @@ import * as Yup from "yup";
 import { useDispatch } from "react-redux";
 import * as action from "../../../../../../store/actions";
 import { getAdditionalTreatment } from "../slabOff/helpers/additionalTreatment";
+import RetailError from "../../../photochromics/components/retailError/retailError";
+import { retailErrorMessage } from "../../../sunglassLens/helpers/constants";
 
 const SpecialtyLens = ({
     formProps,
@@ -19,6 +21,7 @@ const SpecialtyLens = ({
     calValidations,
     data,
     language,
+    retailError,
 }) => {
     const { values, handleChange } = formProps;
     const dipatch = useDispatch();
@@ -54,8 +57,11 @@ const SpecialtyLens = ({
             dipatch(action.showRetailPopup());
         }
         if (!material?.price && parsedInvoiceData) {
-            setError(
-                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            dipatch(
+                action.retailError({
+                    type: "specialityLens",
+                    error: retailErrorMessage("speciality lens"),
+                })
             );
         }
     };
@@ -114,6 +120,7 @@ const SpecialtyLens = ({
                 />
             </Radio.Group>
             <FormikError name={"isSpecialtyLens"} />
+            <RetailError error={retailError?.specialityLens} />
             {values?.visionPlan === eyemedPlan &&
                 values?.isLensBenifit === lensBenifitYes &&
                 values?.isAdditionalLensOptions === additionalLensYes &&
@@ -129,6 +136,7 @@ const SpecialtyLens = ({
 };
 const mapStateToProps = (state) => ({
     language: state.Auth.language,
+    retailError: state?.persistStore?.retailError,
 });
 
 export default connect(mapStateToProps)(SpecialtyLens);

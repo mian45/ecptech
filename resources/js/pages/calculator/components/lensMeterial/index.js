@@ -14,6 +14,8 @@ import CalculatorInput from "../frameOrder/components/calculatorInput/calculator
 import { resetLowerCopayMaterial } from "./helpers/resetLowerCopayMaterial";
 import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
+import { retailErrorMessage } from "../sunglassLens/helpers/constants";
+import RetailError from "../photochromics/components/retailError/retailError";
 
 const LensMeterials = ({
     formProps,
@@ -22,6 +24,7 @@ const LensMeterials = ({
     calValidations,
     setCalValidations,
     language,
+    retailError,
 }) => {
     const dipatch = useDispatch();
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
@@ -38,7 +41,11 @@ const LensMeterials = ({
         Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
 
     const getActiveMaterials = (material) => {
-        if (values?.visionPlan === eyemedPlan) {
+        if (
+            values?.visionPlan === eyemedPlan ||
+            values?.visionPlan === AllPlans[language]?.davis ||
+            values?.visionPlan === AllPlans[language]?.privatePay
+        ) {
             return false;
         }
         const lensType = calculatorObj?.lens_types?.find(
@@ -84,8 +91,11 @@ const LensMeterials = ({
             dipatch(action.showRetailPopup());
         }
         if (!material?.retail_price && parsedInvoiceData) {
-            setError(
-                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            dipatch(
+                action.retailError({
+                    type: "lensMaterial",
+                    error: retailErrorMessage("this material"),
+                })
             );
         }
     };
@@ -247,6 +257,7 @@ const LensMeterials = ({
                             {error && (
                                 <div className={classes["error"]}>{error}</div>
                             )}
+                            <RetailError error={retailError?.lensMaterial} />
                             {values?.lensMaterial &&
                                 values?.visionPlan === eyemedPlan &&
                                 values?.isLensBenifit === lensBenifitYes && (
@@ -279,6 +290,7 @@ const LensMeterials = ({
 
 const mapStateToProps = (state) => ({
     language: state.Auth.language,
+    retailError: state?.persistStore?.retailError,
 });
 
 export default connect(mapStateToProps)(LensMeterials);

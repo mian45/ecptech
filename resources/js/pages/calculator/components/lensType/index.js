@@ -15,6 +15,8 @@ import CalculatorInput from "../frameOrder/components/calculatorInput/calculator
 import { selectLensTypeValidations } from "./helpers/selectLensTypeValidations";
 import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
+import RetailError from "../photochromics/components/retailError/retailError";
+import { retailErrorMessage } from "../sunglassLens/helpers/constants";
 
 const LensType = ({
     formProps,
@@ -24,6 +26,7 @@ const LensType = ({
     calValidations,
     getBaseValues,
     language,
+    retailError,
 }) => {
     const dipatch = useDispatch();
     const { values, handleChange, handleBlur, setFieldValue, setFieldError } =
@@ -205,8 +208,11 @@ const LensType = ({
             dipatch(action.showRetailPopup());
         }
         if (!collection?.price && parsedInvoiceData) {
-            setError(
-                "The Retail Price for this brand is not added from the settings. Are you sure you want to continue?"
+            dipatch(
+                action.retailError({
+                    type: "brand",
+                    error: retailErrorMessage("this brand"),
+                })
             );
         }
     };
@@ -457,6 +463,9 @@ const LensType = ({
                                             </div>
                                         )}
                                         <FormikError name={"lensTypeValue"} />
+                                        <RetailError
+                                            error={retailError?.brand}
+                                        />
                                     </>
                                 )}
                                 {values?.lensType &&
@@ -523,6 +532,7 @@ const LensType = ({
 
 const mapStateToProps = (state) => ({
     language: state.Auth.language,
+    retailError: state?.persistStore?.retailError,
 });
 
 export default connect(mapStateToProps)(LensType);

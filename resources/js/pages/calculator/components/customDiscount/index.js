@@ -213,7 +213,7 @@ const CustomDiscount = ({
                                             }
                                         >
                                             <input
-                                                className={`${classes["input"]} ${classes["margin-discount"]}`}
+                                                className={`${classes["input"]} `}
                                                 type={"text"}
                                                 onChange={
                                                     handleDiscountValueChange
@@ -225,26 +225,31 @@ const CustomDiscount = ({
                                                 min={0.0}
                                                 max={100.0}
                                             />
-                                            <select
-                                                value={
-                                                    values?.discountAmountType ||
-                                                    ""
-                                                }
-                                                onChange={handleChange}
-                                                id="discountAmountType"
-                                                name="discountAmountType"
-                                                className={`${classes["discount-select"]} ${classes["center-select"]}`}
-                                            >
-                                                <option value={"percentage"}>
-                                                    %
-                                                </option>
-                                                <option value={"amount"}>
-                                                    $
-                                                </option>
-                                            </select>
                                         </div>
 
                                         <FormikError name={"discountValue"} />
+                                    </div>
+                                    <div
+                                        className={`${classes["discount-input-row"]} `}
+                                    >
+                                        <div className={classes["input-label"]}>
+                                            Type
+                                        </div>
+
+                                        <select
+                                            value={
+                                                values?.discountAmountType || ""
+                                            }
+                                            onChange={handleChange}
+                                            id="discountAmountType"
+                                            name="discountAmountType"
+                                            className={`${classes["discount-select"]} ${classes["center-select"]}`}
+                                        >
+                                            <option value={"percentage"}>
+                                                %
+                                            </option>
+                                            <option value={"amount"}>$</option>
+                                        </select>
                                     </div>
                                 </div>
                             )}

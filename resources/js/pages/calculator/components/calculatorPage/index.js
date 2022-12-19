@@ -971,28 +971,21 @@ const CalculatorScreen = ({ retailPopup }) => {
                                                                     ?.question_permissions
                                                             }
                                                         />
-                                                        {(formProps?.values
-                                                            ?.isFrameBenifit ===
-                                                            FrameBenifitAvailableEnum.yes ||
-                                                            formProps?.values
-                                                                ?.visionPlan ===
-                                                                "Private Pay") && (
-                                                            <TracingFee
-                                                                formProps={
-                                                                    formProps
-                                                                }
-                                                                calculatorObj={
-                                                                    calculatorObj &&
-                                                                    calculatorObj
-                                                                }
-                                                                setCalValidations={
-                                                                    setCalValidations
-                                                                }
-                                                                calValidations={
-                                                                    calValidations
-                                                                }
-                                                            />
-                                                        )}
+                                                        <TracingFee
+                                                            formProps={
+                                                                formProps
+                                                            }
+                                                            calculatorObj={
+                                                                calculatorObj &&
+                                                                calculatorObj
+                                                            }
+                                                            setCalValidations={
+                                                                setCalValidations
+                                                            }
+                                                            calValidations={
+                                                                calValidations
+                                                            }
+                                                        />
                                                         <GlassesProtection
                                                             formProps={
                                                                 formProps
