@@ -97,61 +97,30 @@ const LensType = ({
             console.log("error while getting brands");
         }
     };
+
     const handleNVFType = async (e) => {
         if (e?.target?.value === "NVF") {
             let validationObject = {};
-            validationObject.isAntireflective = Yup.string().required(
-                "Antireflective is required"
-            );
-            validationObject.antireflectiveType = Yup.string().required(
-                "Antireflective type is required"
-            );
+
             validationObject.blueLight = Yup.string().required(
                 "Blue light filtering is required"
             );
             validationObject.lensTypeValue =
                 Yup.string().required("Brand is required");
-            await setFieldValue("isAntireflective", "Yes");
-            if (values?.isAntireflective === "No") {
-                await setFieldValue("isAntireflective", "");
-            }
-            if (values?.blueLight === "No") {
-                await setFieldValue("blueLight", "");
-            }
+
             await setFieldValue("blueLight", "Yes");
-            if (
-                !values?.isAntireflective ||
-                values?.isAntireflective === "No"
-            ) {
-                delete validationObject.antireflectiveType;
-            }
             setCalValidations({
                 ...calValidations,
                 ...validationObject,
             });
         } else {
-            const antireflectiveVisibility =
-                calculatorObj?.questions
-                    ?.find((item) => item?.title === values?.visionPlan)
-                    ?.question_permissions?.find(
-                        (ques) => ques.question === "Anti-Reflective Properties"
-                    )?.optional === "true";
             const blueLightVisibility =
                 calculatorObj?.questions
                     ?.find((item) => item?.title === values?.visionPlan)
                     ?.question_permissions?.find(
                         (ques) => ques.question === "Blue Light Filtering"
                     )?.optional === "true";
-            if (!antireflectiveVisibility) {
-                await setFieldError("isAntireflective", "");
-                await setFieldError("antireflectiveType", "");
-                const validations = { ...calValidations };
-                delete validations.isAntireflective;
-                delete validations.antireflectiveType;
-                setCalValidations({
-                    ...validations,
-                });
-            }
+
             if (!blueLightVisibility) {
                 await setFieldError("blueLight", "");
                 const validations = { ...calValidations };
@@ -169,11 +138,7 @@ const LensType = ({
         let lenses = [];
         selectedLensType?.brands?.forEach((element) => {
             element?.collections?.forEach((lens) => {
-                if (lens?.display_name) {
-                    lenses.push(lens?.display_name);
-                } else {
-                    lenses.push(lens?.title);
-                }
+                lenses.push(lens);
             });
         });
         return lenses;
@@ -187,14 +152,8 @@ const LensType = ({
         let collection = null;
         targetedLens?.brands?.forEach((item) => {
             item.collections?.forEach((val) => {
-                if (val?.display_name) {
-                    if (val.display_name == e.target?.value) {
-                        collection = val;
-                    }
-                } else {
-                    if (val.title == e.target?.value) {
-                        collection = val;
-                    }
+                if (val?.title == e?.target?.value) {
+                    collection = val;
                 }
             });
         });
@@ -213,6 +172,7 @@ const LensType = ({
                 action.retailError({
                     type: "brand",
                     error: retailErrorMessage("this brand"),
+                    plan: values?.visionPlan,
                 })
             );
         }
@@ -227,14 +187,8 @@ const LensType = ({
             let activeMaterials = [];
             lensType?.brands?.forEach((item) => {
                 item?.collections?.forEach((val) => {
-                    if (val?.display_name) {
-                        if (val?.display_name == e?.target?.value) {
-                            activeMaterials = val?.lenses;
-                        }
-                    } else {
-                        if (val?.title == e?.target?.value) {
-                            activeMaterials = val?.lenses;
-                        }
+                    if (val?.title == e?.target?.value) {
+                        activeMaterials = val?.lenses;
                     }
                 });
             });
@@ -263,12 +217,61 @@ const LensType = ({
             }
         }
     };
-
+    const handleEyezenType = async (e) => {
+        if (
+            values?.lensType === "Single Vision" &&
+            (e?.target?.value === "Eyezen+ 0" ||
+                e?.target?.value === "Eyezen+ 1, 2, 3, 4")
+        ) {
+            await setFieldValue("isAntireflective", "Yes");
+            const antireflectiveType = Yup.string().required(
+                "Antireflective type is required"
+            );
+            formProps?.setFieldTouched("antireflectiveType", true);
+            setCalValidations({
+                ...calValidations,
+                antireflectiveType,
+            });
+        } else {
+            const antireflectiveVisibility =
+                calculatorObj?.questions
+                    ?.find((item) => item?.title === values?.visionPlan)
+                    ?.question_permissions?.find(
+                        (ques) =>
+                            ques?.question === "Anti-Reflective Properties"
+                    )?.optional === "true";
+            if (!antireflectiveVisibility) {
+                await setFieldError("isAntireflective", "");
+                await setFieldError("antireflectiveType", "");
+                const validations = { ...calValidations };
+                delete validations.isAntireflective;
+                delete validations.antireflectiveType;
+                setCalValidations({
+                    ...validations,
+                });
+            }
+            if (antireflectiveVisibility) {
+                await setFieldError("antireflectiveType", "");
+                const validations = { ...calValidations };
+                if (values?.isAntireflective === "Yes") {
+                    validations.antireflectiveType = Yup.string().required(
+                        "Antireflective type is required"
+                    );
+                    formProps?.setFieldTouched("antireflectiveType", true);
+                }
+                setCalValidations({
+                    ...validations,
+                });
+            }
+        }
+    };
     const handleBrandSelection = async (e) => {
+        await handleEyezenType(e);
         if (
             !(
                 values?.visionPlan === eyemedPlan ||
-                values?.visionPlan === davisPlan
+                values?.visionPlan === davisPlan ||
+                values?.visionPlan === AllPlans[language]?.privatePay
             )
         ) {
             await resetMaterial(e);
@@ -302,15 +305,9 @@ const LensType = ({
             );
             let collection = null;
             targetedLens?.brands?.forEach((item) => {
-                item.collections?.forEach((val) => {
-                    if (val?.display_name) {
-                        if (val.display_name == e.target?.value) {
-                            collection = val;
-                        }
-                    } else {
-                        if (val.title == e.target?.value) {
-                            collection = val;
-                        }
+                item?.collections?.forEach((val) => {
+                    if (val.title == e.target?.value) {
+                        collection = val;
                     }
                 });
             });
@@ -447,11 +444,15 @@ const LensType = ({
                                                                 ]
                                                             }
                                                             key={index}
-                                                            label={lens}
-                                                            value={lens}
+                                                            label={
+                                                                lens?.display_name
+                                                                    ? lens?.display_name
+                                                                    : lens?.title
+                                                            }
+                                                            value={lens?.title}
                                                             active={
                                                                 values?.lensTypeValue ===
-                                                                lens
+                                                                lens?.title
                                                             }
                                                         />
                                                     );
@@ -465,7 +466,10 @@ const LensType = ({
                                         )}
                                         <FormikError name={"lensTypeValue"} />
                                         <RetailError
-                                            error={retailError?.brand}
+                                            error={
+                                                retailError[values?.visionPlan]
+                                                    ?.brand
+                                            }
                                         />
                                     </>
                                 )}

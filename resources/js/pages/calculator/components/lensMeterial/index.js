@@ -55,14 +55,8 @@ const LensMeterials = ({
         let activeMaterials = [];
         lensType?.brands?.forEach((item) => {
             item?.collections?.forEach((val) => {
-                if (val?.display_name) {
-                    if (val?.display_name == values?.lensTypeValue) {
-                        activeMaterials = val?.lenses;
-                    }
-                } else {
-                    if (val?.title == values?.lensTypeValue) {
-                        activeMaterials = val?.lenses;
-                    }
+                if (val?.title == values?.lensTypeValue) {
+                    activeMaterials = val?.lenses;
                 }
             });
         });
@@ -95,6 +89,7 @@ const LensMeterials = ({
                 action.retailError({
                     type: "lensMaterial",
                     error: retailErrorMessage("this material"),
+                    plan: values?.visionPlan,
                 })
             );
         }
@@ -113,7 +108,8 @@ const LensMeterials = ({
             e?.target?.value &&
             !(
                 values?.visionPlan === eyemedPlan ||
-                values?.visionPlan === "Davis Vision"
+                values?.visionPlan === AllPlans[language]?.davis ||
+                values?.visionPlan === AllPlans[language]?.privatePay
             )
         ) {
             await getBaseValues(
@@ -257,7 +253,12 @@ const LensMeterials = ({
                             {error && (
                                 <div className={classes["error"]}>{error}</div>
                             )}
-                            <RetailError error={retailError?.lensMaterial} />
+                            <RetailError
+                                error={
+                                    retailError[values?.visionPlan]
+                                        ?.lensMaterial
+                                }
+                            />
                             {values?.lensMaterial &&
                                 values?.visionPlan === eyemedPlan &&
                                 values?.isLensBenifit === lensBenifitYes && (

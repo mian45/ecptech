@@ -109,16 +109,10 @@ const InvoiceTableActions = ({ data }) => {
         })?.id;
         let collectionId = null;
         lensType?.brands?.forEach((item) => {
-            item.collections?.forEach((val) => {
+            item?.collections?.forEach((val) => {
                 const setCollectionId = () => {
-                    if (val?.display_name) {
-                        if (val.display_name == userState?.lensType?.brand) {
-                            collectionId = val?.id;
-                        }
-                    } else {
-                        if (val.title == userState?.lensType?.brand) {
-                            collectionId = val?.id;
-                        }
+                    if (val?.title == userState?.lensType?.brand) {
+                        collectionId = val?.id;
                     }
                 };
 

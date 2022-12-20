@@ -655,14 +655,8 @@ export const getPriceFromDBOld = (receipt, calculatorObj, lensPrices) => {
     )?.brands;
     categoryBrands?.forEach((item) => {
         item.collections?.forEach((val) => {
-            if (val?.display_name) {
-                if (val.display_name == receipt?.values?.lensType?.brand) {
-                    progressiveCategory = val?.category;
-                }
-            } else {
-                if (val.title == receipt?.values?.lensType?.brand) {
-                    progressiveCategory = val?.category;
-                }
+            if (val.title == receipt?.values?.lensType?.brand) {
+                progressiveCategory = val?.category;
             }
         });
     });

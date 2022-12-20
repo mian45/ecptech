@@ -10,15 +10,9 @@ export const getPriceFromDB = (receipt, calculatorObj, lensPrices) => {
         (item) => item?.title === "PAL"
     )?.brands;
     categoryBrands?.forEach((item) => {
-        item.collections?.forEach((val) => {
-            if (val?.display_name) {
-                if (val.display_name == receipt?.values?.lensType?.brand) {
-                    progressiveCategory = val?.category;
-                }
-            } else {
-                if (val.title == receipt?.values?.lensType?.brand) {
-                    progressiveCategory = val?.category;
-                }
+        item?.collections?.forEach((val) => {
+            if (val?.title == receipt?.values?.lensType?.brand) {
+                progressiveCategory = val?.category;
             }
         });
     });

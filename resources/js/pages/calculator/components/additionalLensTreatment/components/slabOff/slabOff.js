@@ -61,6 +61,7 @@ const SlabOff = ({
                 action.retailError({
                     type: "slabOff",
                     error: retailErrorMessage("slab off"),
+                    plan: values?.visionPlan,
                 })
             );
         }
@@ -120,7 +121,7 @@ const SlabOff = ({
                 />
             </Radio.Group>
             <FormikError name={"isSlabOff"} />
-            <RetailError error={retailError?.slabOff} />
+            <RetailError error={retailError[values?.visionPlan]?.slabOff} />
             {values?.visionPlan === eyemedPlan &&
                 values?.isLensBenifit === lensBenifitYes &&
                 values?.isAdditionalLensOptions === additionalLensYes &&

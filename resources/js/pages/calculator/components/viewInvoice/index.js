@@ -142,7 +142,7 @@ const ViewInvoice = ({
                 `${process.env.MIX_REACT_APP_URL}/api/save-invoice`,
                 payload
             );
-           message.destroy();
+            message.destroy();
             messageApi.open({
                 type: "success",
                 content: res.data.message,
@@ -208,7 +208,8 @@ const ViewInvoice = ({
                 duration: 5,
                 className: "custom-postion-error",
             });
-        }    };
+        }
+    };
 
     const calculateTotalDue = () => {
         let total = 0;
@@ -709,21 +710,11 @@ export const getPrivatePayLensPices = (values, receipt, lensPrices) => {
     if (values?.lens_types) {
         values?.lens_types[0].brands?.forEach((item) => {
             item.collections?.forEach((val) => {
-                if (val?.display_name) {
-                    if (val.display_name == receipt?.values?.lensType?.brand) {
-                        if (!val?.price) {
-                            price = 0;
-                        } else {
-                            price = parseFloat(val?.price || 0) || 0;
-                        }
-                    }
-                } else {
-                    if (val.title == receipt?.values?.lensType?.brand) {
-                        if (!val?.price) {
-                            price = 0;
-                        } else {
-                            price = parseFloat(val?.price || 0) || 0;
-                        }
+                if (val.title == receipt?.values?.lensType?.brand) {
+                    if (!val?.price) {
+                        price = 0;
+                    } else {
+                        price = parseFloat(val?.price || 0) || 0;
                     }
                 }
             });

@@ -127,6 +127,7 @@ const AntireFlextive = ({
                 action.retailError({
                     type: "antiReflective",
                     error: retailErrorMessage("this Anti-Reflective"),
+                    plan: values?.visionPlan,
                 })
             );
         }
@@ -186,7 +187,12 @@ const AntireFlextive = ({
                                     active={values?.isAntireflective === "Yes"}
                                 />
 
-                                {values?.lensType !== "NVF" && (
+                                {!(
+                                    values?.lensType === "Single Vision" &&
+                                    (values?.lensTypeValue === "Eyezen+ 0" ||
+                                        values?.lensTypeValue ===
+                                            "Eyezen+ 1, 2, 3, 4")
+                                ) && (
                                     <CustomRadio
                                         label={"No"}
                                         value={"No"}
@@ -241,7 +247,10 @@ const AntireFlextive = ({
                                     </Radio.Group>
                                     <FormikError name={"antireflectiveType"} />
                                     <RetailError
-                                        error={retailError?.antiReflective}
+                                        error={
+                                            retailError[values?.visionPlan]
+                                                ?.antiReflective
+                                        }
                                     />
                                 </>
                             )}
