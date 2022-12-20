@@ -348,15 +348,9 @@ export const getLensByLowerCopay = (data, calculatorObj, lensPrices) => {
         (item) => item?.title === "PAL"
     )?.brands;
     categoryBrands?.forEach((item) => {
-        item.collections?.forEach((val) => {
-            if (val?.display_name) {
-                if (val.display_name == data?.lensType?.brand) {
-                    progressiveCategory = val?.category;
-                }
-            } else {
-                if (val.title == data?.lensType?.brand) {
-                    progressiveCategory = val?.category;
-                }
+        item?.collections?.forEach((val) => {
+            if (val.title == data?.lensType?.brand) {
+                progressiveCategory = val?.category;
             }
         });
     });
@@ -468,15 +462,9 @@ const GetLensFee = (data, calculatorObj, lensPrices) => {
         (item) => item?.title === "PAL"
     )?.brands;
     categoryBrands?.forEach((item) => {
-        item.collections?.forEach((val) => {
-            if (val?.display_name) {
-                if (val.display_name == data?.lensType?.brand) {
-                    progressiveCategory = val?.category;
-                }
-            } else {
-                if (val.title == data?.lensType?.brand) {
-                    progressiveCategory = val?.category;
-                }
+        item?.collections?.forEach((val) => {
+            if (val?.title == data?.lensType?.brand) {
+                progressiveCategory = val?.category;
             }
         });
     });
@@ -730,22 +718,12 @@ export const GetPrivateLensFee = (calculatorObj, data) => {
             (val) => val?.title === data?.lensType?.type
         );
         currentPlan?.brands?.forEach((item) => {
-            item.collections?.forEach((val) => {
-                if (val?.display_name) {
-                    if (val.display_name == data?.lensType?.brand) {
-                        if (!val?.price) {
-                            price = 0;
-                        } else {
-                            price = parseFloat(val?.price || 0) || 0;
-                        }
-                    }
-                } else {
-                    if (val.title == data?.lensType?.brand) {
-                        if (!val?.price) {
-                            price = 0;
-                        } else {
-                            price = parseFloat(val?.price || 0) || 0;
-                        }
+            item?.collections?.forEach((val) => {
+                if (val?.title == data?.lensType?.brand) {
+                    if (!val?.price) {
+                        price = 0;
+                    } else {
+                        price = parseFloat(val?.price || 0) || 0;
                     }
                 }
             });

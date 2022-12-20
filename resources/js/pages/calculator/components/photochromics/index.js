@@ -125,6 +125,7 @@ const Photochromics = ({
                 action.retailError({
                     type: "photochromics",
                     error: retailErrorMessage("this photochromics"),
+                    plan: values?.visionPlan,
                 })
             );
         }
@@ -229,7 +230,10 @@ const Photochromics = ({
                                     </Radio.Group>
                                     <FormikError name={"photochromicsType"} />
                                     <RetailError
-                                        error={retailError?.photochromics}
+                                        error={
+                                            retailError[values?.visionPlan]
+                                                ?.photochromics
+                                        }
                                     />
                                 </>
                             )}

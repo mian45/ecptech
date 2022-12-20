@@ -61,6 +61,7 @@ const SpecialtyLens = ({
                 action.retailError({
                     type: "specialityLens",
                     error: retailErrorMessage("speciality lens"),
+                    plan: values?.visionPlan,
                 })
             );
         }
@@ -120,7 +121,9 @@ const SpecialtyLens = ({
                 />
             </Radio.Group>
             <FormikError name={"isSpecialtyLens"} />
-            <RetailError error={retailError?.specialityLens} />
+            <RetailError
+                error={retailError[values?.visionPlan]?.specialityLens}
+            />
             {values?.visionPlan === eyemedPlan &&
                 values?.isLensBenifit === lensBenifitYes &&
                 values?.isAdditionalLensOptions === additionalLensYes &&

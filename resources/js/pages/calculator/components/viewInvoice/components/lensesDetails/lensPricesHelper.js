@@ -308,15 +308,9 @@ const GetLensFee = (data, calculatorObj, lensPrices) => {
         (item) => item?.title === "PAL"
     )?.brands;
     categoryBrands?.forEach((item) => {
-        item.collections?.forEach((val) => {
-            if (val?.display_name) {
-                if (val.display_name == data?.lensType?.brand) {
-                    progressiveCategory = val?.category;
-                }
-            } else {
-                if (val.title == data?.lensType?.brand) {
-                    progressiveCategory = val?.category;
-                }
+        item?.collections?.forEach((val) => {
+            if (val?.title == data?.lensType?.brand) {
+                progressiveCategory = val?.category;
             }
         });
     });

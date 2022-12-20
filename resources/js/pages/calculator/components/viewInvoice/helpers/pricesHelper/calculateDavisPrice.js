@@ -165,14 +165,8 @@ const getPriceForLens = (data, calculatorObj) => {
 
     lensType?.brands?.forEach((item) => {
         item?.collections?.forEach((val) => {
-            if (val?.display_name) {
-                if (val?.display_name == data?.lensType?.brand) {
-                    price = val?.lense_price || 0;
-                }
-            } else {
-                if (val?.title == data?.lensType?.brand) {
-                    price = val?.lense_price || 0;
-                }
+            if (val?.title == data?.lensType?.brand) {
+                price = val?.lense_price || 0;
             }
         });
     });
@@ -197,14 +191,8 @@ const getProgressiveLensPrice = (data, calculatorObj) => {
     )?.brands;
     categoryBrands?.forEach((item) => {
         item?.collections?.forEach((val) => {
-            if (val?.display_name) {
-                if (val?.display_name == data?.lensType?.brand) {
-                    progressiveCategory = val?.category;
-                }
-            } else {
-                if (val?.title == data?.lensType?.brand) {
-                    progressiveCategory = val?.category;
-                }
+            if (val?.title == data?.lensType?.brand) {
+                progressiveCategory = val?.category;
             }
         });
     });

@@ -130,6 +130,7 @@ const SunglassLens = ({
                 action.retailError({
                     type: type,
                     error: retailErrorMessage(retailErrorsMessage(type)),
+                    plan: values?.visionPlan,
                 })
             );
         }
@@ -162,6 +163,7 @@ const SunglassLens = ({
                 action.retailError({
                     type: "polarized",
                     error: "",
+                    plan: values?.visionPlan,
                 })
             );
             const validations = { ...calValidations };
@@ -327,7 +329,9 @@ const SunglassLens = ({
                     )}
                 </Radio.Group>
                 <FormikError name={"sunglassesType"} />
-                <RetailError error={retailError?.polarized} />
+                <RetailError
+                    error={retailError[values?.visionPlan]?.polarized}
+                />
                 {values?.visionPlan === eyemedPlan &&
                     values?.isLensBenifit === lensBenifitYes &&
                     values?.isSunglasses === sunglassesYes &&
@@ -394,7 +398,9 @@ const SunglassLens = ({
                             )}
                         </Radio.Group>
                         <FormikError name={"tintType"} />
-                        <RetailError error={retailError?.tint} />
+                        <RetailError
+                            error={retailError[values?.visionPlan]?.tint}
+                        />
                         {values?.visionPlan === eyemedPlan &&
                             values?.isLensBenifit === lensBenifitYes &&
                             values?.isSunglasses === sunglassesYes &&
@@ -492,7 +498,9 @@ const SunglassLens = ({
                             )}
                         </Radio.Group>
                         <FormikError name={"mirrorCoatingType"} />
-                        <RetailError error={retailError?.coating} />
+                        <RetailError
+                            error={retailError[values?.visionPlan]?.coating}
+                        />
                         {values?.visionPlan === eyemedPlan &&
                             values?.isLensBenifit === lensBenifitYes &&
                             values?.isSunglasses === sunglassesYes &&

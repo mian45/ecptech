@@ -56,6 +56,7 @@ const BlueLightFiltering = ({
                 action.retailError({
                     type: "blueLightFilter",
                     error: retailErrorMessage("blue light filtering"),
+                    plan: values?.visionPlan,
                 })
             );
         }
@@ -98,7 +99,11 @@ const BlueLightFiltering = ({
                             )}
                         </Radio.Group>
                         <FormikError name={"blueLight"} />
-                        <RetailError error={retailError?.blueLightFilter} />
+                        <RetailError
+                            error={
+                                retailError[values?.visionPlan]?.blueLightFilter
+                            }
+                        />
                     </div>
                 </Col>
             </Row>

@@ -1,21 +1,8 @@
 import { RETAIL_ERROR } from "../action-types";
-
-const defaultRetailError = {
-    brand: "",
-    lensMaterial: "",
-    photochromics: "",
-    polarized: "",
-    tint: "",
-    coating: "",
-    antiReflective: "",
-    blueLightFilter: "",
-    slabOff: "",
-    specialityLens: "",
-    polish: "",
-};
+import { defaultRetailError } from "../initialValues/calculatorInitialValues";
 
 const initialState = {
-    retailError: { ...defaultRetailError },
+    retailError: { ...defaultRetailError() },
 };
 
 function persistStore(state, payload) {
@@ -25,7 +12,13 @@ function persistStore(state, payload) {
 const retailError = (state, payload) => {
     const stateObj = {
         ...state,
-        retailError: { ...state?.retailError, [payload.type]: payload?.error },
+        retailError: {
+            ...state?.retailError,
+            [payload.plan]: {
+                ...state?.retailError[payload?.plan],
+                [payload.type]: payload?.error,
+            },
+        },
     };
     return { ...stateObj };
 };
