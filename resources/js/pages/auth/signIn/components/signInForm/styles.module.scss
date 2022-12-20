@@ -62,11 +62,13 @@
     border: 1px solid #dfdfdf;
     border-radius: 23px;
     font-size: 16px;
-    color: #747474;
+    color: #747474 !important;
+    -webkit-text-fill-color: #747474 !important;
 }
 .password-input {
     width: 100%;
-    color: #747474;
+    color: #747474 !important;
+    -webkit-text-fill-color: #747474 !important;
     border: none !important;
     outline: none !important;
     &:-webkit-autofill,

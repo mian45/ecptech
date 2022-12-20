@@ -77,7 +77,11 @@
         align-items: flex-start;
     }
     .search-button {
-        margin-bottom: 20px;
-        margin-top: 24px;
+        margin-bottom: 10px;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .search-button {
+        margin-bottom: 10px;
     }
 }

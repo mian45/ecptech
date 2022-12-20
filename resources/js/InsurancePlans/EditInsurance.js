@@ -115,6 +115,9 @@ function EditInsurance({ userId }) {
         if (updateInsurancePlan.length == 0) {
             return;
         }
+        if(buttonLoader==true){
+            return;
+        }
         setButtonLoader(true);
         const toggle = {
             user_id: userId,
