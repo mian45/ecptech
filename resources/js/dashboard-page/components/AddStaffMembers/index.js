@@ -179,7 +179,7 @@ const AddStaffMember = ({ userId }) => {
             <div>{contextHolder}</div>
             <div className={classes["label"]}>Add Staff Members</div>
             <Row justify="space-between" align="middle">
-                <Col xs={18}>
+                <Col xs={18} md={19}>
                     <input
                         className={classes["input-field"]}
                         placeholder={"Enter staff member name"}
@@ -187,7 +187,7 @@ const AddStaffMember = ({ userId }) => {
                         value={staffInput}
                     />
                 </Col>
-                <Col xs={5}>
+                <Col xs={5} md={3}>
                     <Row
                         className={`${
                             classes["tick-wrapper"]

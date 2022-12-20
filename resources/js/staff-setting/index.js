@@ -11,7 +11,7 @@ const StaffSetting = ({userRole}) => {
         <Col>
         <p className={classes["main"]}>{`Staff Setting`}</p>
         </Col>
-        <Row className={classes["sub-container"]}>
+        <Row>
         <Col xs={24} md={24} lg={16} className={classes["staff-login-container"]}>
         {userRole !== "staff" && <StaffLogin />}
         </Col>
