@@ -5,12 +5,13 @@
     font-weight: bold;
 }
 
-.sub-container {
-    justify-content: space-between;
-}
+
 .staff-member-container {
     @media (max-width: 768px) {
         margin-top: 16px;
         margin-bottom: 16px;
     }
+}
+.staff-login-container{
+    max-width: 787px;
 }
