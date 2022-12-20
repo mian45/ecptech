@@ -323,31 +323,27 @@ const EyePrescription = ({ userId }) => {
                                 />
                             );
                         })}
-                    </Col>
-                    <Col xs={24} md={14} className={classes["button-wrapper"]}>
-                        <Row justify="end" align="middle">
-                            <Col xs={10} md={7} className={classes["btn-grid"]}>
-                                <button
-                                    className={classes["button"]}
-                                    onClick={handleSubmit}
-                                    disabled={
-                                        errors.length == 0
-                                            ? true
-                                            : errors.includes(true)
-                                            ? true
-                                            : !disable
-                                    }
-                                >
-                                    {buttonLoader == false ? (
-                                        "Save"
-                                    ) : (
-                                        <span>
-                                            <p>Save</p>
-                                            <CustomLoader buttonBool={true} />
-                                        </span>
-                                    )}
-                                </button>
-                            </Col>
+                        <Row justify="end">
+                                    <button
+                                        className={classes["button"]}
+                                        onClick={handleSubmit}
+                                        disabled={
+                                            errors.length == 0
+                                                ? true
+                                                : errors.includes(true)
+                                                ? true
+                                                : !disable
+                                        }
+                                    >
+                                        {buttonLoader == false ? (
+                                            "Save"
+                                        ) : (
+                                            <span>
+                                                <p>Save</p>
+                                                <CustomLoader buttonBool={true} />
+                                            </span>
+                                        )}
+                                    </button>
                         </Row>
                     </Col>
                 </Row>
@@ -520,6 +516,7 @@ const EyePrescriptionSlot = ({
                                 );
                             })}
                     </Col>
+                    
                 </Row>
             </Col>
         </Row>

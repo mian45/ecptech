@@ -82,6 +82,7 @@ const Invoices = ({ userId, clientUserId, userRole }) => {
                 invoiceObject
             );
             setTableData(res?.data?.data);
+            message.destroy()
             messageApi.open({
                 type: "success",
                 content: res.data.message,

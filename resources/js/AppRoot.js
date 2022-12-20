@@ -1,19 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Switch } from "react-router-dom";
+import {useLocation, Switch } from "react-router-dom";
 import Routes from "./appRoutes/routes";
 import Header from "./Header";
 import SideBar from "./Side-bar";
 import SignIn from "./pages/auth/signIn";
 const AppRoot = ({ isAuthenticated }) => {
+    const location=useLocation()
     const [templogout, setTempLogout] = useState(localStorage.getItem("temp"));
+    const [active,setActive]=useState(false)
     useEffect(() => {
         setInterval(() => {
             setTempLogout(localStorage.getItem("temp"));
         }, 5000);
     }, []);
+    useEffect(()=>{
+        if(window.location.href.includes('login')){
+            setActive(true)
+        }else{
+            setActive(false)
+        }
+
+    },[location])
     return (
-        <Router>
+        <>
             {JSON.parse(templogout) === true ? (
                 <SignIn
                     tempSet={(e) => {
@@ -30,7 +40,7 @@ const AppRoot = ({ isAuthenticated }) => {
             ) : null}
             <div
                 className={
-                    JSON.parse(templogout) !== true ? "d-block" : "d-none"
+                    active?'':JSON.parse(templogout) !== true ? "d-block" : "d-none"
                 }
             >
                 <Switch>
@@ -42,7 +52,7 @@ const AppRoot = ({ isAuthenticated }) => {
                     />
                 </Switch>
             </div>
-        </Router>
+        </>
     );
 };
 
