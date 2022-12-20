@@ -167,7 +167,9 @@ const CustomDiscount = ({
                                         </option>
                                     );
                                 })}
-                                <option value={"other"}>Other</option>
+                                <option value={"other"}>
+                                    Create New Discount
+                                </option>
                             </select>
                             {discount !== "other" && (
                                 <FormikError name={"discountValue"} />

@@ -94,6 +94,7 @@ const Polish = ({
                 action.retailError({
                     type: "polish",
                     error: retailErrorMessage("this polish"),
+                    plan: values?.visionPlan,
                 })
             );
         }
@@ -185,7 +186,9 @@ const Polish = ({
                         })}
                     </Radio.Group>
                     <FormikError name={"polishType"} />
-                    <RetailError error={retailError?.polish} />
+                    <RetailError
+                        error={retailError[values?.visionPlan]?.polish}
+                    />
                 </>
             )}
             {values?.visionPlan === eyemedPlan &&

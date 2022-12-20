@@ -43,18 +43,12 @@ export const getOriginalPrice = (
     } else if (data?.visionPlan === "Davis Vision") {
         //get lens type price
         const lensType = calculatorObj?.lens_types?.find(
-            (item) => item.title === values?.lensType
+            (item) => item?.title === values?.lensType
         );
         lensType?.brands?.forEach((item) => {
-            item.collections?.forEach((val) => {
-                if (val?.display_name) {
-                    if (val.display_name == values?.lensTypeValue) {
-                        lensPrice = parseFloat(val?.lense_price || 0);
-                    }
-                } else {
-                    if (val.title == values?.lensTypeValue) {
-                        lensPrice = parseFloat(val?.lense_price || 0);
-                    }
+            item?.collections?.forEach((val) => {
+                if (val?.title == values?.lensTypeValue) {
+                    lensPrice = parseFloat(val?.lense_price || 0);
                 }
             });
         });

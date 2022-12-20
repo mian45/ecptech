@@ -241,15 +241,9 @@ const CalculatorScreen = ({ retailPopup }) => {
             })?.id;
             let collectionId = null;
             lensType?.brands?.forEach((item) => {
-                item.collections?.forEach((val) => {
-                    if (val?.display_name) {
-                        if (val.display_name == values?.lensTypeValue) {
-                            collectionId = val?.id;
-                        }
-                    } else {
-                        if (val.title == values?.lensTypeValue) {
-                            collectionId = val?.id;
-                        }
+                item?.collections?.forEach((val) => {
+                    if (val?.title == values?.lensTypeValue) {
+                        collectionId = val?.id;
                     }
                 });
             });
@@ -1023,17 +1017,12 @@ const CalculatorScreen = ({ retailPopup }) => {
                                             className={classes["submit-button"]}
                                             type={"submit"}
                                             disabled={
-                                                (formProps?.values
+                                                formProps?.values
                                                     ?.isFrameBenifit ===
                                                     FrameBenifitAvailableEnum.onlyThisTime &&
-                                                    formProps?.values
-                                                        ?.isLensBenifit ===
-                                                        LensBenifitAvailableEnum.onlyThisTime) ||
-                                                !(
-                                                    formProps?.isValid &&
-                                                    formProps?.dirty
-                                                ) ||
-                                                formProps?.isSubmitting
+                                                formProps?.values
+                                                    ?.isLensBenifit ===
+                                                    LensBenifitAvailableEnum.onlyThisTime
                                             }
                                         >
                                             {buttonLoader == true ? (
