@@ -169,7 +169,17 @@ const DetailsList = ({
             ) || 0
         ).toFixed(2);
         const discount = totalFrame - discountPrice;
-        return parseFloat(discount || 0).toFixed(2);
+        const actualDiscount =
+            parseFloat(discount || 0).toFixed(2) > 0
+                ? parseFloat(discount || 0).toFixed(2)
+                : 0;
+        return actualDiscount;
+    };
+    const savingsPercentage = () => {
+        const totalFrame = (glassesCost() || 0).toFixed(2);
+        const savingRate =
+            (savings() / (totalFrame > 0 ? totalFrame : 1)) * 100;
+        return parseFloat(savingRate || 0).toFixed(2);
     };
 
     return (
@@ -295,9 +305,7 @@ const DetailsList = ({
                         <FramePriceSlot
                             className={classes["tax-Slot"]}
                             priceClass={classes["price-padding"]}
-                            title={
-                                "Retail fee your glasses would have cost without your vision plan"
-                            }
+                            title={"Normal Retail Fee without your vision plan"}
                             price={`$${(glassesCost() || 0).toFixed(2)}`}
                         />
                     </Col>
@@ -335,7 +343,7 @@ const DetailsList = ({
                         </span>
                         <span
                             className={classes["saving-price"]}
-                        >{`$${savings()}`}</span>
+                        >{`(${savingsPercentage()}%) $${savings()}`}</span>
                     </Col>
                     <Col xs={24}>
                         <ButtonsList
