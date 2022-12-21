@@ -168,7 +168,10 @@ const Dashboard = () => {
                             setShowDatePicker(false);
                         }}
                     >
-                        <div className={classes["picker-container"]}>
+                        <div
+                            className={classes["picker-container"]}
+                            onClick={(e) => e.stopPropagation()}
+                        >
                             <Col xs={24}>
                                 <DateRangePicker
                                     className="picker"
