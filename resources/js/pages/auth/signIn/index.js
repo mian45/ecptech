@@ -35,15 +35,7 @@ const SignIn = ({ isAuthenticated, userRole, tempSet, templogout }) => {
     }, [darkTheme]);
     return (
         <>
-            <Row className={classes["container-logo"]}>
-                <Col xs={24}>
-                    <img
-                        src={logo}
-                        alt="logo"
-                        className={classes["page-logo"]}
-                    />
-                </Col>
-            </Row>
+            
             <Row justify="center" align="middle">
                 <Col
                     span={12}
@@ -53,8 +45,17 @@ const SignIn = ({ isAuthenticated, userRole, tempSet, templogout }) => {
                     md={12}
                     lg={12}
                     xl={12}
-                >
+                ><Row className={classes["container-logo"]}justify="center" align="middle">
+                <Col xs={22} md={24} lg={19}>
+                        <img
+                            src={logo}
+                            alt="logo"
+                            className={classes["page-logo"]}
+                        />
+                    </Col>
+                </Row>
                     <Row justify="space-around" align="middle" >
+                    
                         <SignInForm
                             tempSet={(e) => {
                                 tempSet(e);

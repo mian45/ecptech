@@ -10,14 +10,8 @@
     }
 }
 .container-logo{
-    position: absolute;
-    z-index: 1;
-    padding: 20px;
-    top:27px;
-    @media only screen and (min-width:1366px) {
-       left:70px
-    }
-    
+    margin-bottom: 50px;
+    margin-top: -50px;
 }
 .login-section{
     background-color: var(--login-background-color);
