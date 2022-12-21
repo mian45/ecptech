@@ -32,7 +32,7 @@ const BlueLightFiltering = ({
     const blueLightVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
-            (ques) => ques.question === "Blue Light Filtering"
+            (ques) => ques?.question === "Blue Light Filtering"
         )?.visibility;
     const showAlert = () => {
         const material = calculatorObj?.addons

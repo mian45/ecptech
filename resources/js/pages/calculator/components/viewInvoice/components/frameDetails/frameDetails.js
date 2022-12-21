@@ -247,8 +247,8 @@ const PlusIcon = () => {
                     transform="translate(0)"
                     fill="none"
                     stroke="#2a2a2a"
-                    stroke-linecap="round"
-                    stroke-width="1"
+                    strokeLinecap="round"
+                    strokeWidth="1"
                 />
                 <line
                     id="Line_77"
@@ -258,8 +258,8 @@ const PlusIcon = () => {
                     transform="translate(0)"
                     fill="none"
                     stroke="#2a2a2a"
-                    stroke-linecap="round"
-                    stroke-width="1"
+                    strokeLinecap="round"
+                    strokeWidth="1"
                 />
             </g>
         </svg>
@@ -286,8 +286,8 @@ const MinusIcon = () => {
                     transform="translate(0)"
                     fill="none"
                     stroke="#2a2a2a"
-                    stroke-linecap="round"
-                    stroke-width="1"
+                    strokeLinecap="round"
+                    strokeWidth="1"
                 />
                 <line
                     id="Line_77"
@@ -297,8 +297,8 @@ const MinusIcon = () => {
                     transform="translate(6.934 -0.066) rotate(90)"
                     fill="none"
                     stroke="#2a2a2a"
-                    stroke-linecap="round"
-                    stroke-width="1"
+                    strokeLinecap="round"
+                    strokeWidth="1"
                 />
             </g>
         </svg>
