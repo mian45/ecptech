@@ -601,7 +601,7 @@ const DiscountTaxes = (props) => {
                                     lg={16}
                                     className="discount-container_first discount-tax-con"
                                 >
-                                    <Row justify="center" align="middle">
+                                    
                                         <Col xs={24} md={24}>
                                             <p className="heading">Discounts</p>
                                         </Col>
@@ -800,7 +800,7 @@ const DiscountTaxes = (props) => {
                                                 </Row>
                                             </form>
                                         </Col>
-                                        <Col xs={24}>
+                                        <Col xs={24} className="discount-output">
                                             <Row>
                                                 <Col
                                                     xs={24}
@@ -818,7 +818,7 @@ const DiscountTaxes = (props) => {
                                                                         Name
                                                                     </th>
                                                                     <th>
-                                                                        Discount
+                                                                    Discount
                                                                         Value
                                                                     </th>
                                                                     <th></th>
@@ -844,7 +844,7 @@ const DiscountTaxes = (props) => {
                                                                                         ? `${dis.value} %`
                                                                                         : `$ ${dis.value}`}
                                                                                 </td>
-                                                                                <td className="discount-col-3">
+                                                                                <td className="col-4 custom-tax-col-3">
                                                                                 <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
                                                                                     <img
                                                                                         style={{
@@ -908,7 +908,7 @@ const DiscountTaxes = (props) => {
                                                 </Col>
                                             </Row>
                                         </Col>
-                                    </Row>
+                                    
                                 </Col>
                             </Row>
                         </Col>

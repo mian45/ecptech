@@ -308,7 +308,7 @@ const TracingSettings = ({ userId,setLoading }) => {
                                                                     width: "18px",
                                                                     height: "18px",
                                                                     marginRight:
-                                                                        "30px",
+                                                                        "20px",
                                                                     cursor: "pointer",
                                                                 }}
                                                                 src={edit}

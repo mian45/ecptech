@@ -145,12 +145,17 @@ const EyePrescription = ({ userId }) => {
 
         selectedMaterial[key] = value;
 
-        const from = parseFloat(selectedMaterial.sphere_from * 1);
-        const to = parseFloat(selectedMaterial.sphere_to * 1);
+        // const from = parseFloat(selectedMaterial.sphere_from * 1);
+        // const to = parseFloat(selectedMaterial.sphere_to * 1);
 
         const isErrorArray = eyeDetails?.map((item, index) => {
-            const item_from = parseFloat(item?.sphere_from * 1);
-            const item_to = parseFloat(item?.sphere_to * 1);
+            let from,to
+            from = parseFloat(item.sphere_from * 1);
+            to = parseFloat(item.sphere_to * 1);
+        
+           const details=eyeDetails.map((intItem,int_index)=>{
+            const item_from = parseFloat(intItem?.sphere_from * 1);
+            const item_to = parseFloat(intItem?.sphere_to * 1);
             if (
                 (item_from <= from &&
                     item_to <= from &&
@@ -163,12 +168,18 @@ const EyePrescription = ({ userId }) => {
             ) {
                 return false;
             } else {
-                if (index == index_selected) {
+                if (index == int_index) {
                     return false;
                 } else {
                     return true;
                 }
             }
+           })
+           if(details.includes(true))
+           {return true}
+           else{
+            return false
+           }
         });
         console.log("isError array", isErrorArray);
         eyeDetails = eyeDetails.map((item, index) => {
