@@ -16,6 +16,10 @@ import * as Yup from "yup";
 import { AllPlans } from "../../data/plansList";
 import { connect } from "react-redux";
 import { Plans } from "../../data/plansJson";
+import { handleLensBenifitNo } from "./helpers/handleLensBenifitNo";
+import { handleLensBenifitYesValidations } from "./helpers/handleLensBenifitsYesValidations";
+import { handleFrameBenifitNo } from "./helpers/handleFrameBenifitNo";
+import { handleFrameBenifitYes } from "./helpers/handleFrameBenifitYes";
 
 const VisionBenifits = ({
     formProps,
@@ -67,16 +71,7 @@ const VisionBenifits = ({
                 setPrivatePayError("Please switch to Private Pay");
             }
             setFieldValue("benifitType", BenifitTypeEnums.frame);
-            const validations = { ...calValidations };
-            delete validations.frameOrderType;
-            delete validations.frameRetailFee;
-            delete validations.frameContribution;
-            delete validations.drillMount;
-            delete validations.drillMountValue;
-            delete validations.shipping;
-            setCalValidations({
-                ...validations,
-            });
+            handleFrameBenifitNo(calValidations, setCalValidations);
         } else {
             if (
                 values?.isLensBenifit === LensBenifitAvailableEnum.onlyThisTime
@@ -86,44 +81,12 @@ const VisionBenifits = ({
                 setFieldValue("benifitType", "");
             }
             setPrivatePayError("");
-            if (
-                data?.find(
-                    (ques) => ques.question === "Frame Benefit Available"
-                )?.optional === "true"
-            ) {
-                const validationObject = {
-                    frameOrderType: Yup.string().required(
-                        "Frame Order is required"
-                    ),
-                };
-                if (values?.frameOrderType === "New Frame Purchase") {
-                    validationObject.frameRetailFee = Yup.string().required(
-                        "Retail fee is required"
-                    );
-                    validationObject.frameContribution = Yup.string().required(
-                        "Contribution is required"
-                    );
-                    validationObject.drillMount = Yup.string().required(
-                        "Drill mount is required"
-                    );
-                    if (
-                        values?.visionPlan === eyemedPlan &&
-                        values?.drillMount === "Yes"
-                    ) {
-                        validationObject.drillMountValue =
-                            Yup.string().required("Drill mount is required");
-                    }
-                }
-                if (values?.frameOrderType === "Patient Own Frame") {
-                    validationObject.tracingFee = Yup.string().required(
-                        "Tracing Fee is required"
-                    );
-                }
-                setCalValidations({
-                    ...calValidations,
-                    ...validationObject,
-                });
-            }
+            const validationObject = handleFrameBenifitYes(data, true, values);
+
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
         }
         handleChange(event);
     };
@@ -137,20 +100,7 @@ const VisionBenifits = ({
                 setPrivatePayError("Please switch to Private Pay");
             }
             setFieldValue("benifitType", BenifitTypeEnums.lens);
-            const validations = { ...calValidations };
-            delete validations.isLoweredCopay;
-            delete validations.lensType;
-            if (values.lensType) {
-                delete validations.lensTypeValue;
-            }
-            delete validations.lensMaterial;
-            delete validations.isPhotochromics;
-            delete validations.isSunglasses;
-            delete validations.isAntireflective;
-            delete validations.isAdditionalLensOptions;
-            setCalValidations({
-                ...validations,
-            });
+            handleLensBenifitNo(calValidations, setCalValidations);
         } else {
             if (
                 values?.isFrameBenifit ===
@@ -161,7 +111,11 @@ const VisionBenifits = ({
                 setFieldValue("benifitType", "");
             }
             setPrivatePayError("");
-            const validationObject = GetValidations(data, false, values);
+            const validationObject = handleLensBenifitYesValidations(
+                data,
+                true,
+                values
+            );
             setCalValidations({
                 ...calValidations,
                 ...validationObject,

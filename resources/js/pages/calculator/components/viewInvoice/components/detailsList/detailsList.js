@@ -93,9 +93,9 @@ const DetailsList = ({
                         transform="translate(0 -5.285)"
                         fill="none"
                         stroke="#000"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
                     />
                     <path
                         id="Path_159"
@@ -104,9 +104,9 @@ const DetailsList = ({
                         transform="translate(-1.762 -3.083)"
                         fill="none"
                         stroke="#000"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
                     />
                     <path
                         id="Path_160"
@@ -115,16 +115,20 @@ const DetailsList = ({
                         transform="translate(-3.963)"
                         fill="none"
                         stroke="#000"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="1.5"
                     />
                 </g>
             </svg>
         );
     };
     const RenderDownloadIcon = (props) => (
-        <Icon component={DownloadIcon} {...props} />
+        <Icon
+            component={DownloadIcon}
+            {...props}
+            style={{ cursor: "pointer" }}
+        />
     );
 
     const RenderDiscount = () => {
