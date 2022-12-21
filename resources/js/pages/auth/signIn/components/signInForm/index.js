@@ -13,7 +13,7 @@ import {
 import Icon from "@ant-design/icons";
 import CustomLoader from "../../../../../components/customLoader";
 import CustomCheckbox from "../../../../../components/customCheckbox";
-
+import logo from "../../../../../../images/logo.png";
 const EyeSVG = () => (
     <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -239,7 +239,12 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                     return (
                         <>
                             <Col xs={22} md={24} lg={18}>
-                                <div className={classes["login-title"]}>
+                            <img
+                        src={logo}
+                        alt="logo"
+                        className={classes["page-logo"]}
+                    />
+                            <div className={classes["login-title"]}>
                                     Log in
                                 </div>
                                 <div className={classes["login-subtitle"]}>
@@ -247,8 +252,6 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                     login credentials below to start using the
                                     app.
                                 </div>
-                            </Col>
-                            <Col xs={22} md={24} lg={18}>
                                 <Form
                                     name="basic"
                                     labelCol={{ span: 6 }}
