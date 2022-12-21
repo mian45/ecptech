@@ -128,13 +128,13 @@ const VisionBenifits = ({
         <div className={classes["container"]}>
             {frameBenifitVisibility && values?.visionPlan !== "Private Pay" && (
                 <Row className={classes["frame-container"]}>
-                    <Col sx={0} sm={0} md={5}>
+                    <Col xs={24} sm={24} md={5} lg={5}>
                         <QuestionIcon
                             icon={glassesIcon}
                             active={values?.isFrameBenifit}
                         />
                     </Col>
-                    <Col sx={24} sm={24} md={19}>
+                    <Col xs={24} sm={24} md={19} lg={19}>
                         <div className={classes["question-container"]}>
                             <CalculatorHeading
                                 title="Frame Benefit Available ?"
@@ -179,13 +179,13 @@ const VisionBenifits = ({
             )}
             {lensBenifitVisibility && values?.visionPlan !== "Private Pay" && (
                 <Row className={classes["frame-container"]}>
-                    <Col sx={0} sm={0} md={5}>
+                    <Col xs={24} sm={24} md={5} lg={5}>
                         <QuestionIcon
                             icon={lensIcon}
                             active={values?.isLensBenifit}
                         />
                     </Col>
-                    <Col sx={24} sm={24} md={19}>
+                    <Col xs={24} sm={24} md={19} lg={19}>
                         <div className={classes["question-container"]}>
                             <CalculatorHeading
                                 title="Lens Benefit Available ?"
@@ -230,13 +230,13 @@ const VisionBenifits = ({
             )}
             {materialCopayVisibility && (
                 <Row className={classes["frame-container"]}>
-                    <Col sx={0} sm={0} md={5}>
+                    <Col xs={24} sm={24} md={5} lg={5}>
                         <QuestionIcon
                             icon={materialIcon}
                             active={values?.materialCopay !== ""}
                         />
                     </Col>
-                    <Col sx={24} sm={24} md={19}>
+                    <Col xs={24} sm={24} md={19} lg={19}>
                         <div className={classes["question-container"]}>
                             <CalculatorHeading
                                 title={materialCopayTitle}

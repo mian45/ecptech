@@ -68,10 +68,10 @@ const BlueLightFiltering = ({
     const renderBlueLight = () => {
         return (
             <Row className={classes["container"]}>
-                <Col sx={0} sm={0} md={5}>
+                <Col xs={24} sm={24} md={5} lg={5}>
                     <QuestionIcon icon={icon} active={values?.blueLight} />
                 </Col>
-                <Col sx={24} sm={24} md={19}>
+                <Col xs={24} sm={24} md={19} lg={19}>
                     <div className={classes["vision-container"]}>
                         <CalculatorHeading
                             title={blueLightTitle}
