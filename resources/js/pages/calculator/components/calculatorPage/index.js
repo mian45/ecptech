@@ -11,7 +11,7 @@ import ProtectionPlan from "../protectionPlan";
 import SelectVisionPlan from "../selectVisionPlan";
 import SunglassLens from "../sunglassLens";
 import ViewInvoice from "../viewInvoice";
-import VisionBenifits, { GetValidations } from "../visionBenifits";
+import VisionBenifits from "../visionBenifits";
 import classes from "./styles.module.scss";
 import { Formik } from "formik";
 import * as Yup from "yup";
@@ -41,6 +41,8 @@ import BlueLightFiltering from "../blueLightFiltering/blueLightFiltering";
 import InvoicePriceAlert from "../invoicePriceAlert";
 import { connect, useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
+import { handleLensBenifitYesValidations } from "../visionBenifits/helpers/handleLensBenifitsYesValidations";
+import { handleFrameBenifitYes } from "../visionBenifits/helpers/handleFrameBenifitYes";
 
 const CalculatorScreen = ({ retailPopup }) => {
     const history = useHistory();
@@ -272,23 +274,19 @@ const CalculatorScreen = ({ retailPopup }) => {
             const arrangedValues = GetMappedPayload(values);
             setCalValues(arrangedValues);
         } else if (values?.benifitType === BenifitTypeEnums?.frame) {
-            const permission =
-                calculatorObj?.questions
-                    ?.find((item) => item.title === values?.visionPlan)
-                    ?.question_permissions?.find(
-                        (ques) => ques.question === "Frame Order"
-                    )?.optional === "true";
-            if (permission) {
-                const validationObject = {
-                    frameOrderType: Yup.string().required(
-                        "Frame Order is required"
-                    ),
-                };
-                setCalValidations({
-                    ...calValidations,
-                    ...validationObject,
-                });
-            }
+            const permission = calculatorObj?.questions?.find(
+                (item) => item?.title === values?.visionPlan
+            )?.question_permissions;
+
+            const validationObject = handleFrameBenifitYes(
+                permission,
+                false,
+                values
+            );
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
             actions.setFieldValue("submitBenifitType", BenifitTypeEnums.frame);
             actions.setFieldValue("benifitType", "");
             window.scrollTo({
@@ -301,7 +299,11 @@ const CalculatorScreen = ({ retailPopup }) => {
             const permissions = calculatorObj?.questions?.find(
                 (item) => item.title === values?.visionPlan
             )?.question_permissions;
-            const validationObject = GetValidations(permissions, false, values);
+            const validationObject = handleLensBenifitYesValidations(
+                permissions,
+                false,
+                values
+            );
             setCalValidations({
                 ...calValidations,
                 ...validationObject,
