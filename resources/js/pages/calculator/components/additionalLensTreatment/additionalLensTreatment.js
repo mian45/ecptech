@@ -103,7 +103,7 @@ const AdditionalLensTreatment = ({
         const polish =
             data?.find((ques) => ques?.question == "Polish")?.optional ===
             "true";
-        return (values?.visionPlan === allPlans?.eyemedPlan ||
+        return (values?.visionPlan === allPlans?.eyemed ||
             values?.visionPlan === allPlans?.davis) &&
             (slabOff || specialityLens || polish)
             ? true
