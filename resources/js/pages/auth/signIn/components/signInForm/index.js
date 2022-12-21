@@ -276,7 +276,6 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                     className={
                                                         classes["email-input"]
                                                     }
-                                                    onBlur={handleBlur}
                                                     value={values.email}
                                                     onChange={handleChange}
                                                 />
@@ -308,7 +307,6 @@ const SignInForm = ({ userRole, dispatch, tempSet, templogout }) => {
                                                     name="password"
                                                     value={values.password}
                                                     onChange={handleChange}
-                                                    onBlur={handleBlur}
                                                     className={
                                                         classes[
                                                             "password-container"
