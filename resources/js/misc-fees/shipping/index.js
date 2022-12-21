@@ -272,7 +272,12 @@ const ShippingSettings = ({ userId, setLoading }) => {
                                                 <tr className="discount-output_body">
                                                     <td>{shipping.name}</td>
                                                     <td>${shipping.value}</td>
-                                                    <td className="col-4 custom-tax-col-3">
+                                                    <td
+                                                        className="col-4 custom-tax-col-3"
+                                                        style={{
+                                                            paddingLeft: "0px",
+                                                        }}
+                                                    >
                                                         <Tooltip
                                                             title={"Edit"}
                                                             color={"#6fa5cb"}
