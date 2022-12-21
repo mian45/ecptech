@@ -189,13 +189,14 @@ const passwordValidations = Yup.object().shape({
         .required("Password is Required"),
 });
 const ProfilePasswordValidations = ({ userId }) => {
+    const [messageApi, contextHolder] = message.useMessage();
     const defaultPasswordState = {
         oldPassword: "",
         newPassword: "",
         confirmPassword: "",
     };
 
-    const handleSaveClick = async (values) => {
+    const handleSaveClick = async (values, actions) => {
         try {
             const passwordObject = {
                 old_password: values.oldPassword,
@@ -203,19 +204,28 @@ const ProfilePasswordValidations = ({ userId }) => {
                 password_confirmation: values.confirmPassword,
                 user_id: userId,
             };
-            await axios.post(
+            const res = await axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/change-password`,
                 passwordObject
             );
+            message.destroy();
+            messageApi.open({
+                type: "success",
+                content: res?.data?.message,
+                duration: 5,
+                className: "custom-postion",
+            });
+            actions?.resetForm();
         } catch (err) {
+            actions?.setSubmitting(false);
+            actions?.resetForm();
             message.destroy();
             messageApi.open({
                 type: "error",
-                content: err.response.data.message,
+                content: err?.response?.data?.message,
                 duration: 5,
                 className: "custom-postion-error",
             });
-            console.log("error while save password", err);
         }
     };
 
@@ -225,10 +235,11 @@ const ProfilePasswordValidations = ({ userId }) => {
             return;
         }
 
-        handleSaveClick(values);
+        handleSaveClick(values, actions);
     };
     return (
         <div style={{ width: "100%" }}>
+            <div>{contextHolder}</div>
             <Formik
                 initialValues={{
                     ...defaultPasswordState,
