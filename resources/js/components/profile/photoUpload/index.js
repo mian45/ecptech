@@ -12,9 +12,9 @@ const PhotoUpload = ({
     user
 }) => {
     const [selectedImage, setSelectedImage] = useState(null);
+    const [URl, setURl] = useState(null);
 useEffect(()=>{
-    setSelectedImage(user.logo)
-    values.profileImage=user.logo
+    setURl(user.logo)
 },[user])
     const uploadMediaFile = async (event) => {
         try {
@@ -47,13 +47,13 @@ useEffect(()=>{
             <div className={classes["image-container"]}>
                 <label
                     htmlFor="profileImage"
-                    className={classes[selectedImage ? "icon" : "photo-upload"]}
+                    className={classes[selectedImage||URl ? "icon" : "photo-upload"]}
                 >
-                    {selectedImage!==null && selectedImage!==undefined ? (
+                    {(selectedImage!==null && selectedImage!==undefined) ||(URl!==null && URl!==undefined)? (
                         <img
                             alt="not found"
                             className={classes["photo-upload"]}
-                            src={selectedImage}
+                            src={selectedImage||URl}
                         ></img>
                     ) : (
                         <>  
