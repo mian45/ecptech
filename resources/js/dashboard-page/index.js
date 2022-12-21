@@ -75,7 +75,7 @@ const Dashboard = ({ userRole, apiDates, userId }) => {
         getSummaryStats();
     }, [apiDates, userId]);
     return (
-        <Row className={classes["container"]} span={24}>
+        <Row className={classes["container"]} span={24} justify='space-between'>
             <div>{contextHolder}</div>
             <Col xs={24} lg={17}>
                 <Row
