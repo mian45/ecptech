@@ -13,7 +13,7 @@ class PrescriptionController extends Controller
 {
     public function prescriptions(Request $request){
         $validator = Validator::make($request->all(), [
-            'plan' => 'required|in:vsp,davis,eyemed',
+            'plan' => 'required|in:vsp,davis,eyemed,spectera,vba',
         ]);
 
         if ($validator->fails()) {
@@ -38,7 +38,7 @@ class PrescriptionController extends Controller
     public function eyePrescriptions(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'plan' => 'required|in:vsp,davis,eyemed',
+            'plan' => 'required|in:vsp,davis,eyemed,spectera,vba',
         ]);
 
         if ($validator->fails()) {
