@@ -59,7 +59,7 @@ class UserController extends Controller
         if($request->theme_color){
             $client->theme_color = $request->theme_color;
         }
-        if($request->theme_mode){
+        if(isset($request->theme_mode)){
             $client->theme_mode = $request->theme_mode;
         }
         

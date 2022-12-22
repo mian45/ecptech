@@ -121,6 +121,7 @@ const Auth = (state = initialState, { type, payload = null }) => {
                 logo: payload?.data?.logo,
                 buisnessName: payload?.data.business_name,
                 themeColor: payload?.data?.theme_color,
+                themeType: payload?.data?.theme_mode,
             };
             const roleObject = {
                 id: payload?.data.role.id,

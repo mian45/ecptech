@@ -7,8 +7,8 @@ import ChangePassword from "../changePassword";
 import CustomButton from "../customButton";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import axios from "axios";
 import { Row, Col, Drawer, message } from "antd";
+import Axios from "../../Http";
 const Profile = ({
     userId,
     closeModal,
@@ -66,38 +66,41 @@ const ProfileInfoSection = ({ userId, user, getAuthentication }) => {
     const [messageApi, contextHolder] = message.useMessage();
     const defaultProfileState = {
         businessName: user?.buisnessName ? user?.buisnessName : "",
-        profileImage: null,
+        profileImage: user?.logo || null,
         themeColor: user?.themeColor ? user?.themeColor : "#6FA5CB",
-        themeType: 0,
+        themeType: (user?.themeType).toString() ? user?.themeType : 0,
     };
 
     const handleSaveClick = async (values, actions) => {
         try {
             const personalInfo = new FormData();
-            personalInfo.append("logo", values.profileImage);
-            personalInfo.append("business_name", values.businessName);
-            personalInfo.append("theme_color", values.themeColor);
-            personalInfo.append("theme_mode", values.themeType);
+            user?.logo !== values?.profileImage &&
+                personalInfo.append("logo", values?.profileImage);
+            user?.buisnessName !== values?.businessName &&
+                personalInfo.append("business_name", values?.businessName);
+            user?.themeColor !== values?.themeColor &&
+                personalInfo.append("theme_color", values?.themeColor);
+            parseInt(user?.themeType) !== parseInt(values?.themeType) &&
+                personalInfo.append(
+                    "theme_mode",
+                    values?.themeType?.toString()
+                );
             personalInfo.append("userId", userId);
 
-            await axios
-                .post(
-                    `${process.env.MIX_REACT_APP_URL}/api/edit-profile`,
-                    personalInfo
-                )
-                .then(() => {
-                    getAuthentication();
-                    actions.setSubmitting(false);
-                    message.destroy();
-                    messageApi.open({
-                        type: "success",
-                        content: response.data.message,
-                        duration: 5,
-                        className: "custom-postion",
-                    });
-                });
+            const response = await Axios.post(
+                `${process.env.MIX_REACT_APP_URL}/api/edit-profile`,
+                personalInfo
+            );
+            getAuthentication();
+            actions.setSubmitting(false);
+            message.destroy();
+            messageApi.open({
+                type: "success",
+                content: response.data.message,
+                duration: 5,
+                className: "custom-postion",
+            });
         } catch (err) {
-            console.log("error while save changes", err);
             message.destroy();
             messageApi.open({
                 type: "error",
@@ -126,6 +129,7 @@ const ProfileInfoSection = ({ userId, user, getAuthentication }) => {
             }}
             validationSchema={profileValidations}
             onSubmit={handleClick}
+            enableReinitialize
         >
             {({
                 values,
@@ -204,7 +208,7 @@ const ProfilePasswordValidations = ({ userId }) => {
                 password_confirmation: values.confirmPassword,
                 user_id: userId,
             };
-            const res = await axios.post(
+            const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/change-password`,
                 passwordObject
             );

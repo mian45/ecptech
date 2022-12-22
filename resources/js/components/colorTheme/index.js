@@ -6,7 +6,7 @@ import { ErrorMessage } from "formik";
 
 const ColorTheme = ({ values, setFieldValue, handleChange }) => {
     const handleTogglerChange = () => {
-        if (values.themeType === 0) {
+        if (parseInt(values.themeType) === 0) {
             setFieldValue("themeType", 1);
         } else {
             setFieldValue("themeType", 0);
@@ -49,7 +49,7 @@ const ColorTheme = ({ values, setFieldValue, handleChange }) => {
             <div className={classes["toggle-wrapper"]}>
                 <CustomToggle
                     label={[ThemeTypeEnum.light, ThemeTypeEnum.dark]}
-                    toggle={values.themeType === 1}
+                    toggle={parseInt(values.themeType) === 1}
                     handleTogglerChange={handleTogglerChange}
                 />
             </div>

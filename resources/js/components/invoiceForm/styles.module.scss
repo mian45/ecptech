@@ -71,17 +71,22 @@
     flex-wrap: wrap;
     margin-top: 20px;
 }
+@media only screen and (max-width: 820px) {
+    .search-button {
+        margin-bottom: 10px;
+    }
+    .create-button {
+        margin-bottom: 10px;
+    }
+}
+@media only screen and (max-width: 730px) {
+    .create-button {
+        margin-bottom: 0px;
+    }
+}
 @media only screen and (max-width: 650px) {
     .form-slot-button {
         flex-direction: column;
         align-items: flex-start;
-    }
-    .search-button {
-        margin-bottom: 10px;
-    }
-}
-@media only screen and (max-width: 768px) {
-    .search-button {
-        margin-bottom: 10px;
     }
 }
