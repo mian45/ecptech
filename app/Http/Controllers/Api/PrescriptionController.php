@@ -82,7 +82,8 @@ class PrescriptionController extends Controller
             'right_eye_sphere' => 'required',
             'right_eye_cylinder' => 'required',
             'left_eye_sphere' => 'required',
-            'left_eye_cylinder' => 'required'
+            'left_eye_cylinder' => 'required',
+            'plan' => 'required|in:vsp,davis,eyemed,spectera,vba',
         ]);
         if ($validator->fails()) {
             throw (new ValidationException($validator));
@@ -103,7 +104,7 @@ class PrescriptionController extends Controller
         })->orWhere(function ($query) use ($resultRight){
             $query->where('sphere_from', '>=', $resultRight)
                   ->where('sphere_to', '<=', $resultRight);
-        })->where('user_id', $user_id)->first();
+        })->where('plan',$request->plan)->where('user_id', $user_id)->first();
 
         $resultLeft = $request->left_eye_sphere + $request->left_eye_cylinder;
         $resultLeft = ($request->left_eye_sphere >= $resultLeft)? $request->left_eye_sphere : $resultLeft;
@@ -113,7 +114,7 @@ class PrescriptionController extends Controller
         })->orWhere(function ($query) use ($resultLeft){
             $query->where('sphere_from', '>=', $resultLeft)
                   ->where('sphere_to', '<=', $resultLeft);
-        })->where('user_id', $user_id)->first();
+        })->where('plan',$request->plan)->where('user_id', $user_id)->first();
 
         $meterial_name = '';
         if(isset($right_eye_material) && isset($left_eye_material)){
