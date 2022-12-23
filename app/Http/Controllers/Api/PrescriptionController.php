@@ -12,12 +12,19 @@ use Illuminate\Validation\ValidationException;
 class PrescriptionController extends Controller
 {
     public function prescriptions(Request $request){
+        $validator = Validator::make($request->all(), [
+            'plan' => 'required|in:vsp,davis,eyemed,spectera,vba',
+        ]);
+
+        if ($validator->fails()) {
+            throw (new ValidationException($validator));
+        }
         $user = auth()->user();
         $user_id=$user->id;
         if($user->role_id===3){
           $user_id=  $user->client_id;
         }
-        $eye_prescription = Prescription::select('id','name','sphere_from','sphere_to','user_id','created_at','updated_at')->where('user_id',$user_id)->get();
+        $eye_prescription = Prescription::select('id','name','sphere_from','sphere_to','plan','user_id','created_at','updated_at')->where('plan',$request->plan)->where('user_id',$user_id)->get();
         $data = array();
         foreach($eye_prescription as $row){
 
@@ -29,7 +36,14 @@ class PrescriptionController extends Controller
         return $this->sendResponse($data, 'Eye prescription data get successfully');
     }
     public function eyePrescriptions(Request $request){
-    
+
+        $validator = Validator::make($request->all(), [
+            'plan' => 'required|in:vsp,davis,eyemed,spectera,vba',
+        ]);
+
+        if ($validator->fails()) {
+            throw (new ValidationException($validator));
+        }
         $prescriptions = $request->eye_prescriptions;
         $user = auth()->user();
         $user_id=$user->id;
@@ -38,10 +52,11 @@ class PrescriptionController extends Controller
         }  
    
         
-        Prescription::where('user_id', $user_id)->delete();
+        Prescription::where('user_id', $user_id)->where('plan',$request->plan)->delete();
             foreach($prescriptions as $data){      
                 foreach($data as $row){
                     $eyePrescription = new Prescription;
+                    $eyePrescription->plan = $request->plan;
                     $eyePrescription->name = $row['name'];
                     $eyePrescription->sphere_from = $row['sphere_from'];
                     $eyePrescription->sphere_to = $row['sphere_to'];
@@ -49,7 +64,7 @@ class PrescriptionController extends Controller
                     $eyePrescription->save();
                 }                        
             }
-            $eye_prescription = Prescription::select('id','name','sphere_from','sphere_to','user_id','created_at','updated_at')->where('user_id',$user_id)->get();
+            $eye_prescription = Prescription::select('id','name','sphere_from','sphere_to','plan','user_id','created_at','updated_at')->where('plan',$request->plan)->where('user_id',$user_id)->get();
             $data = array();
             foreach($eye_prescription as $row){
     
@@ -67,7 +82,8 @@ class PrescriptionController extends Controller
             'right_eye_sphere' => 'required',
             'right_eye_cylinder' => 'required',
             'left_eye_sphere' => 'required',
-            'left_eye_cylinder' => 'required'
+            'left_eye_cylinder' => 'required',
+            'plan' => 'required|in:vsp,davis,eyemed,spectera,vba',
         ]);
         if ($validator->fails()) {
             throw (new ValidationException($validator));
@@ -88,7 +104,7 @@ class PrescriptionController extends Controller
         })->orWhere(function ($query) use ($resultRight){
             $query->where('sphere_from', '>=', $resultRight)
                   ->where('sphere_to', '<=', $resultRight);
-        })->where('user_id', $user_id)->first();
+        })->where('plan',$request->plan)->where('user_id', $user_id)->first();
 
         $resultLeft = $request->left_eye_sphere + $request->left_eye_cylinder;
         $resultLeft = ($request->left_eye_sphere >= $resultLeft)? $request->left_eye_sphere : $resultLeft;
@@ -98,7 +114,7 @@ class PrescriptionController extends Controller
         })->orWhere(function ($query) use ($resultLeft){
             $query->where('sphere_from', '>=', $resultLeft)
                   ->where('sphere_to', '<=', $resultLeft);
-        })->where('user_id', $user_id)->first();
+        })->where('plan',$request->plan)->where('user_id', $user_id)->first();
 
         $meterial_name = '';
         if(isset($right_eye_material) && isset($left_eye_material)){
