@@ -40,7 +40,7 @@ class AddUserCollectionPermission
         foreach($lense_types as $lense){
             $brands = Brand::where('lens_type_id',$lense->id)->get();
             foreach($brands as $b){
-                if($b->title == 'Shamir' OR (($lense->title == 'Bifocal' OR $lense->title == 'Trifocal') AND  $b->title == '-')){
+                if($b->title == 'Shamir' OR (($lense->title == 'Bifocal' OR $lense->title == 'Trifocal'))){
                     $brandPermission = BrandPermission::updateOrCreate(
                         ['user_id' => $user->id, 'lense_type_id' => $lense->id,'brand_id'=>$b->id],
                         ['status' => 'active']
