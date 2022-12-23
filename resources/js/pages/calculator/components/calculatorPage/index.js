@@ -114,6 +114,7 @@ const CalculatorScreen = ({ retailPopup }) => {
                 setDefaultValues(allValues);
                 setCalculatorState(allValues[initialPlan]);
                 manageValidationObject(vpState?.questions, initialPlan);
+                dipatch(action.calculatorPopUp(initialPlan))
             }
             getBaseValues(mappedEditValues(editInvoiceState), editCalObject);
             setLoading(false);
