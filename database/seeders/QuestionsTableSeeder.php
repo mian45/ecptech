@@ -519,13 +519,6 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Any copay lowered than standard",
-                'vision_plan_id' => 5,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
-            array(
-
                 'title' => "Protection Plan",
                 'vision_plan_id' => 5,
                 'created_at' => date("Y-m-d H:i:s"),
@@ -546,6 +539,71 @@ class QuestionsTableSeeder extends Seeder
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
+
+            array(
+
+                'title' => "Chemistrie Clip",
+                'vision_plan_id' => 5,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+
+            array(
+
+                'title' => "Edge Coating",
+                'vision_plan_id' => 5,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+
+            array(
+
+                'title' => "Miscellaneous Lens Options",
+                'vision_plan_id' => 5,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+
+            array(
+
+                'title' => "One Year Scratch Warranty",
+                'vision_plan_id' => 5,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+
+            array(
+
+                'title' => "Oversize Lenses",
+                'vision_plan_id' => 5,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+
+            array(
+
+                'title' => "Polish",
+                'vision_plan_id' => 5,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+
+            array(
+
+                'title' => "Scratch Coating",
+                'vision_plan_id' => 5,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+
+            array(
+
+                'title' => "UV Coating",
+                'vision_plan_id' => 5,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            
            
 
             array(
@@ -752,13 +810,6 @@ class QuestionsTableSeeder extends Seeder
             ),
             array(
 
-                'title' => "Any copay lowered than standard",
-                'vision_plan_id' => 7,
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s")
-            ),
-            array(
-
                 'title' => "Protection Plan",
                 'vision_plan_id' => 7,
                 'created_at' => date("Y-m-d H:i:s"),
@@ -779,6 +830,40 @@ class QuestionsTableSeeder extends Seeder
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ),
+
+            array(
+
+                'title' => "Blue Protection",
+                'vision_plan_id' => 7,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+
+            array(
+
+                'title' => "Roll & Polish",
+                'vision_plan_id' => 7,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+
+            array(
+
+                'title' => "Licensed Specialty Enhancement",
+                'vision_plan_id' => 7,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+
+            array(
+
+                'title' => "Scratch Resistant Coatings",
+                'vision_plan_id' => 7,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+
+            
        
 
             array(
