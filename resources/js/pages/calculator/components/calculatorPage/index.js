@@ -64,7 +64,7 @@ const CalculatorScreen = ({ retailPopup }) => {
     const [davisMaterials, setDavisMaterials] = useState([]);
     const editInvoiceState = history?.location?.state?.invoice;
     let scrollRef = useRef();
-    const dipatch = useDispatch();
+    const dispatch = useDispatch();
 
     useEffect(() => {
         if (editInvoiceState?.id) {
@@ -114,7 +114,7 @@ const CalculatorScreen = ({ retailPopup }) => {
                 setDefaultValues(allValues);
                 setCalculatorState(allValues[initialPlan]);
                 manageValidationObject(vpState?.questions, initialPlan);
-                dipatch(action.calculatorPopUp(initialPlan))
+                dispatch(action.calculatorPopUp(initialPlan))
             }
             getBaseValues(mappedEditValues(editInvoiceState), editCalObject);
             setLoading(false);
@@ -140,7 +140,7 @@ const CalculatorScreen = ({ retailPopup }) => {
             const firstPlan = resData?.questions?.find(
                 (item) => item?.title === initialPlan
             );
-            dipatch(action.calculatorPopUp(firstPlan))
+            dispatch(action.calculatorPopUp(firstPlan))
             const colRes = await Axios.post(
                 process.env.MIX_REACT_APP_URL + "/api/get-collections",
                 { vision_plan_id: firstPlan?.id }
@@ -478,9 +478,9 @@ const CalculatorScreen = ({ retailPopup }) => {
                 "CALCULATOR_DATA",
                 JSON.stringify(calculatorData)
             );
-            dipatch(action.showRetailPopup());
+            dispatch(action.showRetailPopup());
         } else {
-            dipatch(action.showRetailPopup());
+            dispatch(action.showRetailPopup());
         }
     };
     const RenderModal = React.useMemo(() => {
@@ -490,7 +490,7 @@ const CalculatorScreen = ({ retailPopup }) => {
                     <InvoicePriceAlert
                         accept={handleSaveClick}
                         cancel={() => {
-                            dipatch(action.showRetailPopup());
+                            dispatch(action.showRetailPopup());
                         }}
                         open={retailPopup}
                     />
