@@ -10,7 +10,8 @@ import { BenifitTypeEnums } from "../../data/initialValues";
 import * as Yup from "yup";
 import Axios from "../../../../Http";
 import { CreateCalculatorValidations } from "../../data/validationHelper";
-
+import { useDispatch } from "react-redux";
+import * as action from "../../../../store/actions";
 const SelectVisionPlan = ({
     formProps,
     calculatorObj,
@@ -27,12 +28,14 @@ const SelectVisionPlan = ({
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const plansList = calculatorObj?.questions?.map((plan) => plan?.title);
-
+    const dispatch= useDispatch()
     const handlePlanClick = async (value) => {
         try {
             const currentPlan = calculatorObj?.questions?.find(
                 (item) => item?.title === value.target?.value || ""
             );
+            console.log('currentPlan',currentPlan)
+            dispatch(action.calculatorPopUp(currentPlan))
             const res = await Axios.post(
                 process.env.MIX_REACT_APP_URL + "/api/get-collections",
                 { vision_plan_id: currentPlan?.id }

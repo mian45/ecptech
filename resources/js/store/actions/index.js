@@ -56,6 +56,12 @@ export function showRetailPopup(payload) {
         payload,
     };
 }
+export function calculatorPopUp(payload) {
+    return {
+        type: ActionTypes.CALCULATOR_POP_UP,
+        payload,
+    };
+}
 
 //calculator
 export function retailError(payload) {

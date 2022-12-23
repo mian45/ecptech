@@ -139,6 +139,7 @@ const CalculatorScreen = ({ retailPopup }) => {
             const firstPlan = resData?.questions?.find(
                 (item) => item?.title === initialPlan
             );
+            dipatch(action.calculatorPopUp(firstPlan))
             const colRes = await Axios.post(
                 process.env.MIX_REACT_APP_URL + "/api/get-collections",
                 { vision_plan_id: firstPlan?.id }
