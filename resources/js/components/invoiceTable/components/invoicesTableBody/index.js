@@ -142,7 +142,7 @@ const InvoiceTableActions = ({ data }) => {
                 <div className={classes["more-icon"]} onClick={openInvoice}>
                     VIEW
                 </div>
-                {data?.status !== "Paid" && (
+                {data?.status !== "paid" ? (
                     <div
                         className={classes["more-icon"]}
                         onClick={() => {
@@ -155,7 +155,7 @@ const InvoiceTableActions = ({ data }) => {
                     >
                         EDIT
                     </div>
-                )}
+                ):null}
             </div>
         );
     };
