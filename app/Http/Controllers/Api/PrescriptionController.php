@@ -98,22 +98,26 @@ class PrescriptionController extends Controller
 
         $resultRight = ($request->right_eye_sphere >= $resultRight)? $request->right_eye_sphere : $resultRight;
 
-        $right_eye_material = Prescription::where(function ($query) use ($resultRight) {
+        $right_eye_material = Prescription::where(function ($query) use ($resultRight,$request)  {
             $query->where('sphere_from', '<=', $resultRight)
-                  ->where('sphere_to', '>=', $resultRight);
-        })->orWhere(function ($query) use ($resultRight){
+                  ->where('sphere_to', '>=', $resultRight)
+                  ->where('plan',$request->plan);
+        })->orWhere(function ($query) use ($resultRight,$request){
             $query->where('sphere_from', '>=', $resultRight)
-                  ->where('sphere_to', '<=', $resultRight);
+                  ->where('sphere_to', '<=', $resultRight)
+                  ->where('plan',$request->plan);
         })->where('plan',$request->plan)->where('user_id', $user_id)->first();
 
         $resultLeft = $request->left_eye_sphere + $request->left_eye_cylinder;
         $resultLeft = ($request->left_eye_sphere >= $resultLeft)? $request->left_eye_sphere : $resultLeft;
-        $left_eye_material = Prescription::where(function ($query) use ($resultLeft) {
+        $left_eye_material = Prescription::where(function ($query) use ($resultLeft,$request) {
             $query->where('sphere_from', '<=', $resultLeft)
-                  ->where('sphere_to', '>=', $resultLeft);
-        })->orWhere(function ($query) use ($resultLeft){
+                  ->where('sphere_to', '>=', $resultLeft)
+                  ->where('plan',$request->plan);
+        })->orWhere(function ($query) use ($resultLeft,$request){
             $query->where('sphere_from', '>=', $resultLeft)
-                  ->where('sphere_to', '<=', $resultLeft);
+                  ->where('sphere_to', '<=', $resultLeft)
+                  ->where('plan',$request->plan);
         })->where('plan',$request->plan)->where('user_id', $user_id)->first();
 
         $meterial_name = '';

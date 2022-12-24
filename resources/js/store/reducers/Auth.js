@@ -33,6 +33,7 @@ const initialState = {
     sidebar: false,
     language: "en",
     retailPopup: false,
+    selectedPlan:{}
 };
 
 const activeState = (state, payload) => {
@@ -105,7 +106,11 @@ const updateStaffLogin = (state, payload) => {
     };
     return stateObj;
 };
-
+const prescriptionPopUp=(state, payload)=>{
+    console.log("payload is here for selected Plan",payload)
+    const stateObj={...state,selectedPlan:payload}
+    return stateObj
+}
 const Auth = (state = initialState, { type, payload = null }) => {
     switch (type) {
         case ActionTypes.AUTH_LOGIN: {
@@ -169,6 +174,8 @@ const Auth = (state = initialState, { type, payload = null }) => {
         }
         case ActionTypes.UPDATE_STAFF_LOGIN:
             return updateStaffLogin(state, payload);
+        case ActionTypes.CALCULATOR_POP_UP:
+            return prescriptionPopUp(state, payload);
         case ActionTypes.SHOW_SIDEBAR: {
             const stateObj = {
                 ...state,
