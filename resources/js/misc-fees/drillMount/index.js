@@ -33,21 +33,14 @@ const DrillSettings = ({ userId,setLoading }) => {
             setDrill({ ...DrillData });
             setLoading(false);
         } catch (err) {
-            if (err.response.data.statusCode === 404) {
+            message.destroy()
                 messageApi.open({
                     type: "error",
                     content: err.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });
-            } else {
-                messageApi.open({
-                    type: "error",
-                    content: err.response.data.message,
-                    duration: 5,
-                    className: 'custom-postion-error',
-                });
-            }
+          
             setLoading(false);
         }
     };
@@ -63,6 +56,7 @@ const DrillSettings = ({ userId,setLoading }) => {
             setDrill({});
             setIsSubmitted(false);
             setShowDeleteDrill(false);
+            message.destroy()
             messageApi.open({
                 type: "success",
                 content: res.data.message,
@@ -70,6 +64,7 @@ const DrillSettings = ({ userId,setLoading }) => {
                 className: 'custom-postion',
             });
         } catch (err) {
+            message.destroy()
             console.log("error while delete Drill");
             messageApi.open({
                 type: "error",
@@ -103,6 +98,7 @@ const DrillSettings = ({ userId,setLoading }) => {
             setAmount("");
             setIsSubmitted(true);
             setDrillButtonLoader(false);
+            message.destroy()
             messageApi.open({
                 type: "success",
                 content: res.data.message,
@@ -112,6 +108,7 @@ const DrillSettings = ({ userId,setLoading }) => {
         } catch (err) {
             console.log("error while adding Drill");
             setDrillButtonLoader(false);
+            message.destroy()
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
@@ -133,6 +130,7 @@ const DrillSettings = ({ userId,setLoading }) => {
             setEditState(false);
             setAmount("");
             setIsSubmitted(true);
+            message.destroy()
             messageApi.open({
                 type: "success",
                 content: res.data.message,
@@ -141,6 +139,7 @@ const DrillSettings = ({ userId,setLoading }) => {
             });
         } catch (err) {
             console.log("error while adding shipping");
+            message.destroy()
             setDrillButtonLoader(false);
             messageApi.open({
                 type: "error",

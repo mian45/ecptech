@@ -34,21 +34,13 @@ const TracingSettings = ({ userId,setLoading }) => {
             setTracing({ ...TracingData });
             setLoading(false);
         } catch (err) {
-            if (err.response.data.statusCode === 404) {
+            message.destroy()
                 messageApi.open({
                     type: "error",
                     content: err.response.data.message,
                     duration: 5,
                     className: 'custom-postion-error',
                 });
-            } else {
-                messageApi.open({
-                    type: "error",
-                    content: err.response.data.message,
-                    duration: 5,
-                    className: 'custom-postion-error',
-                });
-            }
             setLoading(false);
         }
     };
@@ -65,6 +57,7 @@ const TracingSettings = ({ userId,setLoading }) => {
             setTracing({});
             setIsSubmitted(false);
             setShowDeleteTracing(false);
+            message.destroy()
             messageApi.open({
                 type: "success",
                 content: res.data.message,
@@ -73,6 +66,7 @@ const TracingSettings = ({ userId,setLoading }) => {
             });
         } catch (err) {
             console.log("error while delete Tracing");
+            message.destroy()
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
@@ -108,6 +102,7 @@ const TracingSettings = ({ userId,setLoading }) => {
             setTracingAmount("");
             setIsSubmitted(true);
             setTracingButtonLoader(false);
+            message.destroy()
             messageApi.open({
                 type: "success",
                 content: res.data.message,
@@ -117,6 +112,7 @@ const TracingSettings = ({ userId,setLoading }) => {
         } catch (err) {
             console.log("error while adding Tracing");
             setTracingButtonLoader(false);
+            message.destroy()
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
@@ -139,6 +135,7 @@ const TracingSettings = ({ userId,setLoading }) => {
             setEditState(false);
             setTracingAmount("");
             setIsSubmitted(true);
+            message.destroy()
             messageApi.open({
                 type: "success",
                 content: res.data.message,
@@ -148,6 +145,7 @@ const TracingSettings = ({ userId,setLoading }) => {
         } catch (err) {
             console.log("error while adding shipping");
             setTracingButtonLoader(false);
+            message.destroy()
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
