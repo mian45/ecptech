@@ -111,6 +111,10 @@ max-width: 748px;
     color: #2a2a2a;
     outline: none;
     height: 45px;
+    @media (max-width: 325px) {
+        padding: 0px 5px 0px 5px;
+       
+    }
     &::placeholder {
         color: #c4c4c4;
         font-size: 16px;
@@ -181,4 +185,11 @@ max-width: 748px;
 }
 .remove:hover{
     background-color:red;
+}
+.centeredContent{
+    display: flex;
+    align-items: center;
+}
+.margindefault{
+    margin-bottom:40px !important
 }

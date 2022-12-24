@@ -3,9 +3,10 @@ import classes from "./styles.module.scss";
 import Axios from "../../../../Http";
 import { connect } from "react-redux";
 import { defaultMaterials } from "./data";
-import { Row, Col, message } from "antd";
+import { Row, Col, message,Select } from "antd";
 import CustomLoader from "../../../../components/customLoader";
 import removeIcon from "../../../../../images/cross.svg";
+const { Option } = Select;
 const EyePrescription = ({ userId }) => {
     const [messageApi, contextHolder] = message.useMessage();
     let [eyeDetails, setEyeDetails] = useState([]);
@@ -14,6 +15,7 @@ const EyePrescription = ({ userId }) => {
     const [buttonLoader, setButtonLoader] = useState(false);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState([]);
+    const [plan,setPlan]=useState('vsp')
     useEffect(() => {
         const errorsList = [...sphError];
         const isError = errorsList.every((item) => item.value === "");
@@ -26,68 +28,68 @@ const EyePrescription = ({ userId }) => {
 
     useEffect(() => {
         if (userId == null) return;
-        const getEyePrescriptionDetails = async () => {
-            try {
-                setLoading(true);
-                const res = await Axios.get(
-                    `${process.env.MIX_REACT_APP_URL}/api/prescriptions`,
-                    {
-                        params: { user_id: userId },
-                    }
-                );
-                let totalMaterails = [];
-                Object.keys(res?.data?.data).map((item) => {
-                    res?.data?.data[item].map((element) =>
-                        totalMaterails.push(element)
-                    );
-                });
-                const material = [
-                    ...totalMaterails.map((item) => {
-                        return {
-                            ...item,
-                            title: item.name,
-                            from: false,
-                            to: false,
-                        };
-                    }),
-                    ...defaultMaterials?.filter((item) => {
-                        const singleMaterial = totalMaterails?.find(
-                            (val) => val?.name === item?.name
-                        );
-                        if (singleMaterial == undefined) {
-                            return {
-                                ...item,
-                                sphere_from: "",
-                                sphere_to: "",
-                                error: false,
-                            };
-                        }
-                    }),
-                ];
-                setSphError(
-                    material.map((item, index) => {
-                        return { ...item, error: false };
-                    })
-                );
-                setEyeDetails(material);
-                setLoading(false);
-            } catch (err) {
-                console.log("Error while getting glasses details");
-                message.destroy();
-                messageApi.open({
-                    type: "error",
-                    content: err.response.data.message,
-                    duration: 5,
-                    className: "custom-postion-error",
-                    className: "custom-postion-error",
-                });
-            }
-        };
         getEyePrescriptionDetails();
-    }, [userId]);
+    }, [userId,plan]);
     useEffect(() => {
         isIncompleteRange();
     }, [eyeDetails]);
+    const getEyePrescriptionDetails = async () => {
+        try {
+            setLoading(true);
+            const res = await Axios.get(
+                `${process.env.MIX_REACT_APP_URL}/api/prescriptions`,
+                {
+                    params: { user_id: userId,plan:plan },
+                }
+            );
+            let totalMaterails = [];
+            Object.keys(res?.data?.data).map((item) => {
+                res?.data?.data[item].map((element) =>
+                    totalMaterails.push(element)
+                );
+            });
+            const material = [
+                ...totalMaterails.map((item) => {
+                    return {
+                        ...item,
+                        title: item.name,
+                        from: false,
+                        to: false,
+                    };
+                }),
+                ...defaultMaterials?.filter((item) => {
+                    const singleMaterial = totalMaterails?.find(
+                        (val) => val?.name === item?.name
+                    );
+                    if (singleMaterial == undefined) {
+                        return {
+                            ...item,
+                            sphere_from: "",
+                            sphere_to: "",
+                            error: false,
+                        };
+                    }
+                }),
+            ];
+            setSphError(
+                material.map((item, index) => {
+                    return { ...item, error: false };
+                })
+            );
+            setEyeDetails(material);
+            setLoading(false);
+        } catch (err) {
+            console.log("Error while getting glasses details");
+            message.destroy();
+            messageApi.open({
+                type: "error",
+                content: err.response.data.message,
+                duration: 5,
+                className: "custom-postion-error",
+                className: "custom-postion-error",
+            });
+        }
+    };
     const handleInputChange = (value, name, key, index) => {
         if (
             key === "sphere_from" &&
@@ -248,6 +250,7 @@ const EyePrescription = ({ userId }) => {
                 });
             console.log("the data to be posted is here", detailedObject);
             const payload = {
+                plan : plan,
                 eye_prescriptions: detailedObject,
                 user_id: userId,
             };
@@ -310,12 +313,69 @@ const EyePrescription = ({ userId }) => {
     };
 
     return loading == true ? (
+        <>
         <CustomLoader buttonBool={false} />
+        <div>{contextHolder}</div></>
     ) : (
         <Row className={classes["container"]} justify="start" align="middle">
             <div>{contextHolder}</div>
             <Col xs={24} className={classes["page-title"]}>
                 Glasses Prescription Setting
+            </Col>
+            <Col
+                className={`email-remainder-davis_input-sections_input-section ${classes["margindefault"]}`}
+                xs={24}
+            >
+                <Row align="middle">
+                    <Col xs={24} md={3}>
+                        Select Vision Plans
+                    </Col>
+                    <Col xs={24} md={12}>
+                        <Row justify="center" align="middle">
+                            <Col xs={24} className={classes["centeredContent"]}>
+                                <Select
+                                    className="no-outline select-width"
+                                    defaultValue="vsp"
+                                    value={plan}
+                                    onChange={(e) => {
+                                        setPlan(e);
+                                    }}
+                                >
+                                    <Option
+                                        className="ant-select-item-option-content"
+                                        value={"vsp"}
+                                    >
+                                        VSP Plan
+                                    </Option>
+                                    <Option
+                                        className="ant-select-item-option-content"
+                                        value={"davis"}
+                                    >
+                                        Davis Plan
+                                    </Option>
+                                    <Option
+                                        className="ant-select-item-option-content"
+                                        value={"eyemed"}
+                                    >
+                                        EyeMed Plan
+                                    </Option>
+                                    <Option
+                                        className="ant-select-item-option-content"
+                                        value={"spectera"}
+                                    >
+                                        Spectera Plan
+                                    </Option>
+                                    <Option
+                                        className="ant-select-item-option-content"
+                                        value={"vba"}
+                                    >
+                                        VBA Plan
+                                    </Option>
+                                </Select>
+                            </Col>
+                        </Row>
+                    </Col>
+                </Row>
             </Col>
             <Col xs={24} className={classes["content-map-container"]}>
                 <Row justify="center" align="middle">
