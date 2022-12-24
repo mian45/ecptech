@@ -9,6 +9,8 @@ export const UPDATE_STAFF_LOGIN = "UPDATE_STAFF_LOGIN";
 export const ACTIVE_SETTINGS_TAB = "ACTIVE_SETTINGS_TAB";
 export const SHOW_SIDEBAR = "SHOW_SIDEBAR";
 export const RETAIL_POPUP = "RETAIL_POPUP";
+export const CALCULATOR_POP_UP = "CALCULATOR_POP_UP";
+
 
 //calculator
 export const RETAIL_ERROR = "RETAIL_ERROR";
