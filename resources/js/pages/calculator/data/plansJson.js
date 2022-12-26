@@ -4,6 +4,7 @@ import { VspAdvantageJson } from "./plansJson/vspAdvantage";
 import { VspChoiceJson } from "./plansJson/vspChoice";
 import { VspSignatureJson } from "./plansJson/vspSignature";
 import { PrivatePayJson } from "./plansJson/privatePay";
+import { VBAJson } from "./plansJson/vba";
 
 export const benifitsOptions = () => {
     return { yes: "Yes", no: "Only multiple pair benefit only at this time" };
@@ -21,6 +22,7 @@ export const Plans = () => {
             Eyemed: EyemedJson(),
             "Davis Vision": DavisVisionJson(),
             "Private Pay": PrivatePayJson(),
+            VBA: VBAJson(),
         },
     };
 };

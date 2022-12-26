@@ -28,6 +28,15 @@ const PlanTitles = (language, currentPlan) => {
             plan?.frameOrder?.options?.newFrame?.subQuestion?.options?.yes,
         drillMountNo:
             plan?.frameOrder?.options?.newFrame?.subQuestion?.options?.no,
+        drillRimlessMounting:
+            plan?.frameOrder?.options?.newFrame?.subQuestion?.subQuestion
+                ?.options?.rimlessMounting,
+        drillDrillRimlessMounting:
+            plan?.frameOrder?.options?.newFrame?.subQuestion?.subQuestion
+                ?.options?.drillRimlessMounting,
+        drillDrillAndNotchRimlessMounting:
+            plan?.frameOrder?.options?.newFrame?.subQuestion?.subQuestion
+                ?.options?.drillAndNotchRimlessMounting,
         ownFrameTitle: plan?.frameOrder?.options?.ownFrame,
         //lens type
         lensTypeTitle: plan?.lensType?.question,

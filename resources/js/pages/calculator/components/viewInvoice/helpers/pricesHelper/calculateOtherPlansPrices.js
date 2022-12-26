@@ -1,3 +1,4 @@
+import { CompareStrings } from "../../../../../../utils/utils";
 import {
     DRILL_MOUNT,
     GRADIENT_TINT,
@@ -13,6 +14,7 @@ import {
     TRANSITION_XTRACTION,
     ZEISS_PHOTOFUSION,
 } from "../../../../data/constants";
+import { getManufacturer } from "../helpers";
 import {
     GetDavisAntireflectiveFee,
     GetDavisBlueLightFee,
@@ -654,6 +656,7 @@ export const getPriceFromDB = (data, calculatorObj, lensPrices) => {
     if (data.visionPlan === "VSP Advantage") {
         return getAdvantagePricesFromDB(data, calculatorObj, lensPrices);
     } else {
+        const manufacturerList = getManufacturer(data, calculatorObj);
         let lensPrice = 0;
         let materialPrice = 0;
         const materials =
@@ -668,6 +671,41 @@ export const getPriceFromDB = (data, calculatorObj, lensPrices) => {
                 materialPrice: 0,
             };
         } else if (materials[0]?.characteristics?.length === 1) {
+            //if local brand case
+            if (
+                CompareStrings(data?.lensType?.type, "Bifocal") ||
+                CompareStrings(data?.lensType?.type, "Trifocal")
+            ) {
+                if (
+                    manufacturerList?.some(
+                        (item) =>
+                            item?.title === "Generic Traditionally Surfaced" ||
+                            item?.title === "Generic Digitally Surfaced"
+                    )
+                ) {
+                    if (
+                        (
+                            materials[0]?.characteristics[0]?.price || ""
+                        )?.trim() &&
+                        materials[0]?.characteristics[0]?.type !== "add-on" &&
+                        (materials[0]?.characteristics[0]?.name || "")
+                            ?.toLowerCase()
+                            ?.charAt(0) === "A".toLowerCase()
+                    ) {
+                        materialPrice = parseFloat(
+                            (
+                                materials[0]?.characteristics[0]?.price || ""
+                            )?.trim() || ""
+                        );
+                    }
+                }
+                return {
+                    lensPrice: 0,
+                    materialPrice: materialPrice,
+                };
+            }
+
+            // regular brand case
             if ((materials[0]?.characteristics[0]?.price || "")?.trim()) {
                 if (materials[0]?.characteristics[0]?.type !== "add-on") {
                     lensPrice = parseFloat(
@@ -689,6 +727,46 @@ export const getPriceFromDB = (data, calculatorObj, lensPrices) => {
             const TACharecterstics = characteristicsList?.filter(
                 (item) => item?.name === "TA"
             );
+            //if local brand case
+            if (
+                CompareStrings(data?.lensType?.type, "Bifocal") ||
+                CompareStrings(data?.lensType?.type, "Trifocal")
+            ) {
+                if (
+                    manufacturerList?.some(
+                        (item) =>
+                            item?.title === "Generic Traditionally Surfaced" ||
+                            item?.title === "Generic Digitally Surfaced"
+                    )
+                ) {
+                    let isLocal = false;
+                    baseCharecterstics?.forEach((item) => {
+                        if (
+                            (item?.name || "")?.toLowerCase()?.charAt(0) ===
+                            "A"?.toLowerCase()
+                        ) {
+                            isLocal = true;
+                        }
+                    });
+                    if (isLocal) {
+                        lensPrice = 0;
+                        baseCharecterstics?.forEach((item) => {
+                            if ((item?.price || "")?.trim()) {
+                                materialPrice =
+                                    parseFloat(materialPrice || 0) +
+                                    parseFloat(
+                                        (item?.price || "")?.trim() || 0
+                                    );
+                            }
+                        });
+                        return {
+                            lensPrice: lensPrice,
+                            materialPrice: materialPrice,
+                        };
+                    }
+                }
+            }
+            // regular brand case
             if ((baseCharecterstics[0]?.price || "")?.trim()) {
                 lensPrice = parseFloat(
                     (baseCharecterstics[0]?.price || "")?.trim() || ""
@@ -830,6 +908,7 @@ export const GetPrivateAntireflectivePrice = (calculatorObj, value, data) => {
     return total;
 };
 const getAdvantagePricesFromDB = (data, calculatorObj, lensPrices) => {
+    const manufacturerList = getManufacturer(data, calculatorObj);
     let lensPrice = 0;
     let materialPrice = 0;
     const materials =
@@ -844,6 +923,124 @@ const getAdvantagePricesFromDB = (data, calculatorObj, lensPrices) => {
             materialPrice: 0,
         };
     } else if (materials[0]?.characteristics?.length === 1) {
+        //if local brand case
+        if (
+            CompareStrings(data?.lensType?.type, "Bifocal") ||
+            CompareStrings(data?.lensType?.type, "Trifocal")
+        ) {
+            if (
+                manufacturerList?.some(
+                    (item) =>
+                        item?.title === "Generic Traditionally Surfaced" ||
+                        item?.title === "Generic Digitally Surfaced"
+                )
+            ) {
+                if (
+                    (materials[0]?.characteristics[0]?.price || "")?.trim() ||
+                    (
+                        materials[0]?.characteristics[0]?.price_formula || ""
+                    )?.trim()
+                ) {
+                    if (materials[0]?.characteristics[0]?.type !== "add-on") {
+                        const price = materials[0]?.characteristics[0]?.price;
+                        if (
+                            price &&
+                            (materials[0]?.characteristics[0]?.name || "")
+                                ?.toLowerCase()
+                                ?.charAt(0) === "A".toLowerCase()
+                        ) {
+                            materialPrice = parseFloat(
+                                (
+                                    materials[0]?.characteristics[0]?.price ||
+                                    ""
+                                )?.trim() || ""
+                            );
+                        } else {
+                            const formula =
+                                materials[0]?.characteristics[0]?.price_formula;
+                            if (
+                                formula &&
+                                (materials[0]?.characteristics[0]?.name || "")
+                                    ?.toLowerCase()
+                                    ?.charAt(0) === "A".toLowerCase()
+                            ) {
+                                if ((formula || "")?.trim() === "80% of U&C") {
+                                    materialPrice =
+                                        parseFloat(
+                                            GetPrivateLensFee(
+                                                calculatorObj,
+                                                data
+                                            ) || 0
+                                        ) * 0.8;
+                                } else if (
+                                    (formula || "")?.trim().includes("+")
+                                ) {
+                                    if (
+                                        (formula || "")
+                                            ?.trim()
+                                            .includes("80% of U&C")
+                                    ) {
+                                        const secondIndex = formula
+                                            ?.split("+")[1]
+                                            ?.trim();
+                                        if (secondIndex === "80% of U&C") {
+                                            const value1 = formula
+                                                ?.split("+")[0]
+                                                ?.trim();
+                                            const value2 =
+                                                parseFloat(
+                                                    GetPrivateLensFee(
+                                                        calculatorObj,
+                                                        data
+                                                    ) || 0
+                                                ) * 0.8;
+                                            materialPrice =
+                                                parseFloat(value1 || 0) +
+                                                parseFloat(value2 || 0);
+                                        } else if (
+                                            secondIndex === "80% of U&C^3"
+                                        ) {
+                                            const value1 = formula
+                                                ?.split("+")[0]
+                                                ?.trim();
+                                            const value2 =
+                                                parseFloat(
+                                                    GetPrivateLensFee(
+                                                        calculatorObj,
+                                                        data
+                                                    ) || 0
+                                                ) * 0.8;
+                                            materialPrice =
+                                                parseFloat(value1 || 0) +
+                                                parseFloat(value2 || 0) *
+                                                    parseFloat(value2 || 0) *
+                                                    parseFloat(value2 || 0);
+                                        }
+                                    } else {
+                                        const value1 = formula
+                                            ?.split("+")[0]
+                                            ?.trim();
+                                        const value2 = formula
+                                            ?.split("+")[1]
+                                            ?.trim();
+                                        materialPrice =
+                                            parseFloat(value1 || 0) +
+                                            parseFloat(value2 || 0);
+                                    }
+                                }
+                            } else {
+                                materialPrice = 0;
+                            }
+                        }
+                    }
+                }
+            }
+            return {
+                lensPrice: 0,
+                materialPrice: materialPrice,
+            };
+        }
+        // regular brand case
         if (
             (materials[0]?.characteristics[0]?.price || "")?.trim() ||
             (materials[0]?.characteristics[0]?.price_formula || "")?.trim()
@@ -921,6 +1118,7 @@ const getAdvantagePricesFromDB = (data, calculatorObj, lensPrices) => {
             lensPrice: lensPrice,
             materialPrice: 0,
         };
+        // end of single charecterstics
     } else {
         const characteristicsList = materials[0]?.characteristics || [];
         const baseCharecterstics = characteristicsList?.filter(
@@ -929,6 +1127,120 @@ const getAdvantagePricesFromDB = (data, calculatorObj, lensPrices) => {
         const TACharecterstics = characteristicsList?.filter(
             (item) => item?.name === "TA"
         );
+        //if local brand case
+        if (
+            CompareStrings(data?.lensType?.type, "Bifocal") ||
+            CompareStrings(data?.lensType?.type, "Trifocal")
+        ) {
+            if (
+                manufacturerList?.some(
+                    (item) =>
+                        item?.title === "Generic Traditionally Surfaced" ||
+                        item?.title === "Generic Digitally Surfaced"
+                )
+            ) {
+                let isLocal = false;
+                baseCharecterstics?.forEach((item) => {
+                    if (
+                        (item?.name || "")?.toLowerCase()?.charAt(0) ===
+                        "A"?.toLowerCase()
+                    ) {
+                        isLocal = true;
+                    }
+                });
+                if (isLocal) {
+                    lensPrice = 0;
+                    baseCharecterstics?.forEach((item) => {
+                        if ((item?.price || "")?.trim()) {
+                            materialPrice =
+                                parseFloat(materialPrice || 0) +
+                                parseFloat((item?.price || "")?.trim() || 0);
+                        } else {
+                            const formula = item?.price_formula;
+                            if (formula) {
+                                if ((formula || "")?.trim() === "80% of U&C") {
+                                    materialPrice =
+                                        parseFloat(materialPrice || 0) +
+                                        parseFloat(
+                                            GetPrivatePayMaterialPrice(
+                                                calculatorObj,
+                                                data
+                                            ) || 0
+                                        ) *
+                                            0.8;
+                                } else if (
+                                    (formula || "")?.trim().includes("+")
+                                ) {
+                                    if (
+                                        (formula || "")
+                                            ?.trim()
+                                            .includes("80% of U&C")
+                                    ) {
+                                        const secondIndex = formula
+                                            ?.split("+")[1]
+                                            ?.trim();
+                                        if (secondIndex === "80% of U&C") {
+                                            const value1 = formula
+                                                ?.split("+")[0]
+                                                ?.trim();
+                                            const value2 =
+                                                parseFloat(
+                                                    GetPrivatePayMaterialPrice(
+                                                        calculatorObj,
+                                                        data
+                                                    ) || 0
+                                                ) * 0.8;
+                                            materialPrice =
+                                                parseFloat(materialPrice || 0) +
+                                                parseFloat(value1 || 0) +
+                                                parseFloat(value2 || 0);
+                                        } else if (
+                                            secondIndex === "80% of U&C^3"
+                                        ) {
+                                            const value1 = formula
+                                                ?.split("+")[0]
+                                                ?.trim();
+                                            const value2 =
+                                                parseFloat(
+                                                    GetPrivatePayMaterialPrice(
+                                                        calculatorObj,
+                                                        data
+                                                    ) || 0
+                                                ) * 0.8;
+                                            materialPrice =
+                                                parseFloat(materialPrice || 0) +
+                                                parseFloat(value1 || 0) +
+                                                parseFloat(value2 || 0) *
+                                                    parseFloat(value2 || 0) *
+                                                    parseFloat(value2 || 0);
+                                        }
+                                    } else {
+                                        const value1 = formula
+                                            ?.split("+")[0]
+                                            ?.trim();
+                                        const value2 = formula
+                                            ?.split("+")[1]
+                                            ?.trim();
+                                        materialPrice =
+                                            parseFloat(materialPrice || 0) +
+                                            parseFloat(value1 || 0) +
+                                            parseFloat(value2 || 0);
+                                    }
+                                }
+                            } else {
+                                materialPrice =
+                                    parseFloat(materialPrice || 0) + +0;
+                            }
+                        }
+                    });
+                    return {
+                        lensPrice: lensPrice,
+                        materialPrice: materialPrice,
+                    };
+                }
+            }
+        }
+        // regular brand case
         if ((baseCharecterstics[0]?.price || "")?.trim()) {
             lensPrice = parseFloat(
                 (baseCharecterstics[0]?.price || "")?.trim() || ""
