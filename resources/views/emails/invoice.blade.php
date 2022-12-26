@@ -18,38 +18,11 @@
       
       /*All the styling goes here*/
       
-      img {
+      hr{
+        height: 1px;
+        background-color: #ccc;
         border: none;
-        -ms-interpolation-mode: bicubic;
-        max-width: 100%; 
-      }
-
-      body {
-        background-color: #f6f6f6;
-        font-family: 'Montserrat';
-        -webkit-font-smoothing: antialiased;
-        font-size: 14px;
-        line-height: 1.4;
-        margin: 0;
-        padding: 0;
-        -ms-text-size-adjust: 100%;
-        -webkit-text-size-adjust: 100%; 
-      }
-
-      table {
-        border-collapse: separate;
-        mso-table-lspace: 0pt;
-        mso-table-rspace: 0pt;
-        width: 100%; }
-        table td {
-          font-family: 'Montserrat';
-          font-size: 14px;
-          vertical-align: top; 
-      }
-
-      /* -------------------------------------
-          BODY & CONTAINER
-      ------------------------------------- */
+    }
 
       .body {
         font-family: 'Montserrat';
@@ -63,9 +36,9 @@
         display: block;
         margin: 0 auto !important;
         /* makes it centered */
-        max-width: 671px;
+        max-width: 700px;
         padding: 10px;
-        width: 671px; 
+        width: 700px; 
       }
 
       /* This should also be a block element, so that it will fill 100% of the .container */
@@ -73,7 +46,7 @@
         box-sizing: border-box;
         display: block;
         margin: 0 auto;
-        max-width: 671px;
+        max-width: 700px;
         padding: 10px; 
       }
 
@@ -82,13 +55,17 @@
       ------------------------------------- */
       .main {
         background: #ffffff;
-        border-radius: 3px;
+
         width: 100%; 
+        box-shadow: 0px 11px 30px #00000012;
+        border: 1px solid #E8E8E8;
+        border-radius: 19px;
+        opacity: 1;
       }
 
       .wrapper {
         box-sizing: border-box;
-        padding: 20px; 
+        padding: 10px 28px 10px 28px;
       }
 
       .content-block {
@@ -102,13 +79,18 @@
         text-align: center;
         width: 100%; 
       }
-        .footer td,
-        .footer p,
-        .footer span,
-        .footer a {
-          color: #999999;
-          font-size: 12px;
-          text-align: center; 
+      .footer table tr td p {
+        color: #AAAAAA;
+        font-size: 10px !important;
+        text-align: center;
+        margin: 40px;
+        line-height: 20px !important;
+       }
+  
+      .copy-right p{
+          color: #2A2A2A !important;
+          font-size: 11px !important;
+         
       }
 
       /* -------------------------------------
@@ -118,6 +100,7 @@
       h2{
         font-weight: bold;
         font-size: 18px;
+
       }
       strong{
         font-weight: bold;
@@ -132,6 +115,7 @@
         line-height: 15px;
         letter-spacing: 0px;
         opacity: 1;
+        margin:8px;
       }
       table.body tr td p span{
         font-size: 14px;
@@ -139,6 +123,25 @@
       }
       table.body tr{
         line-height: 15px;
+      }
+      ul{
+        padding: 0px 0px 0px 23px;
+      }
+      ul li{
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 20px;
+        letter-spacing: 0px;
+        opacity: 1;
+      }
+      button{
+        width: 90px;
+        height: 33px;
+        color: white;
+        background: #6FA5CB 0% 0% no-repeat padding-box;
+        opacity: 1;
+        border: none;
+        padding-left: 32px;
       }
       /* -------------------------------------
           RESPONSIVE AND MOBILE FRIENDLY STYLES
@@ -159,10 +162,21 @@
         <td>&nbsp;</td>
         <td class="container">
           <div class="content">
-
+          <table style="width: 100%;padding:35px;">
+              <tbody>
+                <tr>
+                  <td align="left">
+                    <img src="{{asset("logo.png")}}">
+                  </td>
+                  <td align="right">
+                       <p style="margin:0px">Invoice # 2332 <br>Dated: Dec 02, 2022</p>
+                  </td>
+                </tr>
+              </tbody>
+          </table>
             <!-- START CENTERED WHITE CONTAINER -->
             <table role="presentation" class="main">
-
+         
               <!-- START MAIN CONTENT AREA -->
               <tr>
                 <td class="wrapper">
@@ -170,19 +184,19 @@
                     <tr>
                       <td>
                         <h2>Estimate for John Varvatos Sunglasses</h2>
-                        <p><strong>Name:</strong> <span> John Smith<span>&nbsp;&nbsp;<strong>Email:</strong> <span> john@mymail.com<span>&nbsp;&nbsp;<strong>Phone:</strong> <span> 123 456 7890<span></p>
-                        <hr>
+                        <p style="margin-left:0px;margin-bottom:16px !important;"><strong>Name:</strong> <span> John Smith<span>&nbsp;&nbsp;<strong>Email:</strong> <span> john@mymail.com<span>&nbsp;&nbsp;<strong>Phone:</strong> <span> 123 456 7890<span></p>
+                        <hr style="color:#E8E8E8">
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                           <tbody>
                             <tr>
-                              <td align="left">
+                              <td align="left" style="padding: 16px 8px 16px 8px;">
                                  <strong>Item Description</strong>
                               </td>
-                              <td align="right">
+                              <td align="right" style="padding: 16px 8px 16px 8px;">
                                  <strong>Price</strong>
                               </td>
                             </tr>
-                            <tr>
+                            <tr style="background: #F3F3F3 0% 0% no-repeat padding-box;"> 
                               <td align="left">
                                  <p>Frame Order</p>
                               </td>
@@ -206,7 +220,7 @@
                                  <p>$0.00</p>
                               </td>
                             </tr>
-                            <tr>
+                            <tr style="background: #F3F3F3 0% 0% no-repeat padding-box;">
                               <td align="left">
                                  <p>Lenses</p>
                               </td>
@@ -270,23 +284,61 @@
                                  <p>Yes</p>
                               </td>
                             </tr>
-                            
-                          </tbody>
-                        </table>
-                        <table role="presentation" border="0" cellpadding="0" cellspacing="0">
-                        <tbody>
-                           <tr>
+                            <tr>
                               <td align="left">
                                 <ul>
                                   <li>Polycarbonate lenses are thinner, lighter weight, and impact resistant space-age lenses. Single vision.</li>
+                                  <li>Viso XC no-glare technology makes your lenses easier to clean than ordinary lenses.</li>
+                                  <li>They reduce glare, resist scratching, repel water, resist smudges and provide UV protection. </li>
+                                  <li>The newest generation of transition lenses darken well in UV light and lighten completely indoors. Transitions options come in grey, brown, or green.</li>
                                 </ul>
                               </td>
                             </tr>
-                            
+                            <tr>
+                              <td align="left">
+                                 <p>Sales Tax</p>
+                              </td>
+                              <td align="right">
+                                 <p><i style="color:#CBCBCB">(25%)</i> $111.39</p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td align="left">
+                                 <p>Shipping</p>
+                              </td>
+                              <td align="right">
+                                 <p>$30.00</p>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td align="left">
+                                 <p>Retail fee your glasses would have cost without your vision plan</p>
+                              </td>
+                              <td align="right">
+                                 <p>$586.93</p>
+                              </td>
+                            </tr>
+                            <tr style="background: #F3F3F3 0% 0% no-repeat padding-box;">
+                              <td align="left" >
+                                 <p>Out of Pocket Fees After Your Vision Plan Contribution</p>
+                              </td>
+                              <td align="right">
+                                 <button>$347.06</button>
+                              </td>
+                            </tr>
+                           
                           </tbody>
                         </table>
-                        <p>This is a really simple email template. Its sole purpose is to get the recipient to click the button with no distractions.</p>
-                        <p>Good luck! Hope it works.</p>
+                        
+                        <table style="width: 100%;">
+                        <tbody>
+                        <tr>
+                          <td align="right">
+                              <p><strong><i>Savings of</i> : </strong><span style="color:#6FA5CB;font-size:14px;">$239.90</span></p>
+                          </td>
+                        </tr>
+                        </tbody>
+                        </table>
                       </td>
                     </tr>
                   </table>
@@ -301,14 +353,15 @@
             <div class="footer">
               <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                 <tr>
-                  <td class="content-block">
-                    <span class="apple-link">Company Inc, 3 Abbey Road, San Francisco CA 94102</span>
-                    <br> Don't like these emails? <a href="http://i.imgur.com/CScmqnj.gif">Unsubscribe</a>.
+                  <td style="padding:0px 53px 5px 53px">
+                    <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.<p>
+                    <hr>
                   </td>
                 </tr>
+               
                 <tr>
-                  <td class="content-block powered-by">
-                    Powered by <a href="http://htmlemail.io">HTMLemail</a>.
+                  <td class="copy-right">
+                   <p> Copyright © Urban Optics 2022. All Rights Reserved.</p>
                   </td>
                 </tr>
               </table>
