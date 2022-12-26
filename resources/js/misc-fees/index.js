@@ -5,6 +5,7 @@ import {  Col, Row } from "antd";
 import { message } from "antd";
 import CustomLoader from "../components/customLoader";
 import TracingFee from "./tracingFee";
+import DrillMount from "./drillMount";
 const MiscFees = () => {
     const [messageApi, contextHolder] = message.useMessage();
     const [loading, setLoading] = useState(false);
@@ -29,6 +30,9 @@ const MiscFees = () => {
                         </Col>
                         <Col xs={24}>
                             <TracingFee setLoading={(e)=>{setLoading(e)}} message={messageApi}/>
+                        </Col>
+                        <Col xs={24}>
+                            <DrillMount setLoading={(e)=>{setLoading(e)}} message={messageApi}/>
                         </Col>
                        
                     </Row>
