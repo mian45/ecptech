@@ -919,13 +919,18 @@ class InvoiceCalculaterController extends Controller
             }])->select('id','title')->where('id',$request->vision_plan_id)->get();
         }
 
-        if($vision_plan->title == 'Davis Vision'){
-            $data['lense_materials'] = Code::where('vision_plan_id',$vision_plan->id)
-                                        ->join('lens_materials', 'lens_materials.id', '=', 'codes.lense_material_id')
-                                        ->select('lens_materials.id','lens_materials.lens_material_title','codes.price')
-                                        ->whereNotNull('lense_material_id')->get();
-        }
+        
 
+        $data['lense_materials'] = LensMaterial::join('user_lense_material_settings as setting','lens_materials.id', '=', 'setting.lens_material_id')
+            ->with(['prices' => function($q){  
+                $q->leftjoin('lense_types as l','codes.lense_type_id','=','l.id');
+                $q->select('codes.id','l.title as lense_type','price','lense_material_id');
+            }])
+        ->select('lens_materials.id','lens_material_title','setting.price as retail_price','setting.display_name')
+        ->where('vision_plan_id',$vision_plan->id)
+        ->where('setting.user_id',  auth()->user()->id)
+        ->where('setting.status',  'active')
+        ->get();
        
         
         return $this->sendResponse($data, 'Collections get successfully');
