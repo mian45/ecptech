@@ -27,8 +27,8 @@ let invoice = {
     salesTax: "",
     "salesTaxPercantage ": "",
     shipping: "",
-    "retailFee ": "",
-    "outOfPocket ": "",
+    retailFee: "",
+    outOfPocket: "",
     savingOf: "",
 };
 const DetailsList = ({
@@ -39,6 +39,7 @@ const DetailsList = ({
     handleSendInvoiceClick,
     language,
     davisMaterials,
+    downloadInvoice,
 }) => {
     const currentPlan = receipt?.values?.visionPlan;
     const plansList = AllPlans[language];
@@ -203,8 +204,8 @@ const DetailsList = ({
             (savings() / (totalFrame > 0 ? totalFrame : 1)) * 100;
         return parseFloat(savingRate || 0).toFixed(2);
     };
-    const downloadPdf = () => {
-        console.log("the invoice object is here", invoice);
+    const downloadPdf = async () => {
+        downloadInvoice(invoice);
     };
     invoice.salesTax = `$${getTax()}`;
     invoice["salesTaxPercantage "] = `${getTaxPercentage()}%`;
