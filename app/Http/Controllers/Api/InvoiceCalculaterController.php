@@ -627,6 +627,8 @@ class InvoiceCalculaterController extends Controller
 
                 DB::beginTransaction();
                 $row = 0;
+                $lense_type_id = NULL;
+                $price = NULL;
                 try{
                     while(($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
                         if($row==0){
@@ -639,60 +641,41 @@ class InvoiceCalculaterController extends Controller
                                 $vision_plan = VisionPlan::where('title', $data[0])->first();
                             }
 
-                            if($vision_plan->title == 'VBA' OR $vision_plan->title == 'Spectera'){
 
-                                $data = array_combine($column_names,$data);
-                                
+                            $data = array_combine($column_names,$data);
+                            
+                            if(!empty($data['Lense Materials'])){
                                 $lense_material = LensMaterial::updateOrCreate(
                                     ['vision_plan_id'=>$vision_plan->id,'lens_material_title'=>$data['Lense Materials']]
                                 );
+                            }
+                            
+                            if(!empty($data['Lense Type'])){
+                                $lense_type = LenseType::updateOrCreate(
+                                    ['title'=> $data['Lense Type'], 'vision_plan_id'=>$vision_plan->id]
+                                );
 
-                                if(!empty($data['Lense Type'])){
-                                    $lense_type = LenseType::updateOrCreate(
-                                        ['title'=> $data['Lense Type'], 'vision_plan_id'=>$vision_plan->id]
-                                    );
-                                }
+                                $lense_type_id = $lense_type->id;
+                            }
 
+                            if(!empty($data['Price'])){
                                 $price = str_replace('$','',$data['Price']);
+                            }
+                            
 
-                                if($vision_plan->title == 'VBA'){
-                                    $code = Code::updateOrCreate(
-                                        ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id, 'lense_type_id' =>$lense_type->id ],
-                                        ['price'=> (float)$price]
-                                    );
-
-                                }else{
-                                    if(is_numeric($price)){
-                                        $code = Code::updateOrCreate(
-                                            ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id],
-                                            ['price'=> (float)$price]
-                                        );
-
-                                    }else{
-                                        $code = Code::updateOrCreate(
-                                            ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id],
-                                            ['price_formula'=> $price]
-                                        );
-                                    }
-                                }
-                                
-                                
-
+                            if(is_numeric($price)){
+                                $code = Code::updateOrCreate(
+                                    ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id,'lense_type_id'=>$lense_type_id],
+                                    ['price'=> (float)$price]
+                                );
                             }else{
+                                $code = Code::updateOrCreate(
+                                    ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id,'lense_type_id'=>$lense_type_id],
+                                    ['price_formula'=> $price]
+                                );
+                            } 
 
-                            if(!empty($data[1])){
-                                $lense_material = LensMaterial::where('lens_material_title', $data[1])->first();
-                            }
-
-                            if(!empty($data[2])){
-                                $price = moneyFormatter($data[2]);
-                            }
-
-                            $code = Code::updateOrCreate(
-                                ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id],
-                                ['price'=> $price]
-                            );
-                            }
+                            
                         }
 
                         $row++;
