@@ -3,6 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
     <title></title>
     <style>
@@ -169,7 +170,7 @@
                     <img src="{{asset("logo.png")}}">
                   </td>
                   <td align="right">
-                       <p style="margin:0px">Invoice # 2332 <br>Dated: Dec 02, 2022</p>
+                       <p style="margin:0px">Invoice # {{$data['invoiceNo']}}<br>Dated: {{$data['invoiceDate']}}</p>
                   </td>
                 </tr>
               </tbody>
@@ -184,7 +185,7 @@
                     <tr>
                       <td>
                         <h2>Estimate for John Varvatos Sunglasses</h2>
-                        <p style="margin-left:0px;margin-bottom:16px !important;"><strong>Name:</strong> <span> John Smith<span>&nbsp;&nbsp;<strong>Email:</strong> <span> john@mymail.com<span>&nbsp;&nbsp;<strong>Phone:</strong> <span> 123 456 7890<span></p>
+                        <p style="margin-left:0px;margin-bottom:16px !important;"><strong>Name:</strong> <span> {{$data['name'] ?? 'NA'}}<span>&nbsp;&nbsp;<strong>Email:</strong> <span> {{$data['email'] ?? 'NA'}}<span>&nbsp;&nbsp;<strong>Phone:</strong> <span> {{$data['phone'] ?? 'NA'}}<span></p>
                         <hr style="color:#E8E8E8">
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
                           <tbody>
@@ -201,96 +202,44 @@
                                  <p>Frame Order</p>
                               </td>
                               <td align="right">
-                                 <p>$0.00</p>
+                                 <p>{{$data['invoiceState']['frameTotal'] ?? '$0.00'}}</p>
                               </td>
                             </tr>
+                            @foreach($data['invoiceState']['frameOrder'] as $key => $val) {
                             <tr>
                               <td align="left">
-                                 <p>Frame</p>
+                                 <p>{{$key}}</p>
                               </td>
                               <td align="right">
-                                 <p>$0.00</p>
+                                 <p>{{$val}}</p>
                               </td>
                             </tr>
-                            <tr>
-                              <td align="left">
-                                 <p>Drill Mounte</p>
-                              </td>
-                              <td align="right">
-                                 <p>$0.00</p>
-                              </td>
-                            </tr>
+                            @endforeach
                             <tr style="background: #F3F3F3 0% 0% no-repeat padding-box;">
                               <td align="left">
                                  <p>Lenses</p>
                               </td>
                               <td align="right">
-                                 <p>$445.54</p>
+                                 <p>{{$data['invoiceState']['lenseTotal'] ?? '$0.00'}}</p>
                               </td>
                             </tr>
+                            @foreach($data['invoiceState']['lenses'] as $key => $val) {
                             <tr>
                               <td align="left">
-                                 <p>Shamir Computer/Workspace ( Base fee )</p>
+                                 <p>{{$key}}</p>
                               </td>
                               <td align="right">
-                                 <p>$50.00</p>
+                                 <p>{{$val}}</p>
                               </td>
                             </tr>
-                            <tr>
-                              <td align="left">
-                                 <p>Shamir Computer/Workspace ( Lens Material: Polycarbonate )</p>
-                              </td>
-                              <td align="right">
-                                 <p>$0.00</p>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td align="left">
-                                 <p>Material Copay</p>
-                              </td>
-                              <td align="right">
-                                 <p>$200.00</p>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td align="left">
-                                 <p>Photochromic Option: Transitions Signature 8</p>
-                              </td>
-                              <td align="right">
-                                 <p>$75.00</p>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td align="left">
-                                 <p>Antireflective Properties: Shamir Glacier Plus UV</p>
-                              </td>
-                              <td align="right">
-                                 <p>$85.00</p>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td align="left">
-                                 <p>Mirror Coating: Ski Type Mirror </p>
-                              </td>
-                              <td align="right">
-                                 <p>$47.20</p>
-                              </td>
-                            </tr>
-                            <tr>
-                              <td align="left">
-                                 <p>Is Sunglass Lens Polarized?</p>
-                              </td>
-                              <td align="right">
-                                 <p>Yes</p>
-                              </td>
-                            </tr>
+                            @endforeach
+
                             <tr>
                               <td align="left">
                                 <ul>
-                                  <li>Polycarbonate lenses are thinner, lighter weight, and impact resistant space-age lenses. Single vision.</li>
-                                  <li>Viso XC no-glare technology makes your lenses easier to clean than ordinary lenses.</li>
-                                  <li>They reduce glare, resist scratching, repel water, resist smudges and provide UV protection. </li>
-                                  <li>The newest generation of transition lenses darken well in UV light and lighten completely indoors. Transitions options come in grey, brown, or green.</li>
+                                @foreach($data['invoiceState']['invoiceDesc'] as $key => $val) 
+                                <li>{{$val}}</li>
+                                @endforeach
                                 </ul>
                               </td>
                             </tr>
@@ -299,7 +248,7 @@
                                  <p>Sales Tax</p>
                               </td>
                               <td align="right">
-                                 <p><i style="color:#CBCBCB">(25%)</i> $111.39</p>
+                                 <p><i style="color:#CBCBCB">{{$data['invoiceState']['savingsOfPercantage'] ?? ''}}</i> {{$data['invoiceState']['salesTax'] ?? ''}}</p>
                               </td>
                             </tr>
                             <tr>
@@ -307,7 +256,7 @@
                                  <p>Shipping</p>
                               </td>
                               <td align="right">
-                                 <p>$30.00</p>
+                                 <p>{{$data['invoiceState']['shipping'] ?? '$0.00'}}</p>
                               </td>
                             </tr>
                             <tr>
@@ -315,7 +264,7 @@
                                  <p>Retail fee your glasses would have cost without your vision plan</p>
                               </td>
                               <td align="right">
-                                 <p>$586.93</p>
+                                 <p>{{$data['invoiceState']['retailFee'] ?? '$0.00'}}</p>
                               </td>
                             </tr>
                             <tr style="background: #F3F3F3 0% 0% no-repeat padding-box;">
@@ -323,7 +272,7 @@
                                  <p>Out of Pocket Fees After Your Vision Plan Contribution</p>
                               </td>
                               <td align="right">
-                                 <button>$347.06</button>
+                                 <button>{{$data['invoiceState']['outOfPocket'] ?? '$0.00'}}</button>
                               </td>
                             </tr>
                            
@@ -334,7 +283,7 @@
                         <tbody>
                         <tr>
                           <td align="right">
-                              <p><strong><i>Savings of</i> : </strong><span style="color:#6FA5CB;font-size:14px;">$239.90</span></p>
+                              <p><strong><i>Savings of</i> : </strong><span style="color:#6FA5CB;font-size:14px;">{{$data['invoiceState']['savingOf'] ?? '$0.00'}}</span></p>
                           </td>
                         </tr>
                         </tbody>
