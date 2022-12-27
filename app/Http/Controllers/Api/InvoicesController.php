@@ -14,6 +14,8 @@ use Validator;
 use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 use PDF;
+use Mail;
+use App\Mail\SendInvoiceMail;
 class InvoicesController extends Controller
 {
     public function index(Request $request){
@@ -268,5 +270,33 @@ class InvoicesController extends Controller
         $pdf = PDF::loadView('emails.invoice',['data' => $data]);
     
         return $pdf->download('ecp.pdf');
+    }
+
+    public function sendEmail(Request $request){
+
+        $name = $request->fname . ' ' .$request->lname;
+        $email = $request->email;
+        $phone = $request->phone;
+        $invoiceName = $request->invoiceName;
+        $invoiceNo = $request->invoiceNo;
+        $invoiceDate = $request->invoiceDate;
+        $invoiceState = $request->invoiceState;
+        $data = [
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'invoiceName' => $invoiceName,
+            'invoiceNo' => $invoiceNo,
+            'invoiceDate' => $invoiceDate,
+            'invoiceState' => $invoiceState
+
+        ];
+        $pdf = PDF::loadView('emails.invoice',['data' => $data]);
+        Mail::send('emails.invoice',['data' => $data], function($message)use($data,$pdf) {
+            $message->to($data["email"])
+            ->subject('Mail from ECPTech.com')
+            ->attachData($pdf->output(), "ecp.pdf");
+            });
+        return $this->sendResponse($data, 'Send invoice mail successfully');
     }
 }

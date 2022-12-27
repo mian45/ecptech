@@ -8,3 +8,5 @@ Route::post('save-invoice', [InvoicesController::class, 'saveInvoice']);
 Route::post('save-edit-invoice', [InvoicesController::class, 'saveEditInvoice']);
 
 Route::post('download-pdf', [InvoicesController::class, 'downloadPDF']);
+
+Route::post('send-email', [InvoicesController::class, 'sendEmail']);
