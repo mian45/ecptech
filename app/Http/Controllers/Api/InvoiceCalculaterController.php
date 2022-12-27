@@ -389,6 +389,13 @@ class InvoiceCalculaterController extends Controller
                                 if(!empty($data[4])){
                                     $price = moneyFormatter($data[4]);
                                 }
+                                if($vision_plan->title =='VBA'){
+
+                                    if(!empty($data[2])){
+                                        $category = $data[2];
+                                    }
+
+                                }else{
 
                                 if(strpos($addon_type->title, 'Reflective') !== false){
                                     if(!empty($data[2])){
@@ -397,6 +404,7 @@ class InvoiceCalculaterController extends Controller
                                 }else{
                                     $category = NULL;
                                 }
+                            }
 
                                 
                                 

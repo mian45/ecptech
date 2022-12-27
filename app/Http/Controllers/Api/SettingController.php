@@ -263,7 +263,7 @@ class SettingController extends Controller
     public function getAddons(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'plan' => 'in:vsp,davis,eyemed|required',
+            'plan' => 'in:vsp,davis,eyemed,spectera,vba|required',
             'type' => 'in:addon,lense_treatment',
         ]);
 
