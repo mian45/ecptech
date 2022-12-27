@@ -1,6 +1,7 @@
 import Icon from "@ant-design/icons";
 import { Col, Row } from "antd";
 import React from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { Plans } from "../../../../data/plansJson";
 import { AllPlans } from "../../../../data/plansList";
@@ -14,7 +15,22 @@ import ButtonsList from "../buttonsList/buttonsList";
 import FrameDetails, { FramePriceSlot } from "../frameDetails/frameDetails";
 import LensesDetails from "../lensesDetails/lensesDetails";
 import classes from "./style.module.scss";
-
+let invoice = {
+    frameOrder: {
+        Frame: "",
+        "Drill Mount": "",
+    },
+    lenses: {},
+    invoiceDesc: [],
+    frameTotal: "",
+    lenseTotal: "",
+    salesTax: "",
+    "salesTaxPercantage ": "",
+    shipping: "",
+    "retailFee ": "",
+    "outOfPocket ": "",
+    savingOf: "",
+};
 const DetailsList = ({
     receipt,
     calculatorObj,
@@ -27,7 +43,6 @@ const DetailsList = ({
     const currentPlan = receipt?.values?.visionPlan;
     const plansList = AllPlans[language];
     const plansJson = Plans()[language];
-
     const getTax = () => {
         let totalTax = 0;
         calculatorObj?.tax?.forEach((element) => {
@@ -128,6 +143,9 @@ const DetailsList = ({
             component={DownloadIcon}
             {...props}
             style={{ cursor: "pointer" }}
+            onClick={() => {
+                downloadPdf();
+            }}
         />
     );
 
@@ -185,7 +203,26 @@ const DetailsList = ({
             (savings() / (totalFrame > 0 ? totalFrame : 1)) * 100;
         return parseFloat(savingRate || 0).toFixed(2);
     };
-
+    const downloadPdf = () => {
+        console.log("the invoice object is here", invoice);
+    };
+    invoice.salesTax = `$${getTax()}`;
+    invoice["salesTaxPercantage "] = `${getTaxPercentage()}%`;
+    invoice.shipping = `$${(
+        parseFloat(calculatorObj?.shipping || 0) || 0
+    ).toFixed(2)}`;
+    invoice["retailFee "] = `$${glassesCost()}`;
+    invoice["outOfPocket "] = `$${(
+        CalculateWithTaxesTotalPrice(
+            receipt?.values,
+            calculatorObj,
+            lensPrices,
+            plansList,
+            plansJson,
+            davisMaterials
+        ) || 0
+    ).toFixed(2)}`;
+    invoice.savingOf = `(${savingsPercentage()}%) $${savings()}`;
     return (
         <Row>
             <Col xs={24} className={classes["container"]}>
@@ -245,6 +282,10 @@ const DetailsList = ({
                             receipt={receipt}
                             calculatorObj={calculatorObj}
                             lensPrices={lensPrices}
+                            invoiceData={invoice}
+                            setInvoice={(i) => {
+                                invoice = i;
+                            }}
                         />
                     </Col>
                     <Col xs={24} className={classes["lenses-container"]}>
@@ -253,6 +294,10 @@ const DetailsList = ({
                             calculatorObj={calculatorObj}
                             lensPrices={lensPrices}
                             davisMaterials={davisMaterials}
+                            invoiceData={invoice}
+                            setInvoice={(i) => {
+                                invoice = i;
+                            }}
                         />
                     </Col>
                     <Col xs={24} className={classes["divider-doted"]} />
