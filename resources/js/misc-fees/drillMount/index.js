@@ -7,31 +7,30 @@ import CustomLoader from "../../components/customLoader";
 import DeleteModal from "../../components/deleteModal/index";
 import { Row, Col, message, Tooltip, Switch } from "antd";
 const label = { inputProps: { "aria-label": "Switch demo" } };
-const TracingSettings = ({ userId,setLoading }) => {
+const DrillSettings = ({ userId,setLoading }) => {
     const [messageApi, contextHolder] = message.useMessage();
-    const [TracingName, setTracingName] = useState("");
-    const [TracingAmount, setTracingAmount] = useState("");
-    const [Tracing, setTracing] = useState({});
+    const [Amount, setAmount] = useState("");
+    const [Drill, setDrill] = useState({});
     const [isSubmitted, setIsSubmitted] = useState(false);
-    const [TracingButtonLoader, setTracingButtonLoader] = useState(false);
+    const [DrillButtonLoader, setDrillButtonLoader] = useState(false);
 
     const [editState, setEditState] = useState(false);
-    const [showDeleteTracing, setShowDeleteTracing] = useState(false);
-    const [deleteTracingId, setDeleteTracingId] = useState(0);
+    const [showDeleteDrill, setShowDeleteDrill] = useState(false);
+    const [deleteDrillId, setDeleteDrillId] = useState(0);
     useEffect(() => {
         if (userId == null) return;
         setEditState(false);
-        getTracing();
+        getDrillMount();
     }, [userId]);
-    const getTracing = async () => {
+    const getDrillMount = async () => {
         setLoading(true);
         try {
             const res = await Axios.get(
-                process.env.MIX_REACT_APP_URL + "/api/tracing-fee",
+                process.env.MIX_REACT_APP_URL + "/api/drill-mount",
                 { params: { userId: userId } }
             );
-            const TracingData = res?.data?.data;
-            setTracing({ ...TracingData });
+            const DrillData = res?.data?.data;
+            setDrill({ ...DrillData });
             setLoading(false);
         } catch (err) {
             message.destroy()
@@ -41,22 +40,22 @@ const TracingSettings = ({ userId,setLoading }) => {
                     duration: 5,
                     className: 'custom-postion-error',
                 });
+          
             setLoading(false);
         }
     };
-    const handleUpdateTracing = async (data) => {
-        setTracingName(data?.name);
-        setTracingAmount(data?.value);
+    const handleUpdateDrill = async (data) => {
+        setAmount(data?.value);
         setIsSubmitted(false);
     };
-    const deleteTracing = async (id) => {
+    const deleteDrill = async (id) => {
         try {
             const res = await Axios.delete(
-                process.env.MIX_REACT_APP_URL + `/api/tracing-fee/${id}`,
+                process.env.MIX_REACT_APP_URL + `/api/drill-mount/${id}`,
             );
-            setTracing({});
+            setDrill({});
             setIsSubmitted(false);
-            setShowDeleteTracing(false);
+            setShowDeleteDrill(false);
             message.destroy()
             messageApi.open({
                 type: "success",
@@ -65,8 +64,8 @@ const TracingSettings = ({ userId,setLoading }) => {
                 className: 'custom-postion',
             });
         } catch (err) {
-            console.log("error while delete Tracing");
             message.destroy()
+            console.log("error while delete Drill");
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
@@ -75,33 +74,30 @@ const TracingSettings = ({ userId,setLoading }) => {
             });
         }
     };
-    const handleDeleteTracing = async (id) => {
-        setDeleteTracingId(id);
-        setShowDeleteTracing(true);
-        setTracingName("");
-        setTracingAmount("");
+    const handleDeleteDrill = async (id) => {
+        setDeleteDrillId(id);
+        setShowDeleteDrill(true);
+        setAmount("");
         setIsSubmitted(true);
     };
-    const handleTracingSubmit = async (e) => {
-        setTracingButtonLoader(true);
+    const handleDrillSubmit = async (e) => {
+        setDrillButtonLoader(true);
         e?.preventDefault();
 
         try {
             const payload = {
                 userId: userId,
-                name: TracingName,
-                value: TracingAmount,
+                value: Amount,
             };
             const res = await Axios.post(
-                process.env.MIX_REACT_APP_URL + "/api/tracing-fee",
+                process.env.MIX_REACT_APP_URL + "/api/drill-mount",
                 payload
             );
-            setTracing(res?.data?.data);
-            setTracingName("");
+            setDrill(res?.data?.data);
             setEditState(false);
-            setTracingAmount("");
+            setAmount("");
             setIsSubmitted(true);
-            setTracingButtonLoader(false);
+            setDrillButtonLoader(false);
             message.destroy()
             messageApi.open({
                 type: "success",
@@ -110,8 +106,8 @@ const TracingSettings = ({ userId,setLoading }) => {
                 className: 'custom-postion',
             });
         } catch (err) {
-            console.log("error while adding Tracing");
-            setTracingButtonLoader(false);
+            console.log("error while adding Drill");
+            setDrillButtonLoader(false);
             message.destroy()
             messageApi.open({
                 type: "error",
@@ -124,16 +120,15 @@ const TracingSettings = ({ userId,setLoading }) => {
     const updateStatus=async (status,id)=>{
         try {
             const res = await Axios.put(
-                process.env.MIX_REACT_APP_URL + `/api/tracing-fee/${id}`,
+                process.env.MIX_REACT_APP_URL + `/api/drill-mount/${id}`,
                 {
                     userId:userId,
                     status:status?"active":"inactive"
                    }
             );
-            setTracing(res?.data?.data);
-            setTracingName("");
+            setDrill(res?.data?.data);
             setEditState(false);
-            setTracingAmount("");
+            setAmount("");
             setIsSubmitted(true);
             message.destroy()
             messageApi.open({
@@ -144,8 +139,8 @@ const TracingSettings = ({ userId,setLoading }) => {
             });
         } catch (err) {
             console.log("error while adding shipping");
-            setTracingButtonLoader(false);
             message.destroy()
+            setDrillButtonLoader(false);
             messageApi.open({
                 type: "error",
                 content: err.response.data.message,
@@ -156,15 +151,15 @@ const TracingSettings = ({ userId,setLoading }) => {
     }
     return (
         <>
-            {showDeleteTracing ? (
+            {showDeleteDrill ? (
                 <DeleteModal
                     accept={() => {
-                        deleteTracing(deleteTracingId);
+                        deleteDrill(deleteDrillId);
                     }}
                     cancel={() => {
-                        setShowDeleteTracing(false);
+                        setShowDeleteDrill(false);
                     }}
-                    open={showDeleteTracing}
+                    open={showDeleteDrill}
                 />
             ) : null}
             <Row justify="center" align="middle">
@@ -177,7 +172,7 @@ const TracingSettings = ({ userId,setLoading }) => {
                     <Row justify="center" align="middle">
                         <Col xs={24} md={24}>
                             <div>{contextHolder}</div>
-                            <p className="heading">Tracing</p>
+                            <p className="heading">Drill Mount</p>
                         </Col>
                         <Col xs={24}>
                             <form>
@@ -188,35 +183,10 @@ const TracingSettings = ({ userId,setLoading }) => {
                                         lg={10}
                                         className="discount-container_first-form_section"
                                     >
-                                        <Row justify="center" align="middle">
-                                            <Col xs={24}>
-                                                <p className="input-title">
-                                                    Enter Label
-                                                </p>
-                                            </Col>
-                                            <Col xs={24}>
-                                                <input
-                                                    placeholder="Enter Text"
-                                                    value={TracingName}
-                                                    onChange={(e) => {
-                                                        setTracingName(
-                                                            e.target.value
-                                                        );
-                                                    }}
-                                                />
-                                            </Col>
-                                        </Row>
-                                    </Col>
-                                    <Col
-                                        xs={24}
-                                        md={12}
-                                        lg={10}
-                                        className="discount-container_first-form_section"
-                                    >
                                         <Row>
                                             <Col xs={24}>
                                                 <p className="input-title">
-                                                    Add Tracing Amount
+                                                    Enter Amount
                                                 </p>
                                             </Col>
                                             <Col xs={24}>
@@ -224,9 +194,9 @@ const TracingSettings = ({ userId,setLoading }) => {
                                                     placeholder="Enter Amount"
                                                     type={"number"}
                                                     min={0}
-                                                    value={TracingAmount}
+                                                    value={Amount}
                                                     onChange={(e) => {
-                                                        setTracingAmount(
+                                                        setAmount(
                                                             e.target.value
                                                         );
                                                     }}
@@ -251,17 +221,17 @@ const TracingSettings = ({ userId,setLoading }) => {
                                             >
                                                 <button
                                                     onClick={
-                                                        handleTracingSubmit
+                                                        handleDrillSubmit
                                                     }
-                                                    className={`save-button ${!TracingName ||
-                                                        !TracingAmount
+                                                    className={`save-button ${
+                                                        !Amount
                                                         ? "disable"
                                                         : ""
                                                         } `}
                                                 >
                                                     {editState ? (
                                                         "Update"
-                                                    ) : TracingButtonLoader ==
+                                                    ) : DrillButtonLoader ==
                                                         true ? (
                                                         <span>
                                                             <p>Add</p>
@@ -286,19 +256,19 @@ const TracingSettings = ({ userId,setLoading }) => {
                                 <Col xs={24} className="discount-output">
                                     <Row justify="center" align="middle">
                                         <table>
-                                            {Object.keys(Tracing).length >
+                                            {Object.keys(Drill).length >
                                                 0 && (
                                                     <tr className="discount-output_head">
-                                                        <th>Tracing Label</th>
-                                                        <th>Amount</th>
+                                                        <th>Drill Amount</th>
+                                                        <th>Final Amount</th>
                                                         <th></th>
                                                     </tr>
                                                 )}
-                                            {Object.keys(Tracing).length >
+                                            {Object.keys(Drill).length >
                                                 0 && (
                                                     <tr className="discount-output_body">
-                                                        <td>{Tracing.name}</td>
-                                                        <td>${Tracing.value}</td>
+                                                        <td>${Drill.value}</td>
+                                                        <td>${Drill.value-((Drill.value/100)*20)}</td>
                                                         <td className="col-4 custom-tax-col-3">
                                                         <Tooltip title={"Edit"} color={'#6fa5cb'} key={0}>
                                                             <img
@@ -315,8 +285,8 @@ const TracingSettings = ({ userId,setLoading }) => {
                                                                         true
                                                                     );
                                                                   
-                                                                    handleUpdateTracing(
-                                                                        Tracing
+                                                                    handleUpdateDrill(
+                                                                        Drill
                                                                     );
                                                                 }}
                                                             /></Tooltip>
@@ -329,16 +299,16 @@ const TracingSettings = ({ userId,setLoading }) => {
                                                                 }}
                                                                 src={cross}
                                                                 onClick={() => {
-                                                                    handleDeleteTracing(
-                                                                        Tracing.id
+                                                                    handleDeleteDrill(
+                                                                        Drill.id
                                                                     );
                                                                 }}
                                                             /></Tooltip>
                                                             <Switch
                                                             {...label}
                                                             className="switch-margin"
-                                                            checked={Tracing?.status ==="active"? true: false}
-                                                            onChange={(e) => { updateStatus(e,Tracing.id)}}
+                                                            checked={Drill?.status ==="active"? true: false}
+                                                            onChange={(e) => { updateStatus(e,Drill.id)}}
                                                             />
                                                         </td>
                                                     </tr>
@@ -358,4 +328,4 @@ const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
     token: state.Auth.token,
 });
-export default connect(mapStateToProps)(TracingSettings);
+export default connect(mapStateToProps)(DrillSettings);

@@ -29,8 +29,17 @@ const defaultSuggession = {
     },
     leftEye: { CYL: "", SPH: "", materialToUse: "" },
 };
-
-const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen }) => {
+const plans={
+            "VSP Signature": 'vsp',
+            "VSP Choice": 'vsp',
+            "Private Pay": 'vsp',
+            "VSP Advantage": 'vsp',
+            'Eyemed': 'davis',
+            "Davis Vision": 'eyemed',
+            "Spectera": 'spectera',
+            "VBA": 'vba',
+}
+const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen,plan }) => {
     const [eyeValues, setEyeValues] = useState({ ...defaultEyeValues });
     const [eyeData, setEyeData] = useState({ ...defaultEyeResponse });
     const [showResult, setShowResult] = useState(false);
@@ -74,49 +83,6 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen 
         });
         setValues({ sphare: sphareObj, cylinder: cylinderObj });
     }, []);
-
-    useEffect(() => {
-        if (userId == null) return;
-
-        getEyePrescriprion();
-    }, [userId]);
-    const getEyePrescriprion = async () => {
-        try {
-            let clientId = userId;
-            if (userRole === "staff") {
-                clientId = clientUserId;
-            }
-            const res = await Axios.get(
-                `${process.env.MIX_REACT_APP_URL}/api/prescriptions`,
-                {
-                    params: { user_id: clientId },
-                }
-            );
-            const prescriptionDetails = res?.data?.data;
-
-            let rightEyeSPH = [];
-            let rightEyeCYL = [];
-            let leftEyeSPH = [];
-            let leftEyeCYL = [];
-            for (let index = 0; index < prescriptionDetails.length; index++) {
-                const eye = prescriptionDetails[index];
-                rightEyeSPH = [...rightEyeSPH, eye.sphere_from];
-                leftEyeSPH = [...leftEyeSPH, eye.sphere_to];
-                rightEyeCYL = [...rightEyeCYL, eye.cylinder_from];
-                leftEyeCYL = [...leftEyeCYL, eye.cylinder_to];
-            }
-
-            setEyeData({
-                rightEyeSPH,
-                rightEyeCYL,
-                leftEyeSPH,
-                leftEyeCYL,
-            });
-        } catch (err) {
-            console.log("error while get eyes Records");
-        }
-    };
-
     const handleValueChange = (value, key) => {
         if (
             key === "rightEyeSPH" &&
@@ -165,6 +131,7 @@ const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen 
             formData.append("left_eye_sphere", parseFloat(eyeValues?.leftEyeSPH));
             formData.append("left_eye_cylinder", parseFloat(eyeValues?.leftEyeCYL));
             formData.append("user_id", clientId);
+            formData.append("plan", plans[plan?.title]);
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/eye-prescriptions-calculator`,
                 formData
@@ -436,6 +403,7 @@ const mapStateToProps = (state) => ({
     userId: state.Auth.user?.id,
     userRole: state.Auth.userRole?.name,
     clientUserId: state.Auth.clientUser?.id,
+    plan: state?.Auth?.selectedPlan,
 });
 export default connect(mapStateToProps)(EyePrescriptionModal);
 

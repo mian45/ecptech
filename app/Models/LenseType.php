@@ -19,5 +19,13 @@ class LenseType extends Model
         return $this->hasMany(Brand::class,'lens_type_id');
     }
 
+    public function categories(){
+        return $this->hasMany(self::class,'lense_type_id');
+    }
+
+    public function sub_categories(){
+        return $this->hasMany(self::class,'lense_type_id');
+    }
+
     
 }

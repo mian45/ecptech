@@ -126,6 +126,7 @@ class InvoiceCalculaterController extends Controller
                         if($row==0){
                             // number of fields in the csv
                             $col_count = count($data);
+                            $column_names = $data;
                         }else{
                             $data = $this->clear_encoding_str($data);
                             if(!empty($data[0])){
@@ -136,9 +137,14 @@ class InvoiceCalculaterController extends Controller
                                 $lens_type = LenseType::updateOrCreate(
                                     ['title'=> $data[1], 'vision_plan_id'=>$vision_plan->id]
                                 );
+
+                                $brand_lense_type_id = $lens_type->id;
                             }
 
+                            
 
+                        if($vision_plan->title != 'VBA'){
+                
                             if(!empty($data[2])){
                                 if(strtolower($data[2]) == 'null'){
                                     $title = 'No Brand';
@@ -149,7 +155,7 @@ class InvoiceCalculaterController extends Controller
                                     ['title'=> $title, 'lens_type_id'=>$lens_type->id]
                                 );
                             }
-
+                        }
                            
                             if($vision_plan->title == 'Davis Vision'){
 
@@ -175,7 +181,64 @@ class InvoiceCalculaterController extends Controller
                                     );
                                 }
 
-                            }else{
+                            }elseif($vision_plan->title == 'VBA'){
+
+                                $data = array_combine($column_names,$data);  
+                            
+                                if($lens_type->title == 'Single Vision' || $lens_type->title == 'PAL'){
+                                    
+                                    if(!empty($data['Category'])){
+                                        $lense_type_category = LenseType::updateOrCreate(
+                                            [
+                                                'title'=> $data['Category'], 
+                                                'vision_plan_id'=>$vision_plan->id,
+                                                'lense_type_id' => $lens_type->id,
+                                                'is_category' => 1
+                                            ]
+                                        );
+                                        $brand_lense_type_id = $lense_type_category->id;
+                                    }
+
+                                }
+                            
+                                if($lens_type->title == 'Single Vision'){
+                                    if(!empty($data['Sub Category'])){
+                                        $lense_type_sub_category = LenseType::updateOrCreate(
+                                            [
+                                                'title'=> $data['Sub Category'], 
+                                                'vision_plan_id'=>$vision_plan->id,
+                                                'lense_type_id' => $lense_type_category->id,
+                                                'is_sub_category' => 1
+                                            ]
+                                        );
+                                        $brand_lense_type_id = $lense_type_sub_category->id;
+                                    }
+                            
+                                }
+                            
+                                if(!empty($data['Manufacturer'])){
+                                    
+                                    $brand = Brand::updateOrCreate(
+                                        ['title'=> $data['Manufacturer'], 'lens_type_id'=>$brand_lense_type_id]
+                                    );
+
+                                   
+                                }
+                            
+                                if(!empty($data['Brand'])){
+                            
+                                    $code = Code::where('vision_plan_id', $vision_plan->id)->where('lense_type_id', $brand_lense_type_id)->first();
+                                    
+                            
+                                    $collection = Collection::updateOrCreate(
+                                        ['title'=> $data['Brand'], 'brand_id'=>$brand->id, 'code_id'=>$code->id]
+                                    );
+                                    
+                                }
+                            
+                                
+                            }
+                            else{
 
                                 if(!empty($data[3])){
                                     $collection = Collection::updateOrCreate(
@@ -391,6 +454,7 @@ class InvoiceCalculaterController extends Controller
                         if($row==0){
                             // number of fields in the csv
                             $col_count = count($data);
+                            $column_names = $data;
                         }else{
                             $data = $this->clear_encoding_str($data);
                             if(!empty($data[0])){
@@ -424,7 +488,60 @@ class InvoiceCalculaterController extends Controller
                                 }
     
 
-                            }else{
+                            }elseif($vision_plan->title == 'VBA'){
+
+                                $data = array_combine($column_names,$data);  
+
+                                if(!empty($data['Lense Type'])){
+                                    $lense_type = LenseType::updateOrCreate(
+                                        ['title'=> $data['Lense Type'], 'vision_plan_id'=>$vision_plan->id]
+                                    );
+
+                                    $code_lense_type_id = $lense_type->id;
+                                }
+
+                                if($lense_type->title == 'Single Vision' || $lense_type->title == 'PAL'){
+                                    
+                                    if(!empty($data['Category'])){
+                                        $lense_type_category = LenseType::updateOrCreate(
+                                            [
+                                                'title'=> $data['Category'], 
+                                                'vision_plan_id'=>$vision_plan->id,
+                                                'lense_type_id' => $lense_type->id,
+                                                'is_category' => 1
+                                            ]
+                                        );
+                                        $code_lense_type_id = $lense_type_category->id;
+                                    }
+                                }
+
+                                if($lense_type->title == 'Single Vision'){
+                                    if(!empty($data['Sub Category'])){
+                                        $lense_type_sub_category = LenseType::updateOrCreate(
+                                            [
+                                                'title'=> $data['Sub Category'], 
+                                                'vision_plan_id'=>$vision_plan->id,
+                                                'lense_type_id' => $lense_type_category->id,
+                                                'is_sub_category' => 1
+                                            ]
+                                        );
+                                        $code_lense_type_id = $lense_type_sub_category->id;
+                                    }
+
+                                }
+
+
+                                if(!empty($data['Price'])){
+                                    $price = moneyFormatter($data['Price']);
+                                }
+
+                                $code = Code::updateOrCreate(
+                                    ['vision_plan_id'=>$vision_plan->id,'lense_type_id'=>$code_lense_type_id],
+                                    ['price'=> $price]
+                                );
+
+                            }
+                            else{
 
                                 if(!empty($data[1])){
                                     $price = str_replace('$','',$data[2]);
@@ -609,8 +726,118 @@ class InvoiceCalculaterController extends Controller
         if($user->role_id===3){
             $userId=  $user->client_id;
         }
+
+        $vision_plan = VisionPlan::find($request->vision_plan_id);
         
+        if($vision_plan->title == 'VBA'){
+
+            $lense_types = LenseType::where('vision_plan_id',$vision_plan->id)->get();
+            foreach($lense_types as $lense_type){
+
+                if($lense_type->title =='Single Vision'){
+
+                    $collections = LenseType::with(['categories' => function($q){
+                                        $q->select('id','title','lense_type_id');
+                                        
+                                        $q->with(['sub_categories' => function($q){
+                                            
+
+                                            $q->select('id','title','lense_type_id');
+                                            $q->with(['brands' => function($q){
+                                                $q->leftjoin('brand_permissions as bp','bp.brand_id','=','brands.id');
+                                                $q->select('brands.id','lens_type_id','title');
+
+                                                $q->with(['collections' => function($q){
+
+                                                    $q->leftjoin('collections_permissions as cp', function ($join) {
+                                                        $join->on('cp.collection_id','=','collections.id');
+                                                    });
+                            
+                                                    $q->leftjoin('codes as c', function ($join) {
+                                                        $join->on('c.id','=','collections.code_id');
+                                                    });
+                                                    
+                                                    $q->select('collections.id','collections.brand_id','title','c.price as lense_price','cp.name as display_name','cp.price','cp.collection_id');
+                            
+
+                                                }]);
+                                            }]);
+                                        }]);
+                                    }])
+                                ->select('id','title','vision_plan_id')
+                                ->where('id',$lense_type->id)
+                                ->where('is_category',0)->where('is_sub_category',0)
+                                ->get();
+
+                }elseif($lense_type->title =='PAL'){
+
+                        $collections = LenseType::with(['categories' => function($q){
+                            $q->select('id','title','lense_type_id');                                
+
+                            $q->with(['brands' => function($q){
+                                $q->leftjoin('brand_permissions as bp','bp.brand_id','=','brands.id');
+                                $q->select('brands.id','lens_type_id','title');
+
+                                $q->with(['collections' => function($q){
+
+                                    $q->leftjoin('collections_permissions as cp', function ($join) {
+                                        $join->on('cp.collection_id','=','collections.id');
+                                    });
+            
+                                    $q->leftjoin('codes as c', function ($join) {
+                                        $join->on('c.id','=','collections.code_id');
+                                    });
+                                    
+                                    $q->select('collections.id','collections.brand_id','title','c.price as lense_price','cp.name as display_name','cp.price','cp.collection_id');
+            
+
+                                }]);
+                            }]);
+                        }])
+                    ->select('id','title','vision_plan_id')
+                    ->where('id',$lense_type->id)
+                    ->where('is_category',0)->where('is_sub_category',0)
+                    ->get();
+
+                }else{
+
+                        $collections = LenseType::with(['brands' => function($q){
+                                                            
+                            $q->leftjoin('brand_permissions as bp','bp.brand_id','=','brands.id');
+                            $q->select('brands.id','lens_type_id','title');
+
+                            $q->with(['collections' => function($q){
+
+                                $q->leftjoin('collections_permissions as cp', function ($join) {
+                                    $join->on('cp.collection_id','=','collections.id');
+                                });
         
+                                $q->leftjoin('codes as c', function ($join) {
+                                    $join->on('c.id','=','collections.code_id');
+                                });
+                                
+                                $q->select('collections.id','collections.brand_id','title','c.price as lense_price','cp.name as display_name','cp.price','cp.collection_id');
+        
+
+                            }]);
+                        }])
+                    ->select('id','title','vision_plan_id')
+                    ->where('id',$lense_type->id)
+                    ->where('is_category',0)->where('is_sub_category',0)
+                    ->get();
+
+                }
+
+
+                if(!$collections->isEmpty()){
+                    $data['collection'][] = $collections[0];
+
+                }
+
+               
+            }
+
+        }else{
         $data['collection'] = LenseType::with(['brands'=>function($q)use($userId){
                     $q->join('brand_permissions as bp','bp.brand_id','=','brands.id');
                     $q->select('brands.id','lens_type_id','title');
@@ -641,8 +868,9 @@ class InvoiceCalculaterController extends Controller
                        
                     }]);
                }])->select('id','title','vision_plan_id')->where('vision_plan_id',request()->vision_plan_id)->get();
+            }
 
-        $vision_plan = VisionPlan::find($request->vision_plan_id);
+        
         if($vision_plan->title == 'Davis Vision' OR $vision_plan->title == 'Eyemed'){
             $data['additional_lense_setting'] = VisionPlan::with(['addon_types' => function($q)use($userId){
 
