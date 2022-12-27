@@ -182,7 +182,6 @@ class SettingController extends Controller
         
     }
     public function getLenseMaterial(Request $request){
-
         $lense_materials = LensMaterial::leftJoin('user_lense_material_settings as setting', function($join){
                                 $join->on('lens_materials.id', '=', 'setting.lens_material_id')
                                 ->where('setting.user_id',  auth()->user()->id);            
