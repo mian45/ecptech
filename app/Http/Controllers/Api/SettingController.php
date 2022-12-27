@@ -188,7 +188,7 @@ class SettingController extends Controller
                             })
                             ->select('lens_materials.id','lens_material_title',DB::raw('IFNULL(status,"inactive") as status'),'price','display_name')
                             ->orderBy('lens_materials.id')
-                            ->get();        
+                            ->get(); 
 
         return $this->sendResponse($lense_materials, 'Lense materials get successfully');
 
