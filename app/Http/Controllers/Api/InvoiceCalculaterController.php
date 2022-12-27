@@ -632,11 +632,53 @@ class InvoiceCalculaterController extends Controller
                         if($row==0){
                             // number of fields in the csv
                             $col_count = count($data);
+                            $column_names = $data;
                         }else{
                             $data = $this->clear_encoding_str($data);
                             if(!empty($data[0])){
                                 $vision_plan = VisionPlan::where('title', $data[0])->first();
                             }
+
+                            if($vision_plan->title == 'VBA' OR $vision_plan->title == 'Spectera'){
+
+                                $data = array_combine($column_names,$data);
+                                
+                                $lense_material = LensMaterial::updateOrCreate(
+                                    ['vision_plan_id'=>$vision_plan->id,'lens_material_title'=>$data['Lense Materials']]
+                                );
+
+                                if(!empty($data['Lense Type'])){
+                                    $lense_type = LenseType::updateOrCreate(
+                                        ['title'=> $data['Lense Type'], 'vision_plan_id'=>$vision_plan->id]
+                                    );
+                                }
+
+                                $price = str_replace('$','',$data['Price']);
+
+                                if($vision_plan->title == 'VBA'){
+                                    $code = Code::updateOrCreate(
+                                        ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id, 'lense_type_id' =>$lense_type->id ],
+                                        ['price'=> (float)$price]
+                                    );
+
+                                }else{
+                                    if(is_numeric($price)){
+                                        $code = Code::updateOrCreate(
+                                            ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id],
+                                            ['price'=> (float)$price]
+                                        );
+
+                                    }else{
+                                        $code = Code::updateOrCreate(
+                                            ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id],
+                                            ['price_formula'=> $price]
+                                        );
+                                    }
+                                }
+                                
+                                
+
+                            }else{
 
                             if(!empty($data[1])){
                                 $lense_material = LensMaterial::where('lens_material_title', $data[1])->first();
@@ -650,7 +692,7 @@ class InvoiceCalculaterController extends Controller
                                 ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id],
                                 ['price'=> $price]
                             );
-
+                            }
                         }
 
                         $row++;
