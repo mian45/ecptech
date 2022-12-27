@@ -14,4 +14,8 @@ class LensMaterial extends Model
     public function lenses(){
         return $this->hasMany(Lense::class);
     }
+
+    public function prices(){
+        return $this->hasMany(Code::class,'lense_material_id');
+    }
 }

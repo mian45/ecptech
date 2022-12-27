@@ -87,7 +87,7 @@ class SettingController extends Controller
 
             if($plan == 'vsp'){
 
-                $vision_plans = VisionPlan::where('title','like','%vsp%')->get();
+                $vision_plans = VisionPlan::where('title','like','%vsp%')->orWhere('title','Private Pay')->get();
                 foreach($vision_plans as $vision_plan){
 
                 $lense = LenseType::where('title',$lense_type_title)->where('vision_plan_id',$vision_plan->id)->first();
@@ -182,15 +182,35 @@ class SettingController extends Controller
         
     }
     public function getLenseMaterial(Request $request){
-        $lense_materials = LensMaterial::leftJoin('user_lense_material_settings as setting', function($join){
+
+        $validator = Validator::make($request->all(), [
+            'plan' => 'in:vsp,davis,eyemed,spectera,vba|required'
+        ]);
+
+        if ($validator->fails()) {
+            throw (new ValidationException($validator));
+        }
+        
+        $user_id = auth()->user()->id;
+        
+        if($request->plan == 'vsp'){
+            $vision_plan = VisionPlan::where('title','VSP Signature')->first();
+            $plan = 'vsp';
+        }else{
+            $vision_plan = VisionPlan::where('title','like','%'.$request->plan.'%')->first();
+            $plan = $request->plan;
+        }
+        
+        $data[$plan] = LensMaterial::leftJoin('user_lense_material_settings as setting', function($join){
                                 $join->on('lens_materials.id', '=', 'setting.lens_material_id')
                                 ->where('setting.user_id',  auth()->user()->id);            
                             })
                             ->select('lens_materials.id','lens_material_title',DB::raw('IFNULL(status,"inactive") as status'),'price','display_name')
                             ->orderBy('lens_materials.id')
+                            ->where('vision_plan_id',$vision_plan->id)
                             ->get(); 
 
-        return $this->sendResponse($lense_materials, 'Lense materials get successfully');
+        return $this->sendResponse($data, 'Lense materials get successfully');
 
     }
 
@@ -205,16 +225,42 @@ class SettingController extends Controller
         }
 
         $data = $request->data;
-    
+        $plan = key($data);
+
         $i = 0;
-        foreach($data as $lense_material){
+        foreach($data[$plan] as $lense_material){
 
             $lense_material_id = $lense_material['id'];
 
-            $setting = UserLenseMaterialSetting::updateOrCreate(
-                ['user_id' => auth()->user()->id, 'lens_material_id' => $lense_material_id],
-                ['status' => $lense_material['status'], 'price'=>$lense_material['price'], 'display_name'=>$lense_material['display_name']]
-            );
+            if($plan == 'vsp'){
+
+                $vision_plans = VisionPlan::where('title','like','%vsp%')->orWhere('title','Private Pay')->get();
+                foreach($vision_plans as $vision_plan){
+                    
+                    $lense_materials = LenseMaterial::where('vision_plan_id',$vision_plan->id)->get();
+                    foreach($lense_materials as $lense_material){
+
+                        if($lense_material->title == $lense_material['lens_material_title']){
+                            
+                            $setting = UserLenseMaterialSetting::updateOrCreate(
+                                ['user_id' => auth()->user()->id, 'lens_material_id' => $lense_material_id],
+                                ['status' => $lense_material['status'], 'price'=>$lense_material['price'], 'display_name'=>$lense_material['display_name']]
+                            );     
+
+                        }
+                    }
+
+                }
+            }else{
+
+                $setting = UserLenseMaterialSetting::updateOrCreate(
+                    ['user_id' => auth()->user()->id, 'lens_material_id' => $lense_material_id],
+                    ['status' => $lense_material['status'], 'price'=>$lense_material['price'], 'display_name'=>$lense_material['display_name']]
+                );
+
+            }
+
+            
 
             $permission[$i] = $lense_material;
             $i++;
@@ -314,7 +360,7 @@ class SettingController extends Controller
                     
 
 
-                    $vision_plans = VisionPlan::where('title','like','%vsp%')->get();
+                    $vision_plans = VisionPlan::where('title','like','%vsp%')->orWhere('title','Private Pay')->get();
                     foreach($vision_plans as $vision_plan){
                         
                         $addon_types_all = AddonType::where('vision_plan_id',$vision_plan->id)->get();
