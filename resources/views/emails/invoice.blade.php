@@ -283,7 +283,7 @@
                         <tbody>
                         <tr>
                           <td align="right">
-                              <p><strong><i>Savings of</i> : </strong><span style="color:#6FA5CB;font-size:14px;">{{$data['invoiceState']['savingOf'] ?? '$0.00'}}</span></p>
+                              <p><strong><i>Savings of</i> : </strong><i style="color:#6FA5CB;font-size:14px;">{{$data['invoiceState']['savingOf'] ?? '$0.00'}}</i></p>
                           </td>
                         </tr>
                         </tbody>
