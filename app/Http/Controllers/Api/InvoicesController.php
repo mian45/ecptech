@@ -15,7 +15,6 @@ use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
 use PDF;
 use Mail;
-use App\Mail\SendInvoiceMail;
 class InvoicesController extends Controller
 {
     public function index(Request $request){
