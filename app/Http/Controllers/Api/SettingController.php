@@ -183,42 +183,13 @@ class SettingController extends Controller
     }
     public function getLenseMaterial(Request $request){
 
-
-        $validator = Validator::make($request->all(), [
-            'plan' => 'in:vsp,davis,eyemed,spectera,vba|required',
-        ]);
-
-        if ($validator->fails()) {
-            throw (new ValidationException($validator));
-        }
-
-        if($request->plan == 'vsp' OR $request->plan == 'davis' OR $request->plan == 'eyemed'){
-
         $lense_materials = LensMaterial::leftJoin('user_lense_material_settings as setting', function($join){
                                 $join->on('lens_materials.id', '=', 'setting.lens_material_id')
                                 ->where('setting.user_id',  auth()->user()->id);            
                             })
                             ->select('lens_materials.id','lens_material_title',DB::raw('IFNULL(status,"inactive") as status'),'price','display_name')
-                            ->whereNull('lens_materials.vision_plan_id')
                             ->orderBy('lens_materials.id')
-                            ->get();
-        }else{
-            
-            $vision_plan = VisionPlan::where('title','like','%'.$request->plan.'%')->first();
-            
-            $lense_materials = LensMaterial::leftJoin('user_lense_material_settings as setting', function($join){
-                $join->on('lens_materials.id', '=', 'setting.lens_material_id')
-                ->where('setting.user_id',  auth()->user()->id);            
-            })
-            ->select('lens_materials.id','lens_material_title',DB::raw('IFNULL(status,"inactive") as status'),'price','display_name')
-            ->where('lens_materials.vision_plan_id',$vision_plan->id)
-            ->orderBy('lens_materials.id')
-            ->get();
-
-        }
-                
-                        
-                
+                            ->get();        
 
         return $this->sendResponse($lense_materials, 'Lense materials get successfully');
 
