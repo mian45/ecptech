@@ -188,7 +188,7 @@ class SettingController extends Controller
                             })
                             ->select('lens_materials.id','lens_material_title',DB::raw('IFNULL(status,"inactive") as status'),'price','display_name')
                             ->orderBy('lens_materials.id')
-                            ->get();
+                            ->get(); 
 
         return $this->sendResponse($lense_materials, 'Lense materials get successfully');
 
@@ -263,7 +263,7 @@ class SettingController extends Controller
     public function getAddons(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'plan' => 'in:vsp,davis,eyemed|required',
+            'plan' => 'in:vsp,davis,eyemed,spectera,vba|required',
             'type' => 'in:addon,lense_treatment',
         ]);
 
