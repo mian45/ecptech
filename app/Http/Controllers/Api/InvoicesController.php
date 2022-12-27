@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 use Validator;
 use Carbon\Carbon;
 use Illuminate\Validation\ValidationException;
-
+use PDF;
 class InvoicesController extends Controller
 {
     public function index(Request $request){
@@ -242,5 +242,31 @@ class InvoicesController extends Controller
         return $this->sendResponse($invoices, 'Invoices list get successfully');
 
     }
+    public function downloadPDF(Request $request)
+    {
 
+        
+        $name = $request->fname . ' ' .$request->lname;
+        $email = $request->email;
+        $phone = $request->phone;
+        $invoiceName = $request->invoiceName;
+        $invoiceNo = $request->invoiceNo;
+        $invoiceDate = $request->invoiceDate;
+        $invoiceState = $request->invoiceState;
+        $data = [
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'invoiceName' => $invoiceName,
+            'invoiceNo' => $invoiceNo,
+            'invoiceDate' => $invoiceDate,
+            'invoiceState' => $invoiceState
+
+        ];
+      
+
+        $pdf = PDF::loadView('emails.invoice',['data' => $data]);
+    
+        return $pdf->download('ecp.pdf');
+    }
 }
