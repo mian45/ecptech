@@ -389,7 +389,7 @@ class InvoiceCalculaterController extends Controller
                                 if(!empty($data[4])){
                                     $price = moneyFormatter($data[4]);
                                 }
-                                if($vision_plan->title =='VBA' OR $vision_plan->title =='Spectera'){
+                                if($vision_plan->title =='VBA' OR $vision_plan->title =='Spectra'){
 
                                     if(!empty($data[2])){
                                         $category = $data[2];
