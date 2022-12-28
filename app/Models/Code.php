@@ -13,4 +13,8 @@ class Code extends Model
     public function characteristics(){
         return $this->hasMany(Characteristic::class);
     }
+
+    public function lense_material(){
+        return $this->belongsTo(LensMaterial::class);
+    }
 }

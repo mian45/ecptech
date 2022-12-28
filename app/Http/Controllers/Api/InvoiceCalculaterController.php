@@ -389,6 +389,13 @@ class InvoiceCalculaterController extends Controller
                                 if(!empty($data[4])){
                                     $price = moneyFormatter($data[4]);
                                 }
+                                if($vision_plan->title =='VBA' OR $vision_plan->title =='Spectera'){
+
+                                    if(!empty($data[2])){
+                                        $category = $data[2];
+                                    }
+
+                                }else{
 
                                 if(strpos($addon_type->title, 'Reflective') !== false){
                                     if(!empty($data[2])){
@@ -397,6 +404,7 @@ class InvoiceCalculaterController extends Controller
                                 }else{
                                     $category = NULL;
                                 }
+                            }
 
                                 
                                 
@@ -619,30 +627,55 @@ class InvoiceCalculaterController extends Controller
 
                 DB::beginTransaction();
                 $row = 0;
+                $lense_type_id = NULL;
+                $price = NULL;
                 try{
                     while(($data = fgetcsv($handle, 1000, ',')) !== FALSE) {
                         if($row==0){
                             // number of fields in the csv
                             $col_count = count($data);
+                            $column_names = $data;
                         }else{
                             $data = $this->clear_encoding_str($data);
                             if(!empty($data[0])){
                                 $vision_plan = VisionPlan::where('title', $data[0])->first();
                             }
 
-                            if(!empty($data[1])){
-                                $lense_material = LensMaterial::where('lens_material_title', $data[1])->first();
+
+                            $data = array_combine($column_names,$data);
+                            
+                            if(!empty($data['Lense Materials'])){
+                                $lense_material = LensMaterial::updateOrCreate(
+                                    ['vision_plan_id'=>$vision_plan->id,'lens_material_title'=>$data['Lense Materials']]
+                                );
+                            }
+                            
+                            if(!empty($data['Lense Type'])){
+                                $lense_type = LenseType::updateOrCreate(
+                                    ['title'=> $data['Lense Type'], 'vision_plan_id'=>$vision_plan->id]
+                                );
+
+                                $lense_type_id = $lense_type->id;
                             }
 
-                            if(!empty($data[2])){
-                                $price = moneyFormatter($data[2]);
+                            if(!empty($data['Price'])){
+                                $price = str_replace('$','',$data['Price']);
                             }
+                            
 
-                            $code = Code::updateOrCreate(
-                                ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id],
-                                ['price'=> $price]
-                            );
+                            if(is_numeric($price)){
+                                $code = Code::updateOrCreate(
+                                    ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id,'lense_type_id'=>$lense_type_id],
+                                    ['price'=> (float)$price]
+                                );
+                            }else{
+                                $code = Code::updateOrCreate(
+                                    ['vision_plan_id'=>$vision_plan->id,'lense_material_id'=>$lense_material->id,'lense_type_id'=>$lense_type_id],
+                                    ['price_formula'=> $price]
+                                );
+                            } 
 
+                            
                         }
 
                         $row++;
@@ -886,13 +919,18 @@ class InvoiceCalculaterController extends Controller
             }])->select('id','title')->where('id',$request->vision_plan_id)->get();
         }
 
-        if($vision_plan->title == 'Davis Vision'){
-            $data['lense_materials'] = Code::where('vision_plan_id',$vision_plan->id)
-                                        ->join('lens_materials', 'lens_materials.id', '=', 'codes.lense_material_id')
-                                        ->select('lens_materials.id','lens_materials.lens_material_title','codes.price')
-                                        ->whereNotNull('lense_material_id')->get();
-        }
+        
 
+        $data['lense_materials'] = LensMaterial::join('user_lense_material_settings as setting','lens_materials.id', '=', 'setting.lens_material_id')
+            ->with(['prices' => function($q){  
+                $q->leftjoin('lense_types as l','codes.lense_type_id','=','l.id');
+                $q->select('codes.id','l.title as lense_type','price','lense_material_id');
+            }])
+        ->select('lens_materials.id','lens_material_title','setting.price as retail_price','setting.display_name')
+        ->where('vision_plan_id',$vision_plan->id)
+        ->where('setting.user_id',  auth()->user()->id)
+        ->where('setting.status',  'active')
+        ->get();
        
         
         return $this->sendResponse($data, 'Collections get successfully');
