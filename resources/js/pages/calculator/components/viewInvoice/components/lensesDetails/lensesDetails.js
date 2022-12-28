@@ -35,6 +35,8 @@ const LensesDetails = ({
     lensPrices,
     davisMaterials,
     language,
+    invoiceData,
+    setInvoice,
 }) => {
     const currentPlan = receipt?.values?.visionPlan;
     const { materialCopayTitle } = PlanTitles(
@@ -51,8 +53,113 @@ const LensesDetails = ({
                 currentPlan === "Private Pay" ? true : false,
                 davisMaterials
             ) || 0;
+
         return (price || 0).toFixed(2);
     };
+    invoiceData.lenseTotal = `$${renderLensesCopay()}`;
+    invoiceData.invoiceDesc = GetSelectionDetails(receipt);
+    invoiceData.lenses[
+        `${receipt?.values?.lensType?.brand || ""} ( Base fee )`
+    ] = `$${RenderBasePrice(receipt?.values, calculatorObj, lensPrices)}`;
+
+    if (
+        parseFloat(receipt?.values?.materialCopay || 0)?.toFixed(2) > 0 ||
+        parseFloat(receipt?.values?.materialCopay || 0)?.toFixed(2) < 0
+    ) {
+        invoiceData.lenses[
+            PlanTitles(language, receipt?.values?.visionPlan).materialCopayTitle
+        ] = `$${parseFloat(receipt?.values?.materialCopay || 0)?.toFixed(2)}`;
+    }
+    if (receipt?.values?.lensMaterial !== undefined) {
+        invoiceData.lenses[
+            `${receipt?.values?.lensType?.brand || ""} ( Lens Material: ${
+                receipt?.values?.lensMaterial
+            } )`
+        ] = `$${RenderLensMaterialPrice(
+            receipt?.values,
+            calculatorObj,
+            lensPrices,
+            davisMaterials
+        )}`;
+    }
+    if (receipt?.values?.photochromics?.status === "Yes") {
+        invoiceData.lenses[
+            `Photochromics: ${receipt?.values?.photochromics?.type}`
+        ] = `$${photochromicPrice || 0}`;
+    }
+    if (receipt?.values?.antiReflectiveProperties?.status === "Yes") {
+        invoiceData.lenses[
+            `Anti-Reflective Properties: ${receipt?.values?.antiReflectiveProperties?.type}`
+        ] = `$${
+            RenderAntireflectivePrices(receipt?.values, calculatorObj) || 0
+        }`;
+    }
+    if (
+        (receipt?.values?.visionPlan === "Eyemed" ||
+            receipt?.values?.visionPlan === "Davis Vision") &&
+        receipt?.values?.slabOff?.status === "Yes"
+    ) {
+        invoiceData.lenses[`Slab Off`] = `$${
+            RenderAdditionalLens(receipt?.values, calculatorObj, "Slab off") ||
+            0
+        }`;
+    }
+    if (
+        (receipt?.values?.visionPlan === "Eyemed" ||
+            receipt?.values?.visionPlan === "Davis Vision") &&
+        receipt?.values?.specialtyLens?.status === "Yes"
+    ) {
+        invoiceData.lenses[`Specialty Lens`] = `$${
+            RenderAdditionalLens(
+                receipt?.values,
+                calculatorObj,
+                "Speciality Lens"
+            ) || 0
+        }`;
+    }
+    if (
+        (receipt?.values?.visionPlan === "Eyemed" ||
+            receipt?.values?.visionPlan === "Davis Vision") &&
+        receipt?.values?.polish?.status === "Yes" &&
+        receipt?.values?.polish?.type
+    ) {
+        invoiceData.lenses[`Polish: ${receipt?.values?.polish?.type}`] = `$${
+            RenderAdditionalLens(receipt?.values, calculatorObj, "Polish") || 0
+        }`;
+    }
+    if (
+        receipt?.values?.visionPlan === "Davis Vision" &&
+        receipt?.values?.blueLight === "Yes"
+    ) {
+        invoiceData.lenses[`Blue Light Filtering`] = `$${
+            RenderBlueLight(calculatorObj, receipt?.values) || 0
+        }`;
+    }
+    if (
+        receipt?.values?.sunGlassesLens?.status === "Yes" &&
+        receipt?.values?.sunGlassesLens?.lensType === "Polarized"
+    ) {
+        invoiceData.lenses[`Polarized Fee`] = `$${
+            RenderPolarizedFee(receipt?.values, calculatorObj) || 0
+        }`;
+    }
+    if (
+        receipt?.values?.sunGlassesLens?.status === "Yes" &&
+        receipt?.values?.sunGlassesLens?.lensType === "Tint"
+    ) {
+        invoiceData.lenses[`Tint Fee`] = `$${
+            RenderTintFee(receipt?.values, calculatorObj) || 0
+        }`;
+    }
+    if (
+        receipt?.values?.sunGlassesLens?.status === "Yes" &&
+        receipt?.values?.sunGlassesLens?.mirrorCoating === "Yes"
+    ) {
+        invoiceData.lenses[
+            `Mirror Coating: ${receipt?.values?.sunGlassesLens?.coatingType}`
+        ] = `$${RenderCoatingFee(receipt?.values, calculatorObj) || 0}`;
+    }
+    setInvoice(invoiceData);
     return (
         <Row>
             <Col xs={24}>

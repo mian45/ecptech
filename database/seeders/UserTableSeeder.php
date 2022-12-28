@@ -95,8 +95,208 @@ class UserTableSeeder extends Seeder
                 'user_id' => 2,
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi index 1.70",
+                'sphere_from' => -5,
+                'sphere_to' => -20,
+                'user_id' => 2,
+                'plan' => 'davis',
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi index 1.70",
+                'sphere_from' => 5,
+                'sphere_to' => 20,
+                'plan' => 'davis',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi Index 1.67",
+                'sphere_from' => -4.25,
+                'sphere_to' => -4.75,
+                'plan' => 'davis',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi Index 1.67",
+                'sphere_from' => 4.25,
+                'sphere_to' => 4.75,
+                'plan' => 'davis',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Trivex",
+                'sphere_from' => -4,
+                'sphere_to' => 4,
+                'plan' => 'davis',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi index 1.70",
+                'sphere_from' => -5,
+                'sphere_to' => -20,
+                'user_id' => 2,
+                'plan' => 'eyemed',
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi index 1.70",
+                'sphere_from' => 5,
+                'sphere_to' => 20,
+                'plan' => 'eyemed',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi Index 1.67",
+                'sphere_from' => -4.25,
+                'sphere_to' => -4.75,
+                'plan' => 'eyemed',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi Index 1.67",
+                'sphere_from' => 4.25,
+                'sphere_to' => 4.75,
+                'plan' => 'eyemed',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Trivex",
+                'sphere_from' => -4,
+                'sphere_to' => 4,
+                'plan' => 'eyemed',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi index 1.70",
+                'sphere_from' => -5,
+                'sphere_to' => -20,
+                'user_id' => 2,
+                'plan' => 'spectra',
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi index 1.70",
+                'sphere_from' => 5,
+                'sphere_to' => 20,
+                'plan' => 'spectra',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi Index 1.67",
+                'sphere_from' => -4.25,
+                'sphere_to' => -4.75,
+                'plan' => 'spectra',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi Index 1.67",
+                'sphere_from' => 4.25,
+                'sphere_to' => 4.75,
+                'plan' => 'spectra',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Trivex",
+                'sphere_from' => -4,
+                'sphere_to' => 4,
+                'plan' => 'spectra',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi index 1.70",
+                'sphere_from' => -5,
+                'sphere_to' => -20,
+                'user_id' => 2,
+                'plan' => 'vba',
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi index 1.70",
+                'sphere_from' => 5,
+                'sphere_to' => 20,
+                'plan' => 'vba',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi Index 1.67",
+                'sphere_from' => -4.25,
+                'sphere_to' => -4.75,
+                'plan' => 'vba',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Hi Index 1.67",
+                'sphere_from' => 4.25,
+                'sphere_to' => 4.75,
+                'plan' => 'vba',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+            array(
+
+                'name' => "Trivex",
+                'sphere_from' => -4,
+                'sphere_to' => 4,
+                'plan' => 'vba',
+                'user_id' => 2,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
             )
-            
+
         ));
 
     }

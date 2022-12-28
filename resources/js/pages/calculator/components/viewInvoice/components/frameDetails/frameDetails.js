@@ -1,6 +1,6 @@
 import { Row, Collapse, Col } from "antd";
 import Icon from "@ant-design/icons";
-import React from "react";
+import React, { useEffect } from "react";
 import classes from "./frameDetails.module.scss";
 import { GetFrameFee } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
 import { DRILL_MOUNT, RIMLESS_DRILL } from "../../../../data/constants";
@@ -18,7 +18,14 @@ import { CompareStrings } from "../../../../../../utils/utils";
 
 const { Panel } = Collapse;
 
-const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
+const FrameDetails = ({
+    receipt,
+    calculatorObj,
+    lensPrices,
+    language,
+    invoiceData,
+    setInvoice,
+}) => {
     const currentPlan = receipt?.values?.visionPlan;
     const plansList = AllPlans[language];
     const plansJson = Plans()[language];
@@ -138,13 +145,14 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
     };
 
     const renderTracing = () => {
-        return receipt?.values?.isFrameBenifit === "Yes" &&
+        const render =
+            receipt?.values?.isFrameBenifit === "Yes" &&
             receipt?.values?.frameOrder?.type === "Patient Own Frame" &&
             receipt?.values?.tracing?.status === "Yes"
-            ? "(Tracing Fee)"
-            : "";
+                ? "(Tracing Fee)"
+                : "";
+        return render;
     };
-
     const renderDrillMountTitle = () => {
         return CompareStrings(receipt?.values?.visionPlan, "VBA")
             ? `${drillMountTitle} (${
@@ -152,7 +160,13 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
               })`
             : drillMountTitle;
     };
-
+    invoiceData.frameTotal = `$${rendeFrameFee()}`;
+    invoiceData.frameOrder["Frame"] = `$${renderOnlyFrameFee()}`;
+    invoiceData.frameOrder["Drill Mount"] = `$${renderDrillMount()}`;
+    invoiceData.frameOrder[
+        "Frame" + renderTracing()
+    ] = `$${renderDrillMount()}`;
+    setInvoice(invoiceData);
     return (
         <Row>
             <Col xs={24}>
