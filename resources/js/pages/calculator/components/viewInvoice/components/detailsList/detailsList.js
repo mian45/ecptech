@@ -25,7 +25,7 @@ let invoice = {
     frameTotal: "",
     lenseTotal: "",
     salesTax: "",
-    "salesTaxPercantage ": "",
+    "salesTaxPercantage": "",
     shipping: "",
     retailFee: "",
     outOfPocket: "",
@@ -209,7 +209,7 @@ const DetailsList = ({
         downloadInvoice(invoice);
     };
     invoice.salesTax = `$${getTax()}`;
-    invoice["salesTaxPercantage "] = `${getTaxPercentage()}%`;
+    invoice["salesTaxPercantage"] = `${getTaxPercentage()}%`;
     invoice.shipping = `$${(
         parseFloat(calculatorObj?.shipping || 0) || 0
     ).toFixed(2)}`;
