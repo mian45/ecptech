@@ -144,7 +144,7 @@ const ViewInvoice = ({
                 payload
             );
             if (status.status !== "draft") {
-                sendEmail(status);
+                sendEmail(status, res);
             }
             message.destroy();
             messageApi.open({
@@ -196,7 +196,7 @@ const ViewInvoice = ({
                 payload
             );
             if (status.status !== "draft") {
-                sendEmail(status);
+                sendEmail(status, res);
             }
             message.destroy();
             messageApi.open({
@@ -217,7 +217,7 @@ const ViewInvoice = ({
             });
         }
     };
-    const sendEmail = async (status) => {
+    const sendEmail = async (status, res) => {
         let clientId = userId;
         if (userRole === "staff") {
             clientId = clientUserId;
@@ -233,6 +233,10 @@ const ViewInvoice = ({
                 email: receipt?.userInfo?.email,
                 phone: receipt?.userInfo?.phoneNo,
                 status: status.status,
+                invoiceNo: res?.data?.id,
+                invoiceDate: dayjs(res?.data?.updated_at).format(
+                    "MMM DD, YYYY"
+                ),
                 amount: (
                     CalculateWithTaxesTotalPrice(
                         receipt?.values,
