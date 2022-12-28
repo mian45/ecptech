@@ -6,7 +6,7 @@ import { CompareStrings } from "../../../../utils/utils";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./licensedSpeciality.module.scss";
-import icon from "../../../../../images/calculator/additional-lens.svg";
+import icon from "../../../../../images/calculator/licensed.svg";
 import LicensedSpecialityTypes from "./components/licensedSpecialityType/licensedSpecialityType";
 import * as Yup from "yup";
 

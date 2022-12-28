@@ -216,7 +216,7 @@ const FrameOrder = ({
                 ),
             };
             if (
-                values?.visionPlan === eyemedPlan &&
+                values?.visionPlan !== eyemedPlan ||
                 values?.drillMount !== drillMountYes
             ) {
                 delete validationObject.drillMountValue;

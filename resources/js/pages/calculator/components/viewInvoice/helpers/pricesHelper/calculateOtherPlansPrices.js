@@ -44,6 +44,32 @@ import {
     GetPrivateSlabOffPrice,
     GetPrivateSpecialityLensPrice,
 } from "./calculateEyemedPrice";
+import {
+    GetPrivateMirrorCoatingPrice,
+    GetPrivatePayVBAMaterialPrice,
+    GetPrivatePolarizedPrice,
+    GetPrivateTintPrice,
+    GetPrivateVBAAsphericFee,
+    GetPrivateVBABlueProtectionFee,
+    GetPrivateVBALensFee,
+    GetPrivateVBALicensedFee,
+    GetPrivateVBARollAndPolishFee,
+    GetPrivateVBAScratchFee,
+    GetVBAAntireflectiveFee,
+    GetVBAAsphericFee,
+    GetVBABlueProtectionFee,
+    GetVBACoatingFee,
+    GetVBALensFee,
+    GetVBALicensedFee,
+    GetVBAMaterialFee,
+    GetVBAPhotochromicFee,
+    GetVBAPolarizedFee,
+    GetVBAPrivateAntireflectivePrice,
+    GetVBARollAndPolishFee,
+    GetVBAScratchFee,
+    GetVBATintFee,
+    GetVBAUVProtectionFee,
+} from "./calculateVBAPrice";
 
 export const CalculateOtherPlansPrices = (
     data,
@@ -830,7 +856,7 @@ export const GetPrivatePhotochromicPrice = (value, calculatorObj, data) => {
         ?.addon_types?.find((item) => item?.title === "Photochromics");
     if (data?.photochromics?.status === "Yes") {
         const selectedPhotochromic = photochromicAddons?.addons?.find(
-            (item) => item.title === value
+            (item) => item?.title === value
         )?.price;
         return parseFloat(selectedPhotochromic || 0) || 0;
     }
@@ -1465,49 +1491,153 @@ export const calculateLensesCopaysFee = (
         // add Polish Price
         total = total + parseFloat(GetDavisPolishFee(data));
     } else if (
+        CompareStrings(data?.isLensBenifit, "Yes") &&
+        CompareStrings(data?.visionPlan, "VBA")
+    ) {
+        // add lens Prices
+        total = total + parseFloat(GetVBALensFee(data, calculatorObj));
+        // add material Prices
+        total = total + parseFloat(GetVBAMaterialFee(data, calculatorObj));
+        // add photochromic price
+        total = total + parseFloat(GetVBAPhotochromicFee(data));
+        // add sun glasses polarized price
+        total = total + parseFloat(GetVBAPolarizedFee(data));
+        // add sun glasses tint price
+        total = total + parseFloat(GetVBATintFee(data));
+        // add sun glasses Mirror coating price
+        total = total + parseFloat(GetVBACoatingFee(data));
+        // add sun glasses UV Protection price
+        total = total + parseFloat(GetVBAUVProtectionFee(data));
+        // add antireflective price
+        total = total + parseFloat(GetVBAAntireflectiveFee(data));
+        // add Aspheric price
+        total = total + parseFloat(GetVBAAsphericFee(data));
+        // add Blue Protection price
+        total = total + parseFloat(GetVBABlueProtectionFee(data));
+        // add Roll and Polish price
+        total = total + parseFloat(GetVBARollAndPolishFee(data));
+        // add Licensed Speciality price
+        total = total + parseFloat(GetVBALicensedFee(data));
+        // add Scratch Resistant Coatings price
+        total = total + parseFloat(GetVBAScratchFee(data));
+    } else if (
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
-        // add lens Prices
-        total = total + parseFloat(GetPrivateLensFee(calculatorObj, data) || 0);
-        total =
-            total +
-            parseFloat(GetPrivatePayMaterialPrice(calculatorObj, data) || 0);
-        // add photochromic price
-        total =
-            total +
-            parseFloat(
-                GetPrivatePhotochromicPrice(
-                    data?.photochromics?.type,
-                    calculatorObj,
-                    data
-                )
-            );
-        // add sun glasses price
-        total =
-            total + parseFloat(GetPrivateSunGlassesPrice(calculatorObj, data));
-        // add antireflective price
-        total =
-            total +
-            parseFloat(
-                GetPrivateAntireflectivePrice(
-                    calculatorObj,
-                    data?.antiReflectiveProperties?.type,
-                    data
-                )
-            );
-        // add addetional treatments
-        if (
-            data?.visionPlan === "Eyemed" ||
-            data?.visionPlan === "Davis Vision"
-        ) {
-            total = total + GetPrivateSlabOffPrice(calculatorObj, data);
-            total = total + GetPrivateSpecialityLensPrice(calculatorObj, data);
-            total = total + GetPrivatePolishPrice(calculatorObj, data);
-        }
-        // add blue light filtering
-        if (data?.visionPlan === "Davis Vision") {
-            total = total + GetPrivateBlueLightPrice(calculatorObj, data);
+        if (CompareStrings(data?.visionPlan, "VBA")) {
+            // add lens Prices
+            total =
+                total +
+                parseFloat(GetPrivateVBALensFee(data, calculatorObj) || 0);
+            // add material Prices
+            total =
+                total +
+                parseFloat(
+                    GetPrivatePayVBAMaterialPrice(data, calculatorObj) || 0
+                );
+            // add photochromic price
+            total =
+                total +
+                parseFloat(
+                    GetPrivatePhotochromicPrice(
+                        data?.photochromics?.type,
+                        calculatorObj,
+                        data
+                    )
+                );
+            // add sun glasses price
+            //// add polarized
+            total =
+                total +
+                parseFloat(GetPrivatePolarizedPrice(calculatorObj, data));
+            //// add Tint
+            total =
+                total + parseFloat(GetPrivateTintPrice(calculatorObj, data));
+            //// add Mirror Coating
+            total =
+                total +
+                parseFloat(GetPrivateMirrorCoatingPrice(calculatorObj, data));
+            /// add sun glasses UV Protection price
+            total = total + parseFloat(GetVBAUVProtectionFee(data));
+
+            // add antireflective price
+            total =
+                total +
+                parseFloat(
+                    GetVBAPrivateAntireflectivePrice(
+                        calculatorObj,
+                        data?.antiReflectiveProperties?.type,
+                        data
+                    )
+                );
+
+            // add Aspheric price
+            total =
+                total +
+                parseFloat(GetPrivateVBAAsphericFee(calculatorObj, data));
+            // add Blue Protection price
+            total =
+                total +
+                parseFloat(GetPrivateVBABlueProtectionFee(calculatorObj, data));
+            // add Roll and Polish price
+            total =
+                total +
+                parseFloat(GetPrivateVBARollAndPolishFee(calculatorObj, data));
+            // add Licensed Speciality price
+            total =
+                total +
+                parseFloat(GetPrivateVBALicensedFee(calculatorObj, data));
+            // add Scratch Resistant Coatings price
+            total =
+                total +
+                parseFloat(GetPrivateVBAScratchFee(calculatorObj, data));
+        } else {
+            // add lens Prices
+            total =
+                total + parseFloat(GetPrivateLensFee(calculatorObj, data) || 0);
+            total =
+                total +
+                parseFloat(
+                    GetPrivatePayMaterialPrice(calculatorObj, data) || 0
+                );
+            // add photochromic price
+            total =
+                total +
+                parseFloat(
+                    GetPrivatePhotochromicPrice(
+                        data?.photochromics?.type,
+                        calculatorObj,
+                        data
+                    )
+                );
+            // add sun glasses price
+            total =
+                total +
+                parseFloat(GetPrivateSunGlassesPrice(calculatorObj, data));
+            // add antireflective price
+            total =
+                total +
+                parseFloat(
+                    GetPrivateAntireflectivePrice(
+                        calculatorObj,
+                        data?.antiReflectiveProperties?.type,
+                        data
+                    )
+                );
+            // add addetional treatments
+            if (
+                data?.visionPlan === "Eyemed" ||
+                data?.visionPlan === "Davis Vision"
+            ) {
+                total = total + GetPrivateSlabOffPrice(calculatorObj, data);
+                total =
+                    total + GetPrivateSpecialityLensPrice(calculatorObj, data);
+                total = total + GetPrivatePolishPrice(calculatorObj, data);
+            }
+            // add blue light filtering
+            if (data?.visionPlan === "Davis Vision") {
+                total = total + GetPrivateBlueLightPrice(calculatorObj, data);
+            }
         }
     }
     //add material copay

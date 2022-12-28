@@ -20,45 +20,46 @@ const VBADrillMountOptions = ({ language, formProps }) => {
 
     return (
         <>
-            {CompareStrings(values?.visionPlan, allPlans?.vba) && (
-                <div className={classes["frame-sub-container"]}>
-                    <CalculatorHeading title={drillOptionsTitle} />
-                    <Radio.Group
-                        onChange={handleChange}
-                        value={values?.drillMountOptions}
-                        id="drillMountOptions"
-                        name="drillMountOptions"
-                        className={classes["radio-group"]}
-                    >
-                        <CustomRadio
-                            label={drillRimlessMounting}
-                            value={drillRimlessMounting}
-                            active={
-                                values?.drillMountOptions ===
-                                drillRimlessMounting
-                            }
-                        />
+            {CompareStrings(values?.visionPlan, allPlans?.vba) &&
+                CompareStrings(values?.drillMount, "Yes") && (
+                    <div className={classes["frame-sub-container"]}>
+                        <CalculatorHeading title={drillOptionsTitle} />
+                        <Radio.Group
+                            onChange={handleChange}
+                            value={values?.drillMountOptions}
+                            id="drillMountOptions"
+                            name="drillMountOptions"
+                            className={classes["radio-group"]}
+                        >
+                            <CustomRadio
+                                label={drillRimlessMounting}
+                                value={drillRimlessMounting}
+                                active={
+                                    values?.drillMountOptions ===
+                                    drillRimlessMounting
+                                }
+                            />
 
-                        <CustomRadio
-                            label={drillDrillRimlessMounting}
-                            value={drillDrillRimlessMounting}
-                            active={
-                                values?.drillMountOptions ===
-                                drillDrillRimlessMounting
-                            }
-                        />
-                        <CustomRadio
-                            label={drillDrillAndNotchRimlessMounting}
-                            value={drillDrillAndNotchRimlessMounting}
-                            active={
-                                values?.drillMountOptions ===
-                                drillDrillAndNotchRimlessMounting
-                            }
-                        />
-                    </Radio.Group>
-                    <FormikError name={"drillMountOptions"} />
-                </div>
-            )}
+                            <CustomRadio
+                                label={drillDrillRimlessMounting}
+                                value={drillDrillRimlessMounting}
+                                active={
+                                    values?.drillMountOptions ===
+                                    drillDrillRimlessMounting
+                                }
+                            />
+                            <CustomRadio
+                                label={drillDrillAndNotchRimlessMounting}
+                                value={drillDrillAndNotchRimlessMounting}
+                                active={
+                                    values?.drillMountOptions ===
+                                    drillDrillAndNotchRimlessMounting
+                                }
+                            />
+                        </Radio.Group>
+                        <FormikError name={"drillMountOptions"} />
+                    </div>
+                )}
         </>
     );
 };

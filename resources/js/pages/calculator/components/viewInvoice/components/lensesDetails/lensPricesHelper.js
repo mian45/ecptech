@@ -1,3 +1,4 @@
+import { CompareStrings } from "../../../../../../utils/utils";
 import {
     GRADIENT_TINT,
     POLARIZED,
@@ -42,6 +43,31 @@ import {
     GetPrivatePayMaterialPrice,
     GetPrivatePhotochromicPrice,
 } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
+import {
+    GetPrivateMirrorCoatingPrice,
+    GetPrivatePayVBAMaterialPrice,
+    GetPrivatePolarizedPrice,
+    GetPrivateTintPrice,
+    GetPrivateVBAAsphericFee,
+    GetPrivateVBABlueProtectionFee,
+    GetPrivateVBALensFee,
+    GetPrivateVBALicensedFee,
+    GetPrivateVBARollAndPolishFee,
+    GetPrivateVBAScratchFee,
+    GetVBAAntireflectiveFee,
+    GetVBAAsphericFee,
+    GetVBABlueProtectionFee,
+    GetVBACoatingFee,
+    GetVBALensFee,
+    GetVBALicensedFee,
+    GetVBAMaterialFee,
+    GetVBAPhotochromicFee,
+    GetVBAPolarizedFee,
+    GetVBAPrivateAntireflectivePrice,
+    GetVBARollAndPolishFee,
+    GetVBAScratchFee,
+    GetVBATintFee,
+} from "../../helpers/pricesHelper/calculateVBAPrice";
 
 export const RenderPhotochromicPrices = (data, calculatorObj) => {
     const currentPlan = data?.visionPlan;
@@ -54,6 +80,8 @@ export const RenderPhotochromicPrices = (data, calculatorObj) => {
             total =
                 total +
                 parseFloat(GetDavisPhotochromicFee(data, calculatorObj));
+        } else if (CompareStrings(currentPlan, "VBA")) {
+            total = total + parseFloat(GetVBAPhotochromicFee(data));
         } else {
             total = total + parseFloat(GetPhotochromicPrice(data));
         }
@@ -85,6 +113,8 @@ export const RenderAntireflectivePrices = (data, calculatorObj) => {
             total =
                 total +
                 parseFloat(GetDavisAntireflectiveFee(data, calculatorObj));
+        } else if (CompareStrings(currentPlan, "VBA")) {
+            total = total + parseFloat(GetVBAAntireflectiveFee(data));
         } else {
             total = total + parseFloat(GetAntireflectivePrice(data));
         }
@@ -92,15 +122,27 @@ export const RenderAntireflectivePrices = (data, calculatorObj) => {
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
-        total =
-            total +
-            parseFloat(
-                GetPrivateAntireflectivePrice(
-                    calculatorObj,
-                    data?.antiReflectiveProperties?.type,
-                    data
-                )
-            );
+        if (CompareStrings(currentPlan, "VBA")) {
+            total =
+                total +
+                parseFloat(
+                    GetVBAPrivateAntireflectivePrice(
+                        calculatorObj,
+                        data?.antiReflectiveProperties?.type,
+                        data
+                    )
+                );
+        } else {
+            total =
+                total +
+                parseFloat(
+                    GetPrivateAntireflectivePrice(
+                        calculatorObj,
+                        data?.antiReflectiveProperties?.type,
+                        data
+                    )
+                );
+        }
     }
     return (total || 0).toFixed(2);
 };
@@ -115,6 +157,8 @@ export const RenderPolarizedFee = (data, calculatorObj) => {
         } else if (currentPlan === "Davis Vision") {
             total =
                 total + parseFloat(GetDavisPolarizedFee(data, calculatorObj));
+        } else if (CompareStrings(currentPlan, "VBA")) {
+            total = total + parseFloat(GetVBAPolarizedFee(data));
         } else {
             if (
                 data?.sunGlassesLens?.status === "Yes" &&
@@ -127,18 +171,26 @@ export const RenderPolarizedFee = (data, calculatorObj) => {
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
-        const glassesAddons = calculatorObj?.addons
-            ?.find((plan) => plan?.title === data?.visionPlan)
-            ?.addon_types?.find((item) => item?.title === "Sunglass Options");
-        if (
-            data?.sunGlassesLens?.status === "Yes" &&
-            data?.sunGlassesLens?.lensType === "Polarized"
-        ) {
-            const polirizedPrice = glassesAddons?.addons?.find(
-                (item) => item?.title === "Polarized"
-            )?.price;
+        if (CompareStrings(currentPlan, "VBA")) {
+            total =
+                total +
+                parseFloat(GetPrivatePolarizedPrice(calculatorObj, data));
+        } else {
+            const glassesAddons = calculatorObj?.addons
+                ?.find((plan) => plan?.title === data?.visionPlan)
+                ?.addon_types?.find(
+                    (item) => item?.title === "Sunglass Options"
+                );
+            if (
+                data?.sunGlassesLens?.status === "Yes" &&
+                data?.sunGlassesLens?.lensType === "Polarized"
+            ) {
+                const polirizedPrice = glassesAddons?.addons?.find(
+                    (item) => item?.title === "Polarized"
+                )?.price;
 
-            total = total + parseFloat(polirizedPrice || 0) || 0;
+                total = total + parseFloat(polirizedPrice || 0) || 0;
+            }
         }
     }
     return (total || 0).toFixed(2);
@@ -152,6 +204,8 @@ export const RenderTintFee = (data, calculatorObj) => {
             total = total + parseFloat(GetEyemedTintFee(data));
         } else if (currentPlan === "Davis Vision") {
             total = total + parseFloat(GetDavisTintFee(data, calculatorObj));
+        } else if (CompareStrings(currentPlan, "VBA")) {
+            total = total + parseFloat(GetVBATintFee(data));
         } else {
             if (
                 data?.sunGlassesLens?.status === "Yes" &&
@@ -168,23 +222,30 @@ export const RenderTintFee = (data, calculatorObj) => {
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
-        const glassesAddons = calculatorObj?.addons
-            ?.find((plan) => plan?.title === data?.visionPlan)
-            ?.addon_types?.find((item) => item?.title === "Sunglass Options");
-        if (
-            data?.sunGlassesLens?.status === "Yes" &&
-            data?.sunGlassesLens?.lensType === "Tint"
-        ) {
-            if (data?.sunGlassesLens?.tintType === "Solid Tint") {
-                const solidTindPrice = glassesAddons?.addons?.find(
-                    (item) => item.title === "Solid Tint"
-                )?.price;
-                total = total + parseFloat(solidTindPrice || 0) || 0;
-            } else {
-                const gradientTindPrice = glassesAddons?.addons?.find(
-                    (item) => item.title === "Gradient Tint"
-                )?.price;
-                total = total + parseFloat(gradientTindPrice || 0) || 0;
+        if (CompareStrings(currentPlan, "VBA")) {
+            total =
+                total + parseFloat(GetPrivateTintPrice(calculatorObj, data));
+        } else {
+            const glassesAddons = calculatorObj?.addons
+                ?.find((plan) => plan?.title === data?.visionPlan)
+                ?.addon_types?.find(
+                    (item) => item?.title === "Sunglass Options"
+                );
+            if (
+                data?.sunGlassesLens?.status === "Yes" &&
+                data?.sunGlassesLens?.lensType === "Tint"
+            ) {
+                if (data?.sunGlassesLens?.tintType === "Solid Tint") {
+                    const solidTindPrice = glassesAddons?.addons?.find(
+                        (item) => item.title === "Solid Tint"
+                    )?.price;
+                    total = total + parseFloat(solidTindPrice || 0) || 0;
+                } else {
+                    const gradientTindPrice = glassesAddons?.addons?.find(
+                        (item) => item.title === "Gradient Tint"
+                    )?.price;
+                    total = total + parseFloat(gradientTindPrice || 0) || 0;
+                }
             }
         }
     }
@@ -200,6 +261,8 @@ export const RenderCoatingFee = (data, calculatorObj) => {
             total = total + parseFloat(GetEyemedCoatingFee(data));
         } else if (currentPlan === "Davis Vision") {
             total = total + parseFloat(GetDavisCoatingFee(data, calculatorObj));
+        } else if (CompareStrings(currentPlan, "VBA")) {
+            total = total + parseFloat(GetVBACoatingFee(data));
         } else {
             if (
                 data?.sunGlassesLens?.status === "Yes" &&
@@ -216,23 +279,31 @@ export const RenderCoatingFee = (data, calculatorObj) => {
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
-        const glassesAddons = calculatorObj?.addons
-            ?.find((plan) => plan?.title === data?.visionPlan)
-            ?.addon_types?.find((item) => item?.title === "Sunglass Options");
-        if (
-            data?.sunGlassesLens?.status === "Yes" &&
-            data?.sunGlassesLens?.mirrorCoating === "Yes"
-        ) {
-            if (data?.sunGlassesLens?.coatingType === "Ski Type Mirror") {
-                const skiTypePrice = glassesAddons?.addons?.find(
-                    (item) => item.title === "Ski Type Mirror"
-                )?.price;
-                total = parseFloat(skiTypePrice || 0) || 0;
-            } else {
-                const solidGradientPrice = glassesAddons?.addons?.find(
-                    (item) => item.title === "Solid/Single Gradient Mirror"
-                )?.price;
-                total = parseFloat(solidGradientPrice || 0) || 0;
+        if (CompareStrings(currentPlan, "VBA")) {
+            total =
+                total +
+                parseFloat(GetPrivateMirrorCoatingPrice(calculatorObj, data));
+        } else {
+            const glassesAddons = calculatorObj?.addons
+                ?.find((plan) => plan?.title === data?.visionPlan)
+                ?.addon_types?.find(
+                    (item) => item?.title === "Sunglass Options"
+                );
+            if (
+                data?.sunGlassesLens?.status === "Yes" &&
+                data?.sunGlassesLens?.mirrorCoating === "Yes"
+            ) {
+                if (data?.sunGlassesLens?.coatingType === "Ski Type Mirror") {
+                    const skiTypePrice = glassesAddons?.addons?.find(
+                        (item) => item.title === "Ski Type Mirror"
+                    )?.price;
+                    total = parseFloat(skiTypePrice || 0) || 0;
+                } else {
+                    const solidGradientPrice = glassesAddons?.addons?.find(
+                        (item) => item.title === "Solid/Single Gradient Mirror"
+                    )?.price;
+                    total = parseFloat(solidGradientPrice || 0) || 0;
+                }
             }
         }
     }
@@ -247,6 +318,8 @@ export const RenderBasePrice = (data, calculatorObj, lensPrices) => {
             total = total + parseFloat(GetEyemedLensFee(data));
         } else if (currentPlan === "Davis Vision") {
             total = total + parseFloat(GetDavisLensFee(data, calculatorObj));
+        } else if (CompareStrings(currentPlan, "VBA")) {
+            total = total + parseFloat(GetVBALensFee(data, calculatorObj));
         } else {
             total =
                 total +
@@ -258,7 +331,14 @@ export const RenderBasePrice = (data, calculatorObj, lensPrices) => {
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
-        total = total + parseFloat(GetPrivateLensFee(calculatorObj, data) || 0);
+        if (CompareStrings(currentPlan, "VBA")) {
+            total =
+                total +
+                parseFloat(GetPrivateVBALensFee(data, calculatorObj) || 0);
+        } else {
+            total =
+                total + parseFloat(GetPrivateLensFee(calculatorObj, data) || 0);
+        }
     }
     return (total || 0).toFixed(2);
 };
@@ -278,6 +358,8 @@ export const RenderLensMaterialPrice = (
         } else if (currentPlan === "Davis Vision") {
             total =
                 total + parseFloat(GetDavisMaterialFee(data, davisMaterials));
+        } else if (CompareStrings(currentPlan, "VBA")) {
+            total = total + parseFloat(GetVBAMaterialFee(data, calculatorObj));
         } else {
             total =
                 total +
@@ -289,9 +371,19 @@ export const RenderLensMaterialPrice = (
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
-        total =
-            total +
-            parseFloat(GetPrivatePayMaterialPrice(calculatorObj, data) || 0);
+        if (CompareStrings(currentPlan, "VBA")) {
+            total =
+                total +
+                parseFloat(
+                    GetPrivatePayVBAMaterialPrice(data, calculatorObj) || 0
+                );
+        } else {
+            total =
+                total +
+                parseFloat(
+                    GetPrivatePayMaterialPrice(calculatorObj, data) || 0
+                );
+        }
     }
     return (total || 0).toFixed(2);
 };
@@ -520,6 +612,73 @@ const GetLensFee = (data, calculatorObj, lensPrices) => {
         }
     } else {
         return { lensPrice: 0, materialPrice: 0 };
+    }
+};
+export const RenderAspheric = (calculatorObj, data) => {
+    if (
+        CompareStrings(data?.isLensBenifit, "Yes") &&
+        CompareStrings(data?.visionPlan, "VBA")
+    ) {
+        return (parseFloat(GetVBAAsphericFee(data) || 0) || 0).toFixed(2);
+    } else {
+        return (
+            parseFloat(GetPrivateVBAAsphericFee(calculatorObj, data) || 0) || 0
+        ).toFixed(2);
+    }
+};
+
+export const RenderBlueProtection = (calculatorObj, data) => {
+    if (
+        CompareStrings(data?.isLensBenifit, "Yes") &&
+        CompareStrings(data?.visionPlan, "VBA")
+    ) {
+        return (parseFloat(GetVBABlueProtectionFee(data) || 0) || 0).toFixed(2);
+    } else {
+        return (
+            parseFloat(
+                GetPrivateVBABlueProtectionFee(calculatorObj, data) || 0
+            ) || 0
+        ).toFixed(2);
+    }
+};
+
+export const RenderRollAndPolish = (calculatorObj, data) => {
+    if (
+        CompareStrings(data?.isLensBenifit, "Yes") &&
+        CompareStrings(data?.visionPlan, "VBA")
+    ) {
+        return (parseFloat(GetVBARollAndPolishFee(data) || 0) || 0).toFixed(2);
+    } else {
+        return (
+            parseFloat(
+                GetPrivateVBARollAndPolishFee(calculatorObj, data) || 0
+            ) || 0
+        ).toFixed(2);
+    }
+};
+export const RenderLicensedPrice = (calculatorObj, data) => {
+    if (
+        CompareStrings(data?.isLensBenifit, "Yes") &&
+        CompareStrings(data?.visionPlan, "VBA")
+    ) {
+        return (parseFloat(GetVBALicensedFee(data) || 0) || 0).toFixed(2);
+    } else {
+        return (
+            parseFloat(GetPrivateVBALicensedFee(calculatorObj, data) || 0) || 0
+        ).toFixed(2);
+    }
+};
+
+export const RenderScratchedPrice = (calculatorObj, data) => {
+    if (
+        CompareStrings(data?.isLensBenifit, "Yes") &&
+        CompareStrings(data?.visionPlan, "VBA")
+    ) {
+        return (parseFloat(GetVBAScratchFee(data) || 0) || 0).toFixed(2);
+    } else {
+        return (
+            parseFloat(GetPrivateVBAScratchFee(calculatorObj, data) || 0) || 0
+        ).toFixed(2);
     }
 };
 

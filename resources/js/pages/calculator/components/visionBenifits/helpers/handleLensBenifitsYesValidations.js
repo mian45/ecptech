@@ -215,6 +215,99 @@ export const handleLensBenifitYesValidations = (
         );
     }
 
+    //add aspheric validations
+    if (
+        data?.find((ques) => ques?.question === "Aspheric")?.optional ===
+            "true" &&
+        values?.visionPlan === "VBA"
+    ) {
+        validationObject.isAspheric = Yup.string().required(
+            "Aspheric is required"
+        );
+    }
+    if (values?.isAspheric === "Yes" && values?.visionPlan === "VBA") {
+        validationObject.asphericType = Yup.string().required(
+            "Aspheric type is required"
+        );
+    }
+
+    //add blue protection validations
+    if (
+        data?.find((ques) => ques?.question === "Blue Protection")?.optional ===
+            "true" &&
+        values?.visionPlan === "VBA"
+    ) {
+        validationObject.isBlueProtection = Yup.string().required(
+            "Blue Protection is required"
+        );
+    }
+    if (values?.isBlueProtection === "Yes" && values?.visionPlan === "VBA") {
+        validationObject.blueProtectionCategory = Yup.string().required(
+            "Category is required"
+        );
+    }
+    if (
+        values?.isBlueProtection === "Yes" &&
+        values?.blueProtectionCategory &&
+        values?.visionPlan === "VBA"
+    ) {
+        validationObject.blueProtectionType = Yup.string().required(
+            "Blue Protection type is required"
+        );
+    }
+
+    //add roll and Polish validations
+    if (
+        data?.find((ques) => ques?.question === "Roll & Polish")?.optional ===
+            "true" &&
+        values?.visionPlan === "VBA"
+    ) {
+        validationObject.isRollAndPolish = Yup.string().required(
+            "Roll & Polish is required"
+        );
+    }
+    if (values?.isRollAndPolish === "Yes" && values?.visionPlan === "VBA") {
+        validationObject.rollAndPolishTypes = Yup.string().required(
+            "Roll & Polish type is required"
+        );
+    }
+
+    //add licensed speciality validations
+    if (
+        data?.find(
+            (ques) => ques?.question === "Licensed Specialty Enhancement"
+        )?.optional === "true" &&
+        values?.visionPlan === "VBA"
+    ) {
+        validationObject.isLicensedSpeciality = Yup.string().required(
+            "Licensed Specialty Enhancement is required"
+        );
+    }
+    if (
+        values?.isLicensedSpeciality === "Yes" &&
+        values?.visionPlan === "VBA"
+    ) {
+        validationObject.licensedSpecialityType = Yup.string().required(
+            "Licensed Specialty Enhancement type is required"
+        );
+    }
+
+    //add Scratch Resistant Coatings validations
+    if (
+        data?.find((ques) => ques?.question === "Scratch Resistant Coatings")
+            ?.optional === "true" &&
+        values?.visionPlan === "VBA"
+    ) {
+        validationObject.isScratched = Yup.string().required(
+            "Scratch Resistant Coating is required"
+        );
+    }
+    if (values?.isScratched === "Yes" && values?.visionPlan === "VBA") {
+        validationObject.scratchedType = Yup.string().required(
+            "Scratch Resistant Coating type is required"
+        );
+    }
+
     //add Speciality lens validations
     if (
         specialityLens &&

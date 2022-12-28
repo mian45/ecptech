@@ -1,11 +1,19 @@
+import { CompareStrings } from "../../../../../utils/utils";
+import * as Yup from "yup";
+
 export const resetLowerCopayMaterial = async (
     e,
     calValidations,
     setCalValidations,
     formProps
 ) => {
-    const { setFieldValue } = formProps;
+    const { values, setFieldValue } = formProps;
     const validations = { ...calValidations };
+    if (CompareStrings(values?.visionPlan, "VBA") && e?.target?.value) {
+        validations.centerThickness = Yup.string().required(
+            "1MM center thickness is required"
+        );
+    }
 
     if (e?.target?.value !== "Polycarbonate") {
         //reset polycarbonate validations

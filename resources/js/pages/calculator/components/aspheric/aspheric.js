@@ -6,7 +6,7 @@ import { CompareStrings } from "../../../../utils/utils";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./aspheric.module.scss";
-import icon from "../../../../../images/calculator/additional-lens.svg";
+import icon from "../../../../../images/calculator/aspheric.svg";
 import AsphericTypes from "./components/ashpericTypes/asphericTypes";
 import * as Yup from "yup";
 

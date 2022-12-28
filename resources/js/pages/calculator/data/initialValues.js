@@ -114,13 +114,15 @@ export const CalculatorInitialValues = {
     //licensed speciality
     isLicensedSpeciality: "",
     licensedSpecialityType: "",
-    //licensed speciality
+    // Scratch Resistant Coatings
     isScratched: "",
     scratchedType: "",
 
     //lenses
     tintCategory: "",
     uvProtection: "",
+
+    centerThickness: "",
 };
 
 export const BenifitTypeEnums = Object.freeze({

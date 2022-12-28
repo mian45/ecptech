@@ -4,7 +4,7 @@ import * as Yup from "yup";
 import { CompareStrings } from "../../../../utils/utils";
 import { Col, Radio, Row } from "antd";
 import QuestionIcon from "../questionIcon";
-import icon from "../../../../../images/calculator/additional-lens.svg";
+import icon from "../../../../../images/calculator/blueProtection.svg";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import CustomRadio from "../../../../components/customRadio";
 import { connect } from "react-redux";

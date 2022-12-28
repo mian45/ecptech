@@ -40,3 +40,70 @@ export const DAVIS_EDGE_POLISH = 22;
 export const DAVIS_HIGH_EDGH_POLISH = 70;
 export const DAVIS_ROLL_AND_POLISH = 16;
 export const DAVIS_ROLL_EDGE_POLISH = 24;
+
+export const PriceConstants = {
+    vba: {
+        rimlessMounting: 8,
+        drillRimlessMounting: 28,
+        drillAndNotchRimlessMounting: 28,
+        centerThickness: 10,
+        photochromic: {
+            photochromic: { sv: 62, pal: 70, nvf: 62, bifocal: 70 },
+            photochromicPolarized: {
+                sv: 118,
+                pal: 136,
+                nvf: 118,
+                bifocal: 136,
+            },
+            photochromicMirror: { sv: 97, pal: 105, nvf: 97, bifocal: 105 },
+        },
+        polarized: {
+            sv: 56,
+            pal: 66,
+            nvf: 56,
+            bifocal: 66,
+        },
+        tint: {
+            normalUse: 10,
+            therapeuticUse: 0,
+        },
+        mirrorCoating: {
+            glass: 23,
+            solid: 35,
+        },
+        uvProtection: 12,
+        antiReflective: {
+            standardAR1: 31,
+            standardAR2: 52,
+            premiumAR1: 69,
+            premiumAR2: 81,
+            ultraAR: 94,
+        },
+        aspheric: {
+            standardPlastic: { sv: 43, pal: 55, nvf: 43, bifocal: 55 },
+            polycarbonate: { sv: 30, pal: 32, nvf: 30, bifocal: 32 },
+            midIndexTrivax: { sv: 0, pal: 0, nvf: 0, bifocal: 0 },
+            midIndexPlastic: { sv: 0, pal: 0, nvf: 0, bifocal: 0 },
+            highIndexPlastic: { sv: 0, pal: 0, nvf: 0, bifocal: 0 },
+        },
+        blueProtection: {
+            material1: 0,
+            material2: 15,
+        },
+        rollAndPolish: {
+            rollOrStandard: 10,
+            rollAndStandard: 10,
+            highLuster: 13,
+            rollAndHignLuster: 13,
+        },
+        licensed: {
+            color: 34,
+            branding: 21,
+        },
+        scratchCoating: {
+            scratchCoating: 0,
+            coating1: 10,
+            coating2: 30,
+        },
+    },
+};

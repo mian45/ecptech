@@ -16,6 +16,8 @@ import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
 import { retailErrorMessage } from "../sunglassLens/helpers/constants";
 import RetailError from "../photochromics/components/retailError/retailError";
+import { CompareStrings } from "../../../../utils/utils";
+import CenterThickness from "./components/centerThickness/centerThikness";
 
 const LensMeterials = ({
     formProps,
@@ -41,10 +43,12 @@ const LensMeterials = ({
         Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
 
     const getActiveMaterials = (material) => {
+        const activePlan = values?.visionPlan;
         if (
-            values?.visionPlan === eyemedPlan ||
-            values?.visionPlan === AllPlans[language]?.davis ||
-            values?.visionPlan === AllPlans[language]?.privatePay
+            CompareStrings(activePlan, eyemedPlan) ||
+            CompareStrings(activePlan, AllPlans[language]?.davis) ||
+            CompareStrings(activePlan, AllPlans[language]?.privatePay) ||
+            CompareStrings(activePlan, AllPlans[language]?.vba)
         ) {
             return false;
         }
@@ -109,7 +113,8 @@ const LensMeterials = ({
             !(
                 values?.visionPlan === eyemedPlan ||
                 values?.visionPlan === AllPlans[language]?.davis ||
-                values?.visionPlan === AllPlans[language]?.privatePay
+                values?.visionPlan === AllPlans[language]?.privatePay ||
+                values?.visionPlan === AllPlans[language]?.vba
             )
         ) {
             await getBaseValues(
@@ -259,6 +264,7 @@ const LensMeterials = ({
                                         ?.lensMaterial
                                 }
                             />
+                            <CenterThickness formProps={formProps} />
                             {values?.lensMaterial &&
                                 values?.visionPlan === eyemedPlan &&
                                 values?.isLensBenifit === lensBenifitYes && (

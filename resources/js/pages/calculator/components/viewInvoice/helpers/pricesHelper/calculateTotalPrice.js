@@ -1,6 +1,8 @@
+import { CompareStrings } from "../../../../../../utils/utils";
 import { CalculateDavisPlansPrices } from "./calculateDavisPrice";
 import { CalculateEyemedPlansPrices } from "./calculateEyemedPrice";
 import { CalculateOtherPlansPrices } from "./calculateOtherPlansPrices";
+import { CalculateVBAPlansPrices } from "./calculateVBAPrice";
 
 export const CalculateTotalPrice = (
     data,
@@ -26,6 +28,13 @@ export const CalculateTotalPrice = (
             plansList,
             plansJson,
             davisMaterials
+        );
+    } else if (CompareStrings(data?.visionPlan, plansList?.vba)) {
+        return CalculateVBAPlansPrices(
+            data,
+            calculatorObj,
+            plansList,
+            plansJson
         );
     } else {
         return CalculateOtherPlansPrices(

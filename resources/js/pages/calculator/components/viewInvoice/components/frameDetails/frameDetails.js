@@ -13,6 +13,8 @@ import { Plans } from "../../../../data/plansJson";
 import { connect } from "react-redux";
 import { GetDavisDrillMountFee } from "../../helpers/pricesHelper/calculateDavisPrice";
 import PlanTitles from "../../../../data/plansTitles/planTitles";
+import { GetVBADrillMountFee } from "../../helpers/pricesHelper/calculateVBAPrice";
+import { CompareStrings } from "../../../../../../utils/utils";
 
 const { Panel } = Collapse;
 
@@ -26,7 +28,19 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
     );
     const rendeFrameFee = () => {
         let price = 0;
-        if (currentPlan === plansList?.eyemed) {
+        if (currentPlan === plansList?.vba) {
+            // add Frame Fee
+            price =
+                price +
+                parseFloat(
+                    GetEyemedFrameFee(receipt?.values, calculatorObj, plansJson)
+                );
+
+            //add drill mount fee
+            price =
+                price +
+                parseFloat(GetVBADrillMountFee(receipt?.values, plansJson));
+        } else if (currentPlan === plansList?.eyemed) {
             // add Frame Fee
             price =
                 price +
@@ -101,6 +115,13 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
         let total = 0;
         const data = receipt?.values;
         if (
+            currentPlan === plansList?.vba &&
+            data?.frameOrder?.drillMount === "Yes"
+        ) {
+            total =
+                total +
+                parseFloat(GetVBADrillMountFee(receipt?.values, plansJson));
+        } else if (
             currentPlan === plansList?.eyemed &&
             data?.frameOrder?.drillMount === "Yes"
         ) {
@@ -124,6 +145,14 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
             : "";
     };
 
+    const renderDrillMountTitle = () => {
+        return CompareStrings(receipt?.values?.visionPlan, "VBA")
+            ? `${drillMountTitle} (${
+                  receipt?.values?.frameOrder?.drillMountOption || ""
+              })`
+            : drillMountTitle;
+    };
+
     return (
         <Row>
             <Col xs={24}>
@@ -144,7 +173,7 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
                             drillMount={renderDrillMount}
                             receipt={receipt}
                             renderTracing={renderTracing}
-                            drillMountTitle={drillMountTitle}
+                            drillMountTitle={renderDrillMountTitle()}
                         />
                     </Panel>
                 </Collapse>

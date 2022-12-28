@@ -41,6 +41,17 @@ export const handleFrameBenifitYes = (data, isContribution, values) => {
         );
     }
 
+    // add Drill mount Options validations
+    if (
+        values?.frameOrderType === "New Frame Purchase" &&
+        values?.drillMount === "Yes" &&
+        values?.visionPlan === "VBA"
+    ) {
+        validationObject.drillMountOptions = Yup.string().required(
+            "Drill mount type is required"
+        );
+    }
+
     // add Tracing Fee validations
     if (values?.frameOrderType === "Patient Own Frame") {
         validationObject.tracingFee = Yup.string().required(

@@ -290,7 +290,8 @@ const LensType = ({
             !(
                 values?.visionPlan === eyemedPlan ||
                 values?.visionPlan === davisPlan ||
-                values?.visionPlan === AllPlans[language]?.privatePay
+                values?.visionPlan === AllPlans[language]?.privatePay ||
+                values?.visionPlan === AllPlans[language]?.vba
             )
         ) {
             await resetMaterial(e);

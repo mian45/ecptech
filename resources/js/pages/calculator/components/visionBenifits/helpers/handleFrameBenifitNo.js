@@ -6,6 +6,7 @@ export const handleFrameBenifitNo = (calValidations, setCalValidations) => {
     delete validations.frameContribution;
     delete validations.drillMount;
     delete validations.drillMountValue;
+    delete validations.drillMountOptions;
     delete validations.tracingFee;
 
     setCalValidations({

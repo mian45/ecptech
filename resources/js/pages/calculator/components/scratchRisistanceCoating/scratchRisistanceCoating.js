@@ -6,7 +6,7 @@ import { CompareStrings } from "../../../../utils/utils";
 import QuestionIcon from "../questionIcon";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
 import classes from "./scratchRisistanceCoating.module.scss";
-import icon from "../../../../../images/calculator/additional-lens.svg";
+import icon from "../../../../../images/calculator/scratch.svg";
 import * as Yup from "yup";
 import ScratchRisistanceCoatingType from "./components/scratchRisistanceCoatingType/scratchRisistanceCoatingType";
 

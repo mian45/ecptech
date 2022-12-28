@@ -37,6 +37,8 @@ import * as action from "../../../../store/actions";
 import { handleLensBenifitYesValidations } from "../visionBenifits/helpers/handleLensBenifitsYesValidations";
 import { handleFrameBenifitYes } from "../visionBenifits/helpers/handleFrameBenifitYes";
 import RenderLensFields from "./components/renderLensFields/renderLensFields";
+import { CompareStrings } from "../../../../utils/utils";
+import { GetVBAValidations } from "./helpers/getVBAValidations";
 
 const CalculatorScreen = ({ retailPopup }) => {
     const history = useHistory();
@@ -140,6 +142,7 @@ const CalculatorScreen = ({ retailPopup }) => {
                 { vision_plan_id: firstPlan?.id }
             );
             resData.lens_types = colRes?.data?.data?.collection;
+            resData.lens_material = colRes?.data?.data?.lense_materials;
             resData.additional_lense_setting = [];
 
             setDavisMaterials(colRes?.data?.data?.lense_materials || []);
@@ -173,7 +176,7 @@ const CalculatorScreen = ({ retailPopup }) => {
     const manageValidationObject = (question, initialPlan) => {
         let allValidations = {};
         question?.forEach((item) => {
-            const validations = CreateCalculatorValidations(
+            let validations = CreateCalculatorValidations(
                 item?.question_permissions
             );
             if (item?.title === "Private Pay") {
@@ -213,6 +216,53 @@ const CalculatorScreen = ({ retailPopup }) => {
                 if (item?.title === "Davis Vision" && blueLight) {
                     validations.blueLight = Yup.string().required(
                         "Blue light filtering is required"
+                    );
+                }
+            } else if (CompareStrings(item?.title, "VBA")) {
+                if (
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Aspheric"
+                    )?.optional === "true"
+                ) {
+                    validations.isAspheric = Yup.string().required(
+                        "Aspheric is required"
+                    );
+                }
+                if (
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Blue Protection"
+                    )?.optional === "true"
+                ) {
+                    validations.isBlueProtection = Yup.string().required(
+                        "Blue Protection is required"
+                    );
+                }
+                if (
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Roll & Polish"
+                    )?.optional === "true"
+                ) {
+                    validations.isRollAndPolish = Yup.string().required(
+                        "Roll & Polish is required"
+                    );
+                }
+                if (
+                    item?.question_permissions?.find(
+                        (ques) =>
+                            ques?.question == "Licensed Specialty Enhancement"
+                    )?.optional === "true"
+                ) {
+                    validations.isLicensedSpeciality = Yup.string().required(
+                        "Licensed Specialty Enhancement is required"
+                    );
+                }
+                if (
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Scratch Resistant Coatings"
+                    )?.optional === "true"
+                ) {
+                    validations.isScratched = Yup.string().required(
+                        "Scratch Resistant Coatings is required"
                     );
                 }
             }

@@ -1,6 +1,7 @@
 import { Col, Collapse, Row } from "antd";
 import React from "react";
 import { connect } from "react-redux";
+import { CompareStrings } from "../../../../../../utils/utils";
 import PlanTitles from "../../../../data/plansTitles/planTitles";
 import { RenderBlueLight } from "../../helpers/pricesHelper/calculateDavisPrice";
 import { calculateLensesCopaysFee } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
@@ -20,6 +21,10 @@ import {
     RenderPolarizedFee,
     RenderTintFee,
     RenderAdditionalLens,
+    RenderAspheric,
+    RenderBlueProtection,
+    RenderRollAndPolish,
+    RenderLicensedPrice,
 } from "./lensPricesHelper";
 
 const { Panel } = Collapse;
@@ -176,6 +181,89 @@ const GetLensPriceByPlan = ({
                 calculatorObj={calculatorObj}
                 receipt={receipt}
             />
+            {CompareStrings(receipt?.values?.visionPlan, "VBA") &&
+                CompareStrings(receipt?.values?.aspheric?.status, "Yes") &&
+                receipt?.values?.aspheric?.type && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={`Aspheric: (${receipt?.values?.aspheric?.type})`}
+                            price={`$${
+                                RenderAspheric(
+                                    calculatorObj,
+                                    receipt?.values
+                                ) || 0
+                            }`}
+                        />
+                    </Col>
+                )}
+            {CompareStrings(receipt?.values?.visionPlan, "VBA") &&
+                CompareStrings(receipt?.values?.rollAndPolish?.status, "Yes") &&
+                receipt?.values?.rollAndPolish?.type && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={`
+                            Roll & Polish: (${receipt?.values?.rollAndPolish?.type})`}
+                            price={`$${
+                                RenderRollAndPolish(
+                                    calculatorObj,
+                                    receipt?.values
+                                ) || 0
+                            }`}
+                        />
+                    </Col>
+                )}
+            {CompareStrings(receipt?.values?.visionPlan, "VBA") &&
+                CompareStrings(
+                    receipt?.values?.licensedSpeciality?.status,
+                    "Yes"
+                ) &&
+                receipt?.values?.licensedSpeciality?.type && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={`Licensed Specialty Enhancement: (${receipt?.values?.licensedSpeciality?.type})`}
+                            price={`$${
+                                RenderLicensedPrice(
+                                    calculatorObj,
+                                    receipt?.values
+                                ) || 0
+                            }`}
+                        />
+                    </Col>
+                )}
+            {CompareStrings(receipt?.values?.visionPlan, "VBA") &&
+                CompareStrings(receipt?.values?.scratch?.status, "Yes") &&
+                receipt?.values?.scratch?.type && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={`Scratch Resistant Coatings: (${receipt?.values?.scratch?.type})`}
+                            price={`$${
+                                RenderLicensedPrice(
+                                    calculatorObj,
+                                    receipt?.values
+                                ) || 0
+                            }`}
+                        />
+                    </Col>
+                )}
+            {CompareStrings(receipt?.values?.visionPlan, "VBA") &&
+                CompareStrings(
+                    receipt?.values?.blueProtection?.status,
+                    "Yes"
+                ) &&
+                receipt?.values?.blueProtection?.type &&
+                receipt?.values?.blueProtection?.category && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={`Blue Protection: (${receipt?.values?.blueProtection?.type})`}
+                            price={`$${
+                                RenderBlueProtection(
+                                    calculatorObj,
+                                    receipt?.values
+                                ) || 0
+                            }`}
+                        />
+                    </Col>
+                )}
             {(receipt?.values?.visionPlan === "Eyemed" ||
                 receipt?.values?.visionPlan === "Davis Vision") &&
                 receipt?.values?.slabOff?.status === "Yes" && (

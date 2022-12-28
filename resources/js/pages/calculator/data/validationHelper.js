@@ -136,6 +136,7 @@ export const GetMappedPayload = (data) => {
             frameContribution: data?.frameContribution,
             drillMount: data?.drillMount,
             drillMountPrice: data?.drillMountValue,
+            drillMountOption: data?.drillMountOptions,
         },
         lowerCopaythanStandard: {
             value: data?.isLoweredCopay,
@@ -225,13 +226,17 @@ export const GetMappedPayload = (data) => {
             brand: data?.lensTypeValue,
             brandPrice: data?.lensTypeInput,
             blendedBifocal: data?.blendedBifocal,
+            category: data?.lensCategory,
+            subCategory: data?.lensSubCategory,
         },
         lensMaterial: data?.lensMaterial,
         lensMaterialPrice: data?.lensMaterialValue,
+        centerThickness: data?.centerThickness,
         photochromics: {
             status: data?.isPhotochromics,
             type: data?.photochromicsType,
             price: data?.photochromicValue,
+            category: data?.photochromicsCategory,
         },
         sunGlassesLens: {
             status: data?.isSunglasses,
@@ -242,11 +247,14 @@ export const GetMappedPayload = (data) => {
             mirrorCoating: data?.isMirrorCoating,
             coatingType: data?.mirrorCoatingType,
             coatingPrice: data?.mirrorCoatingPrice,
+            tintCategory: data?.tintCategory,
+            uvProtection: data?.uvProtection,
         },
         antiReflectiveProperties: {
             status: data?.isAntireflective,
             type: data?.antireflectiveType,
             price: data?.antireflectiveValue,
+            category: data?.antiReflectiveCategory,
         },
         blueLight: data?.blueLight,
         protectionPlan: {
@@ -282,6 +290,27 @@ export const GetMappedPayload = (data) => {
         tracing: {
             status: data?.tracingFee,
             price: data?.tracingPrice,
+        },
+        aspheric: {
+            status: data?.isAspheric,
+            type: data?.asphericType,
+        },
+        blueProtection: {
+            status: data?.isBlueProtection,
+            category: data?.blueProtectionCategory,
+            type: data?.blueProtectionType,
+        },
+        rollAndPolish: {
+            status: data?.isRollAndPolish,
+            type: data?.rollAndPolishTypes,
+        },
+        licensedSpeciality: {
+            status: data?.isLicensedSpeciality,
+            type: data?.licensedSpecialityType,
+        },
+        scratch: {
+            status: data?.isScratched,
+            type: data?.scratchedType,
         },
     };
 };
@@ -342,6 +371,7 @@ export const mappedEditValues = (data) => {
         frameContribution: userState?.frameOrder?.frameContribution || "",
         drillMount: userState?.frameOrder?.drillMount || "",
         drillMountValue: userState?.frameOrder?.drillMountPrice || "",
+        drillMountOptions: userState?.frameOrder?.drillMountOption || "",
         isLoweredCopay: userState?.lowerCopaythanStandard?.value || "",
         isCopayPolycarbonate: polycarbonate?.status || null,
         isCopayPhotochromic: photochromic?.status || null,
@@ -395,11 +425,18 @@ export const mappedEditValues = (data) => {
         lensType: userState?.lensType?.type || "",
         lensTypeValue: userState?.lensType?.brand || "",
         lensTypeInput: userState?.lensType?.brandPrice || "",
+        lensCategory: userState?.lensType?.category || "",
+        lensSubCategory: userState?.lensType?.subCategory || "",
+        //lens materials
         lensMaterial: userState?.lensMaterial || "",
         lensMaterialValue: userState?.lensMaterialPrice || "",
+        centerThickness: userState?.centerThickness || "",
+        //photochromics
         isPhotochromics: userState?.photochromics?.status || "",
         photochromicsType: userState?.photochromics?.type || "",
         photochromicValue: userState?.photochromics?.price || "",
+        photochromicsCategory: userState?.photochromics?.category || "",
+        //sunglasses
         isSunglasses: userState?.sunGlassesLens?.status || "",
         sunglassesType: userState?.sunGlassesLens?.lensType || "",
         polarizedTypePrice: userState?.sunGlassesLens?.polarizedPrice || "",
@@ -408,9 +445,15 @@ export const mappedEditValues = (data) => {
         tintType: userState?.sunGlassesLens?.tintType || "",
         isMirrorCoating: userState?.sunGlassesLens?.mirrorCoating || "",
         mirrorCoatingType: userState?.sunGlassesLens?.coatingType || "",
+        tintCategory: userState?.sunGlassesLens?.tintCategory || "",
+        uvProtection: userState?.sunGlassesLens?.uvProtection || "",
+        //Anti-Reflective
         isAntireflective: userState?.antiReflectiveProperties?.status || "",
         antireflectiveType: userState?.antiReflectiveProperties?.type || "",
         antireflectiveValue: userState?.antiReflectiveProperties?.price || "",
+        antiReflectiveCategory:
+            userState?.antiReflectiveProperties?.category || "",
+        //protection plan
         isProtectionPlan: userState?.protectionPlan?.status || "",
         protectionPlanType: userState?.protectionPlan?.type || "",
         isProtectionPlanPaid: userState?.protectionPlan?.paymentStatus || "",
@@ -433,5 +476,21 @@ export const mappedEditValues = (data) => {
         tracingPrice: userState?.tracing?.price || "",
         blueLight: userState?.blueLight || "",
         blendedBifocal: userState?.lensType?.blendedBifocal || "",
+        //Aspheric
+        isAspheric: userState?.aspheric?.status || "",
+        asphericType: userState?.aspheric?.type || "",
+        // blue protection
+        isBlueProtection: userState?.blueProtection?.status || "",
+        blueProtectionCategory: userState?.blueProtection?.category || "",
+        blueProtectionType: userState?.blueProtection?.type || "",
+        // Roll and Polish
+        isRollAndPolish: userState?.rollAndPolish?.status || "",
+        rollAndPolishTypes: userState?.rollAndPolish?.type || "",
+        // licensed Speciality
+        isLicensedSpeciality: userState?.licensedSpeciality?.status || "",
+        licensedSpecialityType: userState?.licensedSpeciality?.type || "",
+        // scratch risistance coating
+        isScratched: userState?.scratch?.status || "",
+        scratchedType: userState?.scratch?.type || "",
     };
 };

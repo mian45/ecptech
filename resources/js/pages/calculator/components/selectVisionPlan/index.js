@@ -40,6 +40,7 @@ const SelectVisionPlan = ({
                 { vision_plan_id: currentPlan?.id }
             );
             calculatorObj.lens_types = res?.data?.data?.collection;
+            calculatorObj.lens_material = res?.data?.data?.lense_materials;
             calculatorObj.additional_lense_setting = [];
             if (
                 value.target?.value === "Eyemed" ||

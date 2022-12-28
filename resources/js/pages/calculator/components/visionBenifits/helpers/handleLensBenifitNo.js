@@ -50,6 +50,27 @@ export const handleLensBenifitNo = (calValidations, setCalValidations) => {
     delete validations?.polishType;
     delete validations?.polishPrice;
 
+    //remove Aspheric validations
+    delete validations?.isAspheric;
+    delete validations?.asphericType;
+
+    //remove Blue Protection validations
+    delete validations?.isBlueProtection;
+    delete validations?.blueProtectionCategory;
+    delete validations?.blueProtectionType;
+
+    //remove roll and Polish validations
+    delete validations?.isRollAndPolish;
+    delete validations?.rollAndPolishTypes;
+
+    //remove licensed speciality validations
+    delete validations?.isLicensedSpeciality;
+    delete validations?.licensedSpecialityType;
+
+    //remove licensed speciality validations
+    delete validations?.isScratched;
+    delete validations?.scratchedType;
+
     //delete lowered copay validations
     delete validations?.isLoweredCopay;
     delete validations?.isCopayChecked;
