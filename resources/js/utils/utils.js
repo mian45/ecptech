@@ -3,7 +3,7 @@ export const CompareStrings = (a, b) => {
 };
 
 export const groupBy = (property, objectArray) => {
-    return objectArray.reduce((acc, obj) => {
+    return objectArray?.reduce((acc, obj) => {
         const key = obj[property];
         if (!acc[key]) {
             acc[key] = [];
