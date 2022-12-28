@@ -36,7 +36,7 @@ const plans={
             "VSP Advantage": 'vsp',
             'Eyemed': 'davis',
             "Davis Vision": 'eyemed',
-            "Spectera": 'spectera',
+            "Spectra": 'spectra',
             "VBA": 'vba',
 }
 const EyePrescriptionModal = ({ onClose, userId, clientUserId, userRole, onOpen,plan }) => {

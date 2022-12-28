@@ -143,7 +143,7 @@ class InvoiceCalculaterController extends Controller
 
                             
 
-                        if($vision_plan->title != 'VBA'){
+                        if($vision_plan->title != 'VBA' AND $vision_plan->title != 'Spectra'){
                 
                             if(!empty($data[2])){
                                 if(strtolower($data[2]) == 'null'){
@@ -181,9 +181,11 @@ class InvoiceCalculaterController extends Controller
                                     );
                                 }
 
-                            }elseif($vision_plan->title == 'VBA'){
+                            }elseif($vision_plan->title == 'VBA' OR $vision_plan->title == 'Spectra'){
 
                                 $data = array_combine($column_names,$data);  
+
+                                if($vision_plan->title == 'VBA'){
                             
                                 if($lens_type->title == 'Single Vision' || $lens_type->title == 'PAL'){
                                     
@@ -215,6 +217,26 @@ class InvoiceCalculaterController extends Controller
                                     }
                             
                                 }
+
+                                }else{
+                                    if($lens_type->title == 'PAL'){
+                                    
+                                        if(!empty($data['Category'])){
+                                            $lense_type_category = LenseType::updateOrCreate(
+                                                [
+                                                    'title'=> $data['Category'], 
+                                                    'vision_plan_id'=>$vision_plan->id,
+                                                    'lense_type_id' => $lens_type->id,
+                                                    'is_category' => 1
+                                                ]
+                                            );
+                                            $brand_lense_type_id = $lense_type_category->id;
+                                        }
+    
+                                    }
+                                }
+
+                                
                             
                                 if(!empty($data['Manufacturer'])){
                                     
@@ -229,10 +251,17 @@ class InvoiceCalculaterController extends Controller
                             
                                     $code = Code::where('vision_plan_id', $vision_plan->id)->where('lense_type_id', $brand_lense_type_id)->first();
                                     
-                            
+                                    $code_id = NULL;
+                                    if($code){
+                                        $code_id = $code->id;
+                                    }
+                                    
+
                                     $collection = Collection::updateOrCreate(
-                                        ['title'=> $data['Brand'], 'brand_id'=>$brand->id, 'code_id'=>$code->id]
+                                        ['title'=> $data['Brand'], 'brand_id'=>$brand->id, 'code_id'=>$code_id]
                                     );
+
+                                    
                                     
                                 }
                             
@@ -389,7 +418,7 @@ class InvoiceCalculaterController extends Controller
                                 if(!empty($data[4])){
                                     $price = moneyFormatter($data[4]);
                                 }
-                                if($vision_plan->title =='VBA' OR $vision_plan->title =='Spectera'){
+                                if($vision_plan->title =='VBA' OR $vision_plan->title =='Spectra'){
 
                                     if(!empty($data[2])){
                                         $category = $data[2];
@@ -496,7 +525,7 @@ class InvoiceCalculaterController extends Controller
                                 }
     
 
-                            }elseif($vision_plan->title == 'VBA'){
+                            }elseif($vision_plan->title == 'VBA' OR $vision_plan->title == 'Spectra'){
 
                                 $data = array_combine($column_names,$data);  
 
@@ -762,12 +791,12 @@ class InvoiceCalculaterController extends Controller
 
         $vision_plan = VisionPlan::find($request->vision_plan_id);
         
-        if($vision_plan->title == 'VBA'){
+        if($vision_plan->title == 'VBA' OR $vision_plan->title == 'Spectra'){
 
             $lense_types = LenseType::where('vision_plan_id',$vision_plan->id)->get();
             foreach($lense_types as $lense_type){
 
-                if($lense_type->title =='Single Vision'){
+                if($lense_type->title =='Single Vision' AND $vision_plan->title == 'VBA'){
 
                     $collections = LenseType::with(['categories' => function($q){
                                         $q->select('id','title','lense_type_id');
