@@ -237,10 +237,9 @@ class SettingController extends Controller
                 $vision_plans = VisionPlan::where('title','like','%vsp%')->orWhere('title','Private Pay')->get();
                 foreach($vision_plans as $vision_plan){
                     
-                    $lense_materials = LenseMaterial::where('vision_plan_id',$vision_plan->id)->get();
-                    foreach($lense_materials as $lense_material){
-
-                        if($lense_material->title == $lense_material['lens_material_title']){
+                    $lense_materials = LensMaterial::where('vision_plan_id',$vision_plan->id)->get();
+                    foreach($lense_materials as $lense_material_data){
+                        if($lense_material_data->lens_material_title == $lense_material['lens_material_title']){
                             
                             $setting = UserLenseMaterialSetting::updateOrCreate(
                                 ['user_id' => auth()->user()->id, 'lens_material_id' => $lense_material_id],
