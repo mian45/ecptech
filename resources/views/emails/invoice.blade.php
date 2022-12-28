@@ -187,7 +187,7 @@
                         <h2>Estimate for John Varvatos Sunglasses</h2>
                         <p style="margin-left:0px;margin-bottom:16px !important;"><strong>Name:</strong> <span> {{$data['name'] ?? 'NA'}}<span>&nbsp;&nbsp;<strong>Email:</strong> <span> {{$data['email'] ?? 'NA'}}<span>&nbsp;&nbsp;<strong>Phone:</strong> <span> {{$data['phone'] ?? 'NA'}}<span></p>
                         <hr style="color:#E8E8E8">
-                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary">
+                        <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="min-width: 618px;">
                           <tbody>
                             <tr>
                               <td align="left" style="padding: 16px 8px 16px 8px;">
@@ -248,7 +248,11 @@
                                  <p>Sales Tax</p>
                               </td>
                               <td align="right">
-                                 <p><i style="color:#CBCBCB">({{$data['invoiceState']['salesTaxPercantage'] ?? ''}})</i> {{$data['invoiceState']['salesTax'] ?? ''}}</p>
+                                 <p><i style="color:#CBCBCB">
+                                 @if(isset($data['invoiceState']['salesTaxPercantage']))
+                                 ({{$data['invoiceState']['salesTaxPercantage'] ?? ''}})
+                                 @endif
+                                </i> {{$data['invoiceState']['salesTax'] ?? ''}}</p>
                               </td>
                             </tr>
                             <tr>
