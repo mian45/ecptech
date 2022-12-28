@@ -184,7 +184,7 @@ class SettingController extends Controller
     public function getLenseMaterial(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'plan' => 'in:vsp,davis,eyemed,spectera,vba|required'
+            'plan' => 'in:vsp,davis,eyemed,spectra,vba|required'
         ]);
 
         if ($validator->fails()) {
@@ -230,8 +230,7 @@ class SettingController extends Controller
         $i = 0;
         foreach($data[$plan] as $lense_material){
 
-            $lense_material_id = $lense_material['id'];
-
+           
             if($plan == 'vsp'){
 
                 $vision_plans = VisionPlan::where('title','like','%vsp%')->orWhere('title','Private Pay')->get();
@@ -242,7 +241,7 @@ class SettingController extends Controller
                         if($lense_material_data->lens_material_title == $lense_material['lens_material_title']){
                             
                             $setting = UserLenseMaterialSetting::updateOrCreate(
-                                ['user_id' => auth()->user()->id, 'lens_material_id' => $lense_material_id],
+                                ['user_id' => auth()->user()->id, 'lens_material_id' => $lense_material_data->id],
                                 ['status' => $lense_material['status'], 'price'=>$lense_material['price'], 'display_name'=>$lense_material['display_name']]
                             );     
 
@@ -251,6 +250,8 @@ class SettingController extends Controller
 
                 }
             }else{
+
+                $lense_material_id = $lense_material['id'];
 
                 $setting = UserLenseMaterialSetting::updateOrCreate(
                     ['user_id' => auth()->user()->id, 'lens_material_id' => $lense_material_id],
@@ -308,7 +309,7 @@ class SettingController extends Controller
     public function getAddons(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'plan' => 'in:vsp,davis,eyemed,spectera,vba|required',
+            'plan' => 'in:vsp,davis,eyemed,spectra,vba|required',
             'type' => 'in:addon,lense_treatment',
         ]);
 
