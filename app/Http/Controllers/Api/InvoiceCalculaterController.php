@@ -21,6 +21,8 @@ use App\Models\AddOn;
 use App\Models\AddonExtra;
 use Validator;
 use App\Models\TracingFee;
+use App\Models\DrillMount;
+
 use Illuminate\Validation\ValidationException;
 
 
@@ -33,6 +35,7 @@ class InvoiceCalculaterController extends Controller
         $data['tax'] = "";
         $data['discount'] = "";
         $data['tracing_fee'] = "";
+        $data['drill_amount'] = "";
 
         $user=auth()->user();
 
@@ -59,6 +62,11 @@ class InvoiceCalculaterController extends Controller
         $tax = Tax::where('user_id',$userId)->orderBy('created_at', 'desc')->get();
         if($tax){
             $data['tax'] = $tax;
+        }
+
+        $drill_amount = DrillMount::where('user_id',$userId)->where('status','active')->orderBy('created_at', 'desc')->first();
+        if($drill_amount){
+            $data['drill_amount'] = $drill_amount->value;
         }
 
         $data['addons'] = VisionPlan::with(['addon_types' => function($q)use($userId){
@@ -807,12 +815,13 @@ class InvoiceCalculaterController extends Controller
 
                                             $q->select('id','title','lense_type_id');
                                             $q->with(['brands' => function($q){
-                                                $q->leftjoin('brand_permissions as bp','bp.brand_id','=','brands.id');
+                                                $q->join('brand_permissions as bp','bp.brand_id','=','brands.id');
                                                 $q->select('brands.id','lens_type_id','title');
+                                                $q->where('bp.user_id',auth()->user()->id);
 
                                                 $q->with(['collections' => function($q){
 
-                                                    $q->leftjoin('collections_permissions as cp', function ($join) {
+                                                    $q->join('collections_permissions as cp', function ($join) {
                                                         $join->on('cp.collection_id','=','collections.id');
                                                     });
                             
@@ -821,7 +830,7 @@ class InvoiceCalculaterController extends Controller
                                                     });
                                                     
                                                     $q->select('collections.id','collections.brand_id','title','c.price as lense_price','cp.name as display_name','cp.price','cp.collection_id');
-                            
+                                                    $q->where('cp.user_id',auth()->user()->id)->where('cp.status','active');
 
                                                 }]);
                                             }]);
@@ -838,12 +847,13 @@ class InvoiceCalculaterController extends Controller
                             $q->select('id','title','lense_type_id');                                
 
                             $q->with(['brands' => function($q){
-                                $q->leftjoin('brand_permissions as bp','bp.brand_id','=','brands.id');
+                                $q->join('brand_permissions as bp','bp.brand_id','=','brands.id');
                                 $q->select('brands.id','lens_type_id','title');
+                                $q->where('bp.user_id',auth()->user()->id);
 
                                 $q->with(['collections' => function($q){
 
-                                    $q->leftjoin('collections_permissions as cp', function ($join) {
+                                    $q->join('collections_permissions as cp', function ($join) {
                                         $join->on('cp.collection_id','=','collections.id');
                                     });
             
@@ -852,7 +862,7 @@ class InvoiceCalculaterController extends Controller
                                     });
                                     
                                     $q->select('collections.id','collections.brand_id','title','c.price as lense_price','cp.name as display_name','cp.price','cp.collection_id');
-            
+                                    $q->where('cp.user_id',auth()->user()->id)->where('cp.status','active');
 
                                 }]);
                             }]);
@@ -866,12 +876,13 @@ class InvoiceCalculaterController extends Controller
 
                         $collections = LenseType::with(['brands' => function($q){
                                                             
-                            $q->leftjoin('brand_permissions as bp','bp.brand_id','=','brands.id');
+                            $q->join('brand_permissions as bp','bp.brand_id','=','brands.id');
                             $q->select('brands.id','lens_type_id','title');
+                            $q->where('bp.user_id',auth()->user()->id);
 
                             $q->with(['collections' => function($q){
 
-                                $q->leftjoin('collections_permissions as cp', function ($join) {
+                                $q->join('collections_permissions as cp', function ($join) {
                                     $join->on('cp.collection_id','=','collections.id');
                                 });
         
@@ -880,7 +891,7 @@ class InvoiceCalculaterController extends Controller
                                 });
                                 
                                 $q->select('collections.id','collections.brand_id','title','c.price as lense_price','cp.name as display_name','cp.price','cp.collection_id');
-        
+                                $q->where('cp.user_id',auth()->user()->id)->where('cp.status','active');
 
                             }]);
                         }])
