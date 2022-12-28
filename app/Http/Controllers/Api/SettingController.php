@@ -87,7 +87,7 @@ class SettingController extends Controller
 
             if($plan == 'vsp'){
 
-                $vision_plans = VisionPlan::where('title','like','%vsp%')->get();
+                $vision_plans = VisionPlan::where('title','like','%vsp%')->orWhere('title','Private Pay')->get();
                 foreach($vision_plans as $vision_plan){
 
                 $lense = LenseType::where('title',$lense_type_title)->where('vision_plan_id',$vision_plan->id)->first();
@@ -360,7 +360,7 @@ class SettingController extends Controller
                     
 
 
-                    $vision_plans = VisionPlan::where('title','like','%vsp%')->get();
+                    $vision_plans = VisionPlan::where('title','like','%vsp%')->orWhere('title','Private Pay')->get();
                     foreach($vision_plans as $vision_plan){
                         
                         $addon_types_all = AddonType::where('vision_plan_id',$vision_plan->id)->get();

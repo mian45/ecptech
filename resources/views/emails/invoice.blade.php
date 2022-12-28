@@ -135,14 +135,14 @@
         letter-spacing: 0px;
         opacity: 1;
       }
-      button{
-        width: 90px;
-        height: 33px;
+      .btn-pocket-fee{
+        width:106px;
+        height: 20px;
         color: white;
-        background: #6FA5CB 0% 0% no-repeat padding-box;
+        background-color: #6FA5CB;
         opacity: 1;
-        border: none;
-        padding-left: 32px;
+        padding: 10px;
+        font-size: 12px;
       }
       /* -------------------------------------
           RESPONSIVE AND MOBILE FRIENDLY STYLES
@@ -205,7 +205,7 @@
                                  <p>{{$data['invoiceState']['frameTotal'] ?? '$0.00'}}</p>
                               </td>
                             </tr>
-                            @foreach($data['invoiceState']['frameOrder'] as $key => $val) {
+                            @foreach($data['invoiceState']['frameOrder'] as $key => $val)
                             <tr>
                               <td align="left">
                                  <p>{{$key}}</p>
@@ -223,7 +223,7 @@
                                  <p>{{$data['invoiceState']['lenseTotal'] ?? '$0.00'}}</p>
                               </td>
                             </tr>
-                            @foreach($data['invoiceState']['lenses'] as $key => $val) {
+                            @foreach($data['invoiceState']['lenses'] as $key => $val)
                             <tr>
                               <td align="left">
                                  <p>{{$key}}</p>
@@ -271,8 +271,8 @@
                               <td align="left" >
                                  <p>Out of Pocket Fees After Your Vision Plan Contribution</p>
                               </td>
-                              <td align="right">
-                                 <button>{{$data['invoiceState']['outOfPocket'] ?? '$0.00'}}</button>
+                              <td align="right" class="btn-pocket-fee">
+                                 $347.06
                               </td>
                             </tr>
                            
@@ -283,7 +283,7 @@
                         <tbody>
                         <tr>
                           <td align="right">
-                              <p><strong><i>Savings of</i> : </strong><span style="color:#6FA5CB;font-size:14px;">{{$data['invoiceState']['savingOf'] ?? '$0.00'}}</span></p>
+                              <p><strong><i>Savings of</i> : </strong><i style="color:#6FA5CB;font-size:14px;">{{$data['invoiceState']['savingOf'] ?? '$0.00'}}</i></p>
                           </td>
                         </tr>
                         </tbody>
