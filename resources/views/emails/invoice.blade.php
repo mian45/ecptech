@@ -184,7 +184,7 @@
                   <table role="presentation" border="0" cellpadding="0" cellspacing="0">
                     <tr>
                       <td>
-                        <h2>Estimate for John Varvatos Sunglasses</h2>
+                        <h2>Estimate for {{$data['invoiceName'] ?? 'Sunglasses'}}</h2>
                         <p style="margin-left:0px;margin-bottom:16px !important;"><strong>Name:</strong> <span> {{$data['name'] ?? 'NA'}}<span>&nbsp;&nbsp;<strong>Email:</strong> <span> {{$data['email'] ?? 'NA'}}<span>&nbsp;&nbsp;<strong>Phone:</strong> <span> {{$data['phone'] ?? 'NA'}}<span></p>
                         <hr style="color:#E8E8E8">
                         <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="min-width: 618px;">
