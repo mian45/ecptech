@@ -248,7 +248,7 @@
                                  <p>Sales Tax</p>
                               </td>
                               <td align="right">
-                                 <p><i style="color:#CBCBCB">{{$data['invoiceState']['savingsOfPercantage'] ?? ''}}</i> {{$data['invoiceState']['salesTax'] ?? ''}}</p>
+                                 <p><i style="color:#CBCBCB">({{$data['invoiceState']['salesTaxPercantage'] ?? ''}})</i> {{$data['invoiceState']['salesTax'] ?? ''}}</p>
                               </td>
                             </tr>
                             <tr>
@@ -272,7 +272,7 @@
                                  <p>Out of Pocket Fees After Your Vision Plan Contribution</p>
                               </td>
                               <td align="right" class="btn-pocket-fee">
-                                 $347.06
+                              {{$data['invoiceState']['outOfPocket'] ?? '$0.00'}}
                               </td>
                             </tr>
                            
