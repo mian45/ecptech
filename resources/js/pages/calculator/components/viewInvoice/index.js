@@ -21,6 +21,7 @@ import {
     ZEISS_PHOTOFUSION,
 } from "../../data/constants";
 import Axios from "../../../../Http";
+import axios from "axios";
 import { connect } from "react-redux";
 import { INVOICES_ROUTE } from "../../../../appRoutes/routeConstants";
 import UserInfo from "./components/userInfo";
@@ -36,7 +37,7 @@ import ButtonsList from "./components/buttonsList/buttonsList";
 import { AllPlans } from "../../data/plansList";
 import { Plans } from "../../data/plansJson";
 import { useHistory } from "react-router";
-
+import dayjs from "dayjs";
 const ViewInvoice = ({
     onClose,
     calValues,
@@ -124,7 +125,7 @@ const ViewInvoice = ({
                 dob: receipt?.userInfo?.dob,
                 email: receipt?.userInfo?.email,
                 phone: receipt?.userInfo?.phoneNo,
-                status: status,
+                status: status.status,
                 amount: (
                     CalculateWithTaxesTotalPrice(
                         receipt?.values,
@@ -142,6 +143,9 @@ const ViewInvoice = ({
                 `${process.env.MIX_REACT_APP_URL}/api/save-invoice`,
                 payload
             );
+            if (status.status !== "draft") {
+                sendEmail(status, res);
+            }
             message.destroy();
             messageApi.open({
                 type: "success",
@@ -173,7 +177,7 @@ const ViewInvoice = ({
                 userId: clientId,
                 staffId: receipt?.values?.staffId,
                 invoiceName: receipt?.values?.invoiceName,
-                status: status,
+                status: status.status,
                 amount: (
                     CalculateWithTaxesTotalPrice(
                         receipt?.values,
@@ -191,7 +195,9 @@ const ViewInvoice = ({
                 `${process.env.MIX_REACT_APP_URL}/api/save-edit-invoice`,
                 payload
             );
-            history.push(INVOICES_ROUTE);
+            if (status.status !== "draft") {
+                sendEmail(status, res);
+            }
             message.destroy();
             messageApi.open({
                 type: "success",
@@ -199,6 +205,7 @@ const ViewInvoice = ({
                 duration: 5,
                 className: "custom-postion",
             });
+            history.push(INVOICES_ROUTE);
         } catch (err) {
             onClose();
             message.destroy();
@@ -210,7 +217,46 @@ const ViewInvoice = ({
             });
         }
     };
-
+    const sendEmail = async (status, response) => {
+        let clientId = userId;
+        if (userRole === "staff") {
+            clientId = clientUserId;
+        }
+        try {
+            const payload = {
+                userId: clientId,
+                staffId: receipt?.values?.staffId,
+                invoiceName: receipt?.values?.invoiceName,
+                fname: receipt?.userInfo?.firstName,
+                lname: receipt?.userInfo?.lastName,
+                dob: receipt?.userInfo?.dob,
+                email: receipt?.userInfo?.email,
+                phone: receipt?.userInfo?.phoneNo,
+                status: status.status,
+                invoiceNo: response?.data?.data?.id,
+                invoiceDate: dayjs(response?.data?.updated_at).format(
+                    "MMM DD, YYYY"
+                ),
+                amount: (
+                    CalculateWithTaxesTotalPrice(
+                        receipt?.values,
+                        calculatorObj,
+                        lensPrices,
+                        plansList,
+                        plansJson,
+                        davisMaterials
+                    ) || 0
+                ).toFixed(2),
+                vpState: calculatorObj,
+                userState: receipt?.values,
+                invoiceState: status.invoiceState,
+            };
+            const res = await Axios.post(
+                `${process.env.MIX_REACT_APP_URL}/api/send-email`,
+                payload
+            );
+        } catch (err) {}
+    };
     const calculateTotalDue = () => {
         let total = 0;
         total = total + totalWithoutTax();
@@ -278,7 +324,54 @@ const ViewInvoice = ({
             </>
         );
     };
-
+    const downloadInvoice = async (invoice) => {
+        let clientId = userId;
+        if (userRole === "staff") {
+            clientId = clientUserId;
+        }
+        const payload = {
+            userId: clientId,
+            staffId: receipt?.values?.staffId,
+            invoiceName: receipt?.values?.invoiceName,
+            fname: receipt?.userInfo?.firstName,
+            lname: receipt?.userInfo?.lastName,
+            dob: receipt?.userInfo?.dob,
+            email: receipt?.userInfo?.email,
+            phone: receipt?.userInfo?.phoneNo,
+            status: "",
+            invoiceNo: "2332",
+            invoiceDate: dayjs(new Date()).format("MMM DD, YYYY"),
+            amount: (
+                CalculateWithTaxesTotalPrice(
+                    receipt?.values,
+                    calculatorObj,
+                    lensPrices,
+                    plansList,
+                    plansJson,
+                    davisMaterials
+                ) || 0
+            ).toFixed(2),
+            invoiceState: invoice,
+        };
+        const token = localStorage.getItem("access_token");
+        axios({
+            url: process.env.MIX_REACT_APP_URL + "/api/download-pdf",
+            method: "post",
+            data: payload,
+            responseType: "blob",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `Invoice${new Date()}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        });
+    };
     return (
         <Modal
             onCancel={onClose}
@@ -309,6 +402,7 @@ const ViewInvoice = ({
                         mode={mode}
                         handleSendInvoiceClick={handleSendInvoiceClick}
                         davisMaterials={davisMaterials}
+                        downloadInvoice={downloadInvoice}
                     />
                 </Col>
             </Row>
