@@ -40,6 +40,7 @@ const DetailsList = ({
     language,
     davisMaterials,
     downloadInvoice,
+    sendInvoiceEmail,
 }) => {
     const currentPlan = receipt?.values?.visionPlan;
     const plansList = AllPlans[language];
@@ -212,8 +213,8 @@ const DetailsList = ({
     invoice.shipping = `$${(
         parseFloat(calculatorObj?.shipping || 0) || 0
     ).toFixed(2)}`;
-    invoice["retailFee "] = `$${glassesCost()}`;
-    invoice["outOfPocket "] = `$${(
+    invoice["retailFee"] = `$${glassesCost()}`;
+    invoice["outOfPocket"] = `$${(
         CalculateWithTaxesTotalPrice(
             receipt?.values,
             calculatorObj,
@@ -223,7 +224,7 @@ const DetailsList = ({
             davisMaterials
         ) || 0
     ).toFixed(2)}`;
-    invoice.savingOf = `(${savingsPercentage()}%) $${savings()}`;
+    invoice.savingOf = `$${savings()}`;
     return (
         <Row>
             <Col xs={24} className={classes["container"]}>
@@ -393,12 +394,18 @@ const DetailsList = ({
                         </span>
                         <span
                             className={classes["saving-price"]}
-                        >{`(${savingsPercentage()}%) $${savings()}`}</span>
+                        >{`$${savings()}`}</span>
                     </Col>
                     <Col xs={24}>
                         <ButtonsList
                             mode={mode}
-                            handleSendInvoiceClick={handleSendInvoiceClick}
+                            handleSendInvoiceClick={(e) => {
+                                console.log(e);
+                                handleSendInvoiceClick({
+                                    status: e,
+                                    invoiceState: invoice,
+                                });
+                            }}
                         />
                     </Col>
                 </Row>

@@ -125,7 +125,7 @@ const ViewInvoice = ({
                 dob: receipt?.userInfo?.dob,
                 email: receipt?.userInfo?.email,
                 phone: receipt?.userInfo?.phoneNo,
-                status: status,
+                status: status.status,
                 amount: (
                     CalculateWithTaxesTotalPrice(
                         receipt?.values,
@@ -143,6 +143,9 @@ const ViewInvoice = ({
                 `${process.env.MIX_REACT_APP_URL}/api/save-invoice`,
                 payload
             );
+            if (status.status !== "draft") {
+                sendEmail(status);
+            }
             message.destroy();
             messageApi.open({
                 type: "success",
@@ -174,7 +177,7 @@ const ViewInvoice = ({
                 userId: clientId,
                 staffId: receipt?.values?.staffId,
                 invoiceName: receipt?.values?.invoiceName,
-                status: status,
+                status: status.status,
                 amount: (
                     CalculateWithTaxesTotalPrice(
                         receipt?.values,
@@ -192,7 +195,9 @@ const ViewInvoice = ({
                 `${process.env.MIX_REACT_APP_URL}/api/save-edit-invoice`,
                 payload
             );
-            history.push(INVOICES_ROUTE);
+            if (status.status !== "draft") {
+                sendEmail(status);
+            }
             message.destroy();
             messageApi.open({
                 type: "success",
@@ -200,6 +205,7 @@ const ViewInvoice = ({
                 duration: 5,
                 className: "custom-postion",
             });
+            history.push(INVOICES_ROUTE);
         } catch (err) {
             onClose();
             message.destroy();
@@ -211,7 +217,38 @@ const ViewInvoice = ({
             });
         }
     };
-
+    const sendEmail = async (status) => {
+        let clientId = userId;
+        if (userRole === "staff") {
+            clientId = clientUserId;
+        }
+        try {
+            const payload = {
+                id: invoiceId,
+                userId: clientId,
+                staffId: receipt?.values?.staffId,
+                invoiceName: receipt?.values?.invoiceName,
+                status: status.status,
+                amount: (
+                    CalculateWithTaxesTotalPrice(
+                        receipt?.values,
+                        calculatorObj,
+                        lensPrices,
+                        plansList,
+                        plansJson,
+                        davisMaterials
+                    ) || 0
+                ).toFixed(2),
+                vpState: calculatorObj,
+                userState: receipt?.values,
+                invoiceState: status.invoiceState,
+            };
+            const res = await Axios.post(
+                `${process.env.MIX_REACT_APP_URL}/api/send-email`,
+                payload
+            );
+        } catch (err) {}
+    };
     const calculateTotalDue = () => {
         let total = 0;
         total = total + totalWithoutTax();
