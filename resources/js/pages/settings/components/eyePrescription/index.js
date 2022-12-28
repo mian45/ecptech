@@ -361,9 +361,9 @@ const EyePrescription = ({ userId }) => {
                                     </Option>
                                     <Option
                                         className="ant-select-item-option-content"
-                                        value={"spectera"}
+                                        value={"spectra"}
                                     >
-                                        Spectera Plan
+                                        Spectra Plan
                                     </Option>
                                     <Option
                                         className="ant-select-item-option-content"
