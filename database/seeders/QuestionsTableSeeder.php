@@ -833,6 +833,14 @@ class QuestionsTableSeeder extends Seeder
 
             array(
 
+                'title' => "Aspheric",
+                'vision_plan_id' => 7,
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s")
+            ),
+
+            array(
+
                 'title' => "Blue Protection",
                 'vision_plan_id' => 7,
                 'created_at' => date("Y-m-d H:i:s"),

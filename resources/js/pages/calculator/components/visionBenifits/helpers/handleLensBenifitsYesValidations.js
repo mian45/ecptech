@@ -270,7 +270,8 @@ export const handleLensBenifitYesValidations = (
         data?.find(
             (ques) => ques?.question === "Any copay lowered than standard"
         )?.optional === "true" &&
-        isLoweredCopay
+        isLoweredCopay &&
+        values?.visionPlan !== "Eyemed"
     ) {
         validationObject.isLoweredCopay = Yup.string().required(
             "copay dollar amount is required"

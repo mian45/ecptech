@@ -1,0 +1,16 @@
+.radio-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+.label {
+    font-size: 18px;
+    font-family: Montserrat;
+    color: #2a2a2a;
+    margin-top: 20px;
+    margin-bottom: 5px;
+}
+.radio {
+    margin-bottom: 10px;
+    width: 40%;
+    align-items: flex-start;
+}

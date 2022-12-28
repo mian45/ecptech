@@ -11,6 +11,8 @@ import { AllPlans } from "../../data/plansList";
 import { connect } from "react-redux";
 import { Plans } from "../../data/plansJson";
 import CalculatorInput from "./components/calculatorInput/calculatorInput";
+import VBADrillMountOptions from "./components/vbaDrillMountOptions/vbaDrillMountOptions";
+import { CompareStrings } from "../../../../utils/utils";
 
 const FrameOrder = ({
     formProps,
@@ -21,7 +23,7 @@ const FrameOrder = ({
     isFrame,
     language,
 }) => {
-    const { values, handleChange } = formProps;
+    const { values, handleChange, setFieldValue } = formProps;
     const frameOrderVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -62,9 +64,23 @@ const FrameOrder = ({
                 ...calValidations,
                 ...validationObject,
             });
+        } else if (
+            CompareStrings(values?.visionPlan, AllPlans[language]?.vba) &&
+            CompareStrings(e?.target?.value, drillMountYes)
+        ) {
+            const validationObject = {
+                drillMountOptions: Yup.string().required(
+                    "Drill mount option is required"
+                ),
+            };
+            setCalValidations({
+                ...calValidations,
+                ...validationObject,
+            });
         } else {
             const validations = { ...calValidations };
             delete validations.drillMountValue;
+            delete validations.drillMountOptions;
             setCalValidations({
                 ...validations,
             });
@@ -150,6 +166,7 @@ const FrameOrder = ({
                     </Radio.Group>
                     <FormikError name={"drillMount"} />
                 </div>
+                <VBADrillMountOptions formProps={formProps} />
                 {values?.visionPlan === eyemedPlan &&
                     values?.isFrameBenifit === frameBenifitYes &&
                     values?.drillMount === drillMountYes && (
@@ -185,7 +202,7 @@ const FrameOrder = ({
         return false;
     };
 
-    const handleFrameOrderChange = (e) => {
+    const handleFrameOrderChange = async (e) => {
         handleChange(e);
         if (e?.target?.value === "New Frame Purchase") {
             const validationObject = {
@@ -219,9 +236,15 @@ const FrameOrder = ({
             delete validations.frameContribution;
             delete validations.drillMount;
             delete validations.drillMountValue;
+            delete validations.drillMountOptions;
             validations.tracingFee = Yup.string().required(
                 "Tracing Fee is required"
             );
+            await setFieldValue("frameRetailFee", "");
+            await setFieldValue("frameContribution", "");
+            await setFieldValue("drillMount", "");
+            await setFieldValue("drillMountValue", "");
+            await setFieldValue("drillMountOptions", "");
             setCalValidations({
                 ...validations,
             });

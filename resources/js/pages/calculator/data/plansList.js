@@ -6,5 +6,6 @@ export const AllPlans = {
         eyemed: "Eyemed",
         davis: "Davis Vision",
         privatePay: "Private Pay",
+        vba: "VBA",
     },
 };

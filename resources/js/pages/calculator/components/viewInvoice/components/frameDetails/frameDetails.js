@@ -97,7 +97,6 @@ const FrameDetails = ({ receipt, calculatorObj, lensPrices, language }) => {
         }
         return (total || 0).toFixed(2);
     };
-
     const renderDrillMount = () => {
         let total = 0;
         const data = receipt?.values;

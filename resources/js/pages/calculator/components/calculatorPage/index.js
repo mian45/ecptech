@@ -1,15 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import AntireFlextive from "../antireFlextive";
 import FrameOrder from "../frameOrder";
 import GlassesProtection from "../glassesProtection";
 import InvoiceInfo from "../invoiceInfo";
-import LensMeterials from "../lensMeterial";
-import LensType from "../lensType";
 import LoweredCopay from "../loweredCopay";
-import Photochromics from "../photochromics";
 import ProtectionPlan from "../protectionPlan";
 import SelectVisionPlan from "../selectVisionPlan";
-import SunglassLens from "../sunglassLens";
 import ViewInvoice from "../viewInvoice";
 import VisionBenifits from "../visionBenifits";
 import classes from "./styles.module.scss";
@@ -35,14 +30,13 @@ import CustomLoader from "../../../../components/customLoader";
 import CustomDiscount from "../customDiscount";
 import { Col, message } from "antd";
 import { ScrollToFieldError } from "./helpers/scrollToFieldError";
-import AdditionalLensTreatment from "../additionalLensTreatment/additionalLensTreatment";
 import TracingFee from "../tracingFee/tracingFee";
-import BlueLightFiltering from "../blueLightFiltering/blueLightFiltering";
 import InvoicePriceAlert from "../invoicePriceAlert";
 import { connect, useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
 import { handleLensBenifitYesValidations } from "../visionBenifits/helpers/handleLensBenifitsYesValidations";
 import { handleFrameBenifitYes } from "../visionBenifits/helpers/handleFrameBenifitYes";
+import RenderLensFields from "./components/renderLensFields/renderLensFields";
 
 const CalculatorScreen = ({ retailPopup }) => {
     const history = useHistory();
@@ -114,7 +108,7 @@ const CalculatorScreen = ({ retailPopup }) => {
                 setDefaultValues(allValues);
                 setCalculatorState(allValues[initialPlan]);
                 manageValidationObject(vpState?.questions, initialPlan);
-                dispatch(action.calculatorPopUp(initialPlan))
+                dispatch(action.calculatorPopUp(initialPlan));
             }
             getBaseValues(mappedEditValues(editInvoiceState), editCalObject);
             setLoading(false);
@@ -140,7 +134,7 @@ const CalculatorScreen = ({ retailPopup }) => {
             const firstPlan = resData?.questions?.find(
                 (item) => item?.title === initialPlan
             );
-            dispatch(action.calculatorPopUp(firstPlan))
+            dispatch(action.calculatorPopUp(firstPlan));
             const colRes = await Axios.post(
                 process.env.MIX_REACT_APP_URL + "/api/get-collections",
                 { vision_plan_id: firstPlan?.id }
@@ -383,92 +377,6 @@ const CalculatorScreen = ({ retailPopup }) => {
         );
     };
 
-    const RenderLensFields = ({
-        formProps,
-        calculatorObj,
-        setCalValidations,
-        calValidations,
-    }) => {
-        return (
-            <>
-                <LensType
-                    formProps={formProps}
-                    calculatorObj={calculatorObj && calculatorObj}
-                    setCalculatorObj={setCalculatorObj}
-                    setCalValidations={setCalValidations}
-                    calValidations={calValidations}
-                    getBaseValues={getBaseValues}
-                />
-                <LensMeterials
-                    formProps={formProps}
-                    calculatorObj={calculatorObj && calculatorObj}
-                    getBaseValues={getBaseValues}
-                    setCalValidations={setCalValidations}
-                    calValidations={calValidations}
-                />
-                <Photochromics
-                    formProps={formProps}
-                    calculatorObj={calculatorObj && calculatorObj}
-                    setCalValidations={setCalValidations}
-                    calValidations={calValidations}
-                    data={
-                        calculatorObj?.questions?.find(
-                            (item) =>
-                                item.title === formProps?.values?.visionPlan
-                        )?.question_permissions
-                    }
-                />
-                <SunglassLens
-                    formProps={formProps}
-                    calculatorObj={calculatorObj && calculatorObj}
-                    setCalValidations={setCalValidations}
-                    calValidations={calValidations}
-                    data={
-                        calculatorObj?.questions?.find(
-                            (item) =>
-                                item.title === formProps?.values?.visionPlan
-                        )?.question_permissions
-                    }
-                />
-                <AntireFlextive
-                    formProps={formProps}
-                    calculatorObj={calculatorObj && calculatorObj}
-                    setCalValidations={setCalValidations}
-                    calValidations={calValidations}
-                    data={
-                        calculatorObj?.questions?.find(
-                            (item) =>
-                                item.title === formProps?.values?.visionPlan
-                        )?.question_permissions
-                    }
-                />
-                <BlueLightFiltering
-                    formProps={formProps}
-                    calculatorObj={calculatorObj && calculatorObj}
-                    setCalValidations={setCalValidations}
-                    calValidations={calValidations}
-                    data={
-                        calculatorObj?.questions?.find(
-                            (item) =>
-                                item?.title === formProps?.values?.visionPlan
-                        )?.question_permissions
-                    }
-                />
-                <AdditionalLensTreatment
-                    formProps={formProps}
-                    calculatorObj={calculatorObj && calculatorObj}
-                    setCalValidations={setCalValidations}
-                    calValidations={calValidations}
-                    data={
-                        calculatorObj?.questions?.find(
-                            (item) =>
-                                item?.title === formProps?.values?.visionPlan
-                        )?.question_permissions
-                    }
-                />
-            </>
-        );
-    };
     const handleSaveClick = (dontShow) => {
         if (dontShow) {
             const calculatorData = {
@@ -498,6 +406,7 @@ const CalculatorScreen = ({ retailPopup }) => {
             </>
         );
     }, [retailPopup]);
+
     return (
         <Col className={classes["container"]} sm={24} md={24} lg={18}>
             <div>{contextHolder}</div>
@@ -518,7 +427,7 @@ const CalculatorScreen = ({ retailPopup }) => {
                                 ...calValidations,
                             })}
                             onSubmit={handleClick}
-                            validateOnMount
+                            // validateOnMount
                             enableReinitialize
                         >
                             {(formProps) => {
@@ -725,20 +634,17 @@ const CalculatorScreen = ({ retailPopup }) => {
                                                         calculatorObj &&
                                                         calculatorObj
                                                     }
+                                                    setCalculatorObj={
+                                                        setCalculatorObj
+                                                    }
                                                     setCalValidations={
                                                         setCalValidations
                                                     }
                                                     calValidations={
                                                         calValidations
                                                     }
-                                                    data={
-                                                        calculatorObj?.questions?.find(
-                                                            (item) =>
-                                                                item.title ===
-                                                                formProps
-                                                                    ?.values
-                                                                    ?.visionPlan
-                                                        )?.question_permissions
+                                                    getBaseValues={
+                                                        getBaseValues
                                                     }
                                                 />
                                             </div>
@@ -877,23 +783,17 @@ const CalculatorScreen = ({ retailPopup }) => {
                                                                         calculatorObj &&
                                                                         calculatorObj
                                                                     }
+                                                                    setCalculatorObj={
+                                                                        setCalculatorObj
+                                                                    }
                                                                     setCalValidations={
                                                                         setCalValidations
                                                                     }
                                                                     calValidations={
                                                                         calValidations
                                                                     }
-                                                                    data={
-                                                                        calculatorObj?.questions?.find(
-                                                                            (
-                                                                                item
-                                                                            ) =>
-                                                                                item.title ===
-                                                                                formProps
-                                                                                    ?.values
-                                                                                    ?.visionPlan
-                                                                        )
-                                                                            ?.question_permissions
+                                                                    getBaseValues={
+                                                                        getBaseValues
                                                                     }
                                                                 />
                                                             </>

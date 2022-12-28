@@ -28,14 +28,13 @@ const SelectVisionPlan = ({
 }) => {
     const { values, handleChange, handleBlur, setFieldValue } = formProps;
     const plansList = calculatorObj?.questions?.map((plan) => plan?.title);
-    const dispatch= useDispatch()
+    const dispatch = useDispatch();
     const handlePlanClick = async (value) => {
         try {
             const currentPlan = calculatorObj?.questions?.find(
                 (item) => item?.title === value.target?.value || ""
             );
-            console.log('currentPlan',currentPlan)
-            dispatch(action.calculatorPopUp(currentPlan))
+            dispatch(action.calculatorPopUp(currentPlan));
             const res = await Axios.post(
                 process.env.MIX_REACT_APP_URL + "/api/get-collections",
                 { vision_plan_id: currentPlan?.id }

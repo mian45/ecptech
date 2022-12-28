@@ -14,9 +14,11 @@ import { connect } from "react-redux";
 import { handleAntiReflectiveNoValidations } from "./helpers/handleAntireflectiveNoValidations";
 import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
-import { getAddons } from "./helpers/addonsHelper";
+import { getAddons, getAddonsList } from "./helpers/addonsHelper";
 import RetailError from "../photochromics/components/retailError/retailError";
 import { retailErrorMessage } from "../sunglassLens/helpers/constants";
+import AntiReflectiveCategory from "./components/category";
+import { CompareStrings, groupBy } from "../../../../utils/utils";
 
 const AntireFlextive = ({
     formProps,
@@ -43,13 +45,23 @@ const AntireFlextive = ({
         Plans()[language][values?.visionPlan]?.antireflective?.options?.yes;
 
     const getAntireflectiveList = () => {
-        return (
-            calculatorObj?.addons
-                ?.find((plan) => plan?.title === values?.visionPlan)
-                ?.addon_types?.find(
-                    (item) => item?.title === "Anti-Reflective Properties"
-                )?.addons || []
-        );
+        if (!CompareStrings(values?.visionPlan, "VBA")) {
+            return (
+                calculatorObj?.addons
+                    ?.find((plan) => plan?.title === values?.visionPlan)
+                    ?.addon_types?.find(
+                        (item) => item?.title === "Anti-Reflective Properties"
+                    )?.addons || []
+            );
+        } else if (CompareStrings(values?.visionPlan, "VBA")) {
+            const addons = getAddonsList(
+                calculatorObj,
+                "VBA",
+                "Anti-Reflective Coatings"
+            );
+            const groupByAddons = groupBy("category", addons);
+            return groupByAddons[values?.antiReflectiveCategory];
+        }
     };
 
     const handleActiveFields = () => {
@@ -67,19 +79,20 @@ const AntireFlextive = ({
 
     const handleAntireflectiveChange = async (e) => {
         handleChange(e);
-        if (
-            (e?.target?.value === "Yes" &&
-                !data?.find(
-                    (ques) => ques.question === "Anti-Reflective Properties"
-                ).optional) ||
-            (e?.target?.value === "Yes" && values?.lensType === "NVF")
-        ) {
-            const antireflectiveType = Yup.string().required(
-                "Antireflective type is required"
-            );
+        if (e?.target?.value === "Yes") {
+            const validationsObj = {};
+            if (!CompareStrings(values?.visionPlan, "VBA")) {
+                validationsObj.antireflectiveType = Yup.string().required(
+                    "Antireflective type is required"
+                );
+            } else if (CompareStrings(values?.visionPlan, "VBA")) {
+                validationsObj.antiReflectiveCategory = Yup.string().required(
+                    "Category is required"
+                );
+            }
             setCalValidations({
                 ...calValidations,
-                antireflectiveType,
+                ...validationsObj,
             });
         } else if (e?.target?.value === "No") {
             await handleAntiReflectiveNoValidations(
@@ -158,6 +171,16 @@ const AntireFlextive = ({
         }
     };
 
+    const isShowAntiReflectiveTypes = () => {
+        return (CompareStrings(values?.visionPlan, "VBA") &&
+            CompareStrings(values?.isAntireflective, "Yes") &&
+            values?.antiReflectiveCategory) ||
+            (!CompareStrings(values?.visionPlan, "VBA") &&
+                CompareStrings(values?.isAntireflective, "Yes"))
+            ? true
+            : false;
+    };
+
     return (
         <>
             {(antireflectiveVisibility || values?.lensType === "NVF") && (
@@ -206,7 +229,13 @@ const AntireFlextive = ({
                             {error && (
                                 <div className={classes["error"]}>{error}</div>
                             )}
-                            {values?.isAntireflective === "Yes" && (
+                            <AntiReflectiveCategory
+                                formProps={formProps}
+                                calculatorObj={calculatorObj}
+                                calValidations={calValidations}
+                                setCalValidations={setCalValidations}
+                            />
+                            {isShowAntiReflectiveTypes() && (
                                 <>
                                     <div className={classes["label"]}>
                                         Select Properties

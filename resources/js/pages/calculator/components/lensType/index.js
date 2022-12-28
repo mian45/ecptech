@@ -17,6 +17,14 @@ import { useDispatch } from "react-redux";
 import * as action from "../../../../store/actions";
 import RetailError from "../photochromics/components/retailError/retailError";
 import { retailErrorMessage } from "../sunglassLens/helpers/constants";
+import VBACategories from "./components/vbaCategories/vbaCategories";
+import {
+    getRegularPlanBrands,
+    getVbaPALBrands,
+    getVbaSingleVisionBrands,
+    isShowBrands,
+} from "./helpers/helpers";
+import { CompareStrings } from "../../../../utils/utils";
 
 const LensType = ({
     formProps,
@@ -32,7 +40,6 @@ const LensType = ({
     const { values, handleChange, handleBlur, setFieldValue, setFieldError } =
         formProps;
     const [showInvoiceAlert, setShowInvoiceAlert] = useState(false);
-
     const lensTypeVisibility = calculatorObj?.questions
         ?.find((item) => item.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -90,7 +97,11 @@ const LensType = ({
                 setCalValidations
             );
             await handleChange(e);
+            await setFieldValue("lensCategory", "");
+            await setFieldValue("lensSubCategory", "");
             await setFieldValue("lensTypeValue", "");
+            await setFieldValue("lensTypeInput", "");
+            await setFieldValue("blendedBifocal", "");
             setError("");
             await handleNVFType(e);
         } catch (err) {
@@ -132,15 +143,23 @@ const LensType = ({
         }
     };
     const getLensSubValues = () => {
-        const selectedLensType = calculatorObj["lens_types"]?.find(
-            (value) => value?.title === values.lensType
-        );
         let lenses = [];
-        selectedLensType?.brands?.forEach((element) => {
-            element?.collections?.forEach((lens) => {
-                lenses.push(lens);
-            });
-        });
+        if (
+            CompareStrings(values?.visionPlan, "VBA") &&
+            CompareStrings(values?.lensType, "Single Vision") &&
+            values?.lensCategory &&
+            values?.lensSubCategory
+        ) {
+            lenses = getVbaSingleVisionBrands(calculatorObj, values);
+        } else if (
+            CompareStrings(values?.visionPlan, "VBA") &&
+            CompareStrings(values?.lensType, "PAL") &&
+            values?.lensCategory
+        ) {
+            lenses = getVbaPALBrands(calculatorObj, values);
+        } else {
+            lenses = getRegularPlanBrands(calculatorObj, values);
+        }
         return lenses;
     };
 
@@ -420,7 +439,13 @@ const LensType = ({
                                     })}
                                 </Radio.Group>
                                 <FormikError name={"lensType"} />
-                                {values?.lensType && (
+                                <VBACategories
+                                    formProps={formProps}
+                                    calculatorObj={calculatorObj}
+                                    calValidations={calValidations}
+                                    setCalValidations={setCalValidations}
+                                />
+                                {isShowBrands(values) && (
                                     <>
                                         <div
                                             className={classes["choose-label"]}

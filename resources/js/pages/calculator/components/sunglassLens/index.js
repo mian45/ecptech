@@ -19,6 +19,9 @@ import {
     retailErrorsMessage,
 } from "./helpers/constants";
 import RetailError from "../photochromics/components/retailError/retailError";
+import { CompareStrings } from "../../../../utils/utils";
+import VBATintTypes from "./components/vbaTintTypes/vbsTintTypes";
+import UvProtection from "./components/uvProtection/uvProtection";
 
 const SunglassLens = ({
     formProps,
@@ -29,7 +32,7 @@ const SunglassLens = ({
     language,
     retailError,
 }) => {
-    const { values, handleChange, handleBlur } = formProps;
+    const { values, handleChange, setFieldValue } = formProps;
     const dipatch = useDispatch();
 
     const sunglassLensVisibility = calculatorObj?.questions
@@ -57,21 +60,69 @@ const SunglassLens = ({
         ?.addon_types?.find(
             (item) => item.title === "Sunglass Options"
         )?.addons;
-    const isPolirizedActive = addons?.some(
-        (item) => item?.title === "Polarized"
-    );
-    const isSolidTintActive = addons?.some(
-        (item) => item?.title === "Solid Tint"
-    );
-    const isGradientTintActive = addons?.some(
-        (item) => item?.title === "Gradient Tint"
-    );
-    const isSkyTypeActive = addons?.some(
-        (item) => item?.title === "Ski Type Mirror"
-    );
-    const isSolidTypeActive = addons?.some(
-        (item) => item?.title === "Solid/Single Gradient Mirror"
-    );
+    const isPolirizedActive = () => {
+        if (!CompareStrings(values?.visionPlan, "VBA")) {
+            return addons?.some((item) => item?.title === "Polarized");
+        } else if (CompareStrings(values?.visionPlan, "VBA")) {
+            return calculatorObj?.addons
+                ?.find((plan) => plan?.title === values?.visionPlan)
+                ?.addon_types?.some((val) => val?.title === "Polarized");
+        }
+    };
+
+    const isSolidTintActive = () => {
+        if (!CompareStrings(values?.visionPlan, "VBA")) {
+            return addons?.some((item) => item?.title === "Solid Tint");
+        } else if (CompareStrings(values?.visionPlan, "VBA")) {
+            return calculatorObj?.addons
+                ?.find((plan) => plan?.title === values?.visionPlan)
+                ?.addon_types?.find((val) => val?.title === "Tint")
+                ?.addons?.some(
+                    (item) => item?.title === "Tint - Solid or Gradient"
+                );
+        }
+    };
+    const isGradientTintActive = () => {
+        if (!CompareStrings(values?.visionPlan, "VBA")) {
+            return addons?.some((item) => item?.title === "Gradient Tint");
+        } else if (CompareStrings(values?.visionPlan, "VBA")) {
+            return calculatorObj?.addons
+                ?.find((plan) => plan?.title === values?.visionPlan)
+                ?.addon_types?.find((val) => val?.title === "Tint")
+                ?.addons?.some(
+                    (item) => item?.title === "Tint - Solid Pink 1 & 2"
+                );
+        }
+    };
+    const isSkyTypeActive = () => {
+        if (!CompareStrings(values?.visionPlan, "VBA")) {
+            return addons?.some((item) => item?.title === "Ski Type Mirror");
+        } else if (CompareStrings(values?.visionPlan, "VBA")) {
+            return calculatorObj?.addons
+                ?.find((plan) => plan?.title === values?.visionPlan)
+                ?.addon_types?.find((val) => val?.title === "Mirror Coating")
+                ?.addons?.some(
+                    (item) =>
+                        item?.title ===
+                        "Color Coating - Glass and non-tintable materials"
+                );
+        }
+    };
+    const isSolidTypeActive = () => {
+        if (!CompareStrings(values?.visionPlan, "VBA")) {
+            return addons?.some(
+                (item) => item?.title === "Solid/Single Gradient Mirror"
+            );
+        } else if (CompareStrings(values?.visionPlan, "VBA")) {
+            return calculatorObj?.addons
+                ?.find((plan) => plan?.title === values?.visionPlan)
+                ?.addon_types?.find((val) => val?.title === "Mirror Coating")
+                ?.addons?.some(
+                    (item) =>
+                        item?.title === "Mirror Coating - Flash/Gradient/Solid"
+                );
+        }
+    };
 
     const handleInputChange = (e) => {
         const regix = new RegExp("^[0-9]*[/.]?([0-9]*)?$");
@@ -82,7 +133,7 @@ const SunglassLens = ({
         }
     };
 
-    const handleIsSunglassesLensChange = (e) => {
+    const handleIsSunglassesLensChange = async (e) => {
         handleChange(e);
         if (
             e?.target?.value === "Yes" &&
@@ -90,9 +141,13 @@ const SunglassLens = ({
                 ?.optional === "true"
         ) {
             const sunglassesType = Yup.string().required("Option is required");
+            const uvProtection = Yup.string().required(
+                "UV 400 Protection is required"
+            );
             setCalValidations({
                 ...calValidations,
                 sunglassesType,
+                uvProtection,
             });
         } else if (e?.target?.value === "No") {
             const validations = { ...calValidations };
@@ -103,9 +158,21 @@ const SunglassLens = ({
             delete validations.polarizedTypePrice;
             delete validations.tintTypePrice;
             delete validations.mirrorCoatingPrice;
+            delete validations.tintCategory;
+            delete validations.uvProtection;
+
             setCalValidations({
                 ...validations,
             });
+            await setFieldValue("sunglassesType", "");
+            await setFieldValue("tintType", "");
+            await setFieldValue("isMirrorCoating", "");
+            await setFieldValue("mirrorCoatingType", "");
+            await setFieldValue("polarizedTypePrice", "");
+            await setFieldValue("tintTypePrice", "");
+            await setFieldValue("mirrorCoatingPrice", "");
+            await setFieldValue("tintCategory", "");
+            await setFieldValue("uvProtection", "");
         }
     };
     const showAlert = (e, type) => {
@@ -291,7 +358,13 @@ const SunglassLens = ({
             : false;
     };
     const getPolorized = () => {
-        return addons?.find((val) => val?.title === "Polarized");
+        if (!CompareStrings(values?.visionPlan, "VBA")) {
+            return addons?.find((val) => val?.title === "Polarized");
+        } else if (CompareStrings(values?.visionPlan, "VBA")) {
+            return calculatorObj?.addons
+                ?.find((plan) => plan?.title === values?.visionPlan)
+                ?.addon_types?.find((val) => val?.title === "Polarized");
+        }
     };
 
     const renderSunGlassLens = () => {
@@ -306,7 +379,7 @@ const SunglassLens = ({
                     className={classes["radio-group"]}
                     headClass={classes["margin"]}
                 >
-                    {isPolirizedActive && (
+                    {isPolirizedActive() && (
                         <CustomRadio
                             label={
                                 getPolorized()?.display_name
@@ -320,7 +393,7 @@ const SunglassLens = ({
                         />
                     )}
 
-                    {(isSolidTintActive || isGradientTintActive) && (
+                    {(isSolidTintActive() || isGradientTintActive()) && (
                         <CustomRadio
                             label={"Tint"}
                             value={"Tint"}
@@ -345,30 +418,73 @@ const SunglassLens = ({
             </>
         );
     };
+
+    const handleTintLensChange = async (e) => {
+        handleChange(e);
+        showAlert(e, retailErrors()?.tint);
+        if (
+            CompareStrings(values?.visionPlan, "VBA") &&
+            CompareStrings(e?.target?.value, "Tint - Solid Pink 1 & 2")
+        ) {
+            const tintCategory = Yup.string().required("Option is required");
+
+            setCalValidations({
+                ...calValidations,
+                tintCategory,
+            });
+        } else if (
+            CompareStrings(values?.visionPlan, "VBA") &&
+            CompareStrings(e?.target?.value, "Tint - Solid or Gradient")
+        ) {
+            const validationsObj = {};
+            delete validationsObj.tintCategory;
+
+            setCalValidations({
+                ...calValidations,
+                ...validationsObj,
+            });
+            await setFieldValue("tintCategory", "");
+        }
+    };
     const renderTintLens = () => {
         const getSolid = () => {
-            return addons?.find((val) => val?.title === "Solid Tint");
+            if (!CompareStrings(values?.visionPlan, "VBA")) {
+                return addons?.find((val) => val?.title === "Solid Tint");
+            } else if (CompareStrings(values?.visionPlan, "VBA")) {
+                return calculatorObj?.addons
+                    ?.find((plan) => plan?.title === values?.visionPlan)
+                    ?.addon_types?.find((val) => val?.title === "Tint")
+                    ?.addons?.find(
+                        (item) => item?.title === "Tint - Solid or Gradient"
+                    );
+            }
         };
         const getGradient = () => {
-            return addons?.find((val) => val?.title === "Gradient Tint");
+            if (!CompareStrings(values?.visionPlan, "VBA")) {
+                return addons?.find((val) => val?.title === "Gradient Tint");
+            } else if (CompareStrings(values?.visionPlan, "VBA")) {
+                return calculatorObj?.addons
+                    ?.find((plan) => plan?.title === values?.visionPlan)
+                    ?.addon_types?.find((val) => val?.title === "Tint")
+                    ?.addons?.find(
+                        (item) => item?.title === "Tint - Solid Pink 1 & 2"
+                    );
+            }
         };
         return (
             <>
-                {(isSolidTintActive || isGradientTintActive) && (
+                {(isSolidTintActive() || isGradientTintActive()) && (
                     <>
                         <div className={classes["label"]}>Select Tint Lens</div>
                         <Radio.Group
-                            onChange={(e) => {
-                                handleChange(e);
-                                showAlert(e, retailErrors()?.tint);
-                            }}
+                            onChange={handleTintLensChange}
                             value={values?.tintType}
                             id="tintType"
                             name="tintType"
                             className={classes["radio-group"]}
                             headClass={classes["margin"]}
                         >
-                            {isSolidTintActive && (
+                            {isSolidTintActive() && (
                                 <CustomRadio
                                     label={
                                         getSolid()?.display_name
@@ -382,7 +498,7 @@ const SunglassLens = ({
                                 />
                             )}
 
-                            {isGradientTintActive && (
+                            {isGradientTintActive() && (
                                 <CustomRadio
                                     label={
                                         getGradient()?.display_name
@@ -413,6 +529,7 @@ const SunglassLens = ({
                             )}
                     </>
                 )}
+                <VBATintTypes formProps={formProps} />
             </>
         );
     };
@@ -427,7 +544,7 @@ const SunglassLens = ({
                     name="isMirrorCoating"
                     className={classes["radio-group"]}
                 >
-                    {(isSkyTypeActive || isSolidTypeActive) && (
+                    {(isSkyTypeActive() || isSolidTypeActive()) && (
                         <CustomRadio
                             label={"Yes"}
                             value={"Yes"}
@@ -447,16 +564,42 @@ const SunglassLens = ({
     };
     const renderMirrorType = () => {
         const getSkyType = () => {
-            return addons?.find((val) => val?.title === "Ski Type Mirror");
+            if (!CompareStrings(values?.visionPlan, "VBA")) {
+                return addons?.find((val) => val?.title === "Ski Type Mirror");
+            } else if (CompareStrings(values?.visionPlan, "VBA")) {
+                return calculatorObj?.addons
+                    ?.find((plan) => plan?.title === values?.visionPlan)
+                    ?.addon_types?.find(
+                        (val) => val?.title === "Mirror Coating"
+                    )
+                    ?.addons?.find(
+                        (item) =>
+                            item?.title ===
+                            "Color Coating - Glass and non-tintable materials"
+                    );
+            }
         };
         const getSolidSingle = () => {
-            return addons?.find(
-                (val) => val?.title === "Solid/Single Gradient Mirror"
-            );
+            if (!CompareStrings(values?.visionPlan, "VBA")) {
+                return addons?.find(
+                    (val) => val?.title === "Solid/Single Gradient Mirror"
+                );
+            } else if (CompareStrings(values?.visionPlan, "VBA")) {
+                return calculatorObj?.addons
+                    ?.find((plan) => plan?.title === values?.visionPlan)
+                    ?.addon_types?.find(
+                        (val) => val?.title === "Mirror Coating"
+                    )
+                    ?.addons?.find(
+                        (item) =>
+                            item?.title ===
+                            "Mirror Coating - Flash/Gradient/Solid"
+                    );
+            }
         };
         return (
             <>
-                {(isSkyTypeActive || isSolidTypeActive) && (
+                {(isSkyTypeActive() || isSolidTypeActive()) && (
                     <>
                         <div className={classes["label"]}>Please Select</div>
                         <Radio.Group
@@ -467,7 +610,7 @@ const SunglassLens = ({
                             className={classes["radio-group"]}
                             headClass={classes["margin"]}
                         >
-                            {isSkyTypeActive && (
+                            {isSkyTypeActive() && (
                                 <CustomRadio
                                     label={
                                         getSkyType()?.display_name
@@ -482,7 +625,7 @@ const SunglassLens = ({
                                 />
                             )}
 
-                            {isSolidTypeActive && (
+                            {isSolidTypeActive() && (
                                 <CustomRadio
                                     label={
                                         getSolidSingle()?.display_name
@@ -569,6 +712,7 @@ const SunglassLens = ({
                                             )}
                                         </>
                                     )}
+                                    <UvProtection formProps={formProps} />
                                 </>
                             )}
                         </div>

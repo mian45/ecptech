@@ -1,4 +1,5 @@
 import * as Yup from "yup";
+import { CompareStrings } from "../../../../../utils/utils";
 export const selectLensTypeValidations = async (
     e,
     formProps,
@@ -68,8 +69,25 @@ export const selectLensTypeValidations = async (
         delete validations?.blendedBifocal;
         await setFieldValue("blendedBifocal", "");
     }
-    validations.lensTypeValue = Yup.string().required("Brand is required");
-    setCalValidations({
+
+    if (
+        CompareStrings(values?.visionPlan, "VBA") &&
+        CompareStrings(e?.target?.value, "NVF")
+    ) {
+        validations.lensTypeValue = Yup.string().required("Brand is required");
+    } else if (
+        CompareStrings(values?.visionPlan, "VBA") &&
+        (CompareStrings(e?.target?.value, "Single Vision") ||
+            CompareStrings(e?.target?.value, "PAL"))
+    ) {
+        validations.lensCategory = Yup.string().required(
+            "Category is required"
+        );
+    } else if (!CompareStrings(values?.visionPlan, "VBA")) {
+        validations.lensTypeValue = Yup.string().required("Brand is required");
+    }
+
+    await setCalValidations({
         ...validations,
     });
 };

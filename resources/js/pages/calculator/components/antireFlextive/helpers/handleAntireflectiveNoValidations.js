@@ -6,8 +6,11 @@ export const handleAntiReflectiveNoValidations = async (
     const { setFieldValue } = formProps;
     const validations = { ...calValidations };
 
-    // remove anti reflective validations
     delete validations.antireflectiveType;
+    delete validations.antiReflectiveCategory;
+    delete validations.antireflectiveValue;
+
+    // remove anti reflective validations
     delete validations.isCopayAntiReflectiveAmount;
     delete validations.copayAntiReflectiveAmount;
 
@@ -30,6 +33,11 @@ export const handleAntiReflectiveNoValidations = async (
     setCalValidations({
         ...validations,
     });
+
+    await setFieldValue("antireflectiveType", "");
+    await setFieldValue("antiReflectiveCategory", "");
+    await setFieldValue("antireflectiveValue", "");
+
     // reset lower copay Anti reflective values
     await setFieldValue("isCopayAntiReflective", null);
     await setFieldValue("isCopayAntiReflectiveAmount", "");

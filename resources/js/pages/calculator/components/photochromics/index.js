@@ -15,6 +15,9 @@ import * as action from "../../../../store/actions";
 import { getAddons } from "../antireFlextive/helpers/addonsHelper";
 import RetailError from "./components/retailError/retailError";
 import { retailErrorMessage } from "../sunglassLens/helpers/constants";
+import PhotochromicsCategory from "./components/categories/categories";
+import { CompareStrings, groupBy } from "../../../../utils/utils";
+import { getPhotochromicsAddons } from "./helpers/helpers";
 
 const Photochromics = ({
     formProps,
@@ -40,12 +43,23 @@ const Photochromics = ({
         Plans()[language][values?.visionPlan]?.photochromics?.options?.yes;
 
     const getPhotochromicList = () => {
-        return (
-            calculatorObj?.addons
-                ?.find((plan) => plan?.title === values?.visionPlan)
-                ?.addon_types?.find((item) => item?.title === "Photochromics")
-                ?.addons || []
-        );
+        if (!CompareStrings(values?.visionPlan, "VBA")) {
+            return (
+                calculatorObj?.addons
+                    ?.find((plan) => plan?.title === values?.visionPlan)
+                    ?.addon_types?.find(
+                        (item) => item?.title === "Photochromics"
+                    )?.addons || []
+            );
+        } else if (CompareStrings(values?.visionPlan, "VBA")) {
+            const addons = getPhotochromicsAddons(
+                calculatorObj,
+                "VBA",
+                "Photochromics"
+            );
+            const groupByAddons = groupBy("category", addons);
+            return groupByAddons[values?.photochromicsCategory];
+        }
     };
 
     const handleActiveState = () => {
@@ -63,25 +77,33 @@ const Photochromics = ({
 
     const handlePhotochromicsChange = async (e) => {
         handleChange(e);
-        if (
-            e?.target?.value === "Yes" &&
-            data?.find((ques) => ques.question === "Photochromics")
-                ?.optional === "true"
-        ) {
-            const photochromicsType =
-                Yup.string().required("Option is required");
+        if (e?.target?.value === "Yes") {
+            const validationsObj = {};
+            if (!CompareStrings(values?.visionPlan, "VBA")) {
+                validationsObj.photochromicsType =
+                    Yup.string().required("Option is required");
+            } else if (CompareStrings(values?.visionPlan, "VBA")) {
+                validationsObj.photochromicsCategory = Yup.string().required(
+                    "Category is required"
+                );
+            }
             setCalValidations({
                 ...calValidations,
-                photochromicsType,
+                ...validationsObj,
             });
         } else if (e?.target?.value === "No") {
             await setFieldValue("isCopayPhotochromic", null);
             await setFieldValue("isCopayPhotochromicAmount", "");
             await setFieldValue("copayPhotochromicAmount", "");
+            await setFieldValue("photochromicsType", "");
+            await setFieldValue("photochromicsCategory", "");
+            await setFieldValue("photochromicValue", "");
             const validations = { ...calValidations };
             delete validations.isCopayPhotochromicAmount;
             delete validations.copayPhotochromicAmount;
             delete validations.photochromicsType;
+            delete validations.photochromicsCategory;
+            delete validations.photochromicValue;
             setCalValidations({
                 ...validations,
             });
@@ -155,6 +177,16 @@ const Photochromics = ({
         }
     };
 
+    const isShowPhotochromicsTypes = () => {
+        return (CompareStrings(values?.visionPlan, "VBA") &&
+            CompareStrings(values?.isPhotochromics, "Yes") &&
+            values?.photochromicsCategory) ||
+            (!CompareStrings(values?.visionPlan, "VBA") &&
+                CompareStrings(values?.isPhotochromics, "Yes"))
+            ? true
+            : false;
+    };
+
     return (
         <>
             {photochromicsVisibility ? (
@@ -193,7 +225,13 @@ const Photochromics = ({
                             {error && (
                                 <div className={classes["error"]}>{error}</div>
                             )}
-                            {values?.isPhotochromics === "Yes" && (
+                            <PhotochromicsCategory
+                                formProps={formProps}
+                                calculatorObj={calculatorObj}
+                                calValidations={calValidations}
+                                setCalValidations={setCalValidations}
+                            />
+                            {isShowPhotochromicsTypes() && (
                                 <>
                                     <div className={classes["label"]}>
                                         Select Photochromics

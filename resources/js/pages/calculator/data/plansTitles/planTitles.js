@@ -28,6 +28,9 @@ const PlanTitles = (language, currentPlan) => {
             plan?.frameOrder?.options?.newFrame?.subQuestion?.options?.yes,
         drillMountNo:
             plan?.frameOrder?.options?.newFrame?.subQuestion?.options?.no,
+        drillOptionsTitle:
+            plan?.frameOrder?.options?.newFrame?.subQuestion?.subQuestion
+                ?.question,
         drillRimlessMounting:
             plan?.frameOrder?.options?.newFrame?.subQuestion?.subQuestion
                 ?.options?.rimlessMounting,

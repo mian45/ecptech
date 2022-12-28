@@ -13,6 +13,7 @@ export const CalculatorInitialValues = {
     frameContribution: "",
     drillMount: "",
     drillMountValue: "",
+    drillMountOptions: "",
     isLoweredCopay: "",
     isCopayChecked: "",
     isCopayPolycarbonate: null,
@@ -37,11 +38,14 @@ export const CalculatorInitialValues = {
     isCopayCustomProgressiveAmount: "",
     copayCustomProgressiveAmount: "",
     lensType: "",
+    lensCategory: "",
+    lensSubCategory: "",
     lensTypeValue: "",
     lensTypeInput: "",
     lensMaterial: "",
     lensMaterialValue: "",
     isPhotochromics: "",
+    photochromicsCategory: "",
     photochromicsType: "",
     photochromicValue: "",
     isSunglasses: "",
@@ -54,6 +58,7 @@ export const CalculatorInitialValues = {
     mirrorCoatingPrice: "",
     isAntireflective: "",
     antireflectiveType: "",
+    antiReflectiveCategory: "",
     antireflectiveValue: "",
     isProtectionPlan: "",
     protectionPlanType: "",
@@ -96,6 +101,26 @@ export const CalculatorInitialValues = {
     copayUltimateAntireflectiveAmount: "",
     blueLight: "",
     blendedBifocal: "",
+    //aspheric addon
+    isAspheric: "",
+    asphericType: "",
+    //blue protection
+    isBlueProtection: "",
+    blueProtectionCategory: "",
+    blueProtectionType: "",
+    //roll and Polish
+    isRollAndPolish: "",
+    rollAndPolishTypes: "",
+    //licensed speciality
+    isLicensedSpeciality: "",
+    licensedSpecialityType: "",
+    //licensed speciality
+    isScratched: "",
+    scratchedType: "",
+
+    //lenses
+    tintCategory: "",
+    uvProtection: "",
 };
 
 export const BenifitTypeEnums = Object.freeze({
