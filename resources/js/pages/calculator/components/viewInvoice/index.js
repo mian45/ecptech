@@ -217,7 +217,7 @@ const ViewInvoice = ({
             });
         }
     };
-    const sendEmail = async (status, res) => {
+    const sendEmail = async (status, response) => {
         let clientId = userId;
         if (userRole === "staff") {
             clientId = clientUserId;
@@ -233,8 +233,8 @@ const ViewInvoice = ({
                 email: receipt?.userInfo?.email,
                 phone: receipt?.userInfo?.phoneNo,
                 status: status.status,
-                invoiceNo: res?.data?.id,
-                invoiceDate: dayjs(res?.data?.updated_at).format(
+                invoiceNo: response?.data?.data?.id,
+                invoiceDate: dayjs(response?.data?.updated_at).format(
                     "MMM DD, YYYY"
                 ),
                 amount: (
