@@ -27,7 +27,7 @@ class SettingController extends Controller
     public function getLenseFeaturesBrands(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'plan' => 'in:vsp,davis,eyemed|required'
+            'plan' => 'in:vsp,davis,eyemed,spectra,vba|required'
         ]);
 
         if ($validator->fails()) {
@@ -44,6 +44,104 @@ class SettingController extends Controller
             $plan = $request->plan;
         }
 
+        if($vision_plan->title =='VBA' OR $vision_plan->title =='Spectra'){
+
+            $lense_types = LenseType::where('vision_plan_id',$vision_plan->id)->get();
+            foreach($lense_types as $lense_type){
+
+                if($lense_type->title =='Single Vision' AND $vision_plan->title == 'VBA'){
+
+                    $collections = LenseType::with(['categories' => function($q){
+                                        $q->select('id','title','lense_type_id');   
+                                        $q->with(['sub_categories' => function($q){                                         
+                                            $q->select('id','title','lense_type_id');
+                                            $q->with(['brands' => function($q){
+                                                $q->leftjoin('brand_permissions as bp', function($join){
+                                                    $join->on('bp.brand_id','=','brands.id')
+                                                    ->where('bp.user_id',  auth()->user()->id);
+                                                });
+                                                $q->select('brands.id','lens_type_id','title',DB::raw('IFNULL(status,"inactive") as status'));
+
+                                                $q->with(['collections' => function($q){
+                                                    $q->leftjoin('collections_permissions as cp', function ($join) {
+                                                        $join->on('cp.collection_id','=','collections.id')
+                                                        ->where('cp.user_id',  auth()->user()->id);
+                                                    });                                          
+                                                    $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price as custom_price',DB::raw('IFNULL(status,"inactive") as status'),'cp.collection_id');
+
+                                                }]);
+                                            }]);
+                                        }]);
+                                    }])
+                                ->select('id','title','vision_plan_id')
+                                ->where('id',$lense_type->id)
+                                ->where('is_category',0)->where('is_sub_category',0)
+                                ->get();
+
+                }elseif($lense_type->title =='PAL'){
+                        $collections = LenseType::with(['categories' => function($q){
+                            $q->select('id','title','lense_type_id');                                
+
+                            $q->with(['brands' => function($q){                                
+                                $q->leftjoin('brand_permissions as bp', function($join){
+                                    $join->on('bp.brand_id','=','brands.id')
+                                    ->where('bp.user_id',  auth()->user()->id);
+                                });
+                                $q->select('brands.id','lens_type_id','title',DB::raw('IFNULL(status,"inactive") as status'));
+                                $q->with(['collections' => function($q){
+                                    $q->leftjoin('collections_permissions as cp', function ($join) {
+                                        $join->on('cp.collection_id','=','collections.id')
+                                        ->where('cp.user_id',  auth()->user()->id);;
+                                    });
+                                    $q->leftjoin('codes as c', function ($join) {
+                                        $join->on('c.id','=','collections.code_id');
+                                    });
+                                    $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price as custom_price',DB::raw('IFNULL(status,"inactive") as status'),'cp.collection_id');
+
+
+                                }]);
+                            }]);
+                        }])
+                    ->select('id','title','vision_plan_id')
+                    ->where('id',$lense_type->id)
+                    ->where('is_category',0)->where('is_sub_category',0)
+                    ->get();
+
+                }else{
+                        $collections = LenseType::with(['brands' => function($q){                             
+                            $q->leftjoin('brand_permissions as bp', function($join){
+                                $join->on('bp.brand_id','=','brands.id')
+                                ->where('bp.user_id',  auth()->user()->id);
+                            });
+                            $q->select('brands.id','lens_type_id','title',DB::raw('IFNULL(status,"inactive") as status'));
+                            $q->with(['collections' => function($q){
+                                $q->leftjoin('collections_permissions as cp', function ($join) {
+                                    $join->on('cp.collection_id','=','collections.id')
+                                    ->where('cp.user_id',  auth()->user()->id);;
+                                });
+                                $q->leftjoin('codes as c', function ($join) {
+                                    $join->on('c.id','=','collections.code_id');
+                                });
+                                $q->select('collections.id','collections.brand_id','title','cp.name as display_name','cp.price as custom_price',DB::raw('IFNULL(status,"inactive") as status'),'cp.collection_id');
+
+
+                            }]);
+                        }])
+                    ->select('id','title','vision_plan_id')
+                    ->where('id',$lense_type->id)
+                    ->where('is_category',0)->where('is_sub_category',0)
+                    ->get();
+
+                }
+
+                if(!$collections->isEmpty()){
+                    $data_collection['collection'][] = $collections[0];
+                }
+            }
+
+            $data[$plan] = $data_collection['collection'];
+        }else{
+            
         $data[$plan] = LenseType::with(['brands'=>function($q){
             $q->leftJoin('brand_permissions as setting', function($join){
                 $join->on('setting.brand_id', '=', 'brands.id')
@@ -58,6 +156,7 @@ class SettingController extends Controller
                 $q->select('collections.id','collections.brand_id','title','collection_setting.name as display_name','collection_setting.price as custom_price',DB::raw('IFNULL(status,"inactive") as status'));
             }]);
         }])->select("id","title")->where('vision_plan_id',$vision_plan->id)->get();
+    }
  
 
        return $this->sendResponse($data, 'Lense data get successfully');
@@ -93,7 +192,7 @@ class SettingController extends Controller
                 $lense = LenseType::where('title',$lense_type_title)->where('vision_plan_id',$vision_plan->id)->first();
                 
 
-            foreach($lense_type['brands'] as $brand){
+                foreach($lense_type['brands'] as $brand){
                 $brand_id = $brand['id'];
                 $brand_title = $brand['title'];
 
@@ -145,7 +244,94 @@ class SettingController extends Controller
                 
                     }
                 }
-            }else{
+            }elseif($plan =='vba' OR $plan =='spectra'){
+                if($lense_type_title =='Single Vision' AND $plan =='vba'){
+                    
+                    foreach($lense_type['categories'] as $category){
+                        foreach($category['sub_categories'] as $sub_category){
+                            foreach($sub_category['brands'] as $brand){
+                                $brand_id = $brand['id'];
+                                $brand_title = $brand['title'];
+                                $brandPermission = BrandPermission::updateOrCreate(
+                                    ['user_id' => $user_id, 'lense_type_id' => $sub_category['id'],'brand_id'=>$brand_id],
+                                    ['status' => $brand['status'],'lense_type_title' => $sub_category['title'],'brand_title'=>$brand_title]
+                                );
+            
+                                foreach($brand['collections'] as $collection){
+                        
+                                    $collection_id = $collection['id'];
+                                    $collection_title = $collection['title'];
+                                    $name = $collection['display_name'];
+                                    $price = $collection['custom_price'];
+                                    $status = $collection['status'];
+            
+                                    $collectionPermission = CollectionPermission::updateOrCreate(
+                                        ['user_id' => $user_id, 'brand_id' => $brand_id, 'collection_id' => $collection_id],
+                                        ['price' => $price,'name' => $name,'status' => $status, 'brand_title' => $brand_title, 'collection_title' => $collection_title],
+                                    );
+            
+                                }
+                            }
+                            
+                        }
+                        
+                    }
+
+                }elseif($lense_type_title =='PAL'){
+                    foreach($lense_type['categories'] as $category){
+                        foreach($category['brands'] as $brand){
+                            $brand_id = $brand['id'];
+                            $brand_title = $brand['title'];
+        
+                            $brandPermission = BrandPermission::updateOrCreate(
+                                ['user_id' => $user_id, 'lense_type_id' => $category['id'],'brand_id'=>$brand_id],
+                                ['status' => $brand['status'],'lense_type_title' => $category['title'],'brand_title'=>$brand_title]
+                            );
+        
+                            foreach($brand['collections'] as $collection){
+                    
+                                $collection_id = $collection['id'];
+                                $collection_title = $collection['title'];
+                                $name = $collection['display_name'];
+                                $price = $collection['custom_price'];
+                                $status = $collection['status'];
+        
+                                $collectionPermission = CollectionPermission::updateOrCreate(
+                                    ['user_id' => $user_id, 'brand_id' => $brand_id, 'collection_id' => $collection_id],
+                                    ['price' => $price,'name' => $name,'status' => $status, 'brand_title' => $brand_title, 'collection_title' => $collection_title],
+                                );
+        
+                            }
+                        }
+                    }
+                }else{
+                    foreach($lense_type['brands'] as $brand){
+                        $brand_id = $brand['id'];
+                        $brand_title = $brand['title'];
+    
+                        $brandPermission = BrandPermission::updateOrCreate(
+                            ['user_id' => $user_id, 'lense_type_id' => $lense_type_id,'brand_id'=>$brand_id],
+                            ['status' => $brand['status'],'lense_type_title' => $lense_type_title,'brand_title'=>$brand_title]
+                        );
+    
+                        foreach($brand['collections'] as $collection){
+                
+                            $collection_id = $collection['id'];
+                            $collection_title = $collection['title'];
+                            $name = $collection['display_name'];
+                            $price = $collection['custom_price'];
+                            $status = $collection['status'];
+    
+                            $collectionPermission = CollectionPermission::updateOrCreate(
+                                ['user_id' => $user_id, 'brand_id' => $brand_id, 'collection_id' => $collection_id],
+                                ['price' => $price,'name' => $name,'status' => $status, 'brand_title' => $brand_title, 'collection_title' => $collection_title],
+                            );
+    
+                        }
+                    }
+                }
+            }
+            else{
                 foreach($lense_type['brands'] as $brand){
                     $brand_id = $brand['id'];
                     $brand_title = $brand['title'];

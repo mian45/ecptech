@@ -478,6 +478,7 @@ class InvoiceCalculaterController extends Controller
         }
 
         $csv = array();
+        $price = NULL;
 
         if($_FILES['csv']['error'] == 0){
             $tmpName = $_FILES['csv']['tmp_name'];
