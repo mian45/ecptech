@@ -224,10 +224,14 @@ const ViewInvoice = ({
         }
         try {
             const payload = {
-                id: invoiceId,
                 userId: clientId,
                 staffId: receipt?.values?.staffId,
                 invoiceName: receipt?.values?.invoiceName,
+                fname: receipt?.userInfo?.firstName,
+                lname: receipt?.userInfo?.lastName,
+                dob: receipt?.userInfo?.dob,
+                email: receipt?.userInfo?.email,
+                phone: receipt?.userInfo?.phoneNo,
                 status: status.status,
                 amount: (
                     CalculateWithTaxesTotalPrice(
