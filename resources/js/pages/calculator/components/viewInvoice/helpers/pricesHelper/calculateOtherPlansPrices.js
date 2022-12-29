@@ -1428,7 +1428,9 @@ export const calculateLensesCopaysFee = (
     calculatorObj,
     lensPrices,
     isPrivate,
-    davisMaterials
+    davisMaterials,
+    plansList,
+    plansJson
 ) => {
     let total = 0;
     if (

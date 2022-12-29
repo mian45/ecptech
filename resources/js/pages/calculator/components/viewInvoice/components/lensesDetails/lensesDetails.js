@@ -2,6 +2,8 @@ import { Col, Collapse, Row } from "antd";
 import React from "react";
 import { connect } from "react-redux";
 import { CompareStrings } from "../../../../../../utils/utils";
+import { Plans } from "../../../../data/plansJson";
+import { AllPlans } from "../../../../data/plansList";
 import PlanTitles from "../../../../data/plansTitles/planTitles";
 import { RenderBlueLight } from "../../helpers/pricesHelper/calculateDavisPrice";
 import { calculateLensesCopaysFee } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
@@ -40,6 +42,8 @@ const LensesDetails = ({
     setInvoice,
 }) => {
     const currentPlan = receipt?.values?.visionPlan;
+    const plansList = AllPlans[language];
+    const plansJson = Plans()[language];
     const { materialCopayTitle } = PlanTitles(
         language,
         receipt?.values?.visionPlan
@@ -52,7 +56,9 @@ const LensesDetails = ({
                 calculatorObj,
                 lensPrices,
                 currentPlan === "Private Pay" ? true : false,
-                davisMaterials
+                davisMaterials,
+                plansList,
+                plansJson
             ) || 0;
 
         return (price || 0).toFixed(2);
