@@ -312,6 +312,35 @@ export const GetMappedPayload = (data) => {
             status: data?.isScratched,
             type: data?.scratchedType,
         },
+        chemistrieClip: {
+            status: data?.isChemistrieClip,
+            type: data?.chemistrieClipType,
+        },
+        edgeCoating: {
+            status: data?.isEdgeCoating,
+            type: data?.edgeCoatingType,
+        },
+        lensOptions: {
+            status: data?.islensOptions,
+            type: data?.lensOptionsType,
+        },
+        scratchWarrenty: {
+            status: data?.isScratchWarrenty,
+        },
+        overSizeLens: {
+            status: data?.isOverSizeLens,
+            type: data?.overSizeLenseType,
+        },
+        scratchCoating: {
+            status: data?.scratchCoating,
+        },
+        uvCoating: {
+            status: data?.uvCoating,
+        },
+        spectraPolish: {
+            status: data?.spectraPolish,
+            type: data?.spectraPolishType,
+        },
     };
 };
 
@@ -492,5 +521,26 @@ export const mappedEditValues = (data) => {
         // scratch risistance coating
         isScratched: userState?.scratch?.status || "",
         scratchedType: userState?.scratch?.type || "",
+        // chemistrie Clip
+        isChemistrieClip: userState?.chemistrieClip?.status || "",
+        chemistrieClipType: userState?.chemistrieClip?.type || "",
+        // edge Coating
+        isEdgeCoating: userState?.edgeCoating?.status || "",
+        edgeCoatingType: userState?.edgeCoating?.type || "",
+        // lens Options
+        islensOptions: userState?.lensOptions?.status || "",
+        lensOptionsType: userState?.lensOptions?.type || "",
+        // scratch Warrenty
+        isScratchWarrenty: userState?.scratchWarrenty?.status || "",
+        // overSize Lens
+        isOverSizeLens: userState?.overSizeLens?.status || "",
+        overSizeLenseType: userState?.overSizeLens?.type || "",
+        // scratch Coating
+        scratchCoating: userState?.scratchCoating?.status || "",
+        // uv  Coating
+        uvCoating: userState?.uvCoating?.status || "",
+        // spectra Polish
+        spectraPolish: userState?.spectraPolish?.status || "",
+        spectraPolishType: userState?.spectraPolish?.type || "",
     };
 };

@@ -7,5 +7,6 @@ export const AllPlans = {
         davis: "Davis Vision",
         privatePay: "Private Pay",
         vba: "VBA",
+        spectra: "Spectra",
     },
 };

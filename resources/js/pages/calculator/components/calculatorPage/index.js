@@ -265,6 +265,78 @@ const CalculatorScreen = ({ retailPopup }) => {
                         "Scratch Resistant Coatings is required"
                     );
                 }
+            } else if (CompareStrings(item?.title, "VBA")) {
+                if (
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Chemistrie Clip"
+                    )?.optional === "true"
+                ) {
+                    validations.isChemistrieClip = Yup.string().required(
+                        "Chemistrie clip is required"
+                    );
+                }
+                if (
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Edge Coating"
+                    )?.optional === "true"
+                ) {
+                    validations.isEdgeCoating = Yup.string().required(
+                        "Edge coating is required"
+                    );
+                }
+                if (
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Miscellaneous Lens Options"
+                    )?.optional === "true"
+                ) {
+                    validations.islensOptions = Yup.string().required(
+                        "Miscellaneous lens options is required"
+                    );
+                }
+                if (
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "One Year Scratch Warranty"
+                    )?.optional === "true"
+                ) {
+                    validations.isScratchWarrenty = Yup.string().required(
+                        "One year scratch Warranty is required"
+                    );
+                }
+                if (
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Oversize Lenses"
+                    )?.optional === "true"
+                ) {
+                    validations.isOverSizeLens = Yup.string().required(
+                        "One year scratch Warranty is required"
+                    );
+                }
+                if (
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Polish"
+                    )?.optional === "true"
+                ) {
+                    validations.spectraPolish =
+                        Yup.string().required("Polish is required");
+                }
+                if (
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "UV Coating"
+                    )?.optional === "true"
+                ) {
+                    validations.uvCoating = Yup.string().required(
+                        "UV coating is required"
+                    );
+                }
+                if (
+                    item?.question_permissions?.find(
+                        (ques) => ques?.question == "Scratch Coating"
+                    )?.optional === "true"
+                ) {
+                    validations.scratchCoating = Yup.string().required(
+                        "Scratch coating is required"
+                    );
+                }
             }
             allValidations[item.title] = validations;
         });

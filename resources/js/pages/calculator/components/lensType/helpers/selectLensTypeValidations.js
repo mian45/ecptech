@@ -76,14 +76,21 @@ export const selectLensTypeValidations = async (
     ) {
         validations.lensTypeValue = Yup.string().required("Brand is required");
     } else if (
-        CompareStrings(values?.visionPlan, "VBA") &&
-        (CompareStrings(e?.target?.value, "Single Vision") ||
+        (CompareStrings(values?.visionPlan, "VBA") &&
+            (CompareStrings(e?.target?.value, "Single Vision") ||
+                CompareStrings(e?.target?.value, "PAL"))) ||
+        (CompareStrings(values?.visionPlan, "Spectra") &&
             CompareStrings(e?.target?.value, "PAL"))
     ) {
         validations.lensCategory = Yup.string().required(
             "Category is required"
         );
-    } else if (!CompareStrings(values?.visionPlan, "VBA")) {
+    } else if (
+        !(
+            CompareStrings(values?.visionPlan, "VBA") ||
+            CompareStrings(values?.visionPlan, "Spectra")
+        )
+    ) {
         validations.lensTypeValue = Yup.string().required("Brand is required");
     }
 

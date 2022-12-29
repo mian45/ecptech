@@ -26,13 +26,27 @@ const VBACategories = ({
         await setFieldValue("lensSubCategory", "");
         await setFieldValue("lensTypeValue", "");
         const validations = { ...calValidations };
-        if (CompareStrings(values?.lensType, "Single Vision")) {
+        if (
+            CompareStrings(values?.lensType, "Single Vision") &&
+            values?.visionPlan === "VBA"
+        ) {
             validations.lensSubCategory = Yup.string().required(
                 "Sub category is required"
             );
-        } else if (CompareStrings(values?.lensType, "PAL")) {
+        } else if (
+            CompareStrings(values?.lensType, "PAL") &&
+            values?.visionPlan === "VBA"
+        ) {
             validations.lensTypeValue =
                 Yup.string().required("Brand is required");
+        } else if (
+            values?.lensType === "PAL" &&
+            values?.lensCategory === "Non - Formulary progressive lenses" &&
+            values?.visionPlan === "Spectra" &&
+            values?.isLensBenifit === "Yes"
+        ) {
+            validations.lensTypeInput =
+                Yup.string().required("Price is required");
         }
         setCalValidations({ ...validations });
     };
@@ -114,9 +128,11 @@ const VBACategories = ({
     };
     return (
         <>
-            {CompareStrings(values?.visionPlan, "VBA") &&
+            {((CompareStrings(values?.visionPlan, "VBA") &&
                 (CompareStrings(values?.lensType, "Single Vision") ||
-                    CompareStrings(values?.lensType, "PAL")) &&
+                    CompareStrings(values?.lensType, "PAL"))) ||
+                (CompareStrings(values?.visionPlan, "Spectra") &&
+                    CompareStrings(values?.lensType, "PAL"))) &&
                 renderVbaCategories()}
             {CompareStrings(values?.visionPlan, "VBA") &&
                 CompareStrings(values?.lensType, "Single Vision") &&

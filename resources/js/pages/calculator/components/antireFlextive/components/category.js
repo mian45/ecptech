@@ -19,25 +19,56 @@ const AntiReflectiveCategory = ({
 
     const handleAntireflectiveCategoryChange = (e) => {
         handleChange(e);
-        const antireflectiveType = Yup.string().required("Option is required");
+        const validations = {};
+        if (
+            CompareStrings(
+                e?.target?.value,
+                "Non - Formulary anti-reflective coatings"
+            ) &&
+            CompareStrings(values?.visionPlan, "Spectra")
+        ) {
+            validations.antireflectiveValue =
+                Yup.string().required("Price is required");
+        } else {
+            validations.antireflectiveType =
+                Yup.string().required("Option is required");
+        }
         setCalValidations({
             ...calValidations,
-            antireflectiveType,
+            ...validations,
         });
     };
     const getAntiReflectiveCategoryList = () => {
-        const addons = getAddonsList(
-            calculatorObj,
-            "VBA",
-            "Anti-Reflective Coatings"
-        );
-        const groupByAddons = groupBy("category", addons);
-        return Object.keys(groupByAddons) || [];
+        if (CompareStrings(values?.visionPlan, "VBA")) {
+            const addons = getAddonsList(
+                calculatorObj,
+                "VBA",
+                "Anti-Reflective Coatings"
+            );
+            const groupByAddons = groupBy("category", addons);
+            return Object.keys(groupByAddons) || [];
+        } else if (CompareStrings(values?.visionPlan, "Spectra")) {
+            const addons = getAddonsList(
+                calculatorObj,
+                "Spectra",
+                "Anti-Reflective"
+            );
+            const groupByAddons = groupBy("category", addons);
+            const categoriesList = Object.keys(groupByAddons) || [];
+            if (CompareStrings(values?.isLensBenifit, "Yes")) {
+                return [
+                    ...categoriesList,
+                    "Non - Formulary anti-reflective coatings",
+                ];
+            }
+            return [...categoriesList];
+        }
     };
 
     return (
         <>
-            {CompareStrings(values?.visionPlan, "VBA") &&
+            {(CompareStrings(values?.visionPlan, "VBA") ||
+                CompareStrings(values?.visionPlan, "Spectra")) &&
                 CompareStrings(values?.isAntireflective, "Yes") && (
                     <>
                         <div className={classes["label"]}>

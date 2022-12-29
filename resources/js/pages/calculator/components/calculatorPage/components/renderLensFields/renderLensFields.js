@@ -11,6 +11,14 @@ import BlueProtection from "../../../blueProtection/blueProtection";
 import RollAndPolish from "../../../rollAndPolish/rollAndPolish";
 import LicensedSpeciality from "../../../licensedSpeciality/licensedSpeciality";
 import ScratchRisistanceCoating from "../../../scratchRisistanceCoating/scratchRisistanceCoating";
+import ChemistrieClip from "../../../chemistrieClip/chemistrieClip";
+import EdgeCoating from "../../../edgeCoating/edgeCoating";
+import MiscLensOptions from "../../../miscLensOptions/miscLensOptions";
+import OneYearWarrenty from "../../../oneYearWarrenty/oneYearWarrenty";
+import OverSizeLenses from "../../../overSizeLenses/overSizeLenses";
+import ScratchCoating from "../../../scratchCoating/scratchCoating";
+import UvCoating from "../../../uvCoating/uvCoating";
+import SpectraPolish from "../../../spectraPolish/spectraPolish";
 
 const RenderLensFields = ({
     formProps,
@@ -121,6 +129,48 @@ const RenderLensFields = ({
                 calculatorObj={calculatorObj && calculatorObj}
                 setCalValidations={setCalValidations}
                 calValidations={calValidations}
+            />
+            <ChemistrieClip
+                formProps={formProps}
+                calculatorObj={calculatorObj && calculatorObj}
+                setCalValidations={setCalValidations}
+                calValidations={calValidations}
+            />
+            <EdgeCoating
+                formProps={formProps}
+                calculatorObj={calculatorObj && calculatorObj}
+                setCalValidations={setCalValidations}
+                calValidations={calValidations}
+            />
+            <MiscLensOptions
+                formProps={formProps}
+                calculatorObj={calculatorObj && calculatorObj}
+                setCalValidations={setCalValidations}
+                calValidations={calValidations}
+            />
+            <OneYearWarrenty
+                formProps={formProps}
+                calculatorObj={calculatorObj && calculatorObj}
+            />
+            <OverSizeLenses
+                formProps={formProps}
+                calculatorObj={calculatorObj && calculatorObj}
+                setCalValidations={setCalValidations}
+                calValidations={calValidations}
+            />
+            <SpectraPolish
+                formProps={formProps}
+                calculatorObj={calculatorObj && calculatorObj}
+                setCalValidations={setCalValidations}
+                calValidations={calValidations}
+            />
+            <ScratchCoating
+                formProps={formProps}
+                calculatorObj={calculatorObj && calculatorObj}
+            />
+            <UvCoating
+                formProps={formProps}
+                calculatorObj={calculatorObj && calculatorObj}
             />
         </>
     );

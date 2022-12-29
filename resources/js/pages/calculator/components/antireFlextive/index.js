@@ -45,15 +45,7 @@ const AntireFlextive = ({
         Plans()[language][values?.visionPlan]?.antireflective?.options?.yes;
 
     const getAntireflectiveList = () => {
-        if (!CompareStrings(values?.visionPlan, "VBA")) {
-            return (
-                calculatorObj?.addons
-                    ?.find((plan) => plan?.title === values?.visionPlan)
-                    ?.addon_types?.find(
-                        (item) => item?.title === "Anti-Reflective Properties"
-                    )?.addons || []
-            );
-        } else if (CompareStrings(values?.visionPlan, "VBA")) {
+        if (CompareStrings(values?.visionPlan, "VBA")) {
             const addons = getAddonsList(
                 calculatorObj,
                 "VBA",
@@ -61,6 +53,22 @@ const AntireFlextive = ({
             );
             const groupByAddons = groupBy("category", addons);
             return groupByAddons[values?.antiReflectiveCategory];
+        } else if (CompareStrings(values?.visionPlan, "Spectra")) {
+            const addons = getAddonsList(
+                calculatorObj,
+                "Spectra",
+                "Anti-Reflective"
+            );
+            const groupByAddons = groupBy("category", addons);
+            return groupByAddons[values?.antiReflectiveCategory];
+        } else if (!CompareStrings(values?.visionPlan, "VBA")) {
+            return (
+                calculatorObj?.addons
+                    ?.find((plan) => plan?.title === values?.visionPlan)
+                    ?.addon_types?.find(
+                        (item) => item?.title === "Anti-Reflective Properties"
+                    )?.addons || []
+            );
         }
     };
 
@@ -81,13 +89,16 @@ const AntireFlextive = ({
         handleChange(e);
         if (e?.target?.value === "Yes") {
             const validationsObj = {};
-            if (!CompareStrings(values?.visionPlan, "VBA")) {
-                validationsObj.antireflectiveType = Yup.string().required(
-                    "Antireflective type is required"
-                );
-            } else if (CompareStrings(values?.visionPlan, "VBA")) {
+            if (
+                CompareStrings(values?.visionPlan, "VBA") ||
+                CompareStrings(values?.visionPlan, "Spectra")
+            ) {
                 validationsObj.antiReflectiveCategory = Yup.string().required(
                     "Category is required"
+                );
+            } else if (!CompareStrings(values?.visionPlan, "VBA")) {
+                validationsObj.antireflectiveType = Yup.string().required(
+                    "Antireflective type is required"
                 );
             }
             setCalValidations({
@@ -172,10 +183,12 @@ const AntireFlextive = ({
     };
 
     const isShowAntiReflectiveTypes = () => {
-        return (CompareStrings(values?.visionPlan, "VBA") &&
+        return ((CompareStrings(values?.visionPlan, "VBA") ||
+            CompareStrings(values?.visionPlan, "Spectra")) &&
             CompareStrings(values?.isAntireflective, "Yes") &&
             values?.antiReflectiveCategory) ||
             (!CompareStrings(values?.visionPlan, "VBA") &&
+                !CompareStrings(values?.visionPlan, "Spectra") &&
                 CompareStrings(values?.isAntireflective, "Yes"))
             ? true
             : false;
@@ -283,17 +296,29 @@ const AntireFlextive = ({
                                     />
                                 </>
                             )}
-                            {values?.visionPlan === eyemedPlan &&
+                            {(values?.visionPlan === eyemedPlan &&
                                 values?.isLensBenifit === lensBenifitYes &&
                                 values?.isAntireflective ===
                                     antireflectiveYes &&
-                                values?.antireflectiveType && (
-                                    <CalculatorInput
-                                        onChange={handleInputChange}
-                                        value={values?.antireflectiveValue}
-                                        name={"antireflectiveValue"}
-                                    />
-                                )}
+                                values?.antireflectiveType) ||
+                                (CompareStrings(
+                                    values?.antiReflectiveCategory,
+                                    "Non - Formulary anti-reflective coatings"
+                                ) &&
+                                    CompareStrings(
+                                        values?.isLensBenifit,
+                                        "Yes"
+                                    ) &&
+                                    CompareStrings(
+                                        values?.visionPlan,
+                                        "Spectra"
+                                    ) && (
+                                        <CalculatorInput
+                                            onChange={handleInputChange}
+                                            value={values?.antireflectiveValue}
+                                            name={"antireflectiveValue"}
+                                        />
+                                    ))}
                         </div>
                     </Col>
                 </Row>

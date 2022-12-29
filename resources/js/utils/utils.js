@@ -1,5 +1,5 @@
 export const CompareStrings = (a, b) => {
-    return (a || "")?.toLowerCase() === (b || "").toLowerCase() ? true : false;
+    return (a || "")?.toLowerCase() === (b || "")?.toLowerCase() ? true : false;
 };
 
 export const groupBy = (property, objectArray) => {

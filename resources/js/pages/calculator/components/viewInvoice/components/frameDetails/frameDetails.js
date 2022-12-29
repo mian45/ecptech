@@ -15,6 +15,10 @@ import { GetDavisDrillMountFee } from "../../helpers/pricesHelper/calculateDavis
 import PlanTitles from "../../../../data/plansTitles/planTitles";
 import { GetVBADrillMountFee } from "../../helpers/pricesHelper/calculateVBAPrice";
 import { CompareStrings } from "../../../../../../utils/utils";
+import {
+    GetSpectraDrillMountFee,
+    GetSpectraFrameFee,
+} from "../../helpers/pricesHelper/calculateSpectraPrice";
 
 const { Panel } = Collapse;
 
@@ -47,6 +51,28 @@ const FrameDetails = ({
             price =
                 price +
                 parseFloat(GetVBADrillMountFee(receipt?.values, plansJson));
+        } else if (currentPlan === plansList?.spectra) {
+            // add Frame Fee
+            price =
+                price +
+                parseFloat(
+                    GetSpectraFrameFee(
+                        receipt?.values,
+                        calculatorObj,
+                        plansJson
+                    )
+                );
+
+            //add drill mount fee
+            price =
+                price +
+                parseFloat(
+                    GetSpectraDrillMountFee(
+                        receipt?.values,
+                        calculatorObj,
+                        plansJson
+                    )
+                );
         } else if (currentPlan === plansList?.eyemed) {
             // add Frame Fee
             price =
@@ -83,40 +109,53 @@ const FrameDetails = ({
     };
 
     const renderOnlyFrameFee = () => {
-        const isPrivate = currentPlan === plansList?.privatePay ? true : false;
-        const data = receipt?.values;
-        let total = 0;
-        const retailFee = parseFloat(data?.frameOrder?.retailFee || "");
-        const frameContribution = parseFloat(
-            data?.frameOrder?.frameContribution || ""
-        );
-        const onlyThisTime = "Only multiple pair benefit only at this time";
-        const newFrame = "New Frame Purchase";
-        if (
-            (isPrivate || data?.isFrameBenifit === onlyThisTime) &&
-            data?.frameOrder?.type === newFrame
-        ) {
-            total = retailFee;
-        } else if (
-            data?.isFrameBenifit === "Yes" &&
-            data?.frameOrder?.type === newFrame
-        ) {
-            if (retailFee <= frameContribution) {
-                total = total + 0;
-            } else if (retailFee > frameContribution) {
-                const actualPrice = retailFee - frameContribution;
-                const discount = actualPrice * 0.2;
-                const payableFramePrice = actualPrice - discount;
-                total = total + (payableFramePrice || 0);
+        if (receipt?.values?.visionPlan === "Spectra") {
+            return (
+                parseFloat(
+                    GetSpectraFrameFee(
+                        receipt?.values,
+                        calculatorObj,
+                        plansJson
+                    )
+                ) || 0
+            ).toFixed(2);
+        } else {
+            const isPrivate =
+                currentPlan === plansList?.privatePay ? true : false;
+            const data = receipt?.values;
+            let total = 0;
+            const retailFee = parseFloat(data?.frameOrder?.retailFee || "");
+            const frameContribution = parseFloat(
+                data?.frameOrder?.frameContribution || ""
+            );
+            const onlyThisTime = "Only multiple pair benefit only at this time";
+            const newFrame = "New Frame Purchase";
+            if (
+                (isPrivate || data?.isFrameBenifit === onlyThisTime) &&
+                data?.frameOrder?.type === newFrame
+            ) {
+                total = retailFee;
+            } else if (
+                data?.isFrameBenifit === "Yes" &&
+                data?.frameOrder?.type === newFrame
+            ) {
+                if (retailFee <= frameContribution) {
+                    total = total + 0;
+                } else if (retailFee > frameContribution) {
+                    const actualPrice = retailFee - frameContribution;
+                    const discount = actualPrice * 0.2;
+                    const payableFramePrice = actualPrice - discount;
+                    total = total + (payableFramePrice || 0);
+                }
+            } else if (
+                data?.isFrameBenifit === "Yes" &&
+                data?.frameOrder?.type === "Patient Own Frame" &&
+                data?.tracing?.status === "Yes"
+            ) {
+                total = total + parseFloat(calculatorObj?.tracing_fee || 0);
             }
-        } else if (
-            data?.isFrameBenifit === "Yes" &&
-            data?.frameOrder?.type === "Patient Own Frame" &&
-            data?.tracing?.status === "Yes"
-        ) {
-            total = total + parseFloat(calculatorObj?.tracing_fee || 0);
+            return (total || 0).toFixed(2);
         }
-        return (total || 0).toFixed(2);
     };
     const renderDrillMount = () => {
         let total = 0;
@@ -128,6 +167,15 @@ const FrameDetails = ({
             total =
                 total +
                 parseFloat(GetVBADrillMountFee(receipt?.values, plansJson));
+        } else if (
+            currentPlan === plansList?.spectra &&
+            data?.frameOrder?.drillMount === "Yes"
+        ) {
+            total =
+                total +
+                parseFloat(
+                    GetSpectraDrillMountFee(data, calculatorObj, plansJson)
+                );
         } else if (
             currentPlan === plansList?.eyemed &&
             data?.frameOrder?.drillMount === "Yes"

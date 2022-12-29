@@ -45,6 +45,10 @@ import {
     GetPrivateSpecialityLensPrice,
 } from "./calculateEyemedPrice";
 import {
+    SpectraPrivateTotal,
+    SpectraRegularTotal,
+} from "./calculateSpectraPrice";
+import {
     GetPrivateMirrorCoatingPrice,
     GetPrivatePayVBAMaterialPrice,
     GetPrivatePolarizedPrice,
@@ -1430,7 +1434,9 @@ export const calculateLensesCopaysFee = (
     if (
         data?.isLensBenifit === "Yes" &&
         data?.visionPlan !== "Eyemed" &&
-        data?.visionPlan !== "Davis Vision"
+        data?.visionPlan !== "Davis Vision" &&
+        data?.visionPlan !== "VBA" &&
+        data?.visionPlan !== "Spectra"
     ) {
         // add lens Prices
         total = total + parseFloat(GetLensFee(data, calculatorObj, lensPrices));
@@ -1490,6 +1496,13 @@ export const calculateLensesCopaysFee = (
             total + parseFloat(GetDavisSpecialityLensFee(data, calculatorObj));
         // add Polish Price
         total = total + parseFloat(GetDavisPolishFee(data));
+    } else if (
+        CompareStrings(data?.isLensBenifit, "Yes") &&
+        CompareStrings(data?.visionPlan, "VBA")
+    ) {
+        total =
+            total +
+            SpectraRegularTotal(data, calculatorObj, plansList, plansJson);
     } else if (
         CompareStrings(data?.isLensBenifit, "Yes") &&
         CompareStrings(data?.visionPlan, "VBA")
@@ -1591,6 +1604,10 @@ export const calculateLensesCopaysFee = (
             total =
                 total +
                 parseFloat(GetPrivateVBAScratchFee(calculatorObj, data));
+        } else if (CompareStrings(data?.visionPlan, "Spectra")) {
+            total =
+                total +
+                SpectraPrivateTotal(data, calculatorObj, plansList, plansJson);
         } else {
             // add lens Prices
             total =

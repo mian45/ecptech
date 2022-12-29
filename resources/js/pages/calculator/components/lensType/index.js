@@ -152,7 +152,8 @@ const LensType = ({
         ) {
             lenses = getVbaSingleVisionBrands(calculatorObj, values);
         } else if (
-            CompareStrings(values?.visionPlan, "VBA") &&
+            (CompareStrings(values?.visionPlan, "VBA") ||
+                CompareStrings(values?.visionPlan, "Spectra")) &&
             CompareStrings(values?.lensType, "PAL") &&
             values?.lensCategory
         ) {
@@ -291,7 +292,8 @@ const LensType = ({
                 values?.visionPlan === eyemedPlan ||
                 values?.visionPlan === davisPlan ||
                 values?.visionPlan === AllPlans[language]?.privatePay ||
-                values?.visionPlan === AllPlans[language]?.vba
+                values?.visionPlan === AllPlans[language]?.vba ||
+                values?.visionPlan === AllPlans[language]?.spectra
             )
         ) {
             await resetMaterial(e);
@@ -299,10 +301,15 @@ const LensType = ({
         handleChange(e);
         showAlert(e);
         if (
-            values?.lensType &&
-            e?.target?.value &&
-            values?.visionPlan === eyemedPlan &&
-            values?.isLensBenifit === lensBenifitYes
+            (values?.lensType &&
+                e?.target?.value &&
+                values?.visionPlan === eyemedPlan &&
+                values?.isLensBenifit === lensBenifitYes) ||
+            ((values?.lensType === "Single Vision" ||
+                values?.lensType === "Bifocal/Trifocal") &&
+                e?.target?.value &&
+                values?.visionPlan === "Spectra" &&
+                values?.isLensBenifit === lensBenifitYes)
         ) {
             const validationObject = {};
             validationObject.lensTypeInput =
@@ -499,17 +506,33 @@ const LensType = ({
                                         />
                                     </>
                                 )}
-                                {values?.lensType &&
+                                {((values?.lensType &&
                                     values?.lensTypeValue &&
                                     values?.visionPlan === eyemedPlan &&
-                                    values?.isLensBenifit ===
-                                        lensBenifitYes && (
-                                        <CalculatorInput
-                                            onChange={handleInputChange}
-                                            value={values?.lensTypeInput}
-                                            name={"lensTypeInput"}
-                                        />
-                                    )}
+                                    values?.isLensBenifit === lensBenifitYes) ||
+                                    ((values?.lensType === "Single Vision" ||
+                                        values?.lensType ===
+                                            "Bifocal/Trifocal") &&
+                                        values?.lensTypeValue &&
+                                        values?.visionPlan === "Spectra" &&
+                                        values?.isLensBenifit ===
+                                            lensBenifitYes) ||
+                                    (values?.lensType === "NVF" &&
+                                        values?.visionPlan === "Spectra" &&
+                                        values?.isLensBenifit ===
+                                            lensBenifitYes) ||
+                                    (values?.lensType === "PAL" &&
+                                        values?.lensCategory ===
+                                            "Non - Formulary progressive lenses" &&
+                                        values?.visionPlan === "Spectra" &&
+                                        values?.isLensBenifit ===
+                                            lensBenifitYes)) && (
+                                    <CalculatorInput
+                                        onChange={handleInputChange}
+                                        value={values?.lensTypeInput}
+                                        name={"lensTypeInput"}
+                                    />
+                                )}
                                 {values?.visionPlan === "Davis Vision" &&
                                     (values?.lensType === "Bifocal" ||
                                         values?.lensType === "Trifocal") && (

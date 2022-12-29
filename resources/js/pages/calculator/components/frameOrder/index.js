@@ -13,6 +13,7 @@ import { Plans } from "../../data/plansJson";
 import CalculatorInput from "./components/calculatorInput/calculatorInput";
 import VBADrillMountOptions from "./components/vbaDrillMountOptions/vbaDrillMountOptions";
 import { CompareStrings } from "../../../../utils/utils";
+import SpectraDrillMount from "./components/spectraDrillMount/spectraDrillMount";
 
 const FrameOrder = ({
     formProps,
@@ -166,6 +167,10 @@ const FrameOrder = ({
                     </Radio.Group>
                     <FormikError name={"drillMount"} />
                 </div>
+                <SpectraDrillMount
+                    formProps={formProps}
+                    calculatorObj={calculatorObj}
+                />
                 <VBADrillMountOptions formProps={formProps} />
                 {values?.visionPlan === eyemedPlan &&
                     values?.isFrameBenifit === frameBenifitYes &&

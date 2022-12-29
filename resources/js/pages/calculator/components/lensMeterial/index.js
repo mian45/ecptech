@@ -152,9 +152,12 @@ const LensMeterials = ({
             setError("");
         }
         if (
-            e.target.value &&
-            values?.visionPlan === eyemedPlan &&
-            values?.isLensBenifit === lensBenifitYes
+            (e.target.value &&
+                values?.visionPlan === eyemedPlan &&
+                values?.isLensBenifit === lensBenifitYes) ||
+            (e.target.value === "Hi Index >=1.74" &&
+                values?.visionPlan === "Spectra" &&
+                values?.isLensBenifit === lensBenifitYes)
         ) {
             const validationObject = {};
             validationObject.lensMaterialValue =
@@ -265,16 +268,20 @@ const LensMeterials = ({
                                 }
                             />
                             <CenterThickness formProps={formProps} />
-                            {values?.lensMaterial &&
+                            {((values?.lensMaterial &&
                                 values?.visionPlan === eyemedPlan &&
-                                values?.isLensBenifit === lensBenifitYes && (
-                                    <CalculatorInput
-                                        onChange={handleInputChange}
-                                        value={values?.lensMaterialValue}
-                                        name={"lensMaterialValue"}
-                                        headClass={classes["custom-input"]}
-                                    />
-                                )}
+                                values?.isLensBenifit === lensBenifitYes) ||
+                                (values?.lensMaterial === "Hi Index >=1.74" &&
+                                    values?.visionPlan === "Spectra" &&
+                                    values?.isLensBenifit ===
+                                        lensBenifitYes)) && (
+                                <CalculatorInput
+                                    onChange={handleInputChange}
+                                    value={values?.lensMaterialValue}
+                                    name={"lensMaterialValue"}
+                                    headClass={classes["custom-input"]}
+                                />
+                            )}
                             <div className={classes["tagline-box"]}>
                                 <span
                                     className={classes["tagline"]}

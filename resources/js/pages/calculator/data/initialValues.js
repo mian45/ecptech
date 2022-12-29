@@ -123,6 +123,28 @@ export const CalculatorInitialValues = {
     uvProtection: "",
 
     centerThickness: "",
+
+    // Chemistrie Clip
+    isChemistrieClip: "",
+    chemistrieClipType: "",
+    // Edge Coating
+    isEdgeCoating: "",
+    edgeCoatingType: "",
+    // Miscellaneous Lens Options
+    islensOptions: "",
+    lensOptionsType: "",
+    // One Year Scratch Warranty
+    isScratchWarrenty: "",
+    // Oversize Lenses
+    isOverSizeLens: "",
+    overSizeLenseType: "",
+    // Scratch Coating
+    scratchCoating: "",
+    // UV Coating
+    uvCoating: "",
+    // Spectra Polish
+    spectraPolish: "",
+    spectraPolishType: "",
 };
 
 export const BenifitTypeEnums = Object.freeze({

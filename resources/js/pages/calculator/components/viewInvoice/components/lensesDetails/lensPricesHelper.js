@@ -44,6 +44,29 @@ import {
     GetPrivatePhotochromicPrice,
 } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
 import {
+    GetPrivateSpectraLens,
+    GetSpectraAntireflectiveFee,
+    GetSpectraChemistrieClipFee,
+    GetSpectraCoatingFee,
+    GetSpectraEdgeCoatingFee,
+    GetSpectraLensFee,
+    GetSpectraLensOptionsFee,
+    GetSpectraMaterialFee,
+    GetSpectraOverSizeLensesFee,
+    GetSpectraPolarizedFee,
+    getSpectraPrivateAntiReflective,
+    getSpectraPrivateChemistrieClip,
+    getSpectraPrivateEdgeCoating,
+    getSpectraPrivateLensOptions,
+    GetSpectraPrivateMaterial,
+    GetSpectraPrivateMirrorCoating,
+    getSpectraPrivateOverSizeLenses,
+    GetSpectraPrivatePolarized,
+    getSpectraPrivateScratchCoating,
+    GetSpectraScratchCoatingFee,
+    GetSpectraScratechWarrentyFee,
+} from "../../helpers/pricesHelper/calculateSpectraPrice";
+import {
     GetPrivateMirrorCoatingPrice,
     GetPrivatePayVBAMaterialPrice,
     GetPrivatePolarizedPrice,
@@ -82,6 +105,8 @@ export const RenderPhotochromicPrices = (data, calculatorObj) => {
                 parseFloat(GetDavisPhotochromicFee(data, calculatorObj));
         } else if (CompareStrings(currentPlan, "VBA")) {
             total = total + parseFloat(GetVBAPhotochromicFee(data));
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total = total + parseFloat(0);
         } else {
             total = total + parseFloat(GetPhotochromicPrice(data));
         }
@@ -89,15 +114,19 @@ export const RenderPhotochromicPrices = (data, calculatorObj) => {
         isPrivate ||
         data?.isLensBenifit === "Only multiple pair benefit only at this time"
     ) {
-        total =
-            total +
-            parseFloat(
-                GetPrivatePhotochromicPrice(
-                    data?.photochromics?.type,
-                    calculatorObj,
-                    data
-                )
-            );
+        if (CompareStrings(currentPlan, "Spectra")) {
+            total = total + parseFloat(0);
+        } else {
+            total =
+                total +
+                parseFloat(
+                    GetPrivatePhotochromicPrice(
+                        data?.photochromics?.type,
+                        calculatorObj,
+                        data
+                    )
+                );
+        }
     }
     return (total || 0).toFixed(2);
 };
@@ -115,6 +144,8 @@ export const RenderAntireflectivePrices = (data, calculatorObj) => {
                 parseFloat(GetDavisAntireflectiveFee(data, calculatorObj));
         } else if (CompareStrings(currentPlan, "VBA")) {
             total = total + parseFloat(GetVBAAntireflectiveFee(data));
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total = total + parseFloat(GetSpectraAntireflectiveFee(data));
         } else {
             total = total + parseFloat(GetAntireflectivePrice(data));
         }
@@ -131,6 +162,12 @@ export const RenderAntireflectivePrices = (data, calculatorObj) => {
                         data?.antiReflectiveProperties?.type,
                         data
                     )
+                );
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total =
+                total +
+                parseFloat(
+                    getSpectraPrivateAntiReflective(data, calculatorObj)
                 );
         } else {
             total =
@@ -159,6 +196,8 @@ export const RenderPolarizedFee = (data, calculatorObj) => {
                 total + parseFloat(GetDavisPolarizedFee(data, calculatorObj));
         } else if (CompareStrings(currentPlan, "VBA")) {
             total = total + parseFloat(GetVBAPolarizedFee(data));
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total = total + parseFloat(GetSpectraPolarizedFee(data));
         } else {
             if (
                 data?.sunGlassesLens?.status === "Yes" &&
@@ -175,6 +214,10 @@ export const RenderPolarizedFee = (data, calculatorObj) => {
             total =
                 total +
                 parseFloat(GetPrivatePolarizedPrice(calculatorObj, data));
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total =
+                total +
+                parseFloat(GetSpectraPrivatePolarized(data, calculatorObj));
         } else {
             const glassesAddons = calculatorObj?.addons
                 ?.find((plan) => plan?.title === data?.visionPlan)
@@ -206,6 +249,8 @@ export const RenderTintFee = (data, calculatorObj) => {
             total = total + parseFloat(GetDavisTintFee(data, calculatorObj));
         } else if (CompareStrings(currentPlan, "VBA")) {
             total = total + parseFloat(GetVBATintFee(data));
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total = total + parseFloat(0);
         } else {
             if (
                 data?.sunGlassesLens?.status === "Yes" &&
@@ -225,6 +270,8 @@ export const RenderTintFee = (data, calculatorObj) => {
         if (CompareStrings(currentPlan, "VBA")) {
             total =
                 total + parseFloat(GetPrivateTintPrice(calculatorObj, data));
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total = total + parseFloat(0);
         } else {
             const glassesAddons = calculatorObj?.addons
                 ?.find((plan) => plan?.title === data?.visionPlan)
@@ -263,6 +310,8 @@ export const RenderCoatingFee = (data, calculatorObj) => {
             total = total + parseFloat(GetDavisCoatingFee(data, calculatorObj));
         } else if (CompareStrings(currentPlan, "VBA")) {
             total = total + parseFloat(GetVBACoatingFee(data));
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total = total + parseFloat(GetSpectraCoatingFee(data));
         } else {
             if (
                 data?.sunGlassesLens?.status === "Yes" &&
@@ -283,6 +332,10 @@ export const RenderCoatingFee = (data, calculatorObj) => {
             total =
                 total +
                 parseFloat(GetPrivateMirrorCoatingPrice(calculatorObj, data));
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total =
+                total +
+                parseFloat(GetSpectraPrivateMirrorCoating(data, calculatorObj));
         } else {
             const glassesAddons = calculatorObj?.addons
                 ?.find((plan) => plan?.title === data?.visionPlan)
@@ -320,6 +373,8 @@ export const RenderBasePrice = (data, calculatorObj, lensPrices) => {
             total = total + parseFloat(GetDavisLensFee(data, calculatorObj));
         } else if (CompareStrings(currentPlan, "VBA")) {
             total = total + parseFloat(GetVBALensFee(data, calculatorObj));
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total = total + parseFloat(GetSpectraLensFee(data, calculatorObj));
         } else {
             total =
                 total +
@@ -335,6 +390,10 @@ export const RenderBasePrice = (data, calculatorObj, lensPrices) => {
             total =
                 total +
                 parseFloat(GetPrivateVBALensFee(data, calculatorObj) || 0);
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total =
+                total +
+                parseFloat(GetPrivateSpectraLens(data, calculatorObj) || 0);
         } else {
             total =
                 total + parseFloat(GetPrivateLensFee(calculatorObj, data) || 0);
@@ -360,6 +419,9 @@ export const RenderLensMaterialPrice = (
                 total + parseFloat(GetDavisMaterialFee(data, davisMaterials));
         } else if (CompareStrings(currentPlan, "VBA")) {
             total = total + parseFloat(GetVBAMaterialFee(data, calculatorObj));
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total =
+                total + parseFloat(GetSpectraMaterialFee(data, calculatorObj));
         } else {
             total =
                 total +
@@ -377,6 +439,10 @@ export const RenderLensMaterialPrice = (
                 parseFloat(
                     GetPrivatePayVBAMaterialPrice(data, calculatorObj) || 0
                 );
+        } else if (CompareStrings(currentPlan, "Spectra")) {
+            total =
+                total +
+                parseFloat(GetSpectraPrivateMaterial(data, calculatorObj));
         } else {
             total =
                 total +
@@ -741,4 +807,94 @@ export const RenderAdditionalLens = (data, calculatorObj, type) => {
         }
     }
     return (total || 0).toFixed(2);
+};
+
+export const RenderChemistrieClipPrice = (calculatorObj, data) => {
+    if (
+        CompareStrings(data?.isLensBenifit, "Yes") &&
+        CompareStrings(data?.visionPlan, "Spectra")
+    ) {
+        return (
+            parseFloat(GetSpectraChemistrieClipFee(data) || 0) || 0
+        ).toFixed(2);
+    } else {
+        return (
+            parseFloat(
+                getSpectraPrivateChemistrieClip(data, calculatorObj) || 0
+            ) || 0
+        ).toFixed(2);
+    }
+};
+
+export const RenderEdgeCoatingPrice = (calculatorObj, data) => {
+    if (
+        CompareStrings(data?.isLensBenifit, "Yes") &&
+        CompareStrings(data?.visionPlan, "Spectra")
+    ) {
+        return (parseFloat(GetSpectraEdgeCoatingFee(data) || 0) || 0).toFixed(
+            2
+        );
+    } else {
+        return (
+            parseFloat(
+                getSpectraPrivateEdgeCoating(data, calculatorObj) || 0
+            ) || 0
+        ).toFixed(2);
+    }
+};
+
+export const RenderLensOptionsPrice = (calculatorObj, data) => {
+    if (
+        CompareStrings(data?.isLensBenifit, "Yes") &&
+        CompareStrings(data?.visionPlan, "Spectra")
+    ) {
+        return (parseFloat(GetSpectraLensOptionsFee(data) || 0) || 0).toFixed(
+            2
+        );
+    } else {
+        return (
+            parseFloat(
+                getSpectraPrivateLensOptions(data, calculatorObj) || 0
+            ) || 0
+        ).toFixed(2);
+    }
+};
+export const RenderOneYearWarrentyPrice = (data) => {
+    return (parseFloat(GetSpectraScratechWarrentyFee(data) || 0) || 0).toFixed(
+        2
+    );
+};
+
+export const RenderOverSizeLensPrice = (calculatorObj, data) => {
+    if (
+        CompareStrings(data?.isLensBenifit, "Yes") &&
+        CompareStrings(data?.visionPlan, "Spectra")
+    ) {
+        return (
+            parseFloat(GetSpectraOverSizeLensesFee(data) || 0) || 0
+        ).toFixed(2);
+    } else {
+        return (
+            parseFloat(
+                getSpectraPrivateOverSizeLenses(data, calculatorObj) || 0
+            ) || 0
+        ).toFixed(2);
+    }
+};
+
+export const RenderScratchCoatingPrice = (calculatorObj, data) => {
+    if (
+        CompareStrings(data?.isLensBenifit, "Yes") &&
+        CompareStrings(data?.visionPlan, "Spectra")
+    ) {
+        return (
+            parseFloat(GetSpectraScratchCoatingFee(data) || 0) || 0
+        ).toFixed(2);
+    } else {
+        return (
+            parseFloat(
+                getSpectraPrivateScratchCoating(data, calculatorObj) || 0
+            ) || 0
+        ).toFixed(2);
+    }
 };

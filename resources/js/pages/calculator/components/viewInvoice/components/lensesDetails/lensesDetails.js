@@ -11,6 +11,7 @@ import {
     RenderMinusIcon,
     RenderPlusIcon,
 } from "../frameDetails/frameDetails";
+import RenderSpectra from "./components/spectraAddons";
 import classes from "./lensesDetails.module.scss";
 import {
     RenderAntireflectivePrices,
@@ -85,7 +86,7 @@ const LensesDetails = ({
     if (receipt?.values?.photochromics?.status === "Yes") {
         invoiceData.lenses[
             `Photochromics: ${receipt?.values?.photochromics?.type}`
-        ] = `$${photochromicPrice || 0}`;
+        ] = `$${RenderPhotochromicPrices(receipt?.values, calculatorObj) || 0}`;
     }
     if (receipt?.values?.antiReflectiveProperties?.status === "Yes") {
         invoiceData.lenses[
@@ -288,6 +289,40 @@ const GetLensPriceByPlan = ({
                 calculatorObj={calculatorObj}
                 receipt={receipt}
             />
+            {/* Spectra start */}
+
+            <RenderSpectra
+                calculatorObj={calculatorObj}
+                receipt={receipt}
+                type={"Chemistrie Clip"}
+            />
+            <RenderSpectra
+                calculatorObj={calculatorObj}
+                receipt={receipt}
+                type={"Edge Coating"}
+            />
+            <RenderSpectra
+                calculatorObj={calculatorObj}
+                receipt={receipt}
+                type={"Miscellaneous Lens Options"}
+            />
+            <RenderSpectra
+                calculatorObj={calculatorObj}
+                receipt={receipt}
+                type={"One Year Scratch Warranty"}
+            />
+            <RenderSpectra
+                calculatorObj={calculatorObj}
+                receipt={receipt}
+                type={"Oversize Lenses"}
+            />
+            <RenderSpectra
+                calculatorObj={calculatorObj}
+                receipt={receipt}
+                type={"Scratch Coating"}
+            />
+
+            {/* Spectra end */}
             {CompareStrings(receipt?.values?.visionPlan, "VBA") &&
                 CompareStrings(receipt?.values?.aspheric?.status, "Yes") &&
                 receipt?.values?.aspheric?.type && (

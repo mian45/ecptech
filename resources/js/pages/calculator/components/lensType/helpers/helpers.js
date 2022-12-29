@@ -62,7 +62,18 @@ export const isShowBrands = (values) => {
             values?.lensCategory) ||
         (CompareStrings(values?.visionPlan, "VBA") &&
             CompareStrings(values?.lensType, "NVF")) ||
-        (!CompareStrings(values?.visionPlan, "VBA") && values?.lensType)
+        (!(
+            CompareStrings(values?.visionPlan, "VBA") ||
+            CompareStrings(values?.visionPlan, "Spectra")
+        ) &&
+            values?.lensType) ||
+        (CompareStrings(values?.visionPlan, "Spectra") &&
+            (values?.lensType === "Single Vision" ||
+                values?.lensType === "Bifocal/Trifocal")) ||
+        (CompareStrings(values?.visionPlan, "Spectra") &&
+            CompareStrings(values?.lensType, "PAL") &&
+            values?.lensCategory &&
+            values?.lensCategory !== "Non - Formulary progressive lenses")
         ? true
         : false;
 };

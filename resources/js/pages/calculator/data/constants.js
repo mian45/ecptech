@@ -106,4 +106,14 @@ export const PriceConstants = {
             coating2: 30,
         },
     },
+    spectra: {
+        antireflective: {
+            tier1: 30,
+            tier2: 80,
+            tier3: 80,
+            tier4: 90,
+        },
+        scratchWarrenty: 10,
+        polish: 13,
+    },
 };
