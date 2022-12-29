@@ -4,35 +4,34 @@ import classes from "./styles.module.scss";
 import Axios from "../../../../../../Http";
 import { connect } from "react-redux";
 import { Row, Col, message } from "antd";
-const MaterialSettings = ({ userId }) => {
+const MaterialSettings = ({ userId,plan }) => {
     const [lensesMaterialApi, lensesMaterialHolder] = message.useMessage();
     const [isChange, setIsChange] = useState(false);
     let [materials, setMaterials] = useState([]);
     useEffect(() => {
         if (userId == null) return;
-        const getMaterialSettings = async () => {
-            try {
-                const res = await Axios.get(
-                    `${process.env.MIX_REACT_APP_URL}/api/lense-material-settings`,
-                    {
-                        params: { userId: userId },
-                    }
-                );
-
-                setMaterials(res.data.data || []);
-            } catch (err) {
-                console.log("error while get lenses", err);
-                lensesMaterialApi.open({
-                    type: "error",
-                    content: err.response.data.message,
-                    duration: 5,
-                    className: "custom-postion-error",
-                });
-            }
-        };
         getMaterialSettings();
-    }, [userId]);
+    }, [userId,plan]);
+    const getMaterialSettings = async () => {
+        try {
+            const res = await Axios.get(
+                `${process.env.MIX_REACT_APP_URL}/api/lense-material-settings`,
+                {
+                    params: { userId: userId,plan:plan },
+                }
+            );
 
+            setMaterials(res.data.data[plan] || []);
+        } catch (err) {
+            console.log("error while get lenses", err);
+            lensesMaterialApi.open({
+                type: "error",
+                content: err.response.data.message,
+                duration: 5,
+                className: "custom-postion-error",
+            });
+        }
+    };
     const handleCheckbox = (value, collection) => {
         setIsChange(true);
         const newData = materials.map((item, index) => {
@@ -70,7 +69,9 @@ const MaterialSettings = ({ userId }) => {
         setIsChange(false);
         try {
             const payload = {
-                data: [...materials],
+                data:{
+                    [`${plan}`]: [...materials]
+                },
             };
             const res = await Axios.post(
                 `${process.env.MIX_REACT_APP_URL}/api/add-lense-material-setting`,
