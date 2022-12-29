@@ -28,6 +28,7 @@ const VBACategories = ({
         const validations = { ...calValidations };
         if (
             CompareStrings(values?.lensType, "Single Vision") &&
+            CompareStrings(values?.lensCategory, "Digital Single Vision") &&
             values?.visionPlan === "VBA"
         ) {
             validations.lensSubCategory = Yup.string().required(
