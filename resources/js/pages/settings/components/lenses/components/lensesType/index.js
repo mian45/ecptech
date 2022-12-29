@@ -16,12 +16,21 @@ const LensesType = ({ userId, plan }) => {
     const [lensesList, setLensesList] = useState([]);
     const [selectedLensType, setSelectedLensType] = useState("");
     const [selectedRow, setSelectedRow] = useState("");
+    const [selectedCategory, setSelectedCategory] = useState("");
     const [isChange, setIsChange] = useState(false);
-
+    const [isCategories, setIsCategories] = useState(false);
+    const [isSubCat, setIsSubCat] = useState(false);
+    const [selectedSubCat, setSelecetedSubCat] = useState("");
     useEffect(() => {
         if (userId == null) return;
         const getLenses = async () => {
             try {
+                setIsBrands(false);
+                setIsCategories(false);
+                setIsSubCat(false);
+                setSelectedRow("");
+                setSelecetedSubCat("");
+                setSelectedCategory("");
                 const res = await Axios.get(
                     `${process.env.MIX_REACT_APP_URL}/api/get-lense-features-brands?plan=${plan}`,
                     {
@@ -77,12 +86,29 @@ const LensesType = ({ userId, plan }) => {
     };
 
     const onLensTypeClick = (value) => {
-        setIsBrands(true);
-        setSelectedLensType(value);
+        if (
+            (plan == "spectra" && value == "PAL") ||
+            (plan == "vba" && value == "PAL") ||
+            (plan == "vba" && value == "Single Vision")
+        ) {
+            setIsCategories(true);
+            setSelectedLensType(value);
+        } else {
+            setIsBrands(true);
+            setSelectedLensType(value);
+        }
     };
     const onGoBackClick = () => {
-        setSelectedRow("");
         setIsBrands(false);
+        setSelectedRow("");
+    };
+    const onGoBackClickCatClick = () => {
+        setIsCategories(false);
+        setSelectedCategory("");
+    };
+    const onGoBackClickSubCatClick = () => {
+        setSelecetedSubCat("");
+        setIsSubCat(false);
     };
     return (
         <>
@@ -96,6 +122,39 @@ const LensesType = ({ userId, plan }) => {
                             lenses={lensesList}
                             selectedRow={selectedRow}
                             setSelectedRow={setSelectedRow}
+                            selectedCategory={selectedCategory}
+                            selectedSubCat={selectedSubCat}
+                        />
+                    ) : isSubCat ? (
+                        <LensesTypeSubCategoryList
+                            onBackClick={onGoBackClickSubCatClick}
+                            selectedLensType={selectedLensType}
+                            lenses={lensesList}
+                            selectedRow={selectedSubCat}
+                            selectedCategory={selectedCategory}
+                            setSelectedRow={(e) => {
+                                setIsBrands(true);
+                                setSelecetedSubCat(e);
+                            }}
+                        />
+                    ) : isCategories ? (
+                        <LensesTypeCategoryList
+                            onBackClick={onGoBackClickCatClick}
+                            selectedLensType={selectedLensType}
+                            lenses={lensesList}
+                            selectedRow={selectedCategory}
+                            setSelectedRow={(e) => {
+                                if (
+                                    plan == "vba" &&
+                                    selectedLensType == "Single Vision"
+                                ) {
+                                    setIsSubCat(true);
+                                    setSelectedCategory(e);
+                                } else {
+                                    setIsBrands(true);
+                                    setSelectedCategory(e);
+                                }
+                            }}
                         />
                     ) : (
                         <LensesTypeList
@@ -107,10 +166,13 @@ const LensesType = ({ userId, plan }) => {
                 <Col xs={24} md={15} className={classes["right-container"]}>
                     <CollectionSection
                         selectedRow={selectedRow}
+                        selectedCategory={selectedCategory}
                         lenses={lensesList}
                         selectedLensType={selectedLensType}
                         setLensesList={setLensesList}
                         setIsChange={setIsChange}
+                        plan={plan}
+                        selectedSubCat={selectedSubCat}
                     />
                 </Col>
             </Row>
@@ -140,13 +202,44 @@ const CollectionSection = ({
     selectedLensType,
     setLensesList,
     setIsChange,
+    selectedCategory,
+    selectedSubCat,
 }) => {
     const getCollections = () => {
-        const brand = lenses.find((lens) => lens?.title === selectedLensType);
-        const collection = brand?.brands.find(
-            (singleBrand) => singleBrand?.title === selectedRow
-        );
-        return collection?.collections;
+        if (selectedSubCat !== "") {
+            const lens = lenses.find(
+                (category) => category?.title === selectedLensType
+            );
+            const categories = lens?.categories.find(
+                (category) => category?.title === selectedCategory
+            );
+            const subCat = categories?.sub_categories.find(
+                (category) => category?.title === selectedSubCat
+            );
+            const collection = subCat?.brands.find(
+                (singleBrand) => singleBrand?.title === selectedRow
+            );
+            return collection?.collections || [];
+        } else if (selectedCategory !== "") {
+            const lens = lenses.find(
+                (category) => category?.title === selectedLensType
+            );
+            const categories = lens?.categories.find(
+                (category) => category?.title === selectedCategory
+            );
+            const collection = categories?.brands.find(
+                (singleBrand) => singleBrand?.title === selectedRow
+            );
+            return collection?.collections || [];
+        } else {
+            const brand = lenses.find(
+                (lens) => lens?.title === selectedLensType
+            );
+            const collection = brand?.brands.find(
+                (singleBrand) => singleBrand?.title === selectedRow
+            );
+            return collection?.collections;
+        }
     };
     const handleCheckbox = (value, collection) => {
         setIsChange(true);
@@ -196,6 +289,129 @@ const CollectionSection = ({
         selectedCollection.custom_price = value;
         setLensesList([...lens]);
     };
+    const handleCheckboxCat = (value, collection) => {
+        setIsChange(true);
+        const lens = [...lenses];
+
+        const lensType = [...lens].find(
+            (lens) => lens?.title === selectedLensType
+        );
+        const categories = lensType?.categories.find(
+            (category) => category?.title === selectedCategory
+        );
+        const brand = categories?.brands.find(
+            (singleBrand) => singleBrand?.title === selectedRow
+        );
+        const selectedCollection = brand?.collections.find(
+            (collec) => collec?.id === collection?.id
+        );
+        selectedCollection.status = value === true ? "active" : "inactive";
+        setLensesList([...lens]);
+    };
+    const handleDisplayNameChangeCat = (value, collection) => {
+        setIsChange(true);
+        const lens = [...lenses];
+
+        const lensType = [...lens].find(
+            (lens) => lens?.title === selectedLensType
+        );
+        const categories = lensType?.categories.find(
+            (category) => category?.title === selectedCategory
+        );
+        const brand = categories?.brands.find(
+            (singleBrand) => singleBrand?.title === selectedRow
+        );
+        const selectedCollection = brand?.collections.find(
+            (collec) => collec?.id === collection?.id
+        );
+        selectedCollection.display_name = value;
+        setLensesList([...lens]);
+    };
+    const handleAmountNameChangeCat = (value, collection) => {
+        setIsChange(true);
+        const lens = [...lenses];
+
+        const lensType = [...lens].find(
+            (lens) => lens?.title === selectedLensType
+        );
+        const categories = lensType?.categories.find(
+            (category) => category?.title === selectedCategory
+        );
+        const brand = categories?.brands.find(
+            (singleBrand) => singleBrand?.title === selectedRow
+        );
+        const selectedCollection = brand?.collections.find(
+            (collec) => collec?.id === collection?.id
+        );
+        selectedCollection.custom_price = value;
+        setLensesList([...lens]);
+    };
+    const handleCheckboxSubCat = (value, collection) => {
+        setIsChange(true);
+        const lens = [...lenses];
+
+        const lensType = [...lens].find(
+            (lens) => lens?.title === selectedLensType
+        );
+        const categories = lensType?.categories.find(
+            (category) => category?.title === selectedCategory
+        );
+        const subCat = categories?.sub_categories.find(
+            (category) => category?.title === selectedSubCat
+        );
+        const brand = subCat?.brands.find(
+            (singleBrand) => singleBrand?.title === selectedRow
+        );
+        const selectedCollection = brand?.collections.find(
+            (collec) => collec?.id === collection?.id
+        );
+        selectedCollection.status = value === true ? "active" : "inactive";
+        setLensesList([...lens]);
+    };
+    const handleDisplayNameChangeSubCat = (value, collection) => {
+        setIsChange(true);
+        const lens = [...lenses];
+
+        const lensType = [...lens].find(
+            (lens) => lens?.title === selectedLensType
+        );
+        const categories = lensType?.categories.find(
+            (category) => category?.title === selectedCategory
+        );
+        const subCat = categories?.sub_categories.find(
+            (category) => category?.title === selectedSubCat
+        );
+        const brand = subCat?.brands.find(
+            (singleBrand) => singleBrand?.title === selectedRow
+        );
+        const selectedCollection = brand?.collections.find(
+            (collec) => collec?.id === collection?.id
+        );
+        selectedCollection.display_name = value;
+        setLensesList([...lens]);
+    };
+    const handleAmountNameChangeSubCat = (value, collection) => {
+        setIsChange(true);
+        const lens = [...lenses];
+
+        const lensType = [...lens].find(
+            (lens) => lens?.title === selectedLensType
+        );
+        const categories = lensType?.categories.find(
+            (category) => category?.title === selectedCategory
+        );
+        const subCat = categories?.sub_categories.find(
+            (category) => category?.title === selectedSubCat
+        );
+        const brand = subCat?.brands.find(
+            (singleBrand) => singleBrand?.title === selectedRow
+        );
+        const selectedCollection = brand?.collections.find(
+            (collec) => collec?.id === collection?.id
+        );
+        selectedCollection.custom_price = value;
+        setLensesList([...lens]);
+    };
     if (!selectedRow) return <></>;
     return (
         <div className={classes["collection-container"]}>
@@ -207,9 +423,28 @@ const CollectionSection = ({
                     <CollectionSlot
                         key={`${collection?.title || ""}+${index}`}
                         collection={collection}
-                        handleCheckbox={handleCheckbox}
-                        handleDisplayNameChange={handleDisplayNameChange}
-                        handleAmountNameChange={handleAmountNameChange}
+                        handleCheckbox={(e, m) => {
+                            selectedSubCat !== ""
+                                ? handleCheckboxSubCat(e, m)
+                                : selectedCategory !== ""
+                                ? handleCheckboxCat(e, m)
+                                : handleCheckbox(e, m);
+                        }}
+                        handleDisplayNameChange={(e, m) => {
+                            selectedSubCat !== ""
+                                ? handleDisplayNameChangeSubCat(e, m)
+                                : selectedCategory !== ""
+                                ? handleDisplayNameChangeCat(e, m)
+                                : handleDisplayNameChange(e, m);
+                            handleAmountNameChangeCat;
+                        }}
+                        handleAmountNameChange={(e, m) => {
+                            selectedSubCat !== ""
+                                ? handleAmountNameChangeSubCat(e, m)
+                                : selectedCategory !== ""
+                                ? handleAmountNameChangeCat(e, m)
+                                : handleAmountNameChange(e, m);
+                        }}
                         prompt="Click to edit name of lens that calculator displays"
                     />
                 );
@@ -428,10 +663,35 @@ const LensesTypeBrandsList = ({
     lenses,
     setSelectedRow,
     selectedRow,
+    selectedCategory,
+    selectedSubCat,
 }) => {
     const getBrandsList = () => {
-        const brand = lenses.find((lens) => lens?.title === selectedLensType);
-        return brand?.brands || [];
+        if (selectedSubCat !== "") {
+            const lens = lenses.find(
+                (category) => category?.title === selectedLensType
+            );
+            const categories = lens?.categories.find(
+                (category) => category?.title === selectedCategory
+            );
+            const subCat = categories?.sub_categories.find(
+                (category) => category?.title === selectedSubCat
+            );
+            return subCat?.brands || [];
+        } else if (selectedCategory !== "") {
+            const lens = lenses.find(
+                (category) => category?.title === selectedLensType
+            );
+            const categories = lens?.categories.find(
+                (category) => category?.title === selectedCategory
+            );
+            return categories?.brands || [];
+        } else {
+            const brand = lenses.find(
+                (lens) => lens?.title === selectedLensType
+            );
+            return brand?.brands || [];
+        }
     };
     const onBrandRowClick = (value) => {
         setSelectedRow(value);
@@ -455,6 +715,90 @@ const LensesTypeBrandsList = ({
                         title={brand?.title}
                         onClick={() => onBrandRowClick(brand?.title)}
                         active={brand?.title === selectedRow}
+                    />
+                );
+            })}
+        </div>
+    );
+};
+const LensesTypeCategoryList = ({
+    onBackClick,
+    selectedLensType,
+    lenses,
+    setSelectedRow,
+    selectedRow,
+}) => {
+    const getCategoriesList = () => {
+        const category = lenses.find(
+            (lens) => lens?.title === selectedLensType
+        );
+        return category?.categories || [];
+    };
+    const onCategoryRowClick = (value) => {
+        setSelectedRow(value);
+    };
+    return (
+        <div className={classes["lenses-list-container"]}>
+            <div className={classes["lenses-list-back"]} onClick={onBackClick}>
+                <img
+                    src={blackArrowIcon}
+                    alt={"icon"}
+                    className={classes["black-icon"]}
+                />
+                <div className={classes["lenses-list-brand-title"]}>
+                    Categories
+                </div>
+            </div>
+            {getCategoriesList()?.map((category, index) => {
+                return (
+                    <LensLabelSlot
+                        key={index}
+                        title={category?.title}
+                        onClick={() => onCategoryRowClick(category?.title)}
+                        active={category?.title === selectedRow}
+                    />
+                );
+            })}
+        </div>
+    );
+};
+const LensesTypeSubCategoryList = ({
+    onBackClick,
+    selectedLensType,
+    lenses,
+    setSelectedRow,
+    selectedRow,
+    selectedCategory,
+}) => {
+    const getSubCategoriesList = () => {
+        const lens = lenses.find((lens) => lens?.title === selectedLensType);
+        const category = lens?.categories.find(
+            (cat) => cat?.title === selectedCategory
+        );
+        return category?.sub_categories || [];
+    };
+    const onCategoryRowClick = (value) => {
+        setSelectedRow(value);
+    };
+    return (
+        <div className={classes["lenses-list-container"]}>
+            <div className={classes["lenses-list-back"]} onClick={onBackClick}>
+                <img
+                    src={blackArrowIcon}
+                    alt={"icon"}
+                    className={classes["black-icon"]}
+                />
+                <div className={classes["lenses-list-brand-title"]}>
+                    SubCategories
+                </div>
+            </div>
+            {getSubCategoriesList()?.map((category, index) => {
+                return (
+                    <LensLabelSlot
+                        key={index}
+                        title={category?.title}
+                        onClick={() => onCategoryRowClick(category?.title)}
+                        active={category?.title === selectedRow}
                     />
                 );
             })}

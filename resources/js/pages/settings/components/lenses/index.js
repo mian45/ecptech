@@ -62,6 +62,18 @@ const LensesSettings = () => {
                                     >
                                         EyeMed Plan
                                     </Option>
+                                    <Option
+                                        className="ant-select-item-option-content"
+                                        value={"spectra"}
+                                    >
+                                        Spectra Plan
+                                    </Option>
+                                    <Option
+                                        className="ant-select-item-option-content"
+                                        value={"vba"}
+                                    >
+                                        VBA Plan
+                                    </Option>
                                 </Select>
                             </Col>
                         </Row>
@@ -107,7 +119,7 @@ const LensesSettings = () => {
                         >
                             Add On's
                         </Col>
-                        {plan !== "vsp" ? (
+                        {plan !== "vsp"&&plan !=="vba"&&plan !=='spectra' ? (
                             <Col
                                 className={getActiveClass(4)}
                                 onClick={() => setActiveTab(4)}
@@ -121,7 +133,7 @@ const LensesSettings = () => {
                 </Col>
                 <Col xs={24} md={22} lg={18}>
                     {activeTab === 1 && <LensesType plan={plan} />}
-                    {activeTab === 2 && <MaterialSettings />}
+                    {activeTab === 2 && <MaterialSettings plan={plan} />}
                     {activeTab === 3 || activeTab === 4 ? (
                         <AddonSettings
                             plan={plan}
