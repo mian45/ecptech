@@ -97,13 +97,13 @@ const LensType = ({
                 setCalValidations
             );
             await handleChange(e);
+            setError("");
+            await handleNVFType(e);
             await setFieldValue("lensCategory", "");
             await setFieldValue("lensSubCategory", "");
             await setFieldValue("lensTypeValue", "");
             await setFieldValue("lensTypeInput", "");
             await setFieldValue("blendedBifocal", "");
-            setError("");
-            await handleNVFType(e);
         } catch (err) {
             console.log("error while getting brands");
         }
@@ -116,8 +116,15 @@ const LensType = ({
             validationObject.blueLight = Yup.string().required(
                 "Blue light filtering is required"
             );
-            validationObject.lensTypeValue =
-                Yup.string().required("Brand is required");
+            if (
+                !(
+                    e?.target?.value === "Bifocal/Trifocal" &&
+                    values?.visionPlan === "VBA"
+                )
+            ) {
+                validationObject.lensTypeValue =
+                    Yup.string().required("Brand is required");
+            }
 
             await setFieldValue("blueLight", "Yes");
             setCalValidations({

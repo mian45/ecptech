@@ -1,6 +1,6 @@
 import { Col, Radio, Row } from "antd";
 import React from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import classes from "./edgeCoating.module.scss";
 import icon from "../../../../../images/calculator/edgeCoating.svg";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
@@ -9,6 +9,10 @@ import { CompareStrings } from "../../../../utils/utils";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 import QuestionIcon from "../questionIcon";
 import * as Yup from "yup";
+import { getAddons } from "../antireFlextive/helpers/addonsHelper";
+import RetailError from "../photochromics/components/retailError/retailError";
+import * as action from "../../../../store/actions";
+import { retailErrorMessage } from "../sunglassLens/helpers/constants";
 
 const EdgeCoating = ({
     formProps,
@@ -16,8 +20,10 @@ const EdgeCoating = ({
     setCalValidations,
     calValidations,
     language,
+    retailError,
 }) => {
     const { values, handleChange, setFieldValue } = formProps;
+    const dispatch = useDispatch();
     const edgeCoatingVisibility = calculatorObj?.questions
         ?.find((item) => item?.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -31,9 +37,37 @@ const EdgeCoating = ({
             ? true
             : false;
     };
+    const showAlert = (e) => {
+        const material = getAddons(
+            calculatorObj,
+            "Edge Coating",
+            e?.target?.value,
+            values?.visionPlan
+        );
+        const invoiceData = localStorage.getItem("CALCULATOR_DATA");
+        let parsedInvoiceData = false;
+        if (invoiceData) {
+            const data = JSON.parse(invoiceData);
+            parsedInvoiceData = data?.invoicePriceData || false;
+        }
+
+        if (!material?.price && !parsedInvoiceData) {
+            dispatch(action.showRetailPopup());
+        }
+        if (!material?.price && parsedInvoiceData) {
+            dispatch(
+                action.retailError({
+                    type: "edgeCoating",
+                    error: retailErrorMessage("Edge Coating"),
+                    plan: values?.visionPlan,
+                })
+            );
+        }
+    };
 
     const handleEdgeCoatingChange = async (e) => {
         handleChange(e);
+        showAlert(e);
         if (CompareStrings(e?.target?.value, "Yes")) {
             const validationsObj = {};
             validationsObj.edgeCoatingType = Yup.string().required(
@@ -104,6 +138,12 @@ const EdgeCoating = ({
                                     />
                                 </Radio.Group>
                                 <FormikError name={"isEdgeCoating"} />
+                                <RetailError
+                                    error={
+                                        retailError[values?.visionPlan]
+                                            ?.edgeCoating
+                                    }
+                                />
                                 {CompareStrings(values?.isLensBenifit, "Yes") &&
                                     CompareStrings(
                                         values?.isEdgeCoating,
@@ -125,6 +165,7 @@ const EdgeCoating = ({
 
 const mapStateToProps = (state) => ({
     language: state.Auth.language,
+    retailError: state?.persistStore?.retailError,
 });
 
 export default connect(mapStateToProps)(EdgeCoating);

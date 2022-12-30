@@ -11,6 +11,18 @@ const retailError = () => {
         slabOff: "",
         specialityLens: "",
         polish: "",
+        aspheric: "",
+        blueProtection: "",
+        rollAndPolish: "",
+        licensedspeciality: "",
+        scratchRistanceCoating: "",
+        chemistrieClip: "",
+        edgeCoating: "",
+        lensOptions: "",
+        overSizeLens: "",
+        spectraPolish: "",
+        scratchCoating: "",
+        uvCoating: "",
     };
 };
 export const defaultRetailError = () => {
@@ -21,5 +33,7 @@ export const defaultRetailError = () => {
         Eyemed: { ...retailError() },
         "Davis Vision": { ...retailError() },
         "Private Pay": { ...retailError() },
+        VBA: { ...retailError() },
+        Spectra: { ...retailError() },
     };
 };

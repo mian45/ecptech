@@ -49,6 +49,7 @@ import {
     SpectraRegularTotal,
 } from "./calculateSpectraPrice";
 import {
+    getCenterThickness,
     GetPrivateMirrorCoatingPrice,
     GetPrivatePayVBAMaterialPrice,
     GetPrivatePolarizedPrice,
@@ -689,6 +690,23 @@ export const getPriceFromDB = (data, calculatorObj, lensPrices) => {
         const manufacturerList = getManufacturer(data, calculatorObj);
         let lensPrice = 0;
         let materialPrice = 0;
+
+        if (
+            manufacturerList?.some(
+                (item) =>
+                    item?.title === "Generic Traditionally Surfaced" ||
+                    item?.title === "Generic Digitally Surfaced" ||
+                    item?.title ===
+                        "Generic Traditionally Surfaced Single Vision"
+            ) &&
+            data?.lensMaterial === "Aspheric Plastic 1.50"
+        ) {
+            return {
+                lensPrice: 0,
+                materialPrice: 28,
+            };
+        }
+
         const materials =
             lensPrices?.lenses_price &&
             lensPrices?.lenses_price[0]?.lenses?.filter(
@@ -941,6 +959,20 @@ const getAdvantagePricesFromDB = (data, calculatorObj, lensPrices) => {
     const manufacturerList = getManufacturer(data, calculatorObj);
     let lensPrice = 0;
     let materialPrice = 0;
+    if (
+        manufacturerList?.some(
+            (item) =>
+                item?.title === "Generic Traditionally Surfaced" ||
+                item?.title === "Generic Digitally Surfaced" ||
+                item?.title === "Generic Traditionally Surfaced Single Vision"
+        ) &&
+        data?.lensMaterial === "Aspheric Plastic 1.50"
+    ) {
+        return {
+            lensPrice: 0,
+            materialPrice: 28,
+        };
+    }
     const materials =
         lensPrices?.lenses_price &&
         lensPrices?.lenses_price[0]?.lenses?.filter(
@@ -1500,7 +1532,7 @@ export const calculateLensesCopaysFee = (
         total = total + parseFloat(GetDavisPolishFee(data));
     } else if (
         CompareStrings(data?.isLensBenifit, "Yes") &&
-        CompareStrings(data?.visionPlan, "VBA")
+        CompareStrings(data?.visionPlan, "Spectra")
     ) {
         total =
             total +
@@ -1513,6 +1545,8 @@ export const calculateLensesCopaysFee = (
         total = total + parseFloat(GetVBALensFee(data, calculatorObj));
         // add material Prices
         total = total + parseFloat(GetVBAMaterialFee(data, calculatorObj));
+        // add material center thickness Prices
+        total = total + parseFloat(getCenterThickness(data));
         // add photochromic price
         total = total + parseFloat(GetVBAPhotochromicFee(data));
         // add sun glasses polarized price
@@ -1550,6 +1584,8 @@ export const calculateLensesCopaysFee = (
                 parseFloat(
                     GetPrivatePayVBAMaterialPrice(data, calculatorObj) || 0
                 );
+            // add material center thickness Prices
+            total = total + parseFloat(getCenterThickness(data));
             // add photochromic price
             total =
                 total +

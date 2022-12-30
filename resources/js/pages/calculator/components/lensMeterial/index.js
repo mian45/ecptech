@@ -43,6 +43,7 @@ const LensMeterials = ({
         Plans()[language][values?.visionPlan]?.lensBenifit?.options?.yes;
 
     const getActiveMaterials = (material) => {
+        if (material === "Aspheric Plastic 1.50") return false;
         const activePlan = values?.visionPlan;
         if (
             CompareStrings(activePlan, eyemedPlan) ||
@@ -72,6 +73,7 @@ const LensMeterials = ({
                 item?.lens_material_title?.toLowerCase() ===
                 material?.toLowerCase()
         );
+
         return activeMaterials?.length > 0 ? !isMaterialFound : false;
     };
     const showAlert = (e) => {
@@ -207,6 +209,36 @@ const LensMeterials = ({
             : false;
     };
 
+    const getMaterialsList = () => {
+        let materialsList = [];
+        let collection = "";
+        calculatorObj["lens_types"]
+            ?.find((val) => val?.title === values?.lensType)
+            ?.brands?.forEach((item) => {
+                item.collections?.forEach((val) => {
+                    if (val?.title == values?.lensTypeValue) {
+                        collection = item?.title;
+                    }
+                });
+            });
+        if (
+            (values?.visionPlan === "VSP Signature" ||
+                values?.visionPlan === "VSP Choice" ||
+                values?.visionPlan === "VSP Advantage") &&
+            (collection === "Generic Traditionally Surfaced Single Vision" ||
+                collection === "Generic Traditionally Surfaced" ||
+                collection === "Generic Digitally Surfaced")
+        ) {
+            materialsList = calculatorObj["lens_material"];
+        } else {
+            materialsList = calculatorObj["lens_material"]?.filter(
+                (val) => val?.lens_material_title !== "Aspheric Plastic 1.50"
+            );
+        }
+
+        return materialsList;
+    };
+
     return (
         <>
             {lensMaterialVisibility ? (
@@ -233,29 +265,25 @@ const LensMeterials = ({
                                 name="lensMaterial"
                                 className={classes["radio-group"]}
                             >
-                                {calculatorObj["lens_material"]?.map(
-                                    (lensName, index) => {
-                                        return (
-                                            <CustomRadio
-                                                key={index}
-                                                label={getMaterialName(
-                                                    lensName
-                                                )}
-                                                value={
-                                                    lensName?.lens_material_title
-                                                }
-                                                headClass={classes["radio"]}
-                                                active={
-                                                    values?.lensMaterial ===
-                                                    lensName?.lens_material_title
-                                                }
-                                                disabled={getActiveMaterials(
-                                                    lensName?.lens_material_title
-                                                )}
-                                            />
-                                        );
-                                    }
-                                )}
+                                {getMaterialsList()?.map((lensName, index) => {
+                                    return (
+                                        <CustomRadio
+                                            key={index}
+                                            label={getMaterialName(lensName)}
+                                            value={
+                                                lensName?.lens_material_title
+                                            }
+                                            headClass={classes["radio"]}
+                                            active={
+                                                values?.lensMaterial ===
+                                                lensName?.lens_material_title
+                                            }
+                                            disabled={getActiveMaterials(
+                                                lensName?.lens_material_title
+                                            )}
+                                        />
+                                    );
+                                })}
                             </Radio.Group>
                             <FormikError name={"lensMaterial"} />
                             {error && (

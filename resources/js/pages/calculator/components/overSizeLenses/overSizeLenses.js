@@ -1,6 +1,6 @@
 import { Col, Radio, Row } from "antd";
 import React from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import classes from "./overSizeLenses.module.scss";
 import icon from "../../../../../images/calculator/overSize.svg";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
@@ -9,6 +9,10 @@ import { CompareStrings } from "../../../../utils/utils";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 import QuestionIcon from "../questionIcon";
 import * as Yup from "yup";
+import * as action from "../../../../store/actions";
+import { retailErrorMessage } from "../sunglassLens/helpers/constants";
+import { getAddons } from "../antireFlextive/helpers/addonsHelper";
+import RetailError from "../photochromics/components/retailError/retailError";
 
 const OverSizeLenses = ({
     formProps,
@@ -16,8 +20,10 @@ const OverSizeLenses = ({
     setCalValidations,
     calValidations,
     language,
+    retailError,
 }) => {
     const { values, handleChange, setFieldValue } = formProps;
+    const dispatch = useDispatch();
     const overSizeVisibility = calculatorObj?.questions
         ?.find((item) => item?.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -32,8 +38,37 @@ const OverSizeLenses = ({
             : false;
     };
 
+    const showAlert = (e) => {
+        const material = getAddons(
+            calculatorObj,
+            "Oversize Lenses",
+            e?.target?.value,
+            values?.visionPlan
+        );
+        const invoiceData = localStorage.getItem("CALCULATOR_DATA");
+        let parsedInvoiceData = false;
+        if (invoiceData) {
+            const data = JSON.parse(invoiceData);
+            parsedInvoiceData = data?.invoicePriceData || false;
+        }
+
+        if (!material?.price && !parsedInvoiceData) {
+            dispatch(action.showRetailPopup());
+        }
+        if (!material?.price && parsedInvoiceData) {
+            dispatch(
+                action.retailError({
+                    type: "overSizeLens",
+                    error: retailErrorMessage("Oversize Lenses"),
+                    plan: values?.visionPlan,
+                })
+            );
+        }
+    };
+
     const handleOverSizeChange = async (e) => {
         handleChange(e);
+        showAlert(e);
         if (CompareStrings(e?.target?.value, "Yes")) {
             const validationsObj = {};
             validationsObj.overSizeLenseType = Yup.string().required(
@@ -104,6 +139,12 @@ const OverSizeLenses = ({
                                     />
                                 </Radio.Group>
                                 <FormikError name={"isOverSizeLens"} />
+                                <RetailError
+                                    error={
+                                        retailError[values?.visionPlan]
+                                            ?.overSizeLens
+                                    }
+                                />
                                 {CompareStrings(values?.isLensBenifit, "Yes") &&
                                     CompareStrings(
                                         values?.isOverSizeLens,
@@ -125,6 +166,7 @@ const OverSizeLenses = ({
 
 const mapStateToProps = (state) => ({
     language: state.Auth.language,
+    retailError: state?.persistStore?.retailError,
 });
 
 export default connect(mapStateToProps)(OverSizeLenses);

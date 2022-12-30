@@ -1,6 +1,6 @@
 import { Col, Radio, Row } from "antd";
 import React from "react";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import classes from "./chemistrieClip.module.scss";
 import icon from "../../../../../images/calculator/chemistreClip.svg";
 import { CalculatorHeading, FormikError } from "../selectVisionPlan";
@@ -9,6 +9,13 @@ import { CompareStrings } from "../../../../utils/utils";
 import CalculatorInput from "../frameOrder/components/calculatorInput/calculatorInput";
 import QuestionIcon from "../questionIcon";
 import * as Yup from "yup";
+import {
+    getAddons,
+    getAddonsList,
+} from "../antireFlextive/helpers/addonsHelper";
+import * as action from "../../../../store/actions";
+import RetailError from "../photochromics/components/retailError/retailError";
+import { retailErrorMessage } from "../sunglassLens/helpers/constants";
 
 const ChemistrieClip = ({
     formProps,
@@ -16,8 +23,10 @@ const ChemistrieClip = ({
     setCalValidations,
     calValidations,
     language,
+    retailError,
 }) => {
     const { values, handleChange, setFieldValue } = formProps;
+    const dispatch = useDispatch();
     const chemistrieVisibility = calculatorObj?.questions
         ?.find((item) => item?.title === values?.visionPlan)
         ?.question_permissions?.find(
@@ -31,9 +40,37 @@ const ChemistrieClip = ({
             ? true
             : false;
     };
+    const showAlert = (e) => {
+        const material = getAddons(
+            calculatorObj,
+            "Chemistrie Clip",
+            e?.target?.value,
+            values?.visionPlan
+        );
+        const invoiceData = localStorage.getItem("CALCULATOR_DATA");
+        let parsedInvoiceData = false;
+        if (invoiceData) {
+            const data = JSON.parse(invoiceData);
+            parsedInvoiceData = data?.invoicePriceData || false;
+        }
+
+        if (!material?.price && !parsedInvoiceData) {
+            dispatch(action.showRetailPopup());
+        }
+        if (!material?.price && parsedInvoiceData) {
+            dispatch(
+                action.retailError({
+                    type: "chemistrieClip",
+                    error: retailErrorMessage("Chemistrie Clip"),
+                    plan: values?.visionPlan,
+                })
+            );
+        }
+    };
 
     const handleChemistrieClipChange = async (e) => {
         handleChange(e);
+        showAlert(e);
         if (CompareStrings(e?.target?.value, "Yes")) {
             const validationsObj = {};
             validationsObj.chemistrieClipType = Yup.string().required(
@@ -103,7 +140,13 @@ const ChemistrieClip = ({
                                         )}
                                     />
                                 </Radio.Group>
-                                <FormikError name={"isChemistrieClip"} />
+                                <FormikError name={"isChemistrieClip"} />{" "}
+                                <RetailError
+                                    error={
+                                        retailError[values?.visionPlan]
+                                            ?.chemistrieClip
+                                    }
+                                />
                                 {CompareStrings(values?.isLensBenifit, "Yes") &&
                                     CompareStrings(
                                         values?.isChemistrieClip,
@@ -125,6 +168,7 @@ const ChemistrieClip = ({
 
 const mapStateToProps = (state) => ({
     language: state.Auth.language,
+    retailError: state?.persistStore?.retailError,
 });
 
 export default connect(mapStateToProps)(ChemistrieClip);

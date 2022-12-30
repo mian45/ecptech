@@ -28,6 +28,8 @@ export const CalculateVBAPlansPrices = (
         total = total + parseFloat(GetVBALensFee(data, calculatorObj));
         // add material Prices
         total = total + parseFloat(GetVBAMaterialFee(data, calculatorObj));
+        // add material center thickness Prices
+        total = total + parseFloat(getCenterThickness(data));
         // add photochromic price
         total = total + parseFloat(GetVBAPhotochromicFee(data));
         // add sun glasses polarized price
@@ -61,6 +63,8 @@ export const CalculateVBAPlansPrices = (
         total =
             total +
             parseFloat(GetPrivatePayVBAMaterialPrice(data, calculatorObj) || 0);
+        // add material center thickness Prices
+        total = total + parseFloat(getCenterThickness(data));
         // add photochromic price
         total =
             total +
@@ -234,12 +238,10 @@ export const GetVBAMaterialFee = (data, calculatorObj) => {
             (lens) => lens?.lense_type === data?.lensType?.type
         )?.price;
 
-    return data?.lensMaterial
-        ? parseFloat(price || 0) + getCenterThickness(data)
-        : 0;
+    return data?.lensMaterial ? parseFloat(price || 0) : 0;
 };
 
-const getCenterThickness = (data) => {
+export const getCenterThickness = (data) => {
     return CompareStrings(data?.centerThickness, "Yes") && data?.lensMaterial
         ? parseFloat(PriceConstants?.vba?.centerThickness || 0)
         : 0;
@@ -743,9 +745,7 @@ export const GetPrivatePayVBAMaterialPrice = (data, calculatorObj) => {
         ?.prices?.find(
             (lens) => lens?.lense_type === data?.lensType?.type
         )?.retail_price;
-    return data?.lensMaterial
-        ? parseFloat(price || 0) + getCenterThickness(data)
-        : 0;
+    return data?.lensMaterial ? parseFloat(price || 0) : 0;
 };
 
 export const GetVBAPrivateAntireflectivePrice = (

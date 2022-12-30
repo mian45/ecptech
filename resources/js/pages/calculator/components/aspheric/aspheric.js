@@ -18,6 +18,7 @@ const Aspheric = ({
     language,
 }) => {
     const { values, handleChange, setFieldValue } = formProps;
+    console.log("formProps", formProps?.errors);
     const asphericVisibility = calculatorObj?.questions
         ?.find((item) => item?.title === values?.visionPlan)
         ?.question_permissions?.find(

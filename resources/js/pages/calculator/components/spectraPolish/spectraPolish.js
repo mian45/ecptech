@@ -57,7 +57,7 @@ const SpectraPolish = ({
 
     return (
         <>
-            {polishVisibility && values?.visionPlan === "VBA" ? (
+            {polishVisibility && values?.visionPlan === "Spectra" ? (
                 <Row className={classes["container"]}>
                     <Col xs={24} sm={24} md={5} lg={5}>
                         <QuestionIcon

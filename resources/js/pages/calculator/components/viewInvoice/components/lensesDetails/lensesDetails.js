@@ -7,6 +7,7 @@ import { AllPlans } from "../../../../data/plansList";
 import PlanTitles from "../../../../data/plansTitles/planTitles";
 import { RenderBlueLight } from "../../helpers/pricesHelper/calculateDavisPrice";
 import { calculateLensesCopaysFee } from "../../helpers/pricesHelper/calculateOtherPlansPrices";
+import { getCenterThickness } from "../../helpers/pricesHelper/calculateVBAPrice";
 import { GetSelectionDetails } from "../../helpers/selectedMenuList";
 import {
     FramePriceSlot,
@@ -272,6 +273,18 @@ const GetLensPriceByPlan = ({
                     )}`}
                 />
             </Col>
+            {CompareStrings(receipt?.values?.visionPlan, "VBA") &&
+                CompareStrings(receipt?.values?.centerThickness, "Yes") &&
+                receipt?.values?.aspheric?.type && (
+                    <Col xs={24}>
+                        <FramePriceSlot
+                            title={`1MM Centre Thickness`}
+                            price={`$${(
+                                parseFloat(getCenterThickness(data)) || 0
+                            ).toFixed(2)}`}
+                        />
+                    </Col>
+                )}
 
             {receipt?.values?.photochromics?.status === "Yes" && (
                 <Col xs={24}>
